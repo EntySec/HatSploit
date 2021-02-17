@@ -1,0 +1,419 @@
+{
+    "__database__": {
+        "type": "modules"
+    },
+    "auxiliary": {
+        "iphoneos": {
+            "checker/jailbroken_or_not": {
+                "Path": "modules/auxiliary/iphoneos/checker/jailbroken_or_not",
+                "Name": "auxiliary/iphoneos/checker/jailbroken_or_not",
+                "Authors": [
+                    "enty8080"
+                ],
+                "Description": "Check if remote iPhone jailbroken.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Risk": "low"
+            }
+        },
+        "net": {
+            "scanner/network_scanner": {
+                "Path": "modules/auxiliary/net/scanner/network_scanner",
+                "Name": "auxiliary/net/scanner/network_scanner",
+                "Authors": [
+                    "enty8080"
+                ],
+                "Description": "Scan local network.",
+                "Dependencies": [
+                    "scapy"
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Risk": "low"
+            },
+            "scanner/port_scanner": {
+                "Path": "modules/auxiliary/net/scanner/port_scanner",
+                "Name": "auxiliary/net/scanner/port_scanner",
+                "Authors": [
+                    "enty8080"
+                ],
+                "Description": "Scan host for opened ports.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Risk": "low"
+            },
+            "sniffer/user_agent_sniffer": {
+                "Path": "modules/auxiliary/net/sniffer/user_agent_sniffer",
+                "Name": "auxiliary/net/scanner/port_scanner",
+                "Authors": [
+                    "enty8080"
+                ],
+                "Description": "Sniff User-Agent through URL.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Risk": "medium"
+            }
+        },
+        "web": {
+            "scanner/directory_scanner": {
+                "Path": "modules/auxiliary/web/scanner/directory_scanner",
+                "Name": "auxiliary/web/scanner/directory_scanner",
+                "Authors": [
+                    "enty8080"
+                ],
+                "Description": "Website directory scanner.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Risk": "medium"
+            },
+            "scanner/apache_users": {
+                "Path": "modules/auxiliary/web/scanner/apache_users",
+                "Name": "auxiliary/web/scanner/apache_users",
+                "Authors": [
+                    "enty8080"
+                ],
+                "Description": "Scan website apache users.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Risk": "medium"
+            },
+            "scanner/pma_scanner": {
+                "Path": "modules/auxiliary/web/scanner/pma_scanner",
+                "Name": "auxiliary/web/scanner/pma_scanner",
+                "Authors": [
+                    "enty8080"
+                ],
+                "Description": "Scan website PHP My Admin.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Risk": "medium"
+            }
+        }
+    },
+    "exploit": {
+        "iphoneos": {
+            "mobile_safari_app/webkit_filter_dos": {
+                "Path": "modules/exploit/iphoneos/mobile_safari_app/webkit_filter_dos",
+                "Name": "exploit/iphoneos/mobile_safari_app/webkit_filter_dos",
+                "Authors": [
+                    "enty8080"
+                ],
+                "Description": "iPhoneOS 9.1 till 12.1 MobileSafari.app WebKit Filter DoS.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Risk": "high"
+            },
+            "ssh/cydia_default_password": {
+                "Path": "modules/exploit/iphoneos/ssh/cydia_default_password",
+                "Name": "exploit/iphoneos/ssh/cydia_default_password",
+                "Authors": [
+                    "enty8080"
+                ],
+                "Description": "Bypass iPhoneOS SSH authorization using Cydia.app default SSH password.",
+                "Dependencies": [
+                    "paramiko"
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Risk": "medium"
+            }
+        },
+        "linux": {
+            "stager/membrane_reverse_tcp": {
+                "Path": "modules/exploit/linux/stager/membrane_reverse_tcp",
+                "Name": "exploit/linux/stager/membrane_reverse_tcp",
+                "Authors": [
+                    "enty8080"
+                ],
+                "Description": "Linux reverse TCP shell with full remote functionality.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Risk": "high"
+            }
+        },
+        "macos": {
+            "stager/membrane_reverse_tcp": {
+                "Path": "modules/exploit/macos/stager/membrane_reverse_tcp",
+                "Name": "exploit/macos/stager/membrane_reverse_tcp",
+                "Authors": [
+                    "enty8080"
+                ],
+                "Description": "macOS reverse TCP shell with full remote functionality.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Risk": "high"
+            }
+        },
+        "multi": {
+            "f5_big_ip_tmui/local_file_inclusion": {
+                "Path": "modules/exploit/multi/f5_big_ip_tmui/local_file_inclusion",
+                "Name": "exploit/multi/f5_big_ip_tmui/local_file_inclusion",
+                "Authors": [
+                    "enty8080"
+                ],
+                "Description": "Local File Inclusion in F5 BIG-IP Traffic Management User Interface (TMUI).",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Risk": "high"
+            },
+            "f5_big_ip_tmui/remote_code_execution": {
+                "Path": "modules/exploit/multi/f5_big_ip_tmui/remote_code_execution",
+                "Name": "exploit/multi/f5_big_ip_tmui/remote_code_execution",
+                "Authors": [
+                    "enty8080"
+                ],
+                "Description": "Remote Code Execution in F5 BIG-IP Traffic Management User Interface (TMUI).",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Risk": "high"
+            },
+            "nostromo_httpd/remote_code_execution": {
+                "Path": "modules/exploit/multi/nostromo_httpd/remote_code_execution",
+                "Name": "exploit/multi/nostromo_httpd/remote_code_execution",
+                "Authors": [
+                    "enty8080"
+                ],
+                "Description": "Remote Code Execution in Nostromo httpd.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Risk": "high"
+            },
+            "vbulletin_widget_php/config_code_execution": {
+                "Path": "modules/exploit/multi/vbulletin_widget_php/config_code_execution",
+                "Name": "exploit/multi/vbulletin_widget_php/config_code_execution",
+                "Authors": [
+                    "enty8080"
+                ],
+                "Description": "vBulletin 5.0.0 till 5.5.4 widget_php widgetConfig Remote Code Execution.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Risk": "high"
+            },
+            "vbulletin_widget_php/template_code_execution": {
+                "Path": "modules/exploit/multi/vbulletin_widget_php/template_code_execution",
+                "Name": "exploit/multi/vbulletin_widget_php/template_code_execution",
+                "Authors": [
+                    "enty8080"
+                ],
+                "Description": "vBulletin 5.5.4 till 5.6.2 widget_php widget_tabbedcontainer_tab_panel Remote Code Execution.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Risk": "high"
+            },
+            "ssh/libssh_code_execution": {
+                "Path": "modules/exploit/multi/ssh/libssh_code_execution",
+                "Name": "exploit/multi/ssh/libssh_code_execution",
+                "Authors": [
+                    "enty8080"
+                ],
+                "Description": "SSH LibSSH unauthorized access Remote Code Execution.",
+                "Dependencies": [
+                    "paramiko"
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Risk": "medium"
+            },
+            "cctv_goahead_camera/password_disclosure": {
+                "Path": "modules/exploit/multi/cctv_goahead_camera/password_disclosure",
+                "Name": "exploit/multi/cctv_goahead_camera/password_disclosure",
+                "Authors": [
+                    "enty8080"
+                ],
+                "Description": "CCTV GoAhead Camera password disclosure exploit.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Risk": "high"
+            },
+            "netwave_ip_camera/password_disclosure": {
+                "Path": "modules/exploit/multi/netwave_ip_camera/password_disclosure",
+                "Name": "exploit/multi/netwave_ip_camera/password_disclosure",
+                "Authors": [
+                    "enty8080"
+                ],
+                "Description": "Netwave IP Camera password disclosure exploit.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Risk": "high"
+            }
+        }
+    },
+    "post": {
+        "linux": {
+            "membrane/transfer/download": {
+                "Path": "modules/post/linux/membrane/transfer/download",
+                "Name": "post/linux/membrane/transfer/download",
+                "Authors": [
+                    "enty8080"
+                ],
+                "Description": "Download remote file.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Risk": "high"
+            },
+            "membrane/transfer/upload": {
+                "Path": "modules/post/linux/membrane/transfer/upload",
+                "Name": "post/linux/membrane/transfer/upload",
+                "Authors": [
+                    "enty8080"
+                ],
+                "Description": "Upload local file.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Risk": "medium"
+            }
+        },
+        "macos": {
+            "membrane/gather/getvol": {
+                "Path": "modules/post/macos/membrane/gather/getvol",
+                "Name": "post/macos/membrane/gather/getvol",
+                "Authors": [
+                    "enty8080"
+                ],
+                "Description": "Get device volume level.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Risk": "medium"
+            },
+            "membrane/gather/prompt": {
+                "Path": "modules/post/macos/membrane/gather/prompt",
+                "Name": "post/macos/membrane/gather/prompt",
+                "Authors": [
+                    "enty8080"
+                ],
+                "Description": "Prompt user to type password.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Risk": "high"
+            },
+            "membrane/transfer/download": {
+                "Path": "modules/post/macos/membrane/transfer/download",
+                "Name": "post/macos/membrane/transfer/download",
+                "Authors": [
+                    "enty8080"
+                ],
+                "Description": "Download remote file.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Risk": "high"
+            },
+            "membrane/transfer/upload": {
+                "Path": "modules/post/macos/membrane/transfer/upload",
+                "Name": "post/macos/membrane/transfer/upload",
+                "Authors": [
+                    "enty8080"
+                ],
+                "Description": "Upload local file.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Risk": "medium"
+            },
+            "membrane/trolling/say": {
+                "Path": "modules/post/macos/membrane/trolling/say",
+                "Name": "post/macos/membrane/trolling/say",
+                "Authors": [
+                    "enty8080"
+                ],
+                "Description": "Say text message on device.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Risk": "low"
+            }
+        }
+    }
+}

@@ -1,0 +1,61 @@
+%comment
+%comment MIT License
+%comment
+%comment Copyright (c) 2020-2021 EntySec
+%comment
+%comment Permission is hereby granted, free of charge, to any person obtaining a copy
+%comment of this software and associated documentation files (the "Software"), to deal
+%comment in the Software without restriction, including without limitation the rights
+%comment to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+%comment copies of the Software, and to permit persons to whom the Software is
+%comment furnished to do so, subject to the following conditions:
+%comment
+%comment The above copyright notice and this permission notice shall be included in all
+%comment copies or substantial portions of the Software.
+%comment
+%comment THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+%comment IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+%comment FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+%comment AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+%comment LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+%comment OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+%comment SOFTWARE.
+%comment
+
+%newline
+%end
+Unable to handle kernel NULL pointer dereference at virtual address 0xd34db33f
+EFLAGS: 00010046
+eax: 00000001 ebx: f77c8c00 ecx: 00000000 edx: f77f0001
+esi: 803bf014 edi: 8023c755 ebp: 80237f84 esp: 80237f60
+ds: 0018   es: 0018  ss: 0018
+Process Swapper (Pid: 0, process nr: 0, stackpage=80377000)
+%newline
+%boldStack: hhhhhhhh..........hhhhhhhh
+       hhhhhhhh..........hhhhhhhh
+       hhhhhhhhhhhhhhhhhhhhhhhhhh
+       hhhhhhhh..........hhhhhhhh
+       hhhhhhhh..........hhhhhhhh
+       hhhhhhhh..........hhhhhhhh
+       ..........................
+       cccccccccccccccccccccccccc
+       cccccccccccccccccccccccccc
+       ccccccccc.................
+       cccccccccccccccccccccccccc
+       cccccccccccccccccccccccccc
+       .................ccccccccc
+       cccccccccccccccccccccccccc
+       cccccccccccccccccccccccccc
+       ..........................
+       ffffffffffffffffffffffffff
+       ffffffff..................
+       ffffffffffffffffffffffffff
+       ffffffff..................
+       ffffffff..................
+       ffffffff..................%end
+%newline
+%yellowCode: 00 00 00 00 H4 T! SP L0 1T FR 4M 3W OR K! V3 R5 I0 N1 00 00 00 00%end
+Aiee, Killing Interrupt handler
+%redKernel panic: Attempted to kill the idle task!
+In swapper task - not syncing
+%end

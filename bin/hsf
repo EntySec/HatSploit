@@ -1,0 +1,78 @@
+#!/usr/bin/env python3
+
+#
+# MIT License
+#
+# Copyright (c) 2020-2021 EntySec
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+#
+
+import os
+import sys
+import yaml
+
+root_path = '/opt/hsf/'
+sys.path.append(root_path)
+
+from core.config import config
+
+config = config()
+config.configure()
+
+from core.console import console
+from core.badges import badges
+
+class hsf:
+    def __init__(self):
+        self.console = console()
+        self.badges = badges()
+        
+    def accept_terms_of_service(self):
+        if not os.path.exists(root_path + '.accepted'):
+            self.badges.output_information("--( The HatSploit Terms of Service )--\n")
+            
+            terms = ""
+            terms += "The HatSploit Framework is designed purely\n"
+            terms += "for good and not evil. If you are planning on\n"
+            terms += "using this tool for malicious purposes that are\n"
+            terms += "not authorized by the company you are performing\n"
+            terms += "assessments for, you are violating the terms of\n"
+            terms += "service and license of this toolset. By accepting\n"
+            terms += "our terms of service, you agree that you will only\n"
+            terms += "use this tool for lawful purposes only.\n"
+            
+            self.badges.output_empty(terms)
+            
+            agree = self.badges.input_question("Accept? [Y/n] ")
+            if agree.lower() not in ['y', 'yes']:
+                return False
+            
+            open(root_path + '.accepted', 'w').close()
+            return True
+        return True
+        
+    def launch(self):
+        if self.console.check_root():
+            if self.console.check_install():
+                if self.accept_terms_of_service():
+                    self.console.shell()
+                
+hsf = hsf()
+hsf.launch()

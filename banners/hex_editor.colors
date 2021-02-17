@@ -1,0 +1,44 @@
+%comment
+%comment MIT License
+%comment
+%comment Copyright (c) 2020-2021 EntySec
+%comment
+%comment Permission is hereby granted, free of charge, to any person obtaining a copy
+%comment of this software and associated documentation files (the "Software"), to deal
+%comment in the Software without restriction, including without limitation the rights
+%comment to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+%comment copies of the Software, and to permit persons to whom the Software is
+%comment furnished to do so, subject to the following conditions:
+%comment
+%comment The above copyright notice and this permission notice shall be included in all
+%comment copies or substantial portions of the Software.
+%comment
+%comment THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+%comment IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+%comment FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+%comment AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+%comment LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+%comment OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+%comment SOFTWARE.
+%comment
+
+%newline
+%end
+ [                              B8  42  4E  D9  29  2C    ]
+ [                              4F  08  63  3C  E6  F6    ]
+ [                              3D  %back%yellow%whiteT!%end  43  42  C2  3D    ]
+ [                              22  93  96  %back%yellow%whiteL0%end  C8  FB    ]
+ [                              62  A6  3F  C3  03  E7    ]
+ [                              00  10  1D  CC  6C  21    ]
+%bold............................... %back%whiteGR  AN  BO  RO  UG  H-%end    V%end
+ [                              C6  4C  1A  1E  8A  83    ]
+ [                              FF  F3  00  E2  62  55    ]
+ [                              FB  56  55  3E  F7  39    ]
+ [                              F1  45  D7  64  C3  D3    ]
+ [                              E7  80  %back%yellow%whiteSP%end  FF  E3  BA    ]
+ [                              45  32  52  F0  %back%yellow%white1T%end  40    ]
+ [                              D3  D5  95  A6  F8  C0    ]
+ [                              %back%yellow%whiteH4%end  34  F8  A5  34  C7    ]
+ [                              DC  F9  18  ED  CC  0F    ]
+ [                              BB  F5  11  FF  30  31    ]
+%end
