@@ -375,6 +375,7 @@ idx_config
 .envrc
 .envs
 .env~
+.erlang.cookie
 .error_log
 .esdoc.json
 .esformatter
