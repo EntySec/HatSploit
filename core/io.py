@@ -28,25 +28,28 @@ import os
 import sys
 import readline
 
+from core.colors import colors
 from core.storage import local_storage
 from core.fmt import fmt
 
 class io:
     def __init__(self):
+        self.colors = colors()
         self.local_storage = local_storage()
         self.fmt = fmt()
 
     def output(self, message, end='\n'):
-        sys.stdout.write('\033[1K\r' + message + end)
+        sys.stdout.write(self.colors.REMOVE + message + end)
         sys.stdout.flush()
         if self.local_storage.get("current_prompt") and self.local_storage.get("active_input"):
-            sys.stdout.write('\033[1K\r' + self.local_storage.get("current_prompt") + readline.get_line_buffer())
+            prompt = self.colors.REMOVE + self.local_storage.get("current_prompt") + readline.get_line_buffer()
+            sys.stdout.write(prompt)
             sys.stdout.flush()
 
     def input(self, prompt_message):
         self.local_storage.set("current_prompt", prompt_message)
         self.local_storage.set("active_input", True)
-        commands = input('\033[1K\r' + prompt_message)
+        commands = input(self.colors.REMOVE + prompt_message)
         commands = self.fmt.format_commands(commands)
         arguments = list()
         if commands:
