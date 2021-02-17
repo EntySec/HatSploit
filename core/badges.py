@@ -24,6 +24,8 @@
 # SOFTWARE.
 #
 
+import os
+
 from core.io import io
 
 class badges:
@@ -60,26 +62,26 @@ class badges:
         self.Q = self.WHITE + self.BOLD + '[?] ' + self.END
         self.A = self.WHITE + self.BOLD + '[>] ' + self.END
 
-    def output_empty(self, message):
-        self.io.output(message)
+    def output_empty(self, message, end=self.NEWLINE):
+        self.io.output(message, end)
         
-    def output_usage(self, message):
-        self.output_empty("Usage: " + message)
+    def output_usage(self, message, end=self.NEWLINE):
+        self.output_empty("Usage: " + message, end)
         
-    def output_process(self, message):
-        self.output_empty(self.P + message)
+    def output_process(self, message, end=self.NEWLINE):
+        self.output_empty(self.P + message, end)
 
-    def output_success(self, message):
-        self.output_empty(self.S + message)
+    def output_success(self, message, end=self.NEWLINE):
+        self.output_empty(self.S + message, end)
 
-    def output_error(self, message):
-        self.output_empty(self.E + message)
+    def output_error(self, message, end=self.NEWLINE):
+        self.output_empty(self.E + message, end)
 
-    def output_warning(self, message):
-        self.output_empty(self.W + message)
+    def output_warning(self, message, end=self.NEWLINE):
+        self.output_empty(self.W + message, end)
 
-    def output_information(self, message):
-        self.output_empty(self.I + message)
+    def output_information(self, message, end=self.NEWLINE):
+        self.output_empty(self.I + message, end)
         
     def input_empty(self, message):
         output = ""
