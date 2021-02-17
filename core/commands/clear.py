@@ -39,4 +39,4 @@ class HatSploitCommand:
         }
 
     def run(self, argc, argv):
-        self.badges.output_empty(self.badges.CLEAR)
+        self.badges.output_empty(self.badges.CLEAR, end='')
