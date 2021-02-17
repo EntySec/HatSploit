@@ -30,6 +30,7 @@ import random
 from core.parser import parser
 from core.config import config
 from core.badges import badges
+from core.colors import colors
 
 from external.colors_script import colors_script
 
@@ -38,6 +39,7 @@ class tip:
         self.parser = parser()
         self.config = config()
         self.badges = badges()
+        self.colors = colors()
         
         self.colors_script = colors_script()
         
@@ -52,7 +54,7 @@ class tip:
                 while not tip:
                     random_tip = random.randint(0, len(tips) - 1)
                     tip = self.colors_script.parse_colors_script(self.config.path_config['base_paths']['tips_path'] + tips[random_tip])
-                self.badges.output_empty(self.badges.END + "HatSploit Tip: " + tip + self.badges.END)
+                self.badges.output_empty(self.colors.END + "HatSploit Tip: " + tip + self.colors.END)
             else:
                 self.badges.output_warning("No tips detected.")
         else:
