@@ -27,10 +27,12 @@
 import textwrap
 
 from core.badges import badges
+from core.colors import colors
 
 class HatSploitPlugin:
     def __init__(self):
         self.badges = badges()
+        self.colors = colors()
 
         self.details = {
             'Name': "cowsay",
@@ -104,4 +106,4 @@ class HatSploitPlugin:
         cow = self.ask_cow(message, len(message))
         self.badges.output_empty(cow)
         
-        self.badges.output_information("Use " + self.badges.GREEN + "cowsay" + self.badges.END + " to call me.")
+        self.badges.output_information("Use " + self.colors.GREEN + "cowsay" + self.colors.END + " to call me.")
