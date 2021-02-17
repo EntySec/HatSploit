@@ -25,9 +25,9 @@
 %newline
 %end
   %boldIIIIII%end     %reddTb.dTb%end
-  %bold  II  %end    %red4'  v  'B%end       %bold ____     __%end
-  %bold  II  %end    %red6.     .P%end       %bold|    \.-``  )%end
-  %bold  II  %end    %red'T;. .;P'%end       %bold|---``\  _.'%end
-  %bold  II  %end     %red'T; ;P'%end     %bold.-`'---``_.'%end
-  %boldIIIIII%end      %red'YvP'%end      %bold(__...--``%end
+  %bold  II  %end    %red4'  v  'B%end       %brown ____     __%end
+  %bold  II  %end    %red6.     .P%end       %brown|    \.-``  )%end
+  %bold  II  %end    %red'T;. .;P'%end       %brown|---``\  _.'%end
+  %bold  II  %end     %red'T; ;P'%end     %brown.-`'---``_.'%end
+  %boldIIIIII%end      %red'YvP'%end      %brown(__...--``%end
 %end
