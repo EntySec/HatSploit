@@ -36,7 +36,7 @@ class io:
         self.local_storage = local_storage()
         self.fmt = fmt()
 
-    def output(self, message, end=os.linesep):
+    def output(self, message, end='\n'):
         sys.stdout.write('\033[1K\r' + message + end)
         sys.stdout.flush()
         if self.local_storage.get("current_prompt") and self.local_storage.get("active_input"):
