@@ -49,6 +49,8 @@ class badges:
         
         self.REMOVE = '\033[1K\r'
         self.CLEAR = '\033c'
+        
+        self.NEWLINE = '\n'
 
         self.I = self.WHITE + self.BOLD + '[i] ' + self.END
         self.S = self.GREEN + self.BOLD + '[+] ' + self.END
