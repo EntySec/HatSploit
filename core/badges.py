@@ -27,60 +27,40 @@
 import os
 
 from core.io import io
+from core.colors import colors
 
 class badges:
     def __init__(self):
         self.io = io()
+        self.colors = colors()
 
-        self.BLACK = '\033[30m'
-        self.RED = '\033[31m'
-        self.GREEN = '\033[32m'
-        self.YELLOW = '\033[33m'
-        self.BLUE = '\033[34m'
-        self.PURPLE = '\033[35m'
-        self.CYAN = '\033[36m'
-        self.WHITE = '\033[77m'
+        self.I = self.colors.WHITE + self.colors.BOLD + '[i] ' + self.colors.END
+        self.S = self.colors.GREEN + self.colors.BOLD + '[+] ' + self.colors.END
+        self.W = self.colors.YELLOW + self.colors.BOLD + '[!] ' + self.colors.END
+        self.E = self.colors.RED + self.colors.BOLD + '[-] ' + self.colors.END
+        self.P = self.colors.BLUE + self.colors.BOLD + '[*] ' + self.colors.END
+        self.Q = self.colors.WHITE + self.colors.BOLD + '[?] ' + self.colors.END
+        self.A = self.colors.WHITE + self.colors.BOLD + '[>] ' + self.colors.END
 
-        self.END = '\033[0m'
-        self.BOLD = '\033[1m'
-        self.DARK = '\033[2m'
-        self.BENT = '\033[3m'
-        self.LINE = '\033[4m'
-        self.TWINK = '\033[5m'
-        self.BACK = '\033[7m'
-        
-        self.REMOVE = '\033[1K\r'
-        self.CLEAR = '\033c'
-        
-        self.NEWLINE = '\n'
-
-        self.I = self.WHITE + self.BOLD + '[i] ' + self.END
-        self.S = self.GREEN + self.BOLD + '[+] ' + self.END
-        self.W = self.YELLOW + self.BOLD + '[!] ' + self.END
-        self.E = self.RED + self.BOLD + '[-] ' + self.END
-        self.P = self.BLUE + self.BOLD + '[*] ' + self.END
-        self.Q = self.WHITE + self.BOLD + '[?] ' + self.END
-        self.A = self.WHITE + self.BOLD + '[>] ' + self.END
-
-    def output_empty(self, message, end=self.NEWLINE):
+    def output_empty(self, message, end='\n'):
         self.io.output(message, end)
         
-    def output_usage(self, message, end=self.NEWLINE):
+    def output_usage(self, message, end='\n'):
         self.output_empty("Usage: " + message, end)
         
-    def output_process(self, message, end=self.NEWLINE):
+    def output_process(self, message, end='\n'):
         self.output_empty(self.P + message, end)
 
-    def output_success(self, message, end=self.NEWLINE):
+    def output_success(self, message, end='\n'):
         self.output_empty(self.S + message, end)
 
-    def output_error(self, message, end=self.NEWLINE):
+    def output_error(self, message, end='\n'):
         self.output_empty(self.E + message, end)
 
-    def output_warning(self, message, end=self.NEWLINE):
+    def output_warning(self, message, end='\n'):
         self.output_empty(self.W + message, end)
 
-    def output_information(self, message, end=self.NEWLINE):
+    def output_information(self, message, end='\n'):
         self.output_empty(self.I + message, end)
         
     def input_empty(self, message):
