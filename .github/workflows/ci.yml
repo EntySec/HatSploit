@@ -1,0 +1,24 @@
+name: CI
+on: [pull_request]
+
+jobs:
+  Linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Upload HatSploit
+        run: sudo mkdir /opt/hsf; sudo cp -r * /opt/hsf
+      - name: Install HatSploit
+        run: cd /opt/hsf; bash install.sh
+      - name: Perform tests
+        run: cd /opt/hsf; python3 tester.py; echo 'exit' | sudo hsf
+  macOS:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Upload HatSploit
+        run: sudo mkdir /opt/hsf; sudo cp -r * /opt/hsf
+      - name: Install HatSploit
+        run: cd /opt/hsf; bash install.sh
+      - name: Perform tests
+        run: cd /opt/hsf; python3 tester.py; echo 'exit' | sudo hsf
