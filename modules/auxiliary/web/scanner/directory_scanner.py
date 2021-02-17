@@ -78,7 +78,10 @@ class HatSploitModule:
         for path in directories:
             response = self.web_tools.send_head_to_url(target_url, path)
             
-            if response.status_code == 200:
-                self.badges.output_success("[%s] ... [%s %s]" % (path, response.status_code, response.reason))
+            if response:
+                if response.status_code == 200:
+                    self.badges.output_success("[%s] ... [%s %s]" % (path, response.status_code, response.reason))
+                else:
+                    self.badges.output_warning("[%s] ... [%s %s]" % (path, response.status_code, response.reason))
             else:
-                self.badges.output_warning("[%s] ... [%s %s]" % (path, response.status_code, response.reason))
+                self.badges.output_error("[%s] ... [Failed to verify]" % (path))
