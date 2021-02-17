@@ -30,14 +30,12 @@ import subprocess
 
 from core.badges import badges
 from core.storage import local_storage
-from core.tables import tables
 from core.modules import modules
 
 class execute:
     def __init__(self):
         self.badges = badges()
         self.local_storage = local_storage()
-        self.tables = tables()
         self.modules = modules()
 
     def execute_command(self, commands, arguments):
@@ -50,7 +48,7 @@ class execute:
         
     def execute_builtin_method(self, commands, arguments):
         if commands[0][0] == '!':
-            if len(commands[0][0]) > 1:
+            if len(commands[0]) > 1:
                 commands[0] = commands[0].replace('!', '', 1)
                 self.execute_system(commands)
             else:
