@@ -29,7 +29,7 @@ import http.server
 from core.badges import badges
 
 class handler(http.server.SimpleHTTPRequestHandler):
-    def log_request(self, format, *args):
+    def log_request(self, fmt, *args):
         pass
         
     def do_GET(self):
