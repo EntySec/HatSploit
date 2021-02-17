@@ -39,6 +39,7 @@ from core.loader import loader
 from core.config import config
 from core.badges import badges
 from core.banner import banner
+from core.colors import colors
 from core.storage import local_storage
 from core.modules import modules
 from core.exceptions import exceptions
@@ -53,6 +54,7 @@ class console:
         self.config = config()
         self.badges = badges()
         self.banner = banner()
+        self.colors = colors()
         self.local_storage = local_storage()
         self.modules = modules()
         self.exceptions = exceptions()
@@ -86,7 +88,7 @@ class console:
                 else:
                     module = self.modules.get_current_module_name()
                     name = self.modules.get_platform(module) + '/' + self.modules.get_name(module)
-                    prompt = '(hsf: ' + self.modules.get_category(module) + ': ' + self.badges.RED + self.badges.BOLD + name + self.badges.END + ')> '
+                    prompt = '(hsf: ' + self.modules.get_category(module) + ': ' + self.colors.RED + self.colors.BOLD + name + self.colors.END + ')> '
                 commands, arguments = self.io.input(prompt)
                 
                 self.jobs.stop_dead()
@@ -113,7 +115,7 @@ class console:
         version = self.config.core_config['details']['version']
         codename = self.config.core_config['details']['codename']
         if self.config.core_config['console']['clear']:
-            self.badges.output_empty(self.badges.CLEAR, end='')
+            self.badges.output_empty(self.colors.CLEAR, end='')
 
         if self.config.core_config['console']['banner']:
             self.banner.print_random_banner()
@@ -135,14 +137,14 @@ class console:
                             modules_total += len(modules[database][module_category][module_platform])
 
             header = ""
-            header += f"{self.badges.END}\n"
+            header += f"{self.colors.END}\n"
             if codename and not codename.isspace():
-                header += f"    --=( {self.badges.YELLOW}HatSploit Framework {codename} {version}{self.badges.END}\n"
+                header += f"    --=( {self.colors.YELLOW}HatSploit Framework {codename} {version}{self.colors.END}\n"
             else:
-                header += f"    --=( {self.badges.YELLOW}HatSploit Framework {version}{self.badges.END}\n"
-            header += f"--==--=( Developed by EntySec ({self.badges.LINE}https://entysec.netlify.app/{self.badges.END})\n"
+                header += f"    --=( {self.colors.YELLOW}HatSploit Framework {version}{self.colors.END}\n"
+            header += f"--==--=( Developed by EntySec ({self.colors.LINE}https://entysec.netlify.app/{self.colors.END})\n"
             header += f"    --=( {modules_total} modules loaded | {plugins_total} plugins available\n"
-            header += f"{self.badges.END}"
+            header += f"{self.colors.END}"
             self.badges.output_empty(header)
             
         if self.config.core_config['console']['tip']:
