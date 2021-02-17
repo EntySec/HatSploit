@@ -48,6 +48,9 @@ class colors_script:
             '%twink': '\033[5m',
             '%back': '\033[7m',
             
+            '%remove': '\033[1K\r',
+            '%clear': '\033c',
+            
             '%newline': '\n'
         }
         
