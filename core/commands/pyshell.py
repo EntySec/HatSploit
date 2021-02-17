@@ -27,12 +27,14 @@
 import platform
 
 from core.badges import badges
+from core.colors import colors
 
 class HatSploitCommand:
     def __init__(self):
         self.badges = badges()
+        self.colors = colors()
         
-        self.prompt = self.badges.BOLD + ">>> " + self.badges.END
+        self.prompt = self.colors.BOLD + ">>> " + self.colors.END
         
         self.details = {
             'Category': "developer",
