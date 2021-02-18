@@ -48,13 +48,13 @@ class hsf:
         if not os.path.exists(root_path + '.accepted'):
             self.badges.output_information("--( The HatSploit Terms of Service )--\n")
             
-            file = open(root_path + 'TERMS_OF_SERVICE.txt', 'r')
+            file = open(root_path + 'TERMS_OF_SERVICE.md', 'r')
             terms = file.read()
             file.close()
             
             self.badges.output_empty(terms)
             
-            agree = self.badges.input_question("Accept? [Y/n] ")
+            agree = self.badges.input_question("Accept HatSploit Framework Terms of Service? [Y/n] ")
             if agree.lower() not in ['y', 'yes']:
                 return False
             
