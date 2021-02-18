@@ -48,15 +48,9 @@ class hsf:
         if not os.path.exists(root_path + '.accepted'):
             self.badges.output_information("--( The HatSploit Terms of Service )--\n")
             
-            terms = ""
-            terms += "The HatSploit Framework is designed purely\n"
-            terms += "for good and not evil. If you are planning on\n"
-            terms += "using this tool for malicious purposes that are\n"
-            terms += "not authorized by the company you are performing\n"
-            terms += "assessments for, you are violating the terms of\n"
-            terms += "service and license of this toolset. By accepting\n"
-            terms += "our terms of service, you agree that you will only\n"
-            terms += "use this tool for lawful purposes only.\n"
+            file = open(root_path + 'TERMS_OF_SERVICE.txt', 'r')
+            terms = file.read()
+            file.close()
             
             self.badges.output_empty(terms)
             
