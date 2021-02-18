@@ -73,6 +73,8 @@ class hsf:
             if self.console.check_install():
                 if self.accept_terms_of_service():
                     self.console.shell()
-                
-hsf = hsf()
-hsf.launch()
+
+
+if __name__ == '__main__':
+    hsf = hsf()
+    hsf.launch()
