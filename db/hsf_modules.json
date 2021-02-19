@@ -20,6 +20,23 @@
                 "Risk": "low"
             }
         },
+        "android": {
+            "checker/check_adb_installation": {
+                "Path": "modules/auxiliary/android/checker/check_adb_installation",
+                "Name": "auxiliary/android/checker/check_adb_installation",
+                "Authors": [
+                    "enty8080"
+                ],
+                "Description": "Check if remote Android device has ADB installation.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Risk": "low"
+            }
+        },
         "net": {
             "scanner/network_scanner": {
                 "Path": "modules/auxiliary/net/scanner/network_scanner",
