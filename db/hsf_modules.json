@@ -199,6 +199,23 @@
                 "Risk": "high"
             }
         },
+        "android": {
+            "adb/remote_code_execution": {
+                "Path": "modules/exploit/android/adb/remote_code_execution",
+                "Name": "exploit/android/adb/remote_code_execution",
+                "Authors": [
+                    "enty8080"
+                ],
+                "Description": "Remote Code Execution in Android ADB.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Risk": "medium"
+            }
+        },
         "multi": {
             "f5_big_ip_tmui/local_file_inclusion": {
                 "Path": "modules/exploit/multi/f5_big_ip_tmui/local_file_inclusion",
