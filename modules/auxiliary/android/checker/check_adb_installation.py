@@ -70,7 +70,7 @@ class HatSploitModule:
         self.badges.output_process("Checking " + remote_host + "...")
         
         if self.web_tools.check_port_opened(remote_host, 5555):
-            self.badges.output_success("Target device has ADB installation!")
+            self.badges.output_success("Target device may has ADB installation!")
         else:
             self.badges.output_warning("Looks like target device has no ADB installation.")
         checker.close()
