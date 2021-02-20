@@ -24,6 +24,9 @@
 # SOFTWARE.
 #
 
+import socket
+import requests.exceptions
+
 from core.badges import badges
 from core.jobs import jobs
 from core.exceptions import exceptions
@@ -64,5 +67,7 @@ class pseudo_shell:
                 execute_method(*arguments, command)
             except (KeyboardInterrupt, EOFError, self.exceptions.GlobalException):
                 pass
+            except (requests.exceptions.Timeout, socket.timeout):
+                self.badges.output_warning("Timeout waiting for response.")
             except Exception as e:
                 self.badges.output_error("An error occurred: " + str(e) + "!")
