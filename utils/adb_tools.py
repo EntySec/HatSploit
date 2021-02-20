@@ -24,8 +24,19 @@
 # SOFTWARE.
 #
 
+import os
+import shutil
+
 from core.badges import badges
 
 class adb_tools:
     def __init__(self):
         self.badges = badges()
+
+    def check_adb_installation(self):
+        if shutil.where('adb'):
+            return True
+        return False
+    
+    def execute_adb_command(self, commands):
+        pass
