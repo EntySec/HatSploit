@@ -136,7 +136,7 @@ class web_tools:
     # Functions to send something to host and port
     #
     
-    def send_post_to_host(self, remote_host, remote_port, data, buffer_size=1024, timeout=5):
+    def send_post_to_host(self, remote_host, remote_port, data, buffer_size=1024, timeout=10):
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         sock.settimeout(timeout)
         sock.connect((remote_host, int(remote_port)))
@@ -145,7 +145,7 @@ class web_tools:
         sock.close()
         return output.decode().strip()
     
-    def check_port_opened(self, remote_host, remote_port, timeout=5):
+    def check_port_opened(self, remote_host, remote_port, timeout=10):
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         sock.settimeout(timeout)
         if sock.connect_ex((remote_host, int(remote_port))) == 0:
