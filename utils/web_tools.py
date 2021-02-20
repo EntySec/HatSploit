@@ -210,8 +210,8 @@ class web_tools:
     #
     
     def get_url_server(self, url):
-        header = self.send_head_to_url(url)
-        if header.headers:
-            if 'Server' in header.keys():
-                return header['Server']
+        headers = self.send_head_to_url(url).headers
+        if headers:
+            if 'Server' in headers.keys():
+                return headers['Server']
         return None
