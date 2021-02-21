@@ -24,19 +24,89 @@
 # SOFTWARE.
 #
 
-import os
 import shutil
+import subprocess
 
 from core.badges import badges
 
 class adb_tools:
     def __init__(self):
         self.badges = badges()
+        
+        self.adb = "adb"
 
+    #
+    # Functions to check dependencies
+    #
+        
     def check_adb_installation(self):
-        if shutil.where('adb'):
+        if shutil.which(self.adb):
             return True
         return False
     
-    def execute_adb_command(self, commands):
-        pass
+    #
+    # Functions to control ADB server
+    #
+    
+    def start_adb_server(self):
+        server_log = self.execute_adb_command("start-server")
+        
+        if not server_log or "failed" in server_log:
+            return False
+        return True
+        
+    def stop_adb_server(self):
+        self.execute_adb_command("disconnect", output=False)
+        server_log = self.execute_adb_command("kill-server")
+        
+        if not server_log or "cannot" in server_log:
+            return False
+        return True
+    
+    #
+    # Functions to connect/disconnect devices
+    #
+    
+    def connect(self, target_addr):
+        server_log = self.execute_adb_command("connect", target_addr)
+        
+        if not server_log or "failed" in server_log:
+            return False
+        return True
+        
+    def disconnect(self, target_addr):
+        server_log = self.execute_adb_command("disconnect", target_addr)
+        
+        if not server_log or "error" in server_log:
+            return False
+        return True
+        
+    #
+    # Functions to check connection to devices
+    #
+        
+    def check_connected(self, target_addr):
+        is_connected = self.execute_adb_command("devices", f"| grep {target_addr}")
+        offline_devices = self.execute_adb_command("devices", "| grep offline")
+        
+        if not is_connected or not offline_devices:
+            return False
+        
+        if target_addr not in is_connected:
+            return False
+        if target_addr in offline_devices:
+            return False
+        
+        return True
+    
+    #
+    # Functions to send commands to ADB server
+    #
+    
+    def execute_adb_command(self, command, arguments="", output=True):
+        if self.check_adb_installation():
+            command_output = subprocess.getoutput(f"{self.adb} {command} {arguments}")
+            if output:
+                return command_output.strip()
+        else:
+            return False

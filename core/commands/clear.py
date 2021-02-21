@@ -30,6 +30,7 @@ from core.colors import colors
 class HatSploitCommand:
     def __init__(self):
         self.badges = badges()
+        self.colors = colors()
 
         self.details = {
             'Category': "core",
