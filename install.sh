@@ -113,10 +113,10 @@ else
     exit 1
 fi
 
-sudo python3 -m pip install setuptools
-sudo python3 -m pip install -r deps/core_dependencies.txt
-sudo python3 -m pip install -r deps/modules_dependencies.txt
-sudo python3 -m pip install -r deps/plugins_dependencies.txt
+sudo -H python3 -m pip install setuptools
+sudo -H python3 -m pip install -r deps/core_dependencies.txt
+sudo -H python3 -m pip install -r deps/modules_dependencies.txt
+sudo -H python3 -m pip install -r deps/plugins_dependencies.txt
 
 if [[ ! -d /opt ]]; then
     {
