@@ -24,8 +24,8 @@
 # SOFTWARE.
 #
 
-import os
 import shutil
+import subprocess
 
 from core.badges import badges
 
@@ -38,5 +38,34 @@ class adb_tools:
             return True
         return False
     
-    def execute_adb_command(self, commands):
-        pass
+    def start_adb_server(self):
+        self.execute_adb_command("start-server", output=False)
+        
+    def stop_adb_server(self):
+        self.execute_adb_command("disconnect", output=False)
+        self.execute_adb_command("kill-server", output=False)
+    
+    def connect(self, target_addr):
+        self.execute_adb_command("connect", target_addr, False)
+        
+    def disconnect(self, target_addr):
+        self.execute_adb_command("disconnect", target_addr, False)
+        
+    def check_connected(self, target_addr):
+        is_connected = self.execute_adb_command("devices", f"| grep {target_addr}")
+        offline_devices = self.execute_adb_command("devices", "| grep offline")
+        
+        if not is_connected:
+            return False
+        elif target_addr in offline_devices:
+            return False
+        
+        return True
+    
+    def execute_adb_command(self, command, arguments="", output=True):
+        if self.check_adb_installation():
+            command_output = subprocess.getoutput("adb " + command + " " + arguments)
+            if output:
+                return command_output.strip()
+        else:
+            self.badges.output_error("Failed to execute command!")
