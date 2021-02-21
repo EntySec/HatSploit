@@ -40,7 +40,7 @@ class adb_tools:
     #
         
     def check_adb_installation(self):
-        if shutil.where(self.adb):
+        if shutil.which(self.adb):
             return True
         return False
     
