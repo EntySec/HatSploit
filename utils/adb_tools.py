@@ -33,10 +33,18 @@ class adb_tools:
     def __init__(self):
         self.badges = badges()
 
+    #
+    # Functions to check dependencies
+    #
+        
     def check_adb_installation(self):
         if shutil.where('adb'):
             return True
         return False
+    
+    #
+    # Functions to control ADB server
+    #
     
     def start_adb_server(self):
         self.execute_adb_command("start-server", output=False)
@@ -45,11 +53,20 @@ class adb_tools:
         self.execute_adb_command("disconnect", output=False)
         self.execute_adb_command("kill-server", output=False)
     
+    
+    #
+    # Functions to connect/disconnect devices
+    #
+    
     def connect(self, target_addr):
         self.execute_adb_command("connect", target_addr, False)
         
     def disconnect(self, target_addr):
         self.execute_adb_command("disconnect", target_addr, False)
+        
+    #
+    # Functions to check connection to devices
+    #
         
     def check_connected(self, target_addr):
         is_connected = self.execute_adb_command("devices", f"| grep {target_addr}")
@@ -61,6 +78,10 @@ class adb_tools:
             return False
         
         return True
+    
+    #
+    # Functions to send commands to ADB server
+    #
     
     def execute_adb_command(self, command, arguments="", output=True):
         if self.check_adb_installation():
