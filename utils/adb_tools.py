@@ -94,9 +94,8 @@ class adb_tools:
         
         if target_addr not in is_connected:
             return False
-        else:
-            if target_addr in offline_devices:
-                return False
+        if target_addr in offline_devices:
+            return False
         
         return True
     
