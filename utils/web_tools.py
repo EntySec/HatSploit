@@ -35,8 +35,7 @@ from requests.packages.urllib3.exceptions import InsecureRequestWarning
 class web_tools:
     def __init__(self):
         self.config = config()
-        
-        self.default_timeout = 10
+
         requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
     
     #
@@ -64,13 +63,13 @@ class web_tools:
     # Functions to check URL stability
     #
     
-    def check_url_access(self, url, path=None, new_user_agent=True, timeout=self.default_timeout):
+    def check_url_access(self, url, path=None, new_user_agent=True, timeout=10):
         response = self.send_head_to_url(url, path, new_user_agent, timeout)
         if response:
             return True
         return False
     
-    def check_url_ssl(self, url, set_user_agent=True, timeout=self.default_timeout):
+    def check_url_ssl(self, url, set_user_agent=True, timeout=10):
         try:
             if set_user_agent:
                 response = requests.get(url, verify=False, headers=self.get_user_agent_header(), timeout=timeout)
@@ -88,7 +87,7 @@ class web_tools:
     # Functions to send something to URL
     #
     
-    def send_head_to_url(self, url, path=None, set_user_agent=True, timeout=self.default_timeout):
+    def send_head_to_url(self, url, path=None, set_user_agent=True, timeout=10):
         url = self.normalize_url(url, timeout=timeout)
         if path:
             if not path.startswith('/') and not url.endswith('/'):
@@ -103,7 +102,7 @@ class web_tools:
             return None
         return response
     
-    def send_get_to_url(self, url, path=None, set_user_agent=True, timeout=self.default_timeout):
+    def send_get_to_url(self, url, path=None, set_user_agent=True, timeout=10):
         url = self.normalize_url(url, timeout=timeout)
         if path:
             if not path.startswith('/') and not url.endswith('/'):
@@ -118,7 +117,7 @@ class web_tools:
             return None
         return response
     
-    def send_post_to_url(self, url, data, path=None, set_user_agent=True, timeout=self.default_timeout):
+    def send_post_to_url(self, url, data, path=None, set_user_agent=True, timeout=10):
         url = self.normalize_url(url, timeout=timeout)
         if path:
             if not path.startswith('/') and not url.endswith('/'):
@@ -137,7 +136,7 @@ class web_tools:
     # Functions to send something to host and port
     #
     
-    def send_post_to_host(self, remote_host, remote_port, data, buffer_size=1024, timeout=self.default_timeout):
+    def send_post_to_host(self, remote_host, remote_port, data, buffer_size=1024, timeout=10):
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         sock.settimeout(timeout)
         sock.connect((remote_host, int(remote_port)))
@@ -146,7 +145,7 @@ class web_tools:
         sock.close()
         return output.decode().strip()
     
-    def check_port_opened(self, remote_host, remote_port, timeout=self.default_timeout):
+    def check_port_opened(self, remote_host, remote_port, timeout=10):
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         sock.settimeout(timeout)
         if sock.connect_ex((remote_host, int(remote_port))) == 0:
@@ -166,7 +165,7 @@ class web_tools:
     # Functions to parse URL
     #
     
-    def craft_url(self, remote_host, remote_port, timeout=self.default_timeout):
+    def craft_url(self, remote_host, remote_port, timeout=10):
         url = remote_host + ':' + remote_port
         return self.normalize_url(url, timeout=timeout)
     
@@ -197,7 +196,7 @@ class web_tools:
         
         return url
     
-    def normalize_url(self, url, check_ssl=True, timeout=self.default_timeout):
+    def normalize_url(self, url, check_ssl=True, timeout=10):
         if check_ssl:
             if self.check_url_ssl(url, timeout=timeout):
                 url = self.add_https_to_url(url)
@@ -210,7 +209,7 @@ class web_tools:
     # Functions to get something from URL
     #
     
-    def get_url_server(self, url, timeout=self.default_timeout):
+    def get_url_server(self, url, timeout=10):
         headers = self.send_head_to_url(url, timeout=timeout).headers
         if headers:
             if 'Server' in headers.keys():
