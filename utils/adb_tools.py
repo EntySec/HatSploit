@@ -49,22 +49,37 @@ class adb_tools:
     #
     
     def start_adb_server(self):
-        self.execute_adb_command("start-server", output=False)
+        server_log = self.execute_adb_command("start-server")
+        
+        if not server_log or "failed" in server_log:
+            return False
+        return True
         
     def stop_adb_server(self):
         self.execute_adb_command("disconnect", output=False)
-        self.execute_adb_command("kill-server", output=False)
-    
+        server_log = self.execute_adb_command("kill-server")
+        
+        if not server_log or "cannot" in server_log:
+            return False
+        return True
     
     #
     # Functions to connect/disconnect devices
     #
     
     def connect(self, target_addr):
-        self.execute_adb_command("connect", target_addr, False)
+        server_log = self.execute_adb_command("connect", target_addr)
+        
+        if not server_log or "failed" in server_log:
+            return False
+        return True
         
     def disconnect(self, target_addr):
-        self.execute_adb_command("disconnect", target_addr, False)
+        server_log = self.execute_adb_command("disconnect", target_addr)
+        
+        if not server_log or "error" in server_log:
+            return False
+        return True
         
     #
     # Functions to check connection to devices
@@ -74,10 +89,14 @@ class adb_tools:
         is_connected = self.execute_adb_command("devices", f"| grep {target_addr}")
         offline_devices = self.execute_adb_command("devices", "| grep offline")
         
-        if not is_connected:
+        if not is_connected or not offline_devices:
             return False
-        elif target_addr in offline_devices:
+        
+        if target_addr not in is_connected:
             return False
+        else:
+            if target_addr in offline_devices:
+                return False
         
         return True
     
@@ -91,4 +110,4 @@ class adb_tools:
             if output:
                 return command_output.strip()
         else:
-            self.badges.output_error("Failed to execute command!")
+            return False
