@@ -32,13 +32,15 @@ from core.badges import badges
 class adb_tools:
     def __init__(self):
         self.badges = badges()
+        
+        self.adb = "adb"
 
     #
     # Functions to check dependencies
     #
         
     def check_adb_installation(self):
-        if shutil.where('adb'):
+        if shutil.where(self.adb):
             return True
         return False
     
@@ -85,7 +87,7 @@ class adb_tools:
     
     def execute_adb_command(self, command, arguments="", output=True):
         if self.check_adb_installation():
-            command_output = subprocess.getoutput("adb " + command + " " + arguments)
+            command_output = subprocess.getoutput(f"{self.adb} {command} {arguments}")
             if output:
                 return command_output.strip()
         else:
