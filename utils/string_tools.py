@@ -27,6 +27,11 @@
 import re
 
 class string_tools:
+    
+    #
+    # Functions to extract strings from binary/executable files
+    #
+    
     def extract_strings(self, binary_data):
         strings = re.findall("[^\x00-\x1F\x7F-\xFF]{4,}", binary_data)
         return strings
