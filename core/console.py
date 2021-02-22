@@ -115,7 +115,7 @@ class console:
         version = self.config.core_config['details']['version']
         codename = self.config.core_config['details']['codename']
         if self.config.core_config['console']['clear']:
-            self.badges.output_empty(self.colors.CLEAR, end='')
+            self.badges.output_empty(self.colors.REMOVE + self.colors.CLEAR + self.colors.REMOVE, end='')
 
         if self.config.core_config['console']['banner']:
             self.banner.print_random_banner()
