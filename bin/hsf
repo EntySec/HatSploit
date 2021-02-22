@@ -24,12 +24,14 @@
 # SOFTWARE.
 #
 
-import os
 import sys
-import yaml
 
+sys.stdout.write("\033]0;HatSploit Framework\007")
 root_path = '/opt/hsf/'
 sys.path.append(root_path)
+
+import os
+import yaml
 
 from core.config import config
 
