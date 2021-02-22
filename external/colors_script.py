@@ -49,7 +49,7 @@ class colors_script:
             '%back': '\033[7m',
             
             '%remove': '\033[1K\r',
-            '%clear': '\033[H\033[2J\033[3J',
+            '%clear': '\033[H\033[J',
             
             '%newline': '\n'
         }
