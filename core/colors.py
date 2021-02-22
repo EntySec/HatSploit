@@ -44,6 +44,6 @@ class colors:
         self.BACK = '\033[7m'
         
         self.REMOVE = '\033[1K\r'
-        self.CLEAR = '\033[H\033[2J\033[3J'
+        self.CLEAR = '\033[H\033[J'
         
         self.NEWLINE = '\n'
