@@ -59,8 +59,9 @@ class adb_tools:
         self.execute_adb_command("disconnect", output=False)
         server_log = self.execute_adb_command("kill-server")
         
-        if not server_log or "cannot" in server_log:
-            return False
+        if server_log:
+            if "cannot" in server_log:
+                return False
         return True
     
     #
