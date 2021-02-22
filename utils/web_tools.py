@@ -39,6 +39,19 @@ class web_tools:
         requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
     
     #
+    # Functions to manipulate fakes
+    #
+    
+    def generate_fake_response(self):
+        fake_response = requests.models.Response()
+        
+        fake_response.code = ""
+        fake_response.error_type = ""
+        fake_response.status_code = 0
+        
+        return fake_response
+    
+    #
     # Functions to manipulate User-Agent
     #
     
@@ -99,7 +112,7 @@ class web_tools:
             else:
                 response = requests.head(url, verify=False, timeout=timeout)
         except Exception:
-            return None
+            return self.generate_fake_response()
         return response
     
     def send_get_to_url(self, url, path=None, set_user_agent=True, timeout=10):
@@ -114,7 +127,7 @@ class web_tools:
             else:
                 response = requests.get(url, verify=False, timeout=timeout)
         except Exception:
-            return None
+            return self.generate_fake_response()
         return response
     
     def send_post_to_url(self, url, data, path=None, set_user_agent=True, timeout=10):
@@ -129,7 +142,7 @@ class web_tools:
             else:
                 response = requests.post(url, data, verify=False, timeout=timeout)
         except Exception:
-            return None
+            return self.generate_fake_response()
         return response
     
     #
