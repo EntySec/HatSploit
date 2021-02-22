@@ -78,7 +78,7 @@ class web_tools:
     
     def check_url_access(self, url, path=None, new_user_agent=True, timeout=10):
         response = self.send_head_to_url(url, path, new_user_agent, timeout)
-        if response:
+        if response.status_code != 0:
             return True
         return False
     
