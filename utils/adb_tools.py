@@ -87,18 +87,18 @@ class adb_tools:
     #
         
     def check_connected(self, target_addr):
-        is_connected = self.execute_adb_command("devices", f"| grep {target_addr}")
-        offline_devices = self.execute_adb_command("devices", "| grep offline")
+        device = self.execute_adb_command("devices", f"| grep {target_addr}")
+        device = device.split('\t')
         
-        if not is_connected or not offline_devices:
-            return False
+        if len(device) == 2:
+            device_addr = device[0]
+            device_state = device[1]
+            
+            if device_addr == target_addr:
+                if device_state == 'device':
+                    return True
         
-        if target_addr not in is_connected:
-            return False
-        if target_addr in offline_devices:
-            return False
-        
-        return True
+        return False
     
     #
     # Functions to send commands to ADB server
