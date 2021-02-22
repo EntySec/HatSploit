@@ -41,4 +41,6 @@ class HatSploitCommand:
         }
 
     def run(self, argc, argv):
-        self.badges.output_empty(self.colors.CLEAR, end='')
+        self.badges.output_empty(self.colors.REMOVE 
+                                 + self.colors.CLEAR 
+                                 + self.colors.REMOVE, end='')
