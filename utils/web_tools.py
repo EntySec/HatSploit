@@ -48,6 +48,7 @@ class web_tools:
         fake_response.code = ""
         fake_response.error_type = ""
         fake_response.status_code = 0
+        fake_response.headers = {'Server': ''}
         
         return fake_response
     
@@ -89,11 +90,10 @@ class web_tools:
             else:
                 response = requests.get(url, verify=False, timeout=timeout)
         except Exception:
-            response = None
+            response = self.generate_fake_response()
         
-        if response:
-            if response.status_code == 400:
-                return True
+        if response.status_code == 400:
+            return True
         return False
     
     #
@@ -224,7 +224,6 @@ class web_tools:
     
     def get_url_server(self, url, timeout=10):
         headers = self.send_head_to_url(url, timeout=timeout).headers
-        if headers:
-            if 'Server' in headers.keys():
-                return headers['Server']
+        if 'Server' in headers.keys():
+            return headers['Server']
         return None
