@@ -49,7 +49,7 @@ class web_tools:
         fake_response.code = ""
         fake_response.error_type = ""
         fake_response.status_code = 0
-        fake_response.headers = {'Server': ''}
+        fake_response.headers = dict()
         
         return fake_response
     
@@ -78,7 +78,7 @@ class web_tools:
     # Functions to check URL stability
     #
     
-    def check_url_access(self, url, path='/', new_user_agent=True, timeout=10):
+    def check_url_access(self, url, path="/", new_user_agent=True, timeout=10):
         response = self.http_request(
             method="HEAD",
             url=url, 
@@ -91,25 +91,12 @@ class web_tools:
             return True
         return False
     
-    def check_url_ssl(self, url, set_user_agent=True, timeout=10):
-        try:
-            if set_user_agent:
-                response = verify=False, headers=self.get_user_agent_header(), timeout=timeout)
-            else:
-                response = requests.get(url, verify=False, timeout=timeout)
-        except Exception:
-            response = self.generate_fake_response()
-        
-        if response.status_code == 400:
-            return True
-        return False
-    
     #
     # HTTP requests
     #
 
-    def http_request(self, method: None, url: None, path: None, data=None, user_agent=True, timeout=10):
-        url = self.normalize_url(url, timeout=timeout)
+    def http_request(self, method: None, url: None, path: None, data=None, ssl=False, user_agent=True, timeout=10):
+        url = self.normalize_url(url, ssl)
         
         if not path.startswith('/') and not url.endswith('/'):
             path = '/' + path
@@ -136,10 +123,10 @@ class web_tools:
     # TCP requests
     #
     
-    def tcp_reqeust(self, remote_host: None, remote_port: None, data: None, buffer_size=1024, timeout=10):
+    def tcp_request(self, host: None, port: None, data: None, buffer_size=1024, timeout=10):
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         sock.settimeout(timeout)
-        sock.connect((remote_host, int(remote_port)))
+        sock.connect((host, int(port)))
         sock.send(data.encode())
         output = sock.recv(buffer_size)
         sock.close()
@@ -149,10 +136,10 @@ class web_tools:
     # TCP ports
     #
     
-    def check_tcp_port(self, remote_host: None, remote_port: None, timeout=10):
+    def check_tcp_port(self, host, port, timeout=10):
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         sock.settimeout(timeout)
-        if sock.connect_ex((remote_host, int(remote_port))) == 0:
+        if sock.connect_ex((host, int(port))) == 0:
             sock.close()
             return True
         sock.close()
@@ -162,26 +149,26 @@ class web_tools:
     # Functions to parse host and port
     #
     
-    def format_host_and_port(self, remote_host, remote_port):
-        return remote_host + ':' + str(remote_port)
+    def format_host_and_port(self, host, port):
+        return host + ':' + str(port)
     
     #
     # Functions to parse URL
     #
     
-    def craft_url(self, remote_host, remote_port, timeout=10):
-        url = remote_host + ':' + remote_port
-        return self.normalize_url(url, timeout=timeout)
+    def craft_url(self, host, port, ssl=False):
+        url = host + ':' + port
+        return self.normalize_url(url, ssl)
     
     def get_url_port(self, url):
-        url = self.strip_scheme(url)
+        url = self.strip_scheme(url, True)
         return url.split(':')[1]
         
     def get_url_host(self, url):
-        url = self.strip_scheme(url)
+        url = self.strip_scheme(url, True)
         return url.split(':')[0]
     
-    def strip_scheme(self, url, strip_path=True):
+    def strip_scheme(self, url, strip_path=False):
         url = url.replace('http://', '', 1)
         url = url.replace('https://', '', 1)
         if strip_path:
@@ -189,20 +176,16 @@ class web_tools:
         return url
     
     def add_http_to_url(self, url):
-        url = self.strip_scheme(url, False)
+        url = self.strip_scheme(url)
         url = 'http://' + url
         return url
     
     def add_https_to_url(self, url):
-        url = self.strip_scheme(url, False)
+        url = self.strip_scheme(url)
         url = 'https://' + url
         return url
     
-    def normalize_url(self, url, check_ssl=True, timeout=10):
-        if check_ssl:
-            if self.check_url_ssl(url, timeout=timeout):
-                url = self.add_https_to_url(url)
-                return url
-
-        url = self.add_http_to_url(url)
-        return url
+    def normalize_url(self, url, ssl=False):
+        if ssl:
+            return self.add_https_to_url(url)
+        return self.add_http_to_url(url)
