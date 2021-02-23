@@ -66,11 +66,16 @@ class HatSploitModule:
                 'Description': "Ports to scan.",
                 'Value': "0-65535",
                 'Required': True
+            },
+            'TIMEOUT': {
+                'Description': "Timeout for scan.",
+                'Value': 0.5,
+                'Required': True
             }
         }
 
     def run(self):
-        remote_host, ports_range = self.parser.parse_options(self.options)
+        remote_host, ports_range, timeout = self.parser.parse_options(self.options)
         
         try:
             start = int(ports_range.split('-')[0].strip())
@@ -79,9 +84,18 @@ class HatSploitModule:
             self.badges.output_error("Invalid range provided!")
             return
         
+        try:
+            if timeout.isdigit():
+                timeout = int(timeout)
+            else:
+                timeout = float(timeout)
+        except Exception:
+            self.badges.output_error("Invalid timeout provided!")
+            return
+        
         self.badges.output_process("Scanning " + remote_host + "...")
         for port in range(start, end):
             target = self.web_tools.format_host_and_port(remote_host, port)
             
-            if self.web_tools.check_tcp_port(remote_host, port):
+            if self.web_tools.check_tcp_port(remote_host, port, timeout):
                 self.badges.output_success(target + " - opened")
