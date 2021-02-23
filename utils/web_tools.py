@@ -95,7 +95,7 @@ class web_tools:
     # HTTP requests
     #
 
-    def http_request(self, method: None, url: None, path: None, data=None, ssl=False, user_agent=True, timeout=10):
+    def http_request(self, method, url, path, data=None, ssl=False, user_agent=True, timeout=10):
         url = self.normalize_url(url, ssl)
         
         if not path.startswith('/') and not url.endswith('/'):
