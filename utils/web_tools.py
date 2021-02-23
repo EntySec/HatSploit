@@ -115,7 +115,8 @@ class web_tools:
                 timeout=timeout,
                 verify=False
             )
-        except Exception:
+        except Exception as e:
+            print(e)
             return self.generate_fake_response()
         return response
     
