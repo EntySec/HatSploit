@@ -59,17 +59,32 @@ class HatSploitModule:
                 'Description': "IP range.",
                 'Value': "192.168.1.1/24",
                 'Required': True
+            },
+            'TIMEOUT': {
+                'Description': "Timeout to scan.",
+                'Value': 10,
+                'Required': True
             }
         }
 
     def run(self):
-        ip_range = self.parser.parse_options(self.options)
+        ip_range, timeout = self.parser.parse_options(self.options)
         self.badges.output_process("Scanning local network...")
+        
+        try:
+            if not isinstance(timeout, int) and not isinstance(timeout, float):
+                if timeout.isdigit():
+                    timeout = int(timeout)
+                else:
+                    timeout = float(timeout)
+        except Exception:
+            self.badges.output_error("Invalid timeout provided!")
+            return
         
         try:
             arp = scapy.all.ARP(pdst=ip_range)
             ether = scapy.all.Ether(dst="ff:ff:ff:ff:ff:ff")
-            result = scapy.all.srp(ether/arp, timeout=10, verbose=False)[0]
+            result = scapy.all.srp(ether/arp, timeout=timeout, verbose=False)[0]
         
             if len(result) > 0:
                 net_data = list()
