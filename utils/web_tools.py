@@ -78,7 +78,7 @@ class web_tools:
     # Functions to check URL stability
     #
     
-    def check_url_access(self, url, path="/", new_user_agent=True, timeout=10):
+    def check_url_access(self, url, path="/", user_agent=True, timeout=10):
         response = self.http_request(
             method="HEAD",
             url=url, 
