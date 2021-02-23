@@ -68,9 +68,7 @@ class HatSploitModule:
         remote_host = self.parser.parse_options(self.options)
         
         self.badges.output_process("Checking " + remote_host + "...")
-        
         if self.web_tools.check_tcp_port(remote_host, 22):
             self.badges.output_success("Target device may be jailbroken!")
         else:
             self.badges.output_warning("Looks like target device is not jailbroken.")
-        checker.close()
