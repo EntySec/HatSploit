@@ -85,10 +85,11 @@ class HatSploitModule:
             return
         
         try:
-            if timeout.isdigit():
-                timeout = int(timeout)
-            else:
-                timeout = float(timeout)
+            if not isinstance(timeout, int) and not isinstance(timeout, float):
+                if timeout.isdigit():
+                    timeout = int(timeout)
+                else:
+                    timeout = float(timeout)
         except Exception:
             self.badges.output_error("Invalid timeout provided!")
             return
