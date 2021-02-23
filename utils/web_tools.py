@@ -79,13 +79,7 @@ class web_tools:
     #
     
     def check_url_access(self, url, path="/", user_agent=True, timeout=10):
-        response = self.http_request(
-            method="HEAD",
-            url=url, 
-            path=path, 
-            user_agent=user_agent, 
-            timeout=timeout
-        )
+        response = self.http_request("HEAD", url, path, user_agent, timeout)
         
         if response.status_code != 0:
             return True
@@ -107,14 +101,7 @@ class web_tools:
             headers = self.get_user_agent_header()
         
         try:
-            response = self.http_client(
-                method=method,
-                url=url,
-                data=data,
-                headers=headers,
-                timeout=timeout,
-                verify=False
-            )
+            response = self.http_client(method=method, url=url, data=data, headers=headers, timeout=timeout, verify=False
         except Exception as e:
             print(e)
             return self.generate_fake_response()
@@ -124,7 +111,7 @@ class web_tools:
     # TCP requests
     #
     
-    def tcp_request(self, host: None, port: None, data: None, buffer_size=1024, timeout=10):
+    def tcp_request(self, host, port, data, buffer_size=1024, timeout=10):
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         sock.settimeout(timeout)
         sock.connect((host, int(port)))
