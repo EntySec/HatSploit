@@ -101,9 +101,8 @@ class web_tools:
             headers = self.get_user_agent_header()
         
         try:
-            response = self.http_client(method=method, url=url, data=data, headers=headers, timeout=timeout, verify=False
-        except Exception as e:
-            print(e)
+            response = self.http_client(method=method, url=url, data=data, headers=headers, timeout=timeout, verify=False)
+        except Exception:
             return self.generate_fake_response()
         return response
     
