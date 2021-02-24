@@ -36,7 +36,7 @@ class web_tools:
     def __init__(self):
         self.config = config()
 
-        self.http_client = requests.response
+        self.http_client = requests.request
         requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
     
     #
