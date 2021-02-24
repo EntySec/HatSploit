@@ -36,6 +36,7 @@ class web_tools:
     def __init__(self):
         self.config = config()
 
+        self.http_client = requests.response
         requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
     
     #
@@ -93,14 +94,22 @@ class web_tools:
         
         if not path.startswith('/') and not url.endswith('/'):
             path = '/' + path
-        url += path
+        url += path[1:]
         
         headers = None
         if user_agent:
             headers = self.get_user_agent_header()
         
         try:
-            response = getattr(requests, method.lower())(url=url, data=data, timeout=10, verify=False, allow_redirects=False)
+            response = self.http_client(
+                method=method,
+                url=url,
+                data=data,
+                headers=headers,
+                timeout=timeout,
+                verify=False,
+                allow_redirects=False
+            )
         except Exception:
             return self.generate_fake_response()
         return response
