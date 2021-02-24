@@ -91,10 +91,7 @@ class web_tools:
 
     def http_request(self, method, url, path, data=None, ssl=False, user_agent=True, timeout=10):
         url = self.normalize_url(url, ssl)
-        
-        if not path.startswith('/') and not url.endswith('/'):
-            path = '/' + path
-        url += path[1:]
+        url = self.add_path_to_url(url, path)
         
         headers = None
         if user_agent:
@@ -179,6 +176,15 @@ class web_tools:
         url = self.strip_scheme(url)
         url = 'https://' + url
         return url
+    
+    def add_path_to_url(self, url, path):
+        if not path.startswith('/'):
+            path = '/' + path
+            
+        if url.endswith('/'):
+            path = path[1:]
+            
+        return url + path
     
     def normalize_url(self, url, ssl=False):
         if ssl:
