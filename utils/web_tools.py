@@ -79,7 +79,7 @@ class web_tools:
     #
     
     def check_url_access(self, url, path="/", user_agent=True, timeout=10):
-        response = self.http_request("HEAD", url, path, user_agent, timeout)
+        response = self.http_request("GET", url, path, user_agent, timeout)
         
         if response.status_code != 0:
             return True
