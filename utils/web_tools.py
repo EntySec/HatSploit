@@ -100,8 +100,7 @@ class web_tools:
             headers = self.get_user_agent_header()
         
         try:
-            response = getattr(requests, method.lower())
-            (url, data, timeout=10, verify=False, allow_redirects=False)
+            response = getattr(requests, method.lower())(url=url, data=data, timeout=10, verify=False, allow_redirects=False)
         except Exception:
             return self.generate_fake_response()
         return response
