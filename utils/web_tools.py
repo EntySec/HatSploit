@@ -84,6 +84,12 @@ class web_tools:
         
         if response.status_code != 0:
             return True
+        
+        if "aborted" in response.reason:
+            response = self.http_request("GET", url, path, None, ssl, user_agent, timeout)
+            
+            if response.status_code != 0:
+                return True
         return False
     
     #
