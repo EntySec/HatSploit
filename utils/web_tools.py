@@ -43,11 +43,12 @@ class web_tools:
     # Functions to manipulate responses
     #
     
-    def generate_fake_response(self):
+    def generate_fake_response(self, reason):
         fake_response = requests.models.Response()
         
         fake_response.code = ""
         fake_response.error_type = ""
+        fake_response.reason = reason
         fake_response.status_code = 0
         fake_response.headers = dict()
         
@@ -78,8 +79,8 @@ class web_tools:
     # Functions to check URL stability
     #
     
-    def check_url_access(self, url, path="/", user_agent=True, timeout=10):
-        response = self.http_request("HEAD", url, path, user_agent, timeout)
+    def check_url_access(self, url, path="/", ssl=False, user_agent=True, timeout=10):
+        response = self.http_request("HEAD", url, path, None, ssl, user_agent, timeout)
         
         if response.status_code != 0:
             return True
@@ -107,8 +108,8 @@ class web_tools:
                 verify=False,
                 allow_redirects=False
             )
-        except Exception:
-            return self.generate_fake_response()
+        except Exception as e:
+            return self.generate_fake_response(str(e))
         return response
     
     #
