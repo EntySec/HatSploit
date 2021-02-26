@@ -37,10 +37,10 @@
                 "Risk": "low"
             }
         },
-        "net": {
+        "multi": {
             "scanner/network_scanner": {
-                "Path": "modules/auxiliary/net/scanner/network_scanner",
-                "Name": "auxiliary/net/scanner/network_scanner",
+                "Path": "modules/auxiliary/multi/scanner/network_scanner",
+                "Name": "auxiliary/multi/scanner/network_scanner",
                 "Authors": [
                     "enty8080"
                 ],
@@ -54,8 +54,8 @@
                 "Risk": "low"
             },
             "scanner/port_scanner": {
-                "Path": "modules/auxiliary/net/scanner/port_scanner",
-                "Name": "auxiliary/net/scanner/port_scanner",
+                "Path": "modules/auxiliary/multi/scanner/port_scanner",
+                "Name": "auxiliary/multi/scanner/port_scanner",
                 "Authors": [
                     "enty8080"
                 ],
@@ -69,8 +69,8 @@
                 "Risk": "low"
             },
             "sniffer/user_agent_sniffer": {
-                "Path": "modules/auxiliary/net/sniffer/user_agent_sniffer",
-                "Name": "auxiliary/net/scanner/port_scanner",
+                "Path": "modules/auxiliary/multi/sniffer/user_agent_sniffer",
+                "Name": "auxiliary/multi/scanner/port_scanner",
                 "Authors": [
                     "enty8080"
                 ],
@@ -82,12 +82,10 @@
                     ""
                 ],
                 "Risk": "medium"
-            }
-        },
-        "web": {
+            },
             "scanner/directory_scanner": {
-                "Path": "modules/auxiliary/web/scanner/directory_scanner",
-                "Name": "auxiliary/web/scanner/directory_scanner",
+                "Path": "modules/auxiliary/multi/scanner/directory_scanner",
+                "Name": "auxiliary/multi/scanner/directory_scanner",
                 "Authors": [
                     "enty8080"
                 ],
@@ -101,8 +99,8 @@
                 "Risk": "medium"
             },
             "scanner/apache_users": {
-                "Path": "modules/auxiliary/web/scanner/apache_users",
-                "Name": "auxiliary/web/scanner/apache_users",
+                "Path": "modules/auxiliary/multi/scanner/apache_users",
+                "Name": "auxiliary/multi/scanner/apache_users",
                 "Authors": [
                     "enty8080"
                 ],
@@ -116,8 +114,8 @@
                 "Risk": "medium"
             },
             "scanner/pma_scanner": {
-                "Path": "modules/auxiliary/web/scanner/pma_scanner",
-                "Name": "auxiliary/web/scanner/pma_scanner",
+                "Path": "modules/auxiliary/multi/scanner/pma_scanner",
+                "Name": "auxiliary/multi/scanner/pma_scanner",
                 "Authors": [
                     "enty8080"
                 ],
