@@ -80,12 +80,14 @@ class HatSploitModule:
         
         for path in self.paths:
             path = path.replace("\n", "")
-            response = self.web_tools.send_head_to_url(target_url, path)
             
-            if response:
-                if response.status_code == 200:
-                    self.badges.output_success("[%s] ... [%s %s]" % (path, response.status_code, response.reason))
-                else:
-                    self.badges.output_warning("[%s] ... [%s %s]" % (path, response.status_code, response.reason))
+            response = self.web_tools.http_request(
+                method="HEAD",
+                url=target_url, 
+                path=path
+            )
+            
+            if response.status_code == 200:
+                self.badges.output_success("[%s] ... [%s %s]" % (path, response.status_code, response.reason))
             else:
-                self.badges.output_error("[%s] ... [Failed to verify]" % (path))
+                self.badges.output_warning("[%s] ... [%s %s]" % (path, response.status_code, response.reason))

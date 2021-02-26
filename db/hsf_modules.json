@@ -337,13 +337,13 @@
                 ],
                 "Risk": "high"
             },
-            "netwave_ip_camera/password_disclosure": {
-                "Path": "modules/exploit/multi/netwave_ip_camera/password_disclosure",
-                "Name": "exploit/multi/netwave_ip_camera/password_disclosure",
+            "netwave_ip_camera/information_disclosure": {
+                "Path": "modules/exploit/multi/netwave_ip_camera/information_disclosure",
+                "Name": "exploit/multi/netwave_ip_camera/information_disclosure",
                 "Authors": [
                     "enty8080"
                 ],
-                "Description": "Netwave IP Camera password disclosure exploit.",
+                "Description": "Netwave IP Camera information disclosure exploit.",
                 "Dependencies": [
                     ""
                 ],

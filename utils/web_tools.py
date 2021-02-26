@@ -36,19 +36,21 @@ class web_tools:
     def __init__(self):
         self.config = config()
 
+        self.http_client = requests.request
         requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
     
     #
-    # Functions to manipulate fakes
+    # Functions to manipulate responses
     #
     
-    def generate_fake_response(self):
+    def generate_fake_response(self, reason):
         fake_response = requests.models.Response()
         
         fake_response.code = ""
         fake_response.error_type = ""
+        fake_response.reason = reason
         fake_response.status_code = 0
-        fake_response.headers = {'Server': ''}
+        fake_response.headers = dict()
         
         return fake_response
     
@@ -77,91 +79,58 @@ class web_tools:
     # Functions to check URL stability
     #
     
-    def check_url_access(self, url, path=None, new_user_agent=True, timeout=10):
-        response = self.send_head_to_url(url, path, new_user_agent, timeout)
+    def check_url_access(self, url, path="/", ssl=False, user_agent=True, timeout=10):
+        response = self.http_request("HEAD", url, path, None, ssl, user_agent, timeout)
+        
         if response.status_code != 0:
             return True
-        return False
-    
-    def check_url_ssl(self, url, set_user_agent=True, timeout=10):
-        try:
-            if set_user_agent:
-                response = requests.get(url, verify=False, headers=self.get_user_agent_header(), timeout=timeout)
-            else:
-                response = requests.get(url, verify=False, timeout=timeout)
-        except Exception:
-            response = self.generate_fake_response()
         
-        if response.status_code == 400:
-            return True
+        if "aborted" in response.reason:
+            response = self.http_request("GET", url, path, None, ssl, user_agent, timeout)
+            
+            if response.status_code != 0:
+                return True
         return False
     
     #
-    # Functions to send something to URL
+    # HTTP requests
     #
-    
-    def send_head_to_url(self, url, path=None, set_user_agent=True, timeout=10):
-        url = self.normalize_url(url, timeout=timeout)
-        if path:
-            if not path.startswith('/') and not url.endswith('/'):
-                path = '/' + path
-            url += path
+
+    def http_request(self, method, url, path, data=None, ssl=False, user_agent=True, timeout=10):
+        url = self.normalize_url(url, ssl)
+        url = self.add_path_to_url(url, path)
+        
+        headers = None
+        if user_agent:
+            headers = self.get_user_agent_header()
+        
         try:
-            if set_user_agent:
-                response = requests.head(url, verify=False, headers=self.get_user_agent_header(), timeout=timeout)
-            else:
-                response = requests.head(url, verify=False, timeout=timeout)
-        except Exception:
-            return self.generate_fake_response()
-        return response
-    
-    def send_get_to_url(self, url, path=None, set_user_agent=True, timeout=10):
-        url = self.normalize_url(url, timeout=timeout)
-        if path:
-            if not path.startswith('/') and not url.endswith('/'):
-                path = '/' + path
-            url += path
-        try:
-            if set_user_agent:
-                response = requests.get(url, verify=False, headers=self.get_user_agent_header(), timeout=timeout)
-            else:
-                response = requests.get(url, verify=False, timeout=timeout)
-        except Exception:
-            return self.generate_fake_response()
-        return response
-    
-    def send_post_to_url(self, url, data, path=None, set_user_agent=True, timeout=10):
-        url = self.normalize_url(url, timeout=timeout)
-        if path:
-            if not path.startswith('/') and not url.endswith('/'):
-                path = '/' + path
-            url += path
-        try:
-            if set_user_agent:
-                response = requests.post(url, data, verify=False, headers=self.get_user_agent_header(), timeout=timeout)
-            else:
-                response = requests.post(url, data, verify=False, timeout=timeout)
-        except Exception:
-            return self.generate_fake_response()
+            response = self.http_client(method=method, url=url, data=data, headers=headers, timeout=timeout, verify=False, allow_redirects=False)
+        except Exception as e:
+            return self.generate_fake_response(str(e))
         return response
     
     #
-    # Functions to send something to host and port
+    # TCP requests
     #
     
-    def send_post_to_host(self, remote_host, remote_port, data, buffer_size=1024, timeout=10):
+    def tcp_request(self, host, port, data, buffer_size=1024, timeout=10):
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         sock.settimeout(timeout)
-        sock.connect((remote_host, int(remote_port)))
+        sock.connect((host, int(port)))
         sock.send(data.encode())
         output = sock.recv(buffer_size)
         sock.close()
         return output.decode().strip()
     
-    def check_port_opened(self, remote_host, remote_port, timeout=10):
+    #
+    # TCP ports
+    #
+    
+    def check_tcp_port(self, host, port, timeout=10):
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         sock.settimeout(timeout)
-        if sock.connect_ex((remote_host, int(remote_port))) == 0:
+        if sock.connect_ex((host, int(port))) == 0:
             sock.close()
             return True
         sock.close()
@@ -171,26 +140,26 @@ class web_tools:
     # Functions to parse host and port
     #
     
-    def format_host_and_port(self, remote_host, remote_port):
-        return remote_host + ':' + str(remote_port)
+    def format_host_and_port(self, host, port):
+        return host + ':' + str(port)
     
     #
     # Functions to parse URL
     #
     
-    def craft_url(self, remote_host, remote_port, timeout=10):
-        url = remote_host + ':' + remote_port
-        return self.normalize_url(url, timeout=timeout)
+    def craft_url(self, host, port, ssl=False):
+        url = host + ':' + port
+        return self.normalize_url(url, ssl)
     
     def get_url_port(self, url):
-        url = self.strip_scheme(url)
+        url = self.strip_scheme(url, True)
         return url.split(':')[1]
         
     def get_url_host(self, url):
-        url = self.strip_scheme(url)
+        url = self.strip_scheme(url, True)
         return url.split(':')[0]
     
-    def strip_scheme(self, url, strip_path=True):
+    def strip_scheme(self, url, strip_path=False):
         url = url.replace('http://', '', 1)
         url = url.replace('https://', '', 1)
         if strip_path:
@@ -198,32 +167,25 @@ class web_tools:
         return url
     
     def add_http_to_url(self, url):
-        url = self.strip_scheme(url, False)
+        url = self.strip_scheme(url)
         url = 'http://' + url
-        
         return url
     
     def add_https_to_url(self, url):
-        url = self.strip_scheme(url, False)
+        url = self.strip_scheme(url)
         url = 'https://' + url
-        
         return url
     
-    def normalize_url(self, url, check_ssl=True, timeout=10):
-        if check_ssl:
-            if self.check_url_ssl(url, timeout=timeout):
-                url = self.add_https_to_url(url)
-                return url
-
-        url = self.add_http_to_url(url)
-        return url
-
-    #
-    # Functions to get something from URL
-    #
+    def add_path_to_url(self, url, path):
+        if not path.startswith('/'):
+            path = '/' + path
+            
+        if url.endswith('/'):
+            path = path[1:]
+            
+        return url + path
     
-    def get_url_server(self, url, timeout=10):
-        headers = self.send_head_to_url(url, timeout=timeout).headers
-        if 'Server' in headers.keys():
-            return headers['Server']
-        return None
+    def normalize_url(self, url, ssl=False):
+        if ssl:
+            return self.add_https_to_url(url)
+        return self.add_http_to_url(url)
