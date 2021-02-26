@@ -46,7 +46,7 @@ class HatSploitModule:
             'Authors': [
                 'enty8080'
             ],
-            'Description': "Sniff User-Aget through URL.",
+            'Description': "Sniff User-Agent through URL.",
             'Dependencies': [
                 ''
             ],
