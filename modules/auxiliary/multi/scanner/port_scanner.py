@@ -42,7 +42,7 @@ class HatSploitModule:
         self.web_tools = web_tools()
 
         self.details = {
-            'Name': "auxiliary/net/scanner/port_scanner",
+            'Name': "auxiliary/multi/scanner/port_scanner",
             'Authors': [
                 'enty8080'
             ],
