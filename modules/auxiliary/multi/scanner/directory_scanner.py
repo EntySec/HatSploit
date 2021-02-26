@@ -39,7 +39,7 @@ class HatSploitModule:
         self.web_tools = web_tools()
         
         self.details = {
-            'Name': "auxiliary/web/scanner/directory_scanner",
+            'Name': "auxiliary/multi/scanner/directory_scanner",
             'Authors': [
                 'enty8080'
             ],
@@ -70,7 +70,7 @@ class HatSploitModule:
             self.badges.output_error("Failed to scan!")
             return
         
-        file = open(self.config.path_config['base_paths']['data_path'] + 'modules/auxiliary/web/scanner/directory_scanner/directories.txt')
+        file = open(self.config.path_config['base_paths']['data_path'] + 'modules/auxiliary/multi/scanner/directory_scanner/directories.txt')
         directories = list(filter(None, file.read().split('\n')))
         
         file.close()
