@@ -33,7 +33,7 @@ from core.helper import helper
 
 from utils.web_tools import web_tools
 
-from data.modules.auxiliary.web.scanner.pma_scanner.dictionary import dictionary
+from data.modules.auxiliary.multi.scanner.pma_scanner.dictionary import dictionary
 
 class HatSploitModule:
     def __init__(self):
@@ -47,7 +47,7 @@ class HatSploitModule:
         self.paths = self.dictionary.paths
 
         self.details = {
-            'Name': "auxiliary/web/scanner/pma_scanner",
+            'Name': "auxiliary/multi/scanner/pma_scanner",
             'Authors': [
                 'enty8080'
             ],
