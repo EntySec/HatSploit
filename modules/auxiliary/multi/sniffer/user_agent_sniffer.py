@@ -31,7 +31,7 @@ from core.badges import badges
 from core.parser import parser
 from core.helper import helper
 
-from data.modules.auxiliary.net.sniffer.user_agent_sniffer.core.handler import handler
+from data.modules.auxiliary.multi.sniffer.user_agent_sniffer.core.handler import handler
 
 class HatSploitModule:
     def __init__(self):
@@ -42,7 +42,7 @@ class HatSploitModule:
         self.handler = handler
         
         self.details = {
-            'Name': "auxiliary/net/sniffer/user_agent_sniffer",
+            'Name': "auxiliary/multi/sniffer/user_agent_sniffer",
             'Authors': [
                 'enty8080'
             ],
