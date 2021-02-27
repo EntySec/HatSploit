@@ -26,32 +26,36 @@
 
 import os
 
+from core.badges import badges
+
 class colors_script:
     def __init__(self):
+        self.badges = badges()
+        
         self.script_extension = "colors"
         
         self.commands = {
-            '%black': '\033[30m',
-            '%red': '\033[31m',
-            '%green': '\033[32m',
-            '%yellow': '\033[33m',
-            '%blue': '\033[34m',
-            '%purple': '\033[35m',
-            '%cyan': '\033[36m',
-            '%white': '\033[77m',
+            '%black': self.badges.BLACK,
+            '%red': self.badges.RED,
+            '%green': self.badges.GREEN,
+            '%yellow': self.badges.YELLOW,
+            '%blue': self.badges.BLUE,
+            '%purple': self.badges.PURPLE,
+            '%cyan': self.badges.CYAN,
+            '%white': self.badges.WHITE,
 
-            '%end': '\033[0m',
-            '%bold': '\033[1m',
-            '%dark': '\033[2m',
-            '%bent': '\033[3m',
-            '%line': '\033[4m',
-            '%twink': '\033[5m',
-            '%back': '\033[7m',
+            '%end': self.badges.END,
+            '%bold': self.badges.BOLD,
+            '%dark': self.badges.DARK,
+            '%bent': self.badges.BENT,
+            '%line': self.badges.LINE,
+            '%twink': self.badges.TWINK,
+            '%back': self.badges.BACK,
             
-            '%remove': '\033[1K\r',
-            '%clear': '\033[H\033[J',
+            '%remove': self.badges.REMOVE,
+            '%clear': self.badges.CLEAR,
             
-            '%newline': '\n'
+            '%newline': self.badges.NEWLINE
         }
         
     def _read_file_lines(self, path):
