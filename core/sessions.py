@@ -69,7 +69,7 @@ class sessions:
                     return True
         return False
     
-    def spawn_pseudo_on_session(self, session_property, session_id):
+    def interact_with_session(self, session_property, session_id):
         sessions = self.local_storage.get("sessions")
         if self.check_session_exist(session_property, session_id):
             execute_method = sessions[session_property][int(session_id)]['send']
