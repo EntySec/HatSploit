@@ -28,8 +28,7 @@ class hatvenom:
     def __init__(self):
         self.formats = {
             'elf': self.generate_elf,
-            'c': self.generate_c,
-            'python': self.generate_python
+            'c': self.generate_c
         }
         
         self.elf_headers = {
@@ -144,4 +143,4 @@ class hatvenom:
         c += "    ret();\n"
         c += "}\n"
         
-        return c
+        return c.encode()
