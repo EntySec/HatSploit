@@ -24,17 +24,6 @@
 # SOFTWARE.
 #
 
-'''
-sessions = {
-    'session_property': {
-        session_id: {
-            session_object: '',
-            ...
-        }
-    }
-}
-'''
-
 from core.storage import local_storage
 
 class session:
