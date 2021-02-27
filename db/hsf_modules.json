@@ -215,6 +215,21 @@
             }
         },
         "multi": {
+            "stager/shell_reverse_tcp": {
+                "Path": "modules/exploit/multi/stager/shell_reverse_tcp",
+                "Name": "exploit/multi/stager/shell_reverse_tcp",
+                "Authors": [
+                    "enty8080"
+                ],
+                "Description": "Cross-platform reverse TCP shell.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Risk": "high"
+            },
             "icewarp_webmail/local_file_inclusion": {
                 "Path": "modules/exploit/multi/icewarp_webmail/local_file_inclusion",
                 "Name": "exploit/multi/icewarp_webmail/local_file_inclusion",
