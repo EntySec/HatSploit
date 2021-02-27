@@ -36,5 +36,5 @@ class controller:
         self.client.close()
 
     def send_command(self, command):
-        self.send((command + '\n').encode())
+        self.handler.send(command)
         output = self.handler.recvall('\n')
