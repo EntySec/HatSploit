@@ -74,6 +74,8 @@ class sessions:
         if self.check_session_exist(session_property, session_id):
             execute_method = sessions[session_property][int(session_id)]['send']
             self.pseudo_shell.spawn_pseudo_shell(session_property, execute_method, execute_method_return=True)
+        else:
+            self.badges.output_error("Invalid session given!")
     
     def close_session(self, session_property, session_id):
         sessions = self.local_storage.get("sessions")
@@ -83,7 +85,9 @@ class sessions:
                 del sessions[session_property][int(session_id)]
                 self.local_storage.update("sessions", sessions)
             except Exception:
-                pass
+                self.badges.output_error("Failed to close session!")
+        else:
+            self.badges.output_error("Invalid session given!")
 
     def get_session(self, session_property, session_id):
         sessions = self.local_storage.get("sessions")
