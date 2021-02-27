@@ -27,12 +27,14 @@
 from core.badges import badges
 from core.tables import tables
 from core.session import session
+from core.storage import local_storage
 
 class HatSploitCommand:
     def __init__(self):
         self.badges = badges()
         self.tables = tables()
         self.session = session()
+        self.local_storage = local_storage()
 
         self.details = {
             'Category': "sessions",
