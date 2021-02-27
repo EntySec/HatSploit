@@ -128,7 +128,7 @@ class HatSploitModule:
         )
         
         self.badges.output_process("Generating payload...")
-        payload = self.hatvenom.generate_executable(file_format, 'x64', shellcode)
+        payload = self.hatvenom.generate(file_format, 'x64', shellcode)
         
         self.badges.output_process("Saving to " + local_file + "...")
         with open(local_file, 'wb') as f:
