@@ -26,14 +26,14 @@
 
 from core.badges import badges
 from core.tables import tables
-from core.session import session
+from core.sessions import sessions
 from core.storage import local_storage
 
 class HatSploitCommand:
     def __init__(self):
         self.badges = badges()
         self.tables = tables()
-        self.session = session()
+        self.sessions = sessions()
         self.local_storage = local_storage()
 
         self.details = {
@@ -68,7 +68,7 @@ class HatSploitCommand:
             if argc < 3:
                 self.badges.output_usage(self.details['Usage'])
             else:
-                if not self.session.close_session(argv[1], argv[2]):
+                if not self.sessions.close_session(argv[1], argv[2]):
                     self.badges.output_error("Invalid session given!")
         else:
             self.badges.output_usage(self.details['Usage'])

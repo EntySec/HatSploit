@@ -26,13 +26,13 @@
 
 from core.badges import badges
 from core.parser import parser
-from core.session import session
+from core.sessions import sessions
 
 class HatSploitModule:
     def __init__(self):
         self.badges = badges()
         self.parser = parser()
-        self.session = session()
+        self.sessions = sessions()
 
         self.details = {
             'Name': "post/macos/membrane/gather/getvol",
@@ -58,7 +58,7 @@ class HatSploitModule:
         }
 
     def run(self):
-        exists, controller = self.session.get_session("macos/membrane", self.parser.parse_options(self.options))
+        exists, controller = self.sessions.get_session("macos/membrane", self.parser.parse_options(self.options))
         if exists:
             self.badges.output_process("Getting device volume level...")
             payload = "output volume of (get volume settings)"

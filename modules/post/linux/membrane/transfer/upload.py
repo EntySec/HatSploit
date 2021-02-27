@@ -32,7 +32,7 @@ class HatSploitModule:
     def __init__(self):
         self.badges = badges()
         self.parser = parser()
-        self.session = session()
+        self.sessions = sessions()
 
         self.details = {
             'Name': "post/linux/membrane/transfer/upload",
@@ -69,6 +69,6 @@ class HatSploitModule:
 
     def run(self):
         lpath, rpath, session = self.parser.parse_options(self.options)
-        exists, controller = self.session.get_session("linux/membrane", session)
+        exists, controller = self.sessions.get_session("linux/membrane", session)
         if exists:
             controller.upload(lpath, rpath)

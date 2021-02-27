@@ -26,13 +26,13 @@
 
 from core.badges import badges
 from core.parser import parser
-from core.session import session
+from core.sessions import sessions
 
 class HatSploitModule:
     def __init__(self):
         self.badges = badges()
         self.parser = parser()
-        self.session = session()
+        self.sessions = sessions()
 
         self.details = {
             'Name': "post/macos/membrane/trolling/say",
@@ -64,7 +64,7 @@ class HatSploitModule:
 
     def run(self):
         message, session = self.parser.parse_options(self.options)
-        exists, controller = self.session.get_session("macos/membrane", session)
+        exists, controller = self.sessions.get_session("macos/membrane", session)
         if exists:
             self.badges.output_process("Sending message to device...")
             status, output = controller.send_command("say", message)

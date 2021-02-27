@@ -26,13 +26,13 @@
 
 from core.badges import badges
 from core.parser import parser
-from core.session import session
+from core.sessions import sessions
 
 class HatSploitModule:
     def __init__(self):
         self.badges = badges()
         self.parser = parser()
-        self.session = session()
+        self.sessions = sessions()
 
         self.details = {
             'Name': "post/macos/membrane/transfer/upload",
@@ -69,6 +69,6 @@ class HatSploitModule:
 
     def run(self):
         lpath, rpath, session = self.parser.parse_options(self.options)
-        exists, controller = self.session.get_session("macos/membrane", session)
+        exists, controller = self.sessions.get_session("macos/membrane", session)
         if exists:
             controller.upload(lpath, rpath)
