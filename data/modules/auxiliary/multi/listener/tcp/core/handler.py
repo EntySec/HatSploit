@@ -31,7 +31,7 @@ class handler:
     def send(self, buffer):
         if not isinstance(buffer, bytes):
             buffer = buffer.encode()
-        self.client.send(buffer + '\n'.encode())
+        self.client.send((buffer + '\n').encode())
     
     def recvall(self, terminator):
         result = b''
