@@ -27,3 +27,13 @@
 class hatvenom:
     def __init__(self):
         self.formats = ['elf', 'c', 'python']
+
+    def host_to_bytes(self, host):
+        result = b""
+        for i in host.split("."):
+            result += bytes([int(i)])
+        return result
+        
+    def port_to_bytes(self, port):
+        result = "%.4x" % int(port)
+        return bytes.fromhex(result)
