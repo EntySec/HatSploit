@@ -30,7 +30,8 @@ class session:
     def __init__(self):
         self.local_storage = local_storage()
         
-    def add_session(self, session_property, session_id, session_object):
+    def add_session(self, session_property, session_id, session_object, 
+                    session_host, session_port, session_username, session_hostname):
         if not self.local_storage.get("sessions"):
             self.local_storage.set("sessions", dict())
 
@@ -43,7 +44,11 @@ class session:
             sessions = {
                 session_property: {
                     int(session_id): {
-                        'session_object': session_object
+                        'session_object': session_object,
+                        'session_host': session_host,
+                        'session_port': session_port,
+                        'session_username': session_username,
+                        'session_hostname': session_hostname
                     }
                 }
             }
@@ -51,7 +56,18 @@ class session:
         self.local_storage.update("sessions", sessions)
     
     def close_session(self, session_property, session_id):
-        pass
+        sessions = self.local_storage.get("sessions")
+        if sessions:
+            if session_property in sessions.keys():
+                if int(session_id) in sessions[session_property].keys():
+                    try:
+                        sessions[session_property][int(session_id)]['session_object'].close()
+                        del sessions[session_property][int(session_id)]
+                        self.local_storage.update("sessions", sessions)
+                        return True
+                    except Exception:
+                        pass
+        return False
     
     def get_session(self, session_property, session_id):
         sessions = self.local_storage.get("sessions")
