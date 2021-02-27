@@ -95,12 +95,12 @@ class hatvenom:
     # Functions to generate
     #
     
-    def generate(file_format, arch, data):
+    def generate(self, file_format, arch, data):
         if file_format in self.formats.keys():
             return self.formats[file_format](arch, data)
         return None
 
-    def generate_elf(arch, data):
+    def generate_elf(self, arch, data):
         if arch in self.elf_headers.keys():
             elf = self.elf_headers[arch] + data
 
@@ -123,3 +123,25 @@ class hatvenom:
                 content = elf[:0x60] + p_filesz + p_memsz + elf[0x70:]
             return content
         return None
+
+    def generate_c(self, arch, data):
+        shellcode = "unsigned char shellcode[] = {\n    \""
+        for idx, x in enumerate(data):
+            if idx % 15 == 0 and idx != 0:
+                shellcode += "\"\n    \""
+            shellcode += "\\x%02x" % x
+        shellcode += "\"\n};\n"
+        
+        c = ""
+        c += "#include <stdio.h>\n"
+        c += "#include <string.h>\n"
+        c += "\n"
+        c += shellcode
+        c += "\n"
+        c += "int main()\n"
+        c += "{\n"
+        c += "    int (*ret)() = (int(*)())shellcode;\n"
+        c += "    ret();\n"
+        c += "}\n"
+        
+        return c
