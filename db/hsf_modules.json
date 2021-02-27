@@ -367,6 +367,40 @@
             }
         }
     },
+    "payload": {
+        "linux": {
+            "x64/reverse_tcp": {
+                "Path": "modules/payload/linux/x64/reverse_tcp",
+                "Name": "payload/linux/x64/reverse_tcp",
+                "Authors": [
+                    "enty8080"
+                ],
+                "Description": "Reverse TCP Payload for Linux x64.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Risk": "low"
+            },
+            "x86/reverse_tcp": {
+                "Path": "modules/payload/linux/x86/reverse_tcp",
+                "Name": "payload/linux/x86/reverse_tcp",
+                "Authors": [
+                    "enty8080"
+                ],
+                "Description": "Reverse TCP Payload for Linux x86.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Risk": "low"
+            }
+        }
+    },
     "post": {
         "linux": {
             "membrane/transfer/download": {
