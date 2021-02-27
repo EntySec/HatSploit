@@ -26,14 +26,12 @@
 
 from core.badges import badges
 from core.parser import parser
-
-from data.modules.exploit.linux.stager.membrane_reverse_tcp.core.session import session
+from core.session import session
 
 class HatSploitModule:
     def __init__(self):
         self.badges = badges()
         self.parser = parser()
-        
         self.session = session()
 
         self.details = {
