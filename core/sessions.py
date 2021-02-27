@@ -26,9 +26,13 @@
 
 from core.storage import local_storage
 
+from utils.pseudo_shell import pseudo_shell
+
 class sessions:
     def __init__(self):
         self.local_storage = local_storage()
+        
+        self.pseudo_shell = pseudo_shell()
 
     def add_session(self, session_property, session_id, session_host, session_port, 
                     session_username, session_hostname, session_object, session_send, session_close):
@@ -57,24 +61,32 @@ class sessions:
         
         self.local_storage.update("sessions", sessions)
     
-    def close_session(self, session_property, session_id):
+    def check_session_exist(self, session_property, session_id):
         sessions = self.local_storage.get("sessions")
         if sessions:
             if session_property in sessions.keys():
                 if int(session_id) in sessions[session_property].keys():
-                    try:
-                        sessions[session_property][int(session_id)]['close']()
-                        del sessions[session_property][int(session_id)]
-                        self.local_storage.update("sessions", sessions)
-                        return True
-                    except Exception:
-                        pass
+                    return True
         return False
     
+    def spawn_pseudo_on_session(self, session_property, session_id):
+        sessions = self.local_storage.get("sessions")
+        if self.check_session_exist(session_property, session_id):
+            execute_method = sessions[session_property][int(session_id)]['send']
+            self.pseudo_shell.spawn_pseudo_shell(session_property, execute_method, execute_method_return=True)
+    
+    def close_session(self, session_property, session_id):
+        sessions = self.local_storage.get("sessions")
+        if self.check_session_exist(session_property, session_id):
+            try:
+                sessions[session_property][int(session_id)]['close']()
+                del sessions[session_property][int(session_id)]
+                self.local_storage.update("sessions", sessions)
+            except Exception:
+                pass
+
     def get_session(self, session_property, session_id):
         sessions = self.local_storage.get("sessions")
-        if sessions:
-            if session_property in sessions.keys():
-                if int(session_id) in sessions[session_property].keys():
-                    return sessions[session_property][int(session_id)]['object']
+        if self.check_session_exist(session_property, session_id):
+            return sessions[session_property][int(session_id)]['object']
         return None
