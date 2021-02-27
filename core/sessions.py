@@ -26,7 +26,7 @@
 
 from core.storage import local_storage
 
-class session:
+class sessions:
     def __init__(self):
         self.local_storage = local_storage()
 
