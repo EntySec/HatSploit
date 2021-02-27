@@ -26,14 +26,12 @@
 
 from core.badges import badges
 from core.parser import parser
-
-from data.modules.exploit.macos.stager.membrane_reverse_tcp.core.session import session
+from core.session import session
 
 class HatSploitModule:
     def __init__(self):
         self.badges = badges()
         self.parser = parser()
-        
         self.session = session()
 
         self.details = {
@@ -66,7 +64,7 @@ class HatSploitModule:
 
     def run(self):
         message, session = self.parser.parse_options(self.options)
-        exists, controller = self.session.get_session(session)
+        exists, controller = self.session.get_session("macos/membrane", session)
         if exists:
             self.badges.output_process("Sending message to device...")
             status, output = controller.send_command("say", message)
