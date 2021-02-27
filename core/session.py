@@ -63,7 +63,7 @@ class session:
             if session_property in sessions.keys():
                 if int(session_id) in sessions[session_property].keys():
                     try:
-                        sessions[session_property][int(session_id)]['session_object'].close()
+                        sessions[session_property][int(session_id)]['session_close']()
                         del sessions[session_property][int(session_id)]
                         self.local_storage.update("sessions", sessions)
                         return True
