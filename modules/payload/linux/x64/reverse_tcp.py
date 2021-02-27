@@ -82,7 +82,7 @@ class HatSploitModule:
         local_host = self.hatvenom.host_to_bytes(local_host)
         local_port = self.hatvenom.port_to_bytes(local_port)
         
-        if not file_format in self.hatvenom.formats:
+        if not file_format in self.hatvenom.formats.keys():
             self.badges.output_error("Invalid format!")
             return
         
