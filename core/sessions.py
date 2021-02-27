@@ -24,12 +24,14 @@
 # SOFTWARE.
 #
 
+from core.badges import badges
 from core.storage import local_storage
 
 from utils.pseudo_shell import pseudo_shell
 
 class sessions:
     def __init__(self):
+        self.badges = badges()
         self.local_storage = local_storage()
         
         self.pseudo_shell = pseudo_shell()
