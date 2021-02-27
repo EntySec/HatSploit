@@ -32,7 +32,7 @@ from core.config import config
 from core.badges import badges
 from core.colors import colors
 
-from external.colors_script import colors_script
+from utils.colors_script import colors_script
 
 class banner:
     def __init__(self):
