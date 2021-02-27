@@ -40,7 +40,7 @@ class HatSploitCommand:
             'Category': "sessions",
             'Name': "sessions",
             'Description': "Manage opened sessions.",
-            'Usage': "sessions [-l|-c <property> <id>]",
+            'Usage': "sessions [-l|-i <property> <id>|-c <property> <id>]",
             'MinArgs': 1
         }
 
@@ -68,7 +68,11 @@ class HatSploitCommand:
             if argc < 3:
                 self.badges.output_usage(self.details['Usage'])
             else:
-                if not self.sessions.close_session(argv[1], argv[2]):
-                    self.badges.output_error("Invalid session given!")
+                self.sessions.close_session(argv[1], argv[2])
+        elif argv[0] == '-i':
+            if argc < 3:
+                self.badges.output_usage(self.details['Usage'])
+            else:
+                self.sessions.interact_with_session(argv[1], argv[2])
         else:
             self.badges.output_usage(self.details['Usage'])
