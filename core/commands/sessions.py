@@ -38,13 +38,30 @@ class HatSploitCommand:
             'Category': "sessions",
             'Name': "sessions",
             'Description': "Manage opened sessions.",
-            'Usage': "sessions [-l|-c <session_property> <session_id>]",
+            'Usage': "sessions [-l|-c <property> <id>]",
             'MinArgs': 1
         }
 
     def run(self, argc, argv):
         if argv[0] == '-l':
-            pass
+            sessions = self.local_storage.get("sessions")
+            
+            if sessions:
+                for session_property in sessions.keys():
+                    sessions_data = list()
+                    headers = ("ID", "Host", "Port", "Username", "Hostname")
+                    for session_id in sessions[session_property].keys():
+                        host = sessions[session_property][session_id]['session_host']
+                        port = sessions[session_property][session_id]['session_port']
+                        username = sessions[session_property][session_id]['session_username']
+                        hostname = sessions[session_property][session_id]['session_hostname']
+                        
+                        sessions_data.append((session_id, host, port, username, hostname))
+                    self.badges.output_empty("")
+                    self.tables.print_table("Sessions: " + session_property, headers, *sessions_data)
+                    self.badges.output_empty("")
+            else:
+                self.badges.output_warning("No opened sessions available.")
         elif argv[0] == '-c':
             if argc < 3:
                 self.badges.output_usage(self.details['Usage'])
