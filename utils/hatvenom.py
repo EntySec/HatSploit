@@ -104,7 +104,7 @@ class hatvenom:
             elf = self.elf_headers[arch] + data
 
             if elf[4] == 1:
-                if self.bigendian:
+                if arch.endswith("be"):
                     p_filesz = pack(">L", len(elf))
                     p_memsz = pack(">L", len(elf) + len(data))
                 else:
@@ -112,7 +112,7 @@ class hatvenom:
                     p_memsz = pack("<L", len(elf) + len(data))
                 content = elf[:0x44] + p_filesz + p_memsz + elf[0x4c:]
             elif elf[4] == 2:
-                if self.bigendian:
+                if arch.endswith("be"):
                     p_filesz = pack(">Q", len(elf))
                     p_memsz = pack(">Q", len(elf) + len(data))
                 else:
