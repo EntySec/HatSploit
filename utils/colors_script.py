@@ -26,36 +26,36 @@
 
 import os
 
-from core.badges import badges
+from core.colors import colors
 
 class colors_script:
     def __init__(self):
-        self.badges = badges()
+        self.colors = colors()
         
         self.script_extension = "colors"
         
         self.commands = {
-            '%black': self.badges.BLACK,
-            '%red': self.badges.RED,
-            '%green': self.badges.GREEN,
-            '%yellow': self.badges.YELLOW,
-            '%blue': self.badges.BLUE,
-            '%purple': self.badges.PURPLE,
-            '%cyan': self.badges.CYAN,
-            '%white': self.badges.WHITE,
+            '%black': self.colors.BLACK,
+            '%red': self.colors.RED,
+            '%green': self.colors.GREEN,
+            '%yellow': self.colors.YELLOW,
+            '%blue': self.colors.BLUE,
+            '%purple': self.colors.PURPLE,
+            '%cyan': self.colors.CYAN,
+            '%white': self.colors.WHITE,
 
-            '%end': self.badges.END,
-            '%bold': self.badges.BOLD,
-            '%dark': self.badges.DARK,
-            '%bent': self.badges.BENT,
-            '%line': self.badges.LINE,
-            '%twink': self.badges.TWINK,
-            '%back': self.badges.BACK,
+            '%end': self.colors.END,
+            '%bold': self.colors.BOLD,
+            '%dark': self.colors.DARK,
+            '%bent': self.colors.BENT,
+            '%line': self.colors.LINE,
+            '%twink': self.colors.TWINK,
+            '%back': self.colors.BACK,
             
-            '%remove': self.badges.REMOVE,
-            '%clear': self.badges.CLEAR,
+            '%remove': self.colors.REMOVE,
+            '%clear': self.colors.CLEAR,
             
-            '%newline': self.badges.NEWLINE
+            '%newline': self.colors.NEWLINE
         }
         
     def _read_file_lines(self, path):
