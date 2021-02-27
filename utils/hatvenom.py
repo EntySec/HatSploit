@@ -24,6 +24,8 @@
 # SOFTWARE.
 #
 
+import struct
+
 class hatvenom:
     def __init__(self):
         self.formats = {
@@ -105,19 +107,19 @@ class hatvenom:
 
             if elf[4] == 1:
                 if arch.endswith("be"):
-                    p_filesz = pack(">L", len(elf))
-                    p_memsz = pack(">L", len(elf) + len(data))
+                    p_filesz = struct.pack(">L", len(elf))
+                    p_memsz = struct.pack(">L", len(elf) + len(data))
                 else:
-                    p_filesz = pack("<L", len(elf))
-                    p_memsz = pack("<L", len(elf) + len(data))
+                    p_filesz = struct.pack("<L", len(elf))
+                    p_memsz = struct.pack("<L", len(elf) + len(data))
                 content = elf[:0x44] + p_filesz + p_memsz + elf[0x4c:]
             elif elf[4] == 2:
                 if arch.endswith("be"):
-                    p_filesz = pack(">Q", len(elf))
-                    p_memsz = pack(">Q", len(elf) + len(data))
+                    p_filesz = struct.pack(">Q", len(elf))
+                    p_memsz = struct.pack(">Q", len(elf) + len(data))
                 else:
-                    p_filesz = pack("<Q", len(elf))
-                    p_memsz = pack("<Q", len(elf) + len(data))
+                    p_filesz = struct.pack("<Q", len(elf))
+                    p_memsz = struct.pack("<Q", len(elf) + len(data))
 
                 content = elf[:0x60] + p_filesz + p_memsz + elf[0x70:]
             return content
