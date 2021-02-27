@@ -26,8 +26,16 @@
 
 class hatvenom:
     def __init__(self):
-        self.formats = ['elf', 'c', 'python']
+        self.formats = {
+            'elf': self.generate_elf,
+            'c': self.generate_c,
+            'python': self.generate_python
+        }
 
+    #
+    # Functions to convert data to bytes
+    #
+        
     def host_to_bytes(self, host):
         result = b""
         for i in host.split("."):
@@ -37,3 +45,12 @@ class hatvenom:
     def port_to_bytes(self, port):
         result = "%.4x" % int(port)
         return bytes.fromhex(result)
+
+    #
+    # Functions to generate executable
+    #
+    
+    def generate(file_format, arch, data):
+        if file_format in self.formats.keys():
+            return self.formats[file_format](arch, data)
+        return None
