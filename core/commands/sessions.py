@@ -53,10 +53,10 @@ class HatSploitCommand:
                     sessions_data = list()
                     headers = ("ID", "Host", "Port", "Username", "Hostname")
                     for session_id in sessions[session_property].keys():
-                        host = sessions[session_property][session_id]['session_host']
-                        port = sessions[session_property][session_id]['session_port']
-                        username = sessions[session_property][session_id]['session_username']
-                        hostname = sessions[session_property][session_id]['session_hostname']
+                        host = sessions[session_property][session_id]['host']
+                        port = sessions[session_property][session_id]['port']
+                        username = sessions[session_property][session_id]['username']
+                        hostname = sessions[session_property][session_id]['hostname']
                         
                         sessions_data.append((session_id, host, port, username, hostname))
                     self.badges.output_empty("")
