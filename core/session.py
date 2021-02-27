@@ -24,6 +24,50 @@
 # SOFTWARE.
 #
 
+'''
+sessions = {
+    'session_property': {
+        session_id: {
+            session_object: '',
+            ...
+        }
+    }
+}
+'''
+
+from core.storage import local_storage
+
 class session:
     def __init__(self):
+        self.local_storage = local_storage()
+        
+    def add_session(self, session_id, session_property, session_object):
+        if not self.local_storage.get("sessions"):
+            self.local_storage.set("sessions", dict())
+
+        if session_property in self.local_storage.get("sessions").keys():
+            sessions = self.local_storage.get("sessions")
+            sessions[session_property][int(session_id)] = {
+                'session_object': session_object
+            }
+        else:
+            sessions = {
+                session_property: {
+                    int(session_id): {
+                        'session_object': session_object
+                    }
+                }
+            }
+        
+        self.local_storage.update("sessions", sessions)
+    
+    def close_session(self, session_id, session_property):
         pass
+    
+    def get_session(self, session_id, session_property):
+        sessions = self.local_storage.get("sessions")
+        if sessions:
+            if session_property in sessions.keys():
+                if int(session_id) in sessions[session_property].keys():
+                    return sessions[session_property][int(session_id)]['session_object']
+        return None
