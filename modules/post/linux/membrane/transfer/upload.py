@@ -26,7 +26,7 @@
 
 from core.badges import badges
 from core.parser import parser
-from cotr.session import session
+from core.session import session
 
 class HatSploitModule:
     def __init__(self):
