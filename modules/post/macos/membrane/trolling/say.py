@@ -67,6 +67,6 @@ class HatSploitModule:
         session = self.sessions.get_session("macos/membrane", session)
         if session:
             self.badges.output_process("Sending message to device...")
-            output = session.send_command("say", message)
-            if not output:
+            status, output = session.send_command("say", message)
+            if not status:
                 self.badges.output_error("Failed to say message!")
