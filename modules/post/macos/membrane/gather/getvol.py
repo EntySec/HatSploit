@@ -58,12 +58,12 @@ class HatSploitModule:
         }
 
     def run(self):
-        exists, controller = self.sessions.get_session("macos/membrane", self.parser.parse_options(self.options))
-        if exists:
+        session = self.sessions.get_session("macos/membrane", self.parser.parse_options(self.options))
+        if session:
             self.badges.output_process("Getting device volume level...")
             payload = "output volume of (get volume settings)"
-            status, output = controller.send_command("osascript", payload)
-            if status == "error":
+            status, output = session.send_command("osascript", payload)
+            if not status:
                 self.badges.output_error("Failed to get device volume level!")
             else:
                 self.badges.output_information("Volume Level: " + output)
