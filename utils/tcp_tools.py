@@ -24,7 +24,6 @@
 # SOFTWARE.
 #
 
-import time
 import socket
 import telnetlib
 
@@ -57,36 +56,28 @@ class tcp_tools:
         if self.client:
             self.client.write(buffer)
             
-    def recv(self, terminator='\x04'):
+    def recv(self):
         if self.client:
-            output = self.client.read_until(terminator.encode())
-            
-            return output
-        return None
-            
-    def recvall(self):
-        if self.client:
-            time.sleep(0.1)
-            output = self.client.read_very_eager()
-            
-            return output
+            result = b""
+            while True:
+                data = self.client.read_very_eager()
+                result += data
+                if data:
+                    break
+            return result
         return None
         
     #
     # Functions to send system commands to client
     #
 
-    def send_command(self, command, wait_until=None):
+    def send_command(self, command):
         if self.client:
             buffer = command.encode()
             self.send(buffer)
             
-            if wait_until:
-                output = self.recv(wait_until)
-                output = output.decode().strip()
-            else:
-                output = self.recvall().decode()
-                output = output.strip()
+            output = self.recv()
+            output = output.decode().strip()
             
             return output
         return None
