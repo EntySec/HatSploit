@@ -59,7 +59,7 @@ class tcp_tools:
             
     def recv(self, terminator='\x04'):
         if self.client:
-            output = self.client.read_until(terminator)
+            output = self.client.read_until(terminator.encode())
             
             return output
         return None
