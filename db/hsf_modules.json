@@ -215,6 +215,21 @@
             }
         },
         "multi": {
+            "stager/shell_reverse_tcp": {
+                "Path": "modules/exploit/multi/stager/shell_reverse_tcp",
+                "Name": "exploit/multi/stager/shell_reverse_tcp",
+                "Authors": [
+                    "enty8080"
+                ],
+                "Description": "Cross-platform reverse TCP shell.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Risk": "high"
+            },
             "icewarp_webmail/local_file_inclusion": {
                 "Path": "modules/exploit/multi/icewarp_webmail/local_file_inclusion",
                 "Name": "exploit/multi/icewarp_webmail/local_file_inclusion",
@@ -364,6 +379,55 @@
                     ""
                 ],
                 "Risk": "high"
+            }
+        }
+    },
+    "payload": {
+        "linux": {
+            "x64/shell_reverse_tcp": {
+                "Path": "modules/payload/linux/x64/shell_reverse_tcp",
+                "Name": "payload/linux/x64/shell_reverse_tcp",
+                "Authors": [
+                    "enty8080"
+                ],
+                "Description": "Shell Reverse TCP Payload for Linux x64.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Risk": "low"
+            },
+            "armle/shell_reverse_tcp": {
+                "Path": "modules/payload/linux/armle/shell_reverse_tcp",
+                "Name": "payload/linux/armle/shell_reverse_tcp",
+                "Authors": [
+                    "enty8080"
+                ],
+                "Description": "Shell Reverse TCP Payload for Linux armle.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Risk": "low"
+            },
+            "x86/shell_reverse_tcp": {
+                "Path": "modules/payload/linux/x86/shell_reverse_tcp",
+                "Name": "payload/linux/x86/shell_reverse_tcp",
+                "Authors": [
+                    "enty8080"
+                ],
+                "Description": "Shell Reverse TCP Payload for Linux x86.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Risk": "low"
             }
         }
     },

@@ -26,15 +26,13 @@
 
 from core.badges import badges
 from core.parser import parser
-
-from data.modules.exploit.linux.stager.membrane_reverse_tcp.core.session import session
+from core.sessions import sessions
 
 class HatSploitModule:
     def __init__(self):
         self.badges = badges()
         self.parser = parser()
-        
-        self.session = session()
+        self.sessions = sessions()
 
         self.details = {
             'Name': "post/linux/membrane/transfer/upload",
@@ -71,6 +69,6 @@ class HatSploitModule:
 
     def run(self):
         lpath, rpath, session = self.parser.parse_options(self.options)
-        exists, controller = self.session.get_session(session)
-        if exists:
-            controller.upload(lpath, rpath)
+        session = self.sessions.get_session("linux/membrane", session)
+        if session:
+            session.upload(lpath, rpath)

@@ -26,32 +26,36 @@
 
 import os
 
+from core.colors import colors
+
 class colors_script:
     def __init__(self):
+        self.colors = colors()
+        
         self.script_extension = "colors"
         
         self.commands = {
-            '%black': '\033[30m',
-            '%red': '\033[31m',
-            '%green': '\033[32m',
-            '%yellow': '\033[33m',
-            '%blue': '\033[34m',
-            '%purple': '\033[35m',
-            '%cyan': '\033[36m',
-            '%white': '\033[77m',
+            '%black': self.colors.BLACK,
+            '%red': self.colors.RED,
+            '%green': self.colors.GREEN,
+            '%yellow': self.colors.YELLOW,
+            '%blue': self.colors.BLUE,
+            '%purple': self.colors.PURPLE,
+            '%cyan': self.colors.CYAN,
+            '%white': self.colors.WHITE,
 
-            '%end': '\033[0m',
-            '%bold': '\033[1m',
-            '%dark': '\033[2m',
-            '%bent': '\033[3m',
-            '%line': '\033[4m',
-            '%twink': '\033[5m',
-            '%back': '\033[7m',
+            '%end': self.colors.END,
+            '%bold': self.colors.BOLD,
+            '%dark': self.colors.DARK,
+            '%bent': self.colors.BENT,
+            '%line': self.colors.LINE,
+            '%twink': self.colors.TWINK,
+            '%back': self.colors.BACK,
             
-            '%remove': '\033[1K\r',
-            '%clear': '\033[H\033[J',
+            '%remove': self.colors.REMOVE,
+            '%clear': self.colors.CLEAR,
             
-            '%newline': '\n'
+            '%newline': self.colors.NEWLINE
         }
         
     def _read_file_lines(self, path):

