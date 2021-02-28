@@ -66,15 +66,16 @@ class pseudo_shell:
                     break
                 if execute_method_return:
                     output = execute_method(*arguments, command)
-                    if len(output) < 2:
-                        self.badges.output_empty(output)
-                    elif len(output) == 2:
-                        if output[0]:
-                            self.badges.output_empty(output[1])
+                    if isinstance(output, tuple):
+                        if len(output) == 2:
+                            if output[0]:
+                                self.badges.output_empty(output[1])
+                            else:
+                                self.badges.output_error("Failed to execute command!")
                         else:
-                            self.badges.output_error("Failed to execute command!")
+                            self.badges.output_error("Invalid execute method (sould have 0, 1 or 2 return values)!")
                     else:
-                        self.badges.output_error("Invalid execute method (sould have 0, 1 or 2 return values)!")
+                        self.badges.output_empty(output)
                 else:
                     execute_method(*arguments, command)
             except (KeyboardInterrupt, EOFError, self.exceptions.GlobalException):
