@@ -50,17 +50,34 @@ class tcp_tools:
         self.client.close()
         
     #
+    # Functions to send and recv from client and to client
+    #
+    
+    def send(self, buffer):
+        if self.client:
+            self.client.write(buffer)
+            
+    def recv(self):
+        if self.client:
+            time.sleep(0.1)
+            output = self.client.read_very_eager()
+            
+            return output
+        return None
+        
+    #
     # Functions to send system commands to client
     #
-        
+
     def send_command(self, command):
         if self.client:
-            self.client.write(command.encode())
+            buffer = command.encode()
+            self.send(buffer)
         
-            time.sleep(0.1)
-            output = self.client.read_very_eager().decode()
+            output = self.recv().decode()
+            output = output.strip()
             
-            return output.strip()
+            return output
         return None
         
     #
