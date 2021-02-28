@@ -63,8 +63,8 @@ class HatSploitModule:
             self.badges.output_process("Getting device volume level...")
             payload = "output volume of (get volume settings)"
 
-            output = session.send_command("osascript", payload)
-            if not output:
+            status, output = session.send_command("osascript", payload)
+            if not status:
                 self.badges.output_error("Failed to get device volume level!")
             else:
                 self.badges.output_information("Volume Level: " + output)
