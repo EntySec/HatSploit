@@ -68,5 +68,5 @@ class HatSploitModule:
         if session:
             self.badges.output_process("Sending message to device...")
             status, output = session.send_command("say", message)
-            if if not status:
+            if not status:
                 self.badges.output_error("Failed to say message!")
