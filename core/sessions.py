@@ -44,7 +44,13 @@ class sessions:
         if session_property in self.local_storage.get("sessions").keys():
             sessions = self.local_storage.get("sessions")
             sessions[session_property][int(session_id)] = {
-                'session_object': session_object
+                'host': session_host,
+                'port': session_port,
+                'username': session_username,
+                'hostname': session_hostname,
+                'object': session_object,
+                'send': session_send,
+                'close': session_close
             }
         else:
             sessions = {
