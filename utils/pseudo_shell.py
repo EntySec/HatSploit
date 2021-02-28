@@ -70,7 +70,7 @@ class pseudo_shell:
                         self.badges.output_empty(output)
                     elif len(output) == 2:
                         if output[0]:
-                            self.badges.output_empty(output)
+                            self.badges.output_empty(output[1])
                         else:
                             self.badges.output_error("Failed to execute command!")
                     else:
