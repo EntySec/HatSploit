@@ -54,7 +54,7 @@ class tcp_tools:
     #
         
     def send_command(self, command):
-        if client:
+        if self.client:
             self.client.write(command.encode())
         
             time.sleep(0.1)
