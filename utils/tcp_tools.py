@@ -69,13 +69,17 @@ class tcp_tools:
     # Functions to send system commands to client
     #
 
-    def send_command(self, command):
+    def send_command(self, command, wait=False):
         if self.client:
             buffer = command.encode()
             self.send(buffer)
-        
-            output = self.recv().decode()
-            output = output.strip()
+            
+            if wait:
+                output = self.client.sock.recv(1024)
+                output = output.decode().strip()
+            else:
+                output = self.recv().decode()
+                output = output.strip()
             
             return output
         return None
