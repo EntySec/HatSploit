@@ -24,6 +24,7 @@
 # SOFTWARE.
 #
 
+import time
 import socket
 import telnetlib
 
@@ -56,13 +57,14 @@ class tcp_tools:
         if self.client:
             self.client.write(buffer)
             
-    def recv(self):
+    def recv(self, timeout=10):
         if self.client:
             result = b""
+            timeout = time.time() + timeout
             while True:
                 data = self.client.read_very_eager()
                 result += data
-                if data:
+                if data or time.time() > timeout:
                     break
             return result
         return None
