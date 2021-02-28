@@ -69,6 +69,6 @@ class HatSploitModule:
 
     def run(self):
         lpath, rpath, session = self.parser.parse_options(self.options)
-        controller = self.sessions.get_session("linux/membrane", session)
-        if controller:
-            controller.upload(lpath, rpath)
+        session = self.sessions.get_session("linux/membrane", session)
+        if session:
+            session.upload(lpath, rpath)
