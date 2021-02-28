@@ -39,11 +39,11 @@ class HatSploitModule:
         self.hatvenom = hatvenom()
         
         self.details = {
-            'Name': "payload/linux/x64/reverse_tcp",
+            'Name': "payload/linux/x64/shell_reverse_tcp",
             'Authors': [
                 'enty8080'
             ],
-            'Description': "Reverse TCP Payload for Linux x64.",
+            'Description': "Shell Reverse TCP Payload for Linux x64.",
             'Dependencies': [
                 ''
             ],
