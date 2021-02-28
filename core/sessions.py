@@ -91,6 +91,9 @@ class sessions:
             try:
                 sessions[session_property][int(session_id)]['close']()
                 del sessions[session_property][int(session_id)]
+                
+                if not sessions[session_property]:
+                    del sessions[session_property]
                 self.local_storage.update("sessions", sessions)
             except Exception:
                 self.badges.output_error("Failed to close session!")
