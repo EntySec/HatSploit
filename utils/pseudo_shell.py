@@ -67,7 +67,7 @@ class pseudo_shell:
                 if execute_method_return:
                     output = execute_method(*arguments, command)
                     if len(output) < 2:
-                        print(output)
+                        self.badges.output_empty(output)
                     elif len(output) == 2:
                         if output[0]:
                             self.badges.output_empty(output)
