@@ -57,7 +57,14 @@ class tcp_tools:
         if self.client:
             self.client.write(buffer)
             
-    def recv(self):
+    def recv(self, terminator='\x04'):
+        if self.client:
+            output = self.client.read_until(terminator)
+            
+            return output
+        return None
+            
+    def recvall(self):
         if self.client:
             time.sleep(0.1)
             output = self.client.read_very_eager()
@@ -69,17 +76,16 @@ class tcp_tools:
     # Functions to send system commands to client
     #
 
-    def send_command(self, command, wait=False):
+    def send_command(self, command, wait_until=None):
         if self.client:
             buffer = command.encode()
             self.send(buffer)
             
-            if wait:
-                output = self.client.sock.recv(1024)
-                _ = self.recv().decode().strip()
+            if wait_until:
+                output = self.recv(wait_until)
                 output = output.decode().strip()
             else:
-                output = self.recv().decode()
+                output = self.recvall().decode()
                 output = output.strip()
             
             return output
