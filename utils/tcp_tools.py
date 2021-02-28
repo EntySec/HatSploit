@@ -76,6 +76,7 @@ class tcp_tools:
             
             if wait:
                 output = self.client.sock.recv(1024)
+                _ = self.recv().decode().strip()
                 output = output.decode().strip()
             else:
                 output = self.recv().decode()
