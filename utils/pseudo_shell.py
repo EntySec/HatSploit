@@ -46,7 +46,7 @@ class pseudo_shell:
         self.badges.output_information("Commands are sent to the target via provided execute method.")
         self.badges.output_empty("")
         
-    def spawn_pseudo_shell(self, module_name, execute_method, arguments=(), execute_method_return=False):
+    def spawn_pseudo_shell(self, module_name, execute_method, arguments=()):
         self.badges.output_process("Spawning Pseudo shell...")
         
         if self.jobs.check_module_job(module_name):
@@ -56,28 +56,25 @@ class pseudo_shell:
             self.badges.output_success("Congratulations, you won Pseudo shell!")
         
             self.pseudo_shell_header()
-            self.launch_pseudo_shell(execute_method, arguments, execute_method_return)
+            self.launch_pseudo_shell(execute_method, arguments)
         
-    def launch_pseudo_shell(self, execute_method, arguments, execute_method_return):
+    def launch_pseudo_shell(self, execute_method, arguments):
         while True:
             try:
                 command = self.badges.input_empty(self.prompt)
                 if command == 'exit':
                     break
-                if execute_method_return:
-                    output = execute_method(*arguments, command)
-                    if isinstance(output, tuple):
-                        if len(output) == 2:
-                            if output[0]:
-                                self.badges.output_empty(output[1])
-                            else:
-                                self.badges.output_error("Failed to execute command!")
+                output = execute_method(*arguments, command).strip()
+                if isinstance(output, tuple) and len(output) == 2:
+                    if output[0]:
+                        if output[1]:
+                            self.badges.output_empty(output[1])
                         else:
-                            self.badges.output_error("Invalid execute method (sould have 0, 1 or 2 return values)!")
+                            self.badges.output_warning("No output provided by command.")
                     else:
-                        self.badges.output_empty(output)
+                        self.badges.output_error("Failed to execute command!")
                 else:
-                    execute_method(*arguments, command)
+                    self.badges.output_error("Invalid execute method!")
             except (KeyboardInterrupt, EOFError, self.exceptions.GlobalException):
                 pass
             except (requests.exceptions.Timeout, socket.timeout):
