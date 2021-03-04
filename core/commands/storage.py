@@ -24,11 +24,11 @@
 # SOFTWARE.
 #
 
-from core.badges import badges
-from core.config import config
+from core.cli.badges import badges
+from core.base.config import config
 
-from core.storage import local_storage
-from core.storage import global_storage
+from core.base.storage import local_storage
+from core.base.storage import global_storage
 
 class HatSploitCommand:
     def __init__(self):

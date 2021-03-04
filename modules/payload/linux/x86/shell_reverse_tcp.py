@@ -24,9 +24,9 @@
 # SOFTWARE.
 #
 
-from core.badges import badges
-from core.helper import helper
-from core.parser import parser
+from core.cli.badges import badges
+from utils.helper import helper
+from core.cli.parser import parser
 
 from utils.hatvenom import hatvenom
 

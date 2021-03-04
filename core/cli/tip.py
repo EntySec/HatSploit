@@ -25,35 +25,37 @@
 #
 
 import os
+import random
 
-from core.badges import badges
+from core.cli.parser import parser
+from core.base.config import config
+from core.cli.badges import badges
+from core.cli.colors import colors
 
-class fsmanip:
+from utils.colors_script import colors_script
+
+class tip:
     def __init__(self):
+        self.parser = parser()
+        self.config = config()
         self.badges = badges()
+        self.colors = colors()
         
-    def exists_directory(self, path):
-        if os.path.isdir(path):
-            if os.path.exists(path):
-                return (True, "directory")
-            self.badges.output_error("Local directory: "+path+": does not exist!")
-            return (False, "")
-        directory = os.path.split(path)[0]
-        if directory == "":
-            directory = "."
-        if os.path.exists(directory):
-            if os.path.isdir(directory):
-                return (True, "file")
-            self.badges.output_error("Error: "+directory+": not a directory!")
-            return (False, "")
-        self.badges.output_error("Local directory: "+directory+": does not exist!")
-        return (False, "")
-
-    def file(self, path):
-        if os.path.exists(path):
-            if os.path.isdir(path):
-                self.badges.output_error("Error: "+path+": not a file!")
-                return False
-            return True
-        self.badges.output_error("Local file: "+path+": does not exist!")
-        return False
+        self.colors_script = colors_script()
+        
+    def print_random_tip(self):
+        if os.path.exists(self.config.path_config['base_paths']['tips_path']):
+            tips = list()
+            all_tips = os.listdir(self.config.path_config['base_paths']['tips_path'])
+            for tip in all_tips:
+                tips.append(tip)
+            if tips:
+                tip = ""
+                while not tip:
+                    random_tip = random.randint(0, len(tips) - 1)
+                    tip = self.colors_script.parse_colors_script(self.config.path_config['base_paths']['tips_path'] + tips[random_tip])
+                self.badges.output_empty(self.colors.END + "HatSploit Tip: " + tip + self.colors.END)
+            else:
+                self.badges.output_warning("No tips detected.")
+        else:
+            self.badges.output_warning("No tips detected.")

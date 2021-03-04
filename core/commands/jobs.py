@@ -26,10 +26,10 @@
 
 import os
 
-from core.jobs import jobs
-from core.badges import badges
-from core.storage import local_storage
-from core.tables import tables
+from core.base.jobs import jobs
+from core.cli.badges import badges
+from core.base.storage import local_storage
+from core.cli.tables import tables
 
 class HatSploitCommand:
     def __init__(self):

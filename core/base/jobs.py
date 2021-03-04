@@ -29,11 +29,11 @@ import sys
 import ctypes
 import threading
 
-from core.exceptions import exceptions
-from core.tables import tables
-from core.badges import badges
-from core.storage import local_storage
-from core.modules import modules
+from core.base.exceptions import exceptions
+from core.cli.tables import tables
+from core.cli.badges import badges
+from core.base.storage import local_storage
+from core.modules.modules import modules
 
 class jobs():
     def __init__(self):

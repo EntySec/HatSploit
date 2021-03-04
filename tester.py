@@ -24,7 +24,7 @@
 # SOFTWARE.
 #
 
-from core.config import config
+from core.base.config import config
 
 config = config()
 config.configure()

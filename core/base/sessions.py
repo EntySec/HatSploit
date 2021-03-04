@@ -24,8 +24,8 @@
 # SOFTWARE.
 #
 
-from core.badges import badges
-from core.storage import local_storage
+from core.cli.badges import badges
+from core.base.storage import local_storage
 
 from utils.pseudo_shell import pseudo_shell
 

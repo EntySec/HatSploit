@@ -24,8 +24,8 @@
 # SOFTWARE.
 #
 
-from core.execute import execute
-from core.fmt import fmt
+from core.base.execute import execute
+from core.cli.fmt import fmt
 
 class HatSploitCommand:
     def __init__(self):

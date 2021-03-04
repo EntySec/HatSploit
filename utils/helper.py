@@ -27,7 +27,7 @@
 import os
 import socket
 
-from core.storage import local_storage
+from core.base.storage import local_storage
 
 class helper:
     def __init__(self):

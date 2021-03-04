@@ -27,9 +27,9 @@
 import os
 import socketserver
 
-from core.badges import badges
-from core.parser import parser
-from core.helper import helper
+from core.cli.badges import badges
+from core.cli.parser import parser
+from utils.helper import helper
 
 from data.modules.auxiliary.multi.sniffer.user_agent_sniffer.core.handler import handler
 

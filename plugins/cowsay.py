@@ -26,8 +26,8 @@
 
 import textwrap
 
-from core.badges import badges
-from core.colors import colors
+from core.cli.badges import badges
+from core.cli.colors import colors
 
 class HatSploitPlugin:
     def __init__(self):

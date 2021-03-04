@@ -26,7 +26,7 @@
 
 import os
 
-from core.colors import colors
+from core.cli.colors import colors
 
 class colors_script:
     def __init__(self):

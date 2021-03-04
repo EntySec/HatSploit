@@ -24,7 +24,7 @@
 # SOFTWARE.
 #
 
-from core.storage import local_storage
+from core.base.storage import local_storage
 
 class plugins:
     def __init__(self):

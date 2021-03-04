@@ -25,34 +25,35 @@
 #
 
 import os
-import sys
-import readline
 
-from core.colors import colors
-from core.storage import local_storage
-from core.fmt import fmt
+from core.cli.badges import badges
 
-class io:
+class fsmanip:
     def __init__(self):
-        self.colors = colors()
-        self.local_storage = local_storage()
-        self.fmt = fmt()
+        self.badges = badges()
+        
+    def exists_directory(self, path):
+        if os.path.isdir(path):
+            if os.path.exists(path):
+                return (True, "directory")
+            self.badges.output_error("Local directory: "+path+": does not exist!")
+            return (False, "")
+        directory = os.path.split(path)[0]
+        if directory == "":
+            directory = "."
+        if os.path.exists(directory):
+            if os.path.isdir(directory):
+                return (True, "file")
+            self.badges.output_error("Error: "+directory+": not a directory!")
+            return (False, "")
+        self.badges.output_error("Local directory: "+directory+": does not exist!")
+        return (False, "")
 
-    def output(self, message, end='\n'):
-        sys.stdout.write(self.colors.REMOVE + message + end)
-        sys.stdout.flush()
-        if self.local_storage.get("current_prompt") and self.local_storage.get("active_input"):
-            prompt = self.colors.REMOVE + self.local_storage.get("current_prompt") + readline.get_line_buffer()
-            sys.stdout.write(prompt)
-            sys.stdout.flush()
-
-    def input(self, prompt_message):
-        self.local_storage.set("current_prompt", prompt_message)
-        self.local_storage.set("active_input", True)
-        commands = input(self.colors.REMOVE + prompt_message)
-        commands = self.fmt.format_commands(commands)
-        arguments = list()
-        if commands:
-            arguments = commands[1:]
-        self.local_storage.set("active_input", False)
-        return (commands, arguments)
+    def file(self, path):
+        if os.path.exists(path):
+            if os.path.isdir(path):
+                self.badges.output_error("Error: "+path+": not a file!")
+                return False
+            return True
+        self.badges.output_error("Local file: "+path+": does not exist!")
+        return False

@@ -24,10 +24,10 @@
 # SOFTWARE.
 #
 
-from core.db import db
-from core.badges import badges
-from core.storage import local_storage
-from core.tables import tables
+from core.db.db import db
+from core.cli.badges import badges
+from core.base.storage import local_storage
+from core.cli.tables import tables
 
 class HatSploitCommand:
     def __init__(self):

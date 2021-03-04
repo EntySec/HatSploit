@@ -28,8 +28,8 @@ import time
 import socket
 import telnetlib
 
-from core.badges import badges
-from core.exceptions import exceptions
+from core.cli.badges import badges
+from core.base.exceptions import exceptions
 
 class tcp_tools:
     def __init__(self):

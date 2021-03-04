@@ -26,8 +26,8 @@
 
 import sys
 
-from core.badges import badges
-from core.importer import importer
+from core.cli.badges import badges
+from core.db.importer import importer
 
 from tests.modules_tests import modules_tests
 from tests.plugins_tests import plugins_tests

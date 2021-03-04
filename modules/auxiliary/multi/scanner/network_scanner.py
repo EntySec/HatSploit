@@ -29,9 +29,9 @@ import sys
 
 import scapy.all
 
-from core.badges import badges
-from core.parser import parser
-from core.tables import tables
+from core.cli.badges import badges
+from core.cli.parser import parser
+from core.cli.tables import tables
 
 class HatSploitModule:
     def __init__(self):

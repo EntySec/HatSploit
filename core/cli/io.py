@@ -25,37 +25,34 @@
 #
 
 import os
-import random
+import sys
+import readline
 
-from core.parser import parser
-from core.config import config
-from core.badges import badges
-from core.colors import colors
+from core.cli.colors import colors
+from core.base.storage import local_storage
+from core.cli.fmt import fmt
 
-from utils.colors_script import colors_script
-
-class tip:
+class io:
     def __init__(self):
-        self.parser = parser()
-        self.config = config()
-        self.badges = badges()
         self.colors = colors()
-        
-        self.colors_script = colors_script()
-        
-    def print_random_tip(self):
-        if os.path.exists(self.config.path_config['base_paths']['tips_path']):
-            tips = list()
-            all_tips = os.listdir(self.config.path_config['base_paths']['tips_path'])
-            for tip in all_tips:
-                tips.append(tip)
-            if tips:
-                tip = ""
-                while not tip:
-                    random_tip = random.randint(0, len(tips) - 1)
-                    tip = self.colors_script.parse_colors_script(self.config.path_config['base_paths']['tips_path'] + tips[random_tip])
-                self.badges.output_empty(self.colors.END + "HatSploit Tip: " + tip + self.colors.END)
-            else:
-                self.badges.output_warning("No tips detected.")
-        else:
-            self.badges.output_warning("No tips detected.")
+        self.local_storage = local_storage()
+        self.fmt = fmt()
+
+    def output(self, message, end='\n'):
+        sys.stdout.write(self.colors.REMOVE + message + end)
+        sys.stdout.flush()
+        if self.local_storage.get("current_prompt") and self.local_storage.get("active_input"):
+            prompt = self.colors.REMOVE + self.local_storage.get("current_prompt") + readline.get_line_buffer()
+            sys.stdout.write(prompt)
+            sys.stdout.flush()
+
+    def input(self, prompt_message):
+        self.local_storage.set("current_prompt", prompt_message)
+        self.local_storage.set("active_input", True)
+        commands = input(self.colors.REMOVE + prompt_message)
+        commands = self.fmt.format_commands(commands)
+        arguments = list()
+        if commands:
+            arguments = commands[1:]
+        self.local_storage.set("active_input", False)
+        return (commands, arguments)

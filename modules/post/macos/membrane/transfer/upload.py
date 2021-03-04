@@ -24,9 +24,9 @@
 # SOFTWARE.
 #
 
-from core.badges import badges
-from core.parser import parser
-from core.sessions import sessions
+from core.cli.badges import badges
+from core.cli.parser import parser
+from core.base.sessions import sessions
 
 class HatSploitModule:
     def __init__(self):

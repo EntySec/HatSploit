@@ -28,7 +28,7 @@ import socket
 import random
 import requests
 
-from core.config import config
+from core.base.config import config
 
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
 

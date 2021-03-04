@@ -24,9 +24,9 @@
 # SOFTWARE.
 #
 
-from core.badges import badges
-from core.parser import parser
-from core.config import config
+from core.cli.badges import badges
+from core.cli.parser import parser
+from core.base.config import config
 
 from utils.web_tools import web_tools
 

@@ -27,18 +27,18 @@
 import os
 import readline
 
-from core.io import io
-from core.tip import tip
-from core.jobs import jobs
-from core.execute import execute
-from core.loader import loader
-from core.config import config
-from core.badges import badges
-from core.banner import banner
-from core.colors import colors
-from core.storage import local_storage
-from core.modules import modules
-from core.exceptions import exceptions
+from core.cli.io import io
+from core.cli.tip import tip
+from core.base.jobs import jobs
+from core.base.execute import execute
+from core.base.loader import loader
+from core.base.config import config
+from core.cli.badges import badges
+from core.cli.banner import banner
+from core.cli.colors import colors
+from core.base.storage import local_storage
+from core.modules.modules import modules
+from core.base.exceptions import exceptions
 
 class console:
     def __init__(self):

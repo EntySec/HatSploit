@@ -27,9 +27,9 @@
 import socket
 import requests.exceptions
 
-from core.badges import badges
-from core.jobs import jobs
-from core.exceptions import exceptions
+from core.cli.badges import badges
+from core.base.jobs import jobs
+from core.base.exceptions import exceptions
 
 class pseudo_shell:
     def __init__(self):
@@ -49,7 +49,7 @@ class pseudo_shell:
     def execute_command(self, execute_method, command, arguments=()):
         try:
             if command == "exit":
-                break
+                return
             output = execute_method(*arguments, command).strip()
             if isinstance(output, tuple) and len(output) == 2:
                 if output[0]:

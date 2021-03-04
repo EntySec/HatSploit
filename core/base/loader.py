@@ -31,9 +31,9 @@ import os
 import string
 import requests
 
-from core.badges import badges
-from core.importer import importer
-from core.config import config
+from core.cli.badges import badges
+from core.db.importer import importer
+from core.base.config import config
 
 class loader:
     def __init__(self):
