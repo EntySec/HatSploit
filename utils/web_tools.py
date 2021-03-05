@@ -162,7 +162,7 @@ class web_tools:
         
     def get_url_host(self, url):
         url = self.strip_scheme(url, True).split(':')
-        if len(url) == 2
+        if len(url) == 2:
             return url.split(':')[0]
         return None
     
