@@ -27,12 +27,7 @@
 import os
 import socket
 
-from core.base.storage import local_storage
-
 class helper:
-    def __init__(self):
-        self.local_storage = local_storage()
-
     def getip(self):
         try:
             server = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
