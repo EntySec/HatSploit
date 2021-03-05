@@ -26,10 +26,10 @@
 
 import os
 
-from core.badges import badges
-from core.importer import importer
-from core.storage import local_storage
-from core.modules import modules
+from core.cli.badges import badges
+from core.db.importer import importer
+from core.base.storage import local_storage
+from core.modules.modules import modules
 
 class modules_tests:
     def __init__(self):

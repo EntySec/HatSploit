@@ -27,7 +27,7 @@
 import os
 import sys
 
-from core.jobs import jobs
+from core.base.jobs import jobs
 
 class HatSploitCommand:
     def __init__(self):

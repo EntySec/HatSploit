@@ -25,13 +25,35 @@
 #
 
 import os
-import base64
-import binascii
 
-class terminator:
-    def generate_terminator(self):
-        return binascii.hexlify(os.urandom(8)).decode()
+from core.cli.badges import badges
 
-    def encode_remote_data(self, local_host, local_port):
-        remote_data = (local_host + ":" + local_port).encode()
-        return base64.b64encode(remote_data).decode()
+class fsmanip:
+    def __init__(self):
+        self.badges = badges()
+        
+    def exists_directory(self, path):
+        if os.path.isdir(path):
+            if os.path.exists(path):
+                return (True, "directory")
+            self.badges.output_error("Local directory: "+path+": does not exist!")
+            return (False, "")
+        directory = os.path.split(path)[0]
+        if directory == "":
+            directory = "."
+        if os.path.exists(directory):
+            if os.path.isdir(directory):
+                return (True, "file")
+            self.badges.output_error("Error: "+directory+": not a directory!")
+            return (False, "")
+        self.badges.output_error("Local directory: "+directory+": does not exist!")
+        return (False, "")
+
+    def file(self, path):
+        if os.path.exists(path):
+            if os.path.isdir(path):
+                self.badges.output_error("Error: "+path+": not a file!")
+                return False
+            return True
+        self.badges.output_error("Local file: "+path+": does not exist!")
+        return False

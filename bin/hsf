@@ -33,13 +33,13 @@ sys.path.append(root_path)
 import os
 import yaml
 
-from core.config import config
+from core.base.config import config
 
 config = config()
 config.configure()
 
-from core.console import console
-from core.badges import badges
+from core.base.console import console
+from core.cli.badges import badges
 
 class hsf:
     def __init__(self):

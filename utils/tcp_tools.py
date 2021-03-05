@@ -28,8 +28,8 @@ import time
 import socket
 import telnetlib
 
-from core.badges import badges
-from core.exceptions import exceptions
+from core.cli.badges import badges
+from core.base.exceptions import exceptions
 
 class tcp_tools:
     def __init__(self):
@@ -50,17 +50,38 @@ class tcp_tools:
         self.client.close()
         
     #
+    # Functions to send and recv from client and to client
+    #
+    
+    def send(self, buffer):
+        if self.client:
+            self.client.write(buffer)
+            
+    def recv(self, timeout=10):
+        if self.client:
+            result = b""
+            timeout = time.time() + timeout
+            while True:
+                data = self.client.read_very_eager()
+                result += data
+                if data or time.time() > timeout:
+                    break
+            return result
+        return None
+        
+    #
     # Functions to send system commands to client
     #
-        
+
     def send_command(self, command):
         if self.client:
-            self.client.write(command.encode())
-        
-            time.sleep(0.1)
-            output = self.client.read_very_eager().decode()
+            buffer = command.encode()
+            self.send(buffer)
             
-            return output.strip()
+            output = self.recv()
+            output = output.decode().strip()
+            
+            return output
         return None
         
     #

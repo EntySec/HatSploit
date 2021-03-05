@@ -24,8 +24,8 @@
 # SOFTWARE.
 #
 
-from core.badges import badges
-from core.execute import execute
+from core.cli.badges import badges
+from core.base.execute import execute
 
 class HatSploitCommand:
     def __init__(self):

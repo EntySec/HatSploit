@@ -27,9 +27,9 @@
 import os
 import sys
 
-from core.badges import badges
-from core.parser import parser
-from core.helper import helper
+from core.cli.badges import badges
+from core.cli.parser import parser
+from utils.helper import helper
 
 from utils.web_tools import web_tools
 

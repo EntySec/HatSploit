@@ -26,8 +26,8 @@
 
 import os
 
-from core.io import io
-from core.colors import colors
+from core.cli.io import io
+from core.cli.colors import colors
 
 class badges:
     def __init__(self):

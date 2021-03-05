@@ -24,8 +24,8 @@
 # SOFTWARE.
 #
 
-from core.badges import badges
-from core.storage import local_storage
+from core.cli.badges import badges
+from core.base.storage import local_storage
 
 from utils.pseudo_shell import pseudo_shell
 
@@ -81,7 +81,7 @@ class sessions:
         sessions = self.local_storage.get("sessions")
         if self.check_session_exist(session_property, session_id):
             execute_method = sessions[session_property][int(session_id)]['send']
-            self.pseudo_shell.spawn_pseudo_shell(session_property, execute_method, execute_method_return=True)
+            self.pseudo_shell.spawn_pseudo_shell(session_property, execute_method)
         else:
             self.badges.output_error("Invalid session given!")
     

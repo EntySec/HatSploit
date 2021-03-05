@@ -27,10 +27,10 @@
 import os
 import random
 
-from core.parser import parser
-from core.config import config
-from core.badges import badges
-from core.colors import colors
+from core.cli.parser import parser
+from core.base.config import config
+from core.cli.badges import badges
+from core.cli.colors import colors
 
 from utils.colors_script import colors_script
 

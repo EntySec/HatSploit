@@ -26,7 +26,7 @@
 
 import http.server
 
-from core.badges import badges
+from core.cli.badges import badges
 
 class handler(http.server.SimpleHTTPRequestHandler):
     def log_request(self, fmt, *args):

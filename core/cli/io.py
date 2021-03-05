@@ -24,33 +24,35 @@
 # SOFTWARE.
 #
 
-from core.storage import local_storage
+import os
+import sys
+import readline
 
-class plugins:
+from core.cli.colors import colors
+from core.base.storage import local_storage
+from core.cli.fmt import fmt
+
+class io:
     def __init__(self):
+        self.colors = colors()
         self.local_storage = local_storage()
-        
-    def check_exist(self, name):
-        all_plugins = self.local_storage.get("plugins")
-        if all_plugins:
-            for database in all_plugins.keys():
-                plugins = all_plugins[database]
-                if name in plugins.keys():
-                    return True
-        return False
-      
-    def check_loaded(self, name):
-        loaded_plugins = self.local_storage.get("loaded_plugins")
-        if loaded_plugins:
-            if name in loaded_plugins:
-                return True
-        return False
-        
-    def get_database(self, name):
-        all_plugins = self.local_storage.get("plugins")
-        if all_plugins:
-            for database in all_plugins.keys():
-                plugins = all_plugins[database]
-                if name in plugins.keys():
-                    return database
-        return None
+        self.fmt = fmt()
+
+    def output(self, message, end='\n'):
+        sys.stdout.write(self.colors.REMOVE + message + end)
+        sys.stdout.flush()
+        if self.local_storage.get("current_prompt") and self.local_storage.get("active_input"):
+            prompt = self.colors.REMOVE + self.local_storage.get("current_prompt") + readline.get_line_buffer()
+            sys.stdout.write(prompt)
+            sys.stdout.flush()
+
+    def input(self, prompt_message):
+        self.local_storage.set("current_prompt", prompt_message)
+        self.local_storage.set("active_input", True)
+        commands = input(self.colors.REMOVE + prompt_message)
+        commands = self.fmt.format_commands(commands)
+        arguments = list()
+        if commands:
+            arguments = commands[1:]
+        self.local_storage.set("active_input", False)
+        return (commands, arguments)

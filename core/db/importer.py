@@ -31,13 +31,13 @@ import threading
 import os
 import string
 
-from core.db import db
-from core.badges import badges
-from core.storage import local_storage
-from core.helper import helper
-from core.config import config
-from core.modules import modules
-from core.exceptions import exceptions
+from core.db.db import db
+from core.cli.badges import badges
+from core.base.storage import local_storage
+from utils.helper import helper
+from core.base.config import config
+from core.modules.modules import modules
+from core.base.exceptions import exceptions
 
 class importer:
     def __init__(self):

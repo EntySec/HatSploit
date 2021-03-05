@@ -26,10 +26,10 @@
 
 import os
 
-from core.badges import badges
-from core.storage import local_storage
-from core.plugins import plugins
-from core.importer import importer
+from core.cli.badges import badges
+from core.base.storage import local_storage
+from core.plugins.plugins import plugins
+from core.db.importer import importer
 
 class HatSploitCommand:
     def __init__(self):

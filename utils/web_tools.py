@@ -28,7 +28,7 @@ import socket
 import random
 import requests
 
-from core.config import config
+from core.base.config import config
 
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
 
@@ -97,7 +97,10 @@ class web_tools:
     #
 
     def http_request(self, method, url, path, data=None, ssl=False, user_agent=True, timeout=10):
-        url = self.normalize_url(url, ssl)
+        if self.get_url_port(url) == 443:
+            url = self.normalize_url(url, True)
+        else:
+            url = self.normalize_url(url, ssl)
         url = self.add_path_to_url(url, path)
         
         headers = None
@@ -152,12 +155,16 @@ class web_tools:
         return self.normalize_url(url, ssl)
     
     def get_url_port(self, url):
-        url = self.strip_scheme(url, True)
-        return url.split(':')[1]
+        url = self.strip_scheme(url, True).split(':')
+        if len(url) == 2:
+            return int(url.split(':')[1])
+        return None
         
     def get_url_host(self, url):
-        url = self.strip_scheme(url, True)
-        return url.split(':')[0]
+        url = self.strip_scheme(url, True).split(':')
+        if len(url) == 2:
+            return url.split(':')[0]
+        return None
     
     def strip_scheme(self, url, strip_path=False):
         url = url.replace('http://', '', 1)

@@ -27,10 +27,10 @@
 import os
 import sys
 
-from core.jobs import jobs
-from core.storage import local_storage
-from core.modules import modules
-from core.exceptions import exceptions
+from core.base.jobs import jobs
+from core.base.storage import local_storage
+from core.modules.modules import modules
+from core.base.exceptions import exceptions
 
 class HatSploitCommand:
     def __init__(self):

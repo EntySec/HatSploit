@@ -26,11 +26,21 @@
 
 import struct
 
+from core.base.config import config
+
 class hatvenom:
     def __init__(self):
+        self.config = config()
+
         self.formats = {
             'elf': self.generate_elf,
+            'macho': self.generate_macho,
             'c': self.generate_c
+        }
+        
+        self.macho_templates = {
+            'x64': self.config.path_config['base_paths']['data_path'] + "utils/hatvenom/templates/macho_x64.bin",
+            'aarch64': self.config.path_config['base_paths']['data_path'] + "utils/hatvenom/templates/macho_aarch64.bin"
         }
         
         self.elf_headers = {
@@ -133,6 +143,19 @@ class hatvenom:
 
                 content = elf[:0x60] + p_filesz + p_memsz + elf[0x70:]
             return content
+        return None
+    
+    def generate_macho(self, arch, data):
+        if arch in self.macho_templates.keys():
+            if os.path.exists(self.macho_templates[arch]):
+                macho_file = open(self.macho_templates[arch], 'rb')
+                macho = macho_file.read()
+                macho_file.close()
+
+                payload_index = macho.index(b'PAYLOAD:')
+                data = macho[:payload_index] + data + macho[payload_index + len(data):]
+
+                return content
         return None
 
     def generate_c(self, arch, data):

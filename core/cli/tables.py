@@ -24,7 +24,7 @@
 # SOFTWARE.
 #
 
-from core.badges import badges
+from core.cli.badges import badges
 
 class tables:
     def __init__(self):

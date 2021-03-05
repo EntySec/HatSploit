@@ -24,14 +24,33 @@
 # SOFTWARE.
 #
 
-import os
-import base64
-import binascii
+from core.base.storage import local_storage
 
-class terminator:
-    def generate_terminator(self):
-        return binascii.hexlify(os.urandom(8)).decode()
-
-    def encode_remote_data(self, local_host, local_port):
-        remote_data = (local_host + ":" + local_port).encode()
-        return base64.b64encode(remote_data).decode()
+class plugins:
+    def __init__(self):
+        self.local_storage = local_storage()
+        
+    def check_exist(self, name):
+        all_plugins = self.local_storage.get("plugins")
+        if all_plugins:
+            for database in all_plugins.keys():
+                plugins = all_plugins[database]
+                if name in plugins.keys():
+                    return True
+        return False
+      
+    def check_loaded(self, name):
+        loaded_plugins = self.local_storage.get("loaded_plugins")
+        if loaded_plugins:
+            if name in loaded_plugins:
+                return True
+        return False
+        
+    def get_database(self, name):
+        all_plugins = self.local_storage.get("plugins")
+        if all_plugins:
+            for database in all_plugins.keys():
+                plugins = all_plugins[database]
+                if name in plugins.keys():
+                    return database
+        return None

@@ -25,35 +25,22 @@
 #
 
 import os
+import socket
 
-from core.badges import badges
+class helper:
+    def getip(self):
+        try:
+            server = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+            server.connect(("192.168.1.1", 80))
+            local_host = server.getsockname()[0]
+            server.close()
+            local_host = local_host
+        except Exception:
+            local_host = "127.0.0.1"
+        return local_host
+    
+    def len_file(self, path):
+        return str(os.path.getsize(path)) + " bytes"
 
-class fsmanip:
-    def __init__(self):
-        self.badges = badges()
-        
-    def exists_directory(self, path):
-        if os.path.isdir(path):
-            if os.path.exists(path):
-                return (True, "directory")
-            self.badges.output_error("Local directory: "+path+": does not exist!")
-            return (False, "")
-        directory = os.path.split(path)[0]
-        if directory == "":
-            directory = "."
-        if os.path.exists(directory):
-            if os.path.isdir(directory):
-                return (True, "file")
-            self.badges.output_error("Error: "+directory+": not a directory!")
-            return (False, "")
-        self.badges.output_error("Local directory: "+directory+": does not exist!")
-        return (False, "")
-
-    def file(self, path):
-        if os.path.exists(path):
-            if os.path.isdir(path):
-                self.badges.output_error("Error: "+path+": not a file!")
-                return False
-            return True
-        self.badges.output_error("Local file: "+path+": does not exist!")
-        return False
+    def len_line(self, line):
+        return str(len(line.encode())) + " bytes"

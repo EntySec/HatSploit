@@ -27,7 +27,7 @@
 import shutil
 import subprocess
 
-from core.badges import badges
+from core.cli.badges import badges
 
 class adb_tools:
     def __init__(self):

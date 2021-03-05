@@ -29,8 +29,8 @@ import sys
 
 import socket
 
-from core.badges import badges
-from core.parser import parser
+from core.cli.badges import badges
+from core.cli.parser import parser
 
 from utils.web_tools import web_tools
 

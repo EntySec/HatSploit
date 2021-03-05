@@ -24,9 +24,9 @@
 # SOFTWARE.
 #
 
-from core.badges import badges
-from core.parser import parser
-from core.sessions import sessions
+from core.cli.badges import badges
+from core.cli.parser import parser
+from core.base.sessions import sessions
 
 class HatSploitModule:
     def __init__(self):
@@ -62,6 +62,7 @@ class HatSploitModule:
         if session:
             self.badges.output_process("Getting device volume level...")
             payload = "output volume of (get volume settings)"
+
             status, output = session.send_command("osascript", payload)
             if not status:
                 self.badges.output_error("Failed to get device volume level!")

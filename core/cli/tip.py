@@ -24,11 +24,38 @@
 # SOFTWARE.
 #
 
-from core.badges import badges
+import os
+import random
 
-class db_edit:
+from core.cli.parser import parser
+from core.base.config import config
+from core.cli.badges import badges
+from core.cli.colors import colors
+
+from utils.colors_script import colors_script
+
+class tip:
     def __init__(self):
+        self.parser = parser()
+        self.config = config()
         self.badges = badges()
+        self.colors = colors()
         
-    def get_edit(self):
-        pass
+        self.colors_script = colors_script()
+        
+    def print_random_tip(self):
+        if os.path.exists(self.config.path_config['base_paths']['tips_path']):
+            tips = list()
+            all_tips = os.listdir(self.config.path_config['base_paths']['tips_path'])
+            for tip in all_tips:
+                tips.append(tip)
+            if tips:
+                tip = ""
+                while not tip:
+                    random_tip = random.randint(0, len(tips) - 1)
+                    tip = self.colors_script.parse_colors_script(self.config.path_config['base_paths']['tips_path'] + tips[random_tip])
+                self.badges.output_empty(self.colors.END + "HatSploit Tip: " + tip + self.colors.END)
+            else:
+                self.badges.output_warning("No tips detected.")
+        else:
+            self.badges.output_warning("No tips detected.")
