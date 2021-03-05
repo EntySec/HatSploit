@@ -26,8 +26,12 @@
 
 import struct
 
+from core.base.config import config
+
 class hatvenom:
     def __init__(self):
+        self.config = config()
+
         self.formats = {
             'elf': self.generate_elf,
             'macho': self.generate_macho,
@@ -35,8 +39,8 @@ class hatvenom:
         }
         
         self.macho_templates = {
-            'x64': "templates/macho_x64.bin",
-            'aarch64': "templates/macho_aarch64.bin"
+            'x64': self.config.path_config['base_paths']['data_path'] + "utils/hatvenom/templates/macho_x64.bin",
+            'aarch64': self.config.path_config['base_paths']['data_path'] + "utils/hatvenom/templates/macho_aarch64.bin"
         }
         
         self.elf_headers = {
