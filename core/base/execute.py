@@ -28,12 +28,14 @@ import os
 import sys
 import subprocess
 
+from core.cli.fmt import fmt
 from core.cli.badges import badges
 from core.base.storage import local_storage
 from core.modules.modules import modules
 
 class execute:
     def __init__(self):
+        self.fmt = fmt()
         self.badges = badges()
         self.local_storage = local_storage()
         self.modules = modules()
@@ -45,6 +47,18 @@ class execute:
                     if not self.execute_module_command(commands, arguments):
                         if not self.execute_plugin_command(commands, arguments):
                             self.badges.output_error("Unrecognized command: " + commands[0] + "!")
+        
+    def execute_from_file(self, input_file):
+        if os.path.exists(input_file):
+            file = open(input_file, 'r')
+            file_text = file.read().split('\n')
+            file.close()
+            
+            for line in file_text:
+                commands = self.fmt.format_commands(line)
+                arguments = commands[1:]
+                
+                self.execute_command(commands, arguments)
         
     def execute_builtin_method(self, commands, arguments):
         if commands[0][0] == '!':
