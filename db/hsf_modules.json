@@ -6,7 +6,8 @@
         "iphoneos": {
             "checker/jailbroken_or_not": {
                 "Path": "modules/auxiliary/iphoneos/checker/jailbroken_or_not",
-                "Name": "auxiliary/iphoneos/checker/jailbroken_or_not",
+                "Name": "Jailbreak Installation Checker",
+                "Module": "auxiliary/iphoneos/checker/jailbroken_or_not",
                 "Authors": [
                     "enty8080"
                 ],
@@ -23,7 +24,8 @@
         "android": {
             "checker/check_adb_installation": {
                 "Path": "modules/auxiliary/android/checker/check_adb_installation",
-                "Name": "auxiliary/android/checker/check_adb_installation",
+                "Name": "ADB Installation Checker",
+                "Module": "auxiliary/android/checker/check_adb_installation",
                 "Authors": [
                     "enty8080"
                 ],
@@ -40,7 +42,8 @@
         "multi": {
             "scanner/network_scanner": {
                 "Path": "modules/auxiliary/multi/scanner/network_scanner",
-                "Name": "auxiliary/multi/scanner/network_scanner",
+                "Name": "Network Scanner",
+                "Module": "auxiliary/multi/scanner/network_scanner",
                 "Authors": [
                     "enty8080"
                 ],
@@ -55,7 +58,8 @@
             },
             "scanner/port_scanner": {
                 "Path": "modules/auxiliary/multi/scanner/port_scanner",
-                "Name": "auxiliary/multi/scanner/port_scanner",
+                "Name": "Port Scanner",
+                "Module": "auxiliary/multi/scanner/port_scanner",
                 "Authors": [
                     "enty8080"
                 ],
@@ -70,7 +74,8 @@
             },
             "sniffer/user_agent_sniffer": {
                 "Path": "modules/auxiliary/multi/sniffer/user_agent_sniffer",
-                "Name": "auxiliary/multi/scanner/port_scanner",
+                "Name": "User Agent Sniffer",
+                "Module": "auxiliary/multi/scanner/port_scanner",
                 "Authors": [
                     "enty8080"
                 ],
@@ -85,7 +90,8 @@
             },
             "scanner/directory_scanner": {
                 "Path": "modules/auxiliary/multi/scanner/directory_scanner",
-                "Name": "auxiliary/multi/scanner/directory_scanner",
+                "Name": "Directory Scanner",
+                "Module": "auxiliary/multi/scanner/directory_scanner",
                 "Authors": [
                     "enty8080"
                 ],
@@ -100,7 +106,8 @@
             },
             "scanner/apache_users": {
                 "Path": "modules/auxiliary/multi/scanner/apache_users",
-                "Name": "auxiliary/multi/scanner/apache_users",
+                "Name": "Apache Users Scanner",
+                "Module": "auxiliary/multi/scanner/apache_users",
                 "Authors": [
                     "enty8080"
                 ],
@@ -115,7 +122,8 @@
             },
             "scanner/pma_scanner": {
                 "Path": "modules/auxiliary/multi/scanner/pma_scanner",
-                "Name": "auxiliary/multi/scanner/pma_scanner",
+                "Name": "PMA Scanner",
+                "Module": "auxiliary/multi/scanner/pma_scanner",
                 "Authors": [
                     "enty8080"
                 ],
