@@ -117,7 +117,7 @@ class importer:
                     try:
                         command_directory = command_file_path.replace(self.config.path_config['base_paths']['root_path'], '', 1)
                         command_object = self.import_command(command_directory)
-                        command_name = command_object.details['Name']
+                        command_name = command_object.details['Module']
                         commands[command_name] = command_object
                     except Exception:
                         self.badges.output_error("Failed to load " + file[:-3] + " command!")
