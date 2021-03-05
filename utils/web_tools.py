@@ -156,7 +156,7 @@ class web_tools:
     
     def get_url_port(self, url):
         url = self.strip_scheme(url, True).split(':')
-        if len(url) == 2
+        if len(url) == 2:
             return int(url.split(':')[1])
         return None
         
