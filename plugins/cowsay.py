@@ -26,9 +26,9 @@
 
 import textwrap
 
-from core.plugins.plugin import plugin
+from core.plugins.plugin import HatSploitPlugin
 
-class HatSploitPlugin(plugin):
+class HatSploitPlugin(HatSploitPlugin):
     def __init__(self):
         self.details = {
             'Name': "cowsay",
