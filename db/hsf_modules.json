@@ -410,7 +410,8 @@
         "linux": {
             "x64/shell_reverse_tcp": {
                 "Path": "modules/payload/linux/x64/shell_reverse_tcp",
-                "Name": "payload/linux/x64/shell_reverse_tcp",
+                "Name": "Linux x64 Shell Reverse TCP",
+                "Module": "payload/linux/x64/shell_reverse_tcp",
                 "Authors": [
                     "enty8080"
                 ],
@@ -425,7 +426,8 @@
             },
             "armle/shell_reverse_tcp": {
                 "Path": "modules/payload/linux/armle/shell_reverse_tcp",
-                "Name": "payload/linux/armle/shell_reverse_tcp",
+                "Name": "Linux armle Shell Reverse TCP",
+                "Module": "payload/linux/armle/shell_reverse_tcp",
                 "Authors": [
                     "enty8080"
                 ],
@@ -440,7 +442,8 @@
             },
             "x86/shell_reverse_tcp": {
                 "Path": "modules/payload/linux/x86/shell_reverse_tcp",
-                "Name": "payload/linux/x86/shell_reverse_tcp",
+                "Name": "Linux x86 Shell Reverse TCP",
+                "Module": "payload/linux/x86/shell_reverse_tcp",
                 "Authors": [
                     "enty8080"
                 ],
