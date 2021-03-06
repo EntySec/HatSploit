@@ -26,34 +26,33 @@
 
 import textwrap
 
-from core.plugins.plugin import HatSploitPlugin
+from core.templates.plugin import HatSploitPlugin
 
 class HatSploitPlugin(HatSploitPlugin):
-    def __init__(self):
-        self.details = {
-            'Name': "cowsay",
-            'Authors': [
-                'enty8080'
-            ],
-            'Description': "Cowsay plugin for HatSploit.",
-            'Dependencies': [
-                ''
-            ],
-            'Comments': [
-                ''
-            ]
-        }
+    HatSploitPlugin.details = {
+        'Name': "cowsay",
+        'Authors': [
+            'enty8080'
+        ],
+        'Description': "Cowsay plugin for HatSploit.",
+        'Dependencies': [
+            ''
+        ],
+        'Comments': [
+            ''
+        ]
+    }
 
-        self.commands = {
+    HatSploitPlugin.commands = {
+        'cowsay': {
             'cowsay': {
-                'cowsay': {
-                    'Description': "Ask cow to say message.",
-                    'Usage': "cowsay <message>",
-                    'MinArgs': 1,
-                    'Run': self.cowsay
-                }
+                'Description': "Ask cow to say message.",
+                'Usage': "cowsay <message>",
+                'MinArgs': 1,
+                'Run': self.cowsay
             }
         }
+    }
 
     def ask_cow(self, message, length=40):
         return self.build_bubble(message, length) + self.build_cow()
