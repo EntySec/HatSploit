@@ -24,9 +24,6 @@
 # SOFTWARE.
 #
 
-import os
-import sys
-
 from core.cli.badges import badges
 from core.cli.parser import parser
 
@@ -65,9 +62,6 @@ class HatSploitModule:
             'URL': {
                 'Description': "Target URL address.",
                 'Value': None,
-                'Types': [
-                    str
-                ],
                 'Required': True
             }
         }
