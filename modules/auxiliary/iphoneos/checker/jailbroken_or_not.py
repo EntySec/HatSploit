@@ -24,22 +24,17 @@
 # SOFTWARE.
 #
 
-import os
-import sys
-
-import socket
-
 from core.cli.badges import badges
 from core.cli.parser import parser
 
-from utils.web_tools import web_tools
+from utils.tcp_tools import tcp_tools
 
 class HatSploitModule:
     def __init__(self):
         self.badges = badges()
         self.parser = parser()
         
-        self.web_tools = web_tools()
+        self.tcp_tools = tcp_tools()
 
         self.details = {
             'Name': "Jailbreak Installation Checker",
@@ -69,7 +64,7 @@ class HatSploitModule:
         remote_host = self.parser.parse_options(self.options)
         
         self.badges.output_process("Checking " + remote_host + "...")
-        if self.web_tools.check_tcp_port(remote_host, 22):
+        if self.tcp_tools.check_tcp_port(remote_host, 22):
             self.badges.output_success("Target device may be jailbroken!")
         else:
             self.badges.output_warning("Looks like target device is not jailbroken.")
