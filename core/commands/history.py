@@ -27,22 +27,12 @@
 import os
 import readline
 
-from core.cli.badges import badges
-from core.base.config import config
+from core.templates.command import HatSploitCommand
 
-from core.base.storage import local_storage
-from core.base.storage import global_storage
-
-class HatSploitCommand:
+class HatSploitCommand(HatSploitCommand):
     def __init__(self):
-        self.badges = badges()
-        self.config = config()
-        
         self.history = self.config.path_config['base_paths']['history_path']
         self.storage_path = self.config.path_config['base_paths']['storage_path']
-        
-        self.local_storage = local_storage()
-        self.global_storage = global_storage(self.storage_path)
 
         self.details = {
             'Category': "developer",
