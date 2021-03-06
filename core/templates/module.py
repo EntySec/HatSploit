@@ -45,7 +45,7 @@ from utils.tcp_tools import tcp_tools
 from utils.pseudo_shell import pseudo_shell
 from utils.string_tools import string_tools
 
-class HatSploitModule():
+class HatSploitModule:
     def __init__(self):
         self.badges = badges()
         self.parser = parser()
