@@ -42,7 +42,8 @@ class HatSploitModule:
         self.web_tools = web_tools()
 
         self.details = {
-            'Name': "auxiliary/android/checker/check_adb_installation",
+            'Name': "ADB Installation Checker",
+            'Module': "auxiliary/android/checker/check_adb_installation",
             'Authors': [
                 'enty8080'
             ],
