@@ -29,12 +29,14 @@ import scapy.all
 from core.cli.badges import badges
 from core.cli.parser import parser
 from core.cli.tables import tables
+from core.base.types import types
 
 class HatSploitModule:
     def __init__(self):
         self.badges = badges()
         self.parser = parser()
         self.tables = tables()
+        self.types = types()
         
         self.details = {
             'Name': "Network Scanner",
