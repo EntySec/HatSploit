@@ -27,18 +27,10 @@
 import os
 import sys
 
-from core.base.jobs import jobs
-from core.base.storage import local_storage
-from core.modules.modules import modules
-from core.base.exceptions import exceptions
+from core.templates.command import HatSploitCommand
 
-class HatSploitCommand:
+class HatSploitCommand(HatSploitCommand):
     def __init__(self):
-        self.jobs = jobs()
-        self.local_storage = local_storage()
-        self.modules = modules()
-        self.exceptions = exceptions()
-
         self.details = {
             'Category': "module",
             'Name': "back",
