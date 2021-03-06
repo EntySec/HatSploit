@@ -35,7 +35,8 @@ class HatSploitModule:
         self.sessions = sessions()
 
         self.details = {
-            'Name': "post/macos/membrane/transfer/download",
+            'Name': "macOS Membrane Transfer Download",
+            'Module': "post/macos/membrane/transfer/download",
             'Authors': [
                 'enty8080'
             ],
