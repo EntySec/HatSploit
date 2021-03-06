@@ -73,16 +73,6 @@ class HatSploitModule:
         self.badges.output_process("Scanning local network...")
         
         try:
-            if not isinstance(timeout, int) and not isinstance(timeout, float):
-                if timeout.isdigit():
-                    timeout = int(timeout)
-                else:
-                    timeout = float(timeout)
-        except Exception:
-            self.badges.output_error("Invalid timeout provided!")
-            return
-        
-        try:
             arp = scapy.all.ARP(pdst=ip_range)
             ether = scapy.all.Ether(dst="ff:ff:ff:ff:ff:ff")
             result = scapy.all.srp(ether/arp, timeout=timeout, verbose=False)[0]
