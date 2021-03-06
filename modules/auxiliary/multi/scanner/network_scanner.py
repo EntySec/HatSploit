@@ -59,13 +59,17 @@ class HatSploitModule:
             'RANGE': {
                 'Description': "IP range.",
                 'Value': "192.168.1.1/24",
-                'Type': str,
+                'Types': [
+                    str
+                ],
                 'Required': True
             },
             'TIMEOUT': {
                 'Description': "Timeout to scan.",
                 'Value': 10,
-                'Type': int,
+                'Types': [
+                    int
+                ],
                 'Required': True
             }
         }
