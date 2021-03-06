@@ -299,7 +299,7 @@
                 "Authors": [
                     "enty8080"
                 ],
-                "Description": "Remote Code Execution in Nostromo httpd.",
+                "Description": "Remote Code Execution in Nostromo Httpd.",
                 "Dependencies": [
                     ""
                 ],
