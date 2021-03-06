@@ -27,12 +27,14 @@
 import re
 
 class types:
-    def is_int(self, value):
+    def string_is_int(self, value):
+        value = str(value)
         if value.isdigit():
             return True
         return False
       
-    def is_float(self, value):
+    def string_is_float(self, value):
+        value = str(value)
         if re.match(r'^-?\d+(?:\.\d+)$', value):
             return True
         return False
