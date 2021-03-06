@@ -26,6 +26,7 @@
 
 from core.cli.badges import badges
 from core.cli.parser import parser
+from core.base.types import types
 
 from utils.tcp_tools import tcp_tools
 from utils.web_tools import web_tools
@@ -34,6 +35,7 @@ class HatSploitModule:
     def __init__(self):
         self.badges = badges()
         self.parser = parser()
+        self.types = types()
         
         self.tcp_tools = tcp_tools()
         self.web_tools = web_tools()
@@ -58,32 +60,26 @@ class HatSploitModule:
             'RHOST': {
                 'Description': "Remote host.",
                 'Value': None,
-                'Types': [
-                    str
-                ],
                 'Required': True
             },
             'RANGE': {
                 'Description': "Ports to scan.",
                 'Value': "0-65535",
-                'Types': [
-                    str
-                ],
                 'Required': True
             },
             'TIMEOUT': {
                 'Description': "Timeout for scan.",
                 'Value': 0.5,
-                'Types': [
-                    int, 
-                    float
-                ]
                 'Required': True
             }
         }
 
     def run(self):
         remote_host, ports_range, timeout = self.parser.parse_options(self.options)
+        timeout = self.types.cast_to_float(timeout)
+        
+        if timeout == None:
+            return
         
         try:
             start = int(ports_range.split('-')[0].strip())
