@@ -63,19 +63,25 @@ class HatSploitModule:
             'LHOST': {
                 'Description': "Local host.",
                 'Value': self.tcp_tools.get_local_host(),
-                'Type': str,
+                'Types': [
+                    str
+                ],
                 'Required': True
             },
             'LPORT': {
                 'Description': "Local port.",
                 'Value': 80,
-                'Type': int,
+                'Types': [
+                    int
+                ],
                 'Required': True
             },
             'FOREVER': {
                 'Description': "Start http server forever.",
                 'Value': "no",
-                'Type': str,
+                'Types': [
+                    str
+                ],
                 'Required': False
             }
         }
