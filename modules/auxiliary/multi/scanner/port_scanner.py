@@ -58,19 +58,26 @@ class HatSploitModule:
             'RHOST': {
                 'Description': "Remote host.",
                 'Value': None,
-                'Type': str,
+                'Types': [
+                    str
+                ],
                 'Required': True
             },
             'RANGE': {
                 'Description': "Ports to scan.",
                 'Value': "0-65535",
-                'Type': str,
+                'Types': [
+                    str
+                ],
                 'Required': True
             },
             'TIMEOUT': {
                 'Description': "Timeout for scan.",
                 'Value': 0.5,
-                'Type': [int, float]
+                'Types': [
+                    int, 
+                    float
+                ]
                 'Required': True
             }
         }
