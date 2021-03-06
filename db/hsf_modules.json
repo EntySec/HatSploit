@@ -424,6 +424,22 @@
                 ],
                 "Risk": "low"
             },
+            "x64/shell_bind_tcp": {
+                "Path": "modules/payload/linux/x64/shell_bind_tcp",
+                "Name": "Linux x64 Shell Bind TCP",
+                "Module": "payload/linux/x64/shell_bind_tcp",
+                "Authors": [
+                    "enty8080"
+                ],
+                "Description": "Shell Bind TCP Payload for Linux x64.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Risk": "low"
+            },
             "armle/shell_reverse_tcp": {
                 "Path": "modules/payload/linux/armle/shell_reverse_tcp",
                 "Name": "Linux armle Shell Reverse TCP",
@@ -440,6 +456,22 @@
                 ],
                 "Risk": "low"
             },
+            "armle/shell_bind_tcp": {
+                "Path": "modules/payload/linux/armle/shell_bind_tcp",
+                "Name": "Linux armle Shell Bind TCP",
+                "Module": "payload/linux/armle/shell_bind_tcp",
+                "Authors": [
+                    "enty8080"
+                ],
+                "Description": "Shell Bind TCP Payload for Linux armle.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Risk": "low"
+            },
             "x86/shell_reverse_tcp": {
                 "Path": "modules/payload/linux/x86/shell_reverse_tcp",
                 "Name": "Linux x86 Shell Reverse TCP",
@@ -448,6 +480,22 @@
                     "enty8080"
                 ],
                 "Description": "Shell Reverse TCP Payload for Linux x86.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Risk": "low"
+            },
+            "x86/shell_bind_tcp": {
+                "Path": "modules/payload/linux/x86/shell_bind_tcp",
+                "Name": "Linux x86 Shell Bind TCP",
+                "Module": "payload/linux/x86/shell_bind_tcp",
+                "Authors": [
+                    "enty8080"
+                ],
+                "Description": "Shell Bind TCP Payload for Linux x86.",
                 "Dependencies": [
                     ""
                 ],
