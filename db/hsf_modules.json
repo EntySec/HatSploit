@@ -158,7 +158,7 @@
             },
             "ssh/cydia_default_password": {
                 "Path": "modules/exploit/iphoneos/ssh/cydia_default_password",
-                "Name": "iPhoneOS Cydia.app SSH Default Password",
+                "Name": "iPhoneOS SSH Cydia.app Default Password",
                 "Module": "exploit/iphoneos/ssh/cydia_default_password",
                 "Authors": [
                     "enty8080"
