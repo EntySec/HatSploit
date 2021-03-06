@@ -46,6 +46,7 @@ class HatSploitModule:
             '': {
                 'Description': "",
                 'Value': None,
+                'Type': str,
                 'Required': True
             }
         }
