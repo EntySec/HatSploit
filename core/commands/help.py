@@ -26,18 +26,10 @@
 
 import os
 
-from core.cli.badges import badges
-from core.cli.tables import tables
-from core.modules.modules import modules
-from core.base.storage import local_storage
+from core.templates.command import HatSploitCommand
 
-class HatSploitCommand:
+class HatSploitCommand(HatSploitCommand):
     def __init__(self):
-        self.badges = badges()
-        self.tables = tables()
-        self.modules = modules()
-        self.local_storage = local_storage()
-
         self.details = {
             'Category': "core",
             'Name': "help",
