@@ -52,7 +52,7 @@ class HatSploitCommand:
         
         if self.modules.check_current_module():
             current_module = self.modules.get_current_module_object()
-            value_types = current_module.options[option]['Type']
+            value_types = current_module.options[option]['Types']
             if option in current_module.options.keys():
                 if self.types.string_is_int(value):
                     value = int(value)
