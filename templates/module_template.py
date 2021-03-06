@@ -46,7 +46,11 @@ class HatSploitModule:
             '': {
                 'Description': "",
                 'Value': None,
-                'Type': str,
+                'Types': [
+                    str,
+                    int,
+                    float
+                ],
                 'Required': True
             }
         }
