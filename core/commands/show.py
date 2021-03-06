@@ -64,7 +64,7 @@ class HatSploitCommand:
         modules = self.local_storage.get("modules")
         modules_data = list()
         number = 0
-        headers = ("Number", "Name", "Database", "Risk", "Description")
+        headers = ("Number", "Module", "Database", "Risk", "Description")
         for database in modules.keys():
             modules = modules[database][information]
             for platform in sorted(modules.keys()):
