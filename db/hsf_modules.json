@@ -6,7 +6,8 @@
         "iphoneos": {
             "checker/jailbroken_or_not": {
                 "Path": "modules/auxiliary/iphoneos/checker/jailbroken_or_not",
-                "Name": "auxiliary/iphoneos/checker/jailbroken_or_not",
+                "Name": "Jailbreak Installation Checker",
+                "Module": "auxiliary/iphoneos/checker/jailbroken_or_not",
                 "Authors": [
                     "enty8080"
                 ],
@@ -23,7 +24,8 @@
         "android": {
             "checker/check_adb_installation": {
                 "Path": "modules/auxiliary/android/checker/check_adb_installation",
-                "Name": "auxiliary/android/checker/check_adb_installation",
+                "Name": "ADB Installation Checker",
+                "Module": "auxiliary/android/checker/check_adb_installation",
                 "Authors": [
                     "enty8080"
                 ],
@@ -40,7 +42,8 @@
         "multi": {
             "scanner/network_scanner": {
                 "Path": "modules/auxiliary/multi/scanner/network_scanner",
-                "Name": "auxiliary/multi/scanner/network_scanner",
+                "Name": "Network Scanner",
+                "Module": "auxiliary/multi/scanner/network_scanner",
                 "Authors": [
                     "enty8080"
                 ],
@@ -55,7 +58,8 @@
             },
             "scanner/port_scanner": {
                 "Path": "modules/auxiliary/multi/scanner/port_scanner",
-                "Name": "auxiliary/multi/scanner/port_scanner",
+                "Name": "Port Scanner",
+                "Module": "auxiliary/multi/scanner/port_scanner",
                 "Authors": [
                     "enty8080"
                 ],
@@ -70,7 +74,8 @@
             },
             "sniffer/user_agent_sniffer": {
                 "Path": "modules/auxiliary/multi/sniffer/user_agent_sniffer",
-                "Name": "auxiliary/multi/scanner/port_scanner",
+                "Name": "User Agent Sniffer",
+                "Module": "auxiliary/multi/scanner/port_scanner",
                 "Authors": [
                     "enty8080"
                 ],
@@ -85,7 +90,8 @@
             },
             "scanner/directory_scanner": {
                 "Path": "modules/auxiliary/multi/scanner/directory_scanner",
-                "Name": "auxiliary/multi/scanner/directory_scanner",
+                "Name": "Directory Scanner",
+                "Module": "auxiliary/multi/scanner/directory_scanner",
                 "Authors": [
                     "enty8080"
                 ],
@@ -100,7 +106,8 @@
             },
             "scanner/apache_users": {
                 "Path": "modules/auxiliary/multi/scanner/apache_users",
-                "Name": "auxiliary/multi/scanner/apache_users",
+                "Name": "Apache Users Scanner",
+                "Module": "auxiliary/multi/scanner/apache_users",
                 "Authors": [
                     "enty8080"
                 ],
@@ -115,7 +122,8 @@
             },
             "scanner/pma_scanner": {
                 "Path": "modules/auxiliary/multi/scanner/pma_scanner",
-                "Name": "auxiliary/multi/scanner/pma_scanner",
+                "Name": "PMA Scanner",
+                "Module": "auxiliary/multi/scanner/pma_scanner",
                 "Authors": [
                     "enty8080"
                 ],
@@ -134,7 +142,8 @@
         "iphoneos": {
             "mobile_safari_app/webkit_filter_dos": {
                 "Path": "modules/exploit/iphoneos/mobile_safari_app/webkit_filter_dos",
-                "Name": "exploit/iphoneos/mobile_safari_app/webkit_filter_dos",
+                "Name": "iPhoneOS MobileSafari.app WebKit Filter DoS",
+                "Modules": "exploit/iphoneos/mobile_safari_app/webkit_filter_dos",
                 "Authors": [
                     "enty8080"
                 ],
@@ -149,7 +158,8 @@
             },
             "ssh/cydia_default_password": {
                 "Path": "modules/exploit/iphoneos/ssh/cydia_default_password",
-                "Name": "exploit/iphoneos/ssh/cydia_default_password",
+                "Name": "iPhoneOS SSH Cydia.app Default Password",
+                "Module": "exploit/iphoneos/ssh/cydia_default_password",
                 "Authors": [
                     "enty8080"
                 ],
@@ -166,7 +176,8 @@
         "linux": {
             "stager/membrane_reverse_tcp": {
                 "Path": "modules/exploit/linux/stager/membrane_reverse_tcp",
-                "Name": "exploit/linux/stager/membrane_reverse_tcp",
+                "Name": "Linux Membrane Reverse TCP Stager",
+                "Module": "exploit/linux/stager/membrane_reverse_tcp",
                 "Authors": [
                     "enty8080"
                 ],
@@ -183,7 +194,8 @@
         "macos": {
             "stager/membrane_reverse_tcp": {
                 "Path": "modules/exploit/macos/stager/membrane_reverse_tcp",
-                "Name": "exploit/macos/stager/membrane_reverse_tcp",
+                "Name": "macOS Membrane Reverse TCP Stager",
+                "Module": "exploit/macos/stager/membrane_reverse_tcp",
                 "Authors": [
                     "enty8080"
                 ],
@@ -200,7 +212,8 @@
         "android": {
             "adb/remote_code_execution": {
                 "Path": "modules/exploit/android/adb/remote_code_execution",
-                "Name": "exploit/android/adb/remote_code_execution",
+                "Name": "Android ADB Remote Code Execution",
+                "Module": "exploit/android/adb/remote_code_execution",
                 "Authors": [
                     "enty8080"
                 ],
@@ -217,7 +230,8 @@
         "multi": {
             "stager/shell_reverse_tcp": {
                 "Path": "modules/exploit/multi/stager/shell_reverse_tcp",
-                "Name": "exploit/multi/stager/shell_reverse_tcp",
+                "Name": "Shell Reverse TCP Stager",
+                "Module": "exploit/multi/stager/shell_reverse_tcp",
                 "Authors": [
                     "enty8080"
                 ],
@@ -232,7 +246,8 @@
             },
             "icewarp_webmail/local_file_inclusion": {
                 "Path": "modules/exploit/multi/icewarp_webmail/local_file_inclusion",
-                "Name": "exploit/multi/icewarp_webmail/local_file_inclusion",
+                "Name": "IceWarp WebMail Local File Inclusion",
+                "Module": "exploit/multi/icewarp_webmail/local_file_inclusion",
                 "Authors": [
                     "enty8080"
                 ],
@@ -247,7 +262,8 @@
             },
             "f5_big_ip_tmui/local_file_inclusion": {
                 "Path": "modules/exploit/multi/f5_big_ip_tmui/local_file_inclusion",
-                "Name": "exploit/multi/f5_big_ip_tmui/local_file_inclusion",
+                "Name": "F5 Big-IP TMUI Local File Inclusion",
+                "Module": "exploit/multi/f5_big_ip_tmui/local_file_inclusion",
                 "Authors": [
                     "enty8080"
                 ],
@@ -262,7 +278,8 @@
             },
             "f5_big_ip_tmui/remote_code_execution": {
                 "Path": "modules/exploit/multi/f5_big_ip_tmui/remote_code_execution",
-                "Name": "exploit/multi/f5_big_ip_tmui/remote_code_execution",
+                "Name": "F5 Big-IP TMUI Remote Code Execution",
+                "Module": "exploit/multi/f5_big_ip_tmui/remote_code_execution",
                 "Authors": [
                     "enty8080"
                 ],
@@ -277,11 +294,12 @@
             },
             "nostromo_httpd/remote_code_execution": {
                 "Path": "modules/exploit/multi/nostromo_httpd/remote_code_execution",
-                "Name": "exploit/multi/nostromo_httpd/remote_code_execution",
+                "Name": "Nostromo Httpd Remote Code Execution",
+                "Module": "exploit/multi/nostromo_httpd/remote_code_execution",
                 "Authors": [
                     "enty8080"
                 ],
-                "Description": "Remote Code Execution in Nostromo httpd.",
+                "Description": "Remote Code Execution in Nostromo Httpd.",
                 "Dependencies": [
                     ""
                 ],
@@ -292,7 +310,8 @@
             },
             "vbulletin_widget_php/config_code_execution": {
                 "Path": "modules/exploit/multi/vbulletin_widget_php/config_code_execution",
-                "Name": "exploit/multi/vbulletin_widget_php/config_code_execution",
+                "Name": "vBulletin Widget PHP Config Code Execution",
+                "Module": "exploit/multi/vbulletin_widget_php/config_code_execution",
                 "Authors": [
                     "enty8080"
                 ],
@@ -307,7 +326,8 @@
             },
             "vbulletin_widget_php/template_code_execution": {
                 "Path": "modules/exploit/multi/vbulletin_widget_php/template_code_execution",
-                "Name": "exploit/multi/vbulletin_widget_php/template_code_execution",
+                "Name": "vBulletin Widget PHP Template Code Execution",
+                "Module": "exploit/multi/vbulletin_widget_php/template_code_execution",
                 "Authors": [
                     "enty8080"
                 ],
@@ -322,7 +342,8 @@
             },
             "ssh/libssh_code_execution": {
                 "Path": "modules/exploit/multi/ssh/libssh_code_execution",
-                "Name": "exploit/multi/ssh/libssh_code_execution",
+                "Name": "SSH LibSSH Code Execution",
+                "Module": "exploit/multi/ssh/libssh_code_execution",
                 "Authors": [
                     "enty8080"
                 ],
@@ -337,7 +358,8 @@
             },
             "cctv_goahead_camera/password_disclosure": {
                 "Path": "modules/exploit/multi/cctv_goahead_camera/password_disclosure",
-                "Name": "exploit/multi/cctv_goahead_camera/password_disclosure",
+                "Name": "CCTV GoAhead Camera Password Disclosure",
+                "Module": "exploit/multi/cctv_goahead_camera/password_disclosure",
                 "Authors": [
                     "enty8080"
                 ],
@@ -352,7 +374,8 @@
             },
             "netwave_ip_camera/information_disclosure": {
                 "Path": "modules/exploit/multi/netwave_ip_camera/information_disclosure",
-                "Name": "exploit/multi/netwave_ip_camera/information_disclosure",
+                "Name": "Netwave IP Camera Information Disclosure",
+                "Module": "exploit/multi/netwave_ip_camera/information_disclosure",
                 "Authors": [
                     "enty8080"
                 ],
@@ -367,7 +390,8 @@
             },
             "qnap_qts/local_file_inclusion": {
                 "Path": "modules/exploit/multi/qnap_qts/local_file_inclusion",
-                "Name": "exploit/multi/qnap_qts/local_file_inclusion",
+                "Name": "QNAP QTS Local File Inclusion",
+                "Module": "exploit/multi/qnap_qts/local_file_inclusion",
                 "Authors": [
                     "enty8080"
                 ],
@@ -386,7 +410,8 @@
         "linux": {
             "x64/shell_reverse_tcp": {
                 "Path": "modules/payload/linux/x64/shell_reverse_tcp",
-                "Name": "payload/linux/x64/shell_reverse_tcp",
+                "Name": "Linux x64 Shell Reverse TCP",
+                "Module": "payload/linux/x64/shell_reverse_tcp",
                 "Authors": [
                     "enty8080"
                 ],
@@ -401,7 +426,8 @@
             },
             "armle/shell_reverse_tcp": {
                 "Path": "modules/payload/linux/armle/shell_reverse_tcp",
-                "Name": "payload/linux/armle/shell_reverse_tcp",
+                "Name": "Linux armle Shell Reverse TCP",
+                "Module": "payload/linux/armle/shell_reverse_tcp",
                 "Authors": [
                     "enty8080"
                 ],
@@ -416,7 +442,8 @@
             },
             "x86/shell_reverse_tcp": {
                 "Path": "modules/payload/linux/x86/shell_reverse_tcp",
-                "Name": "payload/linux/x86/shell_reverse_tcp",
+                "Name": "Linux x86 Shell Reverse TCP",
+                "Module": "payload/linux/x86/shell_reverse_tcp",
                 "Authors": [
                     "enty8080"
                 ],
@@ -435,7 +462,8 @@
         "linux": {
             "membrane/transfer/download": {
                 "Path": "modules/post/linux/membrane/transfer/download",
-                "Name": "post/linux/membrane/transfer/download",
+                "Name": "Linux Membrane Transfer Download",
+                "Module": "post/linux/membrane/transfer/download",
                 "Authors": [
                     "enty8080"
                 ],
@@ -450,7 +478,8 @@
             },
             "membrane/transfer/upload": {
                 "Path": "modules/post/linux/membrane/transfer/upload",
-                "Name": "post/linux/membrane/transfer/upload",
+                "Name": "Linux Membrane Transfer Upload",
+                "Module": "post/linux/membrane/transfer/upload",
                 "Authors": [
                     "enty8080"
                 ],
@@ -467,7 +496,8 @@
         "macos": {
             "membrane/gather/getvol": {
                 "Path": "modules/post/macos/membrane/gather/getvol",
-                "Name": "post/macos/membrane/gather/getvol",
+                "Name": "macOS Membrane Gather Volume",
+                "Module": "post/macos/membrane/gather/getvol",
                 "Authors": [
                     "enty8080"
                 ],
@@ -482,7 +512,8 @@
             },
             "membrane/gather/prompt": {
                 "Path": "modules/post/macos/membrane/gather/prompt",
-                "Name": "post/macos/membrane/gather/prompt",
+                "Name": "macOS Membrane Gather Prompt",
+                "Module": "post/macos/membrane/gather/prompt",
                 "Authors": [
                     "enty8080"
                 ],
@@ -497,7 +528,8 @@
             },
             "membrane/transfer/download": {
                 "Path": "modules/post/macos/membrane/transfer/download",
-                "Name": "post/macos/membrane/transfer/download",
+                "Name": "macOS Membrane Transfer Download",
+                "Module": "post/macos/membrane/transfer/download",
                 "Authors": [
                     "enty8080"
                 ],
@@ -512,7 +544,8 @@
             },
             "membrane/transfer/upload": {
                 "Path": "modules/post/macos/membrane/transfer/upload",
-                "Name": "post/macos/membrane/transfer/upload",
+                "Name": "macOS Membrane Transfer Upload",
+                "Module": "post/macos/membrane/transfer/upload",
                 "Authors": [
                     "enty8080"
                 ],
@@ -527,7 +560,8 @@
             },
             "membrane/trolling/say": {
                 "Path": "modules/post/macos/membrane/trolling/say",
-                "Name": "post/macos/membrane/trolling/say",
+                "Name": "macOS Membrane Trolling Say",
+                "Module": "post/macos/membrane/trolling/say",
                 "Authors": [
                     "enty8080"
                 ],

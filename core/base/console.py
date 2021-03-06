@@ -83,8 +83,8 @@ class console:
                     prompt = '(hsf)> '
                 else:
                     module = self.modules.get_current_module_name()
-                    name = self.modules.get_platform(module) + '/' + self.modules.get_name(module)
-                    prompt = '(hsf: ' + self.modules.get_category(module) + ': ' + self.colors.RED + self.colors.BOLD + name + self.colors.END + ')> '
+                    name = self.modules.get_current_module_object().details['Name']
+                    prompt = '(hsf: ' + self.modules.get_category(module) + ': ' + self.colors.RED + name + self.colors.END + ')> '
                 commands, arguments = self.io.input(prompt)
                 
                 self.jobs.stop_dead()

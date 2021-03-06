@@ -42,7 +42,8 @@ class HatSploitModule:
         self.web_tools = web_tools()
 
         self.details = {
-            'Name': "auxiliary/iphoneos/checker/jailbroken_or_not",
+            'Name': "Jailbreak Installation Checker",
+            'Module': "auxiliary/iphoneos/checker/jailbroken_or_not",
             'Authors': [
                 'enty8080'
             ],

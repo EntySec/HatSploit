@@ -40,7 +40,8 @@ class HatSploitModule:
         self.tables = tables()
         
         self.details = {
-            'Name': "auxiliary/multi/scanner/network_scanner",
+            'Name': "Network Scanner",
+            'Module': "auxiliary/multi/scanner/network_scanner",
             'Authors': [
                 'enty8080'
             ],

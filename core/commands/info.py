@@ -63,6 +63,8 @@ class HatSploitCommand:
 
         if current_module['Name']:
             self.badges.output_empty("         Name: " + current_module['Name'])
+        if current_module['Module']:
+            self.badges.output_empty("       Module: " + current_module['Module'])
         if authors:
             self.badges.output_empty("      Authors: " + authors)
         if current_module['Description']:

@@ -28,6 +28,7 @@ class HatSploitModule:
     def __init__(self):
         self.details = {
             'Name': "",
+            'Module': "",
             'Authors': [
                 ''
             ],

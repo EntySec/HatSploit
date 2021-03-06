@@ -42,7 +42,8 @@ class HatSploitModule:
         self.handler = handler
         
         self.details = {
-            'Name': "auxiliary/multi/sniffer/user_agent_sniffer",
+            'Name': "User Agent Sniffer",
+            'Module': "auxiliary/multi/sniffer/user_agent_sniffer",
             'Authors': [
                 'enty8080'
             ],

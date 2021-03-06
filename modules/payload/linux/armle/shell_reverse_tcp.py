@@ -39,7 +39,8 @@ class HatSploitModule:
         self.hatvenom = hatvenom()
         
         self.details = {
-            'Name': "payload/linux/armle/shell_reverse_tcp",
+            'Name': "Linux armle Shell Reverse TCP",
+            'Module': "payload/linux/armle/shell_reverse_tcp",
             'Authors': [
                 'enty8080'
             ],

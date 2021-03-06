@@ -35,7 +35,8 @@ class HatSploitModule:
         self.sessions = sessions()
 
         self.details = {
-            'Name': "post/macos/membrane/gather/prompt",
+            'Name': "macOS Membrane Gather Prompt",
+            'Module': "post/macos/membrane/gather/prompt",
             'Authors': [
                 'enty8080'
             ],
