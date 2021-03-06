@@ -24,10 +24,9 @@
 # SOFTWARE.
 #
 
-from core.cli.badges import badges
-from core.cli.colors import colors
+from core.templates.command import HatSploitCommand
 
-class HatSploitCommand:
+class HatSploitCommand(HatSploitCommand):
     def __init__(self):
         self.badges = badges()
         self.colors = colors()
