@@ -30,14 +30,13 @@ import sys
 from core.templates.command import HatSploitCommand
 
 class HatSploitCommand(HatSploitCommand):
-    def __init__(self):
-        self.details = {
-            'Category': "module",
-            'Name': "back",
-            'Description': "Return to the previous module.",
-            'Usage': "back",
-            'MinArgs': 0
-        }
+    HatSploitCommand.details = {
+        'Category': "module",
+        'Name': "back",
+        'Description': "Return to the previous module.",
+        'Usage': "back",
+        'MinArgs': 0
+    }
 
     def run(self, argc, argv):
         if self.modules.check_current_module():
