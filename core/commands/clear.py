@@ -28,9 +28,6 @@ from core.templates.command import HatSploitCommand
 
 class HatSploitCommand(HatSploitCommand):
     def __init__(self):
-        self.badges = badges()
-        self.colors = colors()
-
         self.details = {
             'Category': "core",
             'Name': "clear",
