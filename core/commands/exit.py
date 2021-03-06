@@ -27,12 +27,10 @@
 import os
 import sys
 
-from core.base.jobs import jobs
+from core.templates.command import HatSploitCommand
 
-class HatSploitCommand:
+class HatSploitCommand(HatSploitCommand):
     def __init__(self):
-        self.jobs = jobs()
-
         self.details = {
             'Category': "core",
             'Name': "exit",
