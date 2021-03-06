@@ -47,7 +47,8 @@ class HatSploitModule:
         self.paths = self.dictionary.paths
 
         self.details = {
-            'Name': "auxiliary/multi/scanner/apache_users",
+            'Name': "Apache Users Scanner",
+            'Module': "auxiliary/multi/scanner/apache_users",
             'Authors': [
                 'enty8080'
             ],
