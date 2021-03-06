@@ -407,6 +407,24 @@
         }
     },
     "payload": {
+        "macos": {
+            "x64/shell_bind_tcp": {
+                "Path": "modules/payload/macos/x64/shell_bind_tcp",
+                "Name": "macOS x64 Shell Bind TCP",
+                "Module": "payload/macos/x64/shell_bind_tcp",
+                "Authors": [
+                    "enty8080"
+                ],
+                "Description": "Shell Bind TCP Payload for macOS x64.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Risk": "low"
+            }
+        },
         "linux": {
             "x64/shell_reverse_tcp": {
                 "Path": "modules/payload/linux/x64/shell_reverse_tcp",
