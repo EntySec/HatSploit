@@ -27,12 +27,14 @@
 import os
 
 from core.cli.badges import badges
+from core.base.types import types
 from core.base.storage import local_storage
 from core.modules.modules import modules
 
 class HatSploitCommand:
     def __init__(self):
         self.badges = badges()
+        self.types = types()
         self.local_storage = local_storage()
         self.modules = modules()
 
@@ -51,7 +53,13 @@ class HatSploitCommand:
         if self.modules.check_current_module():
             current_module = self.modules.get_current_module_object()
             if option in current_module.options.keys():
-                self.badges.output_information(option + " ==> " + value)
+                if self.types.string_is_int(value):
+                    value = int(value)
+                elif self.types.string_is_float(value):
+                    value = float(value)
+                else:
+                    value = str(value)
+                self.badges.output_information(option + " ==> " + str(value))
                 self.local_storage.set_module_option("current_module", self.local_storage.get("current_module_number"), option, value)
             else:
                 self.badges.output_error("Unrecognized option!")
