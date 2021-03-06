@@ -23,8 +23,8 @@
 #
 
 details:
-    codename: "RELEASE"
-    version: "v1.0.0"
+    codename: "Lic1575"
+    version: "v1.5.0"
 
 console:
     clear: true
