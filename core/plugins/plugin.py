@@ -68,5 +68,33 @@ class HatSploitPlugin():
         self.pseudo_shell = pseudo_shell()
         self.string_tools = string_tools()
         
+        self.details = {
+            'Name': "",
+            'Authors': [
+                ''
+            ],
+            'Description': "",
+            'Dependencies': [
+                ''
+            ],
+            'Comments': [
+                ''
+            ]
+        }
+
+        self.commands = {
+            '': {
+                '': {
+                    'Description': "",
+                    'Usage': "",
+                    'MinArgs': 0,
+                    'Run': self.command
+                }
+            }
+        }
+
+    def command(self, argc, argv):
+        pass
+
     def run(self):
-        return
+        pass
