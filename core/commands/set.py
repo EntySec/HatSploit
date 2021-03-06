@@ -52,19 +52,9 @@ class HatSploitCommand:
         
         if self.modules.check_current_module():
             current_module = self.modules.get_current_module_object()
-            value_types = current_module.options[option]['Types']
             if option in current_module.options.keys():
-                if self.types.string_is_int(value):
-                    value = int(value)
-                elif self.types.string_is_float(value):
-                    value = float(value)
-                else:
-                    value = str(value)
-                if type(value) in value_types:
-                    self.badges.output_information(option + " ==> " + str(value))
-                    self.local_storage.set_module_option("current_module", self.local_storage.get("current_module_number"), option, value)
-                else:
-                    self.badges.output_error("Invalid value provided!")
+                self.badges.output_information(option + " ==> " + str(value))
+                self.local_storage.set_module_option("current_module", self.local_storage.get("current_module_number"), option, value)
             else:
                 self.badges.output_error("Unrecognized option!")
         else:
