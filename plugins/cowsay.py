@@ -26,14 +26,10 @@
 
 import textwrap
 
-from core.cli.badges import badges
-from core.cli.colors import colors
+from core.plugins.plugin import HatSploitPlugin
 
-class HatSploitPlugin:
+class HatSploitPlugin(HatSploitPlugin):
     def __init__(self):
-        self.badges = badges()
-        self.colors = colors()
-
         self.details = {
             'Name': "cowsay",
             'Authors': [
