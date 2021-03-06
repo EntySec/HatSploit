@@ -54,9 +54,6 @@ class HatSploitModule:
             'SESSION': {
                 'Description': "Session to run on.",
                 'Value': 0,
-                'Types': [
-                    int
-                ],
                 'Required': True
             }
         }
