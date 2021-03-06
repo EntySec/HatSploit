@@ -24,14 +24,10 @@
 # SOFTWARE.
 #
 
-from core.base.execute import execute
-from core.cli.fmt import fmt
+from core.templates.command import HatSploitCommand
 
-class HatSploitCommand:
+class HatSploitCommand(HatSploitCommand):
     def __init__(self):
-        self.execute = execute()
-        self.fmt = fmt()
-
         self.details = {
             'Category': "developer",
             'Name': "exec",
