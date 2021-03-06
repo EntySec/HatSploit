@@ -29,6 +29,7 @@ import socketserver
 
 from core.cli.badges import badges
 from core.cli.parser import parser
+from core.base.types import types
 
 from utils.tcp_tools import tcp_tools
 
@@ -38,6 +39,7 @@ class HatSploitModule:
     def __init__(self):
         self.badges = badges()
         self.parser = parser()
+        self.types = types()
 
         self.tcp_tools = tcp_tools()
 
@@ -63,25 +65,16 @@ class HatSploitModule:
             'LHOST': {
                 'Description': "Local host.",
                 'Value': self.tcp_tools.get_local_host(),
-                'Types': [
-                    str
-                ],
                 'Required': True
             },
             'LPORT': {
                 'Description': "Local port.",
                 'Value': 80,
-                'Types': [
-                    int
-                ],
                 'Required': True
             },
             'FOREVER': {
                 'Description': "Start http server forever.",
                 'Value': "no",
-                'Types': [
-                    str
-                ],
                 'Required': False
             }
         }
@@ -102,4 +95,9 @@ class HatSploitModule:
         
     def run(self):
         local_host, local_port, forever = self.parser.parse_options(self.options)
+        local_port = self.types.cast_to_int(local_port)
+        
+        if local_port == None:
+            return
+        
         self.start_server(local_host, local_port, forever)
