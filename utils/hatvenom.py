@@ -24,6 +24,7 @@
 # SOFTWARE.
 #
 
+import os
 import struct
 
 from core.base.config import config
