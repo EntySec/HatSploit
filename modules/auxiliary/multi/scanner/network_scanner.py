@@ -24,9 +24,6 @@
 # SOFTWARE.
 #
 
-import os
-import sys
-
 import scapy.all
 
 from core.cli.badges import badges
@@ -59,23 +56,22 @@ class HatSploitModule:
             'RANGE': {
                 'Description': "IP range.",
                 'Value': "192.168.1.1/24",
-                'Types': [
-                    str
-                ],
                 'Required': True
             },
             'TIMEOUT': {
                 'Description': "Timeout to scan.",
                 'Value': 10,
-                'Types': [
-                    int
-                ],
                 'Required': True
             }
         }
 
     def run(self):
         ip_range, timeout = self.parser.parse_options(self.options)
+        timeout = self.types.cast_to_float(timeout)
+        
+        if timeout == None:
+            return
+        
         self.badges.output_process("Scanning local network...")
         
         try:
