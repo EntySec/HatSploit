@@ -24,14 +24,10 @@
 # SOFTWARE.
 #
 
-import os
-import sys
-
-import socket
-
 from core.cli.badges import badges
 from core.cli.parser import parser
 
+from utils.tcp_tools import tcp_tools
 from utils.web_tools import web_tools
 
 class HatSploitModule:
@@ -39,6 +35,7 @@ class HatSploitModule:
         self.badges = badges()
         self.parser = parser()
         
+        self.tcp_tools = tcp_tools()
         self.web_tools = web_tools()
 
         self.details = {
@@ -99,5 +96,5 @@ class HatSploitModule:
         for port in range(start, end):
             target = self.web_tools.format_host_and_port(remote_host, port)
             
-            if self.web_tools.check_tcp_port(remote_host, port, timeout):
+            if self.tcp_tools.check_tcp_port(remote_host, port, timeout):
                 self.badges.output_success(target + " - opened")
