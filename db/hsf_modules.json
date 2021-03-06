@@ -462,7 +462,8 @@
         "linux": {
             "membrane/transfer/download": {
                 "Path": "modules/post/linux/membrane/transfer/download",
-                "Name": "post/linux/membrane/transfer/download",
+                "Name": "Linux Membrane Transfer Download",
+                "Module": "post/linux/membrane/transfer/download",
                 "Authors": [
                     "enty8080"
                 ],
@@ -477,7 +478,8 @@
             },
             "membrane/transfer/upload": {
                 "Path": "modules/post/linux/membrane/transfer/upload",
-                "Name": "post/linux/membrane/transfer/upload",
+                "Name": "Linux Membrane Transfer Upload",
+                "Module": "post/linux/membrane/transfer/upload",
                 "Authors": [
                     "enty8080"
                 ],
@@ -494,7 +496,8 @@
         "macos": {
             "membrane/gather/getvol": {
                 "Path": "modules/post/macos/membrane/gather/getvol",
-                "Name": "post/macos/membrane/gather/getvol",
+                "Name": "macOS Membrane Gather Volume",
+                "Module": "post/macos/membrane/gather/getvol",
                 "Authors": [
                     "enty8080"
                 ],
@@ -509,7 +512,8 @@
             },
             "membrane/gather/prompt": {
                 "Path": "modules/post/macos/membrane/gather/prompt",
-                "Name": "post/macos/membrane/gather/prompt",
+                "Name": "macOS Membrane Gather Prompt",
+                "Module": "post/macos/membrane/gather/prompt",
                 "Authors": [
                     "enty8080"
                 ],
@@ -524,7 +528,8 @@
             },
             "membrane/transfer/download": {
                 "Path": "modules/post/macos/membrane/transfer/download",
-                "Name": "post/macos/membrane/transfer/download",
+                "Name": "macOS Membrane Transfer Download",
+                "Module": "post/macos/membrane/transfer/download",
                 "Authors": [
                     "enty8080"
                 ],
@@ -539,7 +544,8 @@
             },
             "membrane/transfer/upload": {
                 "Path": "modules/post/macos/membrane/transfer/upload",
-                "Name": "post/macos/membrane/transfer/upload",
+                "Name": "macOS Membrane Transfer Upload",
+                "Module": "post/macos/membrane/transfer/upload",
                 "Authors": [
                     "enty8080"
                 ],
@@ -554,7 +560,8 @@
             },
             "membrane/trolling/say": {
                 "Path": "modules/post/macos/membrane/trolling/say",
-                "Name": "post/macos/membrane/trolling/say",
+                "Name": "macOS Membrane Trolling Say",
+                "Module": "post/macos/membrane/trolling/say",
                 "Authors": [
                     "enty8080"
                 ],
