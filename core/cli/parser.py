@@ -29,8 +29,8 @@ class parser:
         if not option:
             values = list()
             for option_name in options.keys():
-                values.append(options[option_name]['Value'])
+                values.append(str(options[option_name]['Value']))
             if len(values) == 1:
                 return values[0]
             return values
-        return options[option]['Value']
+        return str(options[option]['Value'])
