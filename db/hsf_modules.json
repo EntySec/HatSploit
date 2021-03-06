@@ -503,6 +503,70 @@
                     ""
                 ],
                 "Risk": "low"
+            },
+            "mipsbe/shell_reverse_tcp": {
+                "Path": "modules/payload/linux/mipsbe/shell_reverse_tcp",
+                "Name": "Linux mipsbe Shell Reverse TCP",
+                "Module": "payload/linux/mipsbe/shell_reverse_tcp",
+                "Authors": [
+                    "enty8080"
+                ],
+                "Description": "Shell Reverse TCP Payload for Linux mipsbe.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Risk": "low"
+            },
+            "mipsbe/shell_bind_tcp": {
+                "Path": "modules/payload/linux/mipsbe/shell_bind_tcp",
+                "Name": "Linux mipsbe Shell Bind TCP",
+                "Module": "payload/linux/mipsbe/shell_bind_tcp",
+                "Authors": [
+                    "enty8080"
+                ],
+                "Description": "Shell Bind TCP Payload for Linux mipsbe.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Risk": "low"
+            },
+            "mipsle/shell_reverse_tcp": {
+                "Path": "modules/payload/linux/mipsle/shell_reverse_tcp",
+                "Name": "Linux mipsle Shell Reverse TCP",
+                "Module": "payload/linux/mipsle/shell_reverse_tcp",
+                "Authors": [
+                    "enty8080"
+                ],
+                "Description": "Shell Reverse TCP Payload for Linux mipsle.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Risk": "low"
+            },
+            "mipsle/shell_bind_tcp": {
+                "Path": "modules/payload/linux/mipsle/shell_bind_tcp",
+                "Name": "Linux mipsle Shell Bind TCP",
+                "Module": "payload/linux/mipsle/shell_bind_tcp",
+                "Authors": [
+                    "enty8080"
+                ],
+                "Description": "Shell Bind TCP Payload for Linux mipsle.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Risk": "low"
             }
         }
     },
