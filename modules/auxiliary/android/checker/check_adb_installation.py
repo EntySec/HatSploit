@@ -56,7 +56,9 @@ class HatSploitModule:
             'RHOST': {
                 'Description': "Remote host.",
                 'Value': None,
-                'Type': str,
+                'Types': [
+                    str
+                ],
                 'Required': True
             }
         }
