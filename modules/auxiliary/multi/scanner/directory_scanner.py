@@ -39,7 +39,8 @@ class HatSploitModule:
         self.web_tools = web_tools()
         
         self.details = {
-            'Name': "auxiliary/multi/scanner/directory_scanner",
+            'Name': "Directory Scanner",
+            'Module': "auxiliary/multi/scanner/directory_scanner",
             'Authors': [
                 'enty8080'
             ],
