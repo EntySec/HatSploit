@@ -36,6 +36,7 @@ from core.base.storage import local_storage
 from core.base.storage import global_storage
 
 from core.modules.modules import modules
+from core.plugins.plugins import plugins
 
 from utils.adb_tools import adb_tools
 from utils.fsmanip import fsmanip
@@ -59,6 +60,7 @@ class HatSploitPlugin:
         self.global_storage = global_storage()
         
         self.modules = modules()
+        self.plugins = plugins()
         
         self.adb_tools = adb_tools()
         self.fsmanip = fsmanip()
