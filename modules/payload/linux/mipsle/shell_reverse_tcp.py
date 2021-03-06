@@ -40,7 +40,7 @@ class HatSploitModule:
         
         self.details = {
             'Name': "Linux mipsle Shell Reverse TCP",
-            'Module': "payload/linux/mipsbe/shell_reverse_tcp",
+            'Module': "payload/linux/mipsle/shell_reverse_tcp",
             'Authors': [
                 'enty8080'
             ],
