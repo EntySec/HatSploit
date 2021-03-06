@@ -27,14 +27,13 @@
 from core.templates.command import HatSploitCommand
 
 class HatSploitCommand(HatSploitCommand):
-    def __init__(self):
-        self.details = {
-            'Category': "core",
-            'Name': "clear",
-            'Description': "Clear terminal window.",
-            'Usage': "clear",
-            'MinArgs': 0
-        }
+    HatSploitCommand.details = {
+        'Category': "core",
+        'Name': "clear",
+        'Description': "Clear terminal window.",
+        'Usage': "clear",
+        'MinArgs': 0
+    }
 
     def run(self, argc, argv):
         self.badges.output_empty(self.colors.CLEAR, end='')
