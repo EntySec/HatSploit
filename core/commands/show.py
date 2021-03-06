@@ -89,7 +89,7 @@ class HatSploitCommand:
                 required = "no"
             if not value and value != 0:
                 value = ""
-            options_data.append((option, str(value), required, options[option]['Description']))
+            options_data.append((option, value, required, options[option]['Description']))
         self.badges.output_empty("")
         self.tables.print_table("Module Options", headers, *options_data)
         self.badges.output_empty("")
