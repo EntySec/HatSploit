@@ -58,9 +58,6 @@ class HatSploitModule:
             'URL': {
                 'Description': "Target URL.",
                 'Value': None,
-                'Types': [
-                    str
-                ],
                 'Required': True
             }
         }
