@@ -83,7 +83,7 @@ class modules:
     
     def get_current_module_name(self):
         if self.check_current_module():
-            return self.local_storage.get_array("current_module", self.local_storage.get("current_module_number")).details['Name']
+            return self.local_storage.get_array("current_module", self.local_storage.get("current_module_number")).details['Module']
         return None
        
     def get_database(self, name):
