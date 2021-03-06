@@ -26,7 +26,12 @@
 
 import re
 
+from core.cli.badges import badges
+
 class types:
+    def __init__(self):
+        self.badges = badges()
+
     def cast_to_int(self, value):
         try:
             return int(value)
