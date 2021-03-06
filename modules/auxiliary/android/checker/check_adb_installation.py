@@ -24,11 +24,6 @@
 # SOFTWARE.
 #
 
-import os
-import sys
-
-import socket
-
 from core.cli.badges import badges
 from core.cli.parser import parser
 
