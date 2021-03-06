@@ -27,14 +27,16 @@
 import re
 
 class types:
-    def string_is_int(self, value):
-        value = str(value)
-        if value.isdigit():
-            return True
-        return False
-      
-    def string_is_float(self, value):
-        value = str(value)
-        if re.match(r'^-?\d+(?:\.\d+)$', value):
-            return True
-        return False
+    def cast_to_int(self, value):
+        try:
+            return int(value)
+        except Exception:
+            self.badges.output_error("Failed to cast value to int!")
+            return None
+        
+    def cast_to_float(self, value):
+        try:
+            return float(value)
+        except Exception:
+            self.badges.output_error("Failed to cast value to float!")
+            return None
