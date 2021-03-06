@@ -58,16 +58,19 @@ class HatSploitModule:
             'RHOST': {
                 'Description': "Remote host.",
                 'Value': None,
+                'Type': str,
                 'Required': True
             },
             'RANGE': {
                 'Description': "Ports to scan.",
                 'Value': "0-65535",
+                'Type': str,
                 'Required': True
             },
             'TIMEOUT': {
                 'Description': "Timeout for scan.",
                 'Value': 0.5,
+                'Type': [int, float]
                 'Required': True
             }
         }
@@ -80,16 +83,6 @@ class HatSploitModule:
             end = int(ports_range.split('-')[1].strip())
         except Exception:
             self.badges.output_error("Invalid range provided!")
-            return
-        
-        try:
-            if not isinstance(timeout, int) and not isinstance(timeout, float):
-                if timeout.isdigit():
-                    timeout = int(timeout)
-                else:
-                    timeout = float(timeout)
-        except Exception:
-            self.badges.output_error("Invalid timeout provided!")
             return
         
         self.badges.output_process("Scanning " + remote_host + "...")
