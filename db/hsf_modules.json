@@ -423,6 +423,22 @@
                     ""
                 ],
                 "Risk": "low"
+            },
+            "aarch64/shell_bind_tcp": {
+                "Path": "modules/payload/macos/aarch64/shell_bind_tcp",
+                "Name": "macOS aarch64 Shell Bind TCP",
+                "Module": "payload/macos/aarch64/shell_bind_tcp",
+                "Authors": [
+                    "enty8080"
+                ],
+                "Description": "Shell Bind TCP Payload for macOS aarch64.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Risk": "low"
             }
         },
         "linux": {
