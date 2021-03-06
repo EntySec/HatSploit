@@ -27,14 +27,12 @@
 import os
 
 from core.cli.badges import badges
-from core.base.types import types
 from core.base.storage import local_storage
 from core.modules.modules import modules
 
 class HatSploitCommand:
     def __init__(self):
         self.badges = badges()
-        self.types = types()
         self.local_storage = local_storage()
         self.modules = modules()
 
