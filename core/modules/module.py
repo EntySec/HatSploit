@@ -55,9 +55,10 @@ class HatSploitModule():
         self.config = config()
         self.sessions = sessions()
         self.exceptions = exceptions()
-        
         self.local_storage = local_storage()
         self.global_storage = global_storage()
+        
+        self.modules = modules()
         
         self.adb_tools = adb_tools()
         self.fsmanip = fsmanip()
