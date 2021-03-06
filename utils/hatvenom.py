@@ -24,6 +24,7 @@
 # SOFTWARE.
 #
 
+import os
 import struct
 
 from core.base.config import config
@@ -153,7 +154,7 @@ class hatvenom:
                 macho_file.close()
 
                 payload_index = macho.index(b'PAYLOAD:')
-                data = macho[:payload_index] + data + macho[payload_index + len(data):]
+                content = macho[:payload_index] + data + macho[payload_index + len(data):]
 
                 return content
         return None
