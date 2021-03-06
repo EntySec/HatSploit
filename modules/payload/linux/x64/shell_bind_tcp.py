@@ -25,7 +25,6 @@
 #
 
 from core.cli.badges import badges
-from utils.helper import helper
 from core.cli.parser import parser
 
 from utils.hatvenom import hatvenom
@@ -33,7 +32,6 @@ from utils.hatvenom import hatvenom
 class HatSploitModule:
     def __init__(self):
         self.badges = badges()
-        self.helper = helper()
         self.parser = parser()
         
         self.hatvenom = hatvenom()

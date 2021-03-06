@@ -73,15 +73,10 @@ class HatSploitModule:
         
         file = open(self.config.path_config['base_paths']['data_path'] + 'modules/auxiliary/multi/scanner/directory_scanner/directories.txt')
         directories = list(filter(None, file.read().split('\n')))
-        
         file.close()
         
         for path in directories:
-            response = self.web_tools.http_request(
-                method="HEAD",
-                url=target_url, 
-                path=path
-            )
+            response = self.web_tools.http_request(method="HEAD", url=target_url, path=path)
             
             if response.status_code == 200:
                 self.badges.output_success("[%s] ... [%s %s]" % (path, response.status_code, response.reason))

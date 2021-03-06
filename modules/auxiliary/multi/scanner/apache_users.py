@@ -29,7 +29,6 @@ import sys
 
 from core.cli.badges import badges
 from core.cli.parser import parser
-from utils.helper import helper
 
 from utils.web_tools import web_tools
 
@@ -39,9 +38,9 @@ class HatSploitModule:
     def __init__(self):
         self.badges = badges()
         self.parser = parser()
-        self.helper = helper()
-        
+
         self.web_tools = web_tools()
+
         self.dictionary = dictionary()
         
         self.paths = self.dictionary.paths
@@ -81,12 +80,7 @@ class HatSploitModule:
         
         for path in self.paths:
             path = path.replace("\n", "")
-            
-            response = self.web_tools.http_request(
-                method="HEAD",
-                url=target_url, 
-                path=path
-            )
+            response = self.web_tools.http_request(method="HEAD", url=target_url, path=path)
             
             if response.status_code == 200:
                 self.badges.output_success("[%s] ... [%s %s]" % (path, response.status_code, response.reason))

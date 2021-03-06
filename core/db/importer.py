@@ -34,20 +34,22 @@ import string
 from core.db.db import db
 from core.cli.badges import badges
 from core.base.storage import local_storage
-from utils.helper import helper
 from core.base.config import config
 from core.modules.modules import modules
 from core.base.exceptions import exceptions
+
+from utils.tcp_tools import tcp_tools
 
 class importer:
     def __init__(self):
         self.db = db()
         self.badges = badges()
         self.local_storage = local_storage()
-        self.helper = helper()
         self.config = config()
         self.modules = modules()
         self.exceptions = exceptions()
+
+        self.tcp_tools = tcp_tools()
 
     def get_module(self, mu, name, folderpath):
         folderpath_list = folderpath.split(".")

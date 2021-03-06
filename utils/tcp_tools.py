@@ -39,6 +39,21 @@ class tcp_tools:
         self.client = None
 
     #
+    # Functions to manipulate local addresses
+    #
+
+    def get_local_host(self):
+        try:
+            server = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+            server.connect(("192.168.1.1", 80))
+            local_host = server.getsockname()[0]
+            server.close()
+            local_host = local_host
+        except Exception:
+            local_host = "127.0.0.1"
+        return local_host
+
+    #
     # Functions to connect or disconnect
     #
         

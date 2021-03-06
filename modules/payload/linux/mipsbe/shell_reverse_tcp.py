@@ -25,17 +25,17 @@
 #
 
 from core.cli.badges import badges
-from utils.helper import helper
 from core.cli.parser import parser
 
+from utils.tcp_tools import tcp_tools
 from utils.hatvenom import hatvenom
 
 class HatSploitModule:
     def __init__(self):
         self.badges = badges()
-        self.helper = helper()
         self.parser = parser()
-        
+
+        self.tcp_tools = tcp_tools()
         self.hatvenom = hatvenom()
         
         self.details = {
@@ -57,7 +57,7 @@ class HatSploitModule:
         self.options = {
             'LHOST': {
                 'Description': "Local host.",
-                'Value': self.helper.getip(),
+                'Value': self.tcp_tools.get_local_host(),
                 'Required': True
             },
             'LPORT': {

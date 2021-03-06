@@ -24,6 +24,7 @@
 # SOFTWARE.
 #
 
+import socket
 import random
 import requests
 
@@ -111,6 +112,32 @@ class web_tools:
         except Exception as e:
             return self.generate_fake_response(str(e))
         return response
+    
+    #
+    # TCP requests
+    #
+    
+    def tcp_request(self, host, port, data, buffer_size=1024, timeout=10):
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        sock.settimeout(timeout)
+        sock.connect((host, int(port)))
+        sock.send(data.encode())
+        output = sock.recv(buffer_size)
+        sock.close()
+        return output.decode().strip()
+    
+    #
+    # TCP ports
+    #
+    
+    def check_tcp_port(self, host, port, timeout=10):
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        sock.settimeout(timeout)
+        if sock.connect_ex((host, int(port))) == 0:
+            sock.close()
+            return True
+        sock.close()
+        return False
     
     #
     # Functions to parse host and port
