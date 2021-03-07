@@ -27,9 +27,11 @@
 from core.lib.command import HatSploitCommand
 
 from core.base.jobs import jobs
+from core.base.storage import local_storage
 
 class HatSploitCommand(HatSploitCommand):
     jobs = jobs()
+    local_storage = local_storage()
 
     details = {
         'Category': "jobs",
