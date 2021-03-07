@@ -24,29 +24,27 @@
 # SOFTWARE.
 #
 
-from core.cli.badges import badges
-from core.base.config import config
+from core.templates.command import HatSploitCommand
 
+from core.base.config import config
 from core.base.storage import local_storage
 from core.base.storage import global_storage
 
-class HatSploitCommand:
-    def __init__(self):
-        self.badges = badges()
-        self.config = config()
+class HatSploitCommand(HatSploitCommand):
+    config = config()
         
-        self.storage_path = self.config.path_config['base_paths']['storage_path']
+    storage_path = config.path_config['base_paths']['storage_path']
         
-        self.local_storage = local_storage()
-        self.global_storage = global_storage(self.storage_path)
+    local_storage = local_storage()
+    global_storage = global_storage(storage_path)
 
-        self.details = {
-            'Category': "developer",
-            'Name': "storage",
-            'Description': "Manage storage variables.",
-            'Usage': "storage [global|local] [-l|-v <name>|-s <name> <value>|-d <name>]",
-            'MinArgs': 2
-        }
+    details = {
+        'Category': "developer",
+        'Name': "storage",
+        'Description': "Manage storage variables.",
+        'Usage': "storage [global|local] [-l|-v <name>|-s <name> <value>|-d <name>]",
+        'MinArgs': 2
+    }
 
     def run(self, argc, argv):
         type_of_storage = argv[0]
