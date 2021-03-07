@@ -26,15 +26,18 @@
 
 from core.templates.command import HatSploitCommand
 
+from core.base.execute import execute
+
 class HatSploitCommand(HatSploitCommand):
-    def __init__(self):
-        self.details = {
-            'Category': "developer",
-            'Name': "exec",
-            'Description': "Execute local system command.",
-            'Usage': "exec <command>",
-            'MinArgs': 1
-        }
+    execute = execute()
+
+    details = {
+        'Category': "developer",
+        'Name': "exec",
+        'Description': "Execute local system command.",
+        'Usage': "exec <command>",
+        'MinArgs': 1
+    }
 
     def run(self, argc, argv):
         command = self.fmt.format_commands(argv[0])
