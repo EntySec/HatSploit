@@ -24,20 +24,22 @@
 # SOFTWARE.
 #
 
-import os
 import sys
 
 from core.templates.command import HatSploitCommand
 
+from core.base.jobs import jobs
+
 class HatSploitCommand(HatSploitCommand):
-    def __init__(self):
-        self.details = {
-            'Category': "core",
-            'Name': "exit",
-            'Description': "Exit HatSploit Framework.",
-            'Usage': "exit [-f]",
-            'MinArgs': 0
-        }
+    jobs = jobs()
+
+    details = {
+        'Category': "core",
+        'Name': "exit",
+        'Description': "Exit HatSploit Framework.",
+        'Usage': "exit [-f]",
+        'MinArgs': 0
+    }
 
     def run(self, argc, argv):
         if argc > 0:
