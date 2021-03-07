@@ -26,61 +26,55 @@
 
 import scapy.all
 
-from core.cli.badges import badges
-from core.cli.parser import parser
-from core.cli.tables import tables
+from core.lib.module import HatSploitModule
 from core.base.types import types
 
-class HatSploitModule:
-    def __init__(self):
-        self.badges = badges()
-        self.parser = parser()
-        self.tables = tables()
-        self.types = types()
-        
-        self.details = {
-            'Name': "Network Scanner",
-            'Module': "auxiliary/multi/scanner/network_scanner",
-            'Authors': [
-                'enty8080'
-            ],
-            'Description': "Scan local network.",
-            'Dependencies': [
-                'scapy'
-            ],
-            'Comments': [
-                'Uses Python scapy module to scan local network.'
-            ],
-            'Risk': "low"
-        }
+class HatSploitModule(HatSploitModule):
+    types = types()
 
-        self.options = {
-            'RANGE': {
-                'Description': "IP range.",
-                'Value': "192.168.1.1/24",
-                'Required': True
-            },
-            'TIMEOUT': {
-                'Description': "Timeout to scan.",
-                'Value': 10,
-                'Required': True
-            }
+    details = {
+        'Name': "Network Scanner",
+        'Module': "auxiliary/multi/scanner/network_scanner",
+        'Authors': [
+            'enty8080'
+        ],
+        'Description': "Scan local network.",
+        'Dependencies': [
+            'scapy'
+        ],
+        'Comments': [
+            ''
+        ],
+        'Risk': "low"
+    }
+
+    options = {
+        'RANGE': {
+            'Description': "IP range.",
+            'Value': "192.168.1.1/24",
+            'Required': True
+        },
+        'TIMEOUT': {
+            'Description': "Timeout to scan.",
+            'Value': 10,
+            'Required': True
         }
+    }
 
     def run(self):
         ip_range, timeout = self.parser.parse_options(self.options)
         timeout = self.types.cast_to_float(timeout)
-        
+
         if timeout == None:
             return
-        
+
         self.badges.output_process("Scanning local network...")
-        
+
         try:
             arp = scapy.all.ARP(pdst=ip_range)
             ether = scapy.all.Ether(dst="ff:ff:ff:ff:ff:ff")
             result = scapy.all.srp(ether/arp, timeout=timeout, verbose=False)[0]
-        
+
             if len(result) > 0:
                 net_data = list()
                 headers = ("Host", "MAC")
