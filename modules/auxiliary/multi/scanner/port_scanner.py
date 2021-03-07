@@ -24,73 +24,69 @@
 # SOFTWARE.
 #
 
-from core.cli.badges import badges
-from core.cli.parser import parser
+from core.lib.module import HatSploitModule
 from core.base.types import types
 
 from utils.tcp_tools import tcp_tools
 from utils.web_tools import web_tools
 
-class HatSploitModule:
-    def __init__(self):
-        self.badges = badges()
-        self.parser = parser()
-        self.types = types()
-        
-        self.tcp_tools = tcp_tools()
-        self.web_tools = web_tools()
+class HatSploitModule(HatSploitModule):
+    types = types()
 
-        self.details = {
-            'Name': "Port Scanner",
-            'Module': "auxiliary/multi/scanner/port_scanner",
-            'Authors': [
-                'enty8080'
-            ],
-            'Description': "Scan host for opened ports.",
-            'Dependencies': [
-                ''
-            ],
-            'Comments': [
-                ''
-            ],
-            'Risk': "low"
-        }
+    tcp_tools = tcp_tools()
+    web_tools = web_tools()
 
-        self.options = {
-            'RHOST': {
-                'Description': "Remote host.",
-                'Value': None,
-                'Required': True
-            },
-            'RANGE': {
-                'Description': "Ports to scan.",
-                'Value': "0-65535",
-                'Required': True
-            },
-            'TIMEOUT': {
-                'Description': "Timeout for scan.",
-                'Value': 0.5,
-                'Required': True
-            }
+    details = {
+        'Name': "Port Scanner",
+        'Module': "auxiliary/multi/scanner/port_scanner",
+        'Authors': [
+            'enty8080'
+        ],
+        'Description': "Scan host for opened ports.",
+        'Dependencies': [
+            ''
+        ],
+        'Comments': [
+            ''
+        ],
+        'Risk': "low"
+    }
+
+    options = {
+        'RHOST': {
+            'Description': "Remote host.",
+            'Value': None,
+            'Required': True
+        },
+        'RANGE': {
+            'Description': "Ports to scan.",
+            'Value': "0-65535",
+            'Required': True
+        },
+        'TIMEOUT': {
+            'Description': "Timeout for scan.",
+            'Value': 0.5,
+            'Required': True
         }
+    }
 
     def run(self):
         remote_host, ports_range, timeout = self.parser.parse_options(self.options)
         timeout = self.types.cast_to_float(timeout)
-        
+
         if timeout == None:
             return
-        
+
         try:
             start = int(ports_range.split('-')[0].strip())
             end = int(ports_range.split('-')[1].strip())
         except Exception:
             self.badges.output_error("Invalid range provided!")
             return
-        
+
         self.badges.output_process("Scanning " + remote_host + "...")
         for port in range(start, end):
             target = self.web_tools.format_host_and_port(remote_host, port)
-            
+
             if self.tcp_tools.check_tcp_port(remote_host, port, timeout):
                 self.badges.output_success(target + " - opened")
