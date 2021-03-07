@@ -26,15 +26,18 @@
 
 from core.templates.command import HatSploitCommand
 
+from core.modules.modules import modules
+
 class HatSploitCommand(HatSploitCommand):
-    def __init__(self):
-        self.details = {
-            'Category': "module",
-            'Name': "info",
-            'Description': "Show module information.",
-            'Usage': "info [<module>]",
-            'MinArgs': 0
-        }
+    modules = modules()
+
+    details = {
+        'Category': "module",
+        'Name': "info",
+        'Description': "Show module information.",
+        'Usage': "info [<module>]",
+        'MinArgs': 0
+    }
 
     def format_module_information(self, current_module):
         authors = ""
