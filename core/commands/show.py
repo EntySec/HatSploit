@@ -24,27 +24,22 @@
 # SOFTWARE.
 #
 
-import os
+from core.templates.command import HatSploitCommand
 
-from core.cli.badges import badges
 from core.base.storage import local_storage
 from core.modules.modules import modules
-from core.cli.tables import tables
 
-class HatSploitCommand:
-    def __init__(self):
-        self.badges = badges()
-        self.local_storage = local_storage()
-        self.modules = modules()
-        self.tables = tables()
+class HatSploitCommand(HatSploitCommand):
+    local_storage = local_storage()
+    modules = modules()
 
-        self.details = {
-            'Category': "core",
-            'Name': "show",
-            'Description': "Show specified information.",
-            'Usage': "show <information>",
-            'MinArgs': 1
-        }
+    details = {
+        'Category': "core",
+        'Name': "show",
+        'Description': "Show specified information.",
+        'Usage': "show <information>",
+        'MinArgs': 1
+    }
 
     def show_plugins(self):
         plugins = self.local_storage.get("plugins")
