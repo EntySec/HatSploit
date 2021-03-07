@@ -24,25 +24,22 @@
 # SOFTWARE.
 #
 
-import os
+from core.templates.command import HatSploitCommand
 
-from core.cli.badges import badges
 from core.base.storage import local_storage
 from core.modules.modules import modules
 
-class HatSploitCommand:
-    def __init__(self):
-        self.badges = badges()
-        self.local_storage = local_storage()
-        self.modules = modules()
+class HatSploitCommand(HatSploitCommand):
+    local_storage = local_storage()
+    modules = modules()
 
-        self.details = {
-            'Category': "module",
-            'Name': "set",
-            'Description': "Set an option value.",
-            'Usage': "set <option> <value>",
-            'MinArgs': 2
-        }
+    details = {
+        'Category': "module",
+        'Name': "set",
+        'Description': "Set an option value.",
+        'Usage': "set <option> <value>",
+        'MinArgs': 2
+    }
 
     def run(self, argc, argv):
         option = argv[0].upper()
