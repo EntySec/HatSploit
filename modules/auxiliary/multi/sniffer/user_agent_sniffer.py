@@ -24,7 +24,6 @@
 # SOFTWARE.
 #
 
-import os
 import socketserver
 
 from core.lib.module import HatSploitModule
@@ -34,7 +33,7 @@ from utils.tcp_tools import tcp_tools
 
 from data.modules.auxiliary.multi.sniffer.user_agent_sniffer.core.handler import handler
 
-class HatSploitModule:
+class HatSploitModule(HatSploitModule):
     types = types()
 
     tcp_tools = tcp_tools()
