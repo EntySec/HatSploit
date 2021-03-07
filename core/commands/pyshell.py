@@ -26,7 +26,7 @@
 
 import platform
 
-from core.templates.command import HatSploitCommand
+from core.lib.command import HatSploitCommand
 
 class HatSploitCommand(HatSploitCommand):
     details = {

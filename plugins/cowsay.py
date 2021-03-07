@@ -26,7 +26,7 @@
 
 import textwrap
 
-from core.templates.plugin import HatSploitPlugin
+from core.lib.plugin import HatSploitPlugin
 
 class HatSploitPlugin(HatSploitPlugin):
     details = {

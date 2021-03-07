@@ -26,7 +26,7 @@
 
 import sys
 
-from core.templates.command import HatSploitCommand
+from core.lib.command import HatSploitCommand
 
 from core.base.jobs import jobs
 

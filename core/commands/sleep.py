@@ -26,7 +26,7 @@
 
 import time
 
-from core.templates.command import HatSploitCommand
+from core.lib.command import HatSploitCommand
 
 from core.base.execute import execute
 

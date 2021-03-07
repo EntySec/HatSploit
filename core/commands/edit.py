@@ -26,7 +26,7 @@
 
 import os
 
-from core.templates.command import HatSploitCommand
+from core.lib.command import HatSploitCommand
 
 from core.modules.modules import modules
 from core.base.storage import local_storage

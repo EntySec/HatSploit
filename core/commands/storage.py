@@ -24,7 +24,7 @@
 # SOFTWARE.
 #
 
-from core.templates.command import HatSploitCommand
+from core.lib.command import HatSploitCommand
 
 from core.base.config import config
 from core.base.storage import local_storage
