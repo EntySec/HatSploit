@@ -69,7 +69,7 @@ class HatSploitCommand(HatSploitCommand):
                             self.badges.output_error("Invalid value, expected valid number!")
                             return
                     elif number_type[1] == 'integer':
-                        if not self.types.is_int(value):
+                        if not self.types.is_integer(value):
                             self.badges.output_error("Invalid value, expected valid integer!")
                             return
                     elif number_type[1] == 'float':
