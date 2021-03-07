@@ -38,33 +38,29 @@ class HatSploitCommand:
         self.parser = parser()
         self.tables = tables()
 
-        self.details = {
-            'Name': "",
-            'Authors': [
-                ''
-            ],
-            'Description': "",
-            'Dependencies': [
-                ''
-            ],
-            'Comments': [
-                ''
-            ]
-        }
+    details = {
+        'Name': "",
+        'Authors': [
+            ''
+        ],
+        'Description': "",
+        'Dependencies': [
+            ''
+        ],
+        'Comments': [
+            ''
+        ]
+    }
 
-        self.commands = {
+    commands = {
+        '': {
             '': {
-                '': {
-                    'Description': "",
-                    'Usage': "",
-                    'MinArgs': 0,
-                    'Run': self.command
-                }
+                'Description': "",
+                'Usage': "",
+                'MinArgs': 0,
             }
         }
-
-    def command(self, argc, argv):
-        pass
+    }
 
     def run(self):
         pass
