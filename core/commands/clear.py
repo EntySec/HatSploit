@@ -27,7 +27,7 @@
 from core.templates.command import HatSploitCommand
 
 class HatSploitCommand(HatSploitCommand):
-    HatSploitCommand.details = {
+    details = {
         'Category': "core",
         'Name': "clear",
         'Description': "Clear terminal window.",
