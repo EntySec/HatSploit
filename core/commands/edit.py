@@ -28,15 +28,20 @@ import os
 
 from core.templates.command import HatSploitCommand
 
+from core.modules.modules import modules
+from core.base.storage import local_storage
+
 class HatSploitCommand(HatSploitCommand):
-    def __init__(self):
-        self.details = {
-            'Category': "developer",
-            'Name': "edit",
-            'Description': "Open module in editor.",
-            'Usage': "edit <module>",
-            'MinArgs': 1
-        }
+    modules = modules()
+    local_storage = local_storage()
+
+    details = {
+        'Category': "developer",
+        'Name': "edit",
+        'Description': "Open module in editor.",
+        'Usage': "edit <module>",
+        'MinArgs': 1
+    }
 
     def run(self, argc, argv):
         module = argv[0]
