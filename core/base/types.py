@@ -44,6 +44,13 @@ class types:
             return True
         return False
     
+    def is_ipv4_range(self, value):
+        value = value.split('/')
+        if len(value) == 2:
+            if self.is_ipv4(value[0]) and int(value[1]) in [8, 16, 24, 32]:
+                return True
+        return False
+    
     def is_port(self, value):
         if self.is_integer(value):
             if int(value) > 0 and int(value) <= 65535:
