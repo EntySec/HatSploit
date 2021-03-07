@@ -48,8 +48,7 @@ class HatSploitPlugin(HatSploitPlugin):
             'cowsay': {
                 'Description': "Ask cow to say message.",
                 'Usage': "cowsay <message>",
-                'MinArgs': 1,
-                'Run': self.cowsay
+                'MinArgs': 1
             }
         }
     }
