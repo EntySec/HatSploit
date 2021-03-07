@@ -24,39 +24,36 @@
 # SOFTWARE.
 #
 
-from core.cli.badges import badges
-from core.cli.parser import parser
+from core.lib.module import HatSploitModule
+
 from core.base.sessions import sessions
 
-class HatSploitModule:
-    def __init__(self):
-        self.badges = badges()
-        self.parser = parser()
-        self.sessions = sessions()
+class HatSploitModule(HatSploitModule):
+    sessions = sessions()
 
-        self.details = {
-            'Name': "macOS Membrane Gather Volume",
-            'Module': "post/macos/membrane/gather/getvol",
-            'Authors': [
-                'enty8080'
-            ],
-            'Description': "Get device volume level.",
-            'Dependencies': [
-                ''
-            ],
-            'Comments': [
-                ''
-            ],
-            'Risk': "medium"
-        }
+    details = {
+        'Name': "macOS Membrane Gather Volume",
+        'Module': "post/macos/membrane/gather/getvol",
+        'Authors': [
+            'enty8080'
+        ],
+        'Description': "Get device volume level.",
+        'Dependencies': [
+            ''
+        ],
+        'Comments': [
+            ''
+        ],
+        'Risk': "medium"
+    }
 
-        self.options = {
-            'SESSION': {
-                'Description': "Session to run on.",
-                'Value': 0,
-                'Required': True
-            }
+    options = {
+        'SESSION': {
+            'Description': "Session to run on.",
+            'Value': 0,
+            'Required': True
         }
+    }
 
     def run(self):
         session = self.sessions.get_session("macos/membrane", self.parser.parse_options(self.options))
