@@ -38,13 +38,13 @@ class HatSploitCommand:
         self.parser = parser()
         self.tables = tables()
 
-        self.details = {
-            'Category': "",
-            'Name': "",
-            'Description': "",
-            'Usage': "",
-            'MinArgs': 0
-        }
+    details = {
+        'Category': "",
+        'Name': "",
+        'Description': "",
+        'Usage': "",
+        'MinArgs': 0
+    }
 
     def run(self, argc, argv):
         pass
