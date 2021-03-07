@@ -38,41 +38,37 @@ class HatSploitModule:
         self.parser = parser()
         self.tables = tables()
 
-        self.details = {
-            'Name': "",
-            'Module': "",
-            'Authors': [
-                ''
-            ],
-            'Description': "",
-            'Dependencies': [
-                ''
-            ],
-            'Comments': [
-                ''
-            ],
-            'Risk': ""
-        }
+    details = {
+        'Name': "",
+        'Module': "",
+        'Authors': [
+            ''
+        ],
+        'Description': "",
+        'Dependencies': [
+            ''
+        ],
+        'Comments': [
+            ''
+        ],
+        'Risk': ""
+    }
         
-        self.options = {
-            '': {
-                'Description': "",
-                'Value': None,
-                'Required': True
-            }
+    options = {
+        '': {
+            'Description': "",
+            'Value': None,
+            'Required': True
         }
+    }
 
-        self.commands = {
-            '': {
-                'Description': "",
-                'Usage': "",
-                'MinArgs': 0,
-                'Run': self.command
-            }
+    commands = {
+        '': {
+            'Description': "",
+            'Usage': "",
+            'MinArgs': 0,
         }
-
-    def command(self, argc, argv):
-        pass
+    }
         
     def run(self):
         pass
