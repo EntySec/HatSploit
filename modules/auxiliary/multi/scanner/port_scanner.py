@@ -56,26 +56,25 @@ class HatSploitModule(HatSploitModule):
         'RHOST': {
             'Description': "Remote host.",
             'Value': None,
+            'Type': "ip",
             'Required': True
         },
         'RANGE': {
             'Description': "Ports to scan.",
             'Value': "0-65535",
+            'Type': None,
             'Required': True
         },
         'TIMEOUT': {
             'Description': "Timeout for scan.",
             'Value': 0.5,
+            'Type': "number",
             'Required': True
         }
     }
 
     def run(self):
         remote_host, ports_range, timeout = self.parser.parse_options(self.options)
-        timeout = self.types.cast_to_float(timeout)
-
-        if timeout is None:
-            return
 
         try:
             start = int(ports_range.split('-')[0].strip())
