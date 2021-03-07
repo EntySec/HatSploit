@@ -27,8 +27,7 @@
 import os
 import socketserver
 
-from core.cli.badges import badges
-from core.cli.parser import parser
+from core.lib.module import HatSploitModule
 from core.base.types import types
 
 from utils.tcp_tools import tcp_tools
@@ -36,49 +35,46 @@ from utils.tcp_tools import tcp_tools
 from data.modules.auxiliary.multi.sniffer.user_agent_sniffer.core.handler import handler
 
 class HatSploitModule:
-    def __init__(self):
-        self.badges = badges()
-        self.parser = parser()
-        self.types = types()
+    types = types()
 
-        self.tcp_tools = tcp_tools()
+    tcp_tools = tcp_tools()
 
-        self.handler = handler
-        
-        self.details = {
-            'Name': "User Agent Sniffer",
-            'Module': "auxiliary/multi/sniffer/user_agent_sniffer",
-            'Authors': [
-                'enty8080'
-            ],
-            'Description': "Sniff User-Agent through URL.",
-            'Dependencies': [
-                ''
-            ],
-            'Comments': [
-                ''
-            ],
-            'Risk': "medium"
+    handler = handler
+
+    details = {
+        'Name': "User Agent Sniffer",
+        'Module': "auxiliary/multi/sniffer/user_agent_sniffer",
+        'Authors': [
+            'enty8080'
+        ],
+        'Description': "Sniff User-Agent through URL.",
+        'Dependencies': [
+            ''
+        ],
+        'Comments': [
+            ''
+        ],
+        'Risk': "medium"
+    }
+
+    options = {
+        'LHOST': {
+            'Description': "Local host.",
+            'Value': self.tcp_tools.get_local_host(),
+            'Required': True
+        },
+        'LPORT': {
+            'Description': "Local port.",
+            'Value': 80,
+            'Required': True
+        },
+        'FOREVER': {
+            'Description': "Start http server forever.",
+            'Value': "no",
+            'Required': False
         }
-        
-        self.options = {
-            'LHOST': {
-                'Description': "Local host.",
-                'Value': self.tcp_tools.get_local_host(),
-                'Required': True
-            },
-            'LPORT': {
-                'Description': "Local port.",
-                'Value': 80,
-                'Required': True
-            },
-            'FOREVER': {
-                'Description': "Start http server forever.",
-                'Value': "no",
-                'Required': False
-            }
-        }
-        
+    }
+
     def start_server(self, local_host, local_port, forever):
         try:
             httpd = socketserver.TCPServer((local_host, local_port), self.handler)
@@ -97,7 +93,7 @@ class HatSploitModule:
         local_host, local_port, forever = self.parser.parse_options(self.options)
         local_port = self.types.cast_to_int(local_port)
         
-        if local_port == None:
+        if local_port is None:
             return
         
         self.start_server(local_host, local_port, forever)
