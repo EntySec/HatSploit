@@ -50,11 +50,13 @@ class HatSploitModule(HatSploitModule):
         'MESSAGE': {
             'Description': "Message to say.",
             'Value': "Hello, membrane!",
+            'Type': None,
             'Required': True
         },
         'SESSION': {
             'Description': "Session to run on.",
             'Value': 0,
+            'Type': "integer",
             'Required': True
         }
     }
