@@ -52,7 +52,7 @@ class HatSploitModule:
     options = {
         'LHOST': {
             'Description': "Local host.",
-            'Value': self.tcp_tools.get_local_host(),
+            'Value': tcp_tools.get_local_host(),
             'Required': True
         },
         'LPORT': {
