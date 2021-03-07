@@ -51,6 +51,10 @@ class types:
                 return True
         return False
     
+    def is_ipv6_range(self, value):
+        # NOT IMPLEMENTED YET!
+        return False
+    
     def is_port(self, value):
         if self.is_integer(value):
             if int(value) > 0 and int(value) <= 65535:
