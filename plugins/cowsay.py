@@ -29,7 +29,7 @@ import textwrap
 from core.templates.plugin import HatSploitPlugin
 
 class HatSploitPlugin(HatSploitPlugin):
-    HatSploitPlugin.details = {
+    details = {
         'Name': "cowsay",
         'Authors': [
             'enty8080'
@@ -43,7 +43,7 @@ class HatSploitPlugin(HatSploitPlugin):
         ]
     }
 
-    HatSploitPlugin.commands = {
+    commands = {
         'cowsay': {
             'cowsay': {
                 'Description': "Ask cow to say message.",
