@@ -35,10 +35,11 @@ from core.base.storage import global_storage
 class HatSploitCommand(HatSploitCommand):
     config = config()
     local_storage = local_storage()
-    global_storage = global_storage()
 
     history = config.path_config['base_paths']['history_path']
     storage_path = config.path_config['base_paths']['storage_path']
+    
+    global_storage = global_storage(storage_path)
 
     details = {
         'Category': "developer",
