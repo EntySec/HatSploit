@@ -29,7 +29,7 @@ from core.lib.module import HatSploitModule
 from utils.tcp_tools import tcp_tools
 from utils.hatvenom import hatvenom
 
-class HatSploitModule:
+class HatSploitModule(HatSploitModule):
     tcp_tools = tcp_tools()
     hatvenom = hatvenom()
 
