@@ -28,7 +28,7 @@ from core.lib.module import HatSploitModule
 
 from utils.tcp_tools import tcp_tools
 
-class HatSploitModule:
+class HatSploitModule(HatSploitModule):
     tcp_tools = tcp_tools()
 
     details = {
