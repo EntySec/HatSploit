@@ -24,9 +24,6 @@
 # SOFTWARE.
 #
 
-import os
-import sys
-
 from core.templates.command import HatSploitCommand
 
 class HatSploitCommand(HatSploitCommand):
