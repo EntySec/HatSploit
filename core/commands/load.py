@@ -24,19 +24,24 @@
 # SOFTWARE.
 #
 
-import os
-
 from core.templates.command import HatSploitCommand
 
+from core.plugins.plugins import plugins
+from core.base.storage import local_storage
+from core.db.importer import importer
+
 class HatSploitCommand(HatSploitCommand):
-    def __init__(self):
-        self.details = {
-            'Category': "plugin",
-            'Name': "load",
-            'Description': "Load specified plugin.",
-            'Usage': "load <plugin>",
-            'MinArgs': 1
-        }
+    plugins = plugins()
+    local_storage = local_storage()
+    importer = importer()
+
+    details = {
+        'Category': "plugin",
+        'Name': "load",
+        'Description': "Load specified plugin.",
+        'Usage': "load <plugin>",
+        'MinArgs': 1
+    }
 
     def import_plugin(self, database, plugin):
         loaded_plugins = dict()
