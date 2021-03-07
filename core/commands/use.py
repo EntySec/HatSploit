@@ -24,27 +24,24 @@
 # SOFTWARE.
 #
 
-import os
+from core.templates.command import HatSploitCommand
 
 from core.db.importer import importer
-from core.cli.badges import badges
 from core.base.storage import local_storage
 from core.modules.modules import modules
 
-class HatSploitCommand:
-    def __init__(self):
-        self.importer = importer()
-        self.badges = badges()
-        self.local_storage = local_storage()
-        self.modules = modules()
+class HatSploitCommand(HatSploitCommand):
+    importer = importer()
+    local_storage = local_storage()
+    modules = modules()
 
-        self.details = {
-            'Category': "module",
-            'Name': "use",
-            'Description': "Use specified module.",
-            'Usage': "use <module>",
-            'MinArgs': 1
-        }
+    details = {
+        'Category': "module",
+        'Name': "use",
+        'Description': "Use specified module.",
+        'Usage': "use <module>",
+        'MinArgs': 1
+    }
         
     def import_module(self, category, platform, name):
         modules = self.modules.get_module_object(category, platform, name)
