@@ -37,9 +37,6 @@ from core.base.exceptions import exceptions
 from core.base.storage import local_storage
 from core.base.storage import global_storage
 
-from core.modules.modules import modules
-from core.plugins.plugins import plugins
-
 class HatSploit:
     def __init__(self):
         self.fmt = fmt()
@@ -54,6 +51,3 @@ class HatSploit:
         self.exceptions = exceptions()
         self.local_storage = local_storage()
         self.global_storage = global_storage()
-        
-        self.modules = modules()
-        self.plugins = plugins()
