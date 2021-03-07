@@ -50,16 +50,19 @@ class HatSploitModule(HatSploitModule):
         'LPATH': {
             'Description': "Local path.",
             'Value': "/tmp",
+            'Type': None,
             'Required': True
         },
         'RPATH': {
             'Description': "Remote path.",
             'Value': None,
+            'Type': None,
             'Required': True
         },
         'SESSION': {
             'Description': "Session to run on.",
             'Value': 0,
+            'Type': "integer",
             'Required': True
         }
     }
