@@ -59,13 +59,13 @@ class HatSploitModule(HatSploitModule):
         'LHOST': {
             'Description': "Local host.",
             'Value': tcp_tools.get_local_host(),
-            'Type': "ipv4",
+            'Type': "ip",
             'Required': True
         },
         'LPORT': {
             'Description': "Local port.",
             'Value': 80,
-            'Type': "number/integer",
+            'Type': "port",
             'Required': True
         },
         'FOREVER': {
