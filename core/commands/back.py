@@ -26,8 +26,14 @@
 
 from core.templates.command import HatSploitCommand
 
+from core.modules.modules import modules
+from core.base.storage import local_storage
+
 class HatSploitCommand(HatSploitCommand):
-    HatSploitCommand.details = {
+    modules = modules()
+    local_storage = local_storage()
+    
+    details = {
         'Category': "module",
         'Name': "back",
         'Description': "Return to the previous module.",
