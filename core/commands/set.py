@@ -52,36 +52,42 @@ class HatSploitCommand(HatSploitCommand):
             if option in current_module.options.keys():
                 value_type = current_module.options[option]['Type']
 
-                if value_type and value_type.lower == 'ipv4':
+                if value_type and value_type.lower() == 'ip':
+                    if not self.types.is_ip(value):
+                        self.badges.output_error("Invalid value, expected valid IP!")
+                        return
+                
+                if value_type and value_type.lower() == 'ipv4':
                     if not self.types.is_ipv4(value):
                         self.badges.output_error("Invalid value, expected valid IPv4!")
                         return
 
-                if value_type and value_type.lower == 'ipv6':
+                if value_type and value_type.lower() == 'ipv6':
                     if not self.types.is_ipv6(value):
                         self.badges.output_error("Invalid value, expected valid IPv6!")
                         return
-                        
-                if value_type and value_type.lower == 'number':
-                    number_type = value_type.split('/')
-                    if len(number_type) == 1:
-                        if not self.types.is_number(value):
-                            self.badges.output_error("Invalid value, expected valid number!")
-                            return
-                    elif number_type[1] == 'integer':
-                        if not self.types.is_integer(value):
-                            self.badges.output_error("Invalid value, expected valid integer!")
-                            return
-                    elif number_type[1] == 'float':
-                        if not self.types.is_float(value):
-                            self.badges.output_error("Invalid value, expected valid float!")
-                            return
-                    else:
-                        if not self.types.is_number(value):
-                            self.badges.output_error("Invalid value, expected valid number!")
-                            return
                     
-                if value_type and value_type.lower == 'boolean':
+                if value_type and value_type.lower() == 'port':
+                    if not self.types.is_port(value):
+                        self.badges.output_error("Invalid value, expected valid port!")
+                        return
+                        
+                if value_type and value_type.lower() == 'number':
+                    if not self.types.is_number(value):
+                        self.badges.output_error("Invalid value, expected valid number!")
+                        return
+
+                if value_type and value_type.lower() == 'integer':
+                    if not self.types.is_integer(value):
+                        self.badges.output_error("Invalid value, expected valid integer!")
+                        return
+                    
+                if value_type and value_type.lower() == 'float':
+                    if not self.types.is_float(value):
+                        self.badges.output_error("Invalid value, expected valid float!")
+                        return
+                    
+                if value_type and value_type.lower() == 'boolean':
                     if not self.types.is_boolean(value):
                         self.badges.output_error("Invalid value, expected valid boolean!")
                         return
