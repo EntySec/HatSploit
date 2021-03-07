@@ -40,14 +40,6 @@ from core.base.storage import global_storage
 from core.modules.modules import modules
 from core.plugins.plugins import plugins
 
-from utils.adb_tools import adb_tools
-from utils.fsmanip import fsmanip
-from utils.hatvenom import hatvenom
-from utils.web_tools import web_tools
-from utils.tcp_tools import tcp_tools
-from utils.pseudo_shell import pseudo_shell
-from utils.string_tools import string_tools
-
 class HatSploit:
     def __init__(self):
         self.fmt = fmt()
@@ -65,11 +57,3 @@ class HatSploit:
         
         self.modules = modules()
         self.plugins = plugins()
-        
-        self.adb_tools = adb_tools()
-        self.fsmanip = fsmanip()
-        self.hatvenom = hatvenom()
-        self.web_tools = web_tools()
-        self.tcp_tools = tcp_tools()
-        self.pseudo_shell = pseudo_shell()
-        self.string_tools = string_tools()
