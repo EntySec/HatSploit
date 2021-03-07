@@ -27,11 +27,8 @@
 import scapy.all
 
 from core.lib.module import HatSploitModule
-from core.base.types import types
 
 class HatSploitModule(HatSploitModule):
-    types = types()
-
     details = {
         'Name': "Network Scanner",
         'Module': "auxiliary/multi/scanner/network_scanner",
@@ -52,7 +49,7 @@ class HatSploitModule(HatSploitModule):
         'RANGE': {
             'Description': "IP range.",
             'Value': "192.168.1.1/24",
-            'Type': None,
+            'Type': "ipv4_range",
             'Required': True
         },
         'TIMEOUT': {
