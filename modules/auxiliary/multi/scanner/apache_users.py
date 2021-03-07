@@ -34,7 +34,7 @@ class HatSploitModule(HatSploitModule):
     web_tools = web_tools()
 
     dictionary = dictionary()
-    paths = self.dictionary.paths
+    paths = dictionary.paths
 
     details = {
         'Name': "Apache Users Scanner",
