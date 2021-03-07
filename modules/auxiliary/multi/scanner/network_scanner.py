@@ -65,7 +65,7 @@ class HatSploitModule(HatSploitModule):
         ip_range, timeout = self.parser.parse_options(self.options)
         timeout = self.types.cast_to_float(timeout)
 
-        if timeout == None:
+        if timeout is None:
             return
 
         self.badges.output_process("Scanning local network...")
