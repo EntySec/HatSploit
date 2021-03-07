@@ -26,10 +26,12 @@
 
 from core.lib.command import HatSploitCommand
 
+from core.base.types import types
 from core.base.storage import local_storage
 from core.modules.modules import modules
 
 class HatSploitCommand(HatSploitCommand):
+    types = types()
     local_storage = local_storage()
     modules = modules()
 
@@ -48,6 +50,42 @@ class HatSploitCommand(HatSploitCommand):
         if self.modules.check_current_module():
             current_module = self.modules.get_current_module_object()
             if option in current_module.options.keys():
+                value_type = current_module.options[option]['Type']
+
+                if value_type and value_type.lower == 'ipv4':
+                    if not self.types.is_ipv4(value):
+                        self.badges.output_error("Invalid value, expected valid IPv4!")
+                        return
+
+                if value_type and value_type.lower == 'ipv6':
+                    if not self.types.is_ipv6(value):
+                        self.badges.output_error("Invalid value, expected valid IPv6!")
+                        return
+                        
+                if value_type and value_type.lower == 'number':
+                    number_type = value_type.split('/')
+                    if len(number_type) == 1:
+                        if not self.types.is_number(value):
+                            self.badges.output_error("Invalid value, expected valid number!")
+                            return
+                    elif number_type[1] == 'integer':
+                        if not self.types.is_int(value):
+                            self.badges.output_error("Invalid value, expected valid integer!")
+                            return
+                    elif number_type[1] == 'float':
+                        if not self.types.is_float(value):
+                            self.badges.output_error("Invalid value, expected valid float!")
+                            return
+                    else:
+                        if not self.types.is_number(value):
+                            self.badges.output_error("Invalid value, expected valid number!")
+                            return
+                    
+                if value_type and value_type.lower == 'boolean':
+                    if not self.types.is_boolean(value):
+                        self.badges.output_error("Invalid value, expected valid boolean!")
+                        return
+
                 self.badges.output_information(option + " ==> " + value)
                 self.local_storage.set_module_option("current_module", self.local_storage.get("current_module_number"), option, value)
             else:
