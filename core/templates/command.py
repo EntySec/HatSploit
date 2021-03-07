@@ -24,16 +24,27 @@
 # SOFTWARE.
 #
 
-from core.templates.hsf import HatSploit
+from core.cli.fmt import fmt
+from core.cli.badges import badges
+from core.cli.colors import colors
+from core.cli.parser import parser
+from core.cli.tables import tables
 
-class HatSploitCommand(HatSploit):
-    HatSploit.details = {
-        'Category': "",
-        'Name': "",
-        'Description': "",
-        'Usage': "",
-        'MinArgs': 0
-    }
+class HatSploitCommand:
+    def __init__(self):
+        self.fmt = fmt()
+        self.badges = badges()
+        self.colors = colors()
+        self.parser = parser()
+        self.tables = tables()
+
+        self.details = {
+            'Category': "",
+            'Name': "",
+            'Description': "",
+            'Usage': "",
+            'MinArgs': 0
+        }
 
     def run(self, argc, argv):
         pass
