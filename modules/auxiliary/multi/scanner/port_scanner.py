@@ -74,7 +74,7 @@ class HatSploitModule(HatSploitModule):
         remote_host, ports_range, timeout = self.parser.parse_options(self.options)
         timeout = self.types.cast_to_float(timeout)
 
-        if timeout == None:
+        if timeout is None:
             return
 
         try:
