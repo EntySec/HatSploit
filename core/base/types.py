@@ -57,6 +57,14 @@ class types:
                 return True
         return False
     
+    def is_port_range(self, value):
+        value = value.split('-')
+        if len(value) == 2:
+            if int(value[0]) <= int(value[1]):
+                if self.is_port(value[0]) and self.is_port(value[1]):
+                    return True
+        return False
+    
     def is_integer(self, value):
          value = str(value)
          if value.isdigit():
