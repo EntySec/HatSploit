@@ -25,7 +25,6 @@
 #
 
 from core.lib.module import HatSploitModule
-
 from core.base.sessions import sessions
 
 class HatSploitModule(HatSploitModule):
