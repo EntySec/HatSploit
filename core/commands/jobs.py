@@ -24,19 +24,20 @@
 # SOFTWARE.
 #
 
-import os
-
 from core.templates.command import HatSploitCommand
 
+from core.base.jobs import jobs
+
 class HatSploitCommand(HatSploitCommand):
-    def __init__(self):
-        self.details = {
-            'Category': "jobs",
-            'Name': "jobs",
-            'Description': "Manage active jobs.",
-            'Usage': "jobs [-l|-k <id>]",
-            'MinArgs': 1
-        }
+    jobs = jobs()
+
+    details = {
+        'Category': "jobs",
+        'Name': "jobs",
+        'Description': "Manage active jobs.",
+        'Usage': "jobs [-l|-k <id>]",
+        'MinArgs': 1
+    }
 
     def run(self, argc, argv):
         choice = argv[0]
