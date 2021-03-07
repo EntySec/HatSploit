@@ -24,41 +24,52 @@
 # SOFTWARE.
 #
 
-from core.templates.hsf import HatSploit
+from core.cli.fmt import fmt
+from core.cli.badges import badges
+from core.cli.colors import colors
+from core.cli.parser import parser
+from core.cli.tables import tables
 
-class HatSploitModule(HatSploit):
-    HatSploit.details = {
-        'Name': "",
-        'Module': "",
-        'Authors': [
-            ''
-        ],
-        'Description': "",
-        'Dependencies': [
-            ''
-        ],
-        'Comments': [
-            ''
-        ],
-        'Risk': ""
-    }
+class HatSploitModule:
+    def __init__(self):
+        self.fmt = fmt()
+        self.badges = badges()
+        self.colors = colors()
+        self.parser = parser()
+        self.tables = tables()
+
+        self.details = {
+            'Name': "",
+            'Module': "",
+            'Authors': [
+                ''
+            ],
+            'Description': "",
+            'Dependencies': [
+                ''
+            ],
+            'Comments': [
+                ''
+            ],
+            'Risk': ""
+        }
         
-    HatSploit.options = {
-        '': {
-            'Description': "",
-            'Value': None,
-            'Required': True
+        self.options = {
+            '': {
+                'Description': "",
+                'Value': None,
+                'Required': True
+            }
         }
-    }
 
-    HatSploit.commands = {
-        '': {
-            'Description': "",
-            'Usage': "",
-            'MinArgs': 0,
-            'Run': self.command
+        self.commands = {
+            '': {
+                'Description': "",
+                'Usage': "",
+                'MinArgs': 0,
+                'Run': self.command
+            }
         }
-    }
 
     def command(self, argc, argv):
         pass
