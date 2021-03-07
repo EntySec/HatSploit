@@ -24,23 +24,29 @@
 # SOFTWARE.
 #
 
-import os
 import readline
 
 from core.templates.command import HatSploitCommand
 
-class HatSploitCommand(HatSploitCommand):
-    def __init__(self):
-        self.history = self.config.path_config['base_paths']['history_path']
-        self.storage_path = self.config.path_config['base_paths']['storage_path']
+from core.base.config import config
+from core.base.storage import local_storage
+from core.base.storage import global_storage
 
-        self.details = {
-            'Category': "developer",
-            'Name': "history",
-            'Description': "Manage HatSploit history.",
-            'Usage': "history [-l|on|off]",
-            'MinArgs': 1
-        }
+class HatSploitCommand(HatSploitCommand):
+    config = config()
+    local_storage = local_storage()
+    global_storage = global_storage()
+
+    history = config.path_config['base_paths']['history_path']
+    storage_path = config.path_config['base_paths']['storage_path']
+
+    details = {
+        'Category': "developer",
+        'Name': "history",
+        'Description': "Manage HatSploit history.",
+        'Usage': "history [-l|on|off]",
+        'MinArgs': 1
+    }
 
     def run(self, argc, argv):
         option = argv[0]
