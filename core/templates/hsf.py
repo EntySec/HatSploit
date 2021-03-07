@@ -29,25 +29,9 @@ from core.cli.badges import badges
 from core.cli.parser import parser
 from core.cli.tables import tables
 
-from core.base.jobs import jobs
-from core.base.config import config
-from core.base.sessions import sessions
-from core.base.execute import execute
-from core.base.exceptions import exceptions
-from core.base.storage import local_storage
-from core.base.storage import global_storage
-
 class HatSploit:
     def __init__(self):
         self.fmt = fmt()
         self.badges = badges()
         self.parser = parser()
         self.tables = tables()
-        
-        self.jobs = jobs()
-        self.config = config()
-        self.sessions = sessions()
-        self.execute = execute()
-        self.exceptions = exceptions()
-        self.local_storage = local_storage()
-        self.global_storage = global_storage()
