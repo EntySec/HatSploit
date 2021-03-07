@@ -39,6 +39,17 @@ class types:
             return True
         return False
 
+    def is_ip(self, value):
+        if self.is_ipv4(value) and self.is_ipv6(value):
+            return True
+        return False
+    
+    def is_port(self, value):
+        if self.is_integer(value):
+            if int(value) > 0 and int(value) <= 65535:
+                return True
+        return False
+    
     def is_integer(self, value):
          value = str(value)
          if value.isdigit():
