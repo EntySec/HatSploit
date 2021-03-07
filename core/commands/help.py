@@ -24,19 +24,22 @@
 # SOFTWARE.
 #
 
-import os
-
 from core.templates.command import HatSploitCommand
 
+from core.modules.modules import modules
+from core.base.storage import local_storage
+
 class HatSploitCommand(HatSploitCommand):
-    def __init__(self):
-        self.details = {
-            'Category': "core",
-            'Name': "help",
-            'Description': "Show available commands.",
-            'Usage': "help",
-            'MinArgs': 0
-        }
+    modules = modules()
+    local_storage = local_storage()
+    
+    details = {
+        'Category': "core",
+        'Name': "help",
+        'Description': "Show available commands.",
+        'Usage': "help",
+        'MinArgs': 0
+    }
 
     def format_base_commands(self):
         commands_data = dict()
