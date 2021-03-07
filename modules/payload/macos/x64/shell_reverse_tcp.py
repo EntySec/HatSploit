@@ -53,21 +53,25 @@ class HatSploitModule(HatSploitModule):
         'LHOST': {
             'Description': "Local host.",
             'Value': tcp_tools.get_local_host(),
+            'Type': "ip",
             'Required': True
         },
         'LPORT': {
             'Description': "Local port.",
             'Value': 4444,
+            'Type': "port",
             'Required': True
         },
         'FORMAT': {
             'Description': "Output format.",
             'Value': "macho",
+            'Type': None,
             'Required': True
         },
         'LPATH': {
             'Description': "Local path.",
             'Value': "/tmp/payload.bin",
+            'Type': None,
             'Required': True
         }
     }

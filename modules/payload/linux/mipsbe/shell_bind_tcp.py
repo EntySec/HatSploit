@@ -51,16 +51,19 @@ class HatSploitModule(HatSploitModule):
         'BPORT': {
             'Description': "Bind port.",
             'Value': 4444,
+            'Type': "port",
             'Required': True
         },
         'FORMAT': {
             'Description': "Output format.",
             'Value': "elf",
+            'Type': None,
             'Required': True
         },
         'LPATH': {
             'Description': "Local path.",
             'Value': "/tmp/payload.bin",
+            'Type': None,
             'Required': True
         }
     }
