@@ -67,9 +67,24 @@ class HatSploitCommand(HatSploitCommand):
                         self.badges.output_error("Invalid value, expected valid IPv6!")
                         return
                     
+                if value_type and value_type.lower() == 'ipv4_range':
+                    if not self.types.is_ipv4_range(value):
+                        self.badges.output_error("Invalid value, expected valid IPv4 range!")
+                        return
+                    
+                if value_type and value_type.lower() == 'ipv6_range':
+                    if not self.types.is_ipv6_range(value):
+                        self.badges.output_error("Invalid value, expected valid IPv6 range!")
+                        return
+                    
                 if value_type and value_type.lower() == 'port':
                     if not self.types.is_port(value):
                         self.badges.output_error("Invalid value, expected valid port!")
+                        return
+                    
+                if value_type and value_type.lower() == 'port_range':
+                    if not self.types.is_port_range(value):
+                        self.badges.output_error("Invalid value, expected valid port range!")
                         return
                         
                 if value_type and value_type.lower() == 'number':
