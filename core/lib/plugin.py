@@ -30,7 +30,7 @@ from core.cli.colors import colors
 from core.cli.parser import parser
 from core.cli.tables import tables
 
-class HatSploitCommand:
+class HatSploitPlugin:
     def __init__(self):
         self.fmt = fmt()
         self.badges = badges()
