@@ -24,60 +24,56 @@
 # SOFTWARE.
 #
 
-from core.cli.badges import badges
-from core.cli.parser import parser
+from core.lib.module import HatSploitModule
 from core.base.config import config
 
 from utils.web_tools import web_tools
 
-class HatSploitModule:
-    def __init__(self):
-        self.badges = badges()
-        self.parser = parser()
-        self.config = config()
-        
-        self.web_tools = web_tools()
-        
-        self.details = {
-            'Name': "Directory Scanner",
-            'Module': "auxiliary/multi/scanner/directory_scanner",
-            'Authors': [
-                'enty8080'
-            ],
-            'Description': "Website directory scanner.",
-            'Dependencies': [
-                ''
-            ],
-            'Comments': [
-                ''
-            ],
-            'Risk': "medium"
+class HatSploitModule(HatSploitModule):
+    config = config()
+
+    web_tools = web_tools()
+
+    details = {
+        'Name': "Directory Scanner",
+        'Module': "auxiliary/multi/scanner/directory_scanner",
+        'Authors': [
+            'enty8080'
+        ],
+        'Description': "Website directory scanner.",
+        'Dependencies': [
+            ''
+        ],
+        'Comments': [
+            ''
+        ],
+        'Risk': "medium"
+    }
+
+    options = {
+        'URL': {
+            'Description': "Target URL.",
+            'Value': None,
+            'Required': True
         }
-        
-        self.options = {
-            'URL': {
-                'Description': "Target URL.",
-                'Value': None,
-                'Required': True
-            }
-        }
-        
+    }
+
     def run(self):
         target_url = self.parser.parse_options(self.options)
-        
+
         self.badges.output_process("Scanning " + target_url + "...")
-        
+
         if not self.web_tools.check_url_access(target_url):
             self.badges.output_error("Failed to scan!")
             return
-        
+
         file = open(self.config.path_config['base_paths']['data_path'] + 'modules/auxiliary/multi/scanner/directory_scanner/directories.txt')
         directories = list(filter(None, file.read().split('\n')))
         file.close()
-        
+
         for path in directories:
             response = self.web_tools.http_request(method="HEAD", url=target_url, path=path)
-            
+
             if response.status_code == 200:
                 self.badges.output_success("[%s] ... [%s %s]" % (path, response.status_code, response.reason))
             else:
