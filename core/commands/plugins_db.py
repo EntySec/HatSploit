@@ -24,25 +24,22 @@
 # SOFTWARE.
 #
 
-from core.db.db import db
-from core.cli.badges import badges
-from core.base.storage import local_storage
-from core.cli.tables import tables
+from core.templates.command import HatSploitCommand
 
-class HatSploitCommand:
-    def __init__(self):
-        self.db = db()
-        self.badges = badges()
-        self.local_storage = local_storage()
-        self.tables = tables()
-        
-        self.details = {
-            'Category': "database",
-            'Name': "plugins_db",
-            'Description': "Manage plugins databases.",
-            'Usage': "plugins_db [-l|-d <name>|-c <name> <path>]",
-            'MinArgs': 1
-        }
+from core.db.db import db
+from core.base.storage import local_storage
+
+class HatSploitCommand(HatSploitCommand):
+    db = db()
+    local_storage = local_storage()
+
+    details = {
+        'Category': "database",
+        'Name': "plugins_db",
+        'Description': "Manage plugins databases.",
+        'Usage': "plugins_db [-l|-d <name>|-c <name> <path>]",
+        'MinArgs': 1
+    }
 
     def run(self, argc, argv):
         choice = argv[0]
