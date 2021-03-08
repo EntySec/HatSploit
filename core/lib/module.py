@@ -58,15 +58,8 @@ class HatSploitModule:
         '': {
             'Description': "",
             'Value': None,
+            'Type': None,
             'Required': True
-        }
-    }
-
-    commands = {
-        '': {
-            'Description': "",
-            'Usage': "",
-            'MinArgs': 0,
         }
     }
         
