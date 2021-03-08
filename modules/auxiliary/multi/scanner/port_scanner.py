@@ -62,7 +62,7 @@ class HatSploitModule(HatSploitModule):
         'RANGE': {
             'Description': "Ports to scan.",
             'Value': "0-65535",
-            'Type': None,
+            'Type': "port_range",
             'Required': True
         },
         'TIMEOUT': {
@@ -76,12 +76,8 @@ class HatSploitModule(HatSploitModule):
     def run(self):
         remote_host, ports_range, timeout = self.parser.parse_options(self.options)
 
-        try:
-            start = int(ports_range.split('-')[0].strip())
-            end = int(ports_range.split('-')[1].strip())
-        except Exception:
-            self.badges.output_error("Invalid range provided!")
-            return
+        start = int(ports_range.split('-')[0].strip())
+        end = int(ports_range.split('-')[1].strip())
 
         self.badges.output_process("Scanning " + remote_host + "...")
         for port in range(start, end):
