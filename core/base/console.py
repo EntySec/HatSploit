@@ -27,14 +27,14 @@
 import os
 import readline
 
-from core.cli.io import io
-from core.cli.tip import tip
+from core.base.io import io
+from core.util.tip import tip
 from core.base.jobs import jobs
 from core.base.execute import execute
 from core.base.loader import loader
 from core.base.config import config
 from core.cli.badges import badges
-from core.cli.banner import banner
+from core.util.banner import banner
 from core.cli.colors import colors
 from core.base.storage import local_storage
 from core.modules.modules import modules

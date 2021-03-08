@@ -24,21 +24,20 @@
 # SOFTWARE.
 #
 
+from core.lib.command import HatSploitCommand
+
 from core.base.execute import execute
-from core.cli.fmt import fmt
 
-class HatSploitCommand:
-    def __init__(self):
-        self.execute = execute()
-        self.fmt = fmt()
+class HatSploitCommand(HatSploitCommand):
+    execute = execute()
 
-        self.details = {
-            'Category': "developer",
-            'Name': "exec",
-            'Description': "Execute local system command.",
-            'Usage': "exec <command>",
-            'MinArgs': 1
-        }
+    details = {
+        'Category': "developer",
+        'Name': "exec",
+        'Description': "Execute local system command.",
+        'Usage': "exec <command>",
+        'MinArgs': 1
+    }
 
     def run(self, argc, argv):
         command = self.fmt.format_commands(argv[0])

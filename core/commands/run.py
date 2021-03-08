@@ -24,27 +24,24 @@
 # SOFTWARE.
 #
 
-import os
+from core.lib.command import HatSploitCommand
 
-from core.cli.badges import badges
 from core.base.storage import local_storage
 from core.modules.modules import modules
 from core.base.jobs import jobs
 
-class HatSploitCommand:
-    def __init__(self):
-        self.badges = badges()
-        self.local_storage = local_storage()
-        self.modules = modules()
-        self.jobs = jobs()
+class HatSploitCommand(HatSploitCommand):
+    local_storage = local_storage()
+    modules = modules()
+    jobs = jobs()
 
-        self.details = {
-            'Category': "module",
-            'Name': "run",
-            'Description': "Run current module.",
-            'Usage': "run [-h|-j]",
-            'MinArgs': 0
-        }
+    details = {
+        'Category': "module",
+        'Name': "run",
+        'Description': "Run current module.",
+        'Usage': "run [-h|-j]",
+        'MinArgs': 0
+    }
 
     def entry_to_module(self, argc, argv, current_module):
         if argc > 0:
@@ -54,7 +51,7 @@ class HatSploitCommand:
                 self.badges.output_information("Module started as a background job " + str(job_id) + ".")
                 return
         current_module.run()
-        
+
     def run(self, argc, argv):
         if argc > 0:
             if argv[0] == "-h":

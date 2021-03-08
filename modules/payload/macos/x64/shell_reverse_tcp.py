@@ -24,75 +24,74 @@
 # SOFTWARE.
 #
 
-from core.cli.badges import badges
-from core.cli.parser import parser
+from core.lib.module import HatSploitModule
 
 from utils.tcp_tools import tcp_tools
 from utils.hatvenom import hatvenom
 
-class HatSploitModule:
-    def __init__(self):
-        self.badges = badges()
+class HatSploitModule(HatSploitModule):
+    tcp_tools = tcp_tools()
+    hatvenom = hatvenom()
 
-        self.parser = parser()
-        
-        self.hatvenom = hatvenom()
-        
-        self.details = {
-            'Name': "macOS x64 Shell Reverse TCP",
-            'Module': "payload/macos/x64/shell_reverse_tcp",
-            'Authors': [
-                'enty8080'
-            ],
-            'Description': "Shell Reverse TCP Payload for macOS x64.",
-            'Dependencies': [
-                ''
-            ],
-            'Comments': [
-                ''
-            ],
-            'Risk': "low"
+    details = {
+        'Name': "macOS x64 Shell Reverse TCP",
+        'Module': "payload/macos/x64/shell_reverse_tcp",
+        'Authors': [
+            'enty8080'
+        ],
+        'Description': "Shell Reverse TCP Payload for macOS x64.",
+        'Dependencies': [
+            ''
+        ],
+        'Comments': [
+            ''
+        ],
+        'Risk': "low"
+    }
+
+    options = {
+        'LHOST': {
+            'Description': "Local host.",
+            'Value': tcp_tools.get_local_host(),
+            'Type': "ip",
+            'Required': True
+        },
+        'LPORT': {
+            'Description': "Local port.",
+            'Value': 8888,
+            'Type': "port",
+            'Required': True
+        },
+        'FORMAT': {
+            'Description': "Output format.",
+            'Value': "macho",
+            'Type': None,
+            'Required': True
+        },
+        'LPATH': {
+            'Description': "Local path.",
+            'Value': "/tmp/payload.bin",
+            'Type': None,
+            'Required': True
         }
-        
-        self.options = {
-            'LHOST': {
-                'Description': "Local host.",
-                'Value': self.tcp_tools.get_local_host(),
-                'Required': True
-            },
-            'LPORT': {
-                'Description': "Local port.",
-                'Value': 4444,
-                'Required': True
-            },
-            'FORMAT': {
-                'Description': "Output format.",
-                'Value': "macho",
-                'Required': True
-            },
-            'LPATH': {
-                'Description': "Local path.",
-                'Value': "/tmp/payload.bin",
-                'Required': True
-            }
-        }
-        
+    }
+
     def run(self):
         bind_port, file_format, local_file = self.parser.parse_options(self.options)
         bind_port = self.hatvenom.port_to_bytes(bind_port)
-        
+
         if not file_format in self.hatvenom.formats.keys():
             self.badges.output_error("Invalid format!")
             return
-        
+
         self.badges.output_process("Generating shellcode...")
         shellcode = (
             b""
         )
-        
+
         self.badges.output_process("Generating payload...")
         payload = self.hatvenom.generate(file_format, 'x64', shellcode)
-        
+
         self.badges.output_process("Saving to " + local_file + "...")
         with open(local_file, 'wb') as f:
             f.write(payload)

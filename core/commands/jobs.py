@@ -24,27 +24,22 @@
 # SOFTWARE.
 #
 
-import os
+from core.lib.command import HatSploitCommand
 
 from core.base.jobs import jobs
-from core.cli.badges import badges
 from core.base.storage import local_storage
-from core.cli.tables import tables
 
-class HatSploitCommand:
-    def __init__(self):
-        self.jobs = jobs()
-        self.badges = badges()
-        self.local_storage = local_storage()
-        self.tables = tables()
+class HatSploitCommand(HatSploitCommand):
+    jobs = jobs()
+    local_storage = local_storage()
 
-        self.details = {
-            'Category': "jobs",
-            'Name': "jobs",
-            'Description': "Manage active jobs.",
-            'Usage': "jobs [-l|-k <id>]",
-            'MinArgs': 1
-        }
+    details = {
+        'Category': "jobs",
+        'Name': "jobs",
+        'Description': "Manage active jobs.",
+        'Usage': "jobs [-l|-k <id>]",
+        'MinArgs': 1
+    }
 
     def run(self, argc, argv):
         choice = argv[0]

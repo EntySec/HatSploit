@@ -27,61 +27,56 @@
 import os
 import sys
 
-from core.cli.badges import badges
-from core.cli.parser import parser
+from core.lib.module import HatSploitModule
 
 from utils.web_tools import web_tools
 
 from data.modules.auxiliary.multi.scanner.pma_scanner.dictionary import dictionary
 
-class HatSploitModule:
-    def __init__(self):
-        self.badges = badges()
-        self.parser = parser()
+class HatSploitModule(HatSploitModule):
+    web_tools = web_tools()
 
-        self.web_tools = web_tools()
+    dictionary = dictionary()
+    paths = dictionary.paths
 
-        self.dictionary = dictionary()
-        
-        self.paths = self.dictionary.paths
+    details = {
+        'Name': "PMA Scanner",
+        'Module': "auxiliary/multi/scanner/pma_scanner",
+        'Authors': [
+            'enty8080'
+        ],
+        'Description': "Scan website PHP My Admin.",
+        'Dependencies': [
+            ''
+        ],
+        'Comments': [
+            ''
+        ],
+        'Risk': "medium"
+    }
 
-        self.details = {
-            'Name': "PMA Scanner",
-            'Module': "auxiliary/multi/scanner/pma_scanner",
-            'Authors': [
-                'enty8080'
-            ],
-            'Description': "Scan website PHP My Admin.",
-            'Dependencies': [
-                ''
-            ],
-            'Comments': [
-                ''
-            ],
-            'Risk': "medium"
+    options = {
+        'URL': {
+            'Description': "Target URL address.",
+            'Value': None,
+            'Type': None,
+            'Required': True
         }
-
-        self.options = {
-            'URL': {
-                'Description': "Target URL address.",
-                'Value': None,
-                'Required': True
-            }
-        }
+    }
 
     def run(self):
         target_url = self.parser.parse_options(self.options)
-        
+
         self.badges.output_process("Scanning " + target_url + "...")
-        
+
         if not self.web_tools.check_url_access(target_url):
             self.badges.output_error("Failed to scan!")
             return
-        
+
         for path in self.paths:
             path = path.replace("\n", "")
             response = self.web_tools.http_request(method="HEAD", url=target_url, path=path)
-            
+
             if response.status_code == 200:
                 self.badges.output_success("[%s] ... [%s %s]" % (path, response.status_code, response.reason))
             else:

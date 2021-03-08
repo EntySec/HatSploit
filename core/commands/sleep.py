@@ -26,21 +26,20 @@
 
 import time
 
-from core.cli.badges import badges
+from core.lib.command import HatSploitCommand
+
 from core.base.execute import execute
 
-class HatSploitCommand:
-    def __init__(self):
-        self.badges = badges()
-        self.execute = execute()
+class HatSploitCommand(HatSploitCommand):
+    execute = execute()
 
-        self.details = {
-            'Category': "developer",
-            'Name': "sleep",
-            'Description': "Sleep for specified seconds.",
-            'Usage': "sleep <seconds>",
-            'MinArgs': 1
-        }
+    details = {
+        'Category': "developer",
+        'Name': "sleep",
+        'Description': "Sleep for specified seconds.",
+        'Usage': "sleep <seconds>",
+        'MinArgs': 1
+    }
 
     def run(self, argc, argv):
         seconds = argv[0]

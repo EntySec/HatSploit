@@ -24,49 +24,48 @@
 # SOFTWARE.
 #
 
-from core.cli.badges import badges
-from core.cli.parser import parser
+from core.lib.module import HatSploitModule
 from core.base.sessions import sessions
 
-class HatSploitModule:
-    def __init__(self):
-        self.badges = badges()
-        self.parser = parser()
-        self.sessions = sessions()
+class HatSploitModule(HatSploitModule):
+    sessions = sessions()
 
-        self.details = {
-            'Name': "Linux Membrane Transfer Download",
-            'Module': "post/linux/membrane/transfer/download",
-            'Authors': [
-                'enty8080'
-            ],
-            'Description': "Download remote file.",
-            'Dependencies': [
-                ''
-            ],
-            'Comments': [
-                ''
-            ],
-            'Risk': "high"
-        }
+    details = {
+        'Name': "Linux Membrane Transfer Download",
+        'Module': "post/linux/membrane/transfer/download",
+        'Authors': [
+            'enty8080'
+        ],
+        'Description': "Download remote file.",
+        'Dependencies': [
+            ''
+        ],
+        'Comments': [
+            ''
+        ],
+        'Risk': "high"
+    }
 
-        self.options = {
-            'LPATH': {
-                'Description': "Local path.",
-                'Value': "/tmp",
-                'Required': True
-            },
-            'RPATH': {
-                'Description': "Remote path.",
-                'Value': None,
-                'Required': True
-            },
-            'SESSION': {
-                'Description': "Session to run on.",
-                'Value': 0,
-                'Required': True
-            }
+    options = {
+        'LPATH': {
+            'Description': "Local path.",
+            'Value': "/tmp",
+            'Type': None,
+            'Required': True
+        },
+        'RPATH': {
+            'Description': "Remote path.",
+            'Value': None,
+            'Type': None,
+            'Required': True
+        },
+        'SESSION': {
+            'Description': "Session to run on.",
+            'Value': 0,
+            'Type': "integer",
+            'Required': True
         }
+    }
 
     def run(self):
         lpath, rpath, session = self.parser.parse_options(self.options)

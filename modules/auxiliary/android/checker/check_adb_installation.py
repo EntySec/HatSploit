@@ -24,41 +24,37 @@
 # SOFTWARE.
 #
 
-from core.cli.badges import badges
-from core.cli.parser import parser
+from core.lib.module import HatSploitModule
 
 from utils.tcp_tools import tcp_tools
 
-class HatSploitModule:
-    def __init__(self):
-        self.badges = badges()
-        self.parser = parser()
-        
-        self.tcp_tools = tcp_tools()
+class HatSploitModule(HatSploitModule):
+    tcp_tools = tcp_tools()
 
-        self.details = {
-            'Name': "ADB Installation Checker",
-            'Module': "auxiliary/android/checker/check_adb_installation",
-            'Authors': [
-                'enty8080'
-            ],
-            'Description': "Check if remote Android device has ADB installation.",
-            'Dependencies': [
-                ''
-            ],
-            'Comments': [
-                ''
-            ],
-            'Risk': "low"
-        }
+    details = {
+        'Name': "ADB Installation Checker",
+        'Module': "auxiliary/android/checker/check_adb_installation",
+        'Authors': [
+            'enty8080'
+        ],
+        'Description': "Check if remote Android device has ADB installation.",
+        'Dependencies': [
+            ''
+        ],
+        'Comments': [
+            ''
+        ],
+        'Risk': "low"
+    }
 
-        self.options = {
-            'RHOST': {
-                'Description': "Remote host.",
-                'Value': None,
-                'Required': True
-            }
+    options = {
+        'RHOST': {
+            'Description': "Remote host.",
+            'Value': None,
+            'Type': "ip",
+            'Required': True
         }
+    }
 
     def run(self):
         remote_host = self.parser.parse_options(self.options)

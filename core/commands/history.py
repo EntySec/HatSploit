@@ -24,33 +24,30 @@
 # SOFTWARE.
 #
 
-import os
 import readline
 
-from core.cli.badges import badges
-from core.base.config import config
+from core.lib.command import HatSploitCommand
 
+from core.base.config import config
 from core.base.storage import local_storage
 from core.base.storage import global_storage
 
-class HatSploitCommand:
-    def __init__(self):
-        self.badges = badges()
-        self.config = config()
-        
-        self.history = self.config.path_config['base_paths']['history_path']
-        self.storage_path = self.config.path_config['base_paths']['storage_path']
-        
-        self.local_storage = local_storage()
-        self.global_storage = global_storage(self.storage_path)
+class HatSploitCommand(HatSploitCommand):
+    config = config()
+    local_storage = local_storage()
 
-        self.details = {
-            'Category': "developer",
-            'Name': "history",
-            'Description': "Manage HatSploit history.",
-            'Usage': "history [-l|on|off]",
-            'MinArgs': 1
-        }
+    history = config.path_config['base_paths']['history_path']
+    storage_path = config.path_config['base_paths']['storage_path']
+    
+    global_storage = global_storage(storage_path)
+
+    details = {
+        'Category': "developer",
+        'Name': "history",
+        'Description': "Manage HatSploit history.",
+        'Usage': "history [-l|on|off]",
+        'MinArgs': 1
+    }
 
     def run(self, argc, argv):
         option = argv[0]

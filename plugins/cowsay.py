@@ -26,38 +26,32 @@
 
 import textwrap
 
-from core.cli.badges import badges
-from core.cli.colors import colors
+from core.lib.plugin import HatSploitPlugin
 
-class HatSploitPlugin:
-    def __init__(self):
-        self.badges = badges()
-        self.colors = colors()
+class HatSploitPlugin(HatSploitPlugin):
+    details = {
+        'Name': "cowsay",
+        'Authors': [
+            'enty8080'
+        ],
+        'Description': "Cowsay plugin for HatSploit.",
+        'Dependencies': [
+            ''
+        ],
+        'Comments': [
+            ''
+        ]
+    }
 
-        self.details = {
-            'Name': "cowsay",
-            'Authors': [
-                'enty8080'
-            ],
-            'Description': "Cowsay plugin for HatSploit.",
-            'Dependencies': [
-                ''
-            ],
-            'Comments': [
-                ''
-            ]
-        }
-
-        self.commands = {
+    commands = {
+        'cowsay': {
             'cowsay': {
-                'cowsay': {
-                    'Description': "Ask cow to say message.",
-                    'Usage': "cowsay <message>",
-                    'MinArgs': 1,
-                    'Run': self.cowsay
-                }
+                'Description': "Ask cow to say message.",
+                'Usage': "cowsay <message>",
+                'MinArgs': 1
             }
         }
+    }
 
     def ask_cow(self, message, length=40):
         return self.build_bubble(message, length) + self.build_cow()

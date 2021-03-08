@@ -24,21 +24,16 @@
 # SOFTWARE.
 #
 
-from core.cli.badges import badges
-from core.cli.colors import colors
+from core.lib.command import HatSploitCommand
 
-class HatSploitCommand:
-    def __init__(self):
-        self.badges = badges()
-        self.colors = colors()
-
-        self.details = {
-            'Category': "core",
-            'Name': "clear",
-            'Description': "Clear terminal window.",
-            'Usage': "clear",
-            'MinArgs': 0
-        }
+class HatSploitCommand(HatSploitCommand):
+    details = {
+        'Category': "core",
+        'Name': "clear",
+        'Description': "Clear terminal window.",
+        'Usage': "clear",
+        'MinArgs': 0
+    }
 
     def run(self, argc, argv):
         self.badges.output_empty(self.colors.CLEAR, end='')

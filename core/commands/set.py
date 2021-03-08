@@ -24,25 +24,24 @@
 # SOFTWARE.
 #
 
-import os
+from core.lib.command import HatSploitCommand
 
-from core.cli.badges import badges
+from core.base.types import types
 from core.base.storage import local_storage
 from core.modules.modules import modules
 
-class HatSploitCommand:
-    def __init__(self):
-        self.badges = badges()
-        self.local_storage = local_storage()
-        self.modules = modules()
+class HatSploitCommand(HatSploitCommand):
+    types = types()
+    local_storage = local_storage()
+    modules = modules()
 
-        self.details = {
-            'Category': "module",
-            'Name': "set",
-            'Description': "Set an option value.",
-            'Usage': "set <option> <value>",
-            'MinArgs': 2
-        }
+    details = {
+        'Category': "module",
+        'Name': "set",
+        'Description': "Set an option value.",
+        'Usage': "set <option> <value>",
+        'MinArgs': 2
+    }
 
     def run(self, argc, argv):
         option = argv[0].upper()
@@ -50,10 +49,71 @@ class HatSploitCommand:
         
         if self.modules.check_current_module():
             current_module = self.modules.get_current_module_object()
-            if option in current_module.options.keys():
-                self.badges.output_information(option + " ==> " + value)
-                self.local_storage.set_module_option("current_module", self.local_storage.get("current_module_number"), option, value)
+            if hasattr(current_module, "options"):
+                if option in current_module.options.keys():
+                    value_type = current_module.options[option]['Type']
+
+                    if value_type:
+                        if value_type.lower() == 'ip':
+                            if not self.types.is_ip(value):
+                                self.badges.output_error("Invalid value, expected valid IP!")
+                                return
+                
+                        if value_type.lower() == 'ipv4':
+                            if not self.types.is_ipv4(value):
+                                self.badges.output_error("Invalid value, expected valid IPv4!")
+                                return
+
+                        if value_type.lower() == 'ipv6':
+                            if not self.types.is_ipv6(value):
+                                self.badges.output_error("Invalid value, expected valid IPv6!")
+                                return
+                    
+                        if value_type.lower() == 'ipv4_range':
+                            if not self.types.is_ipv4_range(value):
+                                self.badges.output_error("Invalid value, expected valid IPv4 range!")
+                                return
+                    
+                        if value_type.lower() == 'ipv6_range':
+                            if not self.types.is_ipv6_range(value):
+                                self.badges.output_error("Invalid value, expected valid IPv6 range!")
+                                return
+                    
+                        if value_type.lower() == 'port':
+                            if not self.types.is_port(value):
+                                self.badges.output_error("Invalid value, expected valid port!")
+                                return
+                    
+                        if value_type.lower() == 'port_range':
+                            if not self.types.is_port_range(value):
+                                self.badges.output_error("Invalid value, expected valid port range!")
+                                return
+                        
+                        if value_type.lower() == 'number':
+                            if not self.types.is_number(value):
+                                self.badges.output_error("Invalid value, expected valid number!")
+                                return
+
+                        if value_type.lower() == 'integer':
+                            if not self.types.is_integer(value):
+                                self.badges.output_error("Invalid value, expected valid integer!")
+                                return
+                    
+                        if value_type.lower() == 'float':
+                            if not self.types.is_float(value):
+                                self.badges.output_error("Invalid value, expected valid float!")
+                                return
+                    
+                        if value_type.lower() == 'boolean':
+                            if not self.types.is_boolean(value):
+                                self.badges.output_error("Invalid value, expected valid boolean!")
+                                return
+
+                    self.badges.output_information(option + " ==> " + value)
+                    self.local_storage.set_module_option("current_module", self.local_storage.get("current_module_number"), option, value)
+                else:
+                    self.badges.output_error("Unrecognized option!")
             else:
-                self.badges.output_error("Unrecognized option!")
+                self.badges.output_warning("Module has no options.")
         else:
             self.badges.output_warning("No module selected.")

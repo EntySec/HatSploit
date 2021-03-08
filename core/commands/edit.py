@@ -26,27 +26,22 @@
 
 import os
 
-from core.cli.badges import badges
-from core.base.config import config
-from core.base.storage import local_storage
-from core.modules.modules import modules
-from core.base.execute import execute
+from core.lib.command import HatSploitCommand
 
-class HatSploitCommand:
-    def __init__(self):
-        self.badges = badges()
-        self.config = config()
-        self.local_storage = local_storage()
-        self.modules = modules()
-        self.execute = execute()
-        
-        self.details = {
-            'Category': "developer",
-            'Name': "edit",
-            'Description': "Open module in editor.",
-            'Usage': "edit <module>",
-            'MinArgs': 1
-        }
+from core.modules.modules import modules
+from core.base.storage import local_storage
+
+class HatSploitCommand(HatSploitCommand):
+    modules = modules()
+    local_storage = local_storage()
+
+    details = {
+        'Category': "developer",
+        'Name': "edit",
+        'Description': "Open module in editor.",
+        'Usage': "edit <module>",
+        'MinArgs': 1
+    }
 
     def run(self, argc, argv):
         module = argv[0]

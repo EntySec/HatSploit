@@ -24,25 +24,22 @@
 # SOFTWARE.
 #
 
-from core.cli.badges import badges
-from core.cli.tables import tables
+from core.lib.command import HatSploitCommand
+
 from core.base.sessions import sessions
 from core.base.storage import local_storage
 
-class HatSploitCommand:
-    def __init__(self):
-        self.badges = badges()
-        self.tables = tables()
-        self.sessions = sessions()
-        self.local_storage = local_storage()
+class HatSploitCommand(HatSploitCommand):
+    sessions = sessions()
+    local_storage = local_storage()
 
-        self.details = {
-            'Category': "sessions",
-            'Name': "sessions",
-            'Description': "Manage opened sessions.",
-            'Usage': "sessions [-l|-i <property> <id>|-c <property> <id>]",
-            'MinArgs': 1
-        }
+    details = {
+        'Category': "sessions",
+        'Name': "sessions",
+        'Description': "Manage opened sessions.",
+        'Usage': "sessions [-l|-i <property> <id>|-c <property> <id>]",
+        'MinArgs': 1
+    }
 
     def run(self, argc, argv):
         if argv[0] == '-l':

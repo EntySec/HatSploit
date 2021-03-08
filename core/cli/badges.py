@@ -26,7 +26,7 @@
 
 import os
 
-from core.cli.io import io
+from core.base.io import io
 from core.cli.colors import colors
 
 class badges:

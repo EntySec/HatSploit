@@ -26,29 +26,24 @@
 
 import platform
 
-from core.cli.badges import badges
-from core.cli.colors import colors
+from core.lib.command import HatSploitCommand
 
-class HatSploitCommand:
-    def __init__(self):
-        self.badges = badges()
-        self.colors = colors()
-        
-        self.prompt = self.colors.BOLD + ">>> " + self.colors.END
-        
-        self.details = {
-            'Category': "developer",
-            'Name': "pyshell",
-            'Description': "Open Python shell.",
-            'Usage': "pyshell",
-            'MinArgs': 0
-        }
+class HatSploitCommand(HatSploitCommand):
+    details = {
+        'Category': "developer",
+        'Name': "pyshell",
+        'Description': "Open Python shell.",
+        'Usage': "pyshell",
+        'MinArgs': 0
+    }
 
     def run(self, argc, argv):
+        prompt = self.colors.BOLD + ">>> " + self.colors.END
+        
         self.badges.output_information(f"Python {platform.python_version()} console")
         self.badges.output_empty("")
         while True:
-            output = self.badges.input_empty(self.prompt)
+            output = self.badges.input_empty(prompt)
             if "exit" in output or "quit" in output:
                 return
             try:

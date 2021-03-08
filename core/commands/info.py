@@ -24,23 +24,20 @@
 # SOFTWARE.
 #
 
-from core.cli.badges import badges
-from core.modules.modules import modules
-from core.base.storage import local_storage
+from core.lib.command import HatSploitCommand
 
-class HatSploitCommand:
-    def __init__(self):
-        self.badges = badges()
-        self.modules = modules()
-        self.local_storage = local_storage()
-        
-        self.details = {
-            'Category': "module",
-            'Name': "info",
-            'Description': "Show module information.",
-            'Usage': "info [<module>]",
-            'MinArgs': 0
-        }
+from core.modules.modules import modules
+
+class HatSploitCommand(HatSploitCommand):
+    modules = modules()
+
+    details = {
+        'Category': "module",
+        'Name': "info",
+        'Description': "Show module information.",
+        'Usage': "info [<module>]",
+        'MinArgs': 0
+    }
 
     def format_module_information(self, current_module):
         authors = ""

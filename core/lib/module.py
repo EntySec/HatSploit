@@ -24,35 +24,44 @@
 # SOFTWARE.
 #
 
-class HatSploitPlugin:
+from core.cli.fmt import fmt
+from core.cli.badges import badges
+from core.cli.colors import colors
+from core.cli.parser import parser
+from core.cli.tables import tables
+
+class HatSploitModule:
     def __init__(self):
-        self.details = {
-            'Name': "",
-            'Authors': [
-                ''
-            ],
+        self.fmt = fmt()
+        self.badges = badges()
+        self.colors = colors()
+        self.parser = parser()
+        self.tables = tables()
+
+    details = {
+        'Name': "",
+        'Module': "",
+        'Authors': [
+            ''
+        ],
+        'Description': "",
+        'Dependencies': [
+            ''
+        ],
+        'Comments': [
+            ''
+        ],
+        'Risk': ""
+    }
+        
+    options = {
+        '': {
             'Description': "",
-            'Dependencies': [
-                ''
-            ],
-            'Comments': [
-                ''
-            ]
+            'Value': None,
+            'Type': None,
+            'Required': True
         }
-
-        self.commands = {
-            '': {
-                '': {
-                    'Description': "",
-                    'Usage': "",
-                    'MinArgs': 0,
-                    'Run': self.command
-                }
-            }
-        }
-
-    def command(self, argc, argv):
-        pass
-
+    }
+        
     def run(self):
         pass

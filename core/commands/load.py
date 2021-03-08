@@ -24,27 +24,24 @@
 # SOFTWARE.
 #
 
-import os
+from core.lib.command import HatSploitCommand
 
-from core.cli.badges import badges
-from core.base.storage import local_storage
 from core.plugins.plugins import plugins
+from core.base.storage import local_storage
 from core.db.importer import importer
 
-class HatSploitCommand:
-    def __init__(self):
-        self.badges = badges()
-        self.local_storage = local_storage()
-        self.plugins = plugins()
-        self.importer = importer()
+class HatSploitCommand(HatSploitCommand):
+    plugins = plugins()
+    local_storage = local_storage()
+    importer = importer()
 
-        self.details = {
-            'Category': "plugin",
-            'Name': "load",
-            'Description': "Load specified plugin.",
-            'Usage': "load <plugin>",
-            'MinArgs': 1
-        }
+    details = {
+        'Category': "plugin",
+        'Name': "load",
+        'Description': "Load specified plugin.",
+        'Usage': "load <plugin>",
+        'MinArgs': 1
+    }
 
     def import_plugin(self, database, plugin):
         loaded_plugins = dict()

@@ -24,65 +24,60 @@
 # SOFTWARE.
 #
 
-import os
 import socketserver
 
-from core.cli.badges import badges
-from core.cli.parser import parser
-from core.base.types import types
+from core.lib.module import HatSploitModule
 
 from utils.tcp_tools import tcp_tools
 
 from data.modules.auxiliary.multi.sniffer.user_agent_sniffer.core.handler import handler
 
-class HatSploitModule:
-    def __init__(self):
-        self.badges = badges()
-        self.parser = parser()
-        self.types = types()
+class HatSploitModule(HatSploitModule):
+    tcp_tools = tcp_tools()
 
-        self.tcp_tools = tcp_tools()
+    handler = handler
 
-        self.handler = handler
-        
-        self.details = {
-            'Name': "User Agent Sniffer",
-            'Module': "auxiliary/multi/sniffer/user_agent_sniffer",
-            'Authors': [
-                'enty8080'
-            ],
-            'Description': "Sniff User-Agent through URL.",
-            'Dependencies': [
-                ''
-            ],
-            'Comments': [
-                ''
-            ],
-            'Risk': "medium"
+    details = {
+        'Name': "User Agent Sniffer",
+        'Module': "auxiliary/multi/sniffer/user_agent_sniffer",
+        'Authors': [
+            'enty8080'
+        ],
+        'Description': "Sniff User-Agent through URL.",
+        'Dependencies': [
+            ''
+        ],
+        'Comments': [
+            ''
+        ],
+        'Risk': "medium"
+    }
+
+    options = {
+        'LHOST': {
+            'Description': "Local host.",
+            'Value': tcp_tools.get_local_host(),
+            'Type': "ip",
+            'Required': True
+        },
+        'LPORT': {
+            'Description': "Local port.",
+            'Value': 80,
+            'Type': "port",
+            'Required': True
+        },
+        'FOREVER': {
+            'Description': "Start http server forever.",
+            'Value': "no",
+            'Type': "boolean",
+            'Required': False
         }
-        
-        self.options = {
-            'LHOST': {
-                'Description': "Local host.",
-                'Value': self.tcp_tools.get_local_host(),
-                'Required': True
-            },
-            'LPORT': {
-                'Description': "Local port.",
-                'Value': 80,
-                'Required': True
-            },
-            'FOREVER': {
-                'Description': "Start http server forever.",
-                'Value': "no",
-                'Required': False
-            }
-        }
-        
+    }
+
     def start_server(self, local_host, local_port, forever):
         try:
-            httpd = socketserver.TCPServer((local_host, local_port), self.handler)
-            self.badges.output_process("Starting http server on port " + str(local_port) + "...")
+            httpd = socketserver.TCPServer((local_host, int(local_port)), self.handler)
+            self.badges.output_process("Starting http server on port " + local_port + "...")
             if forever.lower() in ['yes', 'y']:
                 while True:
                     self.badges.output_process("Listening for connections...")
@@ -91,13 +86,8 @@ class HatSploitModule:
                 self.badges.output_process("Listening for connections...")
                 httpd.handle_request()
         except Exception:
-            self.badges.output_error("Failed to start http server on port " + str(local_port) + "!")
-        
+            self.badges.output_error("Failed to start http server on port " + local_port + "!")
+
     def run(self):
         local_host, local_port, forever = self.parser.parse_options(self.options)
-        local_port = self.types.cast_to_int(local_port)
-        
-        if local_port == None:
-            return
-        
         self.start_server(local_host, local_port, forever)

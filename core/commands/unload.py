@@ -24,25 +24,22 @@
 # SOFTWARE.
 #
 
-import os
+from core.lib.command import HatSploitCommand
 
-from core.cli.badges import badges
 from core.base.storage import local_storage
 from core.plugins.plugins import plugins
 
-class HatSploitCommand:
-    def __init__(self):
-        self.badges = badges()
-        self.local_storage = local_storage()
-        self.plugins = plugins()
+class HatSploitCommand(HatSploitCommand):
+    local_storage = local_storage()
+    plugins = plugins()
 
-        self.details = {
-            'Category': "plugin",
-            'Name': "unload",
-            'Description': "Unload specified loaded plugin.",
-            'Usage': "unload <plugin>",
-            'MinArgs': 1
-        }
+    details = {
+        'Category': "plugin",
+        'Name': "unload",
+        'Description': "Unload specified loaded plugin.",
+        'Usage': "unload <plugin>",
+        'MinArgs': 1
+    }
 
     def run(self, argc, argv):
         plugin = argv[0]

@@ -24,28 +24,22 @@
 # SOFTWARE.
 #
 
-import os
-import sys
+from core.lib.command import HatSploitCommand
 
-from core.base.jobs import jobs
-from core.base.storage import local_storage
 from core.modules.modules import modules
-from core.base.exceptions import exceptions
+from core.base.storage import local_storage
 
-class HatSploitCommand:
-    def __init__(self):
-        self.jobs = jobs()
-        self.local_storage = local_storage()
-        self.modules = modules()
-        self.exceptions = exceptions()
-
-        self.details = {
-            'Category': "module",
-            'Name': "back",
-            'Description': "Return to the previous module.",
-            'Usage': "back",
-            'MinArgs': 0
-        }
+class HatSploitCommand(HatSploitCommand):
+    modules = modules()
+    local_storage = local_storage()
+    
+    details = {
+        'Category': "module",
+        'Name': "back",
+        'Description': "Return to the previous module.",
+        'Usage': "back",
+        'MinArgs': 0
+    }
 
     def run(self, argc, argv):
         if self.modules.check_current_module():
