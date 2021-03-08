@@ -88,6 +88,6 @@ class types:
         
     def is_boolean(self, value):
         value = value.lower()
-        if value in ['1', '0', 'yes', 'no', 'y', 'n', 'true', 'false']:
+        if value in ['yes', 'no', 'y', 'n']:
             return True
         return False
