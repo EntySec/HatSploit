@@ -50,7 +50,7 @@ class HatSploitModule(HatSploitModule):
     options = {
         'BPORT': {
             'Description': "Bind port.",
-            'Value': 4444,
+            'Value': 8888,
             'Type': "port",
             'Required': True
         },

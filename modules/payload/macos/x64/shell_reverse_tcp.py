@@ -58,7 +58,7 @@ class HatSploitModule(HatSploitModule):
         },
         'LPORT': {
             'Description': "Local port.",
-            'Value': 4444,
+            'Value': 8888,
             'Type': "port",
             'Required': True
         },
