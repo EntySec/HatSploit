@@ -40,7 +40,7 @@ class types:
         return False
 
     def is_ip(self, value):
-        if self.is_ipv4(value) and self.is_ipv6(value):
+        if self.is_ipv4(value) or self.is_ipv6(value):
             return True
         return False
     
