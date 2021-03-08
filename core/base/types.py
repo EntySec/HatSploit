@@ -68,18 +68,18 @@ class types:
                 if self.is_port(value[0]) and self.is_port(value[1]):
                     return True
         return False
-    
-    def is_integer(self, value):
-         value = str(value)
-         if value.isdigit():
-             return True
-         return False
 
-     def is_float(self, value):
-         value = str(value)
-         if re.match(r'^-?\d+(?:\.\d+)$', value):
-             return True
-         return False
+    def is_integer(self, value):
+        value = str(value)
+        if value.isdigit():
+            return True
+        return False
+
+    def is_float(self, value):
+        value = str(value)
+        if re.match(r'^-?\d+(?:\.\d+)$', value):
+            return True
+        return False
 
     def is_number(self, value):
         if self.is_integer(value) or self.is_float(value):
