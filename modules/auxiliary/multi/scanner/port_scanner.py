@@ -83,5 +83,5 @@ class HatSploitModule(HatSploitModule):
         for port in range(start, end):
             target = self.http.format_host_and_port(remote_host, port)
 
-            if self.tcp.check_tcp_port(remote_host, port, timeout):
+            if self.tcp.check_tcp_port(remote_host, port, float(timeout)):
                 self.badges.output_success(target + " - opened")
