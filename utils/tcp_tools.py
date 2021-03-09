@@ -117,14 +117,15 @@ class tcp_tools:
                             self.badges.output_warning("Connection terminated.")
                             return
                         if response:
-                            self.badges.output_empty(response.decode().strip())
+                            self.badges.output_empty(response.decode())
                     elif key.fileobj is sys.stdin:
                         line = sys.stdin.readline()
                         if not line:
                             pass
                         if line == "exit":
                             return
-                        self.client.write(line.encode())
+                        else:
+                            self.client.write(line.encode())
 
     def recv(self, timeout=10):
         if self.client:
