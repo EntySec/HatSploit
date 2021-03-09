@@ -35,11 +35,10 @@ class HatSploitCommand(HatSploitCommand):
 
     usage = ""
     usage += "sessions <option> [arguments]\n\n"
-    usage += "    -h               Show this help message and exit.\n"
-    usage += "    -l               List all active sessions.\n"
-    usage += "    -i <session_id>  Interact with specified session.\n"
-    usage += "    -p <session_id>  Spawn Pseudo shell on specified session.\n"
-    usage += "    -c <session_id>  Close specified session."
+    usage += "    -l, --list                   List all active sessions.\n"
+    usage += "    -i, --interact <session_id>  Interact with specified session.\n"
+    usage += "    -p, --pseudo <session_id>    Spawn Pseudo shell on specified session.\n"
+    usage += "    -c, --close <session_id>     Close specified session."
     
     details = {
         'Category': "sessions",
@@ -50,7 +49,7 @@ class HatSploitCommand(HatSploitCommand):
     }
 
     def run(self, argc, argv):
-        if argv[0] == '-l':
+        if argv[0] in ['-l', '--list']:
             sessions = self.local_storage.get("sessions")
             
             if sessions:
@@ -68,17 +67,17 @@ class HatSploitCommand(HatSploitCommand):
                     self.badges.output_empty("")
             else:
                 self.badges.output_warning("No opened sessions available.")
-        elif argv[0] == '-c':
+        elif argv[0] in ['-c', '--close']:
             if argc < 3:
                 self.badges.output_usage(self.details['Usage'])
             else:
                 self.sessions.close_session(argv[1], argv[2])
-        elif argv[0] == '-p':
+        elif argv[0] in ['-p', '--pseudo']:
             if argc < 3:
                 self.badges.output_usage(self.details['Usage'])
             else:
                 self.sessions.spawn_pseudo_shell(argv[1], argv[2])
-        elif argv[0] == '-i':
+        elif argv[0] in ['-i', '--interact']:
             if argc < 3:
                 self.badges.output_usage(self.details['Usage'])
             else:
