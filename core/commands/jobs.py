@@ -33,11 +33,16 @@ class HatSploitCommand(HatSploitCommand):
     jobs = jobs()
     local_storage = local_storage()
 
+    usage = ""
+    usage += "jobs <option> [arguments]\n\n"
+    usage += "    -l, --list           List all active jobs.\n"
+    usage += "    -k, --kill <job_id>  Kill specified active job."
+
     details = {
         'Category': "jobs",
         'Name': "jobs",
         'Description': "Manage active jobs.",
-        'Usage': "jobs [-l|-k <id>]",
+        'Usage': usage,
         'MinArgs': 1
     }
 
