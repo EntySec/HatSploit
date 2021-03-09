@@ -73,6 +73,13 @@ class sessions:
                     return True
         return False
     
+    def spawn_interactive_connection(self, session_property, session_id):
+        sessions = self.local_storage.get("sessions")
+        if self.check_session_exist(session_property, session_id):
+            sessions[session_property][int(session_id)].interact()
+        else:
+            self.badges.output_error("Invalid session given!")
+    
     def spawn_pseudo_shell(self, session_property, session_id):
         sessions = self.local_storage.get("sessions")
         if self.check_session_exist(session_property, session_id):
