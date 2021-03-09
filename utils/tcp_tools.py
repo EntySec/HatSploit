@@ -128,13 +128,16 @@ class tcp_tools:
 
     def recv(self, timeout=10):
         if self.client:
-            if timeout != -1:
+            if timeout is not None:
                 result = b""
                 timeout = time.time() + timeout
                 while True:
                     data = self.client.read_very_eager()
                     result += data
-                    if data or time.time() > timeout:
+                    if data:
+                        break
+                    if time.time() > timeout:
+                        self.badges.output_warning("Timeout waiting for response.")
                         break
                 return result
             else:
