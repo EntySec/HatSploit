@@ -43,9 +43,9 @@ class HatSploitCommand(HatSploitCommand):
     
     usage = ""
     usage += "history <option>\n\n"
-    usage += "    -l, --list   List all history.\n"
-    usage += "    -c, --clear  Clear all history.\n"
-    usage += "    on/off       Turn history on/off."
+    usage += "  -l, --list   List all history.\n"
+    usage += "  -c, --clear  Clear all history.\n"
+    usage += "  on/off       Turn history on/off."
 
     details = {
         'Category': "developer",
