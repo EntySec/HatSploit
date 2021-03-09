@@ -80,7 +80,7 @@ class HatSploitModule(HatSploitModule):
             """
             self.badges.output_process("Waiting for user to type password...")
 
-            status, output = session.send_command("osascript", payload, timeout=-1)
+            status, output = session.send_command("osascript", payload, None)
             if not status:
                 self.badges.output_error("Failed to prompt user to type password!")
             else:
