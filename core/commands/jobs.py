@@ -36,7 +36,7 @@ class HatSploitCommand(HatSploitCommand):
     usage = ""
     usage += "jobs <option> [arguments]\n\n"
     usage += "  -l, --list           List all active jobs.\n"
-    usage += "  -k, --kill <job_id>  Kill specified job."
+    usage += "  -k, --kill <job_id>  Kill specified job.\n"
 
     details = {
         'Category': "jobs",
