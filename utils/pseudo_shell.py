@@ -49,12 +49,15 @@ class pseudo_shell:
     def execute_command(self, execute_method, command, arguments=()):
         try:
             if command == "exit":
-                return
-            output = execute_method(*arguments, command).strip()
+                return True
+            if isinstance(arguments, tuple):
+                output = execute_method(*arguments, command)
+            else:
+                output = execute_method(arguments, command)
             if isinstance(output, tuple) and len(output) == 2:
                 if output[0]:
                     if output[1]:
-                        self.badges.output_empty(output[1])
+                        self.badges.output_empty(output[1].strip())
                     else:
                         self.badges.output_warning("No output provided by command.")
                 else:
@@ -65,6 +68,7 @@ class pseudo_shell:
             self.badges.output_warning("Timeout waiting for response.")
         except Exception as e:
             self.badges.output_error("An error occurred: " + str(e) + "!")
+        return False
         
     def spawn_pseudo_shell(self, module_name, execute_method, arguments=()):
         self.badges.output_process("Spawning Pseudo shell...")
@@ -84,4 +88,5 @@ class pseudo_shell:
                 command = self.badges.input_empty(self.prompt)
             except (KeyboardInterrupt, EOFError, self.exceptions.GlobalException):
                 pass
-            self.execute_command(execute_method, command, arguments)
+            if self.execute_command(execute_method, command, arguments):
+                return

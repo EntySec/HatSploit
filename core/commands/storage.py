@@ -37,12 +37,19 @@ class HatSploitCommand(HatSploitCommand):
         
     local_storage = local_storage()
     global_storage = global_storage(storage_path)
+    
+    usage = ""
+    usage += "storage [global|local] <option> [arguments]\n\n"
+    usage += "  -l, --list                List all storage variables.\n"
+    usage += "  -v, --value <name>        Show specified storage variable value.\n"
+    usage += "  -s, --set <name> <value>  Set storage veriable value.\n"
+    usage += "  -d, --delete <name>       Delete storage variable.\n"
 
     details = {
         'Category': "developer",
         'Name': "storage",
         'Description': "Manage storage variables.",
-        'Usage': "storage [global|local] [-l|-v <name>|-s <name> <value>|-d <name>]",
+        'Usage': usage,
         'MinArgs': 2
     }
 
@@ -50,24 +57,24 @@ class HatSploitCommand(HatSploitCommand):
         type_of_storage = argv[0]
         if type_of_storage == "global":
             choice = argv[1]
-            if choice == "-l":
+            if choice in ['-l', '--list']:
                 self.badges.output_information("Global storage variables:")
                 for variable in self.global_storage.get_all():
                     if not str.startswith(variable, '__') and not str.endswith(variable, '__'):
                         self.badges.output_empty("    * " + variable)
-            elif choice == "-v":
+            elif choice in ['-v', '--value']:
                 if argc < 3:
                     self.badges.output_usage(self.details['Usage'])
                 else:
                     if argv[2] in self.global_storage.get_all():
                         self.badges.output_information(argv[2] + " = " + str(
                             self.global_storage.get(argv[2])))
-            elif choice == "-s":
+            elif choice in ['-s', '--set']:
                 if argc < 4:
                     self.badges.output_usage(self.details['Usage'])
                 else:
                     self.global_storage.set(argv[2], argv[3])
-            elif choice == "-d":
+            elif choice in ['-d', '--delete']:
                 if argc < 3:
                     self.badges.output_usage(self.details['Usage'])
                 else:
@@ -79,12 +86,12 @@ class HatSploitCommand(HatSploitCommand):
                 self.badges.output_usage(self.details['Usage'])
         elif type_of_storage == "local":
             choice = argv[1]
-            if choice == "-l":
+            if choice in ['-l', '--list']:
                 self.badges.output_information("Local storage variables:")
                 for variable in self.local_storage.get_all():
                     if not str.startswith(variable, '__') and not str.endswith(variable, '__'):
                         self.badges.output_empty("    * " + variable)
-            elif choice == "-v":
+            elif choice in ['-v', '--value']:
                 if argc < 3:
                     self.badges.output_usage(self.details['Usage'])
                 else:
@@ -93,12 +100,12 @@ class HatSploitCommand(HatSploitCommand):
                             self.local_storage.get(argv[2])))
                     else:
                         self.badges.output_error("Invalid storage variable name!")
-            elif choice == "-s":
+            elif choice in ['-s', '--set']:
                 if argc < 4:
                     self.badges.output_usage(self.details['Usage'])
                 else:
                     self.local_storage.set(argv[2], argv[3])
-            elif choice == "-d":
+            elif choice in ['-d', '--delete']:
                 if argc < 3:
                     self.badges.output_usage(self.details['Usage'])
                 else:

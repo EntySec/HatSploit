@@ -40,12 +40,18 @@ class HatSploitCommand(HatSploitCommand):
     storage_path = config.path_config['base_paths']['storage_path']
     
     global_storage = global_storage(storage_path)
+    
+    usage = ""
+    usage += "history <option>\n\n"
+    usage += "  -l, --list   List all history.\n"
+    usage += "  -c, --clear  Clear all history.\n"
+    usage += "  on/off       Turn history on/off.\n"
 
     details = {
         'Category': "developer",
         'Name': "history",
         'Description': "Manage HatSploit history.",
-        'Usage': "history [-l|on|off]",
+        'Usage': usage,
         'MinArgs': 1
     }
 
@@ -59,11 +65,11 @@ class HatSploitCommand(HatSploitCommand):
             self.local_storage.set("history", False)
             self.global_storage.set("history", False)
             self.badges.output_information("HatSploit history: off")
-        elif option == "-c":
+        elif option in ['-c', '--clear']:
             readline.clear_history()
             with open(self.history, 'w') as history:
                 history.write("")
-        elif option == "-l":
+        elif option in ['-l', '--list']:
             using_history = self.local_storage.get("history")
             if using_history:
                 if readline.get_current_history_length() > 0:

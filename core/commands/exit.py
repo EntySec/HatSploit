@@ -33,18 +33,26 @@ from core.base.jobs import jobs
 class HatSploitCommand(HatSploitCommand):
     jobs = jobs()
 
+    usage = ""
+    usage += "exit [option]\n\n"
+    usage += "  -h, --help   Show this help message.\n"
+    usage += "  -f, --force  Force exit, ignoring active jobs.\n"
+
     details = {
         'Category': "core",
         'Name': "exit",
         'Description': "Exit HatSploit Framework.",
-        'Usage': "exit [-f]",
+        'Usage': usage,
         'MinArgs': 0
     }
 
     def run(self, argc, argv):
         if argc > 0:
-            if argv[0] == "-f":
+            if argv[0] in ['-f', '--force']:
                 self.jobs.stop_all_jobs()
                 sys.exit(0)
+            elif argv[0] in ['-h', '--help']:
+                self.badges.output_usage(self.details['Usage'])
+                return
         if self.jobs.exit_jobs():
             sys.exit(0)

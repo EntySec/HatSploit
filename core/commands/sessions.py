@@ -33,43 +33,54 @@ class HatSploitCommand(HatSploitCommand):
     sessions = sessions()
     local_storage = local_storage()
 
+    usage = ""
+    usage += "sessions <option> [arguments]\n\n"
+    usage += "  -l, --list                   List all opened sessions.\n"
+    usage += "  -i, --interact <session_id>  Interact with specified session.\n"
+    usage += "  -p, --pseudo <session_id>    Spawn Pseudo shell on specified session.\n"
+    usage += "  -c, --close <session_id>     Close specified session.\n"
+    
     details = {
         'Category': "sessions",
         'Name': "sessions",
         'Description': "Manage opened sessions.",
-        'Usage': "sessions [-l|-i <property> <id>|-c <property> <id>]",
+        'Usage': usage,
         'MinArgs': 1
     }
 
     def run(self, argc, argv):
-        if argv[0] == '-l':
+        if argv[0] in ['-l', '--list']:
             sessions = self.local_storage.get("sessions")
             
             if sessions:
                 for session_property in sessions.keys():
                     sessions_data = list()
-                    headers = ("ID", "Host", "Port", "Username", "Hostname")
+                    headers = ("ID", "Module", "Host", "Port")
                     for session_id in sessions[session_property].keys():
+                        module = sessions[session_property][session_id]['module']
                         host = sessions[session_property][session_id]['host']
                         port = sessions[session_property][session_id]['port']
-                        username = sessions[session_property][session_id]['username']
-                        hostname = sessions[session_property][session_id]['hostname']
-                        
-                        sessions_data.append((session_id, host, port, username, hostname))
+
+                        sessions_data.append((session_id, module, host, port))
                     self.badges.output_empty("")
-                    self.tables.print_table("Sessions: " + session_property, headers, *sessions_data)
+                    self.tables.print_table("Opened Sessions: " + session_property, headers, *sessions_data)
                     self.badges.output_empty("")
             else:
                 self.badges.output_warning("No opened sessions available.")
-        elif argv[0] == '-c':
+        elif argv[0] in ['-c', '--close']:
             if argc < 3:
                 self.badges.output_usage(self.details['Usage'])
             else:
                 self.sessions.close_session(argv[1], argv[2])
-        elif argv[0] == '-i':
+        elif argv[0] in ['-p', '--pseudo']:
             if argc < 3:
                 self.badges.output_usage(self.details['Usage'])
             else:
-                self.sessions.interact_with_session(argv[1], argv[2])
+                self.sessions.spawn_pseudo_shell(argv[1], argv[2])
+        elif argv[0] in ['-i', '--interact']:
+            if argc < 3:
+                self.badges.output_usage(self.details['Usage'])
+            else:
+                self.sessions.spawn_interactive_connection(argv[1], argv[2])
         else:
             self.badges.output_usage(self.details['Usage'])

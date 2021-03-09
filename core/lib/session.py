@@ -24,37 +24,12 @@
 # SOFTWARE.
 #
 
-from core.lib.session import session
-
-from utils.tcp_tools import tcp_tools
-
-from data.modules.exploit.linux.stager.membrane_reverse_tcp.core.transfer import transfer
-
-class session(session):
-    def __init__(self, client):
-        self.tcp_tools = tcp_tools()
-
-        self.transfer = transfer(client)
-        self.tcp_tools.connect(client)
-
+class session:
     def close(self):
-        self.tcp_tools.disconnect()
+        pass
 
     def send_command(self, command, arguments=None, timeout=10):
-        if arguments:
-            command += " " + arguments
+        pass
 
-        output = self.tcp_tools.send_command(command + '\x04', timeout)
-
-        if "error" in output:
-            return (False, "")
-        return (True, output)
-
-    def interact(self):
-        self.tcp_tools.interactive()
-
-    def download(self, input_file, output_path):
-        self.transfer.download(input_file, output_path)
-
-    def upload(self, input_file, output_path):
-        self.transfer.upload(input_file, output_path)
+    def interact(self, command):
+        pass

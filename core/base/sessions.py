@@ -36,33 +36,26 @@ class sessions:
         
         self.pseudo_shell = pseudo_shell()
 
-    def add_session(self, session_property, session_id, session_host, session_port, 
-                    session_username, session_hostname, session_object, session_send, session_close):
+    def add_session(self, session_property, session_id, session_module, session_host, session_port, session_object):
         if not self.local_storage.get("sessions"):
             self.local_storage.set("sessions", dict())
 
         if session_property in self.local_storage.get("sessions").keys():
             sessions = self.local_storage.get("sessions")
             sessions[session_property][int(session_id)] = {
+                'module': session_module,
                 'host': session_host,
                 'port': session_port,
-                'username': session_username,
-                'hostname': session_hostname,
-                'object': session_object,
-                'send': session_send,
-                'close': session_close
+                'object': session_object
             }
         else:
             sessions = {
                 session_property: {
                     int(session_id): {
+                        'module': session_module,
                         'host': session_host,
                         'port': session_port,
-                        'username': session_username,
-                        'hostname': session_hostname,
-                        'object': session_object,
-                        'send': session_send,
-                        'close': session_close
+                        'object': session_object
                     }
                 }
             }
@@ -77,10 +70,21 @@ class sessions:
                     return True
         return False
     
-    def interact_with_session(self, session_property, session_id):
+    def spawn_interactive_connection(self, session_property, session_id):
         sessions = self.local_storage.get("sessions")
         if self.check_session_exist(session_property, session_id):
-            execute_method = sessions[session_property][int(session_id)]['send']
+            self.badges.output_process("Interacting with session " + str(session_id) + "...")
+            self.badges.output_success("Interactive connection spawned!")
+            self.badges.output_information("Type commands below.\n")
+
+            sessions[session_property][int(session_id)]['object'].interact()
+        else:
+            self.badges.output_error("Invalid session given!")
+    
+    def spawn_pseudo_shell(self, session_property, session_id):
+        sessions = self.local_storage.get("sessions")
+        if self.check_session_exist(session_property, session_id):
+            execute_method = sessions[session_property][int(session_id)]['object'].send_command
             self.pseudo_shell.spawn_pseudo_shell(session_property, execute_method)
         else:
             self.badges.output_error("Invalid session given!")
@@ -89,7 +93,7 @@ class sessions:
         sessions = self.local_storage.get("sessions")
         if self.check_session_exist(session_property, session_id):
             try:
-                sessions[session_property][int(session_id)]['close']()
+                sessions[session_property][int(session_id)]['object'].close()
                 del sessions[session_property][int(session_id)]
                 
                 if not sessions[session_property]:
