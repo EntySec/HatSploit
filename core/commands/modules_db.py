@@ -37,7 +37,7 @@ class HatSploitCommand(HatSploitCommand):
     usage += "modules_db <option> [arguments]\n\n"
     usage += "  -l, --list                   List all connected modules databases.\n"
     usage += "  -d, --disconnect <name>      Disconnect specified modules database.\n"
-    usage += "  -c, --connect <name> <path>  Connect new modules databse.\n"
+    usage += "  -c, --connect <name> <path>  Connect new modules database.\n"
 
     details = {
         'Category': "database",
