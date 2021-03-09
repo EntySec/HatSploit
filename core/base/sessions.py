@@ -36,28 +36,25 @@ class sessions:
         
         self.pseudo_shell = pseudo_shell()
 
-    def add_session(self, session_property, session_id, session_host, session_port, 
-                    session_username, session_hostname, session_object, session_send, session_close):
+    def add_session(self, session_property, session_id, session_module, session_host, session_port, session_object):
         if not self.local_storage.get("sessions"):
             self.local_storage.set("sessions", dict())
 
         if session_property in self.local_storage.get("sessions").keys():
             sessions = self.local_storage.get("sessions")
             sessions[session_property][int(session_id)] = {
+                'module': session_module,
                 'host': session_host,
                 'port': session_port,
-                'username': session_username,
-                'hostname': session_hostname,
                 'object': session_object
             }
         else:
             sessions = {
                 session_property: {
                     int(session_id): {
+                        'module': session_module,
                         'host': session_host,
                         'port': session_port,
-                        'username': session_username,
-                        'hostname': session_hostname,
                         'object': session_object
                     }
                 }
