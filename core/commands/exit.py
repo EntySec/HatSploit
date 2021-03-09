@@ -47,7 +47,7 @@ class HatSploitCommand(HatSploitCommand):
 
     def run(self, argc, argv):
         if argc > 0:
-            if argv[0] == "-f" or argv[0] == "--force":
+            if argv[0] in ['-f', '--force']:
                 self.jobs.stop_all_jobs()
                 sys.exit(0)
         if self.jobs.exit_jobs():
