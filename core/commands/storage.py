@@ -43,7 +43,7 @@ class HatSploitCommand(HatSploitCommand):
     usage += "  -l, --list                List all storage variables.\n"
     usage += "  -v, --value <name>        Show specified storage variable value.\n"
     usage += "  -s, --set <name> <value>  Set storage veriable value.\n"
-    usage += "  -d, --delete <name>       Delete storage variable."
+    usage += "  -d, --delete <name>       Delete storage variable.\n"
 
     details = {
         'Category': "developer",
