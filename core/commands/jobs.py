@@ -48,7 +48,7 @@ class HatSploitCommand(HatSploitCommand):
 
     def run(self, argc, argv):
         choice = argv[0]
-        if choice == '-l':
+        if choice in ['-l', '--list']:
             if self.local_storage.get("jobs"):
                 jobs_data = list()
                 headers = ("ID", "Name", "Module")
@@ -60,7 +60,7 @@ class HatSploitCommand(HatSploitCommand):
                 self.badges.output_empty("")
             else:
                 self.badges.output_warning("No running jobs available.")
-        elif choice == '-k':
+        elif choice in ['-k', '--kill']:
             if argc < 2:
                 self.badges.output_usage(self.details['Usage'])
             else:
