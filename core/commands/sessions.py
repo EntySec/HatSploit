@@ -37,7 +37,7 @@ class HatSploitCommand(HatSploitCommand):
     usage += "sessions <option> [<arguments>]\n\n"
     usage += "    -h               Show this help message and exit.\n"
     usage += "    -l               List all active sessions.\n"
-    usage += "    -i <session_id>  Interact with session.\n"
+    usage += "    -i <session_id>  Interact with specified session.\n"
     usage += "    -p <session_id>  Spawn Pseudo shell on specified session.\n"
     usage += "    -c <session_id>  Close specified session."
     
