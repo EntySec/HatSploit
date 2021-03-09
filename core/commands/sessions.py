@@ -38,7 +38,7 @@ class HatSploitCommand(HatSploitCommand):
     usage += "  -l, --list                   List all opened sessions.\n"
     usage += "  -i, --interact <session_id>  Interact with specified session.\n"
     usage += "  -p, --pseudo <session_id>    Spawn Pseudo shell on specified session.\n"
-    usage += "  -c, --close <session_id>     Close specified session."
+    usage += "  -c, --close <session_id>     Close specified session.\n"
     
     details = {
         'Category': "sessions",
