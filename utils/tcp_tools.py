@@ -113,7 +113,7 @@ class tcp_tools:
                     if key.fileobj is self.client:
                         try:
                             response = self.client.read_eager()
-                        except:
+                        except Exception:
                             self.badges.output_warning("Connection terminated.")
                             return
                         if response:
@@ -122,15 +122,14 @@ class tcp_tools:
                         line = sys.stdin.readline()
                         if not line:
                             pass
-                        if line == "exit":
+                        if line == "exit\n":
                             return
-                        else:
-                            self.client.write(line.encode())
+                        self.client.write(line.encode())
 
     def recv(self, timeout=10):
         if self.client:
+            result = b""
             if timeout is not None:
-                result = b""
                 timeout = time.time() + timeout
                 while True:
                     data = self.client.read_very_eager()
@@ -140,15 +139,13 @@ class tcp_tools:
                     if time.time() > timeout:
                         self.badges.output_warning("Timeout waiting for response.")
                         break
-                return result
             else:
-                result = b""
                 while True:
                     data = self.client.read_very_eager()
                     result += data
                     if data:
                         break
-                return result
+            return result
         return None
         
     #
