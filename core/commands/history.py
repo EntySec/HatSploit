@@ -43,7 +43,6 @@ class HatSploitCommand(HatSploitCommand):
     
     usage = ""
     usage += "history <option>\n\n"
-    usage += "    -h, --help   Show this help message.\n"
     usage += "    -l, --list   List all history.\n"
     usage += "    -c, --clear  Clear all history.\n"
     usage += "    on/off       Turn history on/off."
@@ -66,11 +65,11 @@ class HatSploitCommand(HatSploitCommand):
             self.local_storage.set("history", False)
             self.global_storage.set("history", False)
             self.badges.output_information("HatSploit history: off")
-        elif option == "-c" or option == "--clear":
+        elif option in ['-c', '--clear']:
             readline.clear_history()
             with open(self.history, 'w') as history:
                 history.write("")
-        elif option == "-l" or option == "--list":
+        elif option in ['-l', '--list']:
             using_history = self.local_storage.get("history")
             if using_history:
                 if readline.get_current_history_length() > 0:
