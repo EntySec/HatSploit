@@ -25,9 +25,11 @@
 #
 
 import re
+import sys
 import time
 import socket
 import telnetlib
+import selectors
 
 from core.cli.badges import badges
 from core.base.exceptions import exceptions
@@ -99,6 +101,31 @@ class tcp_tools:
         if self.client:
             self.client.write(buffer)
             
+    def interactive(self):
+        if self.client:
+            selector = selectors.SelectSelector()
+
+            selector.register(self.client, selectors.EVENT_READ)
+            selector.register(sys.stdin, selectors.EVENT_READ)
+            
+            while True:
+                for key, events in selector.select():
+                    if key.fileobj is self.client:
+                        try:
+                            response = self.client.read_eager()
+                        except:
+                            self.badges.output_warning("Connection terminated.")
+                            return
+                        if response:
+                            self.badges.output_empty(response.decode().strip())
+                    elif key.fileobj is sys.stdin:
+                        line = sys.stdin.readline()
+                        if not line:
+                            pass
+                        if line == "exit":
+                            return
+                        self.client.write(line.encode())
+
     def recv(self, timeout=10):
         if self.client:
             result = b""
