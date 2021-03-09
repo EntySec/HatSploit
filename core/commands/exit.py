@@ -35,8 +35,8 @@ class HatSploitCommand(HatSploitCommand):
 
     usage = ""
     usage += "exit [option]\n\n"
-    usage += "    -h, --help   Show this help message.\n"
-    usage += "    -f, --force  Force exit, ignoring active jobs."
+    usage += "  -h, --help   Show this help message.\n"
+    usage += "  -f, --force  Force exit, ignoring active jobs."
 
     details = {
         'Category': "core",
