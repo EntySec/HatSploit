@@ -34,7 +34,7 @@ class HatSploitCommand(HatSploitCommand):
     local_storage = local_storage()
 
     usage = ""
-    usage += "sessions <option> [<arguments>]\n\n"
+    usage += "sessions <option> [arguments]\n\n"
     usage += "    -h               Show this help message and exit.\n"
     usage += "    -l               List all active sessions.\n"
     usage += "    -i <session_id>  Interact with specified session.\n"
