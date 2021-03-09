@@ -29,13 +29,13 @@ import subprocess
 
 from core.cli.badges import badges
 
-from utils.tcp_tools import tcp_tools
+from utils.tcp.tcp import tcp
 
-class adb_tools:
+class adb:
     def __init__(self):
         self.badges = badges()
         
-        self.tcp_tools = tcp_tools()
+        self.tcp = tcp()
         
         self.adb = "adb"
 
@@ -73,7 +73,7 @@ class adb_tools:
     #
     
     def connect(self, target_addr):
-        if self.tcp_tools.check_tcp_port(target_addr, 5555):
+        if self.tcp.check_tcp_port(target_addr, 5555):
             server_log = self.execute_adb_command("connect", target_addr)
 
             if not server_log or "failed" in server_log:

@@ -38,7 +38,7 @@ from core.base.config import config
 from core.modules.modules import modules
 from core.base.exceptions import exceptions
 
-from utils.tcp_tools import tcp_tools
+from utils.tcp.tcp import tcp
 
 class importer:
     def __init__(self):
@@ -49,7 +49,7 @@ class importer:
         self.modules = modules()
         self.exceptions = exceptions()
 
-        self.tcp_tools = tcp_tools()
+        self.tcp = tcp()
 
     def get_module(self, mu, name, folderpath):
         folderpath_list = folderpath.split(".")

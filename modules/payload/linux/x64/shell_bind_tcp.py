@@ -26,7 +26,7 @@
 
 from core.lib.module import HatSploitModule
 
-from utils.hatvenom import hatvenom
+from utils.payload.hatvenom import hatvenom
 
 class HatSploitModule(HatSploitModule):
     hatvenom = hatvenom()

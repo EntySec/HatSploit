@@ -26,10 +26,10 @@
 
 from core.lib.module import HatSploitModule
 
-from utils.tcp_tools import tcp_tools
+from utils.tcp.tcp import tcp
 
 class HatSploitModule(HatSploitModule):
-    tcp_tools = tcp_tools()
+    tcp = tcp()
 
     details = {
         'Name': "ADB Installation Checker",
@@ -60,7 +60,7 @@ class HatSploitModule(HatSploitModule):
         remote_host = self.parser.parse_options(self.options)
         
         self.badges.output_process("Checking " + remote_host + "...")
-        if self.tcp_tools.check_tcp_port(remote_host, 5555):
+        if self.tcp.check_tcp_port(remote_host, 5555):
             self.badges.output_success("Target device may has ADB installation!")
         else:
             self.badges.output_warning("Looks like target device has no ADB installation.")

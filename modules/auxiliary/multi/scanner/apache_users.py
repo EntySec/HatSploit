@@ -26,12 +26,12 @@
 
 from core.lib.module import HatSploitModule
 
-from utils.web_tools import web_tools
+from utils.http.http import http
 
 from data.modules.auxiliary.multi.scanner.apache_users.dictionary import dictionary
 
 class HatSploitModule(HatSploitModule):
-    web_tools = web_tools()
+    http = http()
 
     dictionary = dictionary()
     paths = dictionary.paths
@@ -66,13 +66,13 @@ class HatSploitModule(HatSploitModule):
 
         self.badges.output_process("Scanning " + target_url + "...")
 
-        if not self.web_tools.check_url_access(target_url):
+        if not self.http.check_url_access(target_url):
             self.badges.output_error("Failed to scan!")
             return
 
         for path in self.paths:
             path = path.replace("\n", "")
-            response = self.web_tools.http_request(method="HEAD", url=target_url, path=path)
+            response = self.http.http_request(method="HEAD", url=target_url, path=path)
 
             if response.status_code == 200:
                 self.badges.output_success("[%s] ... [%s %s]" % (path, response.status_code, response.reason))

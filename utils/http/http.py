@@ -31,7 +31,7 @@ from core.base.config import config
 
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
 
-class web_tools:
+class http:
     def __init__(self):
         self.config = config()
 

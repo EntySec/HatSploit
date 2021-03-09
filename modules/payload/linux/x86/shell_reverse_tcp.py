@@ -26,11 +26,11 @@
 
 from core.lib.module import HatSploitModule
 
-from utils.tcp_tools import tcp_tools
-from utils.hatvenom import hatvenom
+from utils.tcp.tcp import tcp
+from utils.payload.hatvenom import hatvenom
 
 class HatSploitModule(HatSploitModule):
-    tcp_tools = tcp_tools()
+    tcp = tcp()
     hatvenom = hatvenom()
 
     details = {

@@ -27,12 +27,12 @@
 from core.lib.module import HatSploitModule
 from core.base.config import config
 
-from utils.web_tools import web_tools
+from utils.http.http import http
 
 class HatSploitModule(HatSploitModule):
     config = config()
 
-    web_tools = web_tools()
+    http = http()
 
     details = {
         'Name': "Directory Scanner",
@@ -64,7 +64,7 @@ class HatSploitModule(HatSploitModule):
 
         self.badges.output_process("Scanning " + target_url + "...")
 
-        if not self.web_tools.check_url_access(target_url):
+        if not self.http.check_url_access(target_url):
             self.badges.output_error("Failed to scan!")
             return
 
@@ -73,7 +73,7 @@ class HatSploitModule(HatSploitModule):
         file.close()
 
         for path in directories:
-            response = self.web_tools.http_request(method="HEAD", url=target_url, path=path)
+            response = self.http.http_request(method="HEAD", url=target_url, path=path)
 
             if response.status_code == 200:
                 self.badges.output_success("[%s] ... [%s %s]" % (path, response.status_code, response.reason))
