@@ -80,14 +80,14 @@ class sessions:
             self.badges.output_success("Interactive connection spawned!")
             self.badges.output_information("Type commands below.\n")
 
-            sessions[session_property][int(session_id)].interact()
+            sessions[session_property][int(session_id)]['object'].interact()
         else:
             self.badges.output_error("Invalid session given!")
     
     def spawn_pseudo_shell(self, session_property, session_id):
         sessions = self.local_storage.get("sessions")
         if self.check_session_exist(session_property, session_id):
-            execute_method = sessions[session_property][int(session_id)].send_command
+            execute_method = sessions[session_property][int(session_id)]['object'].send_command
             self.pseudo_shell.spawn_pseudo_shell(session_property, execute_method)
         else:
             self.badges.output_error("Invalid session given!")
@@ -96,7 +96,7 @@ class sessions:
         sessions = self.local_storage.get("sessions")
         if self.check_session_exist(session_property, session_id):
             try:
-                sessions[session_property][int(session_id)].close()
+                sessions[session_property][int(session_id)]['object'].close()
                 del sessions[session_property][int(session_id)]
                 
                 if not sessions[session_property]:
