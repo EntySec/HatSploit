@@ -33,11 +33,18 @@ class HatSploitCommand(HatSploitCommand):
     sessions = sessions()
     local_storage = local_storage()
 
+    usage = ""
+    usage += "sessions <option> [<arguments>]\n\n"
+    usage += "\t-l               List all active sessions.\n"
+    usage += "\t-i <session_id>  Interact with session.\n"
+    usage += "\t-p <session_id>  Spawn Pseudo shell on specified session.\n"
+    usage += "\t-c <session_id>  Close specified session.\n"
+    
     details = {
         'Category': "sessions",
         'Name': "sessions",
         'Description': "Manage opened sessions.",
-        'Usage': "sessions [-l|-i <property> <id>|-c <property> <id>]",
+        'Usage': usage,
         'MinArgs': 1
     }
 
@@ -48,16 +55,15 @@ class HatSploitCommand(HatSploitCommand):
             if sessions:
                 for session_property in sessions.keys():
                     sessions_data = list()
-                    headers = ("ID", "Host", "Port", "Username", "Hostname")
+                    headers = ("ID", "Module", "Host", "Port")
                     for session_id in sessions[session_property].keys():
+                        module = sessions[session_property][session_id]['module']
                         host = sessions[session_property][session_id]['host']
                         port = sessions[session_property][session_id]['port']
-                        username = sessions[session_property][session_id]['username']
-                        hostname = sessions[session_property][session_id]['hostname']
-                        
-                        sessions_data.append((session_id, host, port, username, hostname))
+
+                        sessions_data.append((session_id, module, host, port))
                     self.badges.output_empty("")
-                    self.tables.print_table("Sessions: " + session_property, headers, *sessions_data)
+                    self.tables.print_table("Active Sessions: " + session_property, headers, *sessions_data)
                     self.badges.output_empty("")
             else:
                 self.badges.output_warning("No opened sessions available.")
