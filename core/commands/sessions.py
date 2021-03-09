@@ -35,7 +35,7 @@ class HatSploitCommand(HatSploitCommand):
 
     usage = ""
     usage += "sessions <option> [arguments]\n\n"
-    usage += "    -l, --list                   List all active sessions.\n"
+    usage += "    -l, --list                   List all opened sessions.\n"
     usage += "    -i, --interact <session_id>  Interact with specified session.\n"
     usage += "    -p, --pseudo <session_id>    Spawn Pseudo shell on specified session.\n"
     usage += "    -c, --close <session_id>     Close specified session."
@@ -63,7 +63,7 @@ class HatSploitCommand(HatSploitCommand):
 
                         sessions_data.append((session_id, module, host, port))
                     self.badges.output_empty("")
-                    self.tables.print_table("Active Sessions: " + session_property, headers, *sessions_data)
+                    self.tables.print_table("Opened Sessions: " + session_property, headers, *sessions_data)
                     self.badges.output_empty("")
             else:
                 self.badges.output_warning("No opened sessions available.")
