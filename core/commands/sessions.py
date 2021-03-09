@@ -66,10 +66,15 @@ class HatSploitCommand(HatSploitCommand):
                 self.badges.output_usage(self.details['Usage'])
             else:
                 self.sessions.close_session(argv[1], argv[2])
+        elif argv[0] == '-p':
+            if argc < 3:
+                self.badges.output_usage(self.details['Usage'])
+            else:
+                self.sessions.spawn_pseudo_shell(argv[1], argv[2])
         elif argv[0] == '-i':
             if argc < 3:
                 self.badges.output_usage(self.details['Usage'])
             else:
-                self.sessions.interact_with_session(argv[1], argv[2])
+                self.sessions.spawn_interactive_connection(argv[1], argv[2])
         else:
             self.badges.output_usage(self.details['Usage'])
