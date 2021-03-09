@@ -33,17 +33,23 @@ class HatSploitCommand(HatSploitCommand):
     db = db()
     local_storage = local_storage()
 
+    usage = ""
+    usage += "modules_db <option> [arguments]\n\n"
+    usage += "  -l, --list                   List all connected modules databases.\n"
+    usage += "  -d, --disconnect <name>      Disconnect specified modules database.\n"
+    usage += "  -c, --connect <name> <path>  Connect new modules databse.\n"
+
     details = {
         'Category': "database",
         'Name': "modules_db",
         'Description': "Manage modules databases.",
-        'Usage': "modules_db [-l|-d <name>|-c <name> <path>]",
+        'Usage': usage,
         'MinArgs': 1
     }
 
     def run(self, argc, argv):
         choice = argv[0]
-        if choice == "-l":
+        if choice in ['-l', '--list']:
             if self.local_storage.get("connected_modules_databases"):
                 databases_data = list()
                 number = 0
@@ -57,12 +63,12 @@ class HatSploitCommand(HatSploitCommand):
                 self.badges.output_empty("")
             else:
                 self.badges.output_warning("No modules database connected.")
-        elif choice == '-d':
+        elif choice in ['-d', '--disconnect']:
             if argc < 2:
                 self.badges.output_usage(self.details['Usage'])
             else:
                 self.db.disconnect_modules_database(argv[1])
-        elif choice == '-c':
+        elif choice in ['-c', '--connect']:
             if argc < 3:
                 self.badges.output_usage(self.details['Usage'])
             else:
