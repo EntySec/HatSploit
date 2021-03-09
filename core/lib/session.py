@@ -28,7 +28,7 @@ class session:
     def close(self):
         pass
 
-    def send_command(self, command):
+    def send_command(self, command, arguments=None, timeout=10):
         pass
 
     def interact(self, command):
