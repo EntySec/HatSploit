@@ -56,7 +56,7 @@ class HatSploitModule(HatSploitModule):
     options = {
         'LHOST': {
             'Description': "Local host.",
-            'Value': tcp_tools.get_local_host(),
+            'Value': tcp.get_local_host(),
             'Type': "ip",
             'Required': True
         },
