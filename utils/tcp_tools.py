@@ -151,12 +151,12 @@ class tcp_tools:
     # Functions to send system commands to client
     #
 
-    def send_command(self, command):
+    def send_command(self, command, timeout=10):
         if self.client:
             buffer = command.encode()
             self.send(buffer)
             
-            output = self.recv()
+            output = self.recv(timeout)
             output = output.decode().strip()
             
             return output
