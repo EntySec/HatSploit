@@ -76,6 +76,10 @@ class sessions:
     def spawn_interactive_connection(self, session_property, session_id):
         sessions = self.local_storage.get("sessions")
         if self.check_session_exist(session_property, session_id):
+            self.badges.output_process("Interacting with session " + str(session_id) + "...")
+            self.badges.output_success("Interactive connection spawned!")
+            self.badges.output_information("Type commands below.\n")
+
             sessions[session_property][int(session_id)].interact()
         else:
             self.badges.output_error("Invalid session given!")
