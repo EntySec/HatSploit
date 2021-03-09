@@ -35,6 +35,7 @@ class HatSploitCommand(HatSploitCommand):
 
     usage = ""
     usage += "exit [option]\n\n"
+    usage += "    -h, --help   Show this help message.\n"
     usage += "    -f, --force  Force exit, ignoring active jobs."
 
     details = {
@@ -50,5 +51,8 @@ class HatSploitCommand(HatSploitCommand):
             if argv[0] in ['-f', '--force']:
                 self.jobs.stop_all_jobs()
                 sys.exit(0)
+            elif argv[0] in ['-h', '--help']:
+                self.badges.output_usage(self.details['Usage'])
+                return
         if self.jobs.exit_jobs():
             sys.exit(0)
