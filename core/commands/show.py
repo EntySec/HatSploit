@@ -103,7 +103,7 @@ class HatSploitCommand(HatSploitCommand):
             self.badges.output_information(usage)
         else:
             self.badges.output_warning("No informations available!")
-        
+
     def run(self, argc, argv):
         information = argv[0]
         
