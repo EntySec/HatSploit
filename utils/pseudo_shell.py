@@ -50,7 +50,10 @@ class pseudo_shell:
         try:
             if command == "exit":
                 return
-            output = execute_method(*arguments, command).strip()
+            if isinstance(arguments, tuple):
+                output = execute_method(*arguments, command).strip()
+            else:
+                output = execute_method(arguments, command).strip()
             if isinstance(output, tuple) and len(output) == 2:
                 if output[0]:
                     if output[1]:
