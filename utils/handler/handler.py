@@ -24,12 +24,24 @@
 # SOFTWARE.
 #
 
+from core.base.sessions import sessions
+from core.base.storage import local_storage
+
 from utils.tcp.tcp import tcp
 
 class handler:
     def __init__(self):
+        self.sessions = sessions()
+        self.local_storage = local_storage()
+
         self.tcp = tcp()
 
-    def handle_session(self, local_host, local_port):
-        session = self.tcp.listen(local_host, local_port)
-        pass
+    def handle_session(self, module_name, session_property, local_host, local_port):
+        sessions = self.local_storage.get("sessions")
+        session, address = self.tcp.listen(local_host, local_port)
+
+        id_number = 0
+        if session_property in sessions.keys():
+            id_number = len(sessions[session_property])
+        self.sessions.add_session(session_property, id_number, module_name, address, local_port, session)
+        self.badges.output_success("Session " + str(self.id_number) + " opened!")
