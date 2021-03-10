@@ -28,7 +28,7 @@ import os
 
 from core.cli.badges import badges
 
-class fsmanip:
+class fs:
     def __init__(self):
         self.badges = badges()
         
