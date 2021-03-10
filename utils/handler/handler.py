@@ -26,7 +26,6 @@
 
 from core.base.sessions import sessions
 from core.base.storage import local_storage
-from core.base.exceptions import exceptions
 from core.cli.badges import badges
 
 from utils.tcp.tcp import tcp
@@ -52,9 +51,10 @@ class handler:
             try:
                 self.server = self.tcp.start_server(local_host, local_port)
                 self.badges.output_success("Reverse TCP handler successfully started!")
+                return True
             except Exception:
                 self.badges.output_error("Failed to start reverse TCP handler!")
-                raise self.exceptions.GlobalException
+        return False
 
     def listen_for_session(self, server, local_host, local_port, session=session):
         try:
@@ -65,11 +65,15 @@ class handler:
             return (session, address[0])
         except Exception:
             self.badges.output_error("Failed to listen!")
-            raise self.exceptions.GlobalException
+            return (None, None)
 
     def handle_session(self, module_name, session_property, local_host, local_port, session=session):
         if self.server:
             session, address = self.listen_for_session(self.server, local_host, local_port, session)
+            if not session and not address:
+                return False
 
             session_id = self.sessions.add_session(session_property, module_name, address, local_port, session)
             self.badges.output_success("Session " + str(session_id) + " opened!")
+            return True
+        return False
