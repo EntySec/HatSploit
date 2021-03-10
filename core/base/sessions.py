@@ -63,7 +63,7 @@ class sessions:
             }
         
         self.local_storage.update("sessions", sessions)
-        return session_od
+        return session_id
     
     def check_session_exist(self, session_property, session_id):
         sessions = self.local_storage.get("sessions")
