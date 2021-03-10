@@ -39,8 +39,7 @@ class handler:
         self.badges = badges()
 
         self.tcp = tcp()
-        
-        self.server = None
+        self.servers = dict()
 
     def start_handler(self, local_host, local_port):
         if self.tcp.check_tcp_port(local_host, local_port):
@@ -48,7 +47,7 @@ class handler:
         else:
             self.badges.output_process("Starting reverse TCP handler on port " + str(local_port) + "...")
             try:
-                self.server = self.tcp.start_server(local_host, local_port)
+                self.servers[int(local_port)] = self.tcp.start_server(local_host, local_port)
                 self.badges.output_success("Reverse TCP handler successfully started!")
                 return True
             except Exception:
@@ -68,7 +67,7 @@ class handler:
 
     def handle_session(self, module_name, session_property, local_host, local_port, session=session):
         if self.server:
-            session, address = self.listen_for_session(self.server, local_host, local_port, session)
+            session, address = self.listen_for_session(self.server[int(local_port)], local_host, local_port, session)
             if not session and not address:
                 return False
 
