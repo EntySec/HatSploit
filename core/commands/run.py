@@ -47,7 +47,7 @@ class HatSploitCommand(HatSploitCommand):
         if argc > 0:
             if argv[0] == "-j":
                 self.badges.output_process("Running module as a background job...")
-                job_id = self.jobs.create_job(current_module.details['Name'], current_module.details['Name'], current_module.run)
+                job_id = self.jobs.create_job(current_module.details['Name'], current_module.details['Module'], current_module.run)
                 self.badges.output_information("Module started as a background job " + str(job_id) + ".")
                 return
         current_module.run()
