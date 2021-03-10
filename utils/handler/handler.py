@@ -36,7 +36,6 @@ class handler:
     def __init__(self):
         self.sessions = sessions()
         self.local_storage = local_storage()
-        self.exceptions = exceptions()
         self.badges = badges()
 
         self.tcp = tcp()
