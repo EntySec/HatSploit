@@ -27,14 +27,14 @@
 from core.lib.module import HatSploitModule
 from core.base.types import types
 
-from utils.tcp_tools import tcp_tools
-from utils.web_tools import web_tools
+from utils.tcp.tcp import tcp
+from utils.http.http import http
 
 class HatSploitModule(HatSploitModule):
     types = types()
 
-    tcp_tools = tcp_tools()
-    web_tools = web_tools()
+    tcp = tcp()
+    http = http()
 
     details = {
         'Name': "Port Scanner",
@@ -81,7 +81,7 @@ class HatSploitModule(HatSploitModule):
 
         self.badges.output_process("Scanning " + remote_host + "...")
         for port in range(start, end):
-            target = self.web_tools.format_host_and_port(remote_host, port)
+            target = self.http.format_host_and_port(remote_host, port)
 
-            if self.tcp_tools.check_tcp_port(remote_host, port, timeout):
+            if self.tcp.check_tcp_port(remote_host, port, float(timeout)):
                 self.badges.output_success(target + " - opened")

@@ -29,7 +29,7 @@ import struct
 
 from core.base.config import config
 
-class hatvenom:
+class payload:
     def __init__(self):
         self.config = config()
 
@@ -40,8 +40,8 @@ class hatvenom:
         }
         
         self.macho_templates = {
-            'x64': self.config.path_config['base_paths']['data_path'] + "utils/hatvenom/templates/macho_x64.bin",
-            'aarch64': self.config.path_config['base_paths']['data_path'] + "utils/hatvenom/templates/macho_aarch64.bin"
+            'x64': self.config.path_config['base_paths']['data_path'] + "utils/payload/payload/templates/macho_x64.bin",
+            'aarch64': self.config.path_config['base_paths']['data_path'] + "utils/payload/payload/templates/macho_aarch64.bin"
         }
         
         self.elf_headers = {

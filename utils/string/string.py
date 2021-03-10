@@ -26,7 +26,7 @@
 
 import re
 
-class string_tools:
+class string:
     
     #
     # Functions to extract strings from binary/executable files

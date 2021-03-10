@@ -28,12 +28,12 @@ import socketserver
 
 from core.lib.module import HatSploitModule
 
-from utils.tcp_tools import tcp_tools
+from utils.tcp.tcp import tcp
 
 from data.modules.auxiliary.multi.sniffer.user_agent_sniffer.core.handler import handler
 
 class HatSploitModule(HatSploitModule):
-    tcp_tools = tcp_tools()
+    tcp = tcp()
 
     handler = handler
 
@@ -56,7 +56,7 @@ class HatSploitModule(HatSploitModule):
     options = {
         'LHOST': {
             'Description': "Local host.",
-            'Value': tcp_tools.get_local_host(),
+            'Value': tcp.get_local_host(),
             'Type': "ip",
             'Required': True
         },

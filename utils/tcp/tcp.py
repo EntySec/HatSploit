@@ -34,7 +34,7 @@ import selectors
 from core.cli.badges import badges
 from core.base.exceptions import exceptions
 
-class tcp_tools:
+class tcp:
     def __init__(self):
         self.badges = badges()
         self.exceptions = exceptions()
@@ -117,7 +117,7 @@ class tcp_tools:
                             self.badges.output_warning("Connection terminated.")
                             return
                         if response:
-                            self.badges.output_empty(response.decode())
+                            self.badges.output_empty(response.decode(), end='')
                     elif key.fileobj is sys.stdin:
                         line = sys.stdin.readline()
                         if not line:
@@ -137,8 +137,7 @@ class tcp_tools:
                     if data:
                         break
                     if time.time() > timeout:
-                        self.badges.output_warning("Timeout waiting for response.")
-                        break
+                        raise socket.timeout
             else:
                 while True:
                     data = self.client.read_very_eager()

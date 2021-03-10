@@ -27,7 +27,7 @@
 from core.cli.badges import badges
 from core.base.storage import local_storage
 
-from utils.pseudo_shell import pseudo_shell
+from utils.shell.pseudo_shell import pseudo_shell
 
 class sessions:
     def __init__(self):

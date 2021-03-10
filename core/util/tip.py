@@ -32,7 +32,7 @@ from core.base.config import config
 from core.cli.badges import badges
 from core.cli.colors import colors
 
-from utils.colors_script import colors_script
+from utils.colors.colors_script import colors_script
 
 class tip:
     def __init__(self):
