@@ -41,10 +41,17 @@ class handler:
         self.badges = badges()
 
         self.tcp = tcp()
+        
+        self.server = None
 
-    def listen_for_session(self, local_host, local_port, session=session):
+    def start_handler(self, local_host, local_port):
+        if self.tcp.check_tcp_port(local_port):
+            self.badges.output_error("Provided port is already in use!")
+        else:
+            self.server = self.tcp.start_server(local_host, local_port)
+        
+    def listen_for_session(self, server, local_host, local_port, session=session):
         try:
-            server = self.tcp.start_server(local_host, local_port)
             client, address = server.accept()
             self.badges.output_process("Connecting to " + address[0] + "...")
             self.badges.output_process("Establishing connection...")
@@ -55,7 +62,7 @@ class handler:
             raise self.exceptions.GlobalException
         
     def handle_session(self, module_name, session_property, local_host, local_port, session=session):
-        session, address = self.listen_for_session(local_host, local_port, session)
+        session, address = self.listen_for_session(self.server, local_host, local_port, session)
 
         session_id = self.sessions.add_session(session_property, module_name, address, local_port, session)
         self.badges.output_success("Session " + str(session_id) + " opened!")
