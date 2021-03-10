@@ -29,6 +29,7 @@ from core.base.storage import local_storage
 from core.cli.badges import badges
 
 from utils.tcp.tcp import tcp
+from utils.http.http import http
 
 from data.utils.handler.handler.session import session
 
@@ -39,6 +40,8 @@ class handler:
         self.badges = badges()
 
         self.tcp = tcp()
+        self.http = http()
+
         self.servers = dict()
 
     def start_handler(self, local_host, local_port):
@@ -47,7 +50,7 @@ class handler:
         else:
             self.badges.output_process("Starting reverse TCP handler on port " + str(local_port) + "...")
             try:
-                address = self.tcp.format_host_and_port(local_host, local_port)
+                address = self.http.format_host_and_port(local_host, local_port)
                 self.servers[address] = self.tcp.start_server(local_host, local_port)
                 self.badges.output_success("Reverse TCP handler successfully started!")
                 return True
@@ -67,13 +70,13 @@ class handler:
             return (None, None)
 
     def handle_session(self, module_name, session_property, local_host, local_port, session=session):
-        address = self.tcp.format_host_and_port(local_host, local_port)
+        address = self.http.format_host_and_port(local_host, local_port)
         if address in self.servers.keys():
-            session, address = self.listen_for_session(self.servers[address], local_host, local_port, session)
-            if not session and not address:
+            session, remote_address = self.listen_for_session(self.servers[address], local_host, local_port, session)
+            if not session and not remote_address:
                 return False
 
-            session_id = self.sessions.add_session(session_property, module_name, address, local_port, session)
+            session_id = self.sessions.add_session(session_property, module_name, remote_address, local_port, session)
             self.badges.output_success("Session " + str(session_id) + " opened!")
             return True
         return False
