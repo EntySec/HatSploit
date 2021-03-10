@@ -48,7 +48,7 @@ class handler:
             client, address = server.accept()
             self.badges.output_process("Connecting to " + address[0] + "...")
             self.badges.output_process("Establishing connection...")
-            session = session_template(client)
+            session = session(client)
             return (session, address[0])
         except Exception:
             self.badges.output_error("Failed to listen!")
