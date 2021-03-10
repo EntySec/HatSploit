@@ -137,8 +137,7 @@ class tcp:
                     if data:
                         break
                     if time.time() > timeout:
-                        self.badges.output_warning("Timeout waiting for response.")
-                        break
+                        raise socket.timeout
             else:
                 while True:
                     data = self.client.read_very_eager()
