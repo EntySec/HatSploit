@@ -58,7 +58,7 @@ class http:
     #
     
     def new_user_agent(self):
-        file = open(self.config.path_config['base_paths']['data_path'] + 'utils/web_tools/user_agents.txt')
+        file = open(self.config.path_config['base_paths']['data_path'] + 'utils/http/http/user_agents.txt')
         user_agents = list(filter(None, file.read().split('\n')))
         
         file.close()
