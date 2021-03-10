@@ -31,6 +31,8 @@ from core.cli.badges import badges
 
 from utils.tcp.tcp import tcp
 
+from data.utils.handler.handler.session import session
+
 class handler:
     def __init__(self):
         self.sessions = sessions()
@@ -40,7 +42,7 @@ class handler:
 
         self.tcp = tcp()
 
-    def listen_for_session(self, local_host, local_port, session_template):
+    def listen_for_session(self, local_host, local_port, session=session):
         try:
             server = self.tcp.start_server(local_host, local_port)
             client, address = server.accept()
@@ -52,9 +54,9 @@ class handler:
             self.badges.output_error("Failed to listen!")
             raise self.exceptions.GlobalException
         
-    def handle_session(self, module_name, session_property, local_host, local_port, session_template):
+    def handle_session(self, module_name, session_property, local_host, local_port, session=session):
         sessions = self.local_storage.get("sessions")
-        session, address = self.tcp.listen_for_session(local_host, local_port, session_template)
+        session, address = self.tcp.listen_for_session(local_host, local_port, session)
 
         id_number = 0
         if session_property in sessions.keys():
