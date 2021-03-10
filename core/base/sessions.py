@@ -36,7 +36,7 @@ class sessions:
         
         self.pseudo_shell = pseudo_shell()
 
-    def add_session(self, session_property, session_id, session_module, session_host, session_port, session_object):
+    def add_session(self, session_property, session_module, session_host, session_port, session_object):
         if not self.local_storage.get("sessions"):
             self.local_storage.set("sessions", dict())
 
