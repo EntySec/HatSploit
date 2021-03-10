@@ -67,7 +67,7 @@ class handler:
 
     def handle_session(self, module_name, session_property, local_host, local_port, session=session):
         if self.server:
-            session, address = self.listen_for_session(self.server[int(local_port)], local_host, local_port, session)
+            session, address = self.listen_for_session(self.servers[int(local_port)], local_host, local_port, session)
             if not session and not address:
                 return False
 
