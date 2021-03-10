@@ -31,7 +31,7 @@ from core.cli.badges import badges
 from core.base.jobs import jobs
 from core.base.exceptions import exceptions
 
-class pseudo_shell:
+class pseudo:
     def __init__(self):
         self.badges = badges()
         self.jobs = jobs()
