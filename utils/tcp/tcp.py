@@ -163,7 +163,7 @@ class tcp:
         return None
         
     #
-    # Functions to manipulate 
+    # Functions to manipulate with server
     #
         
     def start_server(self, local_host, local_port):
@@ -177,3 +177,15 @@ class tcp:
             self.badges.output_error("Failed to bind to " + local_host + ":" + local_port + "!")
             raise self.exceptions.GlobalException
         return server
+    
+    def listen(self, local_host, local_port):
+        try:
+            server = self.start_server(local_host, local_port)
+            client, address = server.accept()
+            self.badges.output_process("Connecting to " + address[0] + "...")
+            self.badges.output_process("Establishing connection...")
+            self.session = session(client)
+            return (self.session, address[0])
+        except Exception:
+            self.badges.output_error("Failed to listen!")
+            raise self.exceptions.GlobalException
