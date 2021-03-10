@@ -24,38 +24,24 @@
 # SOFTWARE.
 #
 
-from core.cli.badges import badges
-from core.base.exceptions import exceptions
+from core.lib.session import session
 
 from utils.tcp.tcp import tcp
 
-from data.modules.exploit.multi.stager.shell_reverse_tcp.core.session import session
-
-class listener:
-    def __init__(self):
-        self.badges = badges()
-        self.exceptions = exceptions()
-        
+class session(session):
+    def __init__(self, client):
         self.tcp = tcp()
-        
-        self.session = None
+        self.tcp.connect(client)
 
-    def start_listener(self, local_host, local_port):
-        try:
-            server = self.tcp.start_server(local_host, local_port)
-            self.badges.output_success("Listener started on port " + local_port + "!")
-            return server
-        except Exception:
-            self.badges.output_error("Failed to start listener!")
-            raise self.exceptions.GlobalException
+    def close(self):
+        self.tcp.disconnect()
 
-    def listen(self, local_host, local_port, server):
-        try:
-            client, address = server.accept()
-            self.badges.output_process("Connecting to " + address[0] + "...")
-            self.badges.output_process("Establishing connection...")
-            self.session = session(client)
-            return (self.session, address[0])
-        except Exception:
-            self.badges.output_error("Failed to listen!")
-            raise self.exceptions.GlobalException
+    def send_command(self, command, arguments=None, timeout=10):
+        if arguments:
+            command += " " + arguments
+
+        output = self.tcp.send_command(command + '\n', timeout)
+        return (True, output)
+
+    def interact(self):
+        self.tcp.interactive()

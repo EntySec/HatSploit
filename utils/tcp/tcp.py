@@ -163,7 +163,7 @@ class tcp:
         return None
         
     #
-    # Functions to manipulate 
+    # Functions to manipulate with server
     #
         
     def start_server(self, local_host, local_port):
