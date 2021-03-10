@@ -29,7 +29,7 @@ import struct
 
 from core.base.config import config
 
-class hatvenom:
+class payload:
     def __init__(self):
         self.config = config()
 
