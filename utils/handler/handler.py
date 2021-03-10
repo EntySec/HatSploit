@@ -48,7 +48,9 @@ class handler:
         if self.tcp.check_tcp_port(local_port):
             self.badges.output_error("Provided port is already in use!")
         else:
+            self.badges.output_process("Starting reverse TCP handler on port " + str(local_port) + "...")
             self.server = self.tcp.start_server(local_host, local_port)
+            self.badges.output_success("Reverse TCP handler successfully started!")
         
     def listen_for_session(self, server, local_host, local_port, session=session):
         try:
