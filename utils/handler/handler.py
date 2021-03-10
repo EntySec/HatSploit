@@ -56,7 +56,7 @@ class handler:
         
     def handle_session(self, module_name, session_property, local_host, local_port, session=session):
         sessions = self.local_storage.get("sessions")
-        session, address = self.tcp.listen_for_session(local_host, local_port, session)
+        session, address = self.listen_for_session(local_host, local_port, session)
 
         id_number = 0
         if session_property in sessions.keys():
