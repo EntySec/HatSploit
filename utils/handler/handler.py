@@ -62,7 +62,8 @@ class handler:
             raise self.exceptions.GlobalException
         
     def handle_session(self, module_name, session_property, local_host, local_port, session=session):
-        session, address = self.listen_for_session(self.server, local_host, local_port, session)
+        if self.server:
+            session, address = self.listen_for_session(self.server, local_host, local_port, session)
 
-        session_id = self.sessions.add_session(session_property, module_name, address, local_port, session)
-        self.badges.output_success("Session " + str(session_id) + " opened!")
+            session_id = self.sessions.add_session(session_property, module_name, address, local_port, session)
+            self.badges.output_success("Session " + str(session_id) + " opened!")
