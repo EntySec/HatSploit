@@ -26,6 +26,8 @@
 
 from core.base.sessions import sessions
 from core.base.storage import local_storage
+from core.base.exceptions import exceptions
+from core.cli.badges import badges
 
 from utils.tcp.tcp import tcp
 
@@ -33,12 +35,26 @@ class handler:
     def __init__(self):
         self.sessions = sessions()
         self.local_storage = local_storage()
+        self.exceptions = exceptions()
+        self.badges = badges()
 
         self.tcp = tcp()
 
+    def listen_for_session(self, local_host, local_port, session_template):
+        try:
+            server = self.tcp.start_server(local_host, local_port)
+            client, address = server.accept()
+            self.badges.output_process("Connecting to " + address[0] + "...")
+            self.badges.output_process("Establishing connection...")
+            session = session_template(client)
+            return (session, address[0])
+        except Exception:
+            self.badges.output_error("Failed to listen!")
+            raise self.exceptions.GlobalException
+        
     def handle_session(self, module_name, session_property, local_host, local_port, session_template):
         sessions = self.local_storage.get("sessions")
-        session, address = self.tcp.listen(local_host, local_port, session_template)
+        session, address = self.tcp.listen_for_session(local_host, local_port, session_template)
 
         id_number = 0
         if session_property in sessions.keys():
