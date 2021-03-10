@@ -117,7 +117,7 @@ class tcp:
                             self.badges.output_warning("Connection terminated.")
                             return
                         if response:
-                            self.badges.output_empty(response.decode())
+                            self.badges.output_empty(response.decode(), end='')
                     elif key.fileobj is sys.stdin:
                         line = sys.stdin.readline()
                         if not line:
