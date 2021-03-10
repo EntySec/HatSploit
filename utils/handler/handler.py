@@ -43,7 +43,7 @@ class handler:
         self.server = None
 
     def start_handler(self, local_host, local_port):
-        if self.tcp.check_tcp_port(local_port):
+        if self.tcp.check_tcp_port(local_host, local_port):
             self.badges.output_error("Provided port is already in use!")
         else:
             self.badges.output_process("Starting reverse TCP handler on port " + str(local_port) + "...")
