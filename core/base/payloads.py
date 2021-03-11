@@ -30,17 +30,29 @@ class payloads:
     def __init__(self):
         self.local_storage = local_storage()
 
-    def get_payload_options(self, payload):
+    def check_payload_exist(self, payload):
         payloads = self.local_storage.get("payloads")
         if payloads and payload in payloads.keys():
-            return payloads[payload].options
+            return True
+        return False
+        
+    def get_payload_options(self, payload):
+        payload = self.get_payload_object(payload)
+        if payload:
+            return payload.options
         
         return dict()
-        
-    def generate(self, payload):
+    
+    def get_payload_object(self, payload):
         payloads = self.local_storage.get("payloads")
         if payloads and payload in payloads.keys():
-            return payloads[payload].generate()
+            return payloads[payload]
 
+        return None
+        
+    def generate(self, payload):
+        payload = self.get_payload_object(payload)
+        if payload:
+            return payload.generate()
         self.badges.output_error("No such payload!")
         return None
