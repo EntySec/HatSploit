@@ -26,6 +26,7 @@
 
 from core.lib.command import HatSploitCommand
 
+from core.base.payloads import payloads
 from core.base.storage import local_storage
 from core.modules.modules import modules
 
@@ -88,7 +89,25 @@ class HatSploitCommand(HatSploitCommand):
         self.badges.output_empty("")
         self.tables.print_table("Module Options", headers, *options_data)
         self.badges.output_empty("")
-        
+
+        options_data = dict()
+        for option in sorted(options.keys()):
+            if options[option]['Type'].lower() == "payload":
+                payload_options = self.payloads.get_payload_options(options[option]['Value'])
+                if payload_options:
+                    for option in sorted(payload_options.keys()):
+                        value, required = payload_options[option]['Value'], payload_options[option]['Required']
+                        if required:
+                            required = "yes"
+                        else:
+                            required = "no"
+                        if not value and value != 0:
+                            value = ""
+                        options_data.append((option, value, required, payload_options[option]['Description']))
+                    self.badges.output_empty("")
+                    self.tables.print_table("Payload Options", headers, *options_data)
+                    self.badges.output_empty("")
+
     def print_usage(self, informations, plugins, options):
         if informations or plugins or options:
             usage = "Informations: "
