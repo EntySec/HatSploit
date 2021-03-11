@@ -26,11 +26,13 @@
 
 from core.lib.command import HatSploitCommand
 
+from core.base.payloads import payloads
 from core.base.storage import local_storage
 from core.modules.modules import modules
 from core.base.jobs import jobs
 
 class HatSploitCommand(HatSploitCommand):
+    payloads = payloads()
     local_storage = local_storage()
     modules = modules()
     jobs = jobs()
@@ -48,7 +50,7 @@ class HatSploitCommand(HatSploitCommand):
 
     def entry_to_module(self, argc, argv, current_module):
         if argc > 0:
-            if argv[0] == "-j":
+            if argv[0] in ['-j', '--job']:
                 self.badges.output_process("Running module as a background job...")
                 job_id = self.jobs.create_job(current_module.details['Name'], current_module.details['Module'], current_module.run)
                 self.badges.output_information("Module started as a background job " + str(job_id) + ".")
@@ -57,7 +59,7 @@ class HatSploitCommand(HatSploitCommand):
 
     def run(self, argc, argv):
         if argc > 0:
-            if argv[0] == "-h":
+            if argv[0] in ['-h', '--help']:
                 self.badges.output_usage(self.details['Usage'])
                 return
 
