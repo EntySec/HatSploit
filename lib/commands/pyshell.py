@@ -32,6 +32,9 @@ class HatSploitCommand(HatSploitCommand):
     details = {
         'Category': "developer",
         'Name': "pyshell",
+        'Authors': [
+            'enty8080'
+        ],
         'Description': "Open Python shell.",
         'Usage': "pyshell",
         'MinArgs': 0
