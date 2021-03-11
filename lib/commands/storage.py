@@ -48,6 +48,9 @@ class HatSploitCommand(HatSploitCommand):
     details = {
         'Category': "developer",
         'Name': "storage",
+        'Authors': [
+            'enty8080'
+        ],
         'Description': "Manage storage variables.",
         'Usage': usage,
         'MinArgs': 2
