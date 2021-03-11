@@ -36,6 +36,9 @@ class HatSploitCommand(HatSploitCommand):
     details = {
         'Category': "core",
         'Name': "help",
+        'Authors': [
+            'enty8080'
+        ],
         'Description': "Show available commands.",
         'Usage': "help",
         'MinArgs': 0
