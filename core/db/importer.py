@@ -151,7 +151,7 @@ class importer:
                         payload_directory = payload_file_path.replace(self.config.path_config['base_paths']['root_path'], '', 1)
                         try:
                             payload_object = self.import_payload(payload_directory)
-                            payload_name = payload_object.details['Name']
+                            payload_name = payload_object.details['Payload']
                             payloads[payload_name] = payload_object
                             self.local_storage.set("payloads", payloads)
                         except Exception:
