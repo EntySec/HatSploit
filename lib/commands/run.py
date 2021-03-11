@@ -38,6 +38,9 @@ class HatSploitCommand(HatSploitCommand):
     details = {
         'Category': "module",
         'Name': "run",
+        'Authors': [
+            'enty8080'
+        ],
         'Description': "Run current module.",
         'Usage': "run [-h|-j]",
         'MinArgs': 0
