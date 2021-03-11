@@ -41,6 +41,9 @@ class HatSploitCommand(HatSploitCommand):
     details = {
         'Category': "jobs",
         'Name': "jobs",
+        'Authors': [
+            'enty8080'
+        ],
         'Description': "Manage active jobs.",
         'Usage': usage,
         'MinArgs': 1
