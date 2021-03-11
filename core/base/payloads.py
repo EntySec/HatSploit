@@ -35,20 +35,20 @@ class payloads:
         if payloads and payload in payloads.keys():
             return True
         return False
-        
+
     def get_payload_options(self, payload):
         payload = self.get_payload_object(payload)
         if payload:
             if hasattr(payload, "options"):
                 return payload.options
         return dict()
-    
-    def get_payload_object(self, payload):
+
+    def get_payload(self, payload):
         payloads = self.local_storage.get("payloads")
         if payloads and payload in payloads.keys():
             return payloads[payload]
         return None
-        
+
     def generate(self, payload):
         payload = self.get_payload_object(payload)
         if payload:
