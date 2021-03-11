@@ -164,4 +164,5 @@ class importer:
         
     def import_all(self):
         self.import_commands()
+        self.import_payloads()
         self.import_database()
