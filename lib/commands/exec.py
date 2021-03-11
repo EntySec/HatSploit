@@ -34,6 +34,9 @@ class HatSploitCommand(HatSploitCommand):
     details = {
         'Category': "developer",
         'Name': "exec",
+        'Authors': [
+            'enty8080'
+        ],
         'Description': "Execute local system command.",
         'Usage': "exec <command>",
         'MinArgs': 1
