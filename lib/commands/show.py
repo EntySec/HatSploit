@@ -76,6 +76,18 @@ class HatSploitCommand(HatSploitCommand):
         self.tables.print_table(information.title() + " Modules", headers, *modules_data)
         self.badges.output_empty("")
         
+    def show_payloads(self):
+        payloads = self.local_storage.get("payloads")
+        payloads_data = list()
+        number = 0
+        headers = ("Number", "Payload", "Description")
+        for payload in payloads.keys():
+            payloads_data.append((number, payloads[payload].details['Payload'], payloads[payload].details['Description']))
+            number += 1
+        self.badges.output_empty("")
+        self.tables.print_table("Payloads", headers, *payloads_data)
+        self.badges.output_empty("")
+        
     def show_options(self):
         current_module = self.modules.get_current_module_object()
         options_data = list()
@@ -91,29 +103,31 @@ class HatSploitCommand(HatSploitCommand):
                 value = ""
             options_data.append((option, value, required, options[option]['Description']))
         self.badges.output_empty("")
-        self.tables.print_table("Module Options", headers, *options_data)
+        self.tables.print_table("Module Options (" + current_module.details['Module'] + ")", headers, *options_data)
         self.badges.output_empty("")
 
         options_data = list()
         for option in sorted(options.keys()):
             if options[option]['Type'].lower() == 'payload':
-                payload_options = self.payloads.get_payload_options(options[option]['Value'])
-                if payload_options:
-                    for option in sorted(payload_options.keys()):
-                        value, required = payload_options[option]['Value'], payload_options[option]['Required']
+                current_payload = self.payloads.get_payload_object(options[option]['Value'])
+                if current_payload:
+                    for option in sorted(current_payload.options.keys()):
+                        value, required = current_payload.options[option]['Value'], current_payload.options[option]['Required']
                         if required:
                             required = "yes"
                         else:
                             required = "no"
                         if not value and value != 0:
                             value = ""
-                        options_data.append((option, value, required, payload_options[option]['Description']))
-                    self.tables.print_table("Payload Options", headers, *options_data)
+                        options_data.append((option, value, required, current_payload.options[option]['Description']))
+                    self.tables.print_table("Payload Options (" + current_payload.details['Payload'] + ")", headers, *options_data)
                     self.badges.output_empty("")
 
     def print_usage(self, informations, plugins, options):
         if informations or plugins or options:
             usage = "Informations: "
+            if self.local_storage.get("payloads"):
+                usage += "payloads, "
             for information in informations:
                 usage += information + ", "
             if plugins:
@@ -138,6 +152,7 @@ class HatSploitCommand(HatSploitCommand):
         else:
             options = False
         
+        payloads = self.local_storage.get("payloads")
         modules = self.local_storage.get("modules")
         plugins = self.local_storage.get("plugins")
         
@@ -147,6 +162,10 @@ class HatSploitCommand(HatSploitCommand):
                 for category in sorted(modules[database].keys()):
                     informations.append(category)
         
+        if payloads:
+            if information == "payloads":
+                self.show_payloads()
+                return
         if plugins:
             if information == "plugins":
                 self.show_plugins()
