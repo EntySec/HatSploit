@@ -30,6 +30,9 @@ class HatSploitCommand(HatSploitCommand):
     details = {
         'Category': "core",
         'Name': "clear",
+        'Authors': [
+            'enty8080'
+        ],
         'Description': "Clear terminal window.",
         'Usage': "clear",
         'MinArgs': 0
