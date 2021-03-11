@@ -30,6 +30,7 @@ base_paths:
     banners_path: '/opt/hsf/data/banners/'
     modules_path: '/opt/hsf/modules/'
     plugins_path: '/opt/hsf/plugins/'
-    commands_path: '/opt/hsf/core/commands/'
+    commands_path: '/opt/hsf/lib/commands/'
+    payloads_path: '/opt/hsf/lib/payloads/'
     history_path: '/opt/hsf/.history'
     storage_path: '/opt/hsf/config/storage.json'
