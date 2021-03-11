@@ -124,6 +124,18 @@ class modules:
 
     def get_full_name(self, category, platform, name):
         return category + '/' + platform + '/' + name
+    
+    def get_current_module_payload(self):
+        current_module = self.get_current_module_object()
+        if hasattr(current_module, "options"):
+            current_payload = None
+
+            for option in current_module.options.keys():
+                if option['Type'] == 'payload':
+                    if self.payloads.check_payload_exist(option['Value']):
+                        current_payload = self.payloads.get_payload(option[])
+
+        return current_payload
 
     def compare_types(self, value_type, value):
         if value_type and not value_type.lower == 'all':
@@ -192,16 +204,7 @@ class modules:
         if self.check_current_module():
             current_module = self.get_current_module_object()
             if hasattr(current_module, "options"):
-                payload_name = None
-                current_payload = None
-
-                for option in current_module.options.keys():
-                    if option['Type'] == 'payload':
-                        if self.payloads.check_payload_exist(option['Value']):
-                            payload_name = option['Value']
-                            current_payload = self.payloads.get_payload(payload_name)
-                            if not hasattr(current_payload, "options"):
-                                current_payload = None
+                current_payload = self.get_current_module_payload()
 
                 if option in current_module.options.keys():
                     value_type = current_module.options[option]['Type']
@@ -210,12 +213,15 @@ class modules:
                         self.badges.output_information(option + " ==> " + value)
                         self.local_storage.set_module_option("current_module", self.local_storage.get("current_module_number"), option, value)
 
-                elif current_payload and option in current_payload.options.keys():
-                    value_type = current_payload.options[option]['Type']
-                    
-                    if self.compare_types(value_type, value):
-                        self.badges.output_information(option + " ==> " + value)
-                        self.local_storage.set_payload_option(payload_name, option, value)
+                elif current_payload and hasattr(current_payload, "options"):
+                    if option in current_payload.options.keys():
+                        value_type = current_payload.options[option]['Type']
+
+                        if self.compare_types(value_type, value):
+                            self.badges.output_information(option + " ==> " + value)
+                            self.local_storage.set_payload_option(payload_name, option, value)
+                    else:
+                        self.badges.output_error("Unrecognized option!")
                 else:
                     self.badges.output_error("Unrecognized option!")
             else:
