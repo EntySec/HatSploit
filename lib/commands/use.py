@@ -38,6 +38,9 @@ class HatSploitCommand(HatSploitCommand):
     details = {
         'Category': "module",
         'Name': "use",
+        'Authors': [
+            'enty8080'
+        ],
         'Description': "Use specified module.",
         'Usage': "use <module>",
         'MinArgs': 1
