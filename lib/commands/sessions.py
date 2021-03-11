@@ -44,6 +44,9 @@ class HatSploitCommand(HatSploitCommand):
     details = {
         'Category': "sessions",
         'Name': "sessions",
+        'Authors': [
+            'enty8080'
+        ],
         'Description': "Manage opened sessions.",
         'Usage': usage,
         'MinArgs': 1
