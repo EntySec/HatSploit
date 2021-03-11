@@ -219,7 +219,7 @@ class modules:
 
                         if self.compare_types(value_type, value):
                             self.badges.output_information(option + " ==> " + value)
-                            self.local_storage.set_payload_option(payload_name, option, value)
+                            self.local_storage.set_payload_option(current_payload.details['Name'], option, value)
                     else:
                         self.badges.output_error("Unrecognized option!")
                 else:
