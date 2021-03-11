@@ -28,7 +28,7 @@ from core.lib.payload import HatSploitPayload
 
 class HatSploitPayload(HatSploitPayload):
     details = {
-        'Name': "unix/cmd/sh_reverse_tcp.py"
+        'Name': "unix/cmd/sh_reverse_tcp"
     }
     
     options = {
