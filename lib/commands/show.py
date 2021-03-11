@@ -38,6 +38,9 @@ class HatSploitCommand(HatSploitCommand):
     details = {
         'Category': "core",
         'Name': "show",
+        'Authors': [
+            'enty8080'
+        ],
         'Description': "Show specified information.",
         'Usage': "show <information>",
         'MinArgs': 1
