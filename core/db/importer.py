@@ -150,7 +150,7 @@ class importer:
                         payload_path = path + '/' + file
                         try:
                             payload_object = self.import_payload(payload_path)
-                            payload_name = payload_object.details['Payload']
+                            payload_name = payload_object.details['Name']
                             payloads[payload_name] = payload_object
                             self.local_storage.set("payloads", payloads)
                         except Exception:
