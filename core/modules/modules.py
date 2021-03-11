@@ -133,7 +133,7 @@ class modules:
             for option in current_module.options.keys():
                 if option['Type'] == 'payload':
                     if self.payloads.check_payload_exist(option['Value']):
-                        current_payload = self.payloads.get_payload(option[])
+                        current_payload = self.payloads.get_payload_object(option[])
 
         return current_payload
 
