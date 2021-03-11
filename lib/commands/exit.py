@@ -41,6 +41,9 @@ class HatSploitCommand(HatSploitCommand):
     details = {
         'Category': "core",
         'Name': "exit",
+        'Authors': [
+            'enty8080'
+        ],
         'Description': "Exit HatSploit Framework.",
         'Usage': usage,
         'MinArgs': 0
