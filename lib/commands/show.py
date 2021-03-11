@@ -93,7 +93,7 @@ class HatSploitCommand(HatSploitCommand):
 
         options_data = dict()
         for option in sorted(options.keys()):
-            if options[option]['Type'].lower() == "payload":
+            if options[option]['Type'].lower() == 'payload':
                 payload_options = self.payloads.get_payload_options(options[option]['Value'])
                 if payload_options:
                     for option in sorted(payload_options.keys()):
