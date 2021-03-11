@@ -82,7 +82,20 @@ class importer:
             self.badges.output_information('Reason: ' + str(e))
             raise self.exceptions.GlobalException
         return command_object
-        
+    
+    def import_payload(self, payload_path):
+        try:
+            payload_directory = payload_path
+            payload_file = os.path.split(payload_directory)[1]
+            payload_directory = payload_directory.replace('/', '.')
+            payload_object = __import__(payload_directory)
+            payload_object = self.get_module(payload_object, payload_file, payload_directory)
+            payload_object = payload_object.HatSploitPayload()
+        except Exception as e:
+            self.badges.output_information('Reason: ' + str(e))
+            raise self.exceptions.GlobalException
+        return payload_object
+
     def import_module(self, module_path):
         try:
             module_directory = module_path
@@ -121,11 +134,11 @@ class importer:
                         command_object = self.import_command(command_directory)
                         command_name = command_object.details['Name']
                         commands[command_name] = command_object
+                        self.local_storage.set("commands", commands)
                     except Exception:
                         self.badges.output_error("Failed to load " + file[:-3] + " command!")
         except Exception:
             pass
-        self.local_storage.set("commands", commands)
         
     def import_payloads(self):
         payloads = dict()
@@ -139,11 +152,11 @@ class importer:
                             payload_object = self.import_payload(payload_path)
                             payload_name = payload_object.details['Payload']
                             payloads[payload_name] = payload_object
+                            self.local_storage.set("payloads", payloads)
                         except Exception:
                             self.badges.output_error("Failed to load " + payload_path + " payload!")
         except Exception:
             pass
-        self.local_storage.set("payloads", payloads)
 
     def import_database(self):
         self.db.connect_modules_database('hsf_modules', self.config.path_config['base_paths']['db_path'] + self.config.db_config['base_dbs']['modules_database'])
