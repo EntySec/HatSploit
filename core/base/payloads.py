@@ -43,7 +43,7 @@ class payloads:
                 return payload.options
         return dict()
 
-    def get_payload(self, payload):
+    def get_payload_object(self, payload):
         payloads = self.local_storage.get("payloads")
         if payloads and payload in payloads.keys():
             return payloads[payload]
