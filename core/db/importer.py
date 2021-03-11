@@ -146,7 +146,7 @@ class importer:
         try:
             for path, subpath, files in os.walk(payload_path):
                 for file in files:
-                    if file.enswith('py'):
+                    if file.endswith('py'):
                         payload_path = path + '/' + file
                         try:
                             payload_object = self.import_payload(payload_path)
