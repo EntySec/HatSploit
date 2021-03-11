@@ -30,6 +30,13 @@ class payloads:
     def __init__(self):
         self.local_storage = local_storage()
 
+    def get_payload_options(self, payload):
+        payloads = self.local_storage.get("payloads")
+        if payloads and payload in payloads.keys():
+            return payloads[payload].options
+        
+        return dict()
+        
     def generate(self, payload):
         payloads = self.local_storage.get("payloads")
         if payloads and payload in payloads.keys():
