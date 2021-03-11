@@ -129,8 +129,8 @@ class importer:
             for file in os.listdir(command_path):
                 if file.endswith('py'):
                     command_file_path = command_path + file[:-3]
+                    command_directory = command_file_path.replace(self.config.path_config['base_paths']['root_path'], '', 1)
                     try:
-                        command_directory = command_file_path.replace(self.config.path_config['base_paths']['root_path'], '', 1)
                         command_object = self.import_command(command_directory)
                         command_name = command_object.details['Name']
                         commands[command_name] = command_object
@@ -147,15 +147,15 @@ class importer:
             for path, subpath, files in os.walk(payload_path):
                 for file in files:
                     if file.endswith('py'):
-                        payload_file_path = path + '/' + file
+                        payload_file_path = path + '/' + file[:-3]
+                        payload_directory = payload_file_path.replace(self.config.path_config['base_paths']['root_path'], '', 1)
                         try:
-                            payload_directory = payload_file_path.replace(self.config.path_config['base_paths']['root_path'], '', 1)
                             payload_object = self.import_payload(payload_directory)
                             payload_name = payload_object.details['Name']
                             payloads[payload_name] = payload_object
                             self.local_storage.set("payloads", payloads)
                         except Exception:
-                            self.badges.output_error("Failed to load " + payload_path + " payload!")
+                            self.badges.output_error("Failed to load " + payload_directory + " payload!")
         except Exception:
             pass
 
