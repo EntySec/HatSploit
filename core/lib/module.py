@@ -54,14 +54,5 @@ class HatSploitModule:
         'Risk': ""
     }
         
-    options = {
-        '': {
-            'Description': "",
-            'Value': None,
-            'Type': None,
-            'Required': True
-        }
-    }
-        
     def run(self):
         pass
