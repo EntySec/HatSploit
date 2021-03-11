@@ -24,8 +24,16 @@
 # SOFTWARE.
 #
 
-from core.db.importer import importer
+from core.base.storage import local_storage
 
-class payload:
+class payloads:
     def __init__(self):
-        self.importer = importer()
+        self.local_storage = local_storage()
+
+    def generate(self, payload):
+        payloads = self.local_storage.get("payloads")
+        if payloads and payload in payloads.keys():
+            return payloads[payload].generate()
+
+        self.badges.output_error("No such payload!")
+        return None
