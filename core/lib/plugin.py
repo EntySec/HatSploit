@@ -52,15 +52,5 @@ class HatSploitPlugin:
         ]
     }
 
-    commands = {
-        '': {
-            '': {
-                'Description': "",
-                'Usage': "",
-                'MinArgs': 0,
-            }
-        }
-    }
-
     def run(self):
         pass
