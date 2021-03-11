@@ -91,7 +91,7 @@ class HatSploitCommand(HatSploitCommand):
         self.tables.print_table("Module Options", headers, *options_data)
         self.badges.output_empty("")
 
-        options_data = dict()
+        options_data = list()
         for option in sorted(options.keys()):
             if options[option]['Type'].lower() == 'payload':
                 payload_options = self.payloads.get_payload_options(options[option]['Value'])
@@ -105,7 +105,6 @@ class HatSploitCommand(HatSploitCommand):
                         if not value and value != 0:
                             value = ""
                         options_data.append((option, value, required, payload_options[option]['Description']))
-                    self.badges.output_empty("")
                     self.tables.print_table("Payload Options", headers, *options_data)
                     self.badges.output_empty("")
 
