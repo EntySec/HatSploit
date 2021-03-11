@@ -41,6 +41,9 @@ class HatSploitPayload:
     details = {
         'Name': "",
         'Payload': "",
+        'Authors': [
+            ''
+        ],
         'Description': ""
     }
 
