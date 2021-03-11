@@ -83,7 +83,7 @@ class HatSploitCommand(HatSploitCommand):
 
                         sessions_data.append((session_id, module, host, port))
                     self.badges.output_empty("")
-                    self.tables.print_table("Opened Sessions: " + session_property, headers, *sessions_data)
+                    self.tables.print_table("Opened Sessions (" + session_property + ")", headers, *sessions_data)
                     self.badges.output_empty("")
                 else:
                     self.badges.output_error("Invalid session property given!")
