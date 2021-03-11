@@ -39,7 +39,8 @@ class payloads:
     def get_payload_options(self, payload):
         payload = self.get_payload_object(payload)
         if payload:
-            return payload.options
+            if hasattr(payload, "options"):
+                return payload.options
         return dict()
     
     def get_payload_object(self, payload):
