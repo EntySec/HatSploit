@@ -31,6 +31,7 @@ from core.base.storage import local_storage
 from core.modules.modules import modules
 
 class HatSploitCommand(HatSploitCommand):
+    payloads = payloads()
     local_storage = local_storage()
     modules = modules()
 
