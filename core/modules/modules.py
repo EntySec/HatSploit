@@ -131,9 +131,9 @@ class modules:
             current_payload = None
 
             for option in current_module.options.keys():
-                if option['Type'] == 'payload':
-                    if self.payloads.check_payload_exist(option['Value']):
-                        current_payload = self.payloads.get_payload_object(option['Value'])
+                if current_module.options[option]['Type'] == 'payload':
+                    if self.payloads.check_payload_exist(current_module.options[option]['Value']):
+                        current_payload = self.payloads.get_payload_object(current_module.options[option]['Value'])
 
         return current_payload
 
