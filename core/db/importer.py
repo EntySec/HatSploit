@@ -131,7 +131,19 @@ class importer:
         payloads = dict()
         payload_path = self.config.path_config['base_paths']['payloads_path']
         try:
-            for file in os.listdir(payload_path)
+            for path, subpath, files in os.walk(payload_path):
+                for file in files:
+                    if file.enswith('py'):
+                        payload_path = path + '/' + file
+                        try:
+                            payload_object = self.import_payload(payload_path)
+                            payload_name = payload_object.details['Payload']
+                            payloads[payload_name] = payload_object
+                        except Exception:
+                            self.badges.output_error("Failed to load " + payload_path + " payload!")
+        except Exception:
+            pass
+        self.local_storage.set("payloads", payloads)
 
     def import_database(self):
         self.db.connect_modules_database('hsf_modules', self.config.path_config['base_paths']['db_path'] + self.config.db_config['base_dbs']['modules_database'])
