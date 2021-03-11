@@ -42,6 +42,9 @@ class HatSploitCommand(HatSploitCommand):
     details = {
         'Category': "database",
         'Name': "modules_db",
+        'Authors': [
+            'enty8080'
+        ],
         'Description': "Manage modules databases.",
         'Usage': usage,
         'MinArgs': 1
