@@ -126,6 +126,12 @@ class importer:
         except Exception:
             pass
         self.local_storage.set("commands", commands)
+        
+    def import_payloads(self):
+        payloads = dict()
+        payload_path = self.config.path_config['base_paths']['payloads_path']
+        try:
+            for file in os.listdir(payload_path)
 
     def import_database(self):
         self.db.connect_modules_database('hsf_modules', self.config.path_config['base_paths']['db_path'] + self.config.db_config['base_dbs']['modules_database'])
