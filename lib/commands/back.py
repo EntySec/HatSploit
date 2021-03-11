@@ -36,6 +36,9 @@ class HatSploitCommand(HatSploitCommand):
     details = {
         'Category': "module",
         'Name': "back",
+        'Authors': [
+            'enty8080'
+        ],
         'Description': "Return to the previous module.",
         'Usage': "back",
         'MinArgs': 0
