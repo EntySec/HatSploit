@@ -77,11 +77,31 @@ class handler:
             return None
 
     def handle_bind_session(self, module_name, session_property, remote_host, remote_port, session=session):
-        session = self.connect(remote_host, remote_port, session)
+        current_module = self.modules.get_current_module_object()
+
+        new_session = self.connect(remote_host, remote_port, session)
         if not session:
             return False
 
-        session_id = self.sessions.add_session(session_property, module_name, remote_host, remote_port, 'bind', session)
+        if current_module.payload is not None:
+            payload = current_module.payload
+
+            self.badges.output_process("Sending payload stage...")
+            new_session.tcp.client.sock.send(payload['execute'].encode())
+            new_session.tcp.client.sock.send(payload['payload'])
+            new_session.close()
+
+            if not payload['staged']:
+                return True
+
+            if payload['session']:
+                session = payload['session']
+
+            new_session, remote_host = self.listen(self.servers[address], session)
+            if not new_session and not remote_host:
+                return False
+
+        session_id = self.sessions.add_session(session_property, module_name, remote_host, remote_port, 'bind', new_session)
         self.badges.output_success("Session " + str(session_id) + " opened!")
         return True
 
@@ -92,8 +112,8 @@ class handler:
 
             if current_module.payload is not None:
                 payload = current_module.payload
-                new_session, remote_address = self.listen(self.servers[address], session)
-                if not new_session and not remote_address:
+                new_session, remote_host = self.listen(self.servers[address], session)
+                if not new_session and not remote_host:
                     return False
 
                 self.badges.output_process("Sending payload stage...")
@@ -103,15 +123,15 @@ class handler:
 
                 if not payload['staged']:
                     return True
-                
+
                 if payload['session']:
                     session = payload['session']
 
-            new_session, remote_address = self.listen(self.servers[address], session)
-            if not new_session and not remote_address:
+            new_session, remote_host = self.listen(self.servers[address], session)
+            if not new_session and not remote_host:
                 return False
 
-            session_id = self.sessions.add_session(session_property, module_name, remote_address, local_port, 'reverse', new_session)
+            session_id = self.sessions.add_session(session_property, module_name, remote_host, local_port, 'reverse', new_session)
             self.badges.output_success("Session " + str(session_id) + " opened!")
             return True
         return False
