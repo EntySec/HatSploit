@@ -33,18 +33,11 @@ class HatSploitModule(HatSploitModule):
 
     details = {
         'Name': "macOS x64 Shell Bind TCP",
-        'Module': "payload/macos/x64/shell_bind_tcp",
+        'Payload': "macos/x64/shell_bind_tcp",
         'Authors': [
             'enty8080'
         ],
-        'Description': "Shell Bind TCP Payload for macOS x64.",
-        'Dependencies': [
-            ''
-        ],
-        'Comments': [
-            ''
-        ],
-        'Risk': "low"
+        'Description': "Shell Bind TCP Payload for macOS x64."
     }
 
     options = {
@@ -55,26 +48,20 @@ class HatSploitModule(HatSploitModule):
             'Required': True
         },
         'FORMAT': {
-            'Description': "Output format.",
+            'Description': "Executable format.",
             'Value': "macho",
-            'Type': None,
-            'Required': True
-        },
-        'LPATH': {
-            'Description': "Local path.",
-            'Value': "/tmp/payload.bin",
             'Type': None,
             'Required': True
         }
     }
 
-    def run(self):
-        bind_port, file_format, local_file = self.parser.parse_options(self.options)
+    def generate(self):
+        bind_port, executable_format = self.parser.parse_options(self.options)
         bind_port = self.payload.port_to_bytes(bind_port)
 
-        if not file_format in self.payload.formats.keys():
-            self.badges.output_error("Invalid format!")
-            return
+        if not executable_format in self.payload.formats.keys():
+            self.badges.output_error("Invalid executable format!")
+            return None
 
         self.badges.output_process("Generating shellcode...")
         shellcode = (
@@ -133,7 +120,4 @@ class HatSploitModule(HatSploitModule):
         self.badges.output_process("Generating payload...")
         payload = self.payload.generate(file_format, 'x64', shellcode)
 
-        self.badges.output_process("Saving to " + local_file + "...")
-        with open(local_file, 'wb') as f:
-            f.write(payload)
-        self.badges.output_success("Successfully saved to " + local_file + "!")
+        return payload
