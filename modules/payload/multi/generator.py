@@ -48,7 +48,7 @@ class HatSploitModule(HatSploitModule):
     }
 
     options = {
-        'PAYLOAD' {
+        'PAYLOAD': {
             'Description': "Payload to generate.",
             'Value': "linux/x64/shell_reverse_tcp",
             'Type': "payload",
