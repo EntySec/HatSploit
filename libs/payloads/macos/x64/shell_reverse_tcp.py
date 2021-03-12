@@ -29,7 +29,7 @@ from core.lib.payload import HatSploitPayload
 from utils.tcp.tcp import tcp
 from utils.payload.payload import payload
 
-class HatSploitModule(HatSploitPayload):
+class HatSploitPayload(HatSploitPayload):
     tcp = tcp()
     payload = payload()
 
