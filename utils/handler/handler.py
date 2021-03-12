@@ -69,14 +69,36 @@ class handler:
             self.badges.output_error("Failed to listen!")
             return (None, None)
 
-    def handle_session(self, module_name, session_property, local_host, local_port, session=session):
+    def connect_to_session(self, remote_host, remote_port, session=session, timeout=10):
+        try:
+            server = socket.socket()
+            server.settimeout(timeout)
+            address = self.http.format_host_and_port(remote_host, remote_port)
+            self.badges.output_process("Connecting to " + address + "...")
+            server.connect((remote_host, int(remote_port)))
+            self.badges.output_process("Establishing connection...")
+            return server
+        except Exception:
+            self.badges.output_error("Failed to connect!")
+            return None
+
+    def handle_bind_session(self, module_name, session_property, remote_host, remote_port, session=session):
+        session = self.connect_to_session(remote_host, remote_port, session)
+        if not session:
+            return False
+
+        session_id = self.sessions.add_session(session_property, module_name, remote_host, remote_port, 'bind', session)
+        self.badges.output_success("Session " + str(session_id) + " opened!")
+        return True
+
+    def handle_reverse_session(self, module_name, session_property, local_host, local_port, session=session):
         address = self.http.format_host_and_port(local_host, local_port)
         if address in self.servers.keys():
             session, remote_address = self.listen_for_session(self.servers[address], local_host, local_port, session)
             if not session and not remote_address:
                 return False
 
-            session_id = self.sessions.add_session(session_property, module_name, remote_address, local_port, session)
+            session_id = self.sessions.add_session(session_property, module_name, remote_address, local_port, 'reverse', session)
             self.badges.output_success("Session " + str(session_id) + " opened!")
             return True
         return False
