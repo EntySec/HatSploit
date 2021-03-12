@@ -37,6 +37,11 @@ class HatSploitCommand(HatSploitCommand):
     modules = modules()
     jobs = jobs()
 
+    usage = ""
+    usage += "run [option]\n\n"
+    usage += "  -h, --help  Show this help message.\n"
+    usage += "  -j, --job   Run current module as a background job.\n"
+
     details = {
         'Category': "module",
         'Name': "run",
@@ -44,7 +49,7 @@ class HatSploitCommand(HatSploitCommand):
             'enty8080'
         ],
         'Description': "Run current module.",
-        'Usage': "run [-h|-j]",
+        'Usage': usage,
         'MinArgs': 0
     }
 
