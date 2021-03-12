@@ -63,7 +63,7 @@ class modules:
         return False
     
     def check_style(self, name):
-        if len(name.split('/')) >= 4:
+        if len(name.split('/')) >= 3:
             return True
         return False
     
