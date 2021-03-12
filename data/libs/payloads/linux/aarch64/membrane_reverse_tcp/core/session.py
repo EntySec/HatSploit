@@ -28,7 +28,7 @@ from core.lib.session import session
 
 from utils.tcp.tcp import tcp
 
-from data.modules.exploit.macos.stager.membrane_reverse_tcp.core.transfer import transfer
+from data.libs.payloads.linux.aarch64.membrane_reverse_tcp.core.transfer import transfer
 
 class session(session):
     def __init__(self, client):
@@ -51,7 +51,7 @@ class session(session):
         return (True, output)
 
     def interact(self):
-        self.tcp.interactive()
+        self.tcp.interactive('\x04')
     
     def download(self, input_file, output_path):
         self.transfer.download(input_file, output_path)
