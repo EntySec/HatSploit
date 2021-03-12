@@ -76,7 +76,7 @@ class handler:
             self.badges.output_error("Failed to handle session!")
             return None
 
-    def handle_bind_session(self, module_name, session_property, remote_host, remote_port, session=session):
+    def handle_bind_session(self, remote_host, remote_port, session=session):
         current_module = self.modules.get_current_module_object()
 
         new_session = self.connect(remote_host, remote_port, session)
@@ -101,11 +101,14 @@ class handler:
             if not new_session and not remote_host:
                 return False
 
-        session_id = self.sessions.add_session(session_property, module_name, remote_host, remote_port, 'bind', new_session)
+        session_property = current_module.payload.details['Payload']
+        module_name = current_module.details['Module']
+
+        session_id = self.sessions.add_session(session_property, module_name, remote_host, remote_port, new_session)
         self.badges.output_success("Session " + str(session_id) + " opened!")
         return True
 
-    def handle_reverse_session(self, module_name, session_property, local_host, local_port, session=session):
+    def handle_reverse_session(self, local_host, local_port, session=session):
         address = self.http.format_host_and_port(local_host, local_port)
         if address in self.servers.keys():
             current_module = self.modules.get_current_module_object()
@@ -131,7 +134,10 @@ class handler:
             if not new_session and not remote_host:
                 return False
 
-            session_id = self.sessions.add_session(session_property, module_name, remote_host, local_port, 'reverse', new_session)
+            session_property = current_module.payload.details['Payload']
+            module_name = current_module.details['Module']
+
+            session_id = self.sessions.add_session(session_property, module_name, remote_host, local_port, new_session)
             self.badges.output_success("Session " + str(session_id) + " opened!")
             return True
         return False
