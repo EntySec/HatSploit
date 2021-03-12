@@ -61,9 +61,7 @@ class HatSploitCommand(HatSploitCommand):
                 for name in databases.keys():
                     databases_data.append((number, name, databases[name]['path']))
                     number += 1
-                self.badges.output_empty("")
                 self.tables.print_table("Connected Modules Databases", headers, *databases_data)
-                self.badges.output_empty("")
             else:
                 self.badges.output_warning("No modules database connected.")
         elif choice in ['-d', '--disconnect']:
