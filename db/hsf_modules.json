@@ -189,42 +189,6 @@
                 "Risk": "medium"
             }
         },
-        "linux": {
-            "stager/membrane_reverse_tcp": {
-                "Path": "modules/exploit/linux/stager/membrane_reverse_tcp",
-                "Name": "Linux Membrane Reverse TCP Stager",
-                "Module": "exploit/linux/stager/membrane_reverse_tcp",
-                "Authors": [
-                    "enty8080"
-                ],
-                "Description": "Linux reverse TCP shell with full remote functionality.",
-                "Dependencies": [
-                    ""
-                ],
-                "Comments": [
-                    ""
-                ],
-                "Risk": "high"
-            }
-        },
-        "macos": {
-            "stager/membrane_reverse_tcp": {
-                "Path": "modules/exploit/macos/stager/membrane_reverse_tcp",
-                "Name": "macOS Membrane Reverse TCP Stager",
-                "Module": "exploit/macos/stager/membrane_reverse_tcp",
-                "Authors": [
-                    "enty8080"
-                ],
-                "Description": "macOS reverse TCP shell with full remote functionality.",
-                "Dependencies": [
-                    ""
-                ],
-                "Comments": [
-                    ""
-                ],
-                "Risk": "high"
-            }
-        },
         "android": {
             "adb/remote_code_execution": {
                 "Path": "modules/exploit/android/adb/remote_code_execution",
