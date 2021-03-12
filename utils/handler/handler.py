@@ -83,42 +83,12 @@ class handler:
         if not session:
             return False
 
+        module_name = current_module.details['Module']
+        session_property = self.modules.get_platform(module_name) + '/' + self.modules.get_name(module_name)
+
         if current_module.payload is not None:
             payload = current_module.payload
-
-            self.badges.output_process("Sending payload stage...")
-            new_session.tcp.client.sock.send(payload['execute'].encode())
-            new_session.tcp.client.sock.send(payload['payload'])
-            new_session.close()
-
-            if not payload['staged']:
-                return True
-
-            if payload['session']:
-                session = payload['session']
-
-            new_session, remote_host = self.listen(self.servers[address], session)
-            if not new_session and not remote_host:
-                return False
-
-        session_property = current_module.payload.details['Payload']
-        module_name = current_module.details['Module']
-
-        session_id = self.sessions.add_session(session_property, module_name, remote_host, remote_port, new_session)
-        self.badges.output_success("Session " + str(session_id) + " opened!")
-        return True
-
-    def handle_reverse_session(self, local_host, local_port, session=session):
-        address = self.http.format_host_and_port(local_host, local_port)
-        if address in self.servers.keys():
-            current_module = self.modules.get_current_module_object()
-
-            if current_module.payload is not None:
-                payload = current_module.payload
-                new_session, remote_host = self.listen(self.servers[address], session)
-                if not new_session and not remote_host:
-                    return False
-
+            if payload['execute'] is not None and payload['payload'] is not None:
                 self.badges.output_process("Sending payload stage...")
                 new_session.tcp.client.sock.send(payload['execute'].encode())
                 new_session.tcp.client.sock.send(payload['payload'])
@@ -130,12 +100,51 @@ class handler:
                 if payload['session']:
                     session = payload['session']
 
+                new_session, remote_host = self.listen(self.servers[address], session)
+                if not new_session and not remote_host:
+                    return False
+
+                session_property = current_module.payload.details['Payload']
+            else:
+                self.badges.output_warning("Payload you provided is not executable.")
+
+        session_id = self.sessions.add_session(session_property, module_name, remote_host, remote_port, new_session)
+        self.badges.output_success("Session " + str(session_id) + " opened!")
+        return True
+
+    def handle_reverse_session(self, local_host, local_port, session=session):
+        address = self.http.format_host_and_port(local_host, local_port)
+        if address in self.servers.keys():
+            current_module = self.modules.get_current_module_object()
+
+            module_name = current_module.details['Module']
+            session_property = self.modules.get_platform(module_name) + '/' + self.modules.get_name(module_name)
+
+            if current_module.payload is not None:
+                payload = current_module.payload
+                if payload['execute'] is not None and payload['payload'] is not None:
+                    new_session, remote_host = self.listen(self.servers[address], session)
+                    if not new_session and not remote_host:
+                        return False
+
+                    self.badges.output_process("Sending payload stage...")
+                    new_session.tcp.client.sock.send(payload['execute'].encode())
+                    new_session.tcp.client.sock.send(payload['payload'])
+                    new_session.close()
+
+                    if not payload['staged']:
+                        return True
+
+                    if payload['session']:
+                        session = payload['session']
+                        
+                    session_property = current_module.payload.details['Payload']
+                else:
+                    self.badges.output_warning("Payload you provided is not executable.")
+
             new_session, remote_host = self.listen(self.servers[address], session)
             if not new_session and not remote_host:
                 return False
-
-            session_property = current_module.payload.details['Payload']
-            module_name = current_module.details['Module']
 
             session_id = self.sessions.add_session(session_property, module_name, remote_host, local_port, new_session)
             self.badges.output_success("Session " + str(session_id) + " opened!")
