@@ -24,11 +24,11 @@
 # SOFTWARE.
 #
 
-from core.lib.module import HatSploitModule
+from core.lib.payload import HatSploitPayload
 
 from utils.payload.payload import payload
 
-class HatSploitModule(HatSploitModule):
+class HatSploitPayload(HatSploitPayload):
     payload = payload()
 
     details = {
