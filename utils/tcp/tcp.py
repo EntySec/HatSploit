@@ -167,13 +167,38 @@ class tcp:
     #
         
     def start_server(self, local_host, local_port):
-        self.badges.output_process("Binding to " + local_host + ":" + local_port + "...")
+        address = self.format_host_and_port(local_host, local_port)
+        self.badges.output_process("Binding to " + address + "...")
         try:
             server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
             server.bind((local_host, int(local_port)))
             server.listen(1)
         except Exception:
-            self.badges.output_error("Failed to bind to " + local_host + ":" + local_port + "!")
+            self.badges.output_error("Failed to bind to " + address + "!")
             raise self.exceptions.GlobalException
         return server
+
+    #
+    # Functions to connect to server
+    #
+
+    def connect(self, remote_host, remote_port, timeout=10):
+        address = self.format_host_and_port(remote_host, remote_port)
+        self.badges.output_process("Connecting to " + address + "...")
+        try:
+            server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            server.settimeout(timeout)
+            server.connect((remote_host, int(remote_port)))
+            self.badges.output_process("Establishing connection...")
+        except Exception:
+            self.badges.output_error("Failed to connect to " + address + "!")
+            raise self.exceptions.GlobalException
+        return server
+    
+    #
+    # Functions to listen
+    #
+    
+    def listen(self, server, local_host, local_port):
+        pass
