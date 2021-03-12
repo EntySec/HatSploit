@@ -126,10 +126,9 @@ class modules:
         return category + '/' + platform + '/' + name
     
     def get_current_module_payload(self):
+        current_payload = None
         current_module = self.get_current_module_object()
         if hasattr(current_module, "options"):
-            current_payload = None
-
             for option in current_module.options.keys():
                 if current_module.options[option]['Type'] == 'payload':
                     if self.payloads.check_payload_exist(current_module.options[option]['Value']):
