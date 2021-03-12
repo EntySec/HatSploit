@@ -50,6 +50,7 @@ class HatSploitPayload:
     data = {
         'payload': None,
         'execute': None,
+        'session': None,
         'staged': True
     }
 
