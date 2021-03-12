@@ -56,9 +56,7 @@ class HatSploitCommand(HatSploitCommand):
             for plugin in sorted(plugins.keys()):
                 plugins_data.append((number, plugin, database, plugins[plugin]['Description']))
                 number += 1
-        self.badges.output_empty("")
         self.tables.print_table("Plugins", headers, *plugins_data)
-        self.badges.output_empty("")
 
     def show_modules(self, information):
         modules = self.local_storage.get("modules")
@@ -72,9 +70,7 @@ class HatSploitCommand(HatSploitCommand):
                     full_name = self.modules.get_full_name(information, platform, module)
                     modules_data.append((number, full_name, database, modules[platform][module]['Risk'], modules[platform][module]['Description']))
                     number += 1
-        self.badges.output_empty("")
         self.tables.print_table(information.title() + " Modules", headers, *modules_data)
-        self.badges.output_empty("")
 
     def show_payloads(self):
         payloads = self.local_storage.get("payloads")
@@ -84,9 +80,7 @@ class HatSploitCommand(HatSploitCommand):
         for payload in payloads.keys():
             payloads_data.append((number, payloads[payload].details['Payload'], payloads[payload].details['Description']))
             number += 1
-        self.badges.output_empty("")
         self.tables.print_table("Payloads", headers, *payloads_data)
-        self.badges.output_empty("")
 
     def show_options(self):
         current_module = self.modules.get_current_module_object()
@@ -102,9 +96,7 @@ class HatSploitCommand(HatSploitCommand):
             if not value and value != 0:
                 value = ""
             options_data.append((option, value, required, options[option]['Description']))
-        self.badges.output_empty("")
         self.tables.print_table("Module Options (" + current_module.details['Module'] + ")", headers, *options_data)
-        self.badges.output_empty("")
 
         options_data = list()
         for option in sorted(options.keys()):
@@ -121,7 +113,6 @@ class HatSploitCommand(HatSploitCommand):
                             value = ""
                         options_data.append((option, value, required, current_payload.options[option]['Description']))
                     self.tables.print_table("Payload Options (" + current_payload.details['Payload'] + ")", headers, *options_data)
-                    self.badges.output_empty("")
 
     def print_usage(self, informations, plugins, options):
         if informations or plugins or options:
