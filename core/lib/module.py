@@ -38,6 +38,8 @@ class HatSploitModule:
         self.parser = parser()
         self.tables = tables()
 
+    payload = None
+        
     details = {
         'Name': "",
         'Module': "",
