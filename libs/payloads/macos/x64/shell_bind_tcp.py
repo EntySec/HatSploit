@@ -118,6 +118,6 @@ class HatSploitPayload(HatSploitPayload):
         )
 
         self.badges.output_process("Generating payload...")
-        payload = self.payload.generate(file_format, 'x64', shellcode)
+        payload = self.payload.generate(executable_format, 'x64', shellcode)
 
         return payload
