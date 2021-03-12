@@ -66,7 +66,8 @@ class HatSploitModule(HatSploitModule):
         payload, local_file = self.parser.parse_options(self.options)
         payload = self.payloads.generate(payload)
 
-        self.badges.output_process("Saving to " + local_file + "...")
-        with open(local_file, 'wb') as f:
-            f.write(payload)
-        self.badges.output_success("Successfully saved to " + local_file + "!")
+        if payload is not None:
+            self.badges.output_process("Saving to " + local_file + "...")
+            with open(local_file, 'wb') as f:
+                f.write(payload)
+            self.badges.output_success("Successfully saved to " + local_file + "!")
