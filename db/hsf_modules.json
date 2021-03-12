@@ -244,14 +244,14 @@
             }
         },
         "multi": {
-            "stager/shell_reverse_tcp": {
-                "Path": "modules/exploit/multi/stager/shell_reverse_tcp",
-                "Name": "Shell Reverse TCP Stager",
-                "Module": "exploit/multi/stager/shell_reverse_tcp",
+            "stager/reverse_tcp": {
+                "Path": "modules/exploit/multi/stager/reverse_tcp",
+                "Name": "Reverse TCP Stager",
+                "Module": "exploit/multi/stager/reverse_tcp",
                 "Authors": [
                     "enty8080"
                 ],
-                "Description": "Multi Shell Reverse TCP Stager.",
+                "Description": "Reverse TCP Stager.",
                 "Dependencies": [
                     ""
                 ],
@@ -260,14 +260,14 @@
                 ],
                 "Risk": "high"
             },
-            "stager/shell_bind_tcp": {
-                "Path": "modules/exploit/multi/stager/shell_bind_tcp",
-                "Name": "Shell Bind TCP Stager",
-                "Module": "exploit/multi/stager/shell_bind_tcp",
+            "stager/bind_tcp": {
+                "Path": "modules/exploit/multi/stager/bind_tcp",
+                "Name": "Bind TCP Stager",
+                "Module": "exploit/multi/stager/bind_tcp",
                 "Authors": [
                     "enty8080"
                 ],
-                "Description": "Multi Shell Bind TCP Stager.",
+                "Description": "Bind TCP Stager.",
                 "Dependencies": [
                     ""
                 ],
