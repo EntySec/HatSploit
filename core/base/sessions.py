@@ -36,7 +36,7 @@ class sessions:
         
         self.pseudo_shell = pseudo_shell()
 
-    def add_session(self, session_property, session_module, session_host, session_port, session_object):
+    def add_session(self, session_property, session_module, session_host, session_port, session_type, session_object):
         if not self.local_storage.get("sessions"):
             self.local_storage.set("sessions", dict())
 
@@ -48,6 +48,7 @@ class sessions:
                 'module': session_module,
                 'host': session_host,
                 'port': session_port,
+                'type': session_type,
                 'object': session_object
             }
         else:
@@ -57,6 +58,7 @@ class sessions:
                         'module': session_module,
                         'host': session_host,
                         'port': session_port,
+                        'type': session_type,
                         'object': session_object
                     }
                 }
@@ -72,7 +74,7 @@ class sessions:
                 if int(session_id) in sessions[session_property].keys():
                     return True
         return False
-    
+
     def spawn_interactive_connection(self, session_property, session_id):
         sessions = self.local_storage.get("sessions")
         if self.check_session_exist(session_property, session_id):
@@ -83,7 +85,7 @@ class sessions:
             sessions[session_property][int(session_id)]['object'].interact()
         else:
             self.badges.output_error("Invalid session given!")
-    
+
     def spawn_pseudo_shell(self, session_property, session_id):
         sessions = self.local_storage.get("sessions")
         if self.check_session_exist(session_property, session_id):
@@ -91,7 +93,7 @@ class sessions:
             self.pseudo_shell.spawn_pseudo_shell(session_property, execute_method)
         else:
             self.badges.output_error("Invalid session given!")
-    
+
     def close_session(self, session_property, session_id):
         sessions = self.local_storage.get("sessions")
         if self.check_session_exist(session_property, session_id):
