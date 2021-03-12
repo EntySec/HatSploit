@@ -200,5 +200,12 @@ class tcp:
     # Functions to listen
     #
     
-    def listen(self, server, local_host, local_port):
-        pass
+    def listen(self, server):
+        try:
+            client, address = server.accept()
+            self.badges.output_process("Connecting to " + address[0] + "...")
+            self.badges.output_process("Establishing connection...")
+        except Exception:
+            self.badges.output_error("Failed to listen!")
+            raise self.exceptions.GlobalException
+        return (client, address[0])
