@@ -262,7 +262,7 @@
             },
             "stager/shell_bind_tcp": {
                 "Path": "modules/exploit/multi/stager/shell_bind_tcp",
-                "Name": "Shell Reverse Bind Stager",
+                "Name": "Shell Bind TCP Stager",
                 "Module": "exploit/multi/stager/shell_bind_tcp",
                 "Authors": [
                     "enty8080"
