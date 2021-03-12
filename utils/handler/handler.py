@@ -60,32 +60,24 @@ class handler:
                 self.badges.output_error("Failed to start reverse TCP handler!")
         return False
 
-    def listen_for_session(self, server, local_host, local_port, session=session):
+    def listen(self, server, session=session):
         try:
-            client, address = server.accept()
-            self.badges.output_process("Connecting to " + address[0] + "...")
-            self.badges.output_process("Establishing connection...")
-            session = session(client)
-            return (session, address[0])
+            client, address = self.tcp.listen(server)
+            return (session(client), address)
         except Exception:
-            self.badges.output_error("Failed to listen!")
+            self.badges.output_error("Failed to handle session!")
             return (None, None)
 
-    def connect_to_session(self, remote_host, remote_port, session=session, timeout=10):
+    def connect(self, remote_host, remote_port, session=session, timeout=10):
         try:
-            server = socket.socket()
-            server.settimeout(timeout)
-            address = self.http.format_host_and_port(remote_host, remote_port)
-            self.badges.output_process("Connecting to " + address + "...")
-            server.connect((remote_host, int(remote_port)))
-            self.badges.output_process("Establishing connection...")
-            return session(server)
+            client = self.tcp.connect(remote_host, remote_port, timeout)
+            return session(client)
         except Exception:
-            self.badges.output_error("Failed to connect!")
+            self.badges.output_error("Failed to handle session!")
             return None
 
     def handle_bind_session(self, module_name, session_property, remote_host, remote_port, session=session):
-        session = self.connect_to_session(remote_host, remote_port, session)
+        session = self.connect(remote_host, remote_port, session)
         if not session:
             return False
 
@@ -96,7 +88,7 @@ class handler:
     def handle_reverse_session(self, module_name, session_property, local_host, local_port, session=session):
         address = self.http.format_host_and_port(local_host, local_port)
         if address in self.servers.keys():
-            session, remote_address = self.listen_for_session(self.servers[address], local_host, local_port, session)
+            session, remote_address = self.listen(self.servers[address], local_host, local_port, session)
             if not session and not remote_address:
                 return False
 
