@@ -53,7 +53,7 @@ class HatSploitModule(HatSploitModule):
             'Value': "linux/x64/shell_reverse_tcp",
             'Type': "payload",
             'Required': True
-        }.
+        },
         'LPATH': {
             'Description': "Local path.",
             'Value': "/tmp/payload.bin",
