@@ -43,4 +43,4 @@ class HatSploitPayload(HatSploitPayload):
         payload = binary.read()
         binary.close()
 
-        return payload
+        return ("file", payload)
