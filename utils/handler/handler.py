@@ -24,6 +24,8 @@
 # SOFTWARE.
 #
 
+import socket
+
 from core.base.sessions import sessions
 from core.base.storage import local_storage
 from core.cli.badges import badges
@@ -77,7 +79,7 @@ class handler:
             self.badges.output_process("Connecting to " + address + "...")
             server.connect((remote_host, int(remote_port)))
             self.badges.output_process("Establishing connection...")
-            return server
+            return session(server)
         except Exception:
             self.badges.output_error("Failed to connect!")
             return None
