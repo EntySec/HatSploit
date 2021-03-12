@@ -87,7 +87,8 @@ class HatSploitCommand(HatSploitCommand):
                 self.badges.output_error("Missed some required options!")
             else:
                 try:
-                    current_module.payload = current_payload.generate()
+                    if current_payload:
+                        current_module.payload = current_payload.generate()
                     self.entry_to_module(argc, argv, current_module)
                 except Exception as e:
                     self.badges.output_error("An error occurred in module: " + str(e) + "!")
