@@ -141,3 +141,10 @@ class handler:
             self.badges.output_success("Session " + str(session_id) + " opened!")
             return True
         return False
+
+    def handle_session(self, host, port, session_type='reverse', session=session):
+        if session_type.lower() == 'reverse':
+            return self.handle_reverse_session(host, port, session)
+        if session_type.lower() == 'bind':
+            return self.handle_bind_session(host, port, session)
+        return None
