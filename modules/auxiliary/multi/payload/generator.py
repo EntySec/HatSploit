@@ -26,8 +26,6 @@
 
 from core.lib.module import HatSploitModule
 
-from core.base.payloads import payloads
-
 class HatSploitModule(HatSploitModule):
     payloads = payloads()
 
@@ -64,10 +62,9 @@ class HatSploitModule(HatSploitModule):
 
     def run(self):
         payload, local_file = self.parser.parse_options(self.options)
-        payload = self.payloads.generate(payload)
 
-        if payload is not None:
+        if self.payload is not None:
             self.badges.output_process("Saving to " + local_file + "...")
             with open(local_file, 'wb') as f:
-                f.write(payload)
+                f.write(self.payload)
             self.badges.output_success("Successfully saved to " + local_file + "!")
