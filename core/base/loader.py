@@ -53,7 +53,7 @@ class loader:
         self.importer.import_all()
     
     def load_everything(self):
-        self.load_update_process()
+        #self.load_update_process()
         self.load_components()
         
     def load_all(self):

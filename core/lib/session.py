@@ -31,5 +31,5 @@ class session:
     def send_command(self, command, arguments=None, timeout=10):
         pass
 
-    def interact(self, command):
+    def interact(self):
         pass

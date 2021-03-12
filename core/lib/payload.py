@@ -50,7 +50,7 @@ class HatSploitPayload:
     data = {
         'payload': None,
         'execute': None,
-        'stager': True
+        'staged': True
     }
 
     def generate(self):
