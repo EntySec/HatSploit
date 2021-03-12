@@ -66,9 +66,7 @@ class HatSploitCommand(HatSploitCommand):
                             port = sessions[session_property][session_id]['port']
 
                             sessions_data.append((session_id, module, host, port))
-                        self.badges.output_empty("")
                         self.tables.print_table("Opened Sessions (" + session_property + ")", headers, *sessions_data)
-                        self.badges.output_empty("")
                 else:
                     self.badges.output_warning("No opened sessions available.")
             else:
@@ -82,9 +80,7 @@ class HatSploitCommand(HatSploitCommand):
                         port = sessions[session_property][session_id]['port']
 
                         sessions_data.append((session_id, module, host, port))
-                    self.badges.output_empty("")
                     self.tables.print_table("Opened Sessions (" + session_property + ")", headers, *sessions_data)
-                    self.badges.output_empty("")
                 else:
                     self.badges.output_error("Invalid session property given!")
         elif argv[0] in ['-c', '--close']:
