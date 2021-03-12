@@ -33,7 +33,7 @@ class HatSploitModule(HatSploitModule):
 
     details = {
         'Name': "Multi Payload Generator",
-        'Module': "payload/multi/generator",
+        'Module': "auxiliary/multi/payload/generator",
         'Authors': [
             'enty8080'
         ],
