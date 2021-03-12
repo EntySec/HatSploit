@@ -27,10 +27,15 @@
 import base64
 
 from core.lib.payload import HatSploitPayload
+from core.base.config import config
 
 from utils.tcp.tcp import tcp
 
+from data.libs.payloads.macos.x64.membrane_reverse_tcp.core.session import session
+
 class HatSploitPayload(HatSploitPayload):
+    config = config()
+
     tcp = tcp()
 
     details = {
@@ -64,7 +69,7 @@ class HatSploitPayload(HatSploitPayload):
         remote_data = remote_data.decode()
 
         self.badges.output_process("Generating payload...")
-        binary = open('external/bin/macos_membrane_x64.bin', 'rb')
+        binary = open(self.config.path_config['base_paths']['data_path'] + 'bin/membrane.bin', 'rb')
         payload = binary.read()
         binary.close()
 
@@ -76,5 +81,6 @@ class HatSploitPayload(HatSploitPayload):
 
         self.data['payload'] = payload
         self.data['execute'] = execute
+        self.data['session'] = session
 
         return self.data
