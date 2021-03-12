@@ -29,7 +29,7 @@ from core.lib.payload import HatSploitPayload
 class HatSploitPayload(HatSploitPayload):
     details = {
         'Name': "Unix ruby Reverse TCP",
-        'Payload': "unix/cmd/ruby_reverse_tcp",
+        'Payload': "unix/generic/ruby_reverse_tcp",
         'Authors': [
             'enty8080'
         ],
