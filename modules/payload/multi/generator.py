@@ -26,10 +26,10 @@
 
 from core.lib.module import HatSploitModule
 
-from utils.payload.payload import payload
+from core.base.payloads import payloads
 
 class HatSploitModule(HatSploitModule):
-    payload = payload()
+    payloads = payloads()
 
     details = {
         'Name': "Multi Payload Generator",
