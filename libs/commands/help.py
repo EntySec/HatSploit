@@ -54,10 +54,8 @@ class HatSploitCommand(HatSploitCommand):
         for command in sorted(commands.keys()):
             label = commands[command].details['Category']
             commands_data[label].append((command, commands[command].details['Description']))
-        self.badges.output_empty("")
         for label in sorted(commands_data.keys()):
             self.tables.print_table(label.title() + " Commands", headers, *commands_data[label])
-            self.badges.output_empty("")
 
     def format_plugin_commands(self):
         for plugin in self.local_storage.get("loaded_plugins").keys():
@@ -72,7 +70,6 @@ class HatSploitCommand(HatSploitCommand):
                         commands_data[label].append((command, commands[label][command]['Description']))
                 for label in sorted(commands_data.keys()):
                     self.tables.print_table(label.title() + " Commands", headers, *commands_data[label])
-                    self.badges.output_empty("")
                     
     def format_custom_commands(self):
         current_module = self.modules.get_current_module_object()
@@ -83,7 +80,6 @@ class HatSploitCommand(HatSploitCommand):
             for command in sorted(commands.keys()):
                 commands_data.append((command, commands[command]['Description']))
             self.tables.print_table("Custom Commands", headers, *commands_data)
-            self.badges.output_empty("")
         
     def run(self, argc, argv):
         self.format_base_commands()
