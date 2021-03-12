@@ -103,6 +103,9 @@ class handler:
 
                 if not payload['staged']:
                     return True
+                
+                if payload['session']:
+                    session = payload['session']
 
             new_session, remote_address = self.listen(self.servers[address], session)
             if not new_session and not remote_address:
