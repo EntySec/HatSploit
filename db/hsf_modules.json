@@ -135,6 +135,22 @@
                     ""
                 ],
                 "Risk": "medium"
+            },
+            "payload/generator": {
+                "Path": "modules/auxiliary/multi/payload/generator",
+                "Name": "Multi Payload Generator",
+                "Module": "auxiliary/multi/payload/generator",
+                "Authors": [
+                    "enty8080"
+                ],
+                "Description": "Multi Payload Generator.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Risk": "high"
             }
         }
     },
@@ -396,26 +412,6 @@
                     "enty8080"
                 ],
                 "Description": "QNAP QTS and Photo Station 6.0.3 Local File Inclusion",
-                "Dependencies": [
-                    ""
-                ],
-                "Comments": [
-                    ""
-                ],
-                "Risk": "high"
-            }
-        }
-    },
-    "payload": {
-        "multi": {
-            "generator": {
-                "Path": "modules/payload/multi/generator",
-                "Name": "Multi Payload Generator",
-                "Module": "payload/multi/generator",
-                "Authors": [
-                    "enty8080"
-                ],
-                "Description": "Multi Payload Generator.",
                 "Dependencies": [
                     ""
                 ],
