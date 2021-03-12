@@ -24,8 +24,6 @@
 # SOFTWARE.
 #
 
-import socket
-
 from core.base.sessions import sessions
 from core.base.storage import local_storage
 from core.cli.badges import badges
