@@ -51,7 +51,7 @@ class session(session):
         return (True, output)
 
     def interact(self):
-        self.tcp.interactive()
+        self.tcp.interactive('\x04')
     
     def download(self, input_file, output_path):
         self.transfer.download(input_file, output_path)
