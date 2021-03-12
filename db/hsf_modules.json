@@ -251,7 +251,23 @@
                 "Authors": [
                     "enty8080"
                 ],
-                "Description": "Cross-platform reverse TCP shell.",
+                "Description": "Multi Shell Reverse TCP Stager.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Risk": "high"
+            },
+            "stager/shell_bind_tcp": {
+                "Path": "modules/exploit/multi/stager/shell_bind_tcp",
+                "Name": "Shell Reverse Bind Stager",
+                "Module": "exploit/multi/stager/shell_bind_tcp",
+                "Authors": [
+                    "enty8080"
+                ],
+                "Description": "Multi Shell Bind TCP Stager.",
                 "Dependencies": [
                     ""
                 ],
