@@ -47,5 +47,10 @@ class HatSploitPayload:
         'Description': ""
     }
 
+    instructions = {
+        'execute': None,
+        'stager': True
+    }
+    
     def generate(self, argc, argv):
         pass
