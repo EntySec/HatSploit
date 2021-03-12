@@ -167,7 +167,7 @@ class tcp:
     #
         
     def start_server(self, local_host, local_port):
-        address = self.format_host_and_port(local_host, local_port)
+        address = local_host + ':' + str(local_port)
         self.badges.output_process("Binding to " + address + "...")
         try:
             server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -183,8 +183,8 @@ class tcp:
     # Functions to connect to server
     #
 
-    def connect(self, remote_host, remote_port, timeout=10):
-        address = self.format_host_and_port(remote_host, remote_port)
+    def connect_server(self, remote_host, remote_port, timeout=10):
+        address = remote_host + ':' + str(remote_port)
         self.badges.output_process("Connecting to " + address + "...")
         try:
             server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
