@@ -24,12 +24,12 @@
 # SOFTWARE.
 #
 
-from core.lib.module import HatSploitModule
+from core.lib.payload import HatSploitPayload
 
 from utils.tcp.tcp import tcp
 from utils.payload.payload import payload
 
-class HatSploitModule(HatSploitModule):
+class HatSploitModule(HatSploitPayload):
     tcp = tcp()
     payload = payload()
 
