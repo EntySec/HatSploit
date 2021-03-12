@@ -70,19 +70,21 @@ class HatSploitCommand(HatSploitCommand):
 
         if self.modules.check_current_module():
             current_module = self.modules.get_current_module_object()
-            count = 0
+            current_payload = self.modules.get_current_module_payload()
+            missed = 0
             if hasattr(current_module, "options"):
                 for option in current_module.options.keys():
                     current_option = current_module.options[option]
                     if not current_option['Value'] and current_option['Value'] != 0 and current_option['Required']:
-                        count += 1
-                if count > 0:
-                    self.badges.output_error("Missed some required options!")
-                else:
-                    try:
-                        self.entry_to_module(argc, argv, current_module)
-                    except Exception as e:
-                        self.badges.output_error("An error occurred in module: " + str(e) + "!")
+                        missed += 1
+            if current_payload:
+                if hasattr(current_payload, "options"):
+                    for option in current_payload.options.keys():
+                        current_option = current_payload.options[option]
+                        if not current_option['Value'] and current_option['Value'] != 0 and current_option['Required']:
+                            missed += 1
+            if missed > 0:
+                self.badges.output_error("Missed some required options!")
             else:
                 try:
                     self.entry_to_module(argc, argv, current_module)
