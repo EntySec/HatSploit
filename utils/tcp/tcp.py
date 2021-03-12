@@ -101,7 +101,7 @@ class tcp:
         if self.client:
             self.client.write(buffer)
             
-    def interactive(self):
+    def interactive(self, terminator='\n'):
         if self.client:
             selector = selectors.SelectSelector()
 
@@ -119,12 +119,12 @@ class tcp:
                         if response:
                             self.badges.output_empty(response.decode(), end='')
                     elif key.fileobj is sys.stdin:
-                        line = sys.stdin.readline()
+                        line = sys.stdin.readline().strip()
                         if not line:
                             pass
-                        if line == "exit\n":
+                        if line == "exit":
                             return
-                        self.client.write(line.encode())
+                        self.client.write((line + terminator).encode())
 
     def recv(self, timeout=10):
         if self.client:
