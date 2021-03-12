@@ -59,7 +59,7 @@ class HatSploitCommand(HatSploitCommand):
         self.badges.output_empty("")
         self.tables.print_table("Plugins", headers, *plugins_data)
         self.badges.output_empty("")
-        
+
     def show_modules(self, information):
         modules = self.local_storage.get("modules")
         modules_data = list()
@@ -75,7 +75,7 @@ class HatSploitCommand(HatSploitCommand):
         self.badges.output_empty("")
         self.tables.print_table(information.title() + " Modules", headers, *modules_data)
         self.badges.output_empty("")
-        
+
     def show_payloads(self):
         payloads = self.local_storage.get("payloads")
         payloads_data = list()
@@ -87,7 +87,7 @@ class HatSploitCommand(HatSploitCommand):
         self.badges.output_empty("")
         self.tables.print_table("Payloads", headers, *payloads_data)
         self.badges.output_empty("")
-        
+
     def show_options(self):
         current_module = self.modules.get_current_module_object()
         options_data = list()
@@ -108,7 +108,7 @@ class HatSploitCommand(HatSploitCommand):
 
         options_data = list()
         for option in sorted(options.keys()):
-            if options[option]['Type'].lower() == 'payload':
+            if options[option]['Type'] and options[option]['Type'].lower() == 'payload':
                 current_payload = self.payloads.get_payload_object(options[option]['Value'])
                 if current_payload:
                     for option in sorted(current_payload.options.keys()):
@@ -142,26 +142,26 @@ class HatSploitCommand(HatSploitCommand):
 
     def run(self, argc, argv):
         information = argv[0]
-        
+
         if self.modules.check_current_module():
             current_module = self.modules.get_current_module_object()
-        
+
             options = False
             if hasattr(current_module, "options"):
                 options = True
         else:
             options = False
-        
+
         payloads = self.local_storage.get("payloads")
         modules = self.local_storage.get("modules")
         plugins = self.local_storage.get("plugins")
-        
+
         informations = list()
         if modules:
             for database in sorted(modules.keys()):
                 for category in sorted(modules[database].keys()):
                     informations.append(category)
-        
+
         if payloads:
             if information == "payloads":
                 self.show_payloads()
