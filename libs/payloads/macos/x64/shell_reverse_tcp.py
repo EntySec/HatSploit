@@ -40,7 +40,8 @@ class HatSploitPayload(HatSploitPayload):
         'Authors': [
             'enty8080'
         ],
-        'Description': "Shell Reverse TCP Payload for macOS x64."
+        'Description': "Shell Reverse TCP Payload for macOS x64.",
+        'Type': "reverse_tcp"
     }
 
     options = {
@@ -90,4 +91,3 @@ class HatSploitPayload(HatSploitPayload):
 
         self.payload = payload
         self.instructions = instructions
-        self.action = 'reverse_tcp'
