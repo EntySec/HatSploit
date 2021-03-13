@@ -64,5 +64,5 @@ class HatSploitModule(HatSploitModule):
         if self.payload is not None:
             self.badges.output_process("Saving to " + local_file + "...")
             with open(local_file, 'wb') as f:
-                f.write(self.payload['payload'])
+                f.write(self.payload)
             self.badges.output_success("Successfully saved to " + local_file + "!")
