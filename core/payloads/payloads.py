@@ -68,3 +68,10 @@ class payloads:
         if self.check_style(name):
             return os.path.join(*(name.split(os.path.sep)[2:]))
         return None
+
+    def get_payload_object(self, platform, architecture, name):
+        payload_full_name = self.get_full_name(platform, architecture, name)
+        if self.check_exist(payload_full_name):
+            database = self.get_database(payload_full_name)
+            return self.local_storage.get("payloads")[database][platform][architecture][name]
+        return None
