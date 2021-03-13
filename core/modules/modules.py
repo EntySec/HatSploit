@@ -28,7 +28,7 @@ import os
 
 from core.base.types import types
 from core.cli.badges import badges
-from core.base.payloads import payloads
+from core.payloads.payloads import payloads
 from core.base.storage import local_storage
 
 class modules:
@@ -124,17 +124,6 @@ class modules:
 
     def get_full_name(self, category, platform, name):
         return category + '/' + platform + '/' + name
-    
-    def get_current_module_payload(self):
-        current_payload = None
-        current_module = self.get_current_module_object()
-        if hasattr(current_module, "options"):
-            for option in current_module.options.keys():
-                if current_module.options[option]['Type'] == 'payload':
-                    if self.payloads.check_payload_exist(current_module.options[option]['Value']):
-                        current_payload = self.payloads.get_payload_object(current_module.options[option]['Value'])
-
-        return current_payload
 
     def compare_types(self, value_type, value):
         if value_type and not value_type.lower == 'all':
@@ -194,7 +183,7 @@ class modules:
                     return False
                 
             if value_type.lower() == 'payload':
-                if not self.payloads.check_payload_exist(value):
+                if not self.payloads.check_exist(value):
                     self.badges.output_error("Invalid payload, expected valid payload!")
                     return False
         return True
