@@ -57,7 +57,9 @@ class HatSploitPayload(HatSploitPayload):
 
     def run(self):
         message = self.parser.parse_options(self.options)
-        call = message # some stuff
+
+        message = (message + '\x00').encode()
+        call = b'\xe8' + struct.pack("<I", len(message) + 0xd)
         
         if not executable_format in self.payload_generator.formats.keys():
             self.badges.output_error("Invalid executable format!")
