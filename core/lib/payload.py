@@ -47,12 +47,10 @@ class HatSploitPayload:
         'Description': ""
     }
 
-    method = {
-        'Payload': "",
-        'Instructions': "",
-        'Session': None,
-        'Type': "one_side"
-    }
+    payload = ""
+    instructions = ""
+    session = None
+    action = ""
 
     def generate(self):
         pass
