@@ -139,31 +139,12 @@ class importer:
                         self.badges.output_error("Failed to load " + file[:-3] + " command!")
         except Exception:
             pass
-        
-    def import_payloads(self):
-        payloads = dict()
-        payload_path = self.config.path_config['base_paths']['payloads_path']
-        try:
-            for path, subpath, files in os.walk(payload_path):
-                for file in files:
-                    if file.endswith('py'):
-                        payload_file_path = path + '/' + file[:-3]
-                        payload_directory = payload_file_path.replace(self.config.path_config['base_paths']['root_path'], '', 1)
-                        try:
-                            payload_object = self.import_payload(payload_directory)
-                            payload_name = payload_object.details['Payload']
-                            payloads[payload_name] = payload_object
-                            self.local_storage.set("payloads", payloads)
-                        except Exception:
-                            self.badges.output_error("Failed to load " + payload_directory + " payload!")
-        except Exception:
-            pass
 
     def import_database(self):
+        self.db.connect_payloads_database('hsf_payloads', self.config.path_config['base_paths']['db_path'] + self.config.db_config['base_dbs']['payloads_database'])
         self.db.connect_modules_database('hsf_modules', self.config.path_config['base_paths']['db_path'] + self.config.db_config['base_dbs']['modules_database'])
         self.db.connect_plugins_database('hsf_plugins', self.config.path_config['base_paths']['db_path'] + self.config.db_config['base_dbs']['plugins_database'])
-        
+
     def import_all(self):
         self.import_commands()
-        self.import_payloads()
         self.import_database()
