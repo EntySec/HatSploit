@@ -26,7 +26,11 @@
 
 from core.lib.payload import HatSploitPayload
 
+from utils.tcp.tcp import tcp
+
 class HatSploitPayload(HatSploitPayload):
+    tcp = tcp()
+
     details = {
         'Name': "Unix /bin/sh Reverse TCP",
         'Payload': "unix/generic/sh_reverse_tcp",
@@ -35,11 +39,11 @@ class HatSploitPayload(HatSploitPayload):
         ],
         'Description': "Unix /bin/sh Reverse TCP payload."
     }
-    
+
     options = {
         'LHOST': {
             'Description': "Local host.",
-            'Value': None,
+            'Value': tcp.get_local_host(),
             'Type': "ip",
             'Required': True
         },
@@ -50,7 +54,7 @@ class HatSploitPayload(HatSploitPayload):
             'Required': True
         }
     }
-    
+
     def generate(self):
         local_host, local_port = self.parser.parse_options(self.options)
 
