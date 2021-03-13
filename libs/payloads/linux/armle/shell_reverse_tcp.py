@@ -106,4 +106,4 @@ class HatSploitPayload(HatSploitPayload):
 
         self.payload = payload
         self.instructions = instructions
-        self.actions = 'reverse_tcp'
+        self.action = 'reverse_tcp'
