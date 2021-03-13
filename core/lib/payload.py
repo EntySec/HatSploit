@@ -39,6 +39,7 @@ class HatSploitPayload:
         self.tables = tables()
 
     details = {
+        'Category': "",
         'Name': "",
         'Payload': "",
         'Authors': [
