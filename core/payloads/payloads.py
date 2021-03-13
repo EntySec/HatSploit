@@ -27,3 +27,5 @@
 from core.base.storage import local_storage
 
 class payloads:
+    def __init__(self):
+        self.local_storage = local_storage()
