@@ -59,14 +59,13 @@ class HatSploitCommand(HatSploitCommand):
                 if sessions:
                     for session_property in sessions.keys():
                         sessions_data = list()
-                        headers = ("ID", "Module", "Host", "Port", "Connection Type")
+                        headers = ("ID", "Module", "Host", "Port")
                         for session_id in sessions[session_property].keys():
                             module = sessions[session_property][session_id]['module']
                             host = sessions[session_property][session_id]['host']
                             port = sessions[session_property][session_id]['port']
-                            connection_type = sessions[session_property][session_id]['type']
 
-                            sessions_data.append((session_id, module, host, port, connection_type))
+                            sessions_data.append((session_id, module, host, port))
                         self.tables.print_table("Opened Sessions (" + session_property + ")", headers, *sessions_data)
                 else:
                     self.badges.output_warning("No opened sessions available.")
@@ -74,14 +73,13 @@ class HatSploitCommand(HatSploitCommand):
                 if argv[1] in sessions.keys():
                     session_property = argv[1]
                     sessions_data = list()
-                    headers = ("ID", "Module", "Host", "Port", "Connection Type")
+                    headers = ("ID", "Module", "Host", "Port")
                     for session_id in sessions[session_property].keys():
                         module = sessions[session_property][session_id]['module']
                         host = sessions[session_property][session_id]['host']
                         port = sessions[session_property][session_id]['port']
-                        connection_type = sessions[session_property][session_id]['type']
 
-                        sessions_data.append((session_id, module, host, port, connection_type))
+                        sessions_data.append((session_id, module, host, port))
                     self.tables.print_table("Opened Sessions (" + session_property + ")", headers, *sessions_data)
                 else:
                     self.badges.output_error("Invalid session property given!")
