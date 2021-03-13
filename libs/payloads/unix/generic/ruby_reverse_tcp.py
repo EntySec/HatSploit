@@ -26,7 +26,11 @@
 
 from core.lib.payload import HatSploitPayload
 
+from utils.tcp.tcp import tcp
+
 class HatSploitPayload(HatSploitPayload):
+    tcp = tcp()
+
     details = {
         'Name': "Unix ruby Reverse TCP",
         'Payload': "unix/generic/ruby_reverse_tcp",
@@ -39,7 +43,7 @@ class HatSploitPayload(HatSploitPayload):
     options = {
         'LHOST': {
             'Description': "Local host.",
-            'Value': None,
+            'Value': tcp.get_local_host(),
             'Type': "ip",
             'Required': True
         },
