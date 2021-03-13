@@ -28,7 +28,7 @@ from core.lib.session import session
 
 from utils.tcp.tcp import tcp
 
-from data.libs.payloads.linux.x64.membrane_reverse_tcp.core.transfer import transfer
+from data.payloads.linux.x64.membrane_reverse_tcp.core.transfer import transfer
 
 class session(session):
     def __init__(self, client):

@@ -31,7 +31,7 @@ from core.base.config import config
 
 from utils.tcp.tcp import tcp
 
-from data.libs.payloads.macos.x64.membrane_reverse_tcp.core.session import session
+from data.payloads.macos.x64.membrane_reverse_tcp.core.session import session
 
 class HatSploitPayload(HatSploitPayload):
     config = config()
