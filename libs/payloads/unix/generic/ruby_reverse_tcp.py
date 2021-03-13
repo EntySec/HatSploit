@@ -39,7 +39,7 @@ class HatSploitPayload(HatSploitPayload):
         ],
         'Description': "Unix ruby Reverse TCP payload."
     }
-    
+
     options = {
         'LHOST': {
             'Description': "Local host.",
@@ -54,7 +54,7 @@ class HatSploitPayload(HatSploitPayload):
             'Required': True
         }
     }
-    
+
     def generate(self):
         local_host, local_port = self.parser.parse_options(self.options)
 
