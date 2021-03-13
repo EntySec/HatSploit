@@ -40,7 +40,8 @@ class HatSploitPayload(HatSploitPayload):
         'Authors': [
             'enty8080'
         ],
-        'Description': "Say Payload for macOS x64."
+        'Description': "Say Payload for macOS x64.",
+        'Type': "one_side"
     }
 
     options = {
@@ -96,4 +97,3 @@ class HatSploitPayload(HatSploitPayload):
 
         self.payload = payload
         self.instructions = instructions
-        self.action = 'one_side'
