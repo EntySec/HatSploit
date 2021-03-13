@@ -88,7 +88,7 @@ class HatSploitCommand(HatSploitCommand):
             else:
                 try:
                     if current_payload:
-                        current_payload.generate()
+                        current_payload.run()
                         current_module.payload = current_payload
                     self.entry_to_module(argc, argv, current_module)
                 except Exception as e:
