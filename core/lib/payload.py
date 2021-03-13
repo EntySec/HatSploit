@@ -45,13 +45,13 @@ class HatSploitPayload:
         'Authors': [
             ''
         ],
-        'Description': ""
+        'Description': "",
+        'Type': ""
     }
 
     payload = ""
     instructions = ""
     session = None
-    action = ""
 
     def run(self):
         pass
