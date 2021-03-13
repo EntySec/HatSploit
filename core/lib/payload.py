@@ -51,7 +51,7 @@ class HatSploitPayload:
         'payload': None,
         'execute': None,
         'session': None,
-        'staged': True
+        'type': "one_side"
     }
 
     def generate(self):
