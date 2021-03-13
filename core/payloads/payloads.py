@@ -29,3 +29,20 @@ from core.base.storage import local_storage
 class payloads:
     def __init__(self):
         self.local_storage = local_storage()
+
+    def check_exist(self, name):
+        if self.check_style(name):
+            all_payloads = self.local_storage.get("payloads")
+            if all_payloads:
+                for database in all_payloads.keys():
+                    payloads = all_payloads[database]
+
+                    platform = self.get_platform(name)
+                    architecture = self.get_architecture(nane)
+
+                    if platform in payloads.keys():
+                        if architecture in payloads[platform].keys():
+                            payload = self.get_name(name)
+                            if payload in payloads[platform][architecture].keys():
+                                return True
+        return False
