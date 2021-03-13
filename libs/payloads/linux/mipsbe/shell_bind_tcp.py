@@ -149,4 +149,4 @@ class HatSploitPayload(HatSploitPayload):
 
         self.payload = payload
         self.instructions = instructions
-        self.actions = 'bind_tcp'
+        self.action = 'bind_tcp'
