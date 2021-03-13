@@ -96,6 +96,7 @@ class handler:
                 new_session.close()
 
                 if payload.action.lower() not in ['bind_tcp', 'reverse_tcp']:
+                    self.badges.output_warning("Payload completed but no session was created.")
                     return True
 
                 if payload.session:
@@ -106,6 +107,7 @@ class handler:
                 if payload.action.lower() == 'bind_tcp':
                     new_session = self.connect(remote_host, remote_port, session)
                     if not new_session:
+                        self.badges.output_warning("Payload completed but no session was created.")
                         return False
                     session_id = self.sessions.add_session(session_property, module_name, remote_host, local_port, new_session)
                     self.badges.output_success("Session " + str(session_id) + " opened!")
@@ -116,6 +118,7 @@ class handler:
                     if self.start_handler(local_host, local_port):
                         new_session, remote_host = self.listen(self.servers[address], session)
                         if not new_session and not remote_host:
+                            self.badges.output_warning("Payload completed but no session was created.")
                             return False
             else:
                 self.badges.output_warning("Payload you provided is not executable.")
@@ -146,6 +149,7 @@ class handler:
                     new_session.close()
 
                     if payload.action.lower() not in ['bind_tcp', 'reverse_tcp']:
+                        self.badges.output_warning("Payload completed but no session was created.")
                         return True
 
                     if payload.session:
@@ -156,6 +160,7 @@ class handler:
                     if payload.action.lower() == 'bind_tcp':
                         new_session = self.connect(remote_host, remote_port, session)
                         if not new_session:
+                            self.badges.output_warning("Payload completed but no session was created.")
                             return False
                         session_id = self.sessions.add_session(session_property, module_name, remote_host, local_port, new_session)
                         self.badges.output_success("Session " + str(session_id) + " opened!")
