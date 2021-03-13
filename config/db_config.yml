@@ -23,5 +23,6 @@
 #
 
 base_dbs:
+    payloads_database: "hsf_payloads.json"
     modules_database: "hsf_modules.json"
     plugins_database: "hsf_plugins.json"
