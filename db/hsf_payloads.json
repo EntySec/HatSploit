@@ -1,1 +1,26 @@
-
+{
+    "__database__": {
+        "type": "payloads"
+    },
+    "macos": {
+        "x64": {
+            "say": {
+                "Path": "payloads/macos/x64/say",
+                "Name": "macOS x64 Say",
+                "Payload": "macos/x64/say",
+                "Authors": [
+                    "enty8080"
+                ],
+                "Description": "Say Payload for macOS x64.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Risk": "low",
+                "Type": "one_side"
+            }
+        }
+    }
+}
