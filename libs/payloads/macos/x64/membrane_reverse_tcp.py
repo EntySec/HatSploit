@@ -46,7 +46,7 @@ class HatSploitPayload(HatSploitPayload):
         ],
         'Description': "Membrane Reverse TCP Payload for macOS x64."
     }
-    
+
     options = {
         'LHOST': {
             'Description': "Local host.",
@@ -69,7 +69,7 @@ class HatSploitPayload(HatSploitPayload):
         remote_data = remote_data.decode()
 
         self.badges.output_process("Generating payload...")
-        
+
         try:
             binary = open(self.config.path_config['base_paths']['data_path'] + 'payloads/macos/x64/membrane_reverse_tcp/bin/membrane.bin', 'rb')
             payload = binary.read()
