@@ -91,7 +91,8 @@ class handler:
             if payload['Instructions'] and payload['Payload']:
                 self.badges.output_process("Sending payload stage...")
                 new_session.tcp.client.sock.send(payload['Instructions'].encode() if isinstance(payload['Instructions'], str) else payload['Instructions'])
-                new_session.tcp.client.sock.send(payload['Payload'].encode() if isinstance(payload['Payload'], str) else payload['Payload'])
+                if payload['Instructions'] != payload['Payload']:
+                    new_session.tcp.client.sock.send(payload['Payload'].encode() if isinstance(payload['Payload'], str) else payload['Payload'])
                 new_session.close()
 
                 if payload['Type'].lower() not in ['bind_tcp', 'reverse_tcp']:
@@ -138,7 +139,8 @@ class handler:
 
                     self.badges.output_process("Sending payload stage...")
                     new_session.tcp.client.sock.send(payload['Instructions'].encode() if isinstance(payload['Instructions'], str) else payload['Instructions'])
-                    new_session.tcp.client.sock.send(payload['Payload'].encode() if isinstance(payload['Payload'], str) else payload['Payload'])
+                    if payload['Instructions'] != payload['Payload']:
+                        new_session.tcp.client.sock.send(payload['Payload'].encode() if isinstance(payload['Payload'], str) else payload['Payload'])
                     new_session.close()
 
                     if payload['Type'] not in ['bind_tcp', 'reverse_tcp']:
