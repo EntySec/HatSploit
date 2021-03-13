@@ -2,10 +2,50 @@
     "__database__": {
         "type": "payloads"
     },
+    "unix": {
+        "generic": {
+            "ruby_reverse_tcp": {
+                "Path": "payloads/unix/generic/ruby_reverse_tcp",
+                "Category": "unix/shell",
+                "Name": "Unix Ruby Shell Reverse TCP",
+                "Payload": "unix/generic/ruby_reverse_tcp",
+                "Authors": [
+                    "enty8080"
+                ],
+                "Description": "Unix ruby shell reverse TCP payload.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Risk": "high",
+                "Type": "reverse_tcp"
+            },
+            "sh_reverse_tcp": {
+                "Path": "payloads/unix/generic/sh_reverse_tcp",
+                "Category": "unix/shell",
+                "Name": "Unix SH Shell Reverse TCP",
+                "Authors": [
+                    "enty8080"
+                ],
+                "Description": "Unix sh shell reverse TCP payload.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Risk": "high",
+                "Type": "reverse_tcp",
+            }
+        }
+    },
     "macos": {
         "x64": {
             "say": {
                 "Path": "payloads/macos/x64/say",
+                "Category": "macos/one_side",
                 "Name": "macOS x64 Say",
                 "Payload": "macos/x64/say",
                 "Authors": [
