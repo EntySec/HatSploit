@@ -102,7 +102,7 @@ class handler:
                 if payload.session:
                     session = payload.session
 
-                session_property = current_module.payload.details['Payload']
+                session_property = current_module.payload.details['Category']
 
                 if payload.action.lower() == 'bind_tcp':
                     new_session = self.connect(remote_host, remote_port, session)
@@ -155,7 +155,7 @@ class handler:
                     if payload.session:
                         session = payload.session
 
-                    session_property = current_module.payload.details['Payload']
+                    session_property = current_module.payload.details['Category']
 
                     if payload.action.lower() == 'bind_tcp':
                         new_session = self.connect(remote_host, remote_port, session)
