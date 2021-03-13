@@ -38,7 +38,8 @@ class HatSploitPayload(HatSploitPayload):
         'Authors': [
             'enty8080'
         ],
-        'Description': "Shell Bind TCP Payload for macOS x64."
+        'Description': "Shell Bind TCP Payload for macOS x64.",
+        'Type': "bind_tcp"
     }
 
     options = {
@@ -129,4 +130,3 @@ class HatSploitPayload(HatSploitPayload):
 
         self.payload = payload
         self.instructions = instructions
-        self.action = 'bind_tcp'
