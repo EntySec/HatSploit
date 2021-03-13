@@ -33,12 +33,19 @@ class HatSploitPayload(HatSploitPayload):
 
     details = {
         'Category': "unix/shell",
-        'Name': "Unix ruby Reverse TCP",
+        'Name': "Unix Ruby Shell Reverse TCP",
         'Payload': "unix/generic/ruby_reverse_tcp",
         'Authors': [
             'enty8080'
         ],
-        'Description': "Unix ruby Reverse TCP payload.",
+        'Description': "Unix ruby shell reverse TCP payload.",
+        'Dependencies': [
+            ''
+        ],
+        'Comments': [
+            ''
+        ],
+        'Risk': "high",
         'Type': "reverse_tcp"
     }
 
