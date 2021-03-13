@@ -36,6 +36,21 @@ class HatSploitPayload(HatSploitPayload):
         'Description': "Membrane Reverse TCP Payload for Linux x64."
     }
 
+    options = {
+        'LHOST': {
+            'Description': "Local host.",
+            'Value': tcp.get_local_host(),
+            'Type': "ip",
+            'Required': True
+        },
+        'LPORT': {
+            'Description': "Local port.",
+            'Value': 8888,
+            'Type': "port",
+            'Required': True
+        }
+    }
+
     def run(self):
         local_host, local_port = self.parser.parse_options(self.options)
 
