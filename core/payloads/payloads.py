@@ -24,6 +24,8 @@
 # SOFTWARE.
 #
 
+import os
+
 from core.base.storage import local_storage
 
 class payloads:
@@ -46,3 +48,18 @@ class payloads:
                             if payload in payloads[platform][architecture].keys():
                                 return True
         return False
+
+    def get_platform(self, name):
+        if self.check_style(name):
+            return name.split('/')[0]
+        return None
+
+    def get_architecture(self, name):
+        if self.check_style(name):
+            return name.split('/')[1]
+        return None
+
+    def get_name(self, name):
+        if self.check_style(name):
+            return os.path.join(*(name.split(os.path.sep)[2:]))
+        return None
