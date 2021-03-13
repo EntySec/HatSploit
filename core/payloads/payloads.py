@@ -49,6 +49,11 @@ class payloads:
                                 return True
         return False
 
+    def check_style(self, name):
+        if len(name.split('/')) >= 3:
+            return True
+        return False
+
     def get_platform(self, name):
         if self.check_style(name):
             return name.split('/')[0]
