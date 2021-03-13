@@ -46,6 +46,10 @@ class HatSploitPayload:
             ''
         ],
         'Description': "",
+        'Dependencies': [
+            ''
+        ],
+        'Risk': "low",
         'Type': ""
     }
 
