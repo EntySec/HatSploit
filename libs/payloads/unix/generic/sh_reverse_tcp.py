@@ -61,7 +61,7 @@ class HatSploitPayload(HatSploitPayload):
         }
     }
 
-    def generate(self):
+    def run(self):
         local_host, local_port, prompt = self.parser.parse_options(self.options)
 
         self.badges.output_process("Generating payload...")
