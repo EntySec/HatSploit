@@ -51,7 +51,7 @@ class HatSploitPayload:
         'Payload': "",
         'Instructions': "",
         'Session': "",
-        'Action': "one_side"
+        'Type': "one_side"
     }
 
     def generate(self):
