@@ -32,12 +32,14 @@ class HatSploitPayload(HatSploitPayload):
     payload_generator = payload_generator()
 
     details = {
+        'Category': "linux/shell",
         'Name': "Linux x86 Shell Bind TCP",
         'Payload': "linux/x86/shell_bind_tcp",
         'Authors': [
             'enty8080'
         ],
-        'Description': "Shell Bind TCP Payload for Linux x86."
+        'Description': "Shell Bind TCP Payload for Linux x86.",
+        'Type': "bind_tcp"
     }
 
     options = {
@@ -120,4 +122,3 @@ class HatSploitPayload(HatSploitPayload):
 
         self.payload = payload
         self.instructions = instructions
-        self.action = 'bind_tcp'
