@@ -39,12 +39,14 @@ class HatSploitPayload(HatSploitPayload):
     tcp = tcp()
 
     details = {
+        'Category': "linux/membrane",
         'Name': "Linux aarch64 Membrane Reverse TCP",
         'Payload': "linux/aarch64/membrane_reverse_tcp",
         'Authors': [
             'enty8080'
         ],
-        'Description': "Membrane Reverse TCP Payload for Linux aarch64."
+        'Description': "Membrane Reverse TCP Payload for Linux aarch64.",
+        'Type': "reverse_tcp"
     }
 
     options = {
@@ -87,4 +89,3 @@ class HatSploitPayload(HatSploitPayload):
         self.payload = payload
         self.instructions = instructions
         self.session = session
-        self.action = 'reverse_tcp'
