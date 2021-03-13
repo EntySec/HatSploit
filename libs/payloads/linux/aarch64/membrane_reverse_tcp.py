@@ -24,9 +24,20 @@
 # SOFTWARE.
 #
 
+import base64
+
 from core.lib.payload import HatSploitPayload
+from core.base.config import config
+
+from utils.tcp.tcp import tcp
+
+from data.libs.payloads.linux.aarch64.membrane_reverse_tcp.core.session import session
 
 class HatSploitPayload(HatSploitPayload):
+    config = config()
+
+    tcp = tcp()
+
     details = {
         'Name': "Linux aarch64 Membrane Reverse TCP",
         'Payload': "linux/aarch64/membrane_reverse_tcp",
