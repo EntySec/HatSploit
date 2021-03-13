@@ -24,6 +24,8 @@
 # SOFTWARE.
 #
 
+import struct
+
 from core.lib.payload import HatSploitPayload
 
 from utils.payload.payload_generator import payload_generator
@@ -56,7 +58,7 @@ class HatSploitPayload(HatSploitPayload):
     }
 
     def run(self):
-        message = self.parser.parse_options(self.options)
+        message, executable_format = self.parser.parse_options(self.options)
 
         message = (message + '\x00').encode()
         call = b'\xe8' + struct.pack("<I", len(message) + 0xd)
