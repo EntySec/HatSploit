@@ -75,3 +75,23 @@ class payloads:
             database = self.get_database(payload_full_name)
             return self.local_storage.get("payloads")[database][platform][architecture][name]
         return None
+
+    def check_exist(self, name):
+        if self.check_style(name):
+            all_payloads = self.local_storage.get("payloads")
+            if all_payloads:
+                for database in all_payloads.keys():
+                    payloads = all_payloads[database]
+
+                    platform = self.get_platform(name)
+                    architecture = self.get_architecture(nane)
+
+                    if platform in payloads.keys():
+                        if architecture in payloads[platform].keys():
+                            payload = self.get_name(name)
+                            if payload in payloads[platform][architecture].keys():
+                                return database
+        return None
+
+    def get_full_name(self, platform, architecture, name):
+        return platform + '/' + architecture + '/' + name
