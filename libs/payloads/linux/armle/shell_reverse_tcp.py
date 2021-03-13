@@ -63,7 +63,7 @@ class HatSploitPayload(HatSploitPayload):
         }
     }
 
-    def generate(self):
+    def run(self):
         local_host, local_port, executable_format = self.parser.parse_options(self.options)
 
         local_host = self.payload_generator.host_to_bytes(local_host)
