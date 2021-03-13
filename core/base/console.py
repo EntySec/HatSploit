@@ -119,10 +119,14 @@ class console:
         if self.config.core_config['console']['header']:
             plugins = self.local_storage.get("plugins")
             modules = self.local_storage.get("modules")
-            
+            payloads = self.local_storage.get("payloads")
+
             plugins_total = 0
             modules_total = 0
-            
+            payloads_total = 0
+
+            if payloads:
+                payloads_total = len(payloads)
             if plugins:
                 for database in plugins.keys():
                     plugins_total += len(plugins[database])
@@ -139,10 +143,10 @@ class console:
             else:
                 header += f"    --=( {self.colors.YELLOW}HatSploit Framework {version}{self.colors.END}\n"
             header += f"--==--=( Developed by EntySec ({self.colors.LINE}https://entysec.netlify.app/{self.colors.END})\n"
-            header += f"    --=( {modules_total} modules loaded | {plugins_total} plugins available\n"
+            header += f"    --=( {payloads_total} payloads | {modules_total} modules | {plugins_total} plugins\n"
             header += f"{self.colors.END}"
             self.badges.output_empty(header)
-            
+
         if self.config.core_config['console']['tip']:
             self.tip.print_random_tip()
             self.badges.output_empty("")
