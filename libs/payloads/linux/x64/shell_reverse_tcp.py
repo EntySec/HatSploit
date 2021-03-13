@@ -34,12 +34,14 @@ class HatSploitPayload(HatSploitPayload):
     payload_generator = payload_generator()
 
     details = {
+        'Category': "linux/shell",
         'Name': "Linux x64 Shell Reverse TCP",
         'Payload': "linux/x64/shell_reverse_tcp",
         'Authors': [
             'enty8080'
         ],
-        'Description': "Shell Reverse TCP Payload for Linux x64."
+        'Description': "Shell Reverse TCP Payload for Linux x64.",
+        'Type': "reverse_tcp"
     }
 
     options = {
@@ -125,4 +127,3 @@ class HatSploitPayload(HatSploitPayload):
 
         self.payload = payload
         self.instructions = instructions
-        self.action = 'reverse_tcp'
