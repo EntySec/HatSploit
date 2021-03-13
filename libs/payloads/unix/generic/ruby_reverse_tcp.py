@@ -38,7 +38,8 @@ class HatSploitPayload(HatSploitPayload):
         'Authors': [
             'enty8080'
         ],
-        'Description': "Unix ruby Reverse TCP payload."
+        'Description': "Unix ruby Reverse TCP payload.",
+        'Type': "reverse_tcp"
     }
 
     options = {
@@ -64,4 +65,3 @@ class HatSploitPayload(HatSploitPayload):
 
         self.payload = payload
         self.instructions = payload
-        self.action = 'reverse_tcp'
