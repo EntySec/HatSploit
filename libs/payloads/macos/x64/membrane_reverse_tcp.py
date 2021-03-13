@@ -82,5 +82,6 @@ class HatSploitPayload(HatSploitPayload):
         self.data['payload'] = payload
         self.data['execute'] = execute
         self.data['session'] = session
+        self.data['type'] = 'reverse_tcp'
 
         return self.data
