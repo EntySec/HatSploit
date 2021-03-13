@@ -112,9 +112,11 @@ class handler:
                     return True
 
                 if payload.action.lower() == 'reverse_tcp':
-                    new_session, remote_host = self.listen(self.servers[address], session)
-                    if not new_session and not remote_host:
-                        return False
+                    local_host, local_port = self.tcp.get_local_host(), remote_port
+                    if self.start_handler(local_host, local_port):
+                        new_session, remote_host = self.listen(self.servers[address], session)
+                        if not new_session and not remote_host:
+                            return False
             else:
                 self.badges.output_warning("Payload you provided is not executable.")
 
