@@ -90,5 +90,3 @@ class HatSploitPayload(HatSploitPayload):
         self.method['Payload'] = payload
         self.method['Instructions'] = instructions
         self.method['Type'] = 'reverse_tcp'
-
-        return payload
