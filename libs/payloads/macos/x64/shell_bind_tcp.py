@@ -129,5 +129,3 @@ class HatSploitPayload(HatSploitPayload):
         self.method['Payload'] = payload
         self.method['Instructions'] = instructions
         self.method['Type'] = 'bind_tcp'
-
-        return payload
