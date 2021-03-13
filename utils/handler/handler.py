@@ -87,30 +87,30 @@ class handler:
         session_property = self.modules.get_platform(module_name) + '/' + self.modules.get_name(module_name)
 
         if current_module.payload is not None:
-            payload = current_module.payload
-            if payload['execute'] is not None and payload['payload'] is not None:
+            payload = current_module.payload.method
+            if payload['Instructions'] and payload['Payload']:
                 self.badges.output_process("Sending payload stage...")
-                new_session.tcp.client.sock.send(payload['execute'].encode() if isinstance(payload['execute'], str) else payload['execute'])
-                new_session.tcp.client.sock.send(payload['payload'].encode() if isinstance(payload['payload'], str) else payload['payload'])
+                new_session.tcp.client.sock.send(payload['Instructions'].encode() if isinstance(payload['Instructions'], str) else payload['Instructions'])
+                new_session.tcp.client.sock.send(payload['Payload'].encode() if isinstance(payload['Payload'], str) else payload['Payload'])
                 new_session.close()
 
-                if payload['type'].lower() not in ['bind_tcp', 'reverse_tcp']:
+                if payload['Type'].lower() not in ['bind_tcp', 'reverse_tcp']:
                     return True
 
-                if payload['session']:
-                    session = payload['session']
+                if payload['Session']:
+                    session = payload['Session']
 
                 session_property = current_module.payload.details['Payload']
 
-                if payload['type'].lower() == 'bind_tcp':
+                if payload['Type'].lower() == 'bind_tcp':
                     new_session = self.connect(remote_host, remote_port, session)
                     if not new_session:
                         return False
                     session_id = self.sessions.add_session(session_property, module_name, remote_host, local_port, new_session)
                     self.badges.output_success("Session " + str(session_id) + " opened!")
                     return True
-                
-                if payload['type'].lower() == 'reverse_tcp':
+
+                if payload['Type'].lower() == 'reverse_tcp':
                     new_session, remote_host = self.listen(self.servers[address], session)
                     if not new_session and not remote_host:
                         return False
@@ -130,26 +130,26 @@ class handler:
             session_property = self.modules.get_platform(module_name) + '/' + self.modules.get_name(module_name)
 
             if current_module.payload is not None:
-                payload = current_module.payload
-                if payload['execute'] is not None and payload['payload'] is not None:
+                payload = current_module.payload.method
+                if payload['Instructions'] and payload['Payload']:
                     new_session, remote_host = self.listen(self.servers[address], session)
                     if not new_session and not remote_host:
                         return False
 
                     self.badges.output_process("Sending payload stage...")
-                    new_session.tcp.client.sock.send(payload['execute'].encode() if isinstance(payload['execute'], str) else payload['execute'])
-                    new_session.tcp.client.sock.send(payload['payload'].encode() if isinstance(payload['payload'], str) else payload['payload'])
+                    new_session.tcp.client.sock.send(payload['Instructions'].encode() if isinstance(payload['Instructions'], str) else payload['Instructions'])
+                    new_session.tcp.client.sock.send(payload['Payload'].encode() if isinstance(payload['Payload'], str) else payload['Payload'])
                     new_session.close()
 
-                    if payload['type'] not in ['bind_tcp', 'reverse_tcp']:
+                    if payload['Type'] not in ['bind_tcp', 'reverse_tcp']:
                         return True
 
-                    if payload['session']:
-                        session = payload['session']
+                    if payload['Session']:
+                        session = payload['Session']
 
                     session_property = current_module.payload.details['Payload']
-                    
-                    if payload['type'].lower() == 'bind_tcp':
+
+                    if payload['Type'].lower() == 'bind_tcp':
                         new_session = self.connect(remote_host, remote_port, session)
                         if not new_session:
                             return False
