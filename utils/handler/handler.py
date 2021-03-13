@@ -80,7 +80,7 @@ class handler:
         current_module = self.modules.get_current_module_object()
 
         new_session = self.connect(remote_host, remote_port, session)
-        if not session:
+        if not new_session:
             return False
 
         module_name = current_module.details['Module']
@@ -90,21 +90,30 @@ class handler:
             payload = current_module.payload
             if payload['execute'] is not None and payload['payload'] is not None:
                 self.badges.output_process("Sending payload stage...")
-                new_session.tcp.client.sock.send(payload['execute'].encode())
-                new_session.tcp.client.sock.send(payload['payload'])
+                new_session.tcp.client.sock.send(payload['execute'].encode() if isinstance(payload['execute'], str) else payload['execute'])
+                new_session.tcp.client.sock.send(payload['payload'].encode() if isinstance(payload['payload'], str) else payload['payload'])
                 new_session.close()
 
-                if not payload['staged']:
+                if payload['type'].lower() not in ['bind_tcp', 'reverse_tcp']:
                     return True
 
                 if payload['session']:
                     session = payload['session']
 
-                new_session, remote_host = self.listen(self.servers[address], session)
-                if not new_session and not remote_host:
-                    return False
-
                 session_property = current_module.payload.details['Payload']
+
+                if payload['type'].lower() == 'bind_tcp':
+                    new_session = self.connect(remote_host, remote_port, session)
+                    if not new_session:
+                        return False
+                    session_id = self.sessions.add_session(session_property, module_name, remote_host, local_port, new_session)
+                    self.badges.output_success("Session " + str(session_id) + " opened!")
+                    return True
+                
+                if payload['type'].lower() == 'reverse_tcp':
+                    new_session, remote_host = self.listen(self.servers[address], session)
+                    if not new_session and not remote_host:
+                        return False
             else:
                 self.badges.output_warning("Payload you provided is not executable.")
 
@@ -128,17 +137,25 @@ class handler:
                         return False
 
                     self.badges.output_process("Sending payload stage...")
-                    new_session.tcp.client.sock.send(payload['execute'].encode())
-                    new_session.tcp.client.sock.send(payload['payload'])
+                    new_session.tcp.client.sock.send(payload['execute'].encode() if isinstance(payload['execute'], str) else payload['execute'])
+                    new_session.tcp.client.sock.send(payload['payload'].encode() if isinstance(payload['payload'], str) else payload['payload'])
                     new_session.close()
 
-                    if not payload['staged']:
+                    if payload['type'] not in ['bind_tcp', 'reverse_tcp']:
                         return True
 
                     if payload['session']:
                         session = payload['session']
-                        
+
                     session_property = current_module.payload.details['Payload']
+                    
+                    if payload['type'].lower() == 'bind_tcp':
+                        new_session = self.connect(remote_host, remote_port, session)
+                        if not new_session:
+                            return False
+                        session_id = self.sessions.add_session(session_property, module_name, remote_host, local_port, new_session)
+                        self.badges.output_success("Session " + str(session_id) + " opened!")
+                        return True
                 else:
                     self.badges.output_warning("Payload you provided is not executable.")
 
