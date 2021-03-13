@@ -35,17 +35,10 @@ class db:
         self.badges = badges()
         self.local_storage = local_storage()
         
-    def identify_database(self, path):
-        database = json.load(open(path))
-        for item in database.keys():
-            if len(database[item]) == 4:
-                return "plugins"
-        return "modules"
-        
     def disconnect_payloads_database(self, name):
         if self.local_storage.get("connected_payloads_databases"):
             if name in self.local_storage.get("connected_payloads_databases"):
-                self.local_storage.delete_element("connected_modules_databases", name)
+                self.local_storage.delete_element("connected_payloads_databases", name)
                 self.local_storage.delete_element("payloads", name)
                 return
         self.badges.output_error("No such payloads database connected!")
