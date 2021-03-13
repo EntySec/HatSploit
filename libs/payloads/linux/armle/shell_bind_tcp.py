@@ -55,7 +55,7 @@ class HatSploitPayload(HatSploitPayload):
         }
     }
 
-    def generate(self):
+    def run(self):
         bind_port, executable_format = self.parser.parse_options(self.options)
         bind_port = self.payload_generator.port_to_bytes(bind_port)
 
