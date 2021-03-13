@@ -26,10 +26,10 @@
 
 from core.lib.payload import HatSploitPayload
 
-from utils.payload.payload import payload
+from utils.payload.payload_generator import payload_generator
 
 class HatSploitPayload(HatSploitPayload):
-    payload = payload()
+    payload_generator = payload_generator()
 
     details = {
         'Name': "Linux armle Shell Bind TCP",
@@ -57,9 +57,9 @@ class HatSploitPayload(HatSploitPayload):
 
     def generate(self):
         bind_port, executable_format = self.parser.parse_options(self.options)
-        bind_port = self.payload.port_to_bytes(bind_port)
+        bind_port = self.payload_generator.port_to_bytes(bind_port)
 
-        if not executable_format in self.payload.formats.keys():
+        if not executable_format in self.payload_generator.formats.keys():
             self.badges.output_error("Invalid executable format!")
             return
 
@@ -133,6 +133,6 @@ class HatSploitPayload(HatSploitPayload):
         )
 
         self.badges.output_process("Generating payload...")
-        payload = self.payload.generate(executable_format, 'armle', shellcode)
+        payload = self.payload_generator.generate(executable_format, 'armle', shellcode)
 
         return payload
