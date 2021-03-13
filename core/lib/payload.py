@@ -50,7 +50,7 @@ class HatSploitPayload:
     method = {
         'Payload': "",
         'Instructions': "",
-        'Session': "",
+        'Session': None,
         'Type': "one_side"
     }
 
