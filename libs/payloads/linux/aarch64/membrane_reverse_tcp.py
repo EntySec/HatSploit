@@ -36,7 +36,7 @@ class HatSploitPayload(HatSploitPayload):
         'Description': "Membrane Reverse TCP Payload for Linux aarch64."
     }
 
-    def generate(self):
+    def run(self):
         local_host, local_port = self.parser.parse_options(self.options)
 
         remote_data = base64.b64encode((local_host + ':' + local_port).encode())
