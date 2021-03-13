@@ -62,7 +62,7 @@ class HatSploitPayload(HatSploitPayload):
         }
     }
 
-    def generate(self):
+    def run(self):
         local_host, local_port = self.parser.parse_options(self.options)
 
         remote_data = base64.b64encode((local_host + ':' + local_port).encode())
