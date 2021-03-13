@@ -73,14 +73,20 @@ class HatSploitCommand(HatSploitCommand):
         self.tables.print_table(information.title() + " Modules", headers, *modules_data)
 
     def show_payloads(self):
-        payloads = self.local_storage.get("payloads")
         payloads_data = list()
-        number = 0
+        payloads = self.local_storage.get("payloads")
         headers = ("Number", "Payload", "Description")
-        for payload in payloads.keys():
-            payloads_data.append((number, payloads[payload].details['Payload'], payloads[payload].details['Description']))
+        number = 0
+
+        for payload in sorted(payloads.keys()):
+            label = payloads[payload].details['Category']
+            payloads_data[label] = dict()
+        for payload in sorted(payloads.keys()):
+            label = payloads[payload].details['Category']
+            payloads_data[label].append((number, payload, payloads[payload].details['Description']))
             number += 1
-        self.tables.print_table("Payloads", headers, *payloads_data)
+        for label in sorted(payloads_data.keys()):
+            self.tables.print_table("Payloads (" + label + ")", headers, *payloads_data)
 
     def show_options(self):
         current_module = self.modules.get_current_module_object()
