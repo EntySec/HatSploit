@@ -95,7 +95,7 @@ class handler:
                     new_session.tcp.client.sock.send(payload.payload.encode() if isinstance(payload.payload, str) else payload.payload)
                 new_session.close()
 
-                if payload.action.lower() not in ['bind_tcp', 'reverse_tcp']:
+                if payload.details['Type'].lower() not in ['bind_tcp', 'reverse_tcp']:
                     self.badges.output_warning("Payload completed but no session was created.")
                     return True
 
@@ -104,7 +104,7 @@ class handler:
 
                 session_property = current_module.payload.details['Category']
 
-                if payload.action.lower() == 'bind_tcp':
+                if payload.details['Type'].lower() == 'bind_tcp':
                     new_session = self.connect(remote_host, remote_port, session)
                     if not new_session:
                         self.badges.output_warning("Payload completed but no session was created.")
@@ -113,7 +113,7 @@ class handler:
                     self.badges.output_success("Session " + str(session_id) + " opened!")
                     return True
 
-                if payload.action.lower() == 'reverse_tcp':
+                if payload.details['Type'].lower() == 'reverse_tcp':
                     local_host, local_port = self.tcp.get_local_host(), remote_port
                     if self.start_handler(local_host, local_port):
                         new_session, remote_host = self.listen(self.servers[address], session)
@@ -148,7 +148,7 @@ class handler:
                         new_session.tcp.client.sock.send(payload.payload.encode() if isinstance(payload.payload, str) else payload.payload)
                     new_session.close()
 
-                    if payload.action.lower() not in ['bind_tcp', 'reverse_tcp']:
+                    if payload.details['Type'].lower() not in ['bind_tcp', 'reverse_tcp']:
                         self.badges.output_warning("Payload completed but no session was created.")
                         return True
 
@@ -157,7 +157,7 @@ class handler:
 
                     session_property = current_module.payload.details['Category']
 
-                    if payload.action.lower() == 'bind_tcp':
+                    if payload.details['Type'].lower() == 'bind_tcp':
                         new_session = self.connect(remote_host, remote_port, session)
                         if not new_session:
                             self.badges.output_warning("Payload completed but no session was created.")
