@@ -52,5 +52,5 @@ class HatSploitPayload:
     session = None
     action = ""
 
-    def generate(self):
+    def run(self):
         pass
