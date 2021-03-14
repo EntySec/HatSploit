@@ -31,7 +31,7 @@ from core.db.importer import importer
 from core.base.storage import local_storage
 from core.payloads.payloads import payloads
 
-class modules_tests:
+class payloads_tests:
     def __init__(self):
         self.badges = badges()
         self.importer = importer()
