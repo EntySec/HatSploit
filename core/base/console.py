@@ -126,7 +126,10 @@ class console:
             payloads_total = 0
 
             if payloads:
-                payloads_total = len(payloads)
+                for database in payloads.keys():
+                    for payload_platform in payloads[database].keys():
+                        for payload_architecture in payloads[database][payload_platform].keys():
+                            payloads_total += len(payloads[database][payload_platform][payload_architecture])
             if plugins:
                 for database in plugins.keys():
                     plugins_total += len(plugins[database])
