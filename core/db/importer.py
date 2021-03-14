@@ -35,7 +35,6 @@ from core.db.db import db
 from core.cli.badges import badges
 from core.base.storage import local_storage
 from core.base.config import config
-from core.modules.modules import modules
 from core.base.exceptions import exceptions
 
 from utils.tcp.tcp import tcp
@@ -46,7 +45,6 @@ class importer:
         self.badges = badges()
         self.local_storage = local_storage()
         self.config = config()
-        self.modules = modules()
         self.exceptions = exceptions()
 
         self.tcp = tcp()
