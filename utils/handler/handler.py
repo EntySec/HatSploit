@@ -44,8 +44,6 @@ class handler:
         self.tcp = tcp()
         self.http = http()
 
-        self.servers = dict()
-
     def listen(self, local_host, local_port, session=session):
         try:
             client, address = self.tcp.listen(local_host, local_port)
@@ -101,11 +99,10 @@ class handler:
 
                 if payload.details['Type'].lower() == 'reverse_tcp':
                     local_host, local_port = self.tcp.get_local_host(), remote_port
-                    if self.start_handler(local_host, local_port):
-                        new_session, remote_host = self.listen(self.servers[address], session)
-                        if not new_session and not remote_host:
-                            self.badges.output_warning("Payload completed but no session was created.")
-                            return False
+                    new_session, remote_host = self.listen(local_host, local_port, session)
+                    if not new_session and not remote_host:
+                        self.badges.output_warning("Payload completed but no session was created.")
+                        return False
             else:
                 self.badges.output_warning("Payload you provided is not executable.")
 
@@ -115,53 +112,51 @@ class handler:
 
     def handle_reverse_session(self, local_host, local_port, session=session):
         address = self.http.format_host_and_port(local_host, local_port)
-        if address in self.servers.keys():
-            current_module = self.modules.get_current_module_object()
+        current_module = self.modules.get_current_module_object()
 
-            module_name = current_module.details['Module']
-            session_property = self.modules.get_platform(module_name) + '/' + self.modules.get_name(module_name)
+        module_name = current_module.details['Module']
+        session_property = self.modules.get_platform(module_name) + '/' + self.modules.get_name(module_name)
 
-            if current_module.payload is not None:
-                payload = current_module.payload
-                if payload.instructions and payload.payload:
-                    new_session, remote_host = self.listen(self.servers[address], session)
-                    if not new_session and not remote_host:
-                        return False
+        if current_module.payload is not None:
+            payload = current_module.payload
+            if payload.instructions and payload.payload:
+                new_session, remote_host = self.listen(local_host, local_port, session)
+                if not new_session and not remote_host:
+                    return False
 
-                    self.badges.output_process("Sending payload stage...")
-                    new_session.tcp.client.sock.send(payload.instructions.encode() if isinstance(payload.instructions, str) else payload.instructions)
-                    if payload.instructions != payload.payload:
-                        new_session.tcp.client.sock.send(payload.payload.encode() if isinstance(payload.payload, str) else payload.payload)
-                    new_session.close()
+                self.badges.output_process("Sending payload stage...")
+                new_session.tcp.client.sock.send(payload.instructions.encode() if isinstance(payload.instructions, str) else payload.instructions)
+                if payload.instructions != payload.payload:
+                    new_session.tcp.client.sock.send(payload.payload.encode() if isinstance(payload.payload, str) else payload.payload)
+                new_session.close()
 
-                    if payload.details['Type'].lower() not in ['bind_tcp', 'reverse_tcp']:
+                if payload.details['Type'].lower() not in ['bind_tcp', 'reverse_tcp']:
+                    self.badges.output_warning("Payload completed but no session was created.")
+                    return True
+
+                if payload.session:
+                    session = payload.session
+
+                session_property = current_module.payload.details['Category']
+
+                if payload.details['Type'].lower() == 'bind_tcp':
+                    new_session = self.connect(remote_host, remote_port, session)
+                    if not new_session:
                         self.badges.output_warning("Payload completed but no session was created.")
-                        return True
+                        return False
+                    session_id = self.sessions.add_session(session_property, module_name, remote_host, local_port, new_session)
+                    self.badges.output_success("Session " + str(session_id) + " opened!")
+                    return True
+            else:
+                self.badges.output_warning("Payload you provided is not executable.")
 
-                    if payload.session:
-                        session = payload.session
+        new_session, remote_host = self.listen(local_host, local_port, session)
+        if not new_session and not remote_host:
+            return False
 
-                    session_property = current_module.payload.details['Category']
-
-                    if payload.details['Type'].lower() == 'bind_tcp':
-                        new_session = self.connect(remote_host, remote_port, session)
-                        if not new_session:
-                            self.badges.output_warning("Payload completed but no session was created.")
-                            return False
-                        session_id = self.sessions.add_session(session_property, module_name, remote_host, local_port, new_session)
-                        self.badges.output_success("Session " + str(session_id) + " opened!")
-                        return True
-                else:
-                    self.badges.output_warning("Payload you provided is not executable.")
-
-            new_session, remote_host = self.listen(self.servers[address], session)
-            if not new_session and not remote_host:
-                return False
-
-            session_id = self.sessions.add_session(session_property, module_name, remote_host, local_port, new_session)
-            self.badges.output_success("Session " + str(session_id) + " opened!")
-            return True
-        return False
+        session_id = self.sessions.add_session(session_property, module_name, remote_host, local_port, new_session)
+        self.badges.output_success("Session " + str(session_id) + " opened!")
+        return True
 
     def handle_session(self, host, port, session_type='reverse', session=session):
         if session_type.lower() == 'reverse':
