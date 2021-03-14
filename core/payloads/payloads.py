@@ -25,6 +25,7 @@
 #
 
 import os
+import copy
 
 from core.db.importer import importer
 from core.base.storage import local_storage
@@ -126,18 +127,18 @@ class payloads:
             if imported_payloads:
                 if current_module_name in imported_payloads.keys():
                     imported_payloads[current_module_name].update({
-                        payload_object.details['Payload']: payload_object
+                        payload_object.details['Payload']: copy.copy(payload_object)
                     })
                 else:
                     imported_payloads.update({
                         current_module_name: {
-                            payload_object.details['Payload']: payload_object
+                            payload_object.details['Payload']: copy.copy(payload_object)
                         }
                     })
             else:
                 imported_payloads = {
                     current_module_name: {
-                        payload_object.details['Payload']: payload_object
+                        payload_object.details['Payload']: copy.copy(payload_object)
                     }
                 }
             self.local_storage.set("imported_payloads", imported_payloads)
