@@ -38,7 +38,14 @@ class HatSploitPayload(HatSploitPayload):
         'Authors': [
             'enty8080'
         ],
-        'Description': "Shell Bind TCP Payload for Linux mipsbe.",
+        'Description': "Shell bind TCP payload for Linux mipsbe.",
+        'Dependencies': [
+            ''
+        ],
+        'Comments': [
+            ''
+        ],
+        'Risk': "high",
         'Type': "bind_tcp"
     }
 
