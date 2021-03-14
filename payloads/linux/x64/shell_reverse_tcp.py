@@ -40,7 +40,14 @@ class HatSploitPayload(HatSploitPayload):
         'Authors': [
             'enty8080'
         ],
-        'Description': "Shell Reverse TCP Payload for Linux x64.",
+        'Description': "Shell reverse TCP payload for Linux x64.",
+        'Dependencies': [
+            ''
+        ],
+        'Comments': [
+            ''
+        ],
+        'Risk': "high",
         'Type': "reverse_tcp"
     }
 
