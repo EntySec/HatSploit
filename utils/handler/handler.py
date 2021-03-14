@@ -46,29 +46,15 @@ class handler:
 
         self.servers = dict()
 
-    def start_handler(self, local_host, local_port):
-        if self.tcp.check_tcp_port(local_host, local_port):
-            self.badges.output_error("Provided port is already in use!")
-        else:
-            self.badges.output_process("Starting reverse TCP handler on port " + str(local_port) + "...")
-            try:
-                address = self.http.format_host_and_port(local_host, local_port)
-                self.servers[address] = self.tcp.start_server(local_host, local_port)
-                self.badges.output_success("Reverse TCP handler successfully started!")
-                return True
-            except Exception:
-                self.badges.output_error("Failed to start reverse TCP handler!")
-        return False
-
-    def listen(self, server, session=session):
+    def listen(self, local_host, local_port, session=session):
         try:
-            client, address = self.tcp.listen(server)
+            client, address = self.tcp.listen(local_host, local_port)
             return (session(client), address)
         except Exception:
             self.badges.output_error("Failed to handle session!")
             return (None, None)
 
-    def connect(self, remote_host, remote_port, session=session, timeout=10):
+    def connect(self, remote_host, remote_port, timeout=10, session=session):
         try:
             client = self.tcp.connect_server(remote_host, remote_port, timeout)
             return session(client)
