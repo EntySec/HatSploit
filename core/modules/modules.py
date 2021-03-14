@@ -189,7 +189,7 @@ class modules:
                     self.badges.output_error("Invalid payload, expected valid payload!")
                     return False
         return True
-
+    
     def set_current_module_option(self, option, value):
         if self.check_current_module():
             current_module = self.get_current_module_object()
@@ -258,10 +258,14 @@ class modules:
 
                                 self.badges.output_process("Using default payload " + payload_name + "...")
 
-                                if self.payloads.add_payload(platform, architecture, name):
-                                    self.add_to_global(module_object)
-                                    return
+                                if self.payloads.check_exist(payload_name):
+                                    if self.payloads.add_payload(platform, architecture, name):
+                                        self.add_to_global(module_object)
+                                        return
+                                    else:
+                                        return
                                 else:
+                                    self.badges.output_error("Invalid default payload!")
                                     return
                     self.add_to_global(module_object)
                 else:
