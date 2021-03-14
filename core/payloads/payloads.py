@@ -27,12 +27,10 @@
 import os
 
 from core.base.storage import local_storage
-from core.modules.modules import modules
 
 class payloads:
     def __init__(self):
         self.local_storage = local_storage()
-        self.modules = modules()
 
     def check_exist(self, name):
         if self.check_style(name):
@@ -98,11 +96,27 @@ class payloads:
     def get_full_name(self, platform, architecture, name):
         return platform + '/' + architecture + '/' + name
 
+    def check_current_module(self):
+        if self.local_storage.get("current_module"):
+            if len(self.local_storage.get("current_module")) > 0:
+                return True
+        return False
+    
+    def get_current_module_object(self):
+        if self.check_current_module():
+            return self.local_storage.get_array("current_module", self.local_storage.get("current_module_number"))
+        return None
+    
+    def get_current_module_name(self):
+        if self.check_current_module():
+            return self.local_storage.get_array("current_module", self.local_storage.get("current_module_number")).details['Module']
+        return None
+    
     def import_payload(self, platform, architecture name):
         payloads = self.get_payload_object(platform, architecture, name)
         try:
             payload_object = self.importer.import_payload(payloads['Path'])
-            current_module_name = self.get_current_module_object().details['Module']
+            current_module_name = self.get_current_module_name()
 
             imported_payloads = self.local_storage.get("imported_payloads")
             if imported_payload:
@@ -127,7 +141,7 @@ class payloads:
         
     def check_imported(self, name):
         imported_payloads = self.local_storage.get("imported_payloads")
-        current_module_name = self.get_current_module_object().details['Module']
+        current_module_name = self.get_current_module_name()
         
         if current_module_name in imported_payloads.keys():
             if name in imported_payloads[current_module_name].keys():
