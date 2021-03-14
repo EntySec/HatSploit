@@ -44,7 +44,6 @@ class handler:
         self.tcp = tcp()
         self.http = http()
 
-        self.current_module = self.modules.get_current_module_object()
         self.servers = dict()
 
     def start_handler(self, local_host, local_port):
@@ -78,7 +77,7 @@ class handler:
             return None
 
     def handle_bind_session(self, remote_host, remote_port, session=session):
-        current_module = self.current_module()
+        current_module = self.modules.get_current_module_object()
 
         new_session = self.connect(remote_host, remote_port, session)
         if not new_session:
@@ -131,7 +130,7 @@ class handler:
     def handle_reverse_session(self, local_host, local_port, session=session):
         address = self.http.format_host_and_port(local_host, local_port)
         if address in self.servers.keys():
-            current_module = self.current_module()
+            current_module = self.modules.get_current_module_object()
 
             module_name = current_module.details['Module']
             session_property = self.modules.get_platform(module_name) + '/' + self.modules.get_name(module_name)
