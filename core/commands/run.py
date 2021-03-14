@@ -26,7 +26,7 @@
 
 from core.lib.command import HatSploitCommand
 
-from core.base.payloads import payloads
+from core.payloads.payloads import payloads
 from core.base.storage import local_storage
 from core.modules.modules import modules
 from core.base.jobs import jobs
@@ -70,7 +70,7 @@ class HatSploitCommand(HatSploitCommand):
 
         if self.modules.check_current_module():
             current_module = self.modules.get_current_module_object()
-            current_payload = self.modules.get_current_module_payload()
+            current_payload = self.payloads.get_current_payload()
             missed = 0
             if hasattr(current_module, "options"):
                 for option in current_module.options.keys():
