@@ -147,6 +147,20 @@ class payloads:
             if name in imported_payloads[current_module_name].keys():
                 return True
         return False
+    
+    def get_current_payload(self):
+        imported_payloads = self.local_storage.get("imported_payloads")
+        current_module_object = self.get_current_module_object()
+        current_module_name = current_module_object.details['Module']
+
+        if hasattr(current_module_object, "options"):
+            for option in current_module_object.options.keys():
+                if current_module_object.options[option]['Type'].lower() == 'payload':
+                    name = current_module_object.options[option]['Value']
+                    if current_module_name in imported_payloads.keys():
+                        if name in imported_payloads[current_module_name].keys():
+                            return imported_payloads[current_module_name][name]
+        return None
         
     def add_payload(self, platform, architecture, name):
         payloads = self.get_payload_object(platform, architecture, name)
