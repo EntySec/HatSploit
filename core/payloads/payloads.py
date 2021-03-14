@@ -26,11 +26,13 @@
 
 import os
 
+from core.db.importer import importer
 from core.base.storage import local_storage
 from core.cli.badges import badges
 
 class payloads:
     def __init__(self):
+        self.importer = importer()
         self.local_storage = local_storage()
         self.badges = badges()
 
