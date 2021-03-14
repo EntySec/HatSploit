@@ -42,7 +42,7 @@ class payloads:
                     payloads = all_payloads[database]
 
                     platform = self.get_platform(name)
-                    architecture = self.get_architecture(nane)
+                    architecture = self.get_architecture(name)
 
                     if platform in payloads.keys():
                         if architecture in payloads[platform].keys():
