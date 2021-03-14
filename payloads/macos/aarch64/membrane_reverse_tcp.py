@@ -45,7 +45,7 @@ class HatSploitPayload(HatSploitPayload):
         'Authors': [
             'enty8080'
         ],
-        'Description': "Membrane Reverse TCP Payload for macOS aarch64.",
+        'Description': "Membrane reverse TCP payload for macOS aarch64.",
         'Dependencies': [
             ''
         ],
