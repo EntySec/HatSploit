@@ -149,12 +149,10 @@ class payloads:
         imported_payloads = self.local_storage.get("imported_payloads")
         current_module_name = self.get_current_module_name()
         
-        if not imported_payloads:
-            return True
-        
-        if current_module_name in imported_payloads.keys():
-            if name in imported_payloads[current_module_name].keys():
-                return True
+        if imported_payloads:
+            if current_module_name in imported_payloads.keys():
+                if name in imported_payloads[current_module_name].keys():
+                    return True
         return False
     
     def get_current_payload(self):
