@@ -188,9 +188,9 @@ class modules:
                 if self.payloads.check_exist(value):
                     module_name = self.get_current_module_name()
                     
-                    platform = self.payloads.get_platform(payload_name)
-                    architecture = self.payloads.get_architecture(payload_name)
-                    name = self.payloads.get_name(payload_name)
+                    platform = self.payloads.get_platform(value)
+                    architecture = self.payloads.get_architecture(value)
+                    name = self.payloads.get_name(value)
 
                     if not self.payloads.add_payload(module_name, platform, architecture, name):
                         self.badges.output_error("Invalid payload, expected valid payload!")
