@@ -212,8 +212,9 @@ class tcp:
             client, address = server.accept()
             self.badges.output_process("Connecting to " + address[0] + "...")
             self.badges.output_process("Establishing connection...")
+
             server.close()
         except Exception:
-            self.badges.output_error("Failed to listen!")
+            self.badges.output_error("Failed to listen on port " + str(local_port) + "!")
             raise self.exceptions.GlobalException
         return (client, address[0])
