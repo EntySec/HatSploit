@@ -28,10 +28,12 @@ from core.lib.command import HatSploitCommand
 
 from core.base.storage import local_storage
 from core.modules.modules import modules
+from core.payloads.payloads import payloads
 
 class HatSploitCommand(HatSploitCommand):
     local_storage = local_storage()
     modules = modules()
+    payloads = payloads()
 
     details = {
         'Category': "core",
@@ -71,7 +73,7 @@ class HatSploitCommand(HatSploitCommand):
         self.tables.print_table(information.title() + " Modules", headers, *modules_data)
 
     def show_payloads(self):
-        payloads_data = list()
+        payloads_data = dict()
         payloads = self.local_storage.get("payloads")
         headers = ("Number", "Payload", "Database", "Risk", "Description")
         number = 0
@@ -82,7 +84,7 @@ class HatSploitCommand(HatSploitCommand):
                     payloads = payloads[database][platform][architecture]
                     for payload in sorted(payloads.keys()):
                         label = payloads[payload]['Category']
-                        payloads_data[label] = dict()
+                        payloads_data[label] = list()
                     for payload in sorted(payloads.keys()):
                         label = payloads[payload]['Category']
                         payloads_data[label].append((number, payload, database, payloads[payload]['Risk'], payloads[payload]['Description']))
@@ -109,7 +111,7 @@ class HatSploitCommand(HatSploitCommand):
         options_data = list()
         for option in sorted(options.keys()):
             if options[option]['Type'] and options[option]['Type'].lower() == 'payload':
-                current_payload = self.payloads.get_payload_object(options[option]['Value'])
+                current_payload = self.payloads.get_current_payload(options[option]['Value'])
                 if current_payload:
                     for option in sorted(current_payload.options.keys()):
                         value, required = current_payload.options[option]['Value'], current_payload.options[option]['Required']
