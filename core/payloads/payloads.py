@@ -102,7 +102,7 @@ class payloads:
         payloads = self.get_payload_object(platform, architecture, name)
         try:
             payload_object = self.importer.import_payload(payloads['Path'])
-            current_module_name = self.modules.get_current_module_object().details['Module']
+            current_module_name = self.get_current_module_object().details['Module']
 
             imported_payloads = self.local_storage.get("imported_payloads")
             if imported_payload:
@@ -127,7 +127,7 @@ class payloads:
         
     def check_imported(self, name):
         imported_payloads = self.local_storage.get("imported_payloads")
-        current_module_name = self.modules.get_current_module_object().details['Module']
+        current_module_name = self.get_current_module_object().details['Module']
         
         if current_module_name in imported_payloads.keys():
             if name in imported_payloads[current_module_name].keys():
@@ -149,7 +149,10 @@ class payloads:
                 payload_object = self.import_payload(platform, architecture, name)
                 if not payload_object:
                     self.badges.output_error("Failed to select module from database!")
+                    return False
         else:
             self.badges.output_error("Payload depends this dependencies which is not installed:")
             for dependence in not_installed:
                 self.badges.output_empty("    * " + dependence)
+            return False
+        return True
