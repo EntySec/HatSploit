@@ -27,10 +27,12 @@
 import os
 
 from core.base.storage import local_storage
+from core.modules.modules import modules
 
 class payloads:
     def __init__(self):
         self.local_storage = local_storage()
+        self.modules = modules()
 
     def check_exist(self, name):
         if self.check_style(name):
@@ -95,3 +97,59 @@ class payloads:
 
     def get_full_name(self, platform, architecture, name):
         return platform + '/' + architecture + '/' + name
+
+    def import_payload(self, platform, architecture name):
+        payloads = self.get_payload_object(platform, architecture, name)
+        try:
+            payload_object = self.importer.import_payload(payloads['Path'])
+            current_module_name = self.modules.get_current_module_object().details['Module']
+
+            imported_payloads = self.local_storage.get("imported_payloads")
+            if imported_payload:
+                if current_module_name in imported_payloads.keys():
+                    imported_payloads[current_module_name].update(payload_object.details['Payload']: payload_object)
+                else:
+                    imported_payloads.update({
+                        current_module_name: {
+                            payload_object.details['Payload']: payload_object
+                        }
+                    })
+            else:
+                imported_payloads = {
+                    current_module_name: {
+                        payload_object.details['Payload']: payload_object
+                    }
+                }
+            self.local_storage.set("imported_payloads", imported_payloads)
+        except Exception:
+            return None
+        return payload_object
+        
+    def check_imported(self, name):
+        imported_payloads = self.local_storage.get("imported_payloads")
+        current_module_name = self.modules.get_current_module_object().details['Module']
+        
+        if current_module_name in imported_payloads.keys():
+            if name in imported_payloads[current_module_name].keys():
+                return True
+        return False
+        
+    def add_payload(self, platform, architecture, name):
+        payloads = self.get_payload_object(platform, architecture, name)
+
+        not_installed = list()
+        for dependence in payloads['Dependencies']:
+            if not self.importer.import_check(dependence):
+                not_installed.append(dependence)
+        if not not_installed:
+            imported_payloads = self.local_storage.get("imported_payloads")
+            full_name = self.get_full_name(platform, architecture, name)
+
+            if not self.check_imported(full_name):
+                payload_object = self.import_payload(platform, architecture, name)
+                if not payload_object:
+                    self.badges.output_error("Failed to select module from database!")
+        else:
+            self.badges.output_error("Payload depends this dependencies which is not installed:")
+            for dependence in not_installed:
+                self.badges.output_empty("    * " + dependence)
