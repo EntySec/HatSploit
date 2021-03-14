@@ -247,6 +247,22 @@ class modules:
             else:
                 module_object = self.import_module(category, platform, name)
                 if module_object:
+                    if hasattr(module_object, "options"):
+                        for option in module_object.options.keys():
+                            if module_object.options[option]['Type'].lower() == 'payload':
+                                payload_name = module_object.options[option]['Value']
+
+                                platform = self.payloads.get_platform(payload_name)
+                                architecture = self.payloads.get_architecture(payload_name)
+                                name = self.payloads.get_name(payload_name)
+
+                                self.badges.output_process("Using default payload " + payload_name + "...")
+
+                                if self.payloads.add_payload(platform, architecture, name):
+                                    self.add_to_global(module_object)
+                                    return
+                                else:
+                                    return
                     self.add_to_global(module_object)
                 else:
                     self.badges.output_error("Failed to select module from database!")
