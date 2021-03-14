@@ -90,7 +90,7 @@ class HatSploitCommand(HatSploitCommand):
                         payloads_data[label].append((number, payload, database, payloads[payload]['Risk'], payloads[payload]['Description']))
                         number += 1
                     for label in sorted(payloads_data.keys()):
-                        self.tables.print_table("Payloads (" + label + ")", headers, *payloads_data)
+                        self.tables.print_table("Payloads (" + label + ")", headers, *payloads_data[label])
 
     def show_options(self):
         current_module = self.modules.get_current_module_object()
@@ -111,7 +111,7 @@ class HatSploitCommand(HatSploitCommand):
         options_data = list()
         for option in sorted(options.keys()):
             if options[option]['Type'] and options[option]['Type'].lower() == 'payload':
-                current_payload = self.payloads.get_current_payload(options[option]['Value'])
+                current_payload = self.payloads.get_current_payload()
                 if current_payload:
                     for option in sorted(current_payload.options.keys()):
                         value, required = current_payload.options[option]['Value'], current_payload.options[option]['Required']
