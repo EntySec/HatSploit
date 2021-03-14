@@ -78,7 +78,7 @@ class payloads:
             return self.local_storage.get("payloads")[database][platform][architecture][name]
         return None
 
-    def check_exist(self, name):
+    def get_database(self, name):
         if self.check_style(name):
             all_payloads = self.local_storage.get("payloads")
             if all_payloads:
@@ -86,7 +86,7 @@ class payloads:
                     payloads = all_payloads[database]
 
                     platform = self.get_platform(name)
-                    architecture = self.get_architecture(nane)
+                    architecture = self.get_architecture(name)
 
                     if platform in payloads.keys():
                         if architecture in payloads[platform].keys():
