@@ -82,7 +82,7 @@ class HatSploitCommand(HatSploitCommand):
             payloads_data = list()
             for platform in sorted(payloads[database].keys()):
                 for architecture in sorted(payloads[database][platform].keys()):
-                    for payload in payloads[database][platform][architecture]
+                    for payload in sorted(payloads[database][platform][architecture].keys()):
                         current_payload = payloads[database][platform][architecture][payload]
                         payloads_data[label].append((number, payload, current_payload['Risk'], current_payload['Description']))
                         number += 1
