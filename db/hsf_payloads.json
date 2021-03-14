@@ -26,6 +26,7 @@
                 "Path": "payloads/unix/generic/sh_reverse_tcp",
                 "Category": "unix/shell",
                 "Name": "Unix SH Shell Reverse TCP",
+                "Payload": "unix/generic/sh_reverse_tcp",
                 "Authors": [
                     "enty8080"
                 ],
@@ -42,7 +43,45 @@
         }
     },
     "macos": {
+        "aarch64": {
+            "membrane_reverse_tcp": {
+                "Path": "payloads/macos/aarch64/membrane_reverse_tcp",
+                "Category": "macos/membrane",
+                "Name": "macOS aarch64 Membrane Reverse TCP",
+                "Payload": "macos/aarch64/membrane_reverse_tcp",
+                "Authors": [
+                    "enty8080"
+                ],
+                "Description": "Membrane reverse TCP payload for macOS aarch64.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Risk": "high",
+                "Type": "reverse_tcp"
+            }
+        },
         "x64": {
+            "membrane_reverse_tcp": {
+                "Path": "payloads/macos/x64/membrane_reverse_tcp",
+                "Category": "macos/membrane",
+                "Name": "macOS x64 Membrane Reverse TCP",
+                "Payload": "macos/x64/membrane_reverse_tcp",
+                "Authors": [
+                    "enty8080"
+                ],
+                "Description": "Membrane reverse TCP payload for macOS x64.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Risk": "high",
+                "Type": "reverse_tcp"
+            },
             "say": {
                 "Path": "payloads/macos/x64/say",
                 "Category": "macos/one_side",
@@ -51,7 +90,7 @@
                 "Authors": [
                     "enty8080"
                 ],
-                "Description": "Say Payload for macOS x64.",
+                "Description": "Say payload for macOS x64.",
                 "Dependencies": [
                     ""
                 ],
@@ -60,6 +99,42 @@
                 ],
                 "Risk": "low",
                 "Type": "one_side"
+            },
+            "shell_bind_tcp": {
+                "Path": "payloads/macos/x64/shell_bind_tcp",
+                "Category": "macos/shell",
+                "Name": "macOS x64 Shell Bind TCP",
+                "Payload": "macos/x64/shell_bind_tcp",
+                "Authors": [
+                    "enty8080"
+                ],
+                "Description": "Shell bind TCP payload for macOS x64.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Risk": "high",
+                "Type": "bind_tcp"
+            },
+            "shell_reverse_tcp": {
+                "Path": "payloads/macos/x64/shell_reverse_tcp",
+                "Category": "macos/shell",
+                "Name": "macOS x64 Shell Reverse TCP",
+                "Payload": "macos/x64/shell_reverse_tcp",
+                "Authors": [
+                    "enty8080"
+                ],
+                "Description": "Shell reverse TCP payload for macOS x64.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Risk": "high",
+                "Type": "reverse_tcp"
             }
         }
     }
