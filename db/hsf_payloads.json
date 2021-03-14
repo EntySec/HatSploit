@@ -38,7 +38,7 @@
                     ""
                 ],
                 "Risk": "high",
-                "Type": "reverse_tcp",
+                "Type": "reverse_tcp"
             }
         }
     },
