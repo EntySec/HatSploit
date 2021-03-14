@@ -159,7 +159,7 @@
             "mobile_safari_app/webkit_filter_dos": {
                 "Path": "modules/exploit/iphoneos/mobile_safari_app/webkit_filter_dos",
                 "Name": "iPhoneOS MobileSafari.app WebKit Filter DoS",
-                "Modules": "exploit/iphoneos/mobile_safari_app/webkit_filter_dos",
+                "Module": "exploit/iphoneos/mobile_safari_app/webkit_filter_dos",
                 "Authors": [
                     "enty8080"
                 ],
