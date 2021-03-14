@@ -116,12 +116,12 @@ class payloads:
             return self.local_storage.get_array("current_module", self.local_storage.get("current_module_number")).details['Module']
         return None
     
-    def import_payload(self, platform, architecture, name):
+    def import_payload(self, module_name, platform, architecture, name):
         payloads = self.get_payload_object(platform, architecture, name)
         try:
             payload_object = self.importer.import_payload(payloads['Path'])
-            current_module_name = self.get_current_module_name()
-
+            current_module_name = module_name
+            
             imported_payloads = self.local_storage.get("imported_payloads")
             if imported_payloads:
                 if current_module_name in imported_payloads.keys():
@@ -145,9 +145,9 @@ class payloads:
             return None
         return payload_object
         
-    def check_imported(self, name):
+    def check_imported(self, module_name, name):
         imported_payloads = self.local_storage.get("imported_payloads")
-        current_module_name = self.get_current_module_name()
+        current_module_name = module_name
         
         if imported_payloads:
             if current_module_name in imported_payloads.keys():
@@ -169,7 +169,7 @@ class payloads:
                             return imported_payloads[current_module_name][name]
         return None
         
-    def add_payload(self, platform, architecture, name):
+    def add_payload(self, module_name, platform, architecture, name):
         payloads = self.get_payload_object(platform, architecture, name)
 
         not_installed = list()
@@ -180,8 +180,8 @@ class payloads:
             imported_payloads = self.local_storage.get("imported_payloads")
             full_name = self.get_full_name(platform, architecture, name)
 
-            if not self.check_imported(full_name):
-                payload_object = self.import_payload(platform, architecture, name)
+            if not self.check_imported(module_name, full_name):
+                payload_object = self.import_payload(module_name, platform, architecture, name)
                 if not payload_object:
                     self.badges.output_error("Failed to select payload from database!")
                     return False
