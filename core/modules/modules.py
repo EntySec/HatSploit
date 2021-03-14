@@ -254,3 +254,14 @@ class modules:
             self.badges.output_error("Module depends this dependencies which is not installed:")
             for dependence in not_installed:
                 self.badges.output_empty("    * " + dependence)
+
+    def add_to_global(self, module_object):
+        if self.check_current_module():
+            self.local_storage.add_array("current_module", '')
+            self.local_storage.set("current_module_number", self.local_storage.get("current_module_number") + 1)
+            self.local_storage.set_array("current_module", self.local_storage.get("current_module_number"), module_object)
+        else:
+            self.local_storage.set("current_module", [])
+            self.local_storage.set("current_module_number", 0)
+            self.local_storage.add_array("current_module", '')
+            self.local_storage.set_array("current_module", self.local_storage.get("current_module_number"), module_object)
