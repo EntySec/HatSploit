@@ -185,15 +185,19 @@ class modules:
                     return False
                 
             if value_type.lower() == 'payload':
-                if not self.payloads.check_exist(value):
-
+                if self.payloads.check_exist(value):
+                    module_name = self.get_current_module_name()
+                    
                     platform = self.payloads.get_platform(payload_name)
                     architecture = self.payloads.get_architecture(payload_name)
                     name = self.payloads.get_name(payload_name)
 
-                    if not self.payloads.add_payload(platform, architecture, name):
+                    if not self.payloads.add_payload(module_name, platform, architecture, name):
                         self.badges.output_error("Invalid payload, expected valid payload!")
                         return False
+                else:
+                    self.badges.output_error("Invalid payload, expected valid payload!")
+                    return False
         return True
     
     def set_current_module_option(self, option, value):
