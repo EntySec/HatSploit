@@ -68,8 +68,7 @@ class HatSploitCommand(HatSploitCommand):
             modules = modules[database][information]
             for platform in sorted(modules.keys()):
                 for module in sorted(modules[platform].keys()):
-                    full_name = self.modules.get_full_name(information, platform, module)
-                    modules_data.append((number, full_name, modules[platform][module]['Risk'], modules[platform][module]['Description']))
+                    modules_data.append((number, modules[platform][module]['Module'], modules[platform][module]['Risk'], modules[platform][module]['Description']))
                     number += 1
             self.tables.print_table(information.title() + " Modules (" + database + ")", headers, *modules_data)
 
@@ -84,7 +83,7 @@ class HatSploitCommand(HatSploitCommand):
                 for architecture in sorted(payloads[database][platform].keys()):
                     for payload in sorted(payloads[database][platform][architecture].keys()):
                         current_payload = payloads[database][platform][architecture][payload]
-                        payloads_data.append((number, current_payload['Category'], payload, current_payload['Risk'], current_payload['Description']))
+                        payloads_data.append((number, current_payload['Category'], current_payload['Payload'], current_payload['Risk'], current_payload['Description']))
                         number += 1
             self.tables.print_table("Payloads (" + database + ")", headers, *payloads_data)
 
