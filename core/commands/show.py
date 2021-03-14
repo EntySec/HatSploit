@@ -86,7 +86,7 @@ class HatSploitCommand(HatSploitCommand):
                         current_payload = payloads[database][platform][architecture][payload]
                         payloads_data[label].append((number, payload, current_payload['Risk'], current_payload['Description']))
                         number += 1
-            self.tables.print_table("Payloads (" + database + ")", headers, *payloads_data[label])
+            self.tables.print_table("Payloads (" + database + ")", headers, *payloads_data)
 
     def show_options(self):
         current_module = self.modules.get_current_module_object()
