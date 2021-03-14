@@ -189,6 +189,7 @@ class tcp:
         try:
             server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             server.settimeout(timeout)
+
             server.connect((remote_host, int(remote_port)))
             self.badges.output_process("Establishing connection...")
         except Exception:
@@ -200,8 +201,14 @@ class tcp:
     # Functions to listen
     #
     
-    def listen(self, server):
+    def listen(self, local_host, local_port):
         try:
+            server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+            server.bind((local_host, int(local_port)))
+            server.listen(1)
+
+            self.badges.output_process("Listening on port " + str(local_port) + "...")
             client, address = server.accept()
             self.badges.output_process("Connecting to " + address[0] + "...")
             self.badges.output_process("Establishing connection...")
