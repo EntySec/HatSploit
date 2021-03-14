@@ -186,15 +186,21 @@ class modules:
                 
             if value_type.lower() == 'payload':
                 if not self.payloads.check_exist(value):
-                    self.badges.output_error("Invalid payload, expected valid payload!")
-                    return False
+
+                    platform = self.payloads.get_platform(payload_name)
+                    architecture = self.payloads.get_architecture(payload_name)
+                    name = self.payloads.get_name(payload_name)
+
+                    if not self.payloads.add_payload(platform, architecture, name):
+                        self.badges.output_error("Invalid payload, expected valid payload!")
+                        return False
         return True
     
     def set_current_module_option(self, option, value):
         if self.check_current_module():
             current_module = self.get_current_module_object()
             if hasattr(current_module, "options"):
-                current_payload = self.get_current_module_payload()
+                current_payload = self.payloads.get_current_payload()
 
                 if option in current_module.options.keys():
                     value_type = current_module.options[option]['Type']
@@ -209,7 +215,7 @@ class modules:
 
                         if self.compare_types(value_type, value):
                             self.badges.output_information(option + " ==> " + value)
-                            self.local_storage.set_payload_option(current_payload.details['Payload'], option, value)
+                            self.local_storage.set_payload_option(current_module.details['Module'], current_payload.details['Payload'], option, value)
                     else:
                         self.badges.output_error("Unrecognized option!")
                 else:
