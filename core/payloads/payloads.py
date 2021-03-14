@@ -27,10 +27,12 @@
 import os
 
 from core.base.storage import local_storage
+from core.cli.badges import badges
 
 class payloads:
     def __init__(self):
         self.local_storage = local_storage()
+        self.badges = badges()
 
     def check_exist(self, name):
         if self.check_style(name):
@@ -112,7 +114,7 @@ class payloads:
             return self.local_storage.get_array("current_module", self.local_storage.get("current_module_number")).details['Module']
         return None
     
-    def import_payload(self, platform, architecture name):
+    def import_payload(self, platform, architecture, name):
         payloads = self.get_payload_object(platform, architecture, name)
         try:
             payload_object = self.importer.import_payload(payloads['Path'])
