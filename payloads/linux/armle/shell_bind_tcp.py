@@ -38,7 +38,14 @@ class HatSploitPayload(HatSploitPayload):
         'Authors': [
             'enty8080'
         ],
-        'Description': "Shell Bind TCP Payload for Linux armle.",
+        'Description': "Shell bind TCP payload for Linux armle.",
+        'Dependencies': [
+            ''
+        ],
+        'Comments': [
+            ''
+        ],
+        'Risk': "high",
         'Type': "bind_tcp"
     }
 
