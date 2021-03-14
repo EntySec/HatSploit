@@ -265,7 +265,7 @@ class modules:
                                 self.badges.output_process("Using default payload " + payload_name + "...")
 
                                 if self.payloads.check_exist(payload_name):
-                                    if self.payloads.add_payload(platform, architecture, name):
+                                    if self.payloads.add_payload(full_name, platform, architecture, name):
                                         self.add_to_global(module_object)
                                         return
                                     else:
