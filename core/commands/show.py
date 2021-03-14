@@ -48,49 +48,45 @@ class HatSploitCommand(HatSploitCommand):
 
     def show_plugins(self):
         plugins = self.local_storage.get("plugins")
-        plugins_data = list()
-        number = 0
-        headers = ("Number", "Name", "Database", "Description")
+        headers = ("Number", "Name", "Description")
         for database in plugins.keys():
+            number = 0
+            plugins_data = list()
             plugins = plugins[database]
             for plugin in sorted(plugins.keys()):
-                plugins_data.append((number, plugin, database, plugins[plugin]['Description']))
+                plugins_data.append((number, plugin, plugins[plugin]['Description']))
                 number += 1
-        self.tables.print_table("Plugins", headers, *plugins_data)
+            self.tables.print_table("Plugins (" + database + ")", headers, *plugins_data)
 
     def show_modules(self, information):
         modules = self.local_storage.get("modules")
-        modules_data = list()
         number = 0
-        headers = ("Number", "Module", "Database", "Risk", "Description")
+        headers = ("Number", "Module", "Risk", "Description")
         for database in modules.keys():
+            number = 0
+            modules_data = list()
             modules = modules[database][information]
             for platform in sorted(modules.keys()):
                 for module in sorted(modules[platform].keys()):
                     full_name = self.modules.get_full_name(information, platform, module)
-                    modules_data.append((number, full_name, database, modules[platform][module]['Risk'], modules[platform][module]['Description']))
+                    modules_data.append((number, full_name, modules[platform][module]['Risk'], modules[platform][module]['Description']))
                     number += 1
-        self.tables.print_table(information.title() + " Modules", headers, *modules_data)
+            self.tables.print_table(information.title() + " Modules (" + database + ")", headers, *modules_data)
 
     def show_payloads(self):
-        payloads_data = dict()
         payloads = self.local_storage.get("payloads")
-        headers = ("Number", "Payload", "Database", "Risk", "Description")
-        number = 0
+        headers = ("Number", "Category", "Payload", "Risk", "Description")
 
         for database in sorted(payloads.keys()):
+            number = 0
+            payloads_data = list()
             for platform in sorted(payloads[database].keys()):
                 for architecture in sorted(payloads[database][platform].keys()):
-                    payloads = payloads[database][platform][architecture]
-                    for payload in sorted(payloads.keys()):
-                        label = payloads[payload]['Category']
-                        payloads_data[label] = list()
-                    for payload in sorted(payloads.keys()):
-                        label = payloads[payload]['Category']
-                        payloads_data[label].append((number, payload, database, payloads[payload]['Risk'], payloads[payload]['Description']))
+                    for payload in payloads[database][platform][architecture]
+                        current_payload = payloads[database][platform][architecture][payload]
+                        payloads_data[label].append((number, payload, current_payload['Risk'], current_payload['Description']))
                         number += 1
-                    for label in sorted(payloads_data.keys()):
-                        self.tables.print_table("Payloads (" + label + ")", headers, *payloads_data[label])
+            self.tables.print_table("Payloads (" + database + ")", headers, *payloads_data[label])
 
     def show_options(self):
         current_module = self.modules.get_current_module_object()
