@@ -123,7 +123,9 @@ class payloads:
             imported_payloads = self.local_storage.get("imported_payloads")
             if imported_payload:
                 if current_module_name in imported_payloads.keys():
-                    imported_payloads[current_module_name].update(payload_object.details['Payload']: payload_object)
+                    imported_payloads[current_module_name].update({
+                        payload_object.details['Payload']: payload_object
+                    })
                 else:
                     imported_payloads.update({
                         current_module_name: {
