@@ -123,7 +123,7 @@ class payloads:
             current_module_name = self.get_current_module_name()
 
             imported_payloads = self.local_storage.get("imported_payloads")
-            if imported_payload:
+            if imported_payloads:
                 if current_module_name in imported_payloads.keys():
                     imported_payloads[current_module_name].update({
                         payload_object.details['Payload']: payload_object
@@ -183,7 +183,7 @@ class payloads:
             if not self.check_imported(full_name):
                 payload_object = self.import_payload(platform, architecture, name)
                 if not payload_object:
-                    self.badges.output_error("Failed to select module from database!")
+                    self.badges.output_error("Failed to select payload from database!")
                     return False
         else:
             self.badges.output_error("Payload depends this dependencies which is not installed:")
