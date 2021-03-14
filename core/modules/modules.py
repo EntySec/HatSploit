@@ -30,6 +30,7 @@ from core.base.types import types
 from core.cli.badges import badges
 from core.payloads.payloads import payloads
 from core.base.storage import local_storage
+from core.db.importer import importer
 
 class modules:
     def __init__(self):
@@ -37,6 +38,7 @@ class modules:
         self.badges = badges()
         self.payloads = payloads()
         self.local_storage = local_storage()
+        self.importer = importer()
         
     def check_exist(self, name):
         if self.check_style(name):
@@ -216,3 +218,39 @@ class modules:
                 self.badges.output_warning("Module has no options.")
         else:
             self.badges.output_warning("No module selected.")
+
+    def import_module(self, category, platform, name):
+        modules = self.get_module_object(category, platform, name)
+        try:
+            module_object = self.importer.import_module(modules['Path'])
+            if not self.local_storage.get("imported_modules"):
+                self.local_storage.set("imported_modules", dict())
+            self.local_storage.update("imported_modules", {self.get_full_name(category, platform, name): module_object})
+        except Exception:
+            return None
+        return module_object
+        
+    def add_module(self, category, platform, name):
+        modules = self.get_module_object(category, platform, name)
+        
+        not_installed = list()
+        for dependence in modules['Dependencies']:
+            if not self.importer.import_check(dependence):
+                not_installed.append(dependence)
+        if not not_installed:
+            imported_modules = self.local_storage.get("imported_modules")
+            full_name = self.get_full_name(category, platform, name)
+            
+            if self.check_imported(full_name):
+                module_object = imported_modules[full_name]
+                self.add_to_global(module_object)
+            else:
+                module_object = self.import_module(category, platform, name)
+                if module_object:
+                    self.add_to_global(module_object)
+                else:
+                    self.badges.output_error("Failed to select module from database!")
+        else:
+            self.badges.output_error("Module depends this dependencies which is not installed:")
+            for dependence in not_installed:
+                self.badges.output_empty("    * " + dependence)
