@@ -40,7 +40,14 @@ class HatSploitPayload(HatSploitPayload):
         'Authors': [
             'enty8080'
         ],
-        'Description': "Say Payload for macOS x64.",
+        'Description': "Say payload for macOS x64.",
+        'Dependencies': [
+            ''
+        ],
+        'Comments': [
+            ''
+        ],
+        'Risk': "low",
         'Type': "one_side"
     }
 
