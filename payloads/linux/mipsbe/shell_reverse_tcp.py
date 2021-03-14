@@ -40,7 +40,7 @@ class HatSploitPayload(HatSploitPayload):
         'Authors': [
             'enty8080'
         ],
-        'Description': "Shell Reverse TCP Payload for Linux mipsbe.",
+        'Description': "Shell reverse TCP payload for Linux mipsbe.",
         'Dependencies': [
             ''
         ],
