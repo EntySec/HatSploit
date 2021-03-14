@@ -41,6 +41,13 @@ class HatSploitPayload(HatSploitPayload):
             'enty8080'
         ],
         'Description': "Shell Reverse TCP Payload for Linux mipsbe.",
+        'Dependencies': [
+            ''
+        ],
+        'Comments': [
+            ''
+        ],
+        'Risk': "high",
         'Type': "reverse_tcp"
     }
 
