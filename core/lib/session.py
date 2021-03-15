@@ -25,11 +25,16 @@
 #
 
 class session:
+    details = {
+        'Platform': "",
+        'Type': ""
+    }
+
     def close(self):
         pass
 
     def send_command(self, command, arguments=None, timeout=10):
-        pass
+        return (True, None)
 
     def interact(self, command):
         pass
