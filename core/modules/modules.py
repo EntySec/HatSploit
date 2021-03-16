@@ -28,6 +28,7 @@ import os
 
 from core.base.types import types
 from core.cli.badges import badges
+from core.base.sessions import sessions
 from core.payloads.payloads import payloads
 from core.base.storage import local_storage
 from core.db.importer import importer
@@ -36,6 +37,7 @@ class modules:
     def __init__(self):
         self.types = types()
         self.badges = badges()
+        self.sessions = sessions()
         self.payloads = payloads()
         self.local_storage = local_storage()
         self.importer = importer()
