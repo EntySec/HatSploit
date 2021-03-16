@@ -86,12 +86,17 @@ class modules:
         if self.check_current_module():
             return self.local_storage.get_array("current_module", self.local_storage.get("current_module_number"))
         return None
-    
+
+    def get_current_module_platform(self):
+        if self.check_current_module():
+            return self.local_storage.get_array("current_module", self.local_storage.get("current_module_number")).details['Platform']
+        return None
+
     def get_current_module_name(self):
         if self.check_current_module():
             return self.local_storage.get_array("current_module", self.local_storage.get("current_module_number")).details['Module']
         return None
-       
+
     def get_database(self, name):
         if self.check_style(name):
             all_modules = self.local_storage.get("modules")
@@ -183,7 +188,12 @@ class modules:
                 if not self.types.is_boolean(value):
                     self.badges.output_error("Invalid value, expected valid boolean!")
                     return False
-                
+
+            if value_type.lower() == 'session':
+                module_platform = self.get_current_module_platform()
+                if not self.sessions.check_exist(mudule_platform, value):
+                    return False
+
             if value_type.lower() == 'payload':
                 if self.payloads.check_exist(value):
                     module_name = self.get_current_module_name()
