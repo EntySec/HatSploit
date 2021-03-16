@@ -35,11 +35,10 @@ class HatSploitCommand(HatSploitCommand):
 
     usage = ""
     usage += "sessions <option> [arguments]\n\n"
-    usage += "  -l, --list [session_property]                   List all opened sessions\n"
-    usage += "                                                  [for specified session property].\n"
-    usage += "  -i, --interact <session_property> <session_id>  Interact with specified session.\n"
-    usage += "  -p, --pseudo <session_property> <session_id>    Spawn Pseudo shell on specified session.\n"
-    usage += "  -c, --close <session_property> <session_id>     Close specified session.\n"
+    usage += "  -l, --list [session_platform]                   List all opened sessions\n"
+    usage += "                                                  [for specified session platform].\n"
+    usage += "  -i, --interact <session_platform> <session_id>  Interact with specified session.\n"
+    usage += "  -c, --close <session_platform> <session_id>     Close specified session.\n"
 
     details = {
         'Category': "sessions",
@@ -84,7 +83,7 @@ class HatSploitCommand(HatSploitCommand):
                         sessions_data.append((session_id, module, host, port, session_type))
                     self.tables.print_table("Opened Sessions (" + session_platform + ")", headers, *sessions_data)
                 else:
-                    self.badges.output_error("Invalid session property given!")
+                    self.badges.output_error("Invalid session platform given!")
         elif argv[0] in ['-c', '--close']:
             if argc < 3:
                 self.badges.output_usage(self.details['Usage'])
