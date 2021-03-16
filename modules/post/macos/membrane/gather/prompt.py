@@ -57,7 +57,8 @@ class HatSploitModule(HatSploitModule):
     }
 
     def run(self):
-        session = self.sessions.get_session("macos/membrane", self.parser.parse_options(self.options))
+        session = self.parser.parse_options(self.options)
+        session = self.sessions.get_session(self.details['Platform'], "membrane", session)
         if session:
             self.badges.output_process("Waiting for prompt window to appear...")
 
