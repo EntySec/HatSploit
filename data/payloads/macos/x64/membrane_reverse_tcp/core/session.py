@@ -37,6 +37,11 @@ class session(session):
         self.transfer = transfer(client)
         self.tcp.connect(client)
 
+    details = {
+        'Platform': "macos",
+        'Type': "membrane"
+    }
+
     def close(self):
         self.tcp.disconnect()
 

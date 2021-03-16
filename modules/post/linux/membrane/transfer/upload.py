@@ -43,6 +43,7 @@ class HatSploitModule(HatSploitModule):
         'Comments': [
             ''
         ],
+        'Platform': "linux",
         'Risk': "medium"
     }
 

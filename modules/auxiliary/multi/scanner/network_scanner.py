@@ -42,6 +42,7 @@ class HatSploitModule(HatSploitModule):
         'Comments': [
             ''
         ],
+        'Platform': "multi",
         'Risk': "low"
     }
 

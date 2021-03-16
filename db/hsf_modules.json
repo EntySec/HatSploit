@@ -18,6 +18,7 @@
                 "Comments": [
                     ""
                 ],
+                "Platform": "iphoneos",
                 "Risk": "low"
             }
         },
@@ -36,6 +37,7 @@
                 "Comments": [
                     ""
                 ],
+                "Platform": "android",
                 "Risk": "low"
             }
         },
@@ -54,6 +56,7 @@
                 "Comments": [
                     ""
                 ],
+                "Platform": "multi",
                 "Risk": "low"
             },
             "scanner/port_scanner": {
@@ -70,6 +73,7 @@
                 "Comments": [
                     ""
                 ],
+                "Platform": "multi",
                 "Risk": "low"
             },
             "sniffer/user_agent_sniffer": {
@@ -86,6 +90,7 @@
                 "Comments": [
                     ""
                 ],
+                "Platform": "multi",
                 "Risk": "medium"
             },
             "scanner/directory_scanner": {
@@ -102,6 +107,7 @@
                 "Comments": [
                     ""
                 ],
+                "Platform": "multi",
                 "Risk": "medium"
             },
             "scanner/apache_users": {
@@ -118,6 +124,7 @@
                 "Comments": [
                     ""
                 ],
+                "Platform": "multi",
                 "Risk": "medium"
             },
             "scanner/pma_scanner": {
@@ -134,6 +141,7 @@
                 "Comments": [
                     ""
                 ],
+                "Platform": "multi",
                 "Risk": "medium"
             },
             "payload/generator": {
@@ -150,6 +158,7 @@
                 "Comments": [
                     ""
                 ],
+                "Platform": "multi",
                 "Risk": "high"
             }
         }
@@ -170,6 +179,7 @@
                 "Comments": [
                     ""
                 ],
+                "Platform": "iphoneos",
                 "Risk": "high"
             },
             "ssh/cydia_default_password": {
@@ -186,6 +196,7 @@
                 "Comments": [
                     ""
                 ],
+                "Platform": "iphoneos",
                 "Risk": "medium"
             }
         },
@@ -204,6 +215,7 @@
                 "Comments": [
                     ""
                 ],
+                "Platform": "android",
                 "Risk": "medium"
             }
         },
@@ -222,6 +234,7 @@
                 "Comments": [
                     ""
                 ],
+                "Platform": "multi",
                 "Risk": "high"
             },
             "stager/bind_tcp": {
@@ -238,6 +251,7 @@
                 "Comments": [
                     ""
                 ],
+                "Platform": "multi",
                 "Risk": "high"
             },
             "icewarp_webmail/local_file_inclusion": {
@@ -254,6 +268,7 @@
                 "Comments": [
                     ""
                 ],
+                "Platform": "multi",
                 "Risk": "high"
             },
             "f5_big_ip_tmui/local_file_inclusion": {
@@ -270,6 +285,7 @@
                 "Comments": [
                     ""
                 ],
+                "Platform": "multi",
                 "Risk": "high"
             },
             "f5_big_ip_tmui/remote_code_execution": {
@@ -286,6 +302,7 @@
                 "Comments": [
                     ""
                 ],
+                "Platform": "multi",
                 "Risk": "high"
             },
             "nostromo_httpd/remote_code_execution": {
@@ -302,6 +319,7 @@
                 "Comments": [
                     ""
                 ],
+                "Platform": "multi",
                 "Risk": "high"
             },
             "vbulletin_widget_php/config_code_execution": {
@@ -318,6 +336,7 @@
                 "Comments": [
                     ""
                 ],
+                "Platform": "multi",
                 "Risk": "high"
             },
             "vbulletin_widget_php/template_code_execution": {
@@ -334,6 +353,7 @@
                 "Comments": [
                     ""
                 ],
+                "Platform": "multi",
                 "Risk": "high"
             },
             "ssh/libssh_code_execution": {
@@ -350,6 +370,7 @@
                 "Comments": [
                     ""
                 ],
+                "Platform": "multi",
                 "Risk": "medium"
             },
             "cctv_goahead_camera/password_disclosure": {
@@ -366,6 +387,7 @@
                 "Comments": [
                     ""
                 ],
+                "Platform": "multi",
                 "Risk": "high"
             },
             "netwave_ip_camera/information_disclosure": {
@@ -382,6 +404,7 @@
                 "Comments": [
                     ""
                 ],
+                "Platform": "multi",
                 "Risk": "high"
             },
             "qnap_qts/local_file_inclusion": {
@@ -398,6 +421,7 @@
                 "Comments": [
                     ""
                 ],
+                "Platform": "multi",
                 "Risk": "high"
             }
         }
@@ -418,6 +442,7 @@
                 "Comments": [
                     ""
                 ],
+                "Platform": "linux",
                 "Risk": "high"
             },
             "membrane/transfer/upload": {
@@ -434,6 +459,7 @@
                 "Comments": [
                     ""
                 ],
+                "Platform": "linux",
                 "Risk": "medium"
             }
         },
@@ -452,6 +478,7 @@
                 "Comments": [
                     ""
                 ],
+                "Platform": "macos",
                 "Risk": "medium"
             },
             "membrane/gather/prompt": {
@@ -468,6 +495,7 @@
                 "Comments": [
                     ""
                 ],
+                "Platform": "macos",
                 "Risk": "high"
             },
             "membrane/transfer/download": {
@@ -484,6 +512,7 @@
                 "Comments": [
                     ""
                 ],
+                "Platform": "macos",
                 "Risk": "high"
             },
             "membrane/transfer/upload": {
@@ -500,6 +529,7 @@
                 "Comments": [
                     ""
                 ],
+                "Platform": "macos",
                 "Risk": "medium"
             },
             "membrane/trolling/say": {
@@ -516,6 +546,7 @@
                 "Comments": [
                     ""
                 ],
+                "Platform": "macos",
                 "Risk": "low"
             }
         }

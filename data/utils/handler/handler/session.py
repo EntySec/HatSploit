@@ -29,9 +29,14 @@ from core.lib.session import session
 from utils.tcp.tcp import tcp
 
 class session(session):
-    def __init__(self, client):
-        self.tcp = tcp()
-        self.tcp.connect(client)
+    def __init__(self):
+        tcp = tcp()
+        tcp.connect(client)
+
+    details = {
+        'Platform': "",
+        'Type': "shell"
+    }
 
     def close(self):
         self.tcp.disconnect()

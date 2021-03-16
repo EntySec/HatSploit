@@ -53,6 +53,7 @@ class HatSploitModule:
         'Comments': [
             ''
         ],
+        'Platform': "",
         'Risk': ""
     }
         
