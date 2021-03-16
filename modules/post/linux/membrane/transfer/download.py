@@ -63,13 +63,13 @@ class HatSploitModule(HatSploitModule):
         'SESSION': {
             'Description': "Session to run on.",
             'Value': 0,
-            'Type': "integer",
+            'Type': "session",
             'Required': True
         }
     }
 
     def run(self):
         lpath, rpath, session = self.parser.parse_options(self.options)
-        session = self.sessions.get_session("linux/membrane", session)
+        session = self.sessions.get_session(self.details['Platform'], "membrane", session)
         if session:
             session.download(rpath, lpath)
