@@ -29,7 +29,7 @@ from core.lib.session import session
 from utils.tcp.tcp import tcp
 
 class session(session):
-    def __init__(self):
+    def __init__(self, client):
         self.tcp = tcp()
         self.tcp.connect(client)
 
