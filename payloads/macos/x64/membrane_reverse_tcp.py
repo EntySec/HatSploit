@@ -39,7 +39,6 @@ class HatSploitPayload(HatSploitPayload):
     tcp = tcp()
 
     details = {
-        'Category': "macos/membrane",
         'Name': "macOS x64 Membrane Reverse TCP",
         'Payload': "macos/x64/membrane_reverse_tcp",
         'Authors': [
