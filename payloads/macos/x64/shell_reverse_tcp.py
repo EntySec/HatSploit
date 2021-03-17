@@ -47,6 +47,7 @@ class HatSploitPayload(HatSploitPayload):
         'Comments': [
             ''
         ],
+        'Platform': "macos",
         'Risk': "high",
         'Type': "reverse_tcp"
     }
