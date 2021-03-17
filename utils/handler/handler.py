@@ -178,9 +178,9 @@ class handler:
         self.badges.output_success("Session " + str(session_id) + " opened!")
         return True
 
-    def handle_session(self, payload, host, port, session=session):
-        if payload.details['Type'].lower() == 'reverse':
+    def handle_session(self, payload, host, port, method, session=session):
+        if method.lower() == 'reverse':
             return self.handle_reverse_session(payload, host, port, session)
-        if payload.details['Type'].lower() == 'bind':
+        if method.lower() == 'bind':
             return self.handle_bind_session(payload, host, port, session)
         return None
