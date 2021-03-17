@@ -34,7 +34,6 @@ class HatSploitPayload(HatSploitPayload):
     payload_generator = payload_generator()
 
     details = {
-        'Category': "linux/shell",
         'Name': "Linux armle Shell Reverse TCP",
         'Payload': "linux/armle/shell_reverse_tcp",
         'Authors': [
