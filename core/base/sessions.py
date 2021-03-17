@@ -32,7 +32,7 @@ class sessions:
         self.badges = badges()
         self.local_storage = local_storage()
 
-    def add_session(self, session_platform, session_module, session_host, session_port, session_type, session_object):
+    def add_session(self, session_platform, session_type, session_host, session_port, session_object):
         if not self.local_storage.get("sessions"):
             self.local_storage.set("sessions", dict())
 
@@ -41,20 +41,18 @@ class sessions:
             sessions = self.local_storage.get("sessions")
             session_id = len(sessions[session_platform])
             sessions[session_platform][int(session_id)] = {
-                'module': session_module,
+                'type': session_type,
                 'host': session_host,
                 'port': session_port,
-                'type': session_type,
                 'object': session_object
             }
         else:
             sessions = {
                 session_platform: {
                     int(session_id): {
-                        'module': session_module,
+                        'type': session_type,
                         'host': session_host,
                         'port': session_port,
-                        'type': session_type,
                         'object': session_object
                     }
                 }
