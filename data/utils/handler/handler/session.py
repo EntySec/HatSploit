@@ -30,8 +30,8 @@ from utils.tcp.tcp import tcp
 
 class session(session):
     def __init__(self):
-        tcp = tcp()
-        tcp.connect(client)
+        self.tcp = tcp()
+        self.tcp.connect(client)
 
     details = {
         'Platform': "",
