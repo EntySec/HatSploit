@@ -58,14 +58,13 @@ class HatSploitCommand(HatSploitCommand):
                 if sessions:
                     for session_platform in sessions.keys():
                         sessions_data = list()
-                        headers = ("ID", "Module", "Host", "Port", "Type")
+                        headers = ("ID", "Type", "Host", "Port")
                         for session_id in sessions[session_platform].keys():
-                            module = sessions[session_platform][session_id]['module']
+                            session_type = sessions[session_platform][session_id]['type']
                             host = sessions[session_platform][session_id]['host']
                             port = sessions[session_platform][session_id]['port']
-                            session_type = sessions[session_platform][session_id]['type']
 
-                            sessions_data.append((session_id, module, host, port, session_type))
+                            sessions_data.append((session_id, session_type, host, port))
                         self.tables.print_table("Opened Sessions (" + session_platform + ")", headers, *sessions_data)
                 else:
                     self.badges.output_warning("No opened sessions available.")
@@ -73,14 +72,13 @@ class HatSploitCommand(HatSploitCommand):
                 if argv[1] in sessions.keys():
                     session_platform = argv[1]
                     sessions_data = list()
-                    headers = ("ID", "Module", "Host", "Port")
+                    headers = ("ID", "Type", "Host", "Port")
                     for session_id in sessions[session_platform].keys():
-                        module = sessions[session_platform][session_id]['module']
+                        session_type = sessions[session_platform][session_id]['type']
                         host = sessions[session_platform][session_id]['host']
                         port = sessions[session_platform][session_id]['port']
-                        session_type = sessions[session_platform][session_id]['type']
 
-                        sessions_data.append((session_id, module, host, port, session_type))
+                        sessions_data.append((session_id, session_type, host, port))
                     self.tables.print_table("Opened Sessions (" + session_platform + ")", headers, *sessions_data)
                 else:
                     self.badges.output_error("Invalid session platform given!")
@@ -89,11 +87,6 @@ class HatSploitCommand(HatSploitCommand):
                 self.badges.output_usage(self.details['Usage'])
             else:
                 self.sessions.close_session(argv[1], argv[2])
-        elif argv[0] in ['-p', '--pseudo']:
-            if argc < 3:
-                self.badges.output_usage(self.details['Usage'])
-            else:
-                self.sessions.spawn_pseudo_shell(argv[1], argv[2])
         elif argv[0] in ['-i', '--interact']:
             if argc < 3:
                 self.badges.output_usage(self.details['Usage'])
