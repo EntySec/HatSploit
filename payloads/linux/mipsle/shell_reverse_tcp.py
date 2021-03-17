@@ -34,7 +34,6 @@ class HatSploitPayload(HatSploitPayload):
     payload_generator = payload_generator()
 
     details = {
-        'Category': "linux/shell",
         'Name': "Linux mipsle Shell Reverse TCP",
         'Payload': "linux/mipsle/shell_reverse_tcp",
         'Authors': [
@@ -47,6 +46,7 @@ class HatSploitPayload(HatSploitPayload):
         'Comments': [
             ''
         ],
+        'Platform': "linux",
         'Risk': "high",
         'Type': "reverse_tcp"
     }
