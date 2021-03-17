@@ -32,7 +32,6 @@ class HatSploitPayload(HatSploitPayload):
     payload_generator = payload_generator()
 
     details = {
-        'Category': "linux/shell",
         'Name': "Linux armle Shell Bind TCP",
         'Payload': "linux/armle/shell_bind_tcp",
         'Authors': [
