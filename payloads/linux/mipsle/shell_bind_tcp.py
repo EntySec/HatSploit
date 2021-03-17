@@ -32,7 +32,6 @@ class HatSploitPayload(HatSploitPayload):
     payload_generator = payload_generator()
 
     details = {
-        'Category': "linux/shell",
         'Name': "Linux mipsle Shell Bind TCP",
         'Payload': "linux/mipsle/shell_bind_tcp",
         'Authors': [
@@ -45,6 +44,7 @@ class HatSploitPayload(HatSploitPayload):
         'Comments': [
             ''
         ],
+        'Platform': "linux",
         'Risk': "high",
         'Type': "bind_tcp"
     }
