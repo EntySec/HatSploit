@@ -34,7 +34,6 @@ class HatSploitPayload(HatSploitPayload):
     payload_generator = payload_generator()
 
     details = {
-        'Category': "macos/shell",
         'Name': "macOS x64 Shell Reverse TCP",
         'Payload': "macos/x64/shell_reverse_tcp",
         'Authors': [
