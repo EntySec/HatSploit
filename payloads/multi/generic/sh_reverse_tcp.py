@@ -32,7 +32,6 @@ class HatSploitPayload(HatSploitPayload):
     tcp = tcp()
 
     details = {
-        'Category': "multi/shell",
         'Name': "SH Shell Reverse TCP",
         'Payload': "multi/generic/sh_reverse_tcp",
         'Authors': [
