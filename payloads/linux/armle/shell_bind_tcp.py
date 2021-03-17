@@ -45,6 +45,7 @@ class HatSploitPayload(HatSploitPayload):
         'Comments': [
             ''
         ],
+        'Platform': "linux",
         'Risk': "high",
         'Type': "bind_tcp"
     }
