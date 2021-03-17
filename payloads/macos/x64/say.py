@@ -34,7 +34,6 @@ class HatSploitPayload(HatSploitPayload):
     payload_generator = payload_generator()
 
     details = {
-        'Category': "macos/one_side",
         'Name': "macOS x64 Say",
         'Payload': "macos/x64/say",
         'Authors': [
