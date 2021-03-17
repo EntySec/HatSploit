@@ -39,7 +39,6 @@ class HatSploitPayload(HatSploitPayload):
     tcp = tcp()
 
     details = {
-        'Category': "linux/membrane",
         'Name': "Linux aarch64 Membrane Reverse TCP",
         'Payload': "linux/aarch64/membrane_reverse_tcp",
         'Authors': [
