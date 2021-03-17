@@ -47,6 +47,7 @@ class HatSploitPayload(HatSploitPayload):
         'Comments': [
             ''
         ],
+        'Platform': "macos",
         'Risk': "low",
         'Type': "one_side"
     }
