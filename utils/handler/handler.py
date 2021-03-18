@@ -103,7 +103,7 @@ class handler:
                     if not new_session:
                         self.badges.output_warning("Payload completed but no session was created.")
                         return False
-                    session_id = self.sessions.add_session(session_platform, session_type, remote_host, local_port, new_session)
+                    session_id = self.sessions.add_session(session_platform, session_type, remote_host, remote_port, new_session)
                     self.badges.output_success("Session " + str(session_id) + " opened!")
                     return True
 
