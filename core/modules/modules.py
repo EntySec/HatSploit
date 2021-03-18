@@ -284,9 +284,8 @@ class modules:
                                     if self.payloads.add_payload(full_name, platform, architecture, name):
                                         self.add_to_global(module_object)
                                     return
-                                else:
-                                    self.badges.output_error("Invalid default payload!")
-                                    return
+                                self.badges.output_error("Invalid default payload!")
+                                return
                     self.add_to_global(module_object)
                 else:
                     self.badges.output_error("Failed to select module from database!")
