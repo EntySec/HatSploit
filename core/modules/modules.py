@@ -283,9 +283,7 @@ class modules:
                                 if self.payloads.check_exist(payload_name):
                                     if self.payloads.add_payload(full_name, platform, architecture, name):
                                         self.add_to_global(module_object)
-                                        return
-                                    else:
-                                        return
+                                    return
                                 else:
                                     self.badges.output_error("Invalid default payload!")
                                     return
