@@ -43,6 +43,7 @@ class HatSploitModule(HatSploitModule):
         'Comments': [
             ''
         ],
+        'Platform': "macos",
         'Risk': "high"
     }
 
@@ -69,6 +70,6 @@ class HatSploitModule(HatSploitModule):
 
     def run(self):
         lpath, rpath, session = self.parser.parse_options(self.options)
-        session = self.sessions.get_session("macos/membrane", session)
+        session = self.sessions.get_session(self.details['Platform'], "membrane", session)
         if session:
             session.download(rpath, lpath)

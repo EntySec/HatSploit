@@ -31,6 +31,7 @@ from core.db.importer import importer
 
 from tests.modules_tests import modules_tests
 from tests.plugins_tests import plugins_tests
+from tests.payloads_tests import payloads_tests
 
 class perform_tests:
     def __init__(self):
@@ -39,6 +40,7 @@ class perform_tests:
 
         self.modules_tests = modules_tests()
         self.plugins_tests = plugins_tests()
+        self.payloads_tests = payloads_tests()
         
     def perform_tests(self):
         self.importer.import_database()
@@ -49,6 +51,9 @@ class perform_tests:
         
         self.badges.output_process("Performing plugins test...")
         statuses.append(self.plugins_tests.perform_test())
+        
+        self.badges.output_process("Performing payloads test...")
+        statuses.append(self.payloads_tests.perform_test())
         
         for status in statuses:
             if status:

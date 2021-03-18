@@ -43,6 +43,7 @@ class HatSploitModule(HatSploitModule):
         'Comments': [
             ''
         ],
+        'Platform': "macos",
         'Risk': "medium"
     }
 
@@ -50,13 +51,14 @@ class HatSploitModule(HatSploitModule):
         'SESSION': {
             'Description': "Session to run on.",
             'Value': 0,
-            'Type': "integer",
+            'Type': "session",
             'Required': True
         }
     }
 
     def run(self):
-        session = self.sessions.get_session("macos/membrane", self.parser.parse_options(self.options))
+        session = self.parser.parse_options(self.options)
+        session = self.sessions.get_session(self.details['Platform'], "membrane", session)
         if session:
             self.badges.output_process("Getting device volume level...")
             payload = "output volume of (get volume settings)"

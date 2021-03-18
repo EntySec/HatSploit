@@ -41,6 +41,9 @@ class HatSploitCommand:
     details = {
         'Category': "",
         'Name': "",
+        'Authors': [
+            ''
+        ],
         'Description': "",
         'Usage': "",
         'MinArgs': 0

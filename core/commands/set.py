@@ -34,6 +34,9 @@ class HatSploitCommand(HatSploitCommand):
     details = {
         'Category': "module",
         'Name': "set",
+        'Authors': [
+            'enty8080'
+        ],
         'Description': "Set an option value.",
         'Usage': "set <option> <value>",
         'MinArgs': 2

@@ -38,6 +38,9 @@ class HatSploitCommand(HatSploitCommand):
     details = {
         'Category': "plugin",
         'Name': "load",
+        'Authors': [
+            'enty8080'
+        ],
         'Description': "Load specified plugin.",
         'Usage': "load <plugin>",
         'MinArgs': 1

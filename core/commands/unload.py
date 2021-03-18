@@ -36,6 +36,9 @@ class HatSploitCommand(HatSploitCommand):
     details = {
         'Category': "plugin",
         'Name': "unload",
+        'Authors': [
+            'enty8080'
+        ],
         'Description': "Unload specified loaded plugin.",
         'Usage': "unload <plugin>",
         'MinArgs': 1

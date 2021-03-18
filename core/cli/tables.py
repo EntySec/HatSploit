@@ -59,8 +59,7 @@ class tables:
                 "{:<{}}".format(header_separator * len(header), current_line_fill)
             ))
 
-        self.badges.output_empty(name.title())
-        self.badges.output_empty("="*len(name.title()))
+        self.badges.output_empty('\n' + name.split()[0].title() + name[len(name.split()[0]):] + ':')
         self.badges.output_empty("")
         self.badges.output_empty(headers_line)
         self.badges.output_empty(headers_separator_line)
@@ -72,3 +71,4 @@ class tables:
                     "{:<{}}".format(element, fill[idx])
                 ))
             self.badges.output_empty(content_line)
+        self.badges.output_empty("")

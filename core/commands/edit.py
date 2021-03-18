@@ -38,6 +38,9 @@ class HatSploitCommand(HatSploitCommand):
     details = {
         'Category': "developer",
         'Name': "edit",
+        'Authors': [
+            'enty8080'
+        ],
         'Description': "Open module in editor.",
         'Usage': "edit <module>",
         'MinArgs': 1

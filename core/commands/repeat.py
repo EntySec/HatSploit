@@ -34,6 +34,9 @@ class HatSploitCommand(HatSploitCommand):
     details = {
         'Category': "developer",
         'Name': "repeat",
+        'Authors': [
+            'enty8080'
+        ],
         'Description': "Repeat specified command.",
         'Usage': "repeat <times> <command>",
         'MinArgs': 2

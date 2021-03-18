@@ -36,6 +36,9 @@ class HatSploitCommand(HatSploitCommand):
     details = {
         'Category': "developer",
         'Name': "sleep",
+        'Authors': [
+            'enty8080'
+        ],
         'Description': "Sleep for specified seconds.",
         'Usage': "sleep <seconds>",
         'MinArgs': 1

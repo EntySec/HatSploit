@@ -50,6 +50,9 @@ class HatSploitCommand(HatSploitCommand):
     details = {
         'Category': "developer",
         'Name': "history",
+        'Authors': [
+            'enty8080'
+        ],
         'Description': "Manage HatSploit history.",
         'Usage': usage,
         'MinArgs': 1

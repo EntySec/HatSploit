@@ -35,7 +35,6 @@ from core.db.db import db
 from core.cli.badges import badges
 from core.base.storage import local_storage
 from core.base.config import config
-from core.modules.modules import modules
 from core.base.exceptions import exceptions
 
 from utils.tcp.tcp import tcp
@@ -46,7 +45,6 @@ class importer:
         self.badges = badges()
         self.local_storage = local_storage()
         self.config = config()
-        self.modules = modules()
         self.exceptions = exceptions()
 
         self.tcp = tcp()
@@ -82,7 +80,20 @@ class importer:
             self.badges.output_information('Reason: ' + str(e))
             raise self.exceptions.GlobalException
         return command_object
-        
+    
+    def import_payload(self, payload_path):
+        try:
+            payload_directory = payload_path
+            payload_file = os.path.split(payload_directory)[1]
+            payload_directory = payload_directory.replace('/', '.')
+            payload_object = __import__(payload_directory)
+            payload_object = self.get_module(payload_object, payload_file, payload_directory)
+            payload_object = payload_object.HatSploitPayload()
+        except Exception as e:
+            self.badges.output_information('Reason: ' + str(e))
+            raise self.exceptions.GlobalException
+        return payload_object
+
     def import_module(self, module_path):
         try:
             module_directory = module_path
@@ -116,21 +127,22 @@ class importer:
             for file in os.listdir(command_path):
                 if file.endswith('py'):
                     command_file_path = command_path + file[:-3]
+                    command_directory = command_file_path.replace(self.config.path_config['base_paths']['root_path'], '', 1)
                     try:
-                        command_directory = command_file_path.replace(self.config.path_config['base_paths']['root_path'], '', 1)
                         command_object = self.import_command(command_directory)
                         command_name = command_object.details['Name']
                         commands[command_name] = command_object
+                        self.local_storage.set("commands", commands)
                     except Exception:
                         self.badges.output_error("Failed to load " + file[:-3] + " command!")
         except Exception:
             pass
-        self.local_storage.set("commands", commands)
 
     def import_database(self):
+        self.db.connect_payloads_database('hsf_payloads', self.config.path_config['base_paths']['db_path'] + self.config.db_config['base_dbs']['payloads_database'])
         self.db.connect_modules_database('hsf_modules', self.config.path_config['base_paths']['db_path'] + self.config.db_config['base_dbs']['modules_database'])
         self.db.connect_plugins_database('hsf_plugins', self.config.path_config['base_paths']['db_path'] + self.config.db_config['base_dbs']['plugins_database'])
-        
+
     def import_all(self):
         self.import_commands()
         self.import_database()

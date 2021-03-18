@@ -38,6 +38,8 @@ class HatSploitModule:
         self.parser = parser()
         self.tables = tables()
 
+    payload = None
+        
     details = {
         'Name': "",
         'Module': "",
@@ -51,16 +53,8 @@ class HatSploitModule:
         'Comments': [
             ''
         ],
+        'Platform': "",
         'Risk': ""
-    }
-        
-    options = {
-        '': {
-            'Description': "",
-            'Value': None,
-            'Type': None,
-            'Required': True
-        }
     }
         
     def run(self):

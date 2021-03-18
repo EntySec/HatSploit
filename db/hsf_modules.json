@@ -18,6 +18,7 @@
                 "Comments": [
                     ""
                 ],
+                "Platform": "iphoneos",
                 "Risk": "low"
             }
         },
@@ -36,6 +37,7 @@
                 "Comments": [
                     ""
                 ],
+                "Platform": "android",
                 "Risk": "low"
             }
         },
@@ -54,6 +56,7 @@
                 "Comments": [
                     ""
                 ],
+                "Platform": "multi",
                 "Risk": "low"
             },
             "scanner/port_scanner": {
@@ -70,6 +73,7 @@
                 "Comments": [
                     ""
                 ],
+                "Platform": "multi",
                 "Risk": "low"
             },
             "sniffer/user_agent_sniffer": {
@@ -86,6 +90,7 @@
                 "Comments": [
                     ""
                 ],
+                "Platform": "multi",
                 "Risk": "medium"
             },
             "scanner/directory_scanner": {
@@ -102,6 +107,7 @@
                 "Comments": [
                     ""
                 ],
+                "Platform": "multi",
                 "Risk": "medium"
             },
             "scanner/apache_users": {
@@ -118,6 +124,7 @@
                 "Comments": [
                     ""
                 ],
+                "Platform": "multi",
                 "Risk": "medium"
             },
             "scanner/pma_scanner": {
@@ -134,7 +141,25 @@
                 "Comments": [
                     ""
                 ],
+                "Platform": "multi",
                 "Risk": "medium"
+            },
+            "payload/generator": {
+                "Path": "modules/auxiliary/multi/payload/generator",
+                "Name": "Multi Payload Generator",
+                "Module": "auxiliary/multi/payload/generator",
+                "Authors": [
+                    "enty8080"
+                ],
+                "Description": "Multi Payload Generator.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Platform": "multi",
+                "Risk": "high"
             }
         }
     },
@@ -143,7 +168,7 @@
             "mobile_safari_app/webkit_filter_dos": {
                 "Path": "modules/exploit/iphoneos/mobile_safari_app/webkit_filter_dos",
                 "Name": "iPhoneOS MobileSafari.app WebKit Filter DoS",
-                "Modules": "exploit/iphoneos/mobile_safari_app/webkit_filter_dos",
+                "Module": "exploit/iphoneos/mobile_safari_app/webkit_filter_dos",
                 "Authors": [
                     "enty8080"
                 ],
@@ -154,6 +179,7 @@
                 "Comments": [
                     ""
                 ],
+                "Platform": "iphoneos",
                 "Risk": "high"
             },
             "ssh/cydia_default_password": {
@@ -170,43 +196,8 @@
                 "Comments": [
                     ""
                 ],
+                "Platform": "iphoneos",
                 "Risk": "medium"
-            }
-        },
-        "linux": {
-            "stager/membrane_reverse_tcp": {
-                "Path": "modules/exploit/linux/stager/membrane_reverse_tcp",
-                "Name": "Linux Membrane Reverse TCP Stager",
-                "Module": "exploit/linux/stager/membrane_reverse_tcp",
-                "Authors": [
-                    "enty8080"
-                ],
-                "Description": "Linux reverse TCP shell with full remote functionality.",
-                "Dependencies": [
-                    ""
-                ],
-                "Comments": [
-                    ""
-                ],
-                "Risk": "high"
-            }
-        },
-        "macos": {
-            "stager/membrane_reverse_tcp": {
-                "Path": "modules/exploit/macos/stager/membrane_reverse_tcp",
-                "Name": "macOS Membrane Reverse TCP Stager",
-                "Module": "exploit/macos/stager/membrane_reverse_tcp",
-                "Authors": [
-                    "enty8080"
-                ],
-                "Description": "macOS reverse TCP shell with full remote functionality.",
-                "Dependencies": [
-                    ""
-                ],
-                "Comments": [
-                    ""
-                ],
-                "Risk": "high"
             }
         },
         "android": {
@@ -224,24 +215,43 @@
                 "Comments": [
                     ""
                 ],
+                "Platform": "android",
                 "Risk": "medium"
             }
         },
         "multi": {
-            "stager/shell_reverse_tcp": {
-                "Path": "modules/exploit/multi/stager/shell_reverse_tcp",
-                "Name": "Shell Reverse TCP Stager",
-                "Module": "exploit/multi/stager/shell_reverse_tcp",
+            "stager/reverse_tcp": {
+                "Path": "modules/exploit/multi/stager/reverse_tcp",
+                "Name": "Reverse TCP Stager",
+                "Module": "exploit/multi/stager/reverse_tcp",
                 "Authors": [
                     "enty8080"
                 ],
-                "Description": "Cross-platform reverse TCP shell.",
+                "Description": "Reverse TCP Stager.",
                 "Dependencies": [
                     ""
                 ],
                 "Comments": [
                     ""
                 ],
+                "Platform": "multi",
+                "Risk": "high"
+            },
+            "stager/bind_tcp": {
+                "Path": "modules/exploit/multi/stager/bind_tcp",
+                "Name": "Bind TCP Stager",
+                "Module": "exploit/multi/stager/bind_tcp",
+                "Authors": [
+                    "enty8080"
+                ],
+                "Description": "Bind TCP Stager.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Platform": "multi",
                 "Risk": "high"
             },
             "icewarp_webmail/local_file_inclusion": {
@@ -258,6 +268,7 @@
                 "Comments": [
                     ""
                 ],
+                "Platform": "multi",
                 "Risk": "high"
             },
             "f5_big_ip_tmui/local_file_inclusion": {
@@ -274,6 +285,7 @@
                 "Comments": [
                     ""
                 ],
+                "Platform": "multi",
                 "Risk": "high"
             },
             "f5_big_ip_tmui/remote_code_execution": {
@@ -290,6 +302,7 @@
                 "Comments": [
                     ""
                 ],
+                "Platform": "multi",
                 "Risk": "high"
             },
             "nostromo_httpd/remote_code_execution": {
@@ -306,6 +319,7 @@
                 "Comments": [
                     ""
                 ],
+                "Platform": "multi",
                 "Risk": "high"
             },
             "vbulletin_widget_php/config_code_execution": {
@@ -322,6 +336,7 @@
                 "Comments": [
                     ""
                 ],
+                "Platform": "multi",
                 "Risk": "high"
             },
             "vbulletin_widget_php/template_code_execution": {
@@ -338,6 +353,7 @@
                 "Comments": [
                     ""
                 ],
+                "Platform": "multi",
                 "Risk": "high"
             },
             "ssh/libssh_code_execution": {
@@ -354,6 +370,7 @@
                 "Comments": [
                     ""
                 ],
+                "Platform": "multi",
                 "Risk": "medium"
             },
             "cctv_goahead_camera/password_disclosure": {
@@ -370,6 +387,7 @@
                 "Comments": [
                     ""
                 ],
+                "Platform": "multi",
                 "Risk": "high"
             },
             "netwave_ip_camera/information_disclosure": {
@@ -386,6 +404,7 @@
                 "Comments": [
                     ""
                 ],
+                "Platform": "multi",
                 "Risk": "high"
             },
             "qnap_qts/local_file_inclusion": {
@@ -402,205 +421,8 @@
                 "Comments": [
                     ""
                 ],
+                "Platform": "multi",
                 "Risk": "high"
-            }
-        }
-    },
-    "payload": {
-        "macos": {
-            "x64/shell_bind_tcp": {
-                "Path": "modules/payload/macos/x64/shell_bind_tcp",
-                "Name": "macOS x64 Shell Bind TCP",
-                "Module": "payload/macos/x64/shell_bind_tcp",
-                "Authors": [
-                    "enty8080"
-                ],
-                "Description": "Shell Bind TCP Payload for macOS x64.",
-                "Dependencies": [
-                    ""
-                ],
-                "Comments": [
-                    ""
-                ],
-                "Risk": "low"
-            },
-            "x64/shell_reverse_tcp": {
-                "Path": "modules/payload/macos/x64/shell_reverse_tcp",
-                "Name": "macOS x64 Shell Reverse TCP",
-                "Module": "payload/macos/x64/shell_reverse_tcp",
-                "Authors": [
-                    "enty8080"
-                ],
-                "Description": "Shell Reverse TCP Payload for macOS x64.",
-                "Dependencies": [
-                    ""
-                ],
-                "Comments": [
-                    ""
-                ],
-                "Risk": "low"
-            }
-        },
-        "linux": {
-            "x64/shell_reverse_tcp": {
-                "Path": "modules/payload/linux/x64/shell_reverse_tcp",
-                "Name": "Linux x64 Shell Reverse TCP",
-                "Module": "payload/linux/x64/shell_reverse_tcp",
-                "Authors": [
-                    "enty8080"
-                ],
-                "Description": "Shell Reverse TCP Payload for Linux x64.",
-                "Dependencies": [
-                    ""
-                ],
-                "Comments": [
-                    ""
-                ],
-                "Risk": "low"
-            },
-            "x64/shell_bind_tcp": {
-                "Path": "modules/payload/linux/x64/shell_bind_tcp",
-                "Name": "Linux x64 Shell Bind TCP",
-                "Module": "payload/linux/x64/shell_bind_tcp",
-                "Authors": [
-                    "enty8080"
-                ],
-                "Description": "Shell Bind TCP Payload for Linux x64.",
-                "Dependencies": [
-                    ""
-                ],
-                "Comments": [
-                    ""
-                ],
-                "Risk": "low"
-            },
-            "armle/shell_reverse_tcp": {
-                "Path": "modules/payload/linux/armle/shell_reverse_tcp",
-                "Name": "Linux armle Shell Reverse TCP",
-                "Module": "payload/linux/armle/shell_reverse_tcp",
-                "Authors": [
-                    "enty8080"
-                ],
-                "Description": "Shell Reverse TCP Payload for Linux armle.",
-                "Dependencies": [
-                    ""
-                ],
-                "Comments": [
-                    ""
-                ],
-                "Risk": "low"
-            },
-            "armle/shell_bind_tcp": {
-                "Path": "modules/payload/linux/armle/shell_bind_tcp",
-                "Name": "Linux armle Shell Bind TCP",
-                "Module": "payload/linux/armle/shell_bind_tcp",
-                "Authors": [
-                    "enty8080"
-                ],
-                "Description": "Shell Bind TCP Payload for Linux armle.",
-                "Dependencies": [
-                    ""
-                ],
-                "Comments": [
-                    ""
-                ],
-                "Risk": "low"
-            },
-            "x86/shell_reverse_tcp": {
-                "Path": "modules/payload/linux/x86/shell_reverse_tcp",
-                "Name": "Linux x86 Shell Reverse TCP",
-                "Module": "payload/linux/x86/shell_reverse_tcp",
-                "Authors": [
-                    "enty8080"
-                ],
-                "Description": "Shell Reverse TCP Payload for Linux x86.",
-                "Dependencies": [
-                    ""
-                ],
-                "Comments": [
-                    ""
-                ],
-                "Risk": "low"
-            },
-            "x86/shell_bind_tcp": {
-                "Path": "modules/payload/linux/x86/shell_bind_tcp",
-                "Name": "Linux x86 Shell Bind TCP",
-                "Module": "payload/linux/x86/shell_bind_tcp",
-                "Authors": [
-                    "enty8080"
-                ],
-                "Description": "Shell Bind TCP Payload for Linux x86.",
-                "Dependencies": [
-                    ""
-                ],
-                "Comments": [
-                    ""
-                ],
-                "Risk": "low"
-            },
-            "mipsbe/shell_reverse_tcp": {
-                "Path": "modules/payload/linux/mipsbe/shell_reverse_tcp",
-                "Name": "Linux mipsbe Shell Reverse TCP",
-                "Module": "payload/linux/mipsbe/shell_reverse_tcp",
-                "Authors": [
-                    "enty8080"
-                ],
-                "Description": "Shell Reverse TCP Payload for Linux mipsbe.",
-                "Dependencies": [
-                    ""
-                ],
-                "Comments": [
-                    ""
-                ],
-                "Risk": "low"
-            },
-            "mipsbe/shell_bind_tcp": {
-                "Path": "modules/payload/linux/mipsbe/shell_bind_tcp",
-                "Name": "Linux mipsbe Shell Bind TCP",
-                "Module": "payload/linux/mipsbe/shell_bind_tcp",
-                "Authors": [
-                    "enty8080"
-                ],
-                "Description": "Shell Bind TCP Payload for Linux mipsbe.",
-                "Dependencies": [
-                    ""
-                ],
-                "Comments": [
-                    ""
-                ],
-                "Risk": "low"
-            },
-            "mipsle/shell_reverse_tcp": {
-                "Path": "modules/payload/linux/mipsle/shell_reverse_tcp",
-                "Name": "Linux mipsle Shell Reverse TCP",
-                "Module": "payload/linux/mipsle/shell_reverse_tcp",
-                "Authors": [
-                    "enty8080"
-                ],
-                "Description": "Shell Reverse TCP Payload for Linux mipsle.",
-                "Dependencies": [
-                    ""
-                ],
-                "Comments": [
-                    ""
-                ],
-                "Risk": "low"
-            },
-            "mipsle/shell_bind_tcp": {
-                "Path": "modules/payload/linux/mipsle/shell_bind_tcp",
-                "Name": "Linux mipsle Shell Bind TCP",
-                "Module": "payload/linux/mipsle/shell_bind_tcp",
-                "Authors": [
-                    "enty8080"
-                ],
-                "Description": "Shell Bind TCP Payload for Linux mipsle.",
-                "Dependencies": [
-                    ""
-                ],
-                "Comments": [
-                    ""
-                ],
-                "Risk": "low"
             }
         }
     },
@@ -620,6 +442,7 @@
                 "Comments": [
                     ""
                 ],
+                "Platform": "linux",
                 "Risk": "high"
             },
             "membrane/transfer/upload": {
@@ -636,6 +459,7 @@
                 "Comments": [
                     ""
                 ],
+                "Platform": "linux",
                 "Risk": "medium"
             }
         },
@@ -654,6 +478,7 @@
                 "Comments": [
                     ""
                 ],
+                "Platform": "macos",
                 "Risk": "medium"
             },
             "membrane/gather/prompt": {
@@ -670,6 +495,7 @@
                 "Comments": [
                     ""
                 ],
+                "Platform": "macos",
                 "Risk": "high"
             },
             "membrane/transfer/download": {
@@ -686,6 +512,7 @@
                 "Comments": [
                     ""
                 ],
+                "Platform": "macos",
                 "Risk": "high"
             },
             "membrane/transfer/upload": {
@@ -702,6 +529,7 @@
                 "Comments": [
                     ""
                 ],
+                "Platform": "macos",
                 "Risk": "medium"
             },
             "membrane/trolling/say": {
@@ -718,6 +546,7 @@
                 "Comments": [
                     ""
                 ],
+                "Platform": "macos",
                 "Risk": "low"
             }
         }

@@ -33,6 +33,11 @@ class session(session):
         self.tcp = tcp()
         self.tcp.connect(client)
 
+    details = {
+        'Platform': "",
+        'Type': "shell"
+    }
+
     def close(self):
         self.tcp.disconnect()
 

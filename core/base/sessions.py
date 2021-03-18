@@ -27,34 +27,30 @@
 from core.cli.badges import badges
 from core.base.storage import local_storage
 
-from utils.shell.pseudo_shell import pseudo_shell
-
 class sessions:
     def __init__(self):
         self.badges = badges()
         self.local_storage = local_storage()
-        
-        self.pseudo_shell = pseudo_shell()
 
-    def add_session(self, session_property, session_module, session_host, session_port, session_object):
+    def add_session(self, session_platform, session_type, session_host, session_port, session_object):
         if not self.local_storage.get("sessions"):
             self.local_storage.set("sessions", dict())
 
         session_id = 0
-        if session_property in self.local_storage.get("sessions").keys():
+        if session_platform in self.local_storage.get("sessions").keys():
             sessions = self.local_storage.get("sessions")
-            session_id = len(sessions[session_property])
-            sessions[session_property][int(session_id)] = {
-                'module': session_module,
+            session_id = len(sessions[session_platform])
+            sessions[session_platform][int(session_id)] = {
+                'type': session_type,
                 'host': session_host,
                 'port': session_port,
                 'object': session_object
             }
         else:
             sessions = {
-                session_property: {
+                session_platform: {
                     int(session_id): {
-                        'module': session_module,
+                        'type': session_type,
                         'host': session_host,
                         'port': session_port,
                         'object': session_object
@@ -65,50 +61,42 @@ class sessions:
         self.local_storage.update("sessions", sessions)
         return session_id
     
-    def check_session_exist(self, session_property, session_id):
+    def check_session_exist(self, session_platform, session_id):
         sessions = self.local_storage.get("sessions")
         if sessions:
-            if session_property in sessions.keys():
-                if int(session_id) in sessions[session_property].keys():
+            if session_platform in sessions.keys():
+                if int(session_id) in sessions[session_platform].keys():
                     return True
         return False
-    
-    def spawn_interactive_connection(self, session_property, session_id):
+
+    def spawn_interactive_connection(self, session_platform, session_id):
         sessions = self.local_storage.get("sessions")
-        if self.check_session_exist(session_property, session_id):
+        if self.check_session_exist(session_platform, session_id):
             self.badges.output_process("Interacting with session " + str(session_id) + "...")
             self.badges.output_success("Interactive connection spawned!")
             self.badges.output_information("Type commands below.\n")
 
-            sessions[session_property][int(session_id)]['object'].interact()
+            sessions[session_platform][int(session_id)]['object'].interact()
         else:
             self.badges.output_error("Invalid session given!")
-    
-    def spawn_pseudo_shell(self, session_property, session_id):
+
+    def close_session(self, session_platform, session_id):
         sessions = self.local_storage.get("sessions")
-        if self.check_session_exist(session_property, session_id):
-            execute_method = sessions[session_property][int(session_id)]['object'].send_command
-            self.pseudo_shell.spawn_pseudo_shell(session_property, execute_method)
-        else:
-            self.badges.output_error("Invalid session given!")
-    
-    def close_session(self, session_property, session_id):
-        sessions = self.local_storage.get("sessions")
-        if self.check_session_exist(session_property, session_id):
+        if self.check_session_exist(session_platform, session_id):
             try:
-                sessions[session_property][int(session_id)]['object'].close()
-                del sessions[session_property][int(session_id)]
+                sessions[session_platform][int(session_id)]['object'].close()
+                del sessions[session_platform][int(session_id)]
                 
-                if not sessions[session_property]:
-                    del sessions[session_property]
+                if not sessions[session_platform]:
+                    del sessions[session_platform]
                 self.local_storage.update("sessions", sessions)
             except Exception:
                 self.badges.output_error("Failed to close session!")
         else:
             self.badges.output_error("Invalid session given!")
 
-    def get_session(self, session_property, session_id):
+    def get_session(self, session_platform, session_type, session_id):
         sessions = self.local_storage.get("sessions")
-        if self.check_session_exist(session_property, session_id):
-            return sessions[session_property][int(session_id)]['object']
+        if self.check_session_exist(session_platform, session_id):
+            return sessions[session_platform][int(session_id)]['object']
         return None

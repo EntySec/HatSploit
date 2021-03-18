@@ -1,0 +1,371 @@
+{
+    "__database__": {
+        "type": "payloads"
+    },
+    "multi": {
+        "generic": {
+            "ruby_reverse_tcp": {
+                "Path": "payloads/multi/generic/ruby_reverse_tcp",
+                "Name": "Ruby Shell Reverse TCP",
+                "Payload": "multi/generic/ruby_reverse_tcp",
+                "Authors": [
+                    "enty8080"
+                ],
+                "Description": "Ruby shell reverse TCP payload.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Platform": "multi",
+                "Risk": "high",
+                "Type": "reverse_tcp"
+            },
+            "sh_reverse_tcp": {
+                "Path": "payloads/multi/generic/sh_reverse_tcp",
+                "Name": "SH Shell Reverse TCP",
+                "Payload": "multi/generic/sh_reverse_tcp",
+                "Authors": [
+                    "enty8080"
+                ],
+                "Description": "SH shell reverse TCP payload.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Platform": "multi",
+                "Risk": "high",
+                "Type": "reverse_tcp"
+            }
+        }
+    },
+    "macos": {
+        "aarch64": {
+            "membrane_reverse_tcp": {
+                "Path": "payloads/macos/aarch64/membrane_reverse_tcp",
+                "Name": "macOS aarch64 Membrane Reverse TCP",
+                "Payload": "macos/aarch64/membrane_reverse_tcp",
+                "Authors": [
+                    "enty8080"
+                ],
+                "Description": "Membrane reverse TCP payload for macOS aarch64.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Platform": "macos",
+                "Risk": "high",
+                "Type": "reverse_tcp"
+            }
+        },
+        "x64": {
+            "membrane_reverse_tcp": {
+                "Path": "payloads/macos/x64/membrane_reverse_tcp",
+                "Name": "macOS x64 Membrane Reverse TCP",
+                "Payload": "macos/x64/membrane_reverse_tcp",
+                "Authors": [
+                    "enty8080"
+                ],
+                "Description": "Membrane reverse TCP payload for macOS x64.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Platform": "macos",
+                "Risk": "high",
+                "Type": "reverse_tcp"
+            },
+            "say": {
+                "Path": "payloads/macos/x64/say",
+                "Name": "macOS x64 Say",
+                "Payload": "macos/x64/say",
+                "Authors": [
+                    "enty8080"
+                ],
+                "Description": "Say payload for macOS x64.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Platform": "macos",
+                "Risk": "low",
+                "Type": "one_side"
+            },
+            "shell_bind_tcp": {
+                "Path": "payloads/macos/x64/shell_bind_tcp",
+                "Name": "macOS x64 Shell Bind TCP",
+                "Payload": "macos/x64/shell_bind_tcp",
+                "Authors": [
+                    "enty8080"
+                ],
+                "Description": "Shell bind TCP payload for macOS x64.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Platform": "macos",
+                "Risk": "high",
+                "Type": "bind_tcp"
+            },
+            "shell_reverse_tcp": {
+                "Path": "payloads/macos/x64/shell_reverse_tcp",
+                "Name": "macOS x64 Shell Reverse TCP",
+                "Payload": "macos/x64/shell_reverse_tcp",
+                "Authors": [
+                    "enty8080"
+                ],
+                "Description": "Shell reverse TCP payload for macOS x64.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Platform": "macos",
+                "Risk": "high",
+                "Type": "reverse_tcp"
+            }
+        }
+    },
+    "linux": {
+        "aarch64": {
+            "membrane_reverse_tcp": {
+                "Path": "payloads/linux/aarch64/membrane_reverse_tcp",
+                "Name": "Linux aarch64 Membrane Reverse TCP",
+                "Payload": "linux/aarch64/membrane_reverse_tcp",
+                "Authors": [
+                    "enty8080"
+                ],
+                "Description": "Membrane reverse TCP payload for Linux aarch64.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Platform": "linux",
+                "Risk": "high",
+                "Type": "reverse_tcp"
+            }
+        },
+        "armle": {
+            "shell_bind_tcp": {
+                "Path": "payloads/linux/armle/shell_bind_tcp",
+                "Name": "Linux armle Shell Bind TCP",
+                "Payload": "linux/armle/shell_bind_tcp",
+                "Authors": [
+                    "enty8080"
+                ],
+                "Description": "Shell bind TCP payload for Linux armle.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Platform": "linux",
+                "Risk": "high",
+                "Type": "bind_tcp"
+            },
+            "shell_reverse_tcp": {
+                "Path": "payloads/linux/armle/shell_reverse_tcp",
+                "Name": "Linux armle Shell Reverse TCP",
+                "Payload": "linux/armle/shell_reverse_tcp",
+                "Authors": [
+                    "enty8080"
+                ],
+                "Description": "Shell reverse TCP payload for Linux armle.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Platform": "linux",
+                "Risk": "high",
+                "Type": "reverse_tcp"
+            }
+        },
+        "mipsbe": {
+            "shell_bind_tcp": {
+                "Path": "payloads/linux/mipsbe/shell_bind_tcp",
+                "Name": "Linux mipsbe Shell Bind TCP",
+                "Payload": "linux/mipsbe/shell_bind_tcp",
+                "Authors": [
+                    "enty8080"
+                ],
+                "Description": "Shell bind TCP payload for Linux mipsbe.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Platform": "linux",
+                "Risk": "high",
+                "Type": "bind_tcp"
+            },
+            "shell_reverse_tcp": {
+                "Path": "payloads/linux/mipsbe/shell_reverse_tcp",
+                "Name": "Linux mipsbe Shell Reverse TCP",
+                "Payload": "linux/mipsbe/shell_reverse_tcp",
+                "Authors": [
+                    "enty8080"
+                ],
+                "Description": "Shell reverse TCP payload for Linux mipsbe.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Platform": "linux",
+                "Risk": "high",
+                "Type": "reverse_tcp"
+            }
+        },
+        "mipsle": {
+            "shell_bind_tcp": {
+                "Path": "payloads/linux/mipsle/shell_bind_tcp",
+                "Name": "Linux mipsle Shell Bind TCP",
+                "Payload": "linux/mipsle/shell_bind_tcp",
+                "Authors": [
+                    "enty8080"
+                ],
+                "Description": "Shell bind TCP payload for Linux mipsle.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Platform": "linux",
+                "Risk": "high",
+                "Type": "bind_tcp"
+            },
+            "shell_reverse_tcp": {
+                "Path": "payloads/linux/mipsle/shell_reverse_tcp",
+                "Name": "Linux mipsle Shell Reverse TCP",
+                "Payload": "linux/mipsle/shell_reverse_tcp",
+                "Authors": [
+                    "enty8080"
+                ],
+                "Description": "Shell reverse TCP payload for Linux mipsle.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Platform": "linux",
+                "Risk": "high",
+                "Type": "reverse_tcp"
+            }
+        },
+        "x64": {
+            "membrane_reverse_tcp": {
+                "Path": "payloads/linux/x64/membrane_reverse_tcp",
+                "Name": "Linux x64 Membrane Reverse TCP",
+                "Payload": "linux/x64/membrane_reverse_tcp",
+                "Authors": [
+                    "enty8080"
+                ],
+                "Description": "Membrane reverse TCP payload for Linux x64.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Platform": "linux",
+                "Risk": "high",
+                "Type": "reverse_tcp"
+            },
+            "shell_bind_tcp": {
+                "Path": "payloads/linux/x64/shell_bind_tcp",
+                "Name": "Linux x64 Shell Bind TCP",
+                "Payload": "linux/x64/shell_bind_tcp",
+                "Authors": [
+                    "enty8080"
+                ],
+                "Description": "Shell bind TCP payload for Linux x64.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Platform": "linux",
+                "Risk": "high",
+                "Type": "bind_tcp"
+            },
+            "shell_reverse_tcp": {
+                "Path": "payloads/linux/x64/shell_reverse_tcp",
+                "Name": "Linux x64 Shell Reverse TCP",
+                "Payload": "linux/x64/shell_reverse_tcp",
+                "Authors": [
+                    "enty8080"
+                ],
+                "Description": "Shell reverse TCP payload for Linux x64.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Platform": "linux",
+                "Risk": "high",
+                "Type": "reverse_tcp"
+            }
+        },
+        "x86": {
+            "shell_bind_tcp": {
+                "Path": "payloads/linux/x86/shell_bind_tcp",
+                "Name": "Linux x86 Shell Bind TCP",
+                "Payload": "linux/x86/shell_bind_tcp",
+                "Authors": [
+                    "enty8080"
+                ],
+                "Description": "Shell bind TCP payload for Linux x86.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Platform": "linux",
+                "Risk": "high",
+                "Type": "bind_tcp"
+            },
+            "shell_reverse_tcp": {
+                "Path": "payloads/linux/x86/shell_reverse_tcp",
+                "Name": "Linux x86 Shell Reverse TCP",
+                "Payload": "linux/x86/shell_reverse_tcp",
+                "Authors": [
+                    "enty8080"
+                ],
+                "Description": "Shell reverse TCP payload for Linux x86.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Platform": "linux",
+                "Risk": "high",
+                "Type": "reverse_tcp"
+            }
+        }
+    }
+}

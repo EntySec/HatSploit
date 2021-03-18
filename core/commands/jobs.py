@@ -41,6 +41,9 @@ class HatSploitCommand(HatSploitCommand):
     details = {
         'Category': "jobs",
         'Name': "jobs",
+        'Authors': [
+            'enty8080'
+        ],
         'Description': "Manage active jobs.",
         'Usage': usage,
         'MinArgs': 1
@@ -55,9 +58,7 @@ class HatSploitCommand(HatSploitCommand):
                 jobs = self.local_storage.get("jobs")
                 for job_id in jobs.keys():
                     jobs_data.append((job_id, jobs[job_id]['job_name'], jobs[job_id]['module_name']))
-                self.badges.output_empty("")
                 self.tables.print_table("Active Jobs", headers, *jobs_data)
-                self.badges.output_empty("")
             else:
                 self.badges.output_warning("No running jobs available.")
         elif choice in ['-k', '--kill']:

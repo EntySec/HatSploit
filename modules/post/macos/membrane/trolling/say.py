@@ -43,6 +43,7 @@ class HatSploitModule(HatSploitModule):
         'Comments': [
             ''
         ],
+        'Platform': "macos",
         'Risk': "low"
     }
 
@@ -63,7 +64,7 @@ class HatSploitModule(HatSploitModule):
 
     def run(self):
         message, session = self.parser.parse_options(self.options)
-        session = self.sessions.get_session("macos/membrane", session)
+        session = self.sessions.get_session(self.details['Platform'], "membrane", session)
         if session:
             self.badges.output_process("Sending message to device...")
             status, output = session.send_command("say", message)

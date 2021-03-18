@@ -101,7 +101,7 @@ class tcp:
         if self.client:
             self.client.write(buffer)
             
-    def interactive(self):
+    def interactive(self, terminator='\n'):
         if self.client:
             selector = selectors.SelectSelector()
 
@@ -119,12 +119,12 @@ class tcp:
                         if response:
                             self.badges.output_empty(response.decode(), end='')
                     elif key.fileobj is sys.stdin:
-                        line = sys.stdin.readline()
+                        line = sys.stdin.readline().strip()
                         if not line:
                             pass
-                        if line == "exit\n":
+                        if line == "exit":
                             return
-                        self.client.write(line.encode())
+                        self.client.write((line + terminator).encode())
 
     def recv(self, timeout=10):
         if self.client:
@@ -167,13 +167,54 @@ class tcp:
     #
         
     def start_server(self, local_host, local_port):
-        self.badges.output_process("Binding to " + local_host + ":" + local_port + "...")
+        address = local_host + ':' + str(local_port)
+        self.badges.output_process("Binding to " + address + "...")
         try:
             server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
             server.bind((local_host, int(local_port)))
             server.listen(1)
         except Exception:
-            self.badges.output_error("Failed to bind to " + local_host + ":" + local_port + "!")
+            self.badges.output_error("Failed to bind to " + address + "!")
             raise self.exceptions.GlobalException
         return server
+
+    #
+    # Functions to connect to server
+    #
+
+    def connect_server(self, remote_host, remote_port, timeout=10):
+        address = remote_host + ':' + str(remote_port)
+        self.badges.output_process("Connecting to " + address + "...")
+        try:
+            server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            server.settimeout(timeout)
+
+            server.connect((remote_host, int(remote_port)))
+            self.badges.output_process("Establishing connection...")
+        except Exception:
+            self.badges.output_error("Failed to connect to " + address + "!")
+            raise self.exceptions.GlobalException
+        return server
+    
+    #
+    # Functions to listen
+    #
+    
+    def listen(self, local_host, local_port):
+        try:
+            server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+            server.bind((local_host, int(local_port)))
+            server.listen(1)
+
+            self.badges.output_process("Listening on port " + str(local_port) + "...")
+            client, address = server.accept()
+            self.badges.output_process("Connecting to " + address[0] + "...")
+            self.badges.output_process("Establishing connection...")
+
+            server.close()
+        except Exception:
+            self.badges.output_error("Failed to listen on port " + str(local_port) + "!")
+            raise self.exceptions.GlobalException
+        return (client, address[0])

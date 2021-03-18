@@ -35,15 +35,17 @@ class HatSploitCommand(HatSploitCommand):
 
     usage = ""
     usage += "sessions <option> [arguments]\n\n"
-    usage += "  -l, --list [session_property]                   List all opened sessions\n"
-    usage += "                                                  [for specified session property].\n"
-    usage += "  -i, --interact <session_property> <session_id>  Interact with specified session.\n"
-    usage += "  -p, --pseudo <session_property> <session_id>    Spawn Pseudo shell on specified session.\n"
-    usage += "  -c, --close <session_property> <session_id>     Close specified session.\n"
-    
+    usage += "  -l, --list [session_platform]                   List all opened sessions\n"
+    usage += "                                                  [for specified session platform].\n"
+    usage += "  -i, --interact <session_platform> <session_id>  Interact with specified session.\n"
+    usage += "  -c, --close <session_platform> <session_id>     Close specified session.\n"
+
     details = {
         'Category': "sessions",
         'Name': "sessions",
+        'Authors': [
+            'enty8080'
+        ],
         'Description': "Manage opened sessions.",
         'Usage': usage,
         'MinArgs': 1
@@ -54,46 +56,37 @@ class HatSploitCommand(HatSploitCommand):
             sessions = self.local_storage.get("sessions")
             if argc < 2:
                 if sessions:
-                    for session_property in sessions.keys():
+                    for session_platform in sessions.keys():
                         sessions_data = list()
-                        headers = ("ID", "Module", "Host", "Port")
-                        for session_id in sessions[session_property].keys():
-                            module = sessions[session_property][session_id]['module']
-                            host = sessions[session_property][session_id]['host']
-                            port = sessions[session_property][session_id]['port']
+                        headers = ("ID", "Type", "Host", "Port")
+                        for session_id in sessions[session_platform].keys():
+                            session_type = sessions[session_platform][session_id]['type']
+                            host = sessions[session_platform][session_id]['host']
+                            port = sessions[session_platform][session_id]['port']
 
-                            sessions_data.append((session_id, module, host, port))
-                        self.badges.output_empty("")
-                        self.tables.print_table("Opened Sessions: " + session_property, headers, *sessions_data)
-                        self.badges.output_empty("")
+                            sessions_data.append((session_id, session_type, host, port))
+                        self.tables.print_table("Opened Sessions (" + session_platform + ")", headers, *sessions_data)
                 else:
                     self.badges.output_warning("No opened sessions available.")
             else:
                 if argv[1] in sessions.keys():
-                    session_property = argv[1]
+                    session_platform = argv[1]
                     sessions_data = list()
-                    headers = ("ID", "Module", "Host", "Port")
-                    for session_id in sessions[session_property].keys():
-                        module = sessions[session_property][session_id]['module']
-                        host = sessions[session_property][session_id]['host']
-                        port = sessions[session_property][session_id]['port']
+                    headers = ("ID", "Type", "Host", "Port")
+                    for session_id in sessions[session_platform].keys():
+                        session_type = sessions[session_platform][session_id]['type']
+                        host = sessions[session_platform][session_id]['host']
+                        port = sessions[session_platform][session_id]['port']
 
-                        sessions_data.append((session_id, module, host, port))
-                    self.badges.output_empty("")
-                    self.tables.print_table("Opened Sessions: " + session_property, headers, *sessions_data)
-                    self.badges.output_empty("")
+                        sessions_data.append((session_id, session_type, host, port))
+                    self.tables.print_table("Opened Sessions (" + session_platform + ")", headers, *sessions_data)
                 else:
-                    self.badges.output_error("Invalid session property given!")
+                    self.badges.output_error("Invalid session platform given!")
         elif argv[0] in ['-c', '--close']:
             if argc < 3:
                 self.badges.output_usage(self.details['Usage'])
             else:
                 self.sessions.close_session(argv[1], argv[2])
-        elif argv[0] in ['-p', '--pseudo']:
-            if argc < 3:
-                self.badges.output_usage(self.details['Usage'])
-            else:
-                self.sessions.spawn_pseudo_shell(argv[1], argv[2])
         elif argv[0] in ['-i', '--interact']:
             if argc < 3:
                 self.badges.output_usage(self.details['Usage'])

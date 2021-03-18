@@ -132,3 +132,9 @@ class local_storage:
             globals()[name][number].options[option]['Value'] = value
         except Exception:
             pass
+
+    def set_payload_option(self, module_name, payload_name, option, value):
+        try:
+            globals()["imported_payloads"][module_name][payload_name].options[option]['Value'] = value
+        except Exception:
+            pass

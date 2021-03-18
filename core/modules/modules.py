@@ -28,13 +28,19 @@ import os
 
 from core.base.types import types
 from core.cli.badges import badges
+from core.base.sessions import sessions
+from core.payloads.payloads import payloads
 from core.base.storage import local_storage
+from core.db.importer import importer
 
 class modules:
     def __init__(self):
         self.types = types()
         self.badges = badges()
+        self.sessions = sessions()
+        self.payloads = payloads()
         self.local_storage = local_storage()
+        self.importer = importer()
         
     def check_exist(self, name):
         if self.check_style(name):
@@ -61,7 +67,7 @@ class modules:
         return False
     
     def check_style(self, name):
-        if len(name.split('/')) >= 4:
+        if len(name.split('/')) >= 3:
             return True
         return False
     
@@ -82,12 +88,17 @@ class modules:
         if self.check_current_module():
             return self.local_storage.get_array("current_module", self.local_storage.get("current_module_number"))
         return None
-    
+
+    def get_current_module_platform(self):
+        if self.check_current_module():
+            return self.local_storage.get_array("current_module", self.local_storage.get("current_module_number")).details['Platform']
+        return None
+
     def get_current_module_name(self):
         if self.check_current_module():
             return self.local_storage.get_array("current_module", self.local_storage.get("current_module_number")).details['Module']
         return None
-       
+
     def get_database(self, name):
         if self.check_style(name):
             all_modules = self.local_storage.get("modules")
@@ -123,75 +134,173 @@ class modules:
     def get_full_name(self, category, platform, name):
         return category + '/' + platform + '/' + name
 
+    def compare_types(self, value_type, value):
+        if value_type and not value_type.lower == 'all':
+            if value_type.lower() == 'ip':
+                if not self.types.is_ip(value):
+                    self.badges.output_error("Invalid value, expected valid IP!")
+                    return False
+
+            if value_type.lower() == 'ipv4':
+                if not self.types.is_ipv4(value):
+                    self.badges.output_error("Invalid value, expected valid IPv4!")
+                    return False
+
+            if value_type.lower() == 'ipv6':
+                if not self.types.is_ipv6(value):
+                    self.badges.output_error("Invalid value, expected valid IPv6!")
+                    return False
+
+            if value_type.lower() == 'ipv4_range':
+                if not self.types.is_ipv4_range(value):
+                    self.badges.output_error("Invalid value, expected valid IPv4 range!")
+                    return False
+
+            if value_type.lower() == 'ipv6_range':
+                if not self.types.is_ipv6_range(value):
+                    self.badges.output_error("Invalid value, expected valid IPv6 range!")
+                    return False
+
+            if value_type.lower() == 'port':
+                if not self.types.is_port(value):
+                    self.badges.output_error("Invalid value, expected valid port!")
+                    return False
+
+            if value_type.lower() == 'port_range':
+                if not self.types.is_port_range(value):
+                    self.badges.output_error("Invalid value, expected valid port range!")
+                    return False
+
+            if value_type.lower() == 'number':
+                if not self.types.is_number(value):
+                    self.badges.output_error("Invalid value, expected valid number!")
+                    return False
+
+            if value_type.lower() == 'integer':
+                if not self.types.is_integer(value):
+                    self.badges.output_error("Invalid value, expected valid integer!")
+                    return False
+
+            if value_type.lower() == 'float':
+                if not self.types.is_float(value):
+                    self.badges.output_error("Invalid value, expected valid float!")
+                    return False
+
+            if value_type.lower() == 'boolean':
+                if not self.types.is_boolean(value):
+                    self.badges.output_error("Invalid value, expected valid boolean!")
+                    return False
+
+            if value_type.lower() == 'session':
+                module_platform = self.get_current_module_platform()
+                if not self.sessions.check_exist(mudule_platform, value):
+                    return False
+
+            if value_type.lower() == 'payload':
+                if self.payloads.check_exist(value):
+                    module_name = self.get_current_module_name()
+                    
+                    platform = self.payloads.get_platform(value)
+                    architecture = self.payloads.get_architecture(value)
+                    name = self.payloads.get_name(value)
+
+                    if not self.payloads.add_payload(module_name, platform, architecture, name):
+                        self.badges.output_error("Invalid payload, expected valid payload!")
+                        return False
+                else:
+                    self.badges.output_error("Invalid payload, expected valid payload!")
+                    return False
+        return True
     
     def set_current_module_option(self, option, value):
         if self.check_current_module():
             current_module = self.get_current_module_object()
             if hasattr(current_module, "options"):
+                current_payload = self.payloads.get_current_payload()
+
                 if option in current_module.options.keys():
                     value_type = current_module.options[option]['Type']
 
-                    if value_type:
-                        if value_type.lower() == 'ip':
-                            if not self.types.is_ip(value):
-                                self.badges.output_error("Invalid value, expected valid IP!")
-                                return
-                
-                        if value_type.lower() == 'ipv4':
-                            if not self.types.is_ipv4(value):
-                                self.badges.output_error("Invalid value, expected valid IPv4!")
-                                return
+                    if self.compare_types(value_type, value):
+                        self.badges.output_information(option + " ==> " + value)
+                        self.local_storage.set_module_option("current_module", self.local_storage.get("current_module_number"), option, value)
 
-                        if value_type.lower() == 'ipv6':
-                            if not self.types.is_ipv6(value):
-                                self.badges.output_error("Invalid value, expected valid IPv6!")
-                                return
-                    
-                        if value_type.lower() == 'ipv4_range':
-                            if not self.types.is_ipv4_range(value):
-                                self.badges.output_error("Invalid value, expected valid IPv4 range!")
-                                return
-                    
-                        if value_type.lower() == 'ipv6_range':
-                            if not self.types.is_ipv6_range(value):
-                                self.badges.output_error("Invalid value, expected valid IPv6 range!")
-                                return
-                    
-                        if value_type.lower() == 'port':
-                            if not self.types.is_port(value):
-                                self.badges.output_error("Invalid value, expected valid port!")
-                                return
-                    
-                        if value_type.lower() == 'port_range':
-                            if not self.types.is_port_range(value):
-                                self.badges.output_error("Invalid value, expected valid port range!")
-                                return
-                        
-                        if value_type.lower() == 'number':
-                            if not self.types.is_number(value):
-                                self.badges.output_error("Invalid value, expected valid number!")
-                                return
+                elif current_payload and hasattr(current_payload, "options"):
+                    if option in current_payload.options.keys():
+                        value_type = current_payload.options[option]['Type']
 
-                        if value_type.lower() == 'integer':
-                            if not self.types.is_integer(value):
-                                self.badges.output_error("Invalid value, expected valid integer!")
-                                return
-                    
-                        if value_type.lower() == 'float':
-                            if not self.types.is_float(value):
-                                self.badges.output_error("Invalid value, expected valid float!")
-                                return
-                    
-                        if value_type.lower() == 'boolean':
-                            if not self.types.is_boolean(value):
-                                self.badges.output_error("Invalid value, expected valid boolean!")
-                                return
-
-                    self.badges.output_information(option + " ==> " + value)
-                    self.local_storage.set_module_option("current_module", self.local_storage.get("current_module_number"), option, value)
+                        if self.compare_types(value_type, value):
+                            self.badges.output_information(option + " ==> " + value)
+                            self.local_storage.set_payload_option(current_module.details['Module'], current_payload.details['Payload'], option, value)
+                    else:
+                        self.badges.output_error("Unrecognized option!")
                 else:
                     self.badges.output_error("Unrecognized option!")
             else:
                 self.badges.output_warning("Module has no options.")
         else:
             self.badges.output_warning("No module selected.")
+
+    def import_module(self, category, platform, name):
+        modules = self.get_module_object(category, platform, name)
+        try:
+            module_object = self.importer.import_module(modules['Path'])
+            if not self.local_storage.get("imported_modules"):
+                self.local_storage.set("imported_modules", dict())
+            self.local_storage.update("imported_modules", {self.get_full_name(category, platform, name): module_object})
+        except Exception:
+            return None
+        return module_object
+        
+    def add_module(self, category, platform, name):
+        modules = self.get_module_object(category, platform, name)
+        
+        not_installed = list()
+        for dependence in modules['Dependencies']:
+            if not self.importer.import_check(dependence):
+                not_installed.append(dependence)
+        if not not_installed:
+            imported_modules = self.local_storage.get("imported_modules")
+            full_name = self.get_full_name(category, platform, name)
+            
+            if self.check_imported(full_name):
+                module_object = imported_modules[full_name]
+                self.add_to_global(module_object)
+            else:
+                module_object = self.import_module(category, platform, name)
+                if module_object:
+                    if hasattr(module_object, "options"):
+                        for option in module_object.options.keys():
+                            if module_object.options[option]['Type'].lower() == 'payload':
+                                payload_name = module_object.options[option]['Value']
+
+                                platform = self.payloads.get_platform(payload_name)
+                                architecture = self.payloads.get_architecture(payload_name)
+                                name = self.payloads.get_name(payload_name)
+
+                                self.badges.output_process("Using default payload " + payload_name + "...")
+
+                                if self.payloads.check_exist(payload_name):
+                                    if self.payloads.add_payload(full_name, platform, architecture, name):
+                                        self.add_to_global(module_object)
+                                    return
+                                self.badges.output_error("Invalid default payload!")
+                                return
+                    self.add_to_global(module_object)
+                else:
+                    self.badges.output_error("Failed to select module from database!")
+        else:
+            self.badges.output_error("Module depends this dependencies which is not installed:")
+            for dependence in not_installed:
+                self.badges.output_empty("    * " + dependence)
+
+    def add_to_global(self, module_object):
+        if self.check_current_module():
+            self.local_storage.add_array("current_module", '')
+            self.local_storage.set("current_module_number", self.local_storage.get("current_module_number") + 1)
+            self.local_storage.set_array("current_module", self.local_storage.get("current_module_number"), module_object)
+        else:
+            self.local_storage.set("current_module", [])
+            self.local_storage.set("current_module_number", 0)
+            self.local_storage.add_array("current_module", '')
+            self.local_storage.set_array("current_module", self.local_storage.get("current_module_number"), module_object)
