@@ -11,7 +11,7 @@ jobs:
       - name: Install HatSploit
         run: cd /opt/hsf; bash install.sh
       - name: Perform tests
-        run: cd /opt/hsf; touch .accepted; python3 tester.py; echo 'exit' | sudo hsf
+        run: cd /opt/hsf; sudo touch .accepted; python3 tester.py; echo 'exit' | sudo hsf
   macOS:
     runs-on: macos-latest
     steps:
@@ -21,4 +21,4 @@ jobs:
       - name: Install HatSploit
         run: cd /opt/hsf; bash install.sh
       - name: Perform tests
-        run: cd /opt/hsf; touch .accepted; python3 tester.py; echo 'exit' | sudo hsf
+        run: cd /opt/hsf; sudo touch .accepted; python3 tester.py; echo 'exit' | sudo hsf
