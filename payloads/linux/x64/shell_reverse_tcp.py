@@ -71,8 +71,8 @@ class HatSploitPayload(HatSploitPayload, PayloadGenerator, TCPClient):
     def run(self):
         local_host, local_port, executable_format = self.parser.parse_options(self.options)
 
-        local_host = self.payload_generator.host_to_bytes(local_host)
-        local_port = self.payload_generator.port_to_bytes(local_port)
+        local_host = self.host_to_bytes(local_host)
+        local_port = self.port_to_bytes(local_port)
 
         if not executable_format in self.formats.keys():
             self.badges.output_error("Invalid executable format!")
