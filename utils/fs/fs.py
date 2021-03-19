@@ -29,8 +29,7 @@ import os
 from core.cli.badges import badges
 
 class FSTools:
-    def __init__(self):
-        self.badges = badges()
+    badges = badges()
         
     def exists_directory(self, path):
         if os.path.isdir(path):
