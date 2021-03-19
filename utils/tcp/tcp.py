@@ -35,15 +35,10 @@ from core.cli.badges import badges
 from core.base.exceptions import exceptions
 
 class TCPClient:
-    def __init__(self):
-        self.badges = badges()
-        self.exceptions = exceptions()
-        
-        self.client = None
-    
-    #
-    # Functions to manipulate local addresses
-    #
+    badges = badges()
+    exceptions = exceptions()
+
+    client = None
 
     def get_local_host(self):
         try:
@@ -56,10 +51,6 @@ class TCPClient:
             local_host = "127.0.0.1"
         return local_host
 
-    #
-    # TCP requests
-    #
-    
     def tcp_request(self, host, port, data, buffer_size=1024, timeout=10):
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         sock.settimeout(timeout)
@@ -68,11 +59,7 @@ class TCPClient:
         output = sock.recv(buffer_size)
         sock.close()
         return output.decode().strip()
-    
-    #
-    # TCP ports
-    #
-    
+
     def check_tcp_port(self, host, port, timeout=10):
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         sock.settimeout(timeout)
@@ -81,33 +68,25 @@ class TCPClient:
             return True
         sock.close()
         return False
-    
-    #
-    # Functions to connect or disconnect
-    #
-        
+
     def connect(self, client):
         self.client = telnetlib.Telnet()
         self.client.sock = client
-        
+
     def disconnect(self):
         self.client.close()
-        
-    #
-    # Functions to send and recv from client and to client
-    #
-    
+
     def send(self, buffer):
         if self.client:
             self.client.write(buffer)
-            
+
     def interactive(self, terminator='\n'):
         if self.client:
             selector = selectors.SelectSelector()
 
             selector.register(self.client, selectors.EVENT_READ)
             selector.register(sys.stdin, selectors.EVENT_READ)
-            
+
             while True:
                 for key, events in selector.select():
                     if key.fileobj is self.client:
@@ -146,26 +125,18 @@ class TCPClient:
                         break
             return result
         return None
-        
-    #
-    # Functions to send system commands to client
-    #
 
     def send_command(self, command, timeout=10):
         if self.client:
             buffer = command.encode()
             self.send(buffer)
-            
+
             output = self.recv(timeout)
             output = output.decode().strip()
-            
+
             return output
         return None
-        
-    #
-    # Functions to manipulate with server
-    #
-        
+
     def start_server(self, local_host, local_port):
         address = local_host + ':' + str(local_port)
         self.badges.output_process("Binding to " + address + "...")
@@ -178,10 +149,6 @@ class TCPClient:
             self.badges.output_error("Failed to bind to " + address + "!")
             raise self.exceptions.GlobalException
         return server
-
-    #
-    # Functions to connect to server
-    #
 
     def connect_server(self, remote_host, remote_port, timeout=10):
         address = remote_host + ':' + str(remote_port)
@@ -196,11 +163,7 @@ class TCPClient:
             self.badges.output_error("Failed to connect to " + address + "!")
             raise self.exceptions.GlobalException
         return server
-    
-    #
-    # Functions to listen
-    #
-    
+
     def listen(self, local_host, local_port):
         try:
             server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
