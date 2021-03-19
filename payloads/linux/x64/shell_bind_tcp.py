@@ -63,7 +63,7 @@ class HatSploitPayload(HatSploitPayload, PayloadGenerator):
 
     def run(self):
         bind_port, executable_format = self.parser.parse_options(self.options)
-        bind_port = self.payload_generator.port_to_bytes(bind_port)
+        bind_port = self.port_to_bytes(bind_port)
 
         if not executable_format in self.formats.keys():
             self.badges.output_error("Invalid executable format!")
