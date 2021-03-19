@@ -34,8 +34,7 @@ HTTP_TIMEOUT = 30.0
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 class HTTPClient:
-    def __init__(self):
-        self.badges = badges()
+    badges = badges()
 
     def http_request(self, url, method, path, session=requests, **kwargs):
         kwargs.setdefault("timeout", HTTP_TIMEOUT)
