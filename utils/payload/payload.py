@@ -32,13 +32,6 @@ from core.base.config import config
 class PayloadGenerator:
     config = config()
 
-    formats = {
-        'pe': self.generate_pe,
-        'elf': self.generate_elf,
-        'macho': self.generate_macho,
-        'c': self.generate_c
-    }
-
     pe_headers = {
         'x86': (
             b'\x4d\x5a\x90\x00\x03\x00\x00\x00\x04\x00\x00\x00\xff\xff\x00\x00\xb8\x00\x00\x00\x00\x00\x00\x00'
@@ -238,3 +231,10 @@ class PayloadGenerator:
         c += "}\n"
 
         return c.encode()
+
+    formats = {
+        'pe': generate_pe,
+        'elf': generate_elf,
+        'macho': generate_macho,
+        'c': generate_c
+    }
