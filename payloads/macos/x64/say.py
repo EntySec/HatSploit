@@ -27,12 +27,9 @@
 import struct
 
 from core.lib.payload import HatSploitPayload
+from utils.payload.payload_generator import PayloadGenerator
 
-from utils.payload.payload_generator import payload_generator
-
-class HatSploitPayload(HatSploitPayload):
-    payload_generator = payload_generator()
-
+class HatSploitPayload(HatSploitPayload, PayloadGenerator):
     details = {
         'Name': "macOS x64 Say",
         'Payload': "macos/x64/say",
@@ -54,7 +51,7 @@ class HatSploitPayload(HatSploitPayload):
     options = {
         'MESSAGE': {
             'Description': "Message to say.",
-            'Value': "Ruslanchik",
+            'Value': "Ruslik",
             'Type': None,
             'Required': True
         },
@@ -71,8 +68,8 @@ class HatSploitPayload(HatSploitPayload):
 
         message = (message + '\x00').encode()
         call = b'\xe8' + struct.pack("<I", len(message) + 0xd)
-        
-        if not executable_format in self.payload_generator.formats.keys():
+
+        if not executable_format in self.formats.keys():
             self.badges.output_error("Invalid executable format!")
             return
 
@@ -94,7 +91,7 @@ class HatSploitPayload(HatSploitPayload):
         )
 
         self.badges.output_process("Generating payload...")
-        payload = self.payload_generator.generate(executable_format, 'x64', shellcode)
+        payload = self.generate(executable_format, 'x64', shellcode)
 
         instructions = ""
         instructions += "cat >/private/var/tmp/.payload;"
