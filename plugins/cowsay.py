@@ -93,11 +93,11 @@ class HatSploitPlugin(HatSploitPlugin):
     def cowsay(self, argc, argv):
         message = argv[0]
         cow = self.ask_cow(message, len(message))
-        self.badges.output_empty(cow)
+        self.output_empty(cow)
 
     def run(self):
         message = "Cow here, moo!"
         cow = self.ask_cow(message, len(message))
-        self.badges.output_empty(cow)
+        self.output_empty(cow)
         
-        self.badges.output_information("Use " + self.colors.GREEN + "cowsay" + self.colors.END + " to call me.")
+        self.output_information("Use " + self.GREEN + "cowsay" + self.END + " to call me.")
