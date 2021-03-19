@@ -27,16 +27,14 @@
 import base64
 
 from core.lib.payload import HatSploitPayload
-from core.base.config import config
+from utils.tcp.tcp import TCPClient
 
-from utils.tcp.tcp import tcp
+from core.base.config import config
 
 from data.payloads.macos.x64.membrane_reverse_tcp.core.session import session
 
-class HatSploitPayload(HatSploitPayload):
+class HatSploitPayload(HatSploitPayload, TCPClient):
     config = config()
-
-    tcp = tcp()
 
     details = {
         'Name': "macOS aarch64 Membrane Reverse TCP",
@@ -59,7 +57,7 @@ class HatSploitPayload(HatSploitPayload):
     options = {
         'LHOST': {
             'Description': "Local host.",
-            'Value': tcp.get_local_host(),
+            'Value': TCPClient.get_local_host(),
             'Type': "ip",
             'Required': True
         },
