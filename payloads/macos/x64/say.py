@@ -27,7 +27,7 @@
 import struct
 
 from core.lib.payload import HatSploitPayload
-from utils.payload.payload_generator import PayloadGenerator
+from utils.payload.payload import PayloadGenerator
 
 class HatSploitPayload(HatSploitPayload, PayloadGenerator):
     details = {
