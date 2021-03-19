@@ -29,32 +29,28 @@ from core.base.storage import local_storage
 from core.modules.modules import modules
 from core.cli.badges import badges
 
-from utils.tcp.tcp import tcp
-from utils.http.http import http
+from utils.tcp.tcp import TCPClient
+from utils.http.http import HTTPClient
 
 from data.utils.handler.handler.session import session
 
-class handler:
-    def __init__(self):
-        self.sessions = sessions()
-        self.local_storage = local_storage()
-        self.modules = modules()
-        self.badges = badges()
+class Handler(TCPClient, HTTPClient):
+    sessions = sessions()
+    local_storage = local_storage()
+    modules = modules()
+    badges = badges()
 
-        self.tcp = tcp()
-        self.http = http()
-
-    def listen(self, local_host, local_port, session=session):
+    def listen_session(self, local_host, local_port, session=session):
         try:
-            client, address = self.tcp.listen(local_host, local_port)
+            client, address = self.listen(local_host, local_port)
             return (session(client), address)
         except Exception:
             self.badges.output_error("Failed to handle session!")
             return (None, None)
 
-    def connect(self, remote_host, remote_port, timeout=10, session=session):
+    def connect_session(self, remote_host, remote_port, timeout=10, session=session):
         try:
-            client = self.tcp.connect_server(remote_host, remote_port, timeout)
+            client = self.connect_server(remote_host, remote_port, timeout)
             return session(client)
         except Exception:
             self.badges.output_error("Failed to handle session!")
@@ -69,7 +65,7 @@ class handler:
 
         session_type = session.details['Type']
         session_platform = session.details['Platform']
-        new_session = self.connect(remote_host, remote_port, session)
+        new_session = self.connect_session(remote_host, remote_port, session)
 
         if not new_session:
             return False
@@ -99,17 +95,17 @@ class handler:
                 session_platform = session.details['Platform']
 
                 if payload.details['Type'].lower() == 'bind_tcp':
-                    new_session = self.connect(remote_host, remote_port, session)
+                    new_session = self.connect_session(remote_host, remote_port, session)
                     if not new_session:
                         self.badges.output_warning("Payload completed but no session was created.")
                         return False
-                    session_id = self.sessions.add_session(session_platform, session_type, remote_host, remote_port, new_session)
+                    session_id = self.sessions.add_session(session_platform, session_type, remote_host, local_port, new_session)
                     self.badges.output_success("Session " + str(session_id) + " opened!")
                     return True
 
                 if payload.details['Type'].lower() == 'reverse_tcp':
                     local_host, local_port = self.tcp.get_local_host(), remote_port
-                    new_session, remote_host = self.listen(local_host, local_port, session)
+                    new_session, remote_host = self.listen_session(local_host, local_port, session)
                     if not new_session and not remote_host:
                         self.badges.output_warning("Payload completed but no session was created.")
                         return False
@@ -127,13 +123,13 @@ class handler:
         if not session.details['Platform']:
             session.details['Platform'] = 'multi'
 
-        address = self.http.format_host_and_port(local_host, local_port)
+        address = local_host + ':' + str(local_port)
 
         if payload is not None:
             session_platform = payload.details['Platform']
 
             if payload.instructions and payload.payload:
-                new_session, remote_host = self.listen(local_host, local_port, session)
+                new_session, remote_host = self.listen_session(local_host, local_port, session)
                 if not new_session and not remote_host:
                     return False
 
@@ -160,7 +156,7 @@ class handler:
                 session_platform = session.details['Platform']
 
                 if payload.details['Type'].lower() == 'bind_tcp':
-                    new_session = self.connect(remote_host, remote_port, session)
+                    new_session = self.connect_session(remote_host, remote_port, session)
                     if not new_session:
                         self.badges.output_warning("Payload completed but no session was created.")
                         return False
@@ -170,7 +166,7 @@ class handler:
             else:
                 self.badges.output_warning("Payload you provided is not executable.")
 
-        new_session, remote_host = self.listen(local_host, local_port, session)
+        new_session, remote_host = self.listen_session(local_host, local_port, session)
         if not new_session and not remote_host:
             return False
 

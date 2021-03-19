@@ -28,7 +28,7 @@ import os
 
 from core.cli.badges import badges
 
-class fs:
+class FSTools:
     def __init__(self):
         self.badges = badges()
         

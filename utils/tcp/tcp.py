@@ -34,7 +34,7 @@ import selectors
 from core.cli.badges import badges
 from core.base.exceptions import exceptions
 
-class tcp:
+class TCPClient:
     def __init__(self):
         self.badges = badges()
         self.exceptions = exceptions()
