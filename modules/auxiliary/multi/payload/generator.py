@@ -48,15 +48,9 @@ class HatSploitModule(Module):
     payload = {
         'Description': "Payload to use.",
         'Value': "linux/x64/shell_reverse_tcp",
-        'Type': [
-            'reverse_tcp',
-            'bind_tcp',
-            'one_side'
-        ],
-        'Category': [
-            'stager',
-            'single'
-        ]
+        'Categories': None,
+        'Platforms': None,
+        'Types': None
     }
 
     options = {
