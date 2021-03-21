@@ -24,12 +24,13 @@
 # SOFTWARE.
 #
 
-from core.lib.command import HatSploitCommand
+from core.lib.command import Command
 
-from core.modules.modules import modules
+from core.modules.modules import Modules
 
-class HatSploitCommand(HatSploitCommand):
-    modules = modules()
+
+class HatSploitCommand(Command):
+    modules = Modules()
 
     details = {
         'Category': "module",
@@ -45,5 +46,5 @@ class HatSploitCommand(HatSploitCommand):
     def run(self, argc, argv):
         option = argv[0].upper()
         value = argv[1]
-        
+
         self.modules.set_current_module_option(option, value)

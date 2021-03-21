@@ -26,12 +26,12 @@
 
 import sys
 
-from core.lib.command import HatSploitCommand
+from core.base.jobs import Jobs
+from core.lib.command import Command
 
-from core.base.jobs import jobs
 
-class HatSploitCommand(HatSploitCommand):
-    jobs = jobs()
+class HatSploitCommand(Command):
+    jobs = Jobs()
 
     usage = ""
     usage += "exit [option]\n\n"
@@ -55,7 +55,7 @@ class HatSploitCommand(HatSploitCommand):
                 self.jobs.stop_all_jobs()
                 sys.exit(0)
             elif argv[0] in ['-h', '--help']:
-                self.badges.output_usage(self.details['Usage'])
+                self.output_usage(self.details['Usage'])
                 return
         if self.jobs.exit_jobs():
             sys.exit(0)

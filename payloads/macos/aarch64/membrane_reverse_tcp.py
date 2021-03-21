@@ -26,17 +26,17 @@
 
 import base64
 
-from core.lib.payload import HatSploitPayload
+from core.base.config import Config
+from core.lib.payload import Payload
+from data.payloads.macos.x64.membrane_reverse_tcp.core.session import session
 from utils.tcp.tcp import TCPClient
 
-from core.base.config import config
 
-from data.payloads.macos.x64.membrane_reverse_tcp.core.session import session
-
-class HatSploitPayload(HatSploitPayload, TCPClient):
-    config = config()
+class HatSploitPayload(Payload, TCPClient):
+    config = Config()
 
     details = {
+        'Category': "stager",
         'Name': "macOS aarch64 Membrane Reverse TCP",
         'Payload': "macos/aarch64/membrane_reverse_tcp",
         'Authors': [
@@ -78,7 +78,8 @@ class HatSploitPayload(HatSploitPayload, TCPClient):
         self.output_process("Generating payload...")
 
         try:
-            binary = open(self.config.path_config['base_paths']['data_path'] + 'libs/payloads/macos/aarch64/membrane_reverse_tcp/bin/membrane.bin', 'rb')
+            binary = open(self.config.path_config['base_paths'][
+                              'data_path'] + 'libs/payloads/macos/aarch64/membrane_reverse_tcp/bin/membrane.bin', 'rb')
             payload = binary.read()
             binary.close()
         except Exception:

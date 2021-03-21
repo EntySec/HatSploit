@@ -24,18 +24,18 @@
 # SOFTWARE.
 #
 
-from core.lib.command import HatSploitCommand
+from core.base.jobs import Jobs
+from core.base.storage import LocalStorage
+from core.lib.command import Command
+from core.modules.modules import Modules
+from core.payloads.payloads import Payloads
 
-from core.payloads.payloads import payloads
-from core.base.storage import local_storage
-from core.modules.modules import modules
-from core.base.jobs import jobs
 
-class HatSploitCommand(HatSploitCommand):
-    payloads = payloads()
-    local_storage = local_storage()
-    modules = modules()
-    jobs = jobs()
+class HatSploitCommand(Command):
+    payloads = Payloads()
+    local_storage = LocalStorage()
+    modules = Modules()
+    jobs = Jobs()
 
     usage = ""
     usage += "run [option]\n\n"
@@ -56,16 +56,17 @@ class HatSploitCommand(HatSploitCommand):
     def entry_to_module(self, argc, argv, current_module):
         if argc > 0:
             if argv[0] in ['-j', '--job']:
-                self.badges.output_process("Running module as a background job...")
-                job_id = self.jobs.create_job(current_module.details['Name'], current_module.details['Module'], current_module.run)
-                self.badges.output_information("Module started as a background job " + str(job_id) + ".")
+                self.output_process("Running module as a background job...")
+                job_id = self.jobs.create_job(current_module.details['Name'], current_module.details['Module'],
+                                              current_module.run)
+                self.output_information("Module started as a background job " + str(job_id) + ".")
                 return
         current_module.run()
 
     def run(self, argc, argv):
         if argc > 0:
             if argv[0] in ['-h', '--help']:
-                self.badges.output_usage(self.details['Usage'])
+                self.output_usage(self.details['Usage'])
                 return
 
         if self.modules.check_current_module():
@@ -84,14 +85,18 @@ class HatSploitCommand(HatSploitCommand):
                         if not current_option['Value'] and current_option['Value'] != 0 and current_option['Required']:
                             missed += 1
             if missed > 0:
-                self.badges.output_error("Missed some required options!")
+                self.output_error("Missed some required options!")
             else:
                 try:
                     if current_payload:
                         current_payload.run()
-                        current_module.payload = current_payload
+
+                        current_module.payload['Payload'] = current_payload.payload
+                        current_module.payload['Instructions'] = current_payload.instructions
+                        current_module.payload['Session'] = current_payload.session
+
                     self.entry_to_module(argc, argv, current_module)
                 except Exception as e:
-                    self.badges.output_error("An error occurred in module: " + str(e) + "!")
+                    self.output_error("An error occurred in module: " + str(e) + "!")
         else:
-            self.badges.output_warning("No module selected.")
+            self.output_warning("No module selected.")

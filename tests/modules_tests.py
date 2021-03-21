@@ -26,18 +26,19 @@
 
 import os
 
-from core.cli.badges import badges
-from core.db.importer import importer
-from core.base.storage import local_storage
-from core.modules.modules import modules
+from core.base.storage import LocalStorage
+from core.cli.badges import Badges
+from core.db.importer import Importer
+from core.modules.modules import Modules
 
-class modules_tests:
+
+class ModulesTests:
     def __init__(self):
-        self.badges = badges()
-        self.importer = importer()
-        self.local_storage = local_storage()
-        self.modules = modules()
-        
+        self.badges = Badges()
+        self.importer = Importer()
+        self.local_storage = LocalStorage()
+        self.modules = Modules()
+
     def perform_test(self):
         fail = False
         all_modules = self.local_storage.get("modules")
@@ -50,8 +51,10 @@ class modules_tests:
                         for module in modules[category][platform].keys():
                             try:
                                 _ = self.importer.import_module(modules[category][platform][module]['Path'])
-                                self.badges.output_success(self.modules.get_full_name(category, platform, module) + ': OK')
+                                self.badges.output_success(
+                                    self.modules.get_full_name(category, platform, module) + ': OK')
                             except Exception:
-                                self.badges.output_error(self.modules.get_full_name(category, platform, module) + ': FAIL')
+                                self.badges.output_error(
+                                    self.modules.get_full_name(category, platform, module) + ': FAIL')
                                 fail = True
         return fail

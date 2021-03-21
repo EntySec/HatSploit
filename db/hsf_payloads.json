@@ -6,6 +6,7 @@
         "generic": {
             "ruby_reverse_tcp": {
                 "Path": "payloads/multi/generic/ruby_reverse_tcp",
+                "Category": "single",
                 "Name": "Ruby Shell Reverse TCP",
                 "Payload": "multi/generic/ruby_reverse_tcp",
                 "Authors": [
@@ -24,6 +25,7 @@
             },
             "sh_reverse_tcp": {
                 "Path": "payloads/multi/generic/sh_reverse_tcp",
+                "Category": "single",
                 "Name": "SH Shell Reverse TCP",
                 "Payload": "multi/generic/sh_reverse_tcp",
                 "Authors": [
@@ -46,6 +48,7 @@
         "aarch64": {
             "membrane_reverse_tcp": {
                 "Path": "payloads/macos/aarch64/membrane_reverse_tcp",
+                "Category": "stager",
                 "Name": "macOS aarch64 Membrane Reverse TCP",
                 "Payload": "macos/aarch64/membrane_reverse_tcp",
                 "Authors": [
@@ -66,6 +69,7 @@
         "x64": {
             "membrane_reverse_tcp": {
                 "Path": "payloads/macos/x64/membrane_reverse_tcp",
+                "Category": "stager",
                 "Name": "macOS x64 Membrane Reverse TCP",
                 "Payload": "macos/x64/membrane_reverse_tcp",
                 "Authors": [
@@ -84,6 +88,7 @@
             },
             "say": {
                 "Path": "payloads/macos/x64/say",
+                "Category": "single",
                 "Name": "macOS x64 Say",
                 "Payload": "macos/x64/say",
                 "Authors": [
@@ -102,6 +107,7 @@
             },
             "shell_bind_tcp": {
                 "Path": "payloads/macos/x64/shell_bind_tcp",
+                "Category": "stager",
                 "Name": "macOS x64 Shell Bind TCP",
                 "Payload": "macos/x64/shell_bind_tcp",
                 "Authors": [
@@ -120,6 +126,7 @@
             },
             "shell_reverse_tcp": {
                 "Path": "payloads/macos/x64/shell_reverse_tcp",
+                "Category": "stager",
                 "Name": "macOS x64 Shell Reverse TCP",
                 "Payload": "macos/x64/shell_reverse_tcp",
                 "Authors": [
@@ -142,6 +149,7 @@
         "aarch64": {
             "membrane_reverse_tcp": {
                 "Path": "payloads/linux/aarch64/membrane_reverse_tcp",
+                "Category": "stager",
                 "Name": "Linux aarch64 Membrane Reverse TCP",
                 "Payload": "linux/aarch64/membrane_reverse_tcp",
                 "Authors": [
@@ -162,6 +170,7 @@
         "armle": {
             "shell_bind_tcp": {
                 "Path": "payloads/linux/armle/shell_bind_tcp",
+                "Category": "stager",
                 "Name": "Linux armle Shell Bind TCP",
                 "Payload": "linux/armle/shell_bind_tcp",
                 "Authors": [
@@ -180,6 +189,7 @@
             },
             "shell_reverse_tcp": {
                 "Path": "payloads/linux/armle/shell_reverse_tcp",
+                "Category": "stager",
                 "Name": "Linux armle Shell Reverse TCP",
                 "Payload": "linux/armle/shell_reverse_tcp",
                 "Authors": [
@@ -200,6 +210,7 @@
         "mipsbe": {
             "shell_bind_tcp": {
                 "Path": "payloads/linux/mipsbe/shell_bind_tcp",
+                "Category": "stager",
                 "Name": "Linux mipsbe Shell Bind TCP",
                 "Payload": "linux/mipsbe/shell_bind_tcp",
                 "Authors": [
@@ -218,6 +229,7 @@
             },
             "shell_reverse_tcp": {
                 "Path": "payloads/linux/mipsbe/shell_reverse_tcp",
+                "Category": "stager",
                 "Name": "Linux mipsbe Shell Reverse TCP",
                 "Payload": "linux/mipsbe/shell_reverse_tcp",
                 "Authors": [
@@ -238,6 +250,7 @@
         "mipsle": {
             "shell_bind_tcp": {
                 "Path": "payloads/linux/mipsle/shell_bind_tcp",
+                "Category": "stager",
                 "Name": "Linux mipsle Shell Bind TCP",
                 "Payload": "linux/mipsle/shell_bind_tcp",
                 "Authors": [
@@ -256,6 +269,7 @@
             },
             "shell_reverse_tcp": {
                 "Path": "payloads/linux/mipsle/shell_reverse_tcp",
+                "Category": "stager",
                 "Name": "Linux mipsle Shell Reverse TCP",
                 "Payload": "linux/mipsle/shell_reverse_tcp",
                 "Authors": [
@@ -276,6 +290,7 @@
         "x64": {
             "membrane_reverse_tcp": {
                 "Path": "payloads/linux/x64/membrane_reverse_tcp",
+                "Category": "stager",
                 "Name": "Linux x64 Membrane Reverse TCP",
                 "Payload": "linux/x64/membrane_reverse_tcp",
                 "Authors": [
@@ -294,6 +309,7 @@
             },
             "shell_bind_tcp": {
                 "Path": "payloads/linux/x64/shell_bind_tcp",
+                "Category": "stager",
                 "Name": "Linux x64 Shell Bind TCP",
                 "Payload": "linux/x64/shell_bind_tcp",
                 "Authors": [
@@ -312,6 +328,7 @@
             },
             "shell_reverse_tcp": {
                 "Path": "payloads/linux/x64/shell_reverse_tcp",
+                "Category": "stager",
                 "Name": "Linux x64 Shell Reverse TCP",
                 "Payload": "linux/x64/shell_reverse_tcp",
                 "Authors": [
@@ -332,6 +349,7 @@
         "x86": {
             "shell_bind_tcp": {
                 "Path": "payloads/linux/x86/shell_bind_tcp",
+                "Category": "stager",
                 "Name": "Linux x86 Shell Bind TCP",
                 "Payload": "linux/x86/shell_bind_tcp",
                 "Authors": [
@@ -350,6 +368,7 @@
             },
             "shell_reverse_tcp": {
                 "Path": "payloads/linux/x86/shell_reverse_tcp",
+                "Category": "stager",
                 "Name": "Linux x86 Shell Reverse TCP",
                 "Payload": "linux/x86/shell_reverse_tcp",
                 "Authors": [

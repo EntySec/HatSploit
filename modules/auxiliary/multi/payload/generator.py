@@ -24,9 +24,10 @@
 # SOFTWARE.
 #
 
-from core.lib.module import HatSploitModule
+from core.lib.module import Module
 
-class HatSploitModule(HatSploitModule):
+
+class HatSploitModule(Module):
     details = {
         'Name': "Multi Payload Generator",
         'Module': "auxiliary/multi/payload/generator",
@@ -44,13 +45,21 @@ class HatSploitModule(HatSploitModule):
         'Risk': "high"
     }
 
+    payload = {
+        'Description': "Payload to use.",
+        'Value': "linux/x64/shell_reverse_tcp",
+        'Type': [
+            'reverse_tcp',
+            'bind_tcp',
+            'one_side'
+        ],
+        'Category': [
+            'stager',
+            'single'
+        ]
+    }
+
     options = {
-        'PAYLOAD': {
-            'Description': "Payload to generate.",
-            'Value': "linux/x64/shell_reverse_tcp",
-            'Type': "payload",
-            'Required': True
-        },
         'LPATH': {
             'Description': "Local path.",
             'Value': "/tmp/payload.bin",
@@ -60,11 +69,11 @@ class HatSploitModule(HatSploitModule):
     }
 
     def run(self):
-        payload, local_file = self.parser.parse_options(self.options)
-        payload = self.payload.payload
+        local_file = self.parse_options(self.options)
+        payload = self.payload['Payload']
 
-        if self.payload.payload:
-            self.badges.output_process("Saving to " + local_file + "...")
+        if payload:
+            self.output_process("Saving to " + local_file + "...")
             with open(local_file, 'wb') as f:
                 f.write(payload.encode() if isinstance(payload, str) else payload)
-            self.badges.output_success("Successfully saved to " + local_file + "!")
+            self.output_success("Successfully saved to " + local_file + "!")

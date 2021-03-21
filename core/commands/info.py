@@ -24,12 +24,13 @@
 # SOFTWARE.
 #
 
-from core.lib.command import HatSploitCommand
+from core.lib.command import Command
 
-from core.modules.modules import modules
+from core.modules.modules import Modules
 
-class HatSploitCommand(HatSploitCommand):
-    modules = modules()
+
+class HatSploitCommand(Command):
+    modules = Modules()
 
     details = {
         'Category': "module",
@@ -58,38 +59,38 @@ class HatSploitCommand(HatSploitCommand):
             comments += line + "\n" + (" " * 14)
         comments = comments[:-15]
 
-        self.badges.output_information("Module information:")
-        self.badges.output_empty("")
+        self.output_information("Module information:")
+        self.output_empty("")
 
         if current_module['Name']:
-            self.badges.output_empty("         Name: " + current_module['Name'])
+            self.output_empty("         Name: " + current_module['Name'])
         if current_module['Module']:
-            self.badges.output_empty("       Module: " + current_module['Module'])
+            self.output_empty("       Module: " + current_module['Module'])
         if authors:
-            self.badges.output_empty("      Authors: " + authors)
+            self.output_empty("      Authors: " + authors)
         if current_module['Description']:
-            self.badges.output_empty("  Description: " + current_module['Description'])
+            self.output_empty("  Description: " + current_module['Description'])
         if dependencies:
-            self.badges.output_empty(" Dependencies: " + dependencies)
+            self.output_empty(" Dependencies: " + dependencies)
         if comments:
-            self.badges.output_empty("     Comments: ")
-            self.badges.output_empty("               " + comments)
+            self.output_empty("     Comments: ")
+            self.output_empty("               " + comments)
         if current_module['Risk']:
-            self.badges.output_empty("         Risk: " + current_module['Risk'])
+            self.output_empty("         Risk: " + current_module['Risk'])
 
-        self.badges.output_empty("")
-        
+        self.output_empty("")
+
     def get_module_information(self, module):
         if self.modules.check_exist(module):
             category = self.modules.get_category(module)
             platform = self.modules.get_platform(module)
             name = self.modules.get_name(module)
-            
+
             module = self.modules.get_module_object(category, platform, name)
             self.format_module_information(module)
         else:
-            self.badges.output_error("Invalid module!")
-        
+            self.output_error("Invalid module!")
+
     def run(self, argc, argv):
         if self.modules.check_current_module():
             if argc > 0:
@@ -100,4 +101,4 @@ class HatSploitCommand(HatSploitCommand):
             if argc > 0:
                 self.get_module_information(argv[0])
             else:
-                self.badges.output_usage(self.details['Usage'])
+                self.output_usage(self.details['Usage'])

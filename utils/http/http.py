@@ -24,22 +24,25 @@
 # SOFTWARE.
 #
 
+import requests
 import socket
 import urllib3
-import requests
 
-from core.cli.badges import badges
+from core.cli.badges import Badges
 
 HTTP_TIMEOUT = 30.0
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
-class HTTPClient:
-    badges = badges()
 
-    def http_request(self, url, method, path, session=requests, **kwargs):
+class HTTPClient:
+    badges = Badges()
+
+    def http_request(self, method, host, port, path, ssl=False, session=requests, **kwargs):
         kwargs.setdefault("timeout", HTTP_TIMEOUT)
         kwargs.setdefault("verify", False)
-        kwargs.setdefault("allow_redirects", False)
+        kwargs.setdefault("allow_redirects", True)
+
+        url = self.normalize_url(host, port, path, ssl)
 
         try:
             return getattr(session, method.lower())(url, **kwargs)
@@ -52,9 +55,10 @@ class HTTPClient:
         except socket.error as e:
             self.badges.output_error(e)
 
-        return requests.Response
+        return None
 
-    def normalize_url(self, host, port, path="", ssl=False):
+    @staticmethod
+    def normalize_url(host, port, path, ssl=False):
         if ssl:
             url = "https://"
         else:

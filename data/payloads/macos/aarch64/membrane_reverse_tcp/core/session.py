@@ -24,40 +24,37 @@
 # SOFTWARE.
 #
 
-from core.lib.session import session
-
-from utils.tcp.tcp import tcp
-
+from core.lib.session import Session
+from utils.tcp.tcp import TCPClient
 from data.payloads.macos.aarch64.membrane_reverse_tcp.core.transfer import transfer
 
-class session(session):
-    def __init__(self, client):
-        self.tcp = tcp()
 
-        self.transfer = transfer(client)
-        self.tcp.connect(client)
-
+class HatSploitSession(Session, TCPClient):
     details = {
         'Platform': "macos",
         'Type': "membrane"
     }
 
+    def open(self, client):
+        self.connect(client)
+        self.transfer = transfer(client)
+
     def close(self):
-        self.tcp.disconnect()
+        self.disconnect()
 
     def send_command(self, command, arguments=None, timeout=10):
         if arguments:
             command += " " + arguments
 
-        output = self.tcp.send_command(command + '\x04', timeout)
+        output = self.send_cmd(command + '\x04', timeout)
 
         if "error" in output:
-            return (False, "")
-        return (True, output)
+            return False, ""
+        return True, output
 
     def interact(self):
-        self.tcp.interactive('\x04')
-    
+        self.interactive('\x04')
+
     def download(self, input_file, output_path):
         self.transfer.download(input_file, output_path)
 

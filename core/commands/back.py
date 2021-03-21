@@ -24,15 +24,15 @@
 # SOFTWARE.
 #
 
-from core.lib.command import HatSploitCommand
+from core.base.storage import LocalStorage
+from core.lib.command import Command
+from core.modules.modules import Modules
 
-from core.modules.modules import modules
-from core.base.storage import local_storage
 
-class HatSploitCommand(HatSploitCommand):
-    modules = modules()
-    local_storage = local_storage()
-    
+class HatSploitCommand(Command):
+    modules = Modules()
+    local_storage = LocalStorage()
+
     details = {
         'Category': "module",
         'Name': "back",

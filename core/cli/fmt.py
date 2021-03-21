@@ -26,8 +26,10 @@
 
 import re
 
-class fmt:
-    def format_commands(self, commands):
+
+class FMT:
+    @staticmethod
+    def format_commands(commands):
         commands = re.split(''' (?=(?:[^'"]|'[^']*'|"[^"]*")*$)''', commands)
         formated_commands = list()
         for command in commands:

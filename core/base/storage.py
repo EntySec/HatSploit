@@ -26,7 +26,8 @@
 
 import json
 
-class global_storage:
+
+class GlobalStorage:
     def __init__(self, file):
         self.file = file
 
@@ -41,99 +42,119 @@ class global_storage:
                 variable_value = None
             else:
                 variable_value = storage_variables[variable]
-            local_storage().set(variable, variable_value)
+            LocalStorage.set(variable, variable_value)
 
     def get_all(self):
         storage_variables = json.load(open(self.file))
         return storage_variables.keys()
-    
+
     def set(self, variable, value):
         storage_variables = json.load(open(self.file))
         old_storage = storage_variables
         new_storage = open(self.file, 'w')
-        
+
         old_storage[variable] = str(value)
         new_storage.write(str(old_storage).replace("'", '"'))
         new_storage.close()
-    
+
     def get(self, variable):
         storage_variables = json.load(open(self.file))
         if variable in storage_variables.keys():
             return storage_variables[variable]
         return None
-    
+
     def delete(self, variable):
         storage_variables = json.load(open(self.file))
         old_storage = storage_variables
-        
+
         if variable in old_storage.keys():
             new_storage = open(self.file, 'w')
-        
+
             del old_storage[variable]
             new_storage.write(str(old_storage).replace("'", '"'))
             new_storage.close()
         else:
             pass
 
-class local_storage:
-    def get_all(self):
+
+class LocalStorage:
+    @staticmethod
+    def get_all():
         return globals().keys()
-    
-    def add(self, name):
+
+    @staticmethod
+    def add(name):
         globals()[name] = None
 
-    def set(self, name, value):
+    @staticmethod
+    def set(name, value):
         globals()[name] = value
 
-    def update(self, name, value):
+    @staticmethod
+    def update(name, value):
         try:
             globals()[name].update(value)
         except Exception:
             pass
 
-    def add_array(self, name, value):
+    @staticmethod
+    def add_array(name, value):
         try:
             globals()[name].append(value)
         except Exception:
             pass
 
-    def get_array(self, name, value):
+    @staticmethod
+    def get_array(name, value):
         try:
             return globals()[name][value]
         except Exception:
             return None
 
-    def set_array(self, name, value1, value2):
+    @staticmethod
+    def set_array(name, value1, value2):
         try:
             globals()[name][value1] = value2
         except Exception:
             pass
 
-    def delete_element(self, name, value):
+    @staticmethod
+    def delete_element(name, value):
         try:
             del globals()[name][value]
         except Exception:
             pass
 
-    def delete(self, name):
+    @staticmethod
+    def delete(name):
         try:
             del globals()[name]
         except Exception:
             pass
 
-    def get(self, name):
+    @staticmethod
+    def get(name):
         try:
             return globals()[name]
         except Exception:
             return None
 
-    def set_module_option(self, name, number, option, value):
+    @staticmethod
+    def set_module_option(name, number, option, value):
         try:
             globals()[name][number].options[option]['Value'] = value
         except Exception:
             pass
 
-    def set_payload_option(self, module_name, payload_name, option, value):
+    @staticmethod
+    def set_module_payload(name, number, value):
+        try:
+            globals()[name][number].payload['Value'] = value
+        except Exception:
+            pass
+
+    @staticmethod
+    def set_payload_option(module_name, payload_name, option, value):
         try:
             globals()["imported_payloads"][module_name][payload_name].options[option]['Value'] = value
         except Exception:

@@ -27,10 +27,11 @@
 import os
 import struct
 
-from core.base.config import config
+from core.base.config import Config
+
 
 class PayloadGenerator:
-    config = config()
+    config = Config()
 
     pe_headers = {
         'x86': (
@@ -143,19 +144,21 @@ class PayloadGenerator:
         )
     }
 
-    def host_to_bytes(self, host):
+    @staticmethod
+    def host_to_bytes(host):
         result = b""
         for i in host.split("."):
             result += bytes([int(i)])
         return result
 
-    def port_to_bytes(self, port):
+    @staticmethod
+    def port_to_bytes(port):
         result = "%.4x" % int(port)
         return bytes.fromhex(result)
 
     def generate(self, file_format, arch, data):
         if file_format in self.formats.keys():
-            return self.formats[file_format](arch, data)
+            return self.formats[file_format](self, arch, data)
         return None
 
     def generate_pe(self, arch, data):
@@ -165,11 +168,11 @@ class PayloadGenerator:
             if arch in ['x86']:
                 pe += b'\xFF' * 4 + b'\x00' * 4 + b'\xFF' * 4
                 content = pe.ljust(1536, b'\x00')
-
-            if arch in ['x64']:
+            elif arch in ['x64']:
                 pe += b'\x00' * 7 + b'\xFF' * 8 + b'\x00' * 8 + b'\xFF' * 8
                 content = pe.ljust(2048, b'\x00')
-
+            else:
+                content = None
             return content
         return None
 
@@ -194,6 +197,8 @@ class PayloadGenerator:
                     p_memsz = struct.pack("<Q", len(elf) + len(data))
 
                 content = elf[:0x60] + p_filesz + p_memsz + elf[0x70:]
+            else:
+                content = None
             return content
         return None
 
@@ -210,7 +215,8 @@ class PayloadGenerator:
                 return content
         return None
 
-    def generate_c(self, arch, data):
+    @staticmethod
+    def generate_c(arch, data):
         shellcode = "unsigned char shellcode[] = {\n    \""
         for idx, x in enumerate(data):
             if idx % 15 == 0 and idx != 0:

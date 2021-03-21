@@ -24,16 +24,16 @@
 # SOFTWARE.
 #
 
-from core.lib.command import HatSploitCommand
+from core.base.storage import LocalStorage
+from core.lib.command import Command
+from core.modules.modules import Modules
+from core.payloads.payloads import Payloads
 
-from core.base.storage import local_storage
-from core.modules.modules import modules
-from core.payloads.payloads import payloads
 
-class HatSploitCommand(HatSploitCommand):
-    local_storage = local_storage()
-    modules = modules()
-    payloads = payloads()
+class HatSploitCommand(Command):
+    local_storage = LocalStorage()
+    modules = Modules()
+    payloads = Payloads()
 
     details = {
         'Category': "core",
@@ -56,11 +56,10 @@ class HatSploitCommand(HatSploitCommand):
             for plugin in sorted(plugins.keys()):
                 plugins_data.append((number, plugin, plugins[plugin]['Description']))
                 number += 1
-            self.tables.print_table("Plugins (" + database + ")", headers, *plugins_data)
+            self.print_table("Plugins (" + database + ")", headers, *plugins_data)
 
     def show_modules(self, information):
         modules = self.local_storage.get("modules")
-        number = 0
         headers = ("Number", "Module", "Risk", "Description")
         for database in modules.keys():
             number = 0
@@ -68,9 +67,10 @@ class HatSploitCommand(HatSploitCommand):
             modules = modules[database][information]
             for platform in sorted(modules.keys()):
                 for module in sorted(modules[platform].keys()):
-                    modules_data.append((number, modules[platform][module]['Module'], modules[platform][module]['Risk'], modules[platform][module]['Description']))
+                    modules_data.append((number, modules[platform][module]['Module'], modules[platform][module]['Risk'],
+                                         modules[platform][module]['Description']))
                     number += 1
-            self.tables.print_table(information.title() + " Modules (" + database + ")", headers, *modules_data)
+            self.print_table(information.title() + " Modules (" + database + ")", headers, *modules_data)
 
     def show_payloads(self):
         payloads = self.local_storage.get("payloads")
@@ -83,41 +83,52 @@ class HatSploitCommand(HatSploitCommand):
                 for architecture in sorted(payloads[database][platform].keys()):
                     for payload in sorted(payloads[database][platform][architecture].keys()):
                         current_payload = payloads[database][platform][architecture][payload]
-                        payloads_data.append((number, current_payload['Category'], current_payload['Payload'], current_payload['Risk'], current_payload['Description']))
+                        payloads_data.append((number, current_payload['Category'], current_payload['Payload'],
+                                              current_payload['Risk'], current_payload['Description']))
                         number += 1
-            self.tables.print_table("Payloads (" + database + ")", headers, *payloads_data)
+            self.print_table("Payloads (" + database + ")", headers, *payloads_data)
 
     def show_options(self):
         current_module = self.modules.get_current_module_object()
-        options_data = list()
-        headers = ("Option", "Value", "Required", "Description")
-        options = current_module.options
-        for option in sorted(options.keys()):
-            value, required = options[option]['Value'], options[option]['Required']
-            if required:
-                required = "yes"
-            else:
-                required = "no"
-            if not value and value != 0:
-                value = ""
-            options_data.append((option, value, required, options[option]['Description']))
-        self.tables.print_table("Module Options (" + current_module.details['Module'] + ")", headers, *options_data)
 
-        options_data = list()
-        for option in sorted(options.keys()):
-            if options[option]['Type'] and options[option]['Type'].lower() == 'payload':
-                current_payload = self.payloads.get_current_payload()
-                if current_payload:
-                    for option in sorted(current_payload.options.keys()):
-                        value, required = current_payload.options[option]['Value'], current_payload.options[option]['Required']
-                        if required:
-                            required = "yes"
-                        else:
-                            required = "no"
-                        if not value and value != 0:
-                            value = ""
-                        options_data.append((option, value, required, current_payload.options[option]['Description']))
-                    self.tables.print_table("Payload Options (" + current_payload.details['Payload'] + ")", headers, *options_data)
+        if not hasattr(current_module, "options") and not hasattr(current_module, "payload"):
+            self.badges.output_warning("Module has no options.")
+            return
+
+        if hasattr(current_module, "options"):
+            options_data = list()
+            headers = ("Option", "Value", "Required", "Description")
+            options = current_module.options
+            for option in sorted(options.keys()):
+                value, required = options[option]['Value'], options[option]['Required']
+                if required:
+                    required = "yes"
+                else:
+                    required = "no"
+                if not value and value != 0:
+                    value = ""
+                options_data.append((option, value, required, options[option]['Description']))
+            if hasattr(current_module, "payload"):
+                payload = current_module.payload
+                options_data.append(('PAYLOAD', payload['Value'], "yes", payload['Description']))
+            self.print_table("Module Options (" + current_module.details['Module'] + ")", headers, *options_data)
+
+        if hasattr(current_module, "payload"):
+            options_data = list()
+            headers = ("Option", "Value", "Required", "Description")
+            current_payload = self.payloads.get_current_payload()
+            if current_payload:
+                for option in sorted(current_payload.options.keys()):
+                    value, required = current_payload.options[option]['Value'], \
+                                    current_payload.options[option]['Required']
+                    if required:
+                        required = "yes"
+                    else:
+                        required = "no"
+                    if not value and value != 0:
+                        value = ""
+                    options_data.append((option, value, required, current_payload.options[option]['Description']))
+                self.print_table("Payload Options (" + current_payload.details['Payload'] + ")", headers, *options_data)
 
     def print_usage(self, informations, plugins, options):
         if informations or plugins or options:
@@ -132,19 +143,15 @@ class HatSploitCommand(HatSploitCommand):
                 usage += "options"
             else:
                 usage = usage[:-2]
-            self.badges.output_information(usage)
+            self.output_information(usage)
         else:
-            self.badges.output_warning("No informations available!")
+            self.output_warning("No informations available!")
 
     def run(self, argc, argv):
         information = argv[0]
 
         if self.modules.check_current_module():
-            current_module = self.modules.get_current_module_object()
-
-            options = False
-            if hasattr(current_module, "options"):
-                options = True
+            options = True
         else:
             options = False
 

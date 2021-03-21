@@ -26,12 +26,12 @@
 
 import time
 
-from core.lib.command import HatSploitCommand
+from core.base.execute import Execute
+from core.lib.command import Command
 
-from core.base.execute import execute
 
-class HatSploitCommand(HatSploitCommand):
-    execute = execute()
+class HatSploitCommand(Command):
+    execute = Execute()
 
     details = {
         'Category': "developer",
@@ -46,8 +46,8 @@ class HatSploitCommand(HatSploitCommand):
 
     def run(self, argc, argv):
         seconds = argv[0]
-        
+
         if seconds.replace('.', '', 1).isdigit():
             time.sleep(float(seconds))
         else:
-            self.badges.output_error("Seconds expected!")
+            self.output_error("Seconds expected!")

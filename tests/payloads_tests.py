@@ -26,18 +26,19 @@
 
 import os
 
-from core.cli.badges import badges
-from core.db.importer import importer
-from core.base.storage import local_storage
-from core.payloads.payloads import payloads
+from core.base.storage import LocalStorage
+from core.cli.badges import Badges
+from core.db.importer import Importer
+from core.payloads.payloads import Payloads
 
-class payloads_tests:
+
+class PayloadsTests:
     def __init__(self):
-        self.badges = badges()
-        self.importer = importer()
-        self.local_storage = local_storage()
-        self.payloads = payloads()
-        
+        self.badges = Badges()
+        self.importer = Importer()
+        self.local_storage = LocalStorage()
+        self.payloads = Payloads()
+
     def perform_test(self):
         fail = False
         all_payloads = self.local_storage.get("payloads")
@@ -50,8 +51,10 @@ class payloads_tests:
                         for payload in payloads[platform][architecture].keys():
                             try:
                                 _ = self.importer.import_payload(payloads[platform][architecture][payload]['Path'])
-                                self.badges.output_success(self.payloads.get_full_name(platform, architecture, payload) + ': OK')
+                                self.badges.output_success(
+                                    self.payloads.get_full_name(platform, architecture, payload) + ': OK')
                             except Exception:
-                                self.badges.output_error(self.payloads.get_full_name(platform, architecture, payload) + ': FAIL')
+                                self.badges.output_error(
+                                    self.payloads.get_full_name(platform, architecture, payload) + ': FAIL')
                                 fail = True
         return fail

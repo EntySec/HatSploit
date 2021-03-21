@@ -24,12 +24,12 @@
 # SOFTWARE.
 #
 
-from core.cli.badges import badges
+from core.cli.badges import Badges
 
-class tables:
-    def __init__(self):
-        self.badges = badges()
-        
+
+class Tables:
+    badges = Badges()
+
     def print_table(self, name, headers, *args, **kwargs) -> None:
         extra_fill = kwargs.get("extra_fill", 4)
         header_separator = kwargs.get("header_separator", "-")

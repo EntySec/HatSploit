@@ -26,9 +26,10 @@
 
 import platform
 
-from core.lib.command import HatSploitCommand
+from core.lib.command import Command
 
-class HatSploitCommand(HatSploitCommand):
+
+class HatSploitCommand(Command):
     details = {
         'Category': "developer",
         'Name': "pyshell",
@@ -41,12 +42,12 @@ class HatSploitCommand(HatSploitCommand):
     }
 
     def run(self, argc, argv):
-        prompt = self.colors.BOLD + ">>> " + self.colors.END
-        
-        self.badges.output_information(f"Python {platform.python_version()} console")
-        self.badges.output_empty("")
+        prompt = self.BOLD + ">>> " + self.END
+
+        self.output_information(f"Python {platform.python_version()} console")
+        self.output_empty("")
         while True:
-            output = self.badges.input_empty(prompt)
+            output = self.input_empty(prompt)
             if "exit" in output or "quit" in output:
                 return
             try:
@@ -56,4 +57,4 @@ class HatSploitCommand(HatSploitCommand):
             except (EOFError, KeyboardInterrupt):
                 return
             except Exception as e:
-                self.badges.output_error(str(e))
+                self.output_error(str(e))

@@ -26,28 +26,29 @@
 
 import http.server
 
-from core.cli.badges import badges
+from core.cli.badges import Badges
+
 
 class handler(http.server.SimpleHTTPRequestHandler):
     def log_request(self, fmt, *args):
         pass
-        
+
     def do_GET(self):
-        self.badges = badges()
-        
+        self.badges = Badges()
+
         self.badges.output_success("Connection from " + self.client_address[0] + "!")
         self.badges.output_process("Performing User-Agent capture...")
-        
+
         self.send_response(200)
         self.send_header("Content-type", "text/html")
         self.end_headers()
-        
+
         self.wfile.write(bytes("Neo... Where are you?", "utf8"))
-        
+
         if 'User-Agent' in self.headers.keys():
             user_agent = self.headers['User-Agent']
             self.badges.output_information("User-Agent: " + user_agent)
-            
+
             self.badges.output_success("User-Agent capture done!")
         else:
             self.badges.output_error("User-Agent capture failed!")

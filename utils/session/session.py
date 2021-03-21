@@ -24,24 +24,11 @@
 # SOFTWARE.
 #
 
-from core.cli.badges import Badges
-from core.cli.colors import Colors
-from core.cli.fmt import FMT
-from core.cli.parser import Parser
-from core.cli.tables import Tables
+from core.base.sessions import Sessions
 
+class SessionTools:
+    sessions = Sessions()
 
-class Command(FMT, Badges, Colors, Parser, Tables):
-    details = {
-        'Category': "",
-        'Name': "",
-        'Authors': [
-            ''
-        ],
-        'Description': "",
-        'Usage': "",
-        'MinArgs': 0
-    }
-
-    def run(self, argc, argv):
-        pass
+    def get_session(self, platform, type, id):
+        session = self.sessions.get_session(platform, type, id)
+        return session

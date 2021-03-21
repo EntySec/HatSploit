@@ -24,14 +24,14 @@
 # SOFTWARE.
 #
 
-from core.lib.command import HatSploitCommand
+from core.base.sessions import Sessions
+from core.base.storage import LocalStorage
+from core.lib.command import Command
 
-from core.base.sessions import sessions
-from core.base.storage import local_storage
 
-class HatSploitCommand(HatSploitCommand):
-    sessions = sessions()
-    local_storage = local_storage()
+class HatSploitCommand(Command):
+    sessions = Sessions()
+    local_storage = LocalStorage()
 
     usage = ""
     usage += "sessions <option> [arguments]\n\n"
@@ -65,9 +65,9 @@ class HatSploitCommand(HatSploitCommand):
                             port = sessions[session_platform][session_id]['port']
 
                             sessions_data.append((session_id, session_type, host, port))
-                        self.tables.print_table("Opened Sessions (" + session_platform + ")", headers, *sessions_data)
+                        self.print_table("Opened Sessions (" + session_platform + ")", headers, *sessions_data)
                 else:
-                    self.badges.output_warning("No opened sessions available.")
+                    self.output_warning("No opened sessions available.")
             else:
                 if argv[1] in sessions.keys():
                     session_platform = argv[1]
@@ -79,18 +79,18 @@ class HatSploitCommand(HatSploitCommand):
                         port = sessions[session_platform][session_id]['port']
 
                         sessions_data.append((session_id, session_type, host, port))
-                    self.tables.print_table("Opened Sessions (" + session_platform + ")", headers, *sessions_data)
+                    self.print_table("Opened Sessions (" + session_platform + ")", headers, *sessions_data)
                 else:
-                    self.badges.output_error("Invalid session platform given!")
+                    self.output_error("Invalid session platform given!")
         elif argv[0] in ['-c', '--close']:
             if argc < 3:
-                self.badges.output_usage(self.details['Usage'])
+                self.output_usage(self.details['Usage'])
             else:
                 self.sessions.close_session(argv[1], argv[2])
         elif argv[0] in ['-i', '--interact']:
             if argc < 3:
-                self.badges.output_usage(self.details['Usage'])
+                self.output_usage(self.details['Usage'])
             else:
                 self.sessions.spawn_interactive_connection(argv[1], argv[2])
         else:
-            self.badges.output_usage(self.details['Usage'])
+            self.output_usage(self.details['Usage'])

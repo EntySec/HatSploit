@@ -24,17 +24,20 @@
 # SOFTWARE.
 #
 
-class session:
+class Session:
     details = {
         'Platform': "",
         'Type': ""
     }
 
+    def open(self, client):
+        pass
+
     def close(self):
         pass
 
     def send_command(self, command, arguments=None, timeout=10):
-        return (True, None)
+        return True, None
 
-    def interact(self, command):
+    def interact(self):
         pass

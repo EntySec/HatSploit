@@ -26,28 +26,28 @@
 
 import os
 
-from core.base.io import io
-from core.cli.colors import colors
+from core.base.io import IO
+from core.cli.colors import Colors
 
-class badges:
-    def __init__(self):
-        self.io = io()
-        self.colors = colors()
 
-        self.I = self.colors.WHITE + self.colors.BOLD + '[i] ' + self.colors.END
-        self.S = self.colors.GREEN + self.colors.BOLD + '[+] ' + self.colors.END
-        self.W = self.colors.YELLOW + self.colors.BOLD + '[!] ' + self.colors.END
-        self.E = self.colors.RED + self.colors.BOLD + '[-] ' + self.colors.END
-        self.P = self.colors.BLUE + self.colors.BOLD + '[*] ' + self.colors.END
-        self.Q = self.colors.WHITE + self.colors.BOLD + '[?] ' + self.colors.END
-        self.A = self.colors.WHITE + self.colors.BOLD + '[>] ' + self.colors.END
+class Badges:
+    io = IO()
+    colors = Colors()
+
+    I = colors.WHITE + colors.BOLD + '[i] ' + colors.END
+    S = colors.GREEN + colors.BOLD + '[+] ' + colors.END
+    W = colors.YELLOW + colors.BOLD + '[!] ' + colors.END
+    E = colors.RED + colors.BOLD + '[-] ' + colors.END
+    P = colors.BLUE + colors.BOLD + '[*] ' + colors.END
+    Q = colors.WHITE + colors.BOLD + '[?] ' + colors.END
+    A = colors.WHITE + colors.BOLD + '[>] ' + colors.END
 
     def output_empty(self, message, end='\n'):
         self.io.output(message, end)
-        
+
     def output_usage(self, message, end='\n'):
         self.output_empty("Usage: " + message, end)
-        
+
     def output_process(self, message, end='\n'):
         self.output_empty(self.P + message, end)
 
@@ -62,14 +62,14 @@ class badges:
 
     def output_information(self, message, end='\n'):
         self.output_empty(self.I + message, end)
-        
+
     def input_empty(self, message):
         output = ""
         out = self.io.input(message)[0]
         for command in out:
             output += command + " "
         return output.strip()
-        
+
     def input_question(self, message):
         return self.input_empty(self.Q + message)
 

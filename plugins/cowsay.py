@@ -26,9 +26,10 @@
 
 import textwrap
 
-from core.lib.plugin import HatSploitPlugin
+from core.lib.plugin import Plugin
 
-class HatSploitPlugin(HatSploitPlugin):
+
+class HatSploitPlugin(Plugin):
     details = {
         'Name': "cowsay",
         'Authors': [
@@ -55,8 +56,9 @@ class HatSploitPlugin(HatSploitPlugin):
 
     def ask_cow(self, message, length=40):
         return self.build_bubble(message, length) + self.build_cow()
-        
-    def get_border(self, lines, index):
+
+    @staticmethod
+    def get_border(lines, index):
         if len(lines) < 2:
             return ["<", ">"]
         if index == 0:
@@ -64,8 +66,9 @@ class HatSploitPlugin(HatSploitPlugin):
         if index == len(lines) - 1:
             return ["\\", "/"]
         return ["|", "|"]
-        
-    def build_cow(self):
+
+    @staticmethod
+    def build_cow():
         return """
          \   ^__^ 
           \  (oo)\_______
@@ -73,12 +76,13 @@ class HatSploitPlugin(HatSploitPlugin):
                  ||----w |
                  ||     ||
         """
-        
-    def normalize_text(self, message, length):
+
+    @staticmethod
+    def normalize_text(message, length):
         lines = textwrap.wrap(message, length)
         maxlen = len(max(lines, key=len))
         return [line.ljust(maxlen) for line in lines]
-    
+
     def build_bubble(self, message, length=40):
         bubble = []
         lines = self.normalize_text(message, length)
@@ -89,7 +93,7 @@ class HatSploitPlugin(HatSploitPlugin):
             bubble.append("%s %s %s" % (border[0], line, border[1]))
         bubble.append(" --" + "-" * bordersize)
         return "\n".join(bubble)
-        
+
     def cowsay(self, argc, argv):
         message = argv[0]
         cow = self.ask_cow(message, len(message))
@@ -99,5 +103,5 @@ class HatSploitPlugin(HatSploitPlugin):
         message = "Cow here, moo!"
         cow = self.ask_cow(message, len(message))
         self.output_empty(cow)
-        
+
         self.output_information("Use " + self.GREEN + "cowsay" + self.END + " to call me.")

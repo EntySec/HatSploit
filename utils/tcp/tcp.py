@@ -25,22 +25,24 @@
 #
 
 import re
-import sys
-import time
-import socket
-import telnetlib
 import selectors
+import socket
+import sys
+import telnetlib
+import time
 
-from core.cli.badges import badges
-from core.base.exceptions import exceptions
+from core.base.exceptions import Exceptions
+from core.cli.badges import Badges
+
 
 class TCPClient:
-    badges = badges()
-    exceptions = exceptions()
+    badges = Badges()
+    exceptions = Exceptions()
 
     client = None
 
-    def get_local_host(self):
+    @staticmethod
+    def get_local_host():
         try:
             server = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
             server.connect(("192.168.1.1", 80))
@@ -51,7 +53,8 @@ class TCPClient:
             local_host = "127.0.0.1"
         return local_host
 
-    def tcp_request(self, host, port, data, buffer_size=1024, timeout=10):
+    @staticmethod
+    def tcp_request(host, port, data, buffer_size=1024, timeout=10):
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         sock.settimeout(timeout)
         sock.connect((host, int(port)))
@@ -60,7 +63,8 @@ class TCPClient:
         sock.close()
         return output.decode().strip()
 
-    def check_tcp_port(self, host, port, timeout=10):
+    @staticmethod
+    def check_tcp_port(host, port, timeout=10):
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         sock.settimeout(timeout)
         if sock.connect_ex((host, int(port))) == 0:
@@ -126,7 +130,7 @@ class TCPClient:
             return result
         return None
 
-    def send_command(self, command, timeout=10):
+    def send_cmd(self, command, timeout=10):
         if self.client:
             buffer = command.encode()
             self.send(buffer)
@@ -180,4 +184,4 @@ class TCPClient:
         except Exception:
             self.badges.output_error("Failed to listen on port " + str(local_port) + "!")
             raise self.exceptions.GlobalException
-        return (client, address[0])
+        return client, address[0]

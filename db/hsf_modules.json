@@ -79,7 +79,7 @@
             "sniffer/user_agent_sniffer": {
                 "Path": "modules/auxiliary/multi/sniffer/user_agent_sniffer",
                 "Name": "User Agent Sniffer",
-                "Module": "auxiliary/multi/scanner/port_scanner",
+                "Module": "auxiliary/multi/sniffer/user_agent_sniffer",
                 "Authors": [
                     "enty8080"
                 ],

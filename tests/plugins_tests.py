@@ -26,16 +26,17 @@
 
 import os
 
-from core.cli.badges import badges
-from core.db.importer import importer
-from core.base.storage import local_storage
+from core.base.storage import LocalStorage
+from core.cli.badges import Badges
+from core.db.importer import Importer
 
-class plugins_tests:
+
+class PluginsTests:
     def __init__(self):
-        self.badges = badges()
-        self.importer = importer()
-        self.local_storage = local_storage()
-        
+        self.badges = Badges()
+        self.importer = Importer()
+        self.local_storage = LocalStorage()
+
     def perform_test(self):
         fail = False
         all_plugins = self.local_storage.get("plugins")

@@ -26,21 +26,21 @@
 
 import readline
 
-from core.lib.command import HatSploitCommand
+from core.base.config import Config
+from core.base.storage import GlobalStorage
+from core.base.storage import LocalStorage
+from core.lib.command import Command
 
-from core.base.config import config
-from core.base.storage import local_storage
-from core.base.storage import global_storage
 
-class HatSploitCommand(HatSploitCommand):
-    config = config()
-    local_storage = local_storage()
+class HatSploitCommand(Command):
+    config = Config()
+    local_storage = LocalStorage()
 
     history = config.path_config['base_paths']['history_path']
     storage_path = config.path_config['base_paths']['storage_path']
-    
-    global_storage = global_storage(storage_path)
-    
+
+    global_storage = GlobalStorage(storage_path)
+
     usage = ""
     usage += "history <option>\n\n"
     usage += "  -l, --list   List all history.\n"
@@ -63,11 +63,11 @@ class HatSploitCommand(HatSploitCommand):
         if option == "on":
             self.local_storage.set("history", True)
             self.global_storage.set("history", True)
-            self.badges.output_information("HatSploit history: on")
+            self.output_information("HatSploit history: on")
         elif option == "off":
             self.local_storage.set("history", False)
             self.global_storage.set("history", False)
-            self.badges.output_information("HatSploit history: off")
+            self.output_information("HatSploit history: off")
         elif option in ['-c', '--clear']:
             readline.clear_history()
             with open(self.history, 'w') as history:
@@ -76,19 +76,19 @@ class HatSploitCommand(HatSploitCommand):
             using_history = self.local_storage.get("history")
             if using_history:
                 if readline.get_current_history_length() > 0:
-                    self.badges.output_information("HatSploit history:")
-                    
+                    self.output_information("HatSploit history:")
+
                     history_file = open(self.history, 'r')
                     history = [x.strip() for x in history_file.readlines()]
                     history_file.close()
                     for line in history:
-                        self.badges.output_empty("    * " + line)
-                    
+                        self.output_empty("    * " + line)
+
                     for index in range(1, readline.get_current_history_length()):
-                        self.badges.output_empty("    * " + readline.get_history_item(index))
+                        self.output_empty("    * " + readline.get_history_item(index))
                 else:
-                    self.badges.output_warning("HatSploit history empty.")
+                    self.output_warning("HatSploit history empty.")
             else:
-                self.badges.output_warning("No history detected.")
+                self.output_warning("No history detected.")
         else:
-            self.badges.output_usage(self.details['Usage'])
+            self.output_usage(self.details['Usage'])

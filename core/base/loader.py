@@ -24,38 +24,41 @@
 # SOFTWARE.
 #
 
-import sys
-import time
-import threading
 import os
-import string
 import requests
+import string
+import sys
+import threading
+import time
 
-from core.cli.badges import badges
-from core.db.importer import importer
-from core.base.config import config
+from core.base.config import Config
+from core.cli.badges import Badges
+from core.db.importer import Importer
 
-class loader:
+
+class Loader:
     def __init__(self):
-        self.badges = badges()
-        self.importer = importer()
-        self.config = config()
+        self.badges = Badges()
+        self.importer = Importer()
+        self.config = Config()
 
     def load_update_process(self):
-        remote_config = requests.get('https://raw.githubusercontent.com/EntySec/HatSploit/main/config/core_config.yml', stream=True)
+        remote_config = requests.get('https://raw.githubusercontent.com/EntySec/HatSploit/main/config/core_config.yml',
+                                     stream=True)
         remote_config = remote_config.content
-        if self.config.get_config_file(remote_config)['details']['version'] != self.config.core_config['details']['version']:
+        if self.config.get_config_file(remote_config)['details']['version'] != \
+                self.config.core_config['details']['version']:
             self.badges.output_warning("Your HatSploit Framework is out-dated.")
             self.badges.output_information("Consider running ./update.sh")
             time.sleep(1)
-    
+
     def load_components(self):
         self.importer.import_all()
-    
+
     def load_everything(self):
         self.load_update_process()
         self.load_components()
-        
+
     def load_all(self):
         loading_process = threading.Thread(target=self.load_everything)
         loading_process.start()
@@ -66,9 +69,11 @@ class loader:
                 status = base_line + char + "\r"
                 cycle += 1
                 if status[cycle % len(status)] in list(string.ascii_lowercase):
-                    status = status[:cycle % len(status)] + status[cycle % len(status)].upper() + status[cycle % len(status) + 1:]
+                    status = status[:cycle % len(status)] + status[cycle % len(status)].upper() + status[cycle % len(
+                        status) + 1:]
                 elif status[cycle % len(status)] in list(string.ascii_uppercase):
-                    status = status[:cycle % len(status)] + status[cycle % len(status)].lower() + status[cycle % len(status) + 1:]
+                    status = status[:cycle % len(status)] + status[cycle % len(status)].lower() + status[cycle % len(
+                        status) + 1:]
                 sys.stdout.write(self.badges.P + status)
                 time.sleep(.1)
                 sys.stdout.flush()

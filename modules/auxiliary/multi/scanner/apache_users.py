@@ -24,15 +24,12 @@
 # SOFTWARE.
 #
 
-from core.lib.module import HatSploitModule
-
-from utils.http.http import http
-
+from core.lib.module import Module
 from data.modules.auxiliary.multi.scanner.apache_users.dictionary import dictionary
+from utils.http.http import HTTPClient
 
-class HatSploitModule(HatSploitModule):
-    http = http()
 
+class HatSploitModule(Module, HTTPClient):
     dictionary = dictionary()
     paths = dictionary.paths
 
@@ -54,28 +51,49 @@ class HatSploitModule(HatSploitModule):
     }
 
     options = {
-        'URL': {
-            'Description': "Target URL address.",
+        'RHOST': {
+            'Description': "Remote host.",
             'Value': None,
             'Type': None,
+            'Required': True
+        },
+        'RPORT': {
+            'Description': "Remote port.",
+            'Value': 80,
+            'Type': "port",
+            'Required': True
+        },
+        'SSL': {
+            'Description': "Server has SSL certificate.",
+            'Value': "no",
+            'Type': "boolean",
             'Required': True
         }
     }
 
     def run(self):
-        target_url = self.parser.parse_options(self.options)
+        remote_host, remote_port, ssl = self.parse_options(self.options)
 
-        self.badges.output_process("Scanning " + target_url + "...")
+        if ssl in ['yes', 'y']:
+            ssl = True
+        else:
+            ssl = False
 
-        if not self.http.check_url_access(target_url):
-            self.badges.output_error("Failed to scan!")
-            return
+        self.output_process("Scanning " + remote_host + "...")
 
         for path in self.paths:
-            path = path.replace("\n", "")
-            response = self.http.http_request(method="HEAD", url=target_url, path=path)
+            path = '/' + path.replace("\n", "")
 
-            if response.status_code == 200:
-                self.badges.output_success("[%s] ... [%s %s]" % (path, response.status_code, response.reason))
-            else:
-                self.badges.output_warning("[%s] ... [%s %s]" % (path, response.status_code, response.reason))
+            response = self.http_request(
+                method="HEAD",
+                host=remote_host,
+                port=remote_port,
+                path=path,
+                ssl=ssl
+            )
+
+            if response is not None:
+                if response.status_code == 200:
+                    self.output_success("[%s] ... [%s %s]" % (path, response.status_code, response.reason))
+                else:
+                    self.output_warning("[%s] ... [%s %s]" % (path, response.status_code, response.reason))

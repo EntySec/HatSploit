@@ -25,20 +25,21 @@
 #
 
 import os
-import sys
 import subprocess
+import sys
 
-from core.cli.fmt import fmt
-from core.cli.badges import badges
-from core.base.storage import local_storage
-from core.modules.modules import modules
+from core.base.storage import LocalStorage
+from core.cli.badges import Badges
+from core.cli.fmt import FMT
+from core.modules.modules import Modules
 
-class execute:
+
+class Execute:
     def __init__(self):
-        self.fmt = fmt()
-        self.badges = badges()
-        self.local_storage = local_storage()
-        self.modules = modules()
+        self.fmt = FMT()
+        self.badges = Badges()
+        self.local_storage = LocalStorage()
+        self.modules = Modules()
 
     def execute_command(self, commands, arguments):
         if commands:
@@ -47,19 +48,19 @@ class execute:
                     if not self.execute_module_command(commands, arguments):
                         if not self.execute_plugin_command(commands, arguments):
                             self.badges.output_error("Unrecognized command: " + commands[0] + "!")
-        
+
     def execute_from_file(self, input_file):
         if os.path.exists(input_file):
             file = open(input_file, 'r')
             file_text = file.read().split('\n')
             file.close()
-            
+
             for line in file_text:
                 commands = self.fmt.format_commands(line)
                 arguments = commands[1:]
-                
+
                 self.execute_command(commands, arguments)
-        
+
     def execute_builtin_method(self, commands, arguments):
         if commands[0][0] == '!':
             if len(commands[0]) > 1:
@@ -69,14 +70,14 @@ class execute:
                 self.badges.output_usage("!<command>")
             return True
         return False
-        
+
     def execute_system(self, commands):
         self.badges.output_process("Executing system command: " + commands[0] + "\n")
         try:
             subprocess.call(commands)
         except Exception:
             self.badges.output_error("Unrecognized system command: " + commands[0] + "!")
-        
+
     def execute_core_command(self, commands, arguments):
         if commands[0] in self.local_storage.get("commands").keys():
             command = self.local_storage.get("commands")[commands[0]]
@@ -86,7 +87,7 @@ class execute:
                 command.run(len(arguments), arguments)
             return True
         return False
-        
+
     def execute_module_command(self, commands, arguments):
         if self.modules.check_current_module():
             if hasattr(self.modules.get_current_module_object(), "commands"):
@@ -96,7 +97,7 @@ class execute:
                     self.parse_and_execute_command(commands, command, arguments, command_object)
                     return True
         return False
-        
+
     def execute_plugin_command(self, commands, arguments):
         if self.local_storage.get("loaded_plugins"):
             for plugin in self.local_storage.get("loaded_plugins").keys():
@@ -108,7 +109,7 @@ class execute:
                             self.parse_and_execute_command(commands, command, arguments, command_object)
                             return True
         return False
-        
+
     def parse_and_execute_command(self, commands, command, arguments, command_object):
         if hasattr(command_object, commands[0]):
             if (len(commands) - 1) < command['MinArgs']:

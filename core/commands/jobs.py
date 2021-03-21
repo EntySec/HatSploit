@@ -24,14 +24,14 @@
 # SOFTWARE.
 #
 
-from core.lib.command import HatSploitCommand
+from core.base.jobs import Jobs
+from core.base.storage import LocalStorage
+from core.lib.command import Command
 
-from core.base.jobs import jobs
-from core.base.storage import local_storage
 
-class HatSploitCommand(HatSploitCommand):
-    jobs = jobs()
-    local_storage = local_storage()
+class HatSploitCommand(Command):
+    jobs = Jobs()
+    local_storage = LocalStorage()
 
     usage = ""
     usage += "jobs <option> [arguments]\n\n"
@@ -58,13 +58,13 @@ class HatSploitCommand(HatSploitCommand):
                 jobs = self.local_storage.get("jobs")
                 for job_id in jobs.keys():
                     jobs_data.append((job_id, jobs[job_id]['job_name'], jobs[job_id]['module_name']))
-                self.tables.print_table("Active Jobs", headers, *jobs_data)
+                self.print_table("Active Jobs", headers, *jobs_data)
             else:
-                self.badges.output_warning("No running jobs available.")
+                self.output_warning("No running jobs available.")
         elif choice in ['-k', '--kill']:
             if argc < 2:
-                self.badges.output_usage(self.details['Usage'])
+                self.output_usage(self.details['Usage'])
             else:
                 self.jobs.delete_job(argv[1])
         else:
-            self.badges.output_usage(self.details['Usage'])
+            self.output_usage(self.details['Usage'])

@@ -24,11 +24,13 @@
 # SOFTWARE.
 #
 
-from core.lib.payload import HatSploitPayload
+from core.lib.payload import Payload
 from utils.tcp.tcp import TCPClient
 
-class HatSploitPayload(HatSploitPayload, TCPClient):
+
+class HatSploitPayload(Payload, TCPClient):
     details = {
+        'Category': "single",
         'Name': "SH Shell Reverse TCP",
         'Payload': "multi/generic/sh_reverse_tcp",
         'Authors': [

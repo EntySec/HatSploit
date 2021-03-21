@@ -26,7 +26,9 @@
 
 import re
 
+
 class StringTools:
-    def extract_strings(self, binary_data):
+    @staticmethod
+    def extract_strings(binary_data):
         strings = re.findall("[^\x00-\x1F\x7F-\xFF]{4,}", binary_data)
         return strings
