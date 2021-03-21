@@ -59,22 +59,27 @@ class Handler(TCPClient, HTTPClient):
             self.badges.output_error("Failed to handle session!")
             return None
 
-    def handle_bind_session(self, remote_host, remote_port, payload=None, session=HatSploitSession):
+    def set_session_details(self, platform, payload, session):
         if not session.details['Type']:
-            session.details['Type'] = 'unrecognized'
+            session.details['Type'] == 'custom'
 
-        if not session.details['Platform']:
-            session.details['Platform'] = 'multi'
+        if payload is not None:
+            session.details['Platform'] = payload['Platform']
+        else:
+            session.details['Platform'] = platform
 
-        session_type = session.details['Type']
-        session_platform = session.details['Platform']
+        return session
+
+    def handle_bind_session(self, platform, remote_host, remote_port, payload=None, session=HatSploitSession):
         new_session = self.connect_session(remote_host, remote_port, session)
 
         if not new_session:
             return False
 
+        new_session = self.set_session_details(platform, payload, session)
+
         if payload is not None:
-            if payload.instructions and payload.payload:
+            if payload['Instructions'] and payload['Payload']:
                 self.badges.output_process("Sending payload stage...")
                 new_session.tcp.client.sock.send(
                     payload.instructions.encode() if isinstance(payload.instructions, str) else payload.instructions)
@@ -181,9 +186,9 @@ class Handler(TCPClient, HTTPClient):
         self.badges.output_success("Session " + str(session_id) + " opened!")
         return True
 
-    def handle_session(self, host, port, method, payload=None, session=HatSploitSession):
+    def handle_session(self, platform, host, port, method, payload=None, session=HatSploitSession):
         if method.lower() == 'reverse':
-            return self.handle_reverse_session(host, port, payload, session)
+            return self.handle_reverse_session(platform, host, port, payload, session)
         if method.lower() == 'bind':
-            return self.handle_bind_session(host, port, payload, session)
+            return self.handle_bind_session(platform, host, port, payload, session)
         return None
