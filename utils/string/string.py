@@ -25,10 +25,15 @@
 #
 
 import re
-
+import os
+import binascii
 
 class StringTools:
     @staticmethod
     def extract_strings(binary_data):
         strings = re.findall("[^\x00-\x1F\x7F-\xFF]{4,}", binary_data)
         return strings
+
+    @staticmethod
+    def random_string():
+        return binascii.hexlify(os.urandom(8)).decode()

