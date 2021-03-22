@@ -47,9 +47,9 @@ class HTTPClient:
         try:
             return getattr(session, method.lower())(url, **kwargs)
         except (requests.exceptions.MissingSchema, requests.exceptions.InvalidSchema):
-            self.badges.output_error("Invalid URL format: {}".format(url))
+            self.badges.output_error("Invalid URL format: {}!".format(url))
         except requests.exceptions.ConnectionError:
-            self.badges.output_error("Connection error: {}".format(url))
+            self.badges.output_error("Connection error: {}!".format(url))
         except requests.RequestException as e:
             self.badges.output_error(e)
         except socket.error as e:
