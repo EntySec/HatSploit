@@ -88,7 +88,7 @@
             },
             "say": {
                 "Path": "payloads/macos/x64/say",
-                "Category": "single",
+                "Category": "stager",
                 "Name": "macOS x64 Say",
                 "Payload": "macos/x64/say",
                 "Authors": [
