@@ -2,13 +2,13 @@
     "__database__": {
         "type": "payloads"
     },
-    "multi": {
+    "unix": {
         "generic": {
             "ruby_reverse_tcp": {
-                "Path": "payloads/multi/generic/ruby_reverse_tcp",
+                "Path": "payloads/unix/generic/ruby_reverse_tcp",
                 "Category": "single",
                 "Name": "Ruby Shell Reverse TCP",
-                "Payload": "multi/generic/ruby_reverse_tcp",
+                "Payload": "unix/generic/ruby_reverse_tcp",
                 "Authors": [
                     "enty8080"
                 ],
@@ -19,15 +19,15 @@
                 "Comments": [
                     ""
                 ],
-                "Platform": "multi",
+                "Platform": "unix",
                 "Risk": "high",
                 "Type": "reverse_tcp"
             },
             "sh_reverse_tcp": {
-                "Path": "payloads/multi/generic/sh_reverse_tcp",
+                "Path": "payloads/unix/generic/sh_reverse_tcp",
                 "Category": "single",
                 "Name": "SH Shell Reverse TCP",
-                "Payload": "multi/generic/sh_reverse_tcp",
+                "Payload": "unix/generic/sh_reverse_tcp",
                 "Authors": [
                     "enty8080"
                 ],
@@ -38,7 +38,7 @@
                 "Comments": [
                     ""
                 ],
-                "Platform": "multi",
+                "Platform": "unix",
                 "Risk": "high",
                 "Type": "reverse_tcp"
             }
