@@ -91,6 +91,10 @@ class HatSploitCommand(Command):
                     if current_payload:
                         current_payload.run()
 
+                        current_module.payload['Category'] = current_payload.details['Category']
+                        current_module.payload['Platform'] = current_payload.details['Platform']
+                        current_module.payload['Type'] = current_payload.details['Type']
+
                         current_module.payload['Payload'] = current_payload.payload
                         current_module.payload['Instructions'] = current_payload.instructions
                         current_module.payload['Session'] = current_payload.session
