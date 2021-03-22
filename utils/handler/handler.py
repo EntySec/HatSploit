@@ -72,9 +72,9 @@ class Handler(TCPClient, HTTPClient):
         if not new_session:
             return False
 
-        new_session = self.set_session_details(platform, payload, session)
+        new_session = self.set_session_details(payload, session)
 
-        if payload is not None:
+        if payload['Category'] in ['stager']:
             if payload['Instructions'] and payload['Payload']:
                 self.badges.output_process("Sending payload stage...")
                 new_session.tcp.client.sock.send(
