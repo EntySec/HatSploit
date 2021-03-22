@@ -100,7 +100,7 @@ class TCPClient:
                             self.badges.output_warning("Connection terminated.")
                             return
                         if response:
-                            self.badges.output_empty(response.decode(), end='')
+                            self.badges.output_empty(response.decode(), start='', end='')
                     elif key.fileobj is sys.stdin:
                         line = sys.stdin.readline().strip()
                         if not line:
