@@ -219,8 +219,17 @@ class Modules:
                     name = self.payloads.get_name(value)
 
                     payload = self.payloads.get_payload_object(platform, architecture, name)
-                    if payload['Type'] in current_module.payload['Type'] and \
-                            payload['Category'] in current_module.payload['Category']:
+                    module_payload = current_module.payload
+
+                    valid = 0
+                    if module_payload['Types'] is None or payload['Type'] in module_payload['Types']:
+                        valid += 1
+                    if module_payload['Categories'] is None or payload['Category'] in module_payload['Categories']:
+                        valid += 1
+                    if module_payload['Platforms'] is None or payload['Platforms'] in module_payload['Platforms']:
+                        valid += 1
+
+                    if valid == 3:
                         if not self.payloads.add_payload(module_name, platform, architecture, name):
                             self.badges.output_error("Invalid payload, expected valid payload!")
                             return
@@ -232,7 +241,7 @@ class Modules:
                         )
                         return
                     else:
-                        self.badges.output_error("Incompatible payload type or category!")
+                        self.badges.output_error("Incompatible payload type, category or platform!")
                         return
                 else:
                     self.badges.output_error("Invalid payload, expected valid payload!")
