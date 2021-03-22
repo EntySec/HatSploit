@@ -32,7 +32,7 @@ class HatSploitPayload(Payload, TCPClient):
     details = {
         'Category': "single",
         'Name': "SH Shell Reverse TCP",
-        'Payload': "multi/generic/sh_reverse_tcp",
+        'Payload': "unix/generic/sh_reverse_tcp",
         'Authors': [
             'enty8080'
         ],
@@ -43,7 +43,7 @@ class HatSploitPayload(Payload, TCPClient):
         'Comments': [
             ''
         ],
-        "Platform": "multi",
+        "Platform": "unix",
         'Risk': "high",
         'Type': "reverse_tcp"
     }
