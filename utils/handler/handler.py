@@ -73,49 +73,49 @@ class Handler(TCPClient, HTTPClient):
             return False
 
         new_session = self.set_session_details(payload, session)
+        session_platform = new_session.details['Platform']
+        session_type = new_session.details['Type']
 
         if payload['Category'] in ['stager']:
             if payload['Instructions'] and payload['Payload']:
+                instructions = payload['Instructions']
+                stage = payload['Payload']
+                stage_session = payload['Session']
+
                 self.badges.output_process("Sending payload stage...")
-                new_session.tcp.client.sock.send(
-                    payload.instructions.encode() if isinstance(payload.instructions, str) else payload.instructions)
-                if payload.instructions != payload.payload:
-                    new_session.tcp.client.sock.send(
-                        payload.payload.encode() if isinstance(payload.payload, str) else payload.payload)
+                new_session.client.sock.send(instructions.encode() if isinstance(instructions, str) else instructions)
+                if instructions != stager:
+                    new_session.client.sock.send(stage.encode() if isinstance(stage, str) else stage)
                 new_session.close()
 
                 if payload.details['Type'].lower() not in ['bind_tcp', 'reverse_tcp']:
                     self.badges.output_warning("Payload completed but no session was created.")
                     return True
 
-                if payload.session:
-                    session = payload.session
+                if stage_session:
+                    session = stage_session
 
-                if not session.details['Type']:
-                    session.details['Type'] = 'unrecognized'
-
-                if not session.details['Platform']:
-                    session.details['Platform'] = payload.details['Platform']
-
-                session_type = session.details['Type']
-                session_platform = session.details['Platform']
-
-                if payload.details['Type'].lower() == 'bind_tcp':
+                if payload['Type'].lower() == 'bind_tcp':
                     new_session = self.connect_session(remote_host, remote_port, session)
                     if not new_session:
                         self.badges.output_warning("Payload completed but no session was created.")
-                        return False
-                    session_id = self.sessions.add_session(session_platform, session_type, remote_host, remote_port,
-                                                           new_session)
-                    self.badges.output_success("Session " + str(session_id) + " opened!")
-                    return True
+                        return True
+                    
+                    new_session = self.set_session_details(payload, session)
+                    session_platform = new_session.details['Platform']
+                    session_type = new_session.details['Type']
 
-                if payload.details['Type'].lower() == 'reverse_tcp':
+                if payload['Type'].lower() == 'reverse_tcp':
                     local_host, local_port = self.tcp.get_local_host(), remote_port
+
                     new_session, remote_host = self.listen_session(local_host, local_port, session)
                     if not new_session and not remote_host:
                         self.badges.output_warning("Payload completed but no session was created.")
-                        return False
+                        return True
+
+                    new_session = self.set_session_details(payload, session)
+                    session_platform = new_session.details['Platform']
+                    session_type = new_session.details['Type']
             else:
                 self.badges.output_warning("Payload you provided is not executable.")
 
