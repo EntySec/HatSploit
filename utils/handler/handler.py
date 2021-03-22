@@ -80,7 +80,7 @@ class Handler(TCPClient, HTTPClient):
 
                 self.badges.output_process("Sending payload stage...")
                 new_session.client.sock.send(instructions.encode() if isinstance(instructions, str) else instructions)
-                if instructions != stager:
+                if instructions != stage:
                     new_session.client.sock.send(stage.encode() if isinstance(stage, str) else stage)
                 new_session.close()
 
@@ -128,7 +128,7 @@ class Handler(TCPClient, HTTPClient):
 
                 self.badges.output_process("Sending payload stage...")
                 new_session.client.sock.send(instructions.encode() if isinstance(instructions, str) else instructions)
-                if instructions != stager:
+                if instructions != stage:
                     new_session.client.sock.send(stage.encode() if isinstance(stage, str) else stage)
                 new_session.close()
 
