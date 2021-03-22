@@ -32,7 +32,7 @@ from utils.payload.payload import PayloadGenerator
 
 class HatSploitPayload(Payload, PayloadGenerator):
     details = {
-        'Category': "single",
+        'Category': "stager",
         'Name': "macOS x64 Say",
         'Payload': "macos/x64/say",
         'Authors': [
