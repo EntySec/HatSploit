@@ -32,7 +32,7 @@ class HatSploitPayload(Payload, TCPClient):
     details = {
         'Category': "single",
         'Name': "Ruby Shell Reverse TCP",
-        'Payload': "multi/generic/ruby_reverse_tcp",
+        'Payload': "unix/generic/ruby_reverse_tcp",
         'Authors': [
             'enty8080'
         ],
@@ -43,7 +43,7 @@ class HatSploitPayload(Payload, TCPClient):
         'Comments': [
             ''
         ],
-        "Platform": "multi",
+        "Platform": "unix",
         'Risk': "high",
         'Type': "reverse_tcp"
     }
