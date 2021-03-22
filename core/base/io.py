@@ -39,11 +39,11 @@ class IO:
         self.local_storage = LocalStorage()
         self.fmt = FMT()
 
-    def output(self, message, end='\n'):
-        sys.stdout.write(self.colors.REMOVE + message + end)
+    def output(self, message, start='\033[1K\r', end='\n'):
+        sys.stdout.write(start + message + end)
         sys.stdout.flush()
         if self.local_storage.get("current_prompt") and self.local_storage.get("active_input"):
-            prompt = self.colors.REMOVE + self.local_storage.get("current_prompt") + readline.get_line_buffer()
+            prompt = start + self.local_storage.get("current_prompt") + readline.get_line_buffer()
             sys.stdout.write(prompt)
             sys.stdout.flush()
 
