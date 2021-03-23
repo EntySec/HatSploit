@@ -78,7 +78,7 @@ class HatSploitModule(Module, HTTPClient):
         else:
             ssl = False
 
-        self.output_process("Scanning " + remote_host + "...")
+        self.output_process(f"Scanning {remote_host}...")
 
         file = open(
             self.config.path_config['base_paths']['data_path'] +

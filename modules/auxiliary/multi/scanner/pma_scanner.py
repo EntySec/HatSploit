@@ -82,7 +82,7 @@ class HatSploitModule(Module, HTTPClient):
         else:
             ssl = False
 
-        self.output_process("Scanning " + remote_host + "...")
+        self.output_process(f"Scanning {remote_host}...")
 
         for path in self.paths:
             path = path.replace("\n", "")

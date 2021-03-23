@@ -75,7 +75,7 @@ class HatSploitModule(Module, TCPClient):
     def start_http_server(self, local_host, local_port, forever):
         try:
             httpd = socketserver.TCPServer((local_host, int(local_port)), self.handler)
-            self.output_process("Starting http server on port " + local_port + "...")
+            self.output_process(f"Starting http server on port {local_port}...")
             if forever.lower() in ['yes', 'y']:
                 while True:
                     self.output_process("Listening for connections...")
@@ -84,7 +84,7 @@ class HatSploitModule(Module, TCPClient):
                 self.output_process("Listening for connections...")
                 httpd.handle_request()
         except Exception:
-            self.output_error("Failed to start http server on port " + local_port + "!")
+            self.output_error(f"Failed to start http server on port {local_port}!")
 
     def run(self):
         local_host, local_port, forever = self.parse_options(self.options)

@@ -49,6 +49,7 @@ class HatSploitModule(Module):
         'Description': "Payload to use.",
         'Value': "linux/x64/shell_reverse_tcp",
         'Categories': None,
+        'Architectures': None,
         'Platforms': None,
         'Types': None
     }
@@ -67,7 +68,7 @@ class HatSploitModule(Module):
         payload = self.payload['Payload']
 
         if payload:
-            self.output_process("Saving to " + local_file + "...")
+            self.output_process(f"Saving to {local_file}...")
             with open(local_file, 'wb') as f:
                 f.write(payload.encode() if isinstance(payload, str) else payload)
-            self.output_success("Successfully saved to " + local_file + "!")
+            self.output_success(f"Successfully saved to {local_file}!")
