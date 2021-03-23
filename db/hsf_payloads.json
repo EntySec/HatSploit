@@ -19,6 +19,7 @@
                 "Comments": [
                     ""
                 ],
+                "Architecture": "generic",
                 "Platform": "unix",
                 "Risk": "high",
                 "Type": "reverse_tcp"
@@ -38,6 +39,7 @@
                 "Comments": [
                     ""
                 ],
+                "Architecture": "generic",
                 "Platform": "unix",
                 "Risk": "high",
                 "Type": "reverse_tcp"
@@ -61,6 +63,7 @@
                 "Comments": [
                     ""
                 ],
+                "Architecture": "aarch64",
                 "Platform": "macos",
                 "Risk": "high",
                 "Type": "reverse_tcp"
@@ -82,6 +85,7 @@
                 "Comments": [
                     ""
                 ],
+                "Architecture": "x64",
                 "Platform": "macos",
                 "Risk": "high",
                 "Type": "reverse_tcp"
@@ -101,6 +105,7 @@
                 "Comments": [
                     ""
                 ],
+                "Architecture": "x64",
                 "Platform": "macos",
                 "Risk": "low",
                 "Type": "one_side"
@@ -120,6 +125,7 @@
                 "Comments": [
                     ""
                 ],
+                "Architecture": "x64",
                 "Platform": "macos",
                 "Risk": "high",
                 "Type": "bind_tcp"
@@ -139,6 +145,7 @@
                 "Comments": [
                     ""
                 ],
+                "Architecture": "x64",
                 "Platform": "macos",
                 "Risk": "high",
                 "Type": "reverse_tcp"
@@ -162,6 +169,7 @@
                 "Comments": [
                     ""
                 ],
+                "Architecture": "aarch64",
                 "Platform": "linux",
                 "Risk": "high",
                 "Type": "reverse_tcp"
@@ -183,6 +191,7 @@
                 "Comments": [
                     ""
                 ],
+                "Architecture": "armle",
                 "Platform": "linux",
                 "Risk": "high",
                 "Type": "bind_tcp"
@@ -202,6 +211,7 @@
                 "Comments": [
                     ""
                 ],
+                "Architecture": "armle",
                 "Platform": "linux",
                 "Risk": "high",
                 "Type": "reverse_tcp"
@@ -223,6 +233,7 @@
                 "Comments": [
                     ""
                 ],
+                "Architecture": "mipsbe",
                 "Platform": "linux",
                 "Risk": "high",
                 "Type": "bind_tcp"
@@ -242,6 +253,7 @@
                 "Comments": [
                     ""
                 ],
+                "Architecture": "mipsbe",
                 "Platform": "linux",
                 "Risk": "high",
                 "Type": "reverse_tcp"
@@ -263,6 +275,7 @@
                 "Comments": [
                     ""
                 ],
+                "Architecture": "mipsle",
                 "Platform": "linux",
                 "Risk": "high",
                 "Type": "bind_tcp"
@@ -282,6 +295,7 @@
                 "Comments": [
                     ""
                 ],
+                "Architecture": "mipsle",
                 "Platform": "linux",
                 "Risk": "high",
                 "Type": "reverse_tcp"
@@ -303,6 +317,7 @@
                 "Comments": [
                     ""
                 ],
+                "Architecture": "x64",
                 "Platform": "linux",
                 "Risk": "high",
                 "Type": "reverse_tcp"
@@ -322,6 +337,7 @@
                 "Comments": [
                     ""
                 ],
+                "Architecture": "x64",
                 "Platform": "linux",
                 "Risk": "high",
                 "Type": "bind_tcp"
@@ -341,6 +357,7 @@
                 "Comments": [
                     ""
                 ],
+                "Architecture": "x64",
                 "Platform": "linux",
                 "Risk": "high",
                 "Type": "reverse_tcp"
@@ -362,6 +379,7 @@
                 "Comments": [
                     ""
                 ],
+                "Architecture": "x86",
                 "Platform": "linux",
                 "Risk": "high",
                 "Type": "bind_tcp"
@@ -381,6 +399,7 @@
                 "Comments": [
                     ""
                 ],
+                "Architecture": "x86",
                 "Platform": "linux",
                 "Risk": "high",
                 "Type": "reverse_tcp"

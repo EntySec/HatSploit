@@ -107,6 +107,10 @@ class Handler(TCPClient, HTTPClient):
             else:
                 self.badges.output_warning("Payload you provided is not executable.")
 
+        if payload['Type'].lower() not in ['bind_tcp', 'reverse_tcp']:
+            self.badges.output_warning("Payload completed but no session was created.")
+            return True
+
         new_session = self.set_session_details(payload, new_session)
         session_platform = new_session.details['Platform']
         session_type = new_session.details['Type']
@@ -158,6 +162,10 @@ class Handler(TCPClient, HTTPClient):
         new_session, remote_host = self.listen_session(local_host, local_port, session)
         if not new_session and not remote_host:
             return False
+
+        if payload['Type'].lower() not in ['bind_tcp', 'reverse_tcp']:
+            self.badges.output_warning("Payload completed but no session was created.")
+            return True
 
         new_session = self.set_session_details(payload, new_session)
         session_platform = new_session.details['Platform']

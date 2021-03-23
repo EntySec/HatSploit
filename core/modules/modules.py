@@ -226,10 +226,12 @@ class Modules:
                         valid += 1
                     if module_payload['Categories'] is None or payload['Category'] in module_payload['Categories']:
                         valid += 1
-                    if module_payload['Platforms'] is None or payload['Platforms'] in module_payload['Platforms']:
+                    if module_payload['Platforms'] is None or payload['Platform'] in module_payload['Platforms']:
+                        valid += 1
+                    if module_payload['Architectures'] is None or payload['Architecture'] in module_payload['Architectures']:
                         valid += 1
 
-                    if valid == 3:
+                    if valid == 4:
                         if not self.payloads.add_payload(module_name, platform, architecture, name):
                             self.badges.output_error("Invalid payload, expected valid payload!")
                             return
