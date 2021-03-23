@@ -4,6 +4,26 @@
     },
     "unix": {
         "generic": {
+            "perl_reverse_tcp": {
+                "Path": "payloads/unix/generic/perl_reverse_tcp",
+                "Category": "single",
+                "Name": "Perl Shell Reverse TCP",
+                "Payload": "unix/generic/perl_reverse_tcp",
+                "Authors": [
+                    "enty8080"
+                ],
+                "Description": "Perl shell reverse TCP payload.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Architecture": "generic",
+                "Platform": "unix",
+                "Risk": "high",
+                "Type": "reverse_tcp"
+            },
             "ruby_reverse_tcp": {
                 "Path": "payloads/unix/generic/ruby_reverse_tcp",
                 "Category": "single",
