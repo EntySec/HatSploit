@@ -31,12 +31,12 @@ from utils.tcp.tcp import TCPClient
 class HatSploitPayload(Payload, TCPClient):
     details = {
         'Category': "single",
-        'Name': "SH Shell Reverse TCP",
-        'Payload': "unix/generic/sh_reverse_tcp",
+        'Name': "Bash Shell Reverse TCP",
+        'Payload': "unix/generic/bash_reverse_tcp",
         'Authors': [
             'enty8080'
         ],
-        'Description': "SH shell reverse TCP payload.",
+        'Description': "Bash shell reverse TCP payload.",
         'Dependencies': [
             ''
         ],
