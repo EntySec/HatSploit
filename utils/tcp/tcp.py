@@ -187,6 +187,8 @@ class TCPClient:
             server.close()
         except socket.timeout:
             self.badges.output_warning("Timeout waiting for connection.")
+
+            server.close()
             raise self.exceptions.GlobalException
         except Exception:
             self.badges.output_error("Failed to listen on port " + str(local_port) + "!")
