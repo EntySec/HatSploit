@@ -39,9 +39,9 @@ class Handler(TCPClient, HTTPClient):
     modules = Modules()
     badges = Badges()
 
-    def listen_session(self, local_host, local_port, session=HatSploitSession):
+    def listen_session(self, local_host, local_port, timeout=None, session=HatSploitSession):
         try:
-            client, address = self.listen(local_host, local_port)
+            client, address = self.listen(local_host, local_port, timeout)
             session = session()
             session.open(client)
             return session, address
@@ -66,7 +66,7 @@ class Handler(TCPClient, HTTPClient):
         session.details['Platform'] = payload['Platform']
         return session
 
-    def handle_bind_session(self, remote_host, remote_port, payload, session=HatSploitSession):
+    def handle_bind_session(self, remote_host, remote_port, payload, timout=None, session=HatSploitSession):
         new_session = self.connect_session(remote_host, remote_port, session)
 
         if not new_session:
@@ -175,9 +175,9 @@ class Handler(TCPClient, HTTPClient):
         self.badges.output_success("Session " + str(session_id) + " opened!")
         return True
 
-    def handle_session(self, host, port, method, payload, session=HatSploitSession):
+    def handle_session(self, host, port, method, payload, timeout=None, session=HatSploitSession):
         if method.lower() == 'reverse':
-            return self.handle_reverse_session(host, port, payload, session)
+            return self.handle_reverse_session(host, port, payload, session, timeout)
         if method.lower() == 'bind':
-            return self.handle_bind_session(host, port, payload, session)
+            return self.handle_bind_session(host, port, payload, session, timeout)
         return None
