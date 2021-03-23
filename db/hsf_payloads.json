@@ -44,15 +44,15 @@
                 "Risk": "high",
                 "Type": "reverse_tcp"
             },
-            "sh_reverse_tcp": {
-                "Path": "payloads/unix/generic/sh_reverse_tcp",
+            "bash_reverse_tcp": {
+                "Path": "payloads/unix/generic/bash_reverse_tcp",
                 "Category": "single",
-                "Name": "SH Shell Reverse TCP",
-                "Payload": "unix/generic/sh_reverse_tcp",
+                "Name": "Bash Shell Reverse TCP",
+                "Payload": "unix/generic/bash_reverse_tcp",
                 "Authors": [
                     "enty8080"
                 ],
-                "Description": "SH shell reverse TCP payload.",
+                "Description": "Bash shell reverse TCP payload.",
                 "Dependencies": [
                     ""
                 ],
