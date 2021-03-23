@@ -24,14 +24,14 @@
 # SOFTWARE.
 #
 
-from core.lib.command import HatSploitCommand
+from core.base.storage import LocalStorage
+from core.db.db import DB
+from core.lib.command import Command
 
-from core.db.db import db
-from core.base.storage import local_storage
 
-class HatSploitCommand(HatSploitCommand):
-    db = db()
-    local_storage = local_storage()
+class HatSploitCommand(Command):
+    db = DB()
+    local_storage = LocalStorage()
 
     usage = ""
     usage += "plugins_db <option> [arguments]\n\n"
@@ -61,18 +61,18 @@ class HatSploitCommand(HatSploitCommand):
                 for name in databases.keys():
                     databases_data.append((number, name, databases[name]['path']))
                     number += 1
-                self.tables.print_table("Connected Plugins Databases", headers, *databases_data)
+                self.print_table("Connected Plugins Databases", headers, *databases_data)
             else:
-                self.badges.output_warning("No plugins database connected.")
+                self.output_warning("No plugins database connected.")
         elif choice in ['-d', '--disconnect']:
             if argc < 2:
-                self.badges.output_usage(self.details['Usage'])
+                self.output_usage(self.details['Usage'])
             else:
                 self.db.disconnect_plugins_database(argv[1])
         elif choice in ['-c', '--connect']:
             if argc < 3:
-                self.badges.output_usage(self.details['Usage'])
+                self.output_usage(self.details['Usage'])
             else:
                 self.db.connect_plugins_database(argv[1], argv[2])
         else:
-            self.badges.output_usage(self.details['Usage'])
+            self.output_usage(self.details['Usage'])

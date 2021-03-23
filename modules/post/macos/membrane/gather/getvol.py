@@ -24,12 +24,11 @@
 # SOFTWARE.
 #
 
-from core.lib.module import HatSploitModule
-from core.base.sessions import sessions
+from core.lib.module import Module
+from utils.session.session import SessionTools
 
-class HatSploitModule(HatSploitModule):
-    sessions = sessions()
 
+class HatSploitModule(Module, SessionTools):
     details = {
         'Name': "macOS Membrane Gather Volume",
         'Module': "post/macos/membrane/gather/getvol",
@@ -57,14 +56,14 @@ class HatSploitModule(HatSploitModule):
     }
 
     def run(self):
-        session = self.parser.parse_options(self.options)
-        session = self.sessions.get_session(self.details['Platform'], "membrane", session)
+        session = self.parse_options(self.options)
+        session = self.get_session(self.details['Platform'], "membrane", session)
         if session:
-            self.badges.output_process("Getting device volume level...")
+            self.output_process("Getting device volume level...")
             payload = "output volume of (get volume settings)"
 
             status, output = session.send_command("osascript", payload)
             if not status:
-                self.badges.output_error("Failed to get device volume level!")
+                self.output_error("Failed to get device volume level!")
             else:
-                self.badges.output_information("Volume Level: " + output)
+                self.output_information("Volume Level: " + output)

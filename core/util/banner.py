@@ -27,22 +27,22 @@
 import os
 import random
 
-from core.cli.parser import parser
-from core.base.config import config
-from core.cli.badges import badges
-from core.cli.colors import colors
+from core.base.config import Config
+from core.cli.badges import Badges
+from core.cli.colors import Colors
+from core.cli.parser import Parser
+from core.util.colors_script import ColorsScript
 
-from utils.colors.colors_script import colors_script
 
-class banner:
+class Banner:
     def __init__(self):
-        self.parser = parser()
-        self.config = config()
-        self.badges = badges()
-        self.colors = colors()
-        
-        self.colors_script = colors_script()
-        
+        self.parser = Parser()
+        self.config = Config()
+        self.badges = Badges()
+        self.colors = Colors()
+
+        self.colors_script = ColorsScript()
+
     def print_random_banner(self):
         if os.path.exists(self.config.path_config['base_paths']['banners_path']):
             banners = list()
@@ -53,7 +53,8 @@ class banner:
                 banner = ""
                 while not banner:
                     random_banner = random.randint(0, len(banners) - 1)
-                    banner = self.colors_script.parse_colors_script(self.config.path_config['base_paths']['banners_path'] + banners[random_banner])
+                    banner = self.colors_script.parse_colors_script(
+                        self.config.path_config['base_paths']['banners_path'] + banners[random_banner])
                 self.badges.output_empty(self.colors.END + banner + self.colors.END)
             else:
                 self.badges.output_warning("No banners detected.")

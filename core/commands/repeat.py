@@ -24,12 +24,12 @@
 # SOFTWARE.
 #
 
-from core.lib.command import HatSploitCommand
+from core.base.execute import Execute
+from core.lib.command import Command
 
-from core.base.execute import execute
 
-class HatSploitCommand(HatSploitCommand):
-    execute = execute()
+class HatSploitCommand(Command):
+    execute = Execute()
 
     details = {
         'Category': "developer",
@@ -45,14 +45,14 @@ class HatSploitCommand(HatSploitCommand):
     def run(self, argc, argv):
         times = argv[0]
         command = argv[1]
-        
+
         if times.isdigit():
             commands = command.split()
             arguments = ""
             if commands:
                 arguments = command.replace(commands[0], "", 1).strip()
-        
-            for time in range(int(times)):
+
+            for _ in range(int(times)):
                 self.execute.execute_command(commands, arguments)
         else:
-            self.badges.output_error("Times expected!")
+            self.output_error("Times expected!")

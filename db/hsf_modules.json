@@ -79,7 +79,7 @@
             "sniffer/user_agent_sniffer": {
                 "Path": "modules/auxiliary/multi/sniffer/user_agent_sniffer",
                 "Name": "User Agent Sniffer",
-                "Module": "auxiliary/multi/scanner/port_scanner",
+                "Module": "auxiliary/multi/sniffer/user_agent_sniffer",
                 "Authors": [
                     "enty8080"
                 ],
@@ -322,40 +322,6 @@
                 "Platform": "multi",
                 "Risk": "high"
             },
-            "vbulletin_widget_php/config_code_execution": {
-                "Path": "modules/exploit/multi/vbulletin_widget_php/config_code_execution",
-                "Name": "vBulletin Widget PHP Config Code Execution",
-                "Module": "exploit/multi/vbulletin_widget_php/config_code_execution",
-                "Authors": [
-                    "enty8080"
-                ],
-                "Description": "vBulletin 5.0.0 till 5.5.4 widget_php widgetConfig Remote Code Execution.",
-                "Dependencies": [
-                    ""
-                ],
-                "Comments": [
-                    ""
-                ],
-                "Platform": "multi",
-                "Risk": "high"
-            },
-            "vbulletin_widget_php/template_code_execution": {
-                "Path": "modules/exploit/multi/vbulletin_widget_php/template_code_execution",
-                "Name": "vBulletin Widget PHP Template Code Execution",
-                "Module": "exploit/multi/vbulletin_widget_php/template_code_execution",
-                "Authors": [
-                    "enty8080"
-                ],
-                "Description": "vBulletin 5.5.4 till 5.6.2 widget_php widget_tabbedcontainer_tab_panel Remote Code Execution.",
-                "Dependencies": [
-                    ""
-                ],
-                "Comments": [
-                    ""
-                ],
-                "Platform": "multi",
-                "Risk": "high"
-            },
             "ssh/libssh_code_execution": {
                 "Path": "modules/exploit/multi/ssh/libssh_code_execution",
                 "Name": "SSH LibSSH Code Execution",
@@ -398,23 +364,6 @@
                     "enty8080"
                 ],
                 "Description": "Netwave IP Camera information disclosure exploit.",
-                "Dependencies": [
-                    ""
-                ],
-                "Comments": [
-                    ""
-                ],
-                "Platform": "multi",
-                "Risk": "high"
-            },
-            "qnap_qts/local_file_inclusion": {
-                "Path": "modules/exploit/multi/qnap_qts/local_file_inclusion",
-                "Name": "QNAP QTS Local File Inclusion",
-                "Module": "exploit/multi/qnap_qts/local_file_inclusion",
-                "Authors": [
-                    "enty8080"
-                ],
-                "Description": "QNAP QTS and Photo Station 6.0.3 Local File Inclusion",
                 "Dependencies": [
                     ""
                 ],

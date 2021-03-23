@@ -24,15 +24,15 @@
 # SOFTWARE.
 #
 
-from core.lib.command import HatSploitCommand
+from core.base.storage import LocalStorage
+from core.lib.command import Command
+from core.modules.modules import Modules
 
-from core.modules.modules import modules
-from core.base.storage import local_storage
 
-class HatSploitCommand(HatSploitCommand):
-    modules = modules()
-    local_storage = local_storage()
-    
+class HatSploitCommand(Command):
+    modules = Modules()
+    local_storage = LocalStorage()
+
     details = {
         'Category': "core",
         'Name': "help",
@@ -55,7 +55,7 @@ class HatSploitCommand(HatSploitCommand):
             label = commands[command].details['Category']
             commands_data[label].append((command, commands[command].details['Description']))
         for label in sorted(commands_data.keys()):
-            self.tables.print_table(label.title() + " Commands", headers, *commands_data[label])
+            self.print_table(label.title() + " Commands", headers, *commands_data[label])
 
     def format_plugin_commands(self):
         for plugin in self.local_storage.get("loaded_plugins").keys():
@@ -69,8 +69,8 @@ class HatSploitCommand(HatSploitCommand):
                     for command in sorted(commands[label].keys()):
                         commands_data[label].append((command, commands[label][command]['Description']))
                 for label in sorted(commands_data.keys()):
-                    self.tables.print_table(label.title() + " Commands", headers, *commands_data[label])
-                    
+                    self.print_table(label.title() + " Commands", headers, *commands_data[label])
+
     def format_custom_commands(self):
         current_module = self.modules.get_current_module_object()
         if hasattr(current_module, "commands"):
@@ -79,8 +79,8 @@ class HatSploitCommand(HatSploitCommand):
             commands = current_module.commands
             for command in sorted(commands.keys()):
                 commands_data.append((command, commands[command]['Description']))
-            self.tables.print_table("Custom Commands", headers, *commands_data)
-        
+            self.print_table("Custom Commands", headers, *commands_data)
+
     def run(self, argc, argv):
         self.format_base_commands()
         if self.modules.check_current_module():

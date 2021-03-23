@@ -26,9 +26,10 @@
 
 import scapy.all
 
-from core.lib.module import HatSploitModule
+from core.lib.module import Module
 
-class HatSploitModule(HatSploitModule):
+
+class HatSploitModule(Module):
     details = {
         'Name': "Network Scanner",
         'Module': "auxiliary/multi/scanner/network_scanner",
@@ -62,24 +63,24 @@ class HatSploitModule(HatSploitModule):
     }
 
     def run(self):
-        ip_range, timeout = self.parser.parse_options(self.options)
+        ip_range, timeout = self.parse_options(self.options)
 
-        self.badges.output_process("Scanning local network...")
+        self.output_process("Scanning local network...")
 
         try:
             arp = scapy.all.ARP(pdst=ip_range)
             ether = scapy.all.Ether(dst="ff:ff:ff:ff:ff:ff")
-            result = scapy.all.srp(ether/arp, timeout=float(timeout), verbose=False)[0]
+            result = scapy.all.srp(ether / arp, timeout=float(timeout), verbose=False)[0]
 
             if len(result) > 0:
                 net_data = list()
                 headers = ("Host", "MAC")
                 for _, received in result:
                     net_data.append((received.psrc, received.hwsrc))
-                self.badges.output_empty("")
-                self.tables.print_table("Network Devices", headers, *net_data)
-                self.badges.output_empty("")
+                self.output_empty("")
+                self.print_table("Network Devices", headers, *net_data)
+                self.output_empty("")
             else:
-                self.badges.output_warning("No hosts detected in local network.")
+                self.output_warning("No hosts detected in local network.")
         except Exception:
-            self.badges.output_error("Failed to scan local network!")
+            self.output_error("Failed to scan local network!")

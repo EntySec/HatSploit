@@ -24,39 +24,40 @@
 # SOFTWARE.
 #
 
+import ctypes
 import os
 import sys
-import ctypes
 import threading
 
-from core.base.exceptions import exceptions
-from core.cli.tables import tables
-from core.cli.badges import badges
-from core.base.storage import local_storage
-from core.modules.modules import modules
+from core.base.exceptions import Exceptions
+from core.base.storage import LocalStorage
+from core.cli.badges import Badges
+from core.cli.tables import Tables
+from core.modules.modules import Modules
 
-class jobs():
+
+class Jobs:
     def __init__(self):
-        self.exceptions = exceptions()
-        self.tables = tables()
-        self.badges = badges()
-        self.local_storage = local_storage()
-        self.modules = modules()
+        self.exceptions = Exceptions()
+        self.tables = Tables()
+        self.badges = Badges()
+        self.local_storage = LocalStorage()
+        self.modules = Modules()
 
         self.job_process = None
-        
+
     def stop_dead(self):
         jobs = self.local_storage.get("jobs")
         if jobs:
             for job_id in list(jobs):
                 if not jobs[job_id]['job_process'].is_alive():
                     self.delete_job(job_id)
-        
+
     def check_jobs(self):
         if not self.local_storage.get("jobs"):
             return True
         return False
-    
+
     def check_module_job(self, module_name):
         jobs = self.local_storage.get("jobs")
         if jobs:
@@ -89,7 +90,7 @@ class jobs():
             if res > 1:
                 ctypes.pythonapi.PyThreadState_SetAsyncExc(job.ident, None)
                 raise self.exceptions.GlobalException
-                
+
     def start_job(self, job_function, job_arguments):
         self.job_process = threading.Thread(target=job_function, args=job_arguments)
         self.job_process.setDaemon(True)

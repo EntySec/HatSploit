@@ -24,29 +24,28 @@
 # SOFTWARE.
 #
 
-from core.lib.session import session
+from core.lib.session import Session
+from utils.tcp.tcp import TCPClient
 
-from utils.tcp.tcp import tcp
 
-class session(session):
-    def __init__(self, client):
-        self.tcp = tcp()
-        self.tcp.connect(client)
-
+class HatSploitSession(Session, TCPClient):
     details = {
         'Platform': "",
         'Type': "shell"
     }
 
+    def open(self, client):
+        self.connect(client)
+
     def close(self):
-        self.tcp.disconnect()
+        self.disconnect()
 
     def send_command(self, command, arguments=None, timeout=10):
         if arguments:
             command += " " + arguments
 
-        output = self.tcp.send_command(command + '\n', timeout)
-        return (True, output)
+        output = self.send_cmd(command + '\n', timeout)
+        return True, output
 
     def interact(self):
-        self.tcp.interactive()
+        self.interactive()

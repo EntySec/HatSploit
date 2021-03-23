@@ -25,27 +25,24 @@
 #
 
 import re
-import sys
-import time
-import socket
-import telnetlib
 import selectors
+import socket
+import sys
+import telnetlib
+import time
 
-from core.cli.badges import badges
-from core.base.exceptions import exceptions
+from core.base.exceptions import Exceptions
+from core.cli.badges import Badges
 
-class tcp:
-    def __init__(self):
-        self.badges = badges()
-        self.exceptions = exceptions()
-        
-        self.client = None
-    
-    #
-    # Functions to manipulate local addresses
-    #
 
-    def get_local_host(self):
+class TCPClient:
+    badges = Badges()
+    exceptions = Exceptions()
+
+    client = None
+
+    @staticmethod
+    def get_local_host():
         try:
             server = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
             server.connect(("192.168.1.1", 80))
@@ -56,11 +53,8 @@ class tcp:
             local_host = "127.0.0.1"
         return local_host
 
-    #
-    # TCP requests
-    #
-    
-    def tcp_request(self, host, port, data, buffer_size=1024, timeout=10):
+    @staticmethod
+    def tcp_request(host, port, data, buffer_size=1024, timeout=10):
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         sock.settimeout(timeout)
         sock.connect((host, int(port)))
@@ -68,12 +62,9 @@ class tcp:
         output = sock.recv(buffer_size)
         sock.close()
         return output.decode().strip()
-    
-    #
-    # TCP ports
-    #
-    
-    def check_tcp_port(self, host, port, timeout=10):
+
+    @staticmethod
+    def check_tcp_port(host, port, timeout=10):
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         sock.settimeout(timeout)
         if sock.connect_ex((host, int(port))) == 0:
@@ -81,33 +72,25 @@ class tcp:
             return True
         sock.close()
         return False
-    
-    #
-    # Functions to connect or disconnect
-    #
-        
+
     def connect(self, client):
         self.client = telnetlib.Telnet()
         self.client.sock = client
-        
+
     def disconnect(self):
         self.client.close()
-        
-    #
-    # Functions to send and recv from client and to client
-    #
-    
+
     def send(self, buffer):
         if self.client:
             self.client.write(buffer)
-            
+
     def interactive(self, terminator='\n'):
         if self.client:
             selector = selectors.SelectSelector()
 
             selector.register(self.client, selectors.EVENT_READ)
             selector.register(sys.stdin, selectors.EVENT_READ)
-            
+
             while True:
                 for key, events in selector.select():
                     if key.fileobj is self.client:
@@ -117,7 +100,7 @@ class tcp:
                             self.badges.output_warning("Connection terminated.")
                             return
                         if response:
-                            self.badges.output_empty(response.decode(), end='')
+                            self.badges.output_empty(response.decode(), start='', end='')
                     elif key.fileobj is sys.stdin:
                         line = sys.stdin.readline().strip()
                         if not line:
@@ -146,26 +129,18 @@ class tcp:
                         break
             return result
         return None
-        
-    #
-    # Functions to send system commands to client
-    #
 
-    def send_command(self, command, timeout=10):
+    def send_cmd(self, command, timeout=10):
         if self.client:
             buffer = command.encode()
             self.send(buffer)
-            
+
             output = self.recv(timeout)
             output = output.decode().strip()
-            
+
             return output
         return None
-        
-    #
-    # Functions to manipulate with server
-    #
-        
+
     def start_server(self, local_host, local_port):
         address = local_host + ':' + str(local_port)
         self.badges.output_process("Binding to " + address + "...")
@@ -179,11 +154,7 @@ class tcp:
             raise self.exceptions.GlobalException
         return server
 
-    #
-    # Functions to connect to server
-    #
-
-    def connect_server(self, remote_host, remote_port, timeout=10):
+    def connect_server(self, remote_host, remote_port, timeout=None):
         address = remote_host + ':' + str(remote_port)
         self.badges.output_process("Connecting to " + address + "...")
         try:
@@ -192,19 +163,19 @@ class tcp:
 
             server.connect((remote_host, int(remote_port)))
             self.badges.output_process("Establishing connection...")
+        except socket.timeout:
+            self.badges.output_warning("Connection timeout.")
+            raise self.exceptions.GlobalException
         except Exception:
             self.badges.output_error("Failed to connect to " + address + "!")
             raise self.exceptions.GlobalException
         return server
-    
-    #
-    # Functions to listen
-    #
-    
-    def listen(self, local_host, local_port):
+
+    def listen(self, local_host, local_port, timeout=None):
         try:
             server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+            server.settimeout(timeout)
             server.bind((local_host, int(local_port)))
             server.listen(1)
 
@@ -214,7 +185,12 @@ class tcp:
             self.badges.output_process("Establishing connection...")
 
             server.close()
+        except socket.timeout:
+            self.badges.output_warning("Timeout waiting for connection.")
+
+            server.close()
+            raise self.exceptions.GlobalException
         except Exception:
             self.badges.output_error("Failed to listen on port " + str(local_port) + "!")
             raise self.exceptions.GlobalException
-        return (client, address[0])
+        return client, address[0]

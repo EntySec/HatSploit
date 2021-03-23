@@ -27,34 +27,35 @@
 import os
 import readline
 
-from core.base.io import io
-from core.util.tip import tip
-from core.base.jobs import jobs
-from core.base.execute import execute
-from core.base.loader import loader
-from core.base.config import config
-from core.cli.badges import badges
-from core.util.banner import banner
-from core.cli.colors import colors
-from core.base.storage import local_storage
-from core.modules.modules import modules
-from core.base.exceptions import exceptions
+from core.base.config import Config
+from core.base.exceptions import Exceptions
+from core.base.execute import Execute
+from core.base.io import IO
+from core.base.jobs import Jobs
+from core.base.loader import Loader
+from core.base.storage import LocalStorage
+from core.cli.badges import Badges
+from core.cli.colors import Colors
+from core.modules.modules import Modules
+from core.util.banner import Banner
+from core.util.tip import Tip
 
-class console:
+
+class Console:
     def __init__(self):
-        self.io = io()
-        self.tip = tip()
-        self.jobs = jobs()
-        self.execute = execute()
-        self.loader = loader()
-        self.config = config()
-        self.badges = badges()
-        self.banner = banner()
-        self.colors = colors()
-        self.local_storage = local_storage()
-        self.modules = modules()
-        self.exceptions = exceptions()
-        
+        self.io = IO()
+        self.tip = Tip()
+        self.jobs = Jobs()
+        self.execute = Execute()
+        self.loader = Loader()
+        self.config = Config()
+        self.badges = Badges()
+        self.banner = Banner()
+        self.colors = Colors()
+        self.local_storage = LocalStorage()
+        self.modules = Modules()
+        self.exceptions = Exceptions()
+
         self.history = self.config.path_config['base_paths']['history_path']
 
     def check_root(self):
@@ -62,7 +63,7 @@ class console:
             return True
         self.badges.output_error("Operation not permitted!")
         return False
-    
+
     def check_install(self):
         if os.path.exists(self.config.path_config['base_paths']['root_path']):
             return True
@@ -84,9 +85,10 @@ class console:
                 else:
                     module = self.modules.get_current_module_name()
                     name = self.modules.get_current_module_object().details['Name']
-                    prompt = '(hsf: ' + self.modules.get_category(module) + ': ' + self.colors.RED + name + self.colors.END + ')> '
+                    prompt = '(hsf: ' + self.modules.get_category(
+                        module) + ': ' + self.colors.RED + name + self.colors.END + ')> '
                 commands, arguments = self.io.input(prompt)
-                
+
                 self.jobs.stop_dead()
                 self.execute.execute_command(commands, arguments)
                 if self.local_storage.get("history"):
@@ -96,7 +98,7 @@ class console:
                 pass
             except Exception as e:
                 self.badges.output_error("An error occurred: " + str(e) + "!")
-    
+
     def enable_history_file(self):
         if not os.path.exists(self.history):
             open(self.history, 'w').close()
@@ -107,7 +109,7 @@ class console:
         if using_history:
             self.enable_history_file()
         readline.parse_and_bind("tab: complete")
-        
+
         version = self.config.core_config['details']['version']
         codename = self.config.core_config['details']['codename']
         if self.config.core_config['console']['clear']:
@@ -115,7 +117,7 @@ class console:
 
         if self.config.core_config['console']['banner']:
             self.banner.print_random_banner()
-        
+
         if self.config.core_config['console']['header']:
             plugins = self.local_storage.get("plugins")
             modules = self.local_storage.get("modules")

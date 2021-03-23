@@ -26,15 +26,12 @@
 
 import socketserver
 
-from core.lib.module import HatSploitModule
-
-from utils.tcp.tcp import tcp
-
+from core.lib.module import Module
 from data.modules.auxiliary.multi.sniffer.user_agent_sniffer.core.handler import handler
+from utils.tcp.tcp import TCPClient
 
-class HatSploitModule(HatSploitModule):
-    tcp = tcp()
 
+class HatSploitModule(Module, TCPClient):
     handler = handler
 
     details = {
@@ -57,7 +54,7 @@ class HatSploitModule(HatSploitModule):
     options = {
         'LHOST': {
             'Description': "Local host.",
-            'Value': tcp.get_local_host(),
+            'Value': TCPClient.get_local_host(),
             'Type': "ip",
             'Required': True
         },
@@ -75,20 +72,20 @@ class HatSploitModule(HatSploitModule):
         }
     }
 
-    def start_server(self, local_host, local_port, forever):
+    def start_http_server(self, local_host, local_port, forever):
         try:
             httpd = socketserver.TCPServer((local_host, int(local_port)), self.handler)
-            self.badges.output_process("Starting http server on port " + local_port + "...")
+            self.output_process(f"Starting http server on port {local_port}...")
             if forever.lower() in ['yes', 'y']:
                 while True:
-                    self.badges.output_process("Listening for connections...")
+                    self.output_process("Listening for connections...")
                     httpd.handle_request()
             else:
-                self.badges.output_process("Listening for connections...")
+                self.output_process("Listening for connections...")
                 httpd.handle_request()
         except Exception:
-            self.badges.output_error("Failed to start http server on port " + local_port + "!")
+            self.output_error(f"Failed to start http server on port {local_port}!")
 
     def run(self):
-        local_host, local_port, forever = self.parser.parse_options(self.options)
-        self.start_server(local_host, local_port, forever)
+        local_host, local_port, forever = self.parse_options(self.options)
+        self.start_http_server(local_host, local_port, forever)

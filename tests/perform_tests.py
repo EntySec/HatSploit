@@ -26,35 +26,35 @@
 
 import sys
 
-from core.cli.badges import badges
-from core.db.importer import importer
+from core.cli.badges import Badges
+from core.db.importer import Importer
+from tests.modules_tests import ModulesTests
+from tests.payloads_tests import PayloadsTests
+from tests.plugins_tests import PluginsTests
 
-from tests.modules_tests import modules_tests
-from tests.plugins_tests import plugins_tests
-from tests.payloads_tests import payloads_tests
 
-class perform_tests:
+class PerformTests:
     def __init__(self):
-        self.badges = badges()
-        self.importer = importer()
+        self.badges = Badges()
+        self.importer = Importer()
 
-        self.modules_tests = modules_tests()
-        self.plugins_tests = plugins_tests()
-        self.payloads_tests = payloads_tests()
-        
+        self.modules_tests = ModulesTests()
+        self.plugins_tests = PluginsTests()
+        self.payloads_tests = PayloadsTests()
+
     def perform_tests(self):
         self.importer.import_database()
-        
+
         statuses = list()
         self.badges.output_process("Performing modules test...")
         statuses.append(self.modules_tests.perform_test())
-        
+
         self.badges.output_process("Performing plugins test...")
         statuses.append(self.plugins_tests.perform_test())
-        
+
         self.badges.output_process("Performing payloads test...")
         statuses.append(self.payloads_tests.perform_test())
-        
+
         for status in statuses:
             if status:
                 self.badges.output_error("Not all tests passed!")

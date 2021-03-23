@@ -2,12 +2,33 @@
     "__database__": {
         "type": "payloads"
     },
-    "multi": {
+    "unix": {
         "generic": {
+            "perl_reverse_tcp": {
+                "Path": "payloads/unix/generic/perl_reverse_tcp",
+                "Category": "single",
+                "Name": "Perl Shell Reverse TCP",
+                "Payload": "unix/generic/perl_reverse_tcp",
+                "Authors": [
+                    "enty8080"
+                ],
+                "Description": "Perl shell reverse TCP payload.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Architecture": "generic",
+                "Platform": "unix",
+                "Risk": "high",
+                "Type": "reverse_tcp"
+            },
             "ruby_reverse_tcp": {
-                "Path": "payloads/multi/generic/ruby_reverse_tcp",
+                "Path": "payloads/unix/generic/ruby_reverse_tcp",
+                "Category": "single",
                 "Name": "Ruby Shell Reverse TCP",
-                "Payload": "multi/generic/ruby_reverse_tcp",
+                "Payload": "unix/generic/ruby_reverse_tcp",
                 "Authors": [
                     "enty8080"
                 ],
@@ -18,25 +39,28 @@
                 "Comments": [
                     ""
                 ],
-                "Platform": "multi",
+                "Architecture": "generic",
+                "Platform": "unix",
                 "Risk": "high",
                 "Type": "reverse_tcp"
             },
-            "sh_reverse_tcp": {
-                "Path": "payloads/multi/generic/sh_reverse_tcp",
-                "Name": "SH Shell Reverse TCP",
-                "Payload": "multi/generic/sh_reverse_tcp",
+            "bash_reverse_tcp": {
+                "Path": "payloads/unix/generic/bash_reverse_tcp",
+                "Category": "single",
+                "Name": "Bash Shell Reverse TCP",
+                "Payload": "unix/generic/bash_reverse_tcp",
                 "Authors": [
                     "enty8080"
                 ],
-                "Description": "SH shell reverse TCP payload.",
+                "Description": "Bash shell reverse TCP payload.",
                 "Dependencies": [
                     ""
                 ],
                 "Comments": [
                     ""
                 ],
-                "Platform": "multi",
+                "Architecture": "generic",
+                "Platform": "unix",
                 "Risk": "high",
                 "Type": "reverse_tcp"
             }
@@ -46,6 +70,7 @@
         "aarch64": {
             "membrane_reverse_tcp": {
                 "Path": "payloads/macos/aarch64/membrane_reverse_tcp",
+                "Category": "stager",
                 "Name": "macOS aarch64 Membrane Reverse TCP",
                 "Payload": "macos/aarch64/membrane_reverse_tcp",
                 "Authors": [
@@ -58,6 +83,7 @@
                 "Comments": [
                     ""
                 ],
+                "Architecture": "aarch64",
                 "Platform": "macos",
                 "Risk": "high",
                 "Type": "reverse_tcp"
@@ -66,6 +92,7 @@
         "x64": {
             "membrane_reverse_tcp": {
                 "Path": "payloads/macos/x64/membrane_reverse_tcp",
+                "Category": "stager",
                 "Name": "macOS x64 Membrane Reverse TCP",
                 "Payload": "macos/x64/membrane_reverse_tcp",
                 "Authors": [
@@ -78,12 +105,14 @@
                 "Comments": [
                     ""
                 ],
+                "Architecture": "x64",
                 "Platform": "macos",
                 "Risk": "high",
                 "Type": "reverse_tcp"
             },
             "say": {
                 "Path": "payloads/macos/x64/say",
+                "Category": "stager",
                 "Name": "macOS x64 Say",
                 "Payload": "macos/x64/say",
                 "Authors": [
@@ -96,12 +125,14 @@
                 "Comments": [
                     ""
                 ],
+                "Architecture": "x64",
                 "Platform": "macos",
                 "Risk": "low",
                 "Type": "one_side"
             },
             "shell_bind_tcp": {
                 "Path": "payloads/macos/x64/shell_bind_tcp",
+                "Category": "stager",
                 "Name": "macOS x64 Shell Bind TCP",
                 "Payload": "macos/x64/shell_bind_tcp",
                 "Authors": [
@@ -114,12 +145,14 @@
                 "Comments": [
                     ""
                 ],
+                "Architecture": "x64",
                 "Platform": "macos",
                 "Risk": "high",
                 "Type": "bind_tcp"
             },
             "shell_reverse_tcp": {
                 "Path": "payloads/macos/x64/shell_reverse_tcp",
+                "Category": "stager",
                 "Name": "macOS x64 Shell Reverse TCP",
                 "Payload": "macos/x64/shell_reverse_tcp",
                 "Authors": [
@@ -132,6 +165,7 @@
                 "Comments": [
                     ""
                 ],
+                "Architecture": "x64",
                 "Platform": "macos",
                 "Risk": "high",
                 "Type": "reverse_tcp"
@@ -142,6 +176,7 @@
         "aarch64": {
             "membrane_reverse_tcp": {
                 "Path": "payloads/linux/aarch64/membrane_reverse_tcp",
+                "Category": "stager",
                 "Name": "Linux aarch64 Membrane Reverse TCP",
                 "Payload": "linux/aarch64/membrane_reverse_tcp",
                 "Authors": [
@@ -154,6 +189,7 @@
                 "Comments": [
                     ""
                 ],
+                "Architecture": "aarch64",
                 "Platform": "linux",
                 "Risk": "high",
                 "Type": "reverse_tcp"
@@ -162,6 +198,7 @@
         "armle": {
             "shell_bind_tcp": {
                 "Path": "payloads/linux/armle/shell_bind_tcp",
+                "Category": "stager",
                 "Name": "Linux armle Shell Bind TCP",
                 "Payload": "linux/armle/shell_bind_tcp",
                 "Authors": [
@@ -174,12 +211,14 @@
                 "Comments": [
                     ""
                 ],
+                "Architecture": "armle",
                 "Platform": "linux",
                 "Risk": "high",
                 "Type": "bind_tcp"
             },
             "shell_reverse_tcp": {
                 "Path": "payloads/linux/armle/shell_reverse_tcp",
+                "Category": "stager",
                 "Name": "Linux armle Shell Reverse TCP",
                 "Payload": "linux/armle/shell_reverse_tcp",
                 "Authors": [
@@ -192,6 +231,7 @@
                 "Comments": [
                     ""
                 ],
+                "Architecture": "armle",
                 "Platform": "linux",
                 "Risk": "high",
                 "Type": "reverse_tcp"
@@ -200,6 +240,7 @@
         "mipsbe": {
             "shell_bind_tcp": {
                 "Path": "payloads/linux/mipsbe/shell_bind_tcp",
+                "Category": "stager",
                 "Name": "Linux mipsbe Shell Bind TCP",
                 "Payload": "linux/mipsbe/shell_bind_tcp",
                 "Authors": [
@@ -212,12 +253,14 @@
                 "Comments": [
                     ""
                 ],
+                "Architecture": "mipsbe",
                 "Platform": "linux",
                 "Risk": "high",
                 "Type": "bind_tcp"
             },
             "shell_reverse_tcp": {
                 "Path": "payloads/linux/mipsbe/shell_reverse_tcp",
+                "Category": "stager",
                 "Name": "Linux mipsbe Shell Reverse TCP",
                 "Payload": "linux/mipsbe/shell_reverse_tcp",
                 "Authors": [
@@ -230,6 +273,7 @@
                 "Comments": [
                     ""
                 ],
+                "Architecture": "mipsbe",
                 "Platform": "linux",
                 "Risk": "high",
                 "Type": "reverse_tcp"
@@ -238,6 +282,7 @@
         "mipsle": {
             "shell_bind_tcp": {
                 "Path": "payloads/linux/mipsle/shell_bind_tcp",
+                "Category": "stager",
                 "Name": "Linux mipsle Shell Bind TCP",
                 "Payload": "linux/mipsle/shell_bind_tcp",
                 "Authors": [
@@ -250,12 +295,14 @@
                 "Comments": [
                     ""
                 ],
+                "Architecture": "mipsle",
                 "Platform": "linux",
                 "Risk": "high",
                 "Type": "bind_tcp"
             },
             "shell_reverse_tcp": {
                 "Path": "payloads/linux/mipsle/shell_reverse_tcp",
+                "Category": "stager",
                 "Name": "Linux mipsle Shell Reverse TCP",
                 "Payload": "linux/mipsle/shell_reverse_tcp",
                 "Authors": [
@@ -268,6 +315,7 @@
                 "Comments": [
                     ""
                 ],
+                "Architecture": "mipsle",
                 "Platform": "linux",
                 "Risk": "high",
                 "Type": "reverse_tcp"
@@ -276,6 +324,7 @@
         "x64": {
             "membrane_reverse_tcp": {
                 "Path": "payloads/linux/x64/membrane_reverse_tcp",
+                "Category": "stager",
                 "Name": "Linux x64 Membrane Reverse TCP",
                 "Payload": "linux/x64/membrane_reverse_tcp",
                 "Authors": [
@@ -288,12 +337,14 @@
                 "Comments": [
                     ""
                 ],
+                "Architecture": "x64",
                 "Platform": "linux",
                 "Risk": "high",
                 "Type": "reverse_tcp"
             },
             "shell_bind_tcp": {
                 "Path": "payloads/linux/x64/shell_bind_tcp",
+                "Category": "stager",
                 "Name": "Linux x64 Shell Bind TCP",
                 "Payload": "linux/x64/shell_bind_tcp",
                 "Authors": [
@@ -306,12 +357,14 @@
                 "Comments": [
                     ""
                 ],
+                "Architecture": "x64",
                 "Platform": "linux",
                 "Risk": "high",
                 "Type": "bind_tcp"
             },
             "shell_reverse_tcp": {
                 "Path": "payloads/linux/x64/shell_reverse_tcp",
+                "Category": "stager",
                 "Name": "Linux x64 Shell Reverse TCP",
                 "Payload": "linux/x64/shell_reverse_tcp",
                 "Authors": [
@@ -324,6 +377,7 @@
                 "Comments": [
                     ""
                 ],
+                "Architecture": "x64",
                 "Platform": "linux",
                 "Risk": "high",
                 "Type": "reverse_tcp"
@@ -332,6 +386,7 @@
         "x86": {
             "shell_bind_tcp": {
                 "Path": "payloads/linux/x86/shell_bind_tcp",
+                "Category": "stager",
                 "Name": "Linux x86 Shell Bind TCP",
                 "Payload": "linux/x86/shell_bind_tcp",
                 "Authors": [
@@ -344,12 +399,14 @@
                 "Comments": [
                     ""
                 ],
+                "Architecture": "x86",
                 "Platform": "linux",
                 "Risk": "high",
                 "Type": "bind_tcp"
             },
             "shell_reverse_tcp": {
                 "Path": "payloads/linux/x86/shell_reverse_tcp",
+                "Category": "stager",
                 "Name": "Linux x86 Shell Reverse TCP",
                 "Payload": "linux/x86/shell_reverse_tcp",
                 "Authors": [
@@ -362,6 +419,7 @@
                 "Comments": [
                     ""
                 ],
+                "Architecture": "x86",
                 "Platform": "linux",
                 "Risk": "high",
                 "Type": "reverse_tcp"

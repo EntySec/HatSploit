@@ -24,16 +24,11 @@
 # SOFTWARE.
 #
 
-import re
-import os
-import binascii
+from core.base.sessions import Sessions
 
-class StringTools:
-    @staticmethod
-    def extract_strings(binary_data):
-        strings = re.findall("[^\x00-\x1F\x7F-\xFF]{4,}", binary_data)
-        return strings
+class SessionTools:
+    sessions = Sessions()
 
-    @staticmethod
-    def random_string():
-        return binascii.hexlify(os.urandom(8)).decode()
+    def get_session(self, platform, type, id):
+        session = self.sessions.get_session(platform, type, id)
+        return session

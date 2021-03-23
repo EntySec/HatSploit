@@ -33,37 +33,38 @@ sys.path.append(root_path)
 import os
 import yaml
 
-from core.base.config import config
+from core.base.config import Config
 
-config = config()
+config = Config()
 config.configure()
 
-from core.base.console import console
-from core.cli.badges import badges
+from core.base.console import Console
+from core.cli.badges import Badges
 
-class hsf:
+
+class HatSploit:
     def __init__(self):
-        self.console = console()
-        self.badges = badges()
-        
+        self.console = Console()
+        self.badges = Badges()
+
     def accept_terms_of_service(self):
         if not os.path.exists(root_path + '.accepted'):
             self.badges.output_information("--( The HatSploit Terms of Service )--\n")
-            
+
             file = open(root_path + 'TERMS_OF_SERVICE.md', 'r')
             terms = file.read()
             file.close()
-            
+
             self.badges.output_empty(terms)
-            
+
             agree = self.badges.input_question("Accept HatSploit Framework Terms of Service? [Y/n] ")
             if agree.lower() not in ['y', 'yes']:
                 return False
-            
+
             open(root_path + '.accepted', 'w').close()
             return True
         return True
-        
+
     def launch(self):
         if self.console.check_root():
             if self.console.check_install():
@@ -72,5 +73,5 @@ class hsf:
 
 
 if __name__ == '__main__':
-    hsf = hsf()
+    hsf = HatSploit()
     hsf.launch()

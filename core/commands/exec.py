@@ -24,12 +24,12 @@
 # SOFTWARE.
 #
 
-from core.lib.command import HatSploitCommand
+from core.base.execute import Execute
+from core.lib.command import Command
 
-from core.base.execute import execute
 
-class HatSploitCommand(HatSploitCommand):
-    execute = execute()
+class HatSploitCommand(Command):
+    execute = Execute()
 
     details = {
         'Category': "developer",
@@ -43,5 +43,5 @@ class HatSploitCommand(HatSploitCommand):
     }
 
     def run(self, argc, argv):
-        command = self.fmt.format_commands(argv[0])
+        command = self.format_commands(argv[0])
         self.execute.execute_system(command)

@@ -24,14 +24,14 @@
 # SOFTWARE.
 #
 
-from core.lib.command import HatSploitCommand
+from core.base.storage import LocalStorage
+from core.lib.command import Command
+from core.plugins.plugins import Plugins
 
-from core.base.storage import local_storage
-from core.plugins.plugins import plugins
 
-class HatSploitCommand(HatSploitCommand):
-    local_storage = local_storage()
-    plugins = plugins()
+class HatSploitCommand(Command):
+    local_storage = LocalStorage()
+    plugins = Plugins()
 
     details = {
         'Category': "plugin",
@@ -46,10 +46,10 @@ class HatSploitCommand(HatSploitCommand):
 
     def run(self, argc, argv):
         plugin = argv[0]
-        self.badges.output_process("Unloading " + plugin + " plugin...")
-        
+        self.output_process("Unloading " + plugin + " plugin...")
+
         if self.plugins.check_loaded(plugin):
             self.local_storage.delete_element("loaded_plugins", plugin)
-            self.badges.output_success("Successfully unloaded " + plugin + " plugin!")
+            self.output_success("Successfully unloaded " + plugin + " plugin!")
         else:
-            self.badges.output_error("Plugin not loaded!")
+            self.output_error("Plugin not loaded!")

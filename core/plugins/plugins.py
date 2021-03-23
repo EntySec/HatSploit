@@ -24,12 +24,13 @@
 # SOFTWARE.
 #
 
-from core.base.storage import local_storage
+from core.base.storage import LocalStorage
 
-class plugins:
+
+class Plugins:
     def __init__(self):
-        self.local_storage = local_storage()
-        
+        self.local_storage = LocalStorage()
+
     def check_exist(self, name):
         all_plugins = self.local_storage.get("plugins")
         if all_plugins:
@@ -38,14 +39,14 @@ class plugins:
                 if name in plugins.keys():
                     return True
         return False
-      
+
     def check_loaded(self, name):
         loaded_plugins = self.local_storage.get("loaded_plugins")
         if loaded_plugins:
             if name in loaded_plugins:
                 return True
         return False
-        
+
     def get_database(self, name):
         all_plugins = self.local_storage.get("plugins")
         if all_plugins:

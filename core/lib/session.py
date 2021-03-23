@@ -24,17 +24,27 @@
 # SOFTWARE.
 #
 
-class session:
+from core.cli.badges import Badges
+from core.cli.colors import Colors
+from core.cli.fmt import FMT
+from core.cli.parser import Parser
+from core.cli.tables import Tables
+
+
+class Session(FMT, Badges, Colors, Parser, Tables):
     details = {
         'Platform': "",
         'Type': ""
     }
 
+    def open(self, client):
+        pass
+
     def close(self):
         pass
 
     def send_command(self, command, arguments=None, timeout=10):
-        return (True, None)
+        return True, None
 
-    def interact(self, command):
+    def interact(self):
         pass

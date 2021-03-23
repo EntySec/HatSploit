@@ -24,30 +24,27 @@
 # SOFTWARE.
 #
 
-import sys
-import time
 import json
-import threading
 import os
 import string
+import sys
+import threading
+import time
 
-from core.db.db import db
-from core.cli.badges import badges
-from core.base.storage import local_storage
-from core.base.config import config
-from core.base.exceptions import exceptions
+from core.base.config import Config
+from core.base.exceptions import Exceptions
+from core.base.storage import LocalStorage
+from core.cli.badges import Badges
+from core.db.db import DB
 
-from utils.tcp.tcp import tcp
 
-class importer:
+class Importer:
     def __init__(self):
-        self.db = db()
-        self.badges = badges()
-        self.local_storage = local_storage()
-        self.config = config()
-        self.exceptions = exceptions()
-
-        self.tcp = tcp()
+        self.db = DB()
+        self.badges = Badges()
+        self.local_storage = LocalStorage()
+        self.config = Config()
+        self.exceptions = Exceptions()
 
     def get_module(self, mu, name, folderpath):
         folderpath_list = folderpath.split(".")
@@ -59,7 +56,8 @@ class importer:
                 return self.get_module(i, name, folderpath)
         return None
 
-    def import_check(self, module_name):
+    @staticmethod
+    def import_check(module_name):
         try:
             __import__(module_name)
         except ModuleNotFoundError:
@@ -67,7 +65,7 @@ class importer:
         except Exception:
             return True
         return True
-        
+
     def import_command(self, command_path):
         try:
             command_directory = command_path
@@ -80,7 +78,7 @@ class importer:
             self.badges.output_information('Reason: ' + str(e))
             raise self.exceptions.GlobalException
         return command_object
-    
+
     def import_payload(self, payload_path):
         try:
             payload_directory = payload_path
@@ -106,7 +104,7 @@ class importer:
             self.badges.output_information('Reason: ' + str(e))
             raise self.exceptions.GlobalException
         return module_object
-    
+
     def import_plugin(self, plugin_path):
         try:
             plugin_directory = plugin_path
@@ -119,7 +117,7 @@ class importer:
             self.badges.output_information('Reason: ' + str(e))
             raise self.exceptions.GlobalException
         return plugin_object
-        
+
     def import_commands(self):
         commands = dict()
         command_path = self.config.path_config['base_paths']['commands_path']
@@ -127,7 +125,8 @@ class importer:
             for file in os.listdir(command_path):
                 if file.endswith('py'):
                     command_file_path = command_path + file[:-3]
-                    command_directory = command_file_path.replace(self.config.path_config['base_paths']['root_path'], '', 1)
+                    command_directory = command_file_path.replace(self.config.path_config['base_paths']['root_path'],
+                                                                  '', 1)
                     try:
                         command_object = self.import_command(command_directory)
                         command_name = command_object.details['Name']
@@ -139,9 +138,12 @@ class importer:
             pass
 
     def import_database(self):
-        self.db.connect_payloads_database('hsf_payloads', self.config.path_config['base_paths']['db_path'] + self.config.db_config['base_dbs']['payloads_database'])
-        self.db.connect_modules_database('hsf_modules', self.config.path_config['base_paths']['db_path'] + self.config.db_config['base_dbs']['modules_database'])
-        self.db.connect_plugins_database('hsf_plugins', self.config.path_config['base_paths']['db_path'] + self.config.db_config['base_dbs']['plugins_database'])
+        self.db.connect_payloads_database('hsf_payloads', self.config.path_config['base_paths']['db_path'] +
+                                          self.config.db_config['base_dbs']['payloads_database'])
+        self.db.connect_modules_database('hsf_modules', self.config.path_config['base_paths']['db_path'] +
+                                         self.config.db_config['base_dbs']['modules_database'])
+        self.db.connect_plugins_database('hsf_plugins', self.config.path_config['base_paths']['db_path'] +
+                                         self.config.db_config['base_dbs']['plugins_database'])
 
     def import_all(self):
         self.import_commands()

@@ -24,34 +24,11 @@
 
 %newline
 %end
-%green
-                     ..
-                    ,:
-            .      ::
-            .:    :2.
-             .:,  1L
-              .v: Z, ..::,
-               :k:N.Lv:
-                22ukL
-                JSYk.%end
-               ,B@B@i
-               BO@@B@.
-             :B@L@Bv:@7
-           .PB@iBB@  .@Mi
-         .P@B@iE@@r  . 7B@i
-        5@@B@:NB@1%purple r  ri:%end7@M
-      .@B@BG.OB@B%purple  ,.. .i, %endMB,
-      @B@BO.B@@B%purple  i7777,    %endMB.
-     PB@B@.OB@BE%purple  LririL,.L. %end@P
-     B@B@5iB@B@i%purple  :77r7L, L7 %endO@
-     @B1B27@B@B,%purple . .:ii.  r7 %endBB
-     O@.@M:B@B@:%purple v7:    ::.  %endBM
-     :Br7@L5B@BO%purple irL: :v7L. %endP@,
-      7@,Y@UqB@B7%purple ir ,L;r: %endu@7
-       r@LiBMBB@Bu%purple   rr:.%end:B@i
-         FNL1NB@@@@:   ;OBX
-           rLu2ZB@B@@XqG7
-              %end%green. rJuv::%end
-  %newline
-  %boldDown right to TOR!
+   ___ ___       __   _______       __       __ __
+  |   Y   .---.-|  |_|   _   .-----|  .-----|__|  |_
+  |%grey.%end  |   |  _  |   _|   |___|  _  |  |  _  |  |   _|
+  |%grey.%end  _   |___._|____|____   |   __|__|_____|__|____|
+  |%grey:%end  |   |          |%grey:%end  |   |__|
+  |%grey::.%end|%grey:.%end |          |%grey::.. .%end |
+  `--- ---'          `-------'
 %end

@@ -27,22 +27,22 @@
 import os
 import random
 
-from core.cli.parser import parser
-from core.base.config import config
-from core.cli.badges import badges
-from core.cli.colors import colors
+from core.base.config import Config
+from core.cli.badges import Badges
+from core.cli.colors import Colors
+from core.cli.parser import Parser
+from core.util.colors_script import ColorsScript
 
-from utils.colors.colors_script import colors_script
 
-class tip:
+class Tip:
     def __init__(self):
-        self.parser = parser()
-        self.config = config()
-        self.badges = badges()
-        self.colors = colors()
-        
-        self.colors_script = colors_script()
-        
+        self.parser = Parser()
+        self.config = Config()
+        self.badges = Badges()
+        self.colors = Colors()
+
+        self.colors_script = ColorsScript()
+
     def print_random_tip(self):
         if os.path.exists(self.config.path_config['base_paths']['tips_path']):
             tips = list()
@@ -53,7 +53,8 @@ class tip:
                 tip = ""
                 while not tip:
                     random_tip = random.randint(0, len(tips) - 1)
-                    tip = self.colors_script.parse_colors_script(self.config.path_config['base_paths']['tips_path'] + tips[random_tip])
+                    tip = self.colors_script.parse_colors_script(
+                        self.config.path_config['base_paths']['tips_path'] + tips[random_tip])
                 self.badges.output_empty(self.colors.END + "HatSploit Tip: " + tip + self.colors.END)
             else:
                 self.badges.output_warning("No tips detected.")

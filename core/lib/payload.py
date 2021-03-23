@@ -24,20 +24,14 @@
 # SOFTWARE.
 #
 
-from core.cli.fmt import fmt
-from core.cli.badges import badges
-from core.cli.colors import colors
-from core.cli.parser import parser
-from core.cli.tables import tables
+from core.cli.badges import Badges
+from core.cli.colors import Colors
+from core.cli.fmt import FMT
+from core.cli.parser import Parser
+from core.cli.tables import Tables
 
-class HatSploitPayload:
-    def __init__(self):
-        self.fmt = fmt()
-        self.badges = badges()
-        self.colors = colors()
-        self.parser = parser()
-        self.tables = tables()
 
+class Payload(FMT, Badges, Colors, Parser, Tables):
     details = {
         'Category': "",
         'Name': "",

@@ -24,18 +24,19 @@
 # SOFTWARE.
 #
 
-import os
 import copy
+import os
 
-from core.db.importer import importer
-from core.base.storage import local_storage
-from core.cli.badges import badges
+from core.base.storage import LocalStorage
+from core.cli.badges import Badges
+from core.db.importer import Importer
 
-class payloads:
+
+class Payloads:
     def __init__(self):
-        self.importer = importer()
-        self.local_storage = local_storage()
-        self.badges = badges()
+        self.importer = Importer()
+        self.local_storage = LocalStorage()
+        self.badges = Badges()
 
     def check_exist(self, name):
         if self.check_style(name):
@@ -54,7 +55,8 @@ class payloads:
                                 return True
         return False
 
-    def check_style(self, name):
+    @staticmethod
+    def check_style(name):
         if len(name.split('/')) >= 3:
             return True
         return False
@@ -98,7 +100,8 @@ class payloads:
                                 return database
         return None
 
-    def get_full_name(self, platform, architecture, name):
+    @staticmethod
+    def get_full_name(platform, architecture, name):
         return platform + '/' + architecture + '/' + name
 
     def check_current_module(self):
@@ -106,23 +109,24 @@ class payloads:
             if len(self.local_storage.get("current_module")) > 0:
                 return True
         return False
-    
+
     def get_current_module_object(self):
         if self.check_current_module():
             return self.local_storage.get_array("current_module", self.local_storage.get("current_module_number"))
         return None
-    
+
     def get_current_module_name(self):
         if self.check_current_module():
-            return self.local_storage.get_array("current_module", self.local_storage.get("current_module_number")).details['Module']
+            return self.local_storage.get_array("current_module",
+                                                self.local_storage.get("current_module_number")).details['Module']
         return None
-    
+
     def import_payload(self, module_name, platform, architecture, name):
         payloads = self.get_payload_object(platform, architecture, name)
         try:
             payload_object = self.importer.import_payload(payloads['Path'])
             current_module_name = module_name
-            
+
             imported_payloads = self.local_storage.get("imported_payloads")
             if imported_payloads:
                 if current_module_name in imported_payloads.keys():
@@ -145,31 +149,29 @@ class payloads:
         except Exception:
             return None
         return payload_object
-        
+
     def check_imported(self, module_name, name):
         imported_payloads = self.local_storage.get("imported_payloads")
         current_module_name = module_name
-        
+
         if imported_payloads:
             if current_module_name in imported_payloads.keys():
                 if name in imported_payloads[current_module_name].keys():
                     return True
         return False
-    
+
     def get_current_payload(self):
         imported_payloads = self.local_storage.get("imported_payloads")
         current_module_object = self.get_current_module_object()
         current_module_name = current_module_object.details['Module']
 
-        if hasattr(current_module_object, "options"):
-            for option in current_module_object.options.keys():
-                if current_module_object.options[option]['Type'].lower() == 'payload':
-                    name = current_module_object.options[option]['Value']
-                    if current_module_name in imported_payloads.keys():
-                        if name in imported_payloads[current_module_name].keys():
-                            return imported_payloads[current_module_name][name]
+        if hasattr(current_module_object, "payload"):
+            name = current_module_object.payload['Value']
+            if current_module_name in imported_payloads.keys():
+                if name in imported_payloads[current_module_name].keys():
+                    return imported_payloads[current_module_name][name]
         return None
-        
+
     def add_payload(self, module_name, platform, architecture, name):
         payloads = self.get_payload_object(platform, architecture, name)
 
@@ -178,7 +180,6 @@ class payloads:
             if not self.importer.import_check(dependence):
                 not_installed.append(dependence)
         if not not_installed:
-            imported_payloads = self.local_storage.get("imported_payloads")
             full_name = self.get_full_name(platform, architecture, name)
 
             if not self.check_imported(module_name, full_name):

@@ -24,6 +24,6 @@
 # SOFTWARE.
 #
 
-class exceptions:
+class Exceptions:
     class GlobalException(Exception):
         pass

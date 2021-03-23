@@ -24,12 +24,11 @@
 # SOFTWARE.
 #
 
-from core.lib.module import HatSploitModule
-from core.base.sessions import sessions
+from core.lib.module import Module
+from utils.session.session import SessionTools
 
-class HatSploitModule(HatSploitModule):
-    sessions = sessions()
 
+class HatSploitModule(Module, SessionTools):
     details = {
         'Name': "macOS Membrane Trolling Say",
         'Module': "post/macos/membrane/trolling/say",
@@ -63,10 +62,10 @@ class HatSploitModule(HatSploitModule):
     }
 
     def run(self):
-        message, session = self.parser.parse_options(self.options)
-        session = self.sessions.get_session(self.details['Platform'], "membrane", session)
+        message, session = self.parse_options(self.options)
+        session = self.get_session(self.details['Platform'], "membrane", session)
         if session:
-            self.badges.output_process("Sending message to device...")
+            self.output_process("Sending message to device...")
             status, output = session.send_command("say", message)
             if not status:
-                self.badges.output_error("Failed to say message!")
+                self.output_error("Failed to say message!")

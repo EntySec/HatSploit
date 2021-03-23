@@ -24,12 +24,12 @@
 # SOFTWARE.
 #
 
-from core.base.config import config
+from core.base.config import Config
 
-config = config()
+config = Config()
 config.configure()
 
-from tests.perform_tests import perform_tests
+from tests.perform_tests import PerformTests
 
-perform_tests = perform_tests()
+perform_tests = PerformTests()
 perform_tests.perform_tests()

@@ -27,88 +27,65 @@
 import shutil
 import subprocess
 
-from core.cli.badges import badges
+from core.cli.badges import Badges
+from utils.tcp.tcp import TCPClient
 
-from utils.tcp.tcp import tcp
 
-class adb:
-    def __init__(self):
-        self.badges = badges()
-        
-        self.tcp = tcp()
-        
-        self.adb = "adb"
+class ADBClient(TCPClient):
+    badges = Badges()
 
-    #
-    # Functions to check dependencies
-    #
-        
+    adb = "adb"
+
     def check_adb_installation(self):
         if shutil.which(self.adb):
             return True
         return False
-    
-    #
-    # Functions to control ADB server
-    #
-    
+
     def start_adb_server(self):
         server_log = self.execute_adb_command("start-server")
-        
+
         if not server_log or "failed" in server_log:
             return False
         return True
-        
+
     def stop_adb_server(self):
         self.execute_adb_command("disconnect", output=False)
         server_log = self.execute_adb_command("kill-server")
-        
+
         if server_log:
             if "cannot" in server_log:
                 return False
         return True
-    
-    #
-    # Functions to connect/disconnect devices
-    #
-    
-    def connect(self, target_addr):
-        if self.tcp.check_tcp_port(target_addr, 5555):
+
+    def adb_connect(self, target_addr):
+        if self.check_tcp_port(target_addr, 5555):
             server_log = self.execute_adb_command("connect", target_addr)
 
             if not server_log or "failed" in server_log:
                 return False
             return True
-        
-    def disconnect(self, target_addr):
+
+    def adb_disconnect(self, target_addr):
         server_log = self.execute_adb_command("disconnect", target_addr)
-        
+
         if not server_log or "error" in server_log:
             return False
         return True
-        
-    #
-    # Functions to check connection to devices
-    #
-        
+
     def check_connected(self, target_addr):
         device = self.execute_adb_command("devices", f"| grep {target_addr}")
         device = device.split('\t')
-        
+
         if len(device) == 2:
             device_addr = device[0]
             device_state = device[1]
-            
+
             if device_addr == target_addr:
                 if device_state == 'device':
                     return True
-        
+
         return False
-    
-    #
-    # Functions to send commands to ADB server
-    #
-    
+
     def execute_adb_command(self, command, arguments="", output=True):
         if self.check_adb_installation():
             command_output = subprocess.getoutput(f"{self.adb} {command} {arguments}")

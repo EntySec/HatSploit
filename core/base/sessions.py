@@ -24,13 +24,14 @@
 # SOFTWARE.
 #
 
-from core.cli.badges import badges
-from core.base.storage import local_storage
+from core.base.storage import LocalStorage
+from core.cli.badges import Badges
 
-class sessions:
+
+class Sessions:
     def __init__(self):
-        self.badges = badges()
-        self.local_storage = local_storage()
+        self.badges = Badges()
+        self.local_storage = LocalStorage()
 
     def add_session(self, session_platform, session_type, session_host, session_port, session_object):
         if not self.local_storage.get("sessions"):
@@ -57,10 +58,10 @@ class sessions:
                     }
                 }
             }
-        
+
         self.local_storage.update("sessions", sessions)
         return session_id
-    
+
     def check_session_exist(self, session_platform, session_id):
         sessions = self.local_storage.get("sessions")
         if sessions:
@@ -86,7 +87,7 @@ class sessions:
             try:
                 sessions[session_platform][int(session_id)]['object'].close()
                 del sessions[session_platform][int(session_id)]
-                
+
                 if not sessions[session_platform]:
                     del sessions[session_platform]
                 self.local_storage.update("sessions", sessions)
@@ -98,5 +99,8 @@ class sessions:
     def get_session(self, session_platform, session_type, session_id):
         sessions = self.local_storage.get("sessions")
         if self.check_session_exist(session_platform, session_id):
-            return sessions[session_platform][int(session_id)]['object']
+            if session_type == sessions[session_platform][int(session_id)]['type']:
+                return sessions[session_platform][int(session_id)]['object']
+            self.badges.output_error("Session with invalid type!")
+            return None
         return None

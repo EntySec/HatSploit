@@ -26,14 +26,14 @@
 
 import os
 
-from core.lib.command import HatSploitCommand
+from core.base.storage import LocalStorage
+from core.lib.command import Command
+from core.modules.modules import Modules
 
-from core.modules.modules import modules
-from core.base.storage import local_storage
 
-class HatSploitCommand(HatSploitCommand):
-    modules = modules()
-    local_storage = local_storage()
+class HatSploitCommand(Command):
+    modules = Modules()
+    local_storage = LocalStorage()
 
     details = {
         'Category': "developer",
@@ -48,28 +48,30 @@ class HatSploitCommand(HatSploitCommand):
 
     def run(self, argc, argv):
         module = argv[0]
-        
+
         module_category = self.modules.get_category(module)
         module_platform = self.modules.get_platform(module)
         module_name = self.modules.get_name(module)
-        
+
         try:
             if not os.environ['EDITOR']:
-                self.badges.output_warning("Shell variable EDITOR not set.")
+                self.output_warning("Shell variable EDITOR not set.")
                 editor = "vi"
             else:
                 editor = os.environ['EDITOR']
         except KeyError:
-            self.badges.output_warning("Shell variable EDITOR not set.")
+            self.output_warning("Shell variable EDITOR not set.")
             editor = "vi"
-            
+
         if self.modules.check_exist(module):
             if not self.modules.check_imported(module):
                 database = self.modules.get_database(module)
-                module_path = self.local_storage.get("modules")[database][module_category][module_platform][module_name]['Path']
+                module_path = self.local_storage.get(
+                    "modules"
+                )[database][module_category][module_platform][module_name]['Path']
                 edit_mode = editor + " " + self.config.path_config['base_paths']['root_path'] + module_path
                 self.execute.execute_system(edit_mode)
             else:
-                self.badges.output_error("Can not edit already used module!")
+                self.output_error("Can not edit already used module!")
         else:
-            self.badges.output_error("Invalid module!")
+            self.output_error("Invalid module!")

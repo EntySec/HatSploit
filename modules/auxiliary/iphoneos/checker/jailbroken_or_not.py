@@ -24,13 +24,11 @@
 # SOFTWARE.
 #
 
-from core.lib.module import HatSploitModule
+from core.lib.module import Module
+from utils.tcp.tcp import TCPClient
 
-from utils.tcp.tcp import tcp
 
-class HatSploitModule(HatSploitModule):
-    tcp = tcp()
-
+class HatSploitModule(Module, TCPClient):
     details = {
         'Name': "Jailbreak Installation Checker",
         'Module': "auxiliary/iphoneos/checker/jailbroken_or_not",
@@ -58,10 +56,10 @@ class HatSploitModule(HatSploitModule):
     }
 
     def run(self):
-        remote_host = self.parser.parse_options(self.options)
+        remote_host = self.parse_options(self.options)
 
-        self.badges.output_process("Checking " + remote_host + "...")
-        if self.tcp.check_tcp_port(remote_host, 22):
-            self.badges.output_success("Target device may be jailbroken!")
+        self.output_process(f"Checking {remote_host}...")
+        if self.check_tcp_port(remote_host, 22):
+            self.output_success("Target device may be jailbroken!")
         else:
-            self.badges.output_warning("Looks like target device is not jailbroken.")
+            self.output_warning("Looks like target device is not jailbroken.")

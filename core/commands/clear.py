@@ -24,9 +24,10 @@
 # SOFTWARE.
 #
 
-from core.lib.command import HatSploitCommand
+from core.lib.command import Command
 
-class HatSploitCommand(HatSploitCommand):
+
+class HatSploitCommand(Command):
     details = {
         'Category': "core",
         'Name': "clear",
@@ -39,4 +40,4 @@ class HatSploitCommand(HatSploitCommand):
     }
 
     def run(self, argc, argv):
-        self.badges.output_empty(self.colors.CLEAR, end='')
+        self.output_empty(self.CLEAR, end='')

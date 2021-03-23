@@ -24,18 +24,11 @@
 # SOFTWARE.
 #
 
-from core.lib.module import HatSploitModule
-from core.base.types import types
+from core.lib.module import Module
+from utils.tcp.tcp import TCPClient
 
-from utils.tcp.tcp import tcp
-from utils.http.http import http
 
-class HatSploitModule(HatSploitModule):
-    types = types()
-
-    tcp = tcp()
-    http = http()
-
+class HatSploitModule(Module, TCPClient):
     details = {
         'Name': "Port Scanner",
         'Module': "auxiliary/multi/scanner/port_scanner",
@@ -75,14 +68,14 @@ class HatSploitModule(HatSploitModule):
     }
 
     def run(self):
-        remote_host, ports_range, timeout = self.parser.parse_options(self.options)
+        remote_host, ports_range, timeout = self.parse_options(self.options)
 
         start = int(ports_range.split('-')[0].strip())
         end = int(ports_range.split('-')[1].strip())
 
-        self.badges.output_process("Scanning " + remote_host + "...")
+        self.output_process(f"Scanning {remote_host}...")
         for port in range(start, end):
-            target = self.http.format_host_and_port(remote_host, port)
+            target = remote_host + '/' + str(port)
 
-            if self.tcp.check_tcp_port(remote_host, port, float(timeout)):
-                self.badges.output_success(target + " - opened")
+            if self.check_tcp_port(remote_host, port, float(timeout)):
+                self.output_success(f"{target} - opened")

@@ -24,8 +24,10 @@
 # SOFTWARE.
 #
 
-class parser:
-    def parse_options(self, options, option=None):
+
+class Parser:
+    @staticmethod
+    def parse_options(options, option=None):
         if not option:
             values = list()
             for option_name in options.keys():

