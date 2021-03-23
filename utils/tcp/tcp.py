@@ -154,7 +154,7 @@ class TCPClient:
             raise self.exceptions.GlobalException
         return server
 
-    def connect_server(self, remote_host, remote_port, timeout=10):
+    def connect_server(self, remote_host, remote_port, timeout=None):
         address = remote_host + ':' + str(remote_port)
         self.badges.output_process("Connecting to " + address + "...")
         try:
