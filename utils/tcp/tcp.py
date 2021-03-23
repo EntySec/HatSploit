@@ -165,7 +165,7 @@ class TCPClient:
             self.badges.output_process("Establishing connection...")
         except socket.timeout:
             self.badges.output_warning("Connection timeout.")
-            return None
+            raise self.exceptions.GlobalException
         except Exception:
             self.badges.output_error("Failed to connect to " + address + "!")
             raise self.exceptions.GlobalException
@@ -187,7 +187,7 @@ class TCPClient:
             server.close()
         except socket.timeout:
             self.badges.output_warning("Timeout waiting for connection.")
-            return None, None
+            raise self.exceptions.GlobalException
         except Exception:
             self.badges.output_error("Failed to listen on port " + str(local_port) + "!")
             raise self.exceptions.GlobalException
