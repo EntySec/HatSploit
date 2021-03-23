@@ -322,40 +322,6 @@
                 "Platform": "multi",
                 "Risk": "high"
             },
-            "vbulletin_widget_php/config_code_execution": {
-                "Path": "modules/exploit/multi/vbulletin_widget_php/config_code_execution",
-                "Name": "vBulletin Widget PHP Config Code Execution",
-                "Module": "exploit/multi/vbulletin_widget_php/config_code_execution",
-                "Authors": [
-                    "enty8080"
-                ],
-                "Description": "vBulletin 5.0.0 till 5.5.4 widget_php widgetConfig Remote Code Execution.",
-                "Dependencies": [
-                    ""
-                ],
-                "Comments": [
-                    ""
-                ],
-                "Platform": "multi",
-                "Risk": "high"
-            },
-            "vbulletin_widget_php/template_code_execution": {
-                "Path": "modules/exploit/multi/vbulletin_widget_php/template_code_execution",
-                "Name": "vBulletin Widget PHP Template Code Execution",
-                "Module": "exploit/multi/vbulletin_widget_php/template_code_execution",
-                "Authors": [
-                    "enty8080"
-                ],
-                "Description": "vBulletin 5.5.4 till 5.6.2 widget_php widget_tabbedcontainer_tab_panel Remote Code Execution.",
-                "Dependencies": [
-                    ""
-                ],
-                "Comments": [
-                    ""
-                ],
-                "Platform": "multi",
-                "Risk": "high"
-            },
             "ssh/libssh_code_execution": {
                 "Path": "modules/exploit/multi/ssh/libssh_code_execution",
                 "Name": "SSH LibSSH Code Execution",
