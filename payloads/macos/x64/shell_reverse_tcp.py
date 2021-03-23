@@ -45,6 +45,7 @@ class HatSploitPayload(Payload, PayloadGenerator, TCPClient, StringTools):
         'Comments': [
             ''
         ],
+        'Architecture': "x64",
         'Platform': "macos",
         'Risk': "high",
         'Type': "reverse_tcp"

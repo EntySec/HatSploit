@@ -46,6 +46,7 @@ class HatSploitPayload(Payload, PayloadGenerator, StringTools):
         'Comments': [
             ''
         ],
+        'Architecture': "x64",
         'Platform': "macos",
         'Risk': "low",
         'Type': "one_side"

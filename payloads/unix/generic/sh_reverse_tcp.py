@@ -43,7 +43,8 @@ class HatSploitPayload(Payload, TCPClient):
         'Comments': [
             ''
         ],
-        "Platform": "unix",
+        'Architecture': "generic",
+        'Platform': "unix",
         'Risk': "high",
         'Type': "reverse_tcp"
     }

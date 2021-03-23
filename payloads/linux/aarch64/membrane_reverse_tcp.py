@@ -50,6 +50,7 @@ class HatSploitPayload(Payload, TCPClient, StringTools):
         'Comments': [
             ''
         ],
+        'Architecture': "aarch64",
         'Platform': "linux",
         'Risk': "high",
         'Type': "reverse_tcp"

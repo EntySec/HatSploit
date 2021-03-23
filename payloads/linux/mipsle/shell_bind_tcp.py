@@ -44,6 +44,7 @@ class HatSploitPayload(Payload, PayloadGenerator, StringTools):
         'Comments': [
             ''
         ],
+        'Architecture': "mipsle",
         'Platform': "linux",
         'Risk': "high",
         'Type': "bind_tcp"

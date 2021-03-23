@@ -45,6 +45,7 @@ class HatSploitPayload(Payload, PayloadGenerator, TCPClient, StringTools):
         'Comments': [
             ''
         ],
+        'Architecture': "mipsbe",
         'Platform': "linux",
         'Risk': "high",
         'Type': "reverse_tcp"

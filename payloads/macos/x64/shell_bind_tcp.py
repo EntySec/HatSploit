@@ -44,6 +44,7 @@ class HatSploitPayload(Payload, PayloadGenerator, StringTools):
         'Comments': [
             ''
         ],
+        'Architecture': "x64",
         'Platform': "macos",
         'Risk': "high",
         'Type': "bind_tcp"
