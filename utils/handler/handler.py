@@ -49,7 +49,7 @@ class Handler(TCPClient, HTTPClient):
             self.badges.output_error("Failed to handle session!")
             return None, None
 
-    def connect_session(self, remote_host, remote_port, timeout=10, session=HatSploitSession):
+    def connect_session(self, remote_host, remote_port, timeout=None, session=HatSploitSession):
         try:
             client = self.connect_server(remote_host, remote_port, timeout)
             session = session()
@@ -66,8 +66,8 @@ class Handler(TCPClient, HTTPClient):
         session.details['Platform'] = payload['Platform']
         return session
 
-    def handle_bind_session(self, remote_host, remote_port, payload, timout=None, session=HatSploitSession):
-        new_session = self.connect_session(remote_host, remote_port, session)
+    def handle_bind_session(self, remote_host, remote_port, payload, timeout=None, session=HatSploitSession):
+        new_session = self.connect_session(remote_host, remote_port, timeout, session)
 
         if not new_session:
             return False
@@ -92,7 +92,7 @@ class Handler(TCPClient, HTTPClient):
                     session = stage_session
 
                 if payload['Type'].lower() == 'bind_tcp':
-                    new_session = self.connect_session(remote_host, remote_port, session)
+                    new_session = self.connect_session(remote_host, remote_port, timeout, session)
                     if not new_session:
                         self.badges.output_warning("Payload completed but no session was created.")
                         return True
@@ -100,7 +100,7 @@ class Handler(TCPClient, HTTPClient):
                 if payload['Type'].lower() == 'reverse_tcp':
                     local_host, local_port = self.tcp.get_local_host(), remote_port
 
-                    new_session, remote_host = self.listen_session(local_host, local_port, session)
+                    new_session, remote_host = self.listen_session(local_host, local_port, timeout, session)
                     if not new_session and not remote_host:
                         self.badges.output_warning("Payload completed but no session was created.")
                         return True
@@ -119,14 +119,14 @@ class Handler(TCPClient, HTTPClient):
         self.badges.output_success("Session " + str(session_id) + " opened!")
         return True
 
-    def handle_reverse_session(self, local_host, local_port, payload, session=HatSploitSession):
+    def handle_reverse_session(self, local_host, local_port, payload, timeout=None, session=HatSploitSession):
         if payload['Category'] in ['stager']:
             if payload['Instructions'] and payload['Payload']:
                 instructions = payload['Instructions']
                 stage = payload['Payload']
                 stage_session = payload['Session']
 
-                new_session, remote_host = self.listen_session(local_host, local_port, session)
+                new_session, remote_host = self.listen_session(local_host, local_port, timeout, session)
                 if not new_session and not remote_host:
                     return False
 
@@ -144,7 +144,7 @@ class Handler(TCPClient, HTTPClient):
                     session = stage_session
 
                 if payload['Type'].lower() == 'bind_tcp':
-                    new_session = self.connect_session(remote_host, remote_port, session)
+                    new_session = self.connect_session(remote_host, remote_port, timeout, session)
                     if not new_session:
                         self.badges.output_warning("Payload completed but no session was created.")
                         return True
@@ -159,7 +159,7 @@ class Handler(TCPClient, HTTPClient):
             else:
                 self.badges.output_warning("Payload you provided is not executable.")
 
-        new_session, remote_host = self.listen_session(local_host, local_port, session)
+        new_session, remote_host = self.listen_session(local_host, local_port, timeout, session)
         if not new_session and not remote_host:
             return False
 
