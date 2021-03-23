@@ -29,11 +29,10 @@ from core.base.storage import LocalStorage
 from core.cli.badges import Badges
 from core.modules.modules import Modules
 from data.utils.handler.handler.session import HatSploitSession
-from utils.http.http import HTTPClient
 from utils.tcp.tcp import TCPClient
 
 
-class Handler(TCPClient, HTTPClient):
+class Handler(TCPClient):
     sessions = Sessions()
     local_storage = LocalStorage()
     modules = Modules()
