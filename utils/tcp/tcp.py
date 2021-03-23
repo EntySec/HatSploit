@@ -163,15 +163,19 @@ class TCPClient:
 
             server.connect((remote_host, int(remote_port)))
             self.badges.output_process("Establishing connection...")
+        except socket.timeout:
+            self.badges.output_warning("Connection timeout.")
+            return None
         except Exception:
             self.badges.output_error("Failed to connect to " + address + "!")
             raise self.exceptions.GlobalException
         return server
 
-    def listen(self, local_host, local_port):
+    def listen(self, local_host, local_port, timeout=None):
         try:
             server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+            server.settimeout(timeout)
             server.bind((local_host, int(local_port)))
             server.listen(1)
 
@@ -181,6 +185,9 @@ class TCPClient:
             self.badges.output_process("Establishing connection...")
 
             server.close()
+        except socket.timeout:
+            self.badges.output_warning("Timeout waiting for connection.")
+            return None, None
         except Exception:
             self.badges.output_error("Failed to listen on port " + str(local_port) + "!")
             raise self.exceptions.GlobalException
