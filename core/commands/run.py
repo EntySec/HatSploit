@@ -89,6 +89,8 @@ class HatSploitCommand(Command):
             else:
                 try:
                     if current_payload:
+                        payload_name = current_module.payload['Value']
+                        self.output_process(f"Configuring {payload_name} payload...")
                         current_payload.run()
 
                         current_module.payload['Category'] = current_payload.details['Category']
