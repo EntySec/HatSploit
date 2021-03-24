@@ -42,6 +42,23 @@
             }
         },
         "multi": {
+            "scanner/ble_scanner": {
+                "Path": "modules/auxiliary/multi/scanner/ble_scanner",
+                "Name": "Bluetooth Low Energy Scanner",
+                "Module": "auxiliary/multi/scanner/ble_scanner",
+                "Authors": [
+                    "enty8080"
+                ],
+                "Description": "Scan for bluetooth low energy devices.",
+                "Dependencies": [
+                    "bluepy"
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Platform": "multi",
+                "Risk": "high"
+            }
             "scanner/network_scanner": {
                 "Path": "modules/auxiliary/multi/scanner/network_scanner",
                 "Name": "Network Scanner",
@@ -144,6 +161,23 @@
                 "Platform": "multi",
                 "Risk": "medium"
             },
+            "enumerate/ble_enumerate": {
+                "Path": "modules/auxiliary/multi/enumerate/ble_enumerate",
+                "Name": "Bluetooth Low Energy Enumerate",
+                "Module": "auxiliary/multi/enumerate/ble_enumerate",
+                "Authors": [
+                    "enty8080"
+                ],
+                "Description": "Enumerate bluetooth low energy devices characteristics.",
+                "Dependencies": [
+                    "bluepy"
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Platform": "multi",
+                "Risk": "high"
+            }
             "payload/generator": {
                 "Path": "modules/auxiliary/multi/payload/generator",
                 "Name": "Multi Payload Generator",
