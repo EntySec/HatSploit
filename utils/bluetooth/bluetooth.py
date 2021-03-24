@@ -24,7 +24,9 @@
 # SOFTWARE.
 #
 
+import time
 import struct
+import binascii
 
 from core.cli.badges import Badges
 from bluepy.btle import Scanner, DefaultDelegate
@@ -32,8 +34,9 @@ from bluepy.btle import Peripheral, ScanEntry, AssignedNumbers
 
 
 class ScanDelegate(DefeultDelegate):
-    def __init__(self, mac, buffering=False, enumeration=False):
+    def __init__(self, mac=None, buffering=False, enumeration=False):
         DefaultDelegate.__init__(self)
+
         self.mac = mac
         self.buffering = buffering
         self.enumeration = enumeration
@@ -52,8 +55,57 @@ class BluetoothDevice(ScanEntry):
 
 
 class BluetoothScanner(Scanner):
-    badges = Badges()
+    def __init__(self, mac=None, iface=0):
+        Scanner.__init__(self, iface)
 
+        self.iface = iface
+        self.mac = mac
+
+    def _decode_address(self, response):
+        address = binascii.b2a_hex(response["addr"][0]).decode("utf-8")
+        return ":".join([address[i: i + 2] for i in range(0, 12, 2)])
+
+    def _find_or_create(self, address):
+        if address in self.scanned:
+            dev = self.scanned[address]
+        else:
+            dev = BluetoothDevice(address, self.iface)
+            self.scanned[address] = dev
+
+        return dev
+    
+    def process(self, timeout=10.0):
+        start = time.time()
+
+        while true:
+            if timeout:
+                remain = start + timeout - time.time()
+                if remain <= 0.0:
+                    break
+            else:
+                remain = None
+
+            response = self._waitResp(["scan", "stat"], remain)
+            if response is None:
+                break
+
+            responseType = response["rsp"][0]
+            if responseType == "stat":
+                if response["state"][0] == "disc":
+                    self._mgmtCmd("scan")
+
+            elif responseType == "scan":
+                address = self._decode_address(response)
+
+                if not self.mac or address == self.mac:
+                    dev = self._find_or_create(address)
+                    newData = dev._update(response)
+
+                    if not self.delegate:
+                        self.delegate.handleDiscovery(dev, (dev.updateCount <= 1), newData)
+
+                    if self.mac and dev.addr == self.mac:
+                        break
 
 class BluetoothClient:
     badges = Badges()
