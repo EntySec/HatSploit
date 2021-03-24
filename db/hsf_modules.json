@@ -58,7 +58,7 @@
                 ],
                 "Platform": "multi",
                 "Risk": "high"
-            }
+            },
             "scanner/network_scanner": {
                 "Path": "modules/auxiliary/multi/scanner/network_scanner",
                 "Name": "Network Scanner",
@@ -177,7 +177,7 @@
                 ],
                 "Platform": "multi",
                 "Risk": "high"
-            }
+            },
             "payload/generator": {
                 "Path": "modules/auxiliary/multi/payload/generator",
                 "Name": "Multi Payload Generator",
@@ -254,6 +254,23 @@
             }
         },
         "multi": {
+            "bluetooth/ble_write": {
+                "Path": "modules/exploit/multi/bluetooth/ble_write",
+                "Name": "Bluetooth Low Energy Write",
+                "Module": "exploit/multi/bluetooth/ble_write",
+                "Authors": [
+                    "enty8080"
+                ],
+                "Description": "Write data to bluetooth low energy device.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Platform": "multi",
+                "Risk": "high"
+            },
             "stager/reverse_tcp": {
                 "Path": "modules/exploit/multi/stager/reverse_tcp",
                 "Name": "Reverse TCP Stager",
