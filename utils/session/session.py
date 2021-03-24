@@ -29,6 +29,6 @@ from core.base.sessions import Sessions
 class SessionTools:
     sessions = Sessions()
 
-    def get_session(self, platform, session_type, session_id):
-        session = self.sessions.get_session(platform, session_type, session_id)
+    def get_session(self, session_platform, session_type, session_id):
+        session = self.sessions.get_session(session_platform, session_type, session_id)
         return session
