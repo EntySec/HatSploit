@@ -31,7 +31,7 @@ from core.base.config import Config
 from core.cli.badges import Badges
 from core.cli.colors import Colors
 from core.cli.parser import Parser
-from core.util.colors_script import ColorsScript
+from core.utils.ui.colors_script import ColorsScript
 
 
 class Banner:
