@@ -35,7 +35,8 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 
 class HTTPClient:
-    badges = Badges()
+    def __init__(self):
+        self.badges = Badges()
 
     def http_request(self, method, host, port, path, ssl=False, session=requests, **kwargs):
         kwargs.setdefault("timeout", HTTP_TIMEOUT)
