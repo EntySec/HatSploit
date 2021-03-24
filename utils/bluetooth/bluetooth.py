@@ -24,4 +24,23 @@
 # SOFTWARE.
 #
 
+import struct
+
+from core.cli.badges import Badges
+from bluepy.btle import Scanner, DefaultDelegate
+from bluepy.btle import Peripheral, ScanEntry, AssignedNumbers
+
+
+class BluetoothDevice(ScanEntry):
+    badges = Badges()
+
+
+class BluetoothScanner(Scanner):
+    badges = Badges()
+
+
 class BluetoothClient:
+    badges = Badges()
+
+    def ble_scan(self, mac):
+        pass
