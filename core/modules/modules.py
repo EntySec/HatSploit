@@ -242,12 +242,10 @@ class Modules:
                             value
                         )
                         return
-                    else:
-                        self.badges.output_error("Incompatible payload type, category or platform!")
-                        return
-                else:
-                    self.badges.output_error("Invalid payload, expected valid payload!")
+                    self.badges.output_error("Incompatible payload type, category or platform!")
                     return
+                self.badges.output_error("Invalid payload, expected valid payload!")
+                return
 
             if hasattr(current_module, "options"):
                 if option in current_module.options.keys():
@@ -262,9 +260,8 @@ class Modules:
                             value
                         )
                     return
-                else:
-                    self.badges.output_error("Unrecognized option!")
-                    return
+                self.badges.output_error("Unrecognized option!")
+                return
 
             if hasattr(current_module, "payload"):
                 current_payload = self.payloads.get_current_payload()
