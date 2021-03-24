@@ -51,7 +51,10 @@ class ScanDelegate(DefeultDelegate):
             dev.print_info()
 
 class BluetoothDevice(ScanEntry):
-    badges = Badges()
+    def __init__(self, address, iface):
+        '''
+        NOT IMPLEMENTED YET
+        '''
 
 
 class BluetoothScanner(Scanner):
