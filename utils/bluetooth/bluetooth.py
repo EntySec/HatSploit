@@ -31,6 +31,22 @@ from bluepy.btle import Scanner, DefaultDelegate
 from bluepy.btle import Peripheral, ScanEntry, AssignedNumbers
 
 
+class ScanDelegate(DefeultDelegate):
+    def __init__(self, mac, buffering=False, enumeration=False):
+        DefaultDelegate.__init__(self)
+        self.mac = mac
+        self.buffering = buffering
+        self.enumeration = enumeration
+
+    def handleDiscovery(self, dev, isNewDev, isNewData):
+        if not isNewDev:
+            return
+        elif self.mac and dev.addr != self.mac:
+            return
+
+        if self.buffering:
+            dev.print_info()
+
 class BluetoothDevice(ScanEntry):
     badges = Badges()
 
@@ -42,5 +58,19 @@ class BluetoothScanner(Scanner):
 class BluetoothClient:
     badges = Badges()
 
-    def ble_scan(self, mac):
-        pass
+    def ble_scan(self, mac=None, buffering=False, enumeration=False, timeout=10):
+        scanner = BluetoothScanner(mac).withDelegate(ScanDelegate(mac, buffering, enumeration))
+
+        if mac is not None:
+            self.badges.output_process("Scanning BLE device...")
+        else:
+            self.badges.output_process("Scanning for BLE devices...")
+
+        devices = list()
+        try:
+            devices = [result for result in scanner.scan(timeout)]
+        except Exception as e:
+            self.badges.output_error("Failed to scan. Check your bluetooth hardware.")
+            self.badges.output_information(f"Trace: {str(e)}")
+
+        return devices
