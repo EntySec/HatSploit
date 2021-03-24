@@ -29,11 +29,10 @@ from core.base.storage import LocalStorage
 from core.cli.badges import Badges
 from core.modules.modules import Modules
 from data.utils.handler.handler.session import HatSploitSession
-from utils.http.http import HTTPClient
-from utils.tcp.tcp import TCPClient
+from core.utils.tcp.tcp import TCP
 
 
-class Handler(TCPClient, HTTPClient):
+class Handler(TCP):
     sessions = Sessions()
     local_storage = LocalStorage()
     modules = Modules()
@@ -51,7 +50,7 @@ class Handler(TCPClient, HTTPClient):
 
     def connect_session(self, remote_host, remote_port, timeout=None, session=HatSploitSession):
         try:
-            client = self.connect_server(remote_host, remote_port, timeout)
+            client = self.connect(remote_host, remote_port, timeout)
             session = session()
             session.open(client)
             return session
@@ -177,7 +176,7 @@ class Handler(TCPClient, HTTPClient):
 
     def handle_session(self, host, port, method, payload, timeout=None, session=HatSploitSession):
         if method.lower() == 'reverse':
-            return self.handle_reverse_session(host, port, payload, session, timeout)
+            return self.handle_reverse_session(host, port, payload, timeout, session)
         if method.lower() == 'bind':
-            return self.handle_bind_session(host, port, payload, session, timeout)
+            return self.handle_bind_session(host, port, payload, timeout, session)
         return None

@@ -72,14 +72,9 @@ class HatSploitModule(Module, HTTPClient):
 
     def run(self):
         remote_host, remote_port, ssl = self.parse_options(self.options)
-
-        if ssl in ['yes', 'y']:
-            ssl = True
-        else:
-            ssl = False
+        ssl = ssl in ['yes', 'y']
 
         self.output_process(f"Scanning {remote_host}...")
-
         file = open(
             self.config.path_config['base_paths']['data_path'] +
             'modules/auxiliary/multi/scanner/directory_scanner/directories.txt'

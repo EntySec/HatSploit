@@ -99,6 +99,14 @@ class HatSploitCommand(Command):
             options_data = list()
             headers = ("Option", "Value", "Required", "Description")
             options = current_module.options
+
+            if hasattr(current_module, "payload"):
+                options['Payload'] = dict()
+                options['Payload']['Description'] = current_module.payload['Description']
+                options['Payload']['Value'] = current_module.payload['Value']
+                options['Payload']['Type'] = None
+                options['Payload']['Required'] = True
+
             for option in sorted(options.keys()):
                 value, required = options[option]['Value'], options[option]['Required']
                 if required:
@@ -108,9 +116,6 @@ class HatSploitCommand(Command):
                 if not value and value != 0:
                     value = ""
                 options_data.append((option, value, required, options[option]['Description']))
-            if hasattr(current_module, "payload"):
-                payload = current_module.payload
-                options_data.append(('PAYLOAD', payload['Value'], "yes", payload['Description']))
             self.print_table("Module Options (" + current_module.details['Module'] + ")", headers, *options_data)
 
         if hasattr(current_module, "payload"):
@@ -150,11 +155,7 @@ class HatSploitCommand(Command):
     def run(self, argc, argv):
         information = argv[0]
 
-        if self.modules.check_current_module():
-            options = True
-        else:
-            options = False
-
+        options = self.module.check_current_module()
         payloads = self.local_storage.get("payloads")
         modules = self.local_storage.get("modules")
         plugins = self.local_storage.get("plugins")

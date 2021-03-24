@@ -27,11 +27,11 @@
 import shutil
 import subprocess
 
+from core.utils.tcp.tcp import TCP
 from core.cli.badges import Badges
-from utils.tcp.tcp import TCPClient
 
 
-class ADBClient(TCPClient):
+class ADBClient(TCP):
     badges = Badges()
 
     adb = "adb"
@@ -57,7 +57,7 @@ class ADBClient(TCPClient):
                 return False
         return True
 
-    def adb_connect(self, target_addr):
+    def connect_adb_client(self, target_addr):
         if self.check_tcp_port(target_addr, 5555):
             server_log = self.execute_adb_command("connect", target_addr)
 
@@ -65,7 +65,7 @@ class ADBClient(TCPClient):
                 return False
             return True
 
-    def adb_disconnect(self, target_addr):
+    def disconnect_adb_client(self, target_addr):
         server_log = self.execute_adb_command("disconnect", target_addr)
 
         if not server_log or "error" in server_log:

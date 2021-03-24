@@ -31,10 +31,10 @@ from core.base.config import Config
 from core.cli.badges import Badges
 from core.cli.colors import Colors
 from core.cli.parser import Parser
-from core.util.colors_script import ColorsScript
+from core.utils.ui.colors_script import ColorsScript
 
 
-class Tip:
+class Banner:
     def __init__(self):
         self.parser = Parser()
         self.config = Config()
@@ -43,20 +43,20 @@ class Tip:
 
         self.colors_script = ColorsScript()
 
-    def print_random_tip(self):
-        if os.path.exists(self.config.path_config['base_paths']['tips_path']):
-            tips = list()
-            all_tips = os.listdir(self.config.path_config['base_paths']['tips_path'])
-            for tip in all_tips:
-                tips.append(tip)
-            if tips:
-                tip = ""
-                while not tip:
-                    random_tip = random.randint(0, len(tips) - 1)
-                    tip = self.colors_script.parse_colors_script(
-                        self.config.path_config['base_paths']['tips_path'] + tips[random_tip])
-                self.badges.output_empty(self.colors.END + "HatSploit Tip: " + tip + self.colors.END)
+    def print_random_banner(self):
+        if os.path.exists(self.config.path_config['base_paths']['banners_path']):
+            banners = list()
+            all_banners = os.listdir(self.config.path_config['base_paths']['banners_path'])
+            for banner in all_banners:
+                banners.append(banner)
+            if banners:
+                banner = ""
+                while not banner:
+                    random_banner = random.randint(0, len(banners) - 1)
+                    banner = self.colors_script.parse_colors_script(
+                        self.config.path_config['base_paths']['banners_path'] + banners[random_banner])
+                self.badges.output_empty(self.colors.END + banner + self.colors.END)
             else:
-                self.badges.output_warning("No tips detected.")
+                self.badges.output_warning("No banners detected.")
         else:
-            self.badges.output_warning("No tips detected.")
+            self.badges.output_warning("No banners detected.")
