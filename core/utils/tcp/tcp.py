@@ -107,4 +107,3 @@ class TCP:
             self.badges.output_error("Failed to listen on port " + str(local_port) + "!")
             raise self.exceptions.GlobalException
         return client, address[0]
-
