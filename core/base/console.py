@@ -37,8 +37,8 @@ from core.base.storage import LocalStorage
 from core.cli.badges import Badges
 from core.cli.colors import Colors
 from core.modules.modules import Modules
-from core.util.banner import Banner
-from core.util.tip import Tip
+from core.utils.ui.banner import Banner
+from core.utils.ui.tip import Tip
 
 
 class Console:
