@@ -155,7 +155,7 @@ class HatSploitCommand(Command):
     def run(self, argc, argv):
         information = argv[0]
 
-        options = self.module.check_current_module()
+        options = self.modules.check_current_module()
         payloads = self.local_storage.get("payloads")
         modules = self.local_storage.get("modules")
         plugins = self.local_storage.get("plugins")
