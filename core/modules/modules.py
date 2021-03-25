@@ -265,8 +265,6 @@ class Modules:
                             value
                         )
                     return
-                self.badges.output_error("Unrecognized option!")
-                return
 
             if hasattr(current_module, "payload"):
                 current_payload = self.payloads.get_current_payload()
