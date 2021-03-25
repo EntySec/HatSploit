@@ -356,6 +356,23 @@
                 "Platform": "multi",
                 "Risk": "high"
             },
+            "f5_big_ip_icontrol/remote_code_execution": {
+                "Path": "modules/exploit/multi/f5_big_ip_icontrol/remote_code_execution",
+                "Name": "F5 Big-IP iControl Remote Code Execution",
+                "Module": "exploit/multi/f5_big_ip_icontrol/remote_code_execution",
+                "Authors": [
+                    "enty8080"
+                ],
+                "Description": "Remote Code Execution in iControl REST.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Platform": "multi",
+                "Risk": "high"
+            },
             "nostromo_httpd/remote_code_execution": {
                 "Path": "modules/exploit/multi/nostromo_httpd/remote_code_execution",
                 "Name": "Nostromo Httpd Remote Code Execution",
