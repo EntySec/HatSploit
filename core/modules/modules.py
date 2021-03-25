@@ -141,6 +141,11 @@ class Modules:
 
     def compare_types(self, value_type, value):
         if value_type and not value_type.lower == 'all':
+            if value_type.lower() == 'mac':
+                if not self.types.is_mac(value):
+                    self.badges.output_error("Invalid value, expected valid MAC!")
+                    return False
+
             if value_type.lower() == 'ip':
                 if not self.types.is_ip(value):
                     self.badges.output_error("Invalid value, expected valid IP!")
