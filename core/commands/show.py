@@ -98,7 +98,7 @@ class HatSploitCommand(Command):
         if hasattr(current_module, "options"):
             options_data = list()
             headers = ("Option", "Value", "Required", "Description")
-            options = current_module.options
+            options = current_module.options.copy()
 
             if hasattr(current_module, "payload"):
                 options['PAYLOAD'] = dict()
