@@ -101,11 +101,11 @@ class HatSploitCommand(Command):
             options = current_module.options
 
             if hasattr(current_module, "payload"):
-                options['Payload'] = dict()
-                options['Payload']['Description'] = current_module.payload['Description']
-                options['Payload']['Value'] = current_module.payload['Value']
-                options['Payload']['Type'] = None
-                options['Payload']['Required'] = True
+                options['PAYLOAD'] = dict()
+                options['PAYLOAD']['Description'] = current_module.payload['Description']
+                options['PAYLOAD']['Value'] = current_module.payload['Value']
+                options['PAYLOAD']['Type'] = None
+                options['PAYLOAD']['Required'] = True
 
             for option in sorted(options.keys()):
                 value, required = options[option]['Value'], options[option]['Required']
