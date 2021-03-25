@@ -24,6 +24,10 @@
 # SOFTWARE.
 #
 
+#
+# Based on threat6/routersploit bluetooth module
+#
+
 import time
 import struct
 import binascii
