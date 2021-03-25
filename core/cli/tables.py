@@ -72,7 +72,7 @@ class Tables:
             for idx, element in enumerate(arg):
                 content_line = "".join((
                     content_line,
-                    "{:<{}}".format(element, fill[idx])
+                    "{:<{}}".format(str(element), fill[idx])
                 ))
             self.badges.output_empty(content_line)
         self.badges.output_empty("")
