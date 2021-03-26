@@ -48,7 +48,7 @@ class ScanDelegate(DefeultDelegate):
     def handleDiscovery(self, dev, isNewDev, isNewData):
         if not isNewDev:
             return
-        elif self.mac and dev.addr != self.mac:
+        if self.mac and dev.addr != self.mac:
             return
 
         if self.buffering:
