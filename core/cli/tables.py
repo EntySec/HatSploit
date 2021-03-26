@@ -24,12 +24,16 @@
 # SOFTWARE.
 #
 
+#
+# Based on threat6/routersploit printer module
+#
+
 from core.cli.badges import Badges
 
 
 class Tables:
     badges = Badges()
-
+    
     def print_table(self, name, headers, *args, **kwargs) -> None:
         extra_fill = kwargs.get("extra_fill", 4)
         header_separator = kwargs.get("header_separator", "-")
@@ -68,7 +72,7 @@ class Tables:
             for idx, element in enumerate(arg):
                 content_line = "".join((
                     content_line,
-                    "{:<{}}".format(element, fill[idx])
+                    "{:<{}}".format(str(element), fill[idx])
                 ))
             self.badges.output_empty(content_line)
         self.badges.output_empty("")

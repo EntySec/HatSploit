@@ -98,14 +98,14 @@ class HatSploitCommand(Command):
         if hasattr(current_module, "options"):
             options_data = list()
             headers = ("Option", "Value", "Required", "Description")
-            options = current_module.options
+            options = current_module.options.copy()
 
             if hasattr(current_module, "payload"):
-                options['Payload'] = dict()
-                options['Payload']['Description'] = current_module.payload['Description']
-                options['Payload']['Value'] = current_module.payload['Value']
-                options['Payload']['Type'] = None
-                options['Payload']['Required'] = True
+                options['PAYLOAD'] = dict()
+                options['PAYLOAD']['Description'] = current_module.payload['Description']
+                options['PAYLOAD']['Value'] = current_module.payload['Value']
+                options['PAYLOAD']['Type'] = None
+                options['PAYLOAD']['Required'] = True
 
             for option in sorted(options.keys()):
                 value, required = options[option]['Value'], options[option]['Required']
@@ -155,7 +155,7 @@ class HatSploitCommand(Command):
     def run(self, argc, argv):
         information = argv[0]
 
-        options = self.module.check_current_module()
+        options = self.modules.check_current_module()
         payloads = self.local_storage.get("payloads")
         modules = self.local_storage.get("modules")
         plugins = self.local_storage.get("plugins")

@@ -24,6 +24,10 @@
 # SOFTWARE.
 #
 
+#
+# Based on threat6/routersploit http module
+#
+
 import requests
 import socket
 import urllib3

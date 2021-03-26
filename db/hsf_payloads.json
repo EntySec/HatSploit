@@ -4,6 +4,26 @@
     },
     "unix": {
         "generic": {
+            "netcat_reverse_tcp": {
+                "Path": "payloads/unix/generic/netcat_reverse_tcp",
+                "Category": "single",
+                "Name": "Netcat Shell Reverse TCP",
+                "Payload": "unix/generic/netcat_reverse_tcp",
+                "Authors": [
+                    "enty8080"
+                ],
+                "Description": "Netcat shell reverse TCP payload.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Architecture": "generic",
+                "Platform": "unix",
+                "Risk": "high",
+                "Type": "reverse_tcp"
+            },
             "perl_reverse_tcp": {
                 "Path": "payloads/unix/generic/perl_reverse_tcp",
                 "Category": "single",
