@@ -65,13 +65,13 @@ class Handler(TCP):
         session.details['Platform'] = payload['Platform']
         return session
 
-    def handle_bind_session(self, remote_host, remote_port, payload, timeout=None, session=HatSploitSession):
+    def handle_bind_session(self, remote_host, remote_port, payload, timeout=None, staged=True, session=HatSploitSession):
         new_session = self.connect_session(remote_host, remote_port, timeout, session)
 
         if not new_session:
             return False
 
-        if payload['Category'] in ['stager']:
+        if payload['Category'] in ['stager'] and staged:
             if payload['Instructions'] and payload['Payload']:
                 instructions = payload['Instructions']
                 stage = payload['Payload']
@@ -118,8 +118,8 @@ class Handler(TCP):
         self.badges.output_success("Session " + str(session_id) + " opened!")
         return True
 
-    def handle_reverse_session(self, local_host, local_port, payload, timeout=None, session=HatSploitSession):
-        if payload['Category'] in ['stager']:
+    def handle_reverse_session(self, local_host, local_port, payload, timeout=None, staged=True, session=HatSploitSession):
+        if payload['Category'] in ['stager'] and staged:
             if payload['Instructions'] and payload['Payload']:
                 instructions = payload['Instructions']
                 stage = payload['Payload']
@@ -174,7 +174,7 @@ class Handler(TCP):
         self.badges.output_success("Session " + str(session_id) + " opened!")
         return True
 
-    def handle_session(self, host, port, method, payload, timeout=None, session=HatSploitSession):
+    def handle_session(self, host, port, method, payload, timeout=None, staged=True, session=HatSploitSession):
         if method.lower() == 'reverse':
             return self.handle_reverse_session(host, port, payload, timeout, session)
         if method.lower() == 'bind':
