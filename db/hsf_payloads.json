@@ -192,6 +192,30 @@
             }
         }
     },
+    "android": {
+        "armle": {
+            "shell_reverse_tcp": {
+                "Path": "payloads/android/armle/shell_reverse_tcp",
+                "Category": "stager",
+                "Name": "Android armle Shell Reverse TCP",
+                "Payload": "android/armle/shell_reverse_tcp",
+                "Authors": [
+                    "enty8080"
+                ],
+                "Description": "Shell reverse TCP payload for Android armle.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Architecture": "armle",
+                "Platform": "android",
+                "Risk": "high",
+                "Type": "bind_tcp"
+            }
+        }
+    },
     "linux": {
         "aarch64": {
             "membrane_reverse_tcp": {
