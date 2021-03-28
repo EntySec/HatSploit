@@ -27,10 +27,9 @@
 from core.lib.payload import Payload
 from utils.payload.payload import PayloadGenerator
 from utils.tcp.tcp import TCPClient
-from utils.string.string import StringTools
 
 
-class HatSploitPayload(Payload, PayloadGenerator, TCPClient, StringTools):
+class HatSploitPayload(Payload, PayloadGenerator, TCPClient):
     details = {
         'Category': "stager",
         'Name': "Linux x86 Shell Reverse TCP",
