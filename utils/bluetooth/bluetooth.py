@@ -37,7 +37,7 @@ from bluepy.btle import Scanner, DefaultDelegate
 from bluepy.btle import Peripheral, ScanEntry, AssignedNumbers
 
 
-class ScanDelegate(DefeultDelegate):
+class ScanDelegate(DefaultDelegate):
     def __init__(self, mac=None, buffering=False, enumeration=False):
         DefaultDelegate.__init__(self)
 
