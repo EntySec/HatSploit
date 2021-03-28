@@ -139,7 +139,7 @@ class Handler(TCP):
                 return False
 
         if payload['Type'].lower() == 'one_side':
-            self.badges.output_process("Payload completed but no session was created.")
+            self.badges.output_warning("Payload completed but no session was created.")
             return True
 
         session = payload['Session'] if payload['Session'] is not None else HatSploitSession
