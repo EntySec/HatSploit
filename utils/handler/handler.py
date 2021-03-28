@@ -88,7 +88,11 @@ class Handler(TCP):
                 sender(command)
 
         args = args if args is not None else ""
-        sender(f"chmod 777 {path}; sh -c '{path} {args}' 2>/dev/null &")
+
+        if encode:
+            sender(f"chmod 777 {path}; sh -c '{path} {args}' 2>/dev/null &\n".encode())
+        else:
+            sender(f"chmod 777 {path}; sh -c '{path} {args}' 2>/dev/null &")
 
     def set_session_details(self, payload, session):
         if not session.details['Type']:
