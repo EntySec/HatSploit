@@ -96,6 +96,4 @@ class HatSploitPayload(Payload, TCPClient, StringTools):
         instructions += f"sh -c '/tmp/{filename} {remote_data}' 2>/dev/null &"
         instructions += "\n"
 
-        self.payload = payload
-        self.instructions = instructions
-        self.session = HatSploitSession
+        return payload, HatSploitSession
