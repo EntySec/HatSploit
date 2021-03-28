@@ -80,7 +80,7 @@ class HatSploitPayload(Payload, TCPClient):
 
         try:
             binary = open(self.config.path_config['base_paths'][
-                              'data_path'] + 'libs/payloads/macos/x64/membrane_reverse_tcp/bin/membrane.bin', 'rb')
+                              'data_path'] + 'payloads/macos/x64/membrane_reverse_tcp/bin/membrane.bin', 'rb')
             payload = binary.read()
             binary.close()
         except Exception:
