@@ -24,6 +24,9 @@
 # SOFTWARE.
 #
 
+import os
+import binascii
+
 from core.base.sessions import Sessions
 from core.base.storage import LocalStorage
 from core.cli.badges import Badges
@@ -60,6 +63,7 @@ class Handler(TCP):
 
     def echo_stage(self, payload, sender, args=None, location='/tmp'):
         self.badges.output_process("Sending payload stage...")
+        filename = binascii.hexlify(os.urandom(8)).decode()
         path = location + '/' + filename
 
         echo_stream = 'echo -ne "{}" >> {}'
