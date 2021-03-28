@@ -94,9 +94,8 @@ class Handler(TCP):
             self.badges.output_error("Payload stage is not found!")
             return False
 
-        session = payload['Session'] if payload['Session'] is not None else HatSploitSession
-
         if sender is not None:
+            session = payload['Session'] if payload['Session'] is not None else HatSploitSession
             if payload['Category'].lower() == 'stager':
                 self.echo_stage(payload['Payload'], sender, payload['Args'], location)
             elif payload['Category'].lower() == 'single':
@@ -107,12 +106,12 @@ class Handler(TCP):
         else:
             if method is not None:
                 if method.lower() == 'reverse_tcp':
-                    new_session, remote_host = self.listen_session(host, port, timeout, session)
+                    new_session, remote_host = self.listen_session(host, port, timeout, HatSploitSession)
                     if not new_session and not remote_host:
                         return False
 
                 if method.lower() == 'bind_tcp':
-                    new_session = self.connect_session(host, port, timeout, session)
+                    new_session = self.connect_session(host, port, timeout, HatSploitSession)
                     remote_host = host
                     if not new_session:
                         return False
@@ -131,6 +130,8 @@ class Handler(TCP):
         if payload['Type'].lower() == 'one_side':
             self.badges.output_process("Payload completed but no session was created.")
             return True
+
+        session = payload['Session'] if payload['Session'] is not None else HatSploitSession
 
         if payload['Type'].lower() == 'bind_tcp':
             new_session = self.connect_session(host, port, timeout, session)
