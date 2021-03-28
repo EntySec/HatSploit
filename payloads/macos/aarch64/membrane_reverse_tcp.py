@@ -30,10 +30,9 @@ from core.base.config import Config
 from core.lib.payload import Payload
 from data.payloads.macos.x64.membrane_reverse_tcp.core.session import HatSploitSession
 from utils.tcp.tcp import TCPClient
-from utils.string.string import StringTools
 
 
-class HatSploitPayload(Payload, TCPClient, StringTools):
+class HatSploitPayload(Payload, TCPClient):
     config = Config()
 
     details = {
