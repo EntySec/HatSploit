@@ -73,10 +73,10 @@ class Handler(TCP):
         size = len(payload)
         num_parts = int(size / echo_max_length) + 1
 
-        self.badges.output_process(f"Sending payload to {path}")
+        self.badges.output_process(f"Sending payload to {path}...")
         for i in range(0, num_parts):
             current = i * echo_max_length
-            print_status("Transferring {}/{} bytes".format(current, len(payload)))
+            self.badges.output_process("Transferring {}/{} bytes...".format(current, len(payload)))
 
             block = str(binascii.hexlify(payload[current:current + echo_max_length]), "utf-8")
             block = echo_prefix + echo_prefix.join(a + b for a, b in zip(block[::2], block[1::2]))
