@@ -66,6 +66,6 @@ class HatSploitModule(Module, SessionTools):
         session = self.get_session(self.details['Platform'], "membrane", session)
         if session:
             self.output_process("Sending message to device...")
-            status, output = session.send_command("say", message)
+            status, output = session.send_command("say", message, output=False)
             if not status:
                 self.output_error("Failed to say message!")
