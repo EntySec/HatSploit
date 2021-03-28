@@ -129,7 +129,7 @@ class Handler(TCP):
                         return False
 
                 if payload['Category'].lower() == 'stager':
-                    self.echo_stage(payload['Payload'], new_session.send_command, payload['Args'], location)
+                    self.echo_stage(payload['Payload'], new_session.send_command, payload['Args'], location, encode=True)
                 elif payload['Category'].lower() == 'single':
                     new_session.send_command(payload['Payload'])
                 else:
