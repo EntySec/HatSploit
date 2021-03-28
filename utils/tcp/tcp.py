@@ -99,13 +99,14 @@ class TCPClient(TCP):
             return result
         return None
 
-    def send_cmd(self, command, timeout=10):
+    def send_cmd(self, command, output=True, timeout=10):
         if self.client:
             buffer = command.encode()
             self.send(buffer)
 
-            output = self.recv(timeout)
-            output = output.decode().strip()
+            if output:
+                output = self.recv(timeout)
+                output = output.decode().strip()
 
-            return output
+                return output
         return None
