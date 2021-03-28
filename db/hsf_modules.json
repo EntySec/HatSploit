@@ -235,23 +235,6 @@
             }
         },
         "android": {
-            "adb/payload_dropper": {
-                "Path": "modules/exploit/android/adb/payload_dropper",
-                "Name": "Android ADB Payload Dropper",
-                "Module": "exploit/android/adb/payload_dropper",
-                "Authors": [
-                    "enty8080"
-                ],
-                "Description": "Android ADB remotely upload and execute payload.",
-                "Dependencies": [
-                    ""
-                ],
-                "Comments": [
-                    ""
-                ],
-                "Platform": "android",
-                "Risk": "high"
-            },
             "adb/remote_code_execution": {
                 "Path": "modules/exploit/android/adb/remote_code_execution",
                 "Name": "Android ADB Remote Code Execution",
