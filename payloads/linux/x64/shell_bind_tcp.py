@@ -26,10 +26,9 @@
 
 from core.lib.payload import Payload
 from utils.payload.payload import PayloadGenerator
-from utils.string.string import StringTools
 
 
-class HatSploitPayload(Payload, PayloadGenerator, StringTools):
+class HatSploitPayload(Payload, PayloadGenerator):
     details = {
         'Category': "stager",
         'Name': "Linux x64 Shell Bind TCP",
