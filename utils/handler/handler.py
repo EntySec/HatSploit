@@ -66,9 +66,9 @@ class Handler(TCP):
         filename = binascii.hexlify(os.urandom(8)).decode()
         path = location + '/' + filename
 
-        echo_stream = 'printf "{}" >> {}'
+        echo_stream = '/bin/bash -c "printf \'{}\' >> {}"'
         echo_prefix = "\\x"
-        echo_max_length = 30
+        echo_max_length = 100
 
         size = len(payload)
         num_parts = int(size / echo_max_length) + 1
