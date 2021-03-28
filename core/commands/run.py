@@ -100,6 +100,8 @@ class HatSploitCommand(Command):
                                 payload, args = payload_data[0], payload_data[1]
                             elif len(payload_data) == 3:
                                 payload, args, session = payload_data[0], payload_data[1], payload_data[2]
+                        else:
+                            payload = payload_data
 
                         current_module.payload['Category'] = current_payload.details['Category']
                         current_module.payload['Platform'] = current_payload.details['Platform']
