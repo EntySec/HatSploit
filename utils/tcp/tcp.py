@@ -105,8 +105,11 @@ class TCPClient(TCP):
             self.send(buffer)
 
             if output:
-                output = self.recv(timeout)
-                output = output.decode().strip()
+                try:
+                    output = self.recv(timeout)
+                    output = output.decode().strip()
 
-                return output
+                    return output
+                except socket.timeout:
+                    self.badges.output_warning("Timeout waiting for response.")
         return None
