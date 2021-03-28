@@ -43,11 +43,11 @@ class HatSploitSession(Session, TCPClient, StringTools, FSTools):
     def close(self):
         self.disconnect()
 
-    def send_command(self, command, arguments=None, timeout=10):
+    def send_command(self, command, arguments=None, output=True, timeout=10):
         if arguments:
             command += " " + arguments
 
-        output = self.send_cmd(command + '\x04', timeout)
+        output = self.send_cmd(command + '\x04', output, timeout)
 
         if "error" in output:
             return False, ""
