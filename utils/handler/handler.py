@@ -66,7 +66,7 @@ class Handler(TCP):
         filename = binascii.hexlify(os.urandom(8)).decode()
         path = location + '/' + filename
 
-        echo_stream = 'echo -ne "{}" >> {}'
+        echo_stream = 'printf "{}" >> {}'
         echo_prefix = "\\x"
         echo_max_length = 30
 
