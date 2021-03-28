@@ -150,6 +150,3 @@ class Handler(TCP):
         session_id = self.sessions.add_session(session_platform, session_type, remote_host, port, new_session)
         self.badges.output_success("Session " + str(session_id) + " opened!")
         return True
-
-    def handle_session(self, host, port, payload, sender=None, location='/tmp', timeout=None, method=None):
-        return self.handle_session(host, port, payload, sender, location, timeout, method=None)
