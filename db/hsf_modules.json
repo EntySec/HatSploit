@@ -250,7 +250,7 @@
                     ""
                 ],
                 "Platform": "android",
-                "Risk": "medium"
+                "Risk": "high"
             }
         },
         "multi": {

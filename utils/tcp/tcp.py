@@ -99,13 +99,17 @@ class TCPClient(TCP):
             return result
         return None
 
-    def send_cmd(self, command, timeout=10):
+    def send_cmd(self, command, output=True, timeout=10):
         if self.client:
             buffer = command.encode()
             self.send(buffer)
 
-            output = self.recv(timeout)
-            output = output.decode().strip()
+            if output:
+                try:
+                    output = self.recv(timeout)
+                    output = output.decode().strip()
 
-            return output
+                    return output
+                except socket.timeout:
+                    self.badges.output_warning("Timeout waiting for response.")
         return None

