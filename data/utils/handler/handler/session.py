@@ -40,11 +40,11 @@ class HatSploitSession(Session, TCPClient):
     def close(self):
         self.disconnect()
 
-    def send_command(self, command, arguments=None, timeout=10):
+    def send_command(self, command, arguments=None, output=True, timeout=10):
         if arguments:
             command += " " + arguments
 
-        output = self.send_cmd(command + '\n', timeout)
+        output = self.send_cmd(command + '\n', output, timeout)
         return True, output
 
     def interact(self):
