@@ -66,7 +66,7 @@ class Handler(TCP):
         filename = binascii.hexlify(os.urandom(8)).decode()
         path = location + '/' + filename
 
-        echo_stream = '/bin/bash -c "printf \'{}\' >> {}"'
+        echo_stream = "printf '{}' >> {}"
         echo_prefix = "\\x"
         echo_max_length = 100
 
@@ -86,6 +86,10 @@ class Handler(TCP):
             else:
                 sender(*args, command)
 
+        if encode:
+            sender(*args, f"printf $(cat {path}) > {path}\n".encode())
+        else:
+            sender(*args, f"printf $(cat {path}) > {path}")
         args = args if args is not None else ""
 
         if encode:
