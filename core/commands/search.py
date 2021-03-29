@@ -57,7 +57,7 @@ class HatSploitCommand(Command):
                     plugins_data.append((number, name, description))
                     number += 1
             if plugins_data:
-                self.print_table("Plugins (" + database + ")", headers, *plugins_data, strip=self.RED + self.END)
+                self.print_table("Plugins (" + database + ")", headers, *plugins_data)
 
     def show_modules(self, keyword):
         modules = self.local_storage.get("modules")
@@ -77,7 +77,7 @@ class HatSploitCommand(Command):
                                                 description))
                             number += 1
             if modules_data:
-                self.print_table(" Modules (" + database + ")", headers, *modules_data, strip=self.RED + self.END)
+                self.print_table(" Modules (" + database + ")", headers, *modules_data)
 
     def show_payloads(self, keyword):
         payloads = self.local_storage.get("payloads")
@@ -98,7 +98,7 @@ class HatSploitCommand(Command):
                                                 current_payload['Risk'], description))
                             number += 1
             if payloads_data:
-                self.print_table("Payloads (" + database + ")", headers, *payloads_data, strip=self.RED + self.END)
+                self.print_table("Payloads (" + database + ")", headers, *payloads_data)
 
     def run(self, argc, argv):
         keyword = argv[0]
