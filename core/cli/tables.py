@@ -44,7 +44,7 @@ class Tables:
 
         def custom_len(x):
             try:
-                return len(x)
+                return len(x) - 11 if '\033' in x or 0
             except TypeError:
                 return 0
 
