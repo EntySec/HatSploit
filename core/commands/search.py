@@ -81,7 +81,7 @@ class HatSploitCommand(Command):
                                                 description))
                             number += 1
             if modules_data:
-                self.print_table(" Modules (" + database + ")", headers, *modules_data)
+                self.print_table("Modules (" + database + ")", headers, *modules_data)
 
     def show_payloads(self, keyword):
         payloads = self.local_storage.get("payloads")
