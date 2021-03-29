@@ -254,6 +254,23 @@
             }
         },
         "multi": {
+            "linksys/eseries_tmunblock_rce": {
+                "Path": "modules/exploit/multi/linksys/eseries_tmunblock_rce",
+                "Name": "Linksys E-Series tmUnblock Remote Code Execution",
+                "Module": "exploit/multi/linksys/eseries_tmunblock_rce",
+                "Authors": [
+                    "enty8080"
+                ],
+                "Description": "Remote Code Execution in Linksys E-Series.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Platform": "multi",
+                "Risk": "high"
+            },
             "bluetooth/ble_write": {
                 "Path": "modules/exploit/multi/bluetooth/ble_write",
                 "Name": "Bluetooth Low Energy Write",
