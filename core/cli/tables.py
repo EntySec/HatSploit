@@ -34,7 +34,7 @@ from core.cli.badges import Badges
 class Tables:
     badges = Badges()
     
-    def print_table(self, name, headers, *args, **kwargs) -> None:
+    def print_table(self, name, headers, *args, **kwargs, strip=None) -> None:
         extra_fill = kwargs.get("extra_fill", 4)
         header_separator = kwargs.get("header_separator", "-")
 
@@ -44,7 +44,7 @@ class Tables:
 
         def custom_len(x):
             try:
-                return len(x)
+                return len(x) - len(strip) if strip is not None else 0
             except TypeError:
                 return 0
 
