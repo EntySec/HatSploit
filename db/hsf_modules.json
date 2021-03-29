@@ -274,9 +274,9 @@
         },
         "unix": {
             "linksys/eseries_tmunblock_rce": {
-                "Path": "modules/exploit/multi/linksys/eseries_tmunblock_rce",
+                "Path": "modules/exploit/unix/linksys/eseries_tmunblock_rce",
                 "Name": "Linksys E-Series tmUnblock Remote Code Execution",
-                "Module": "exploit/multi/linksys/eseries_tmunblock_rce",
+                "Module": "exploit/unix/linksys/eseries_tmunblock_rce",
                 "Authors": [
                     "enty8080"
                 ],
@@ -287,13 +287,13 @@
                 "Comments": [
                     ""
                 ],
-                "Platform": "multi",
+                "Platform": "unix",
                 "Risk": "high"
             },
             "stager/reverse_tcp": {
-                "Path": "modules/exploit/multi/stager/reverse_tcp",
+                "Path": "modules/exploit/unix/stager/reverse_tcp",
                 "Name": "Reverse TCP Stager",
-                "Module": "exploit/multi/stager/reverse_tcp",
+                "Module": "exploit/unix/stager/reverse_tcp",
                 "Authors": [
                     "enty8080"
                 ],
@@ -304,13 +304,13 @@
                 "Comments": [
                     ""
                 ],
-                "Platform": "multi",
+                "Platform": "unix",
                 "Risk": "high"
             },
             "stager/bind_tcp": {
-                "Path": "modules/exploit/multi/stager/bind_tcp",
+                "Path": "modules/exploit/unix/stager/bind_tcp",
                 "Name": "Bind TCP Stager",
-                "Module": "exploit/multi/stager/bind_tcp",
+                "Module": "exploit/unix/stager/bind_tcp",
                 "Authors": [
                     "enty8080"
                 ],
@@ -321,13 +321,13 @@
                 "Comments": [
                     ""
                 ],
-                "Platform": "multi",
+                "Platform": "unix",
                 "Risk": "high"
             },
             "icewarp/webmail_file_inclusion": {
-                "Path": "modules/exploit/multi/icewarp/webmail_file_inclusion",
+                "Path": "modules/exploit/unix/icewarp/webmail_file_inclusion",
                 "Name": "IceWarp WebMail Local File Inclusion",
-                "Module": "exploit/multi/icewarp/webmail_file_inclusion",
+                "Module": "exploit/unix/icewarp/webmail_file_inclusion",
                 "Authors": [
                     "enty8080"
                 ],
@@ -338,13 +338,13 @@
                 "Comments": [
                     ""
                 ],
-                "Platform": "multi",
+                "Platform": "unix",
                 "Risk": "high"
             },
             "f5/big_ip_tmui_lfi": {
-                "Path": "modules/exploit/multi/f5/big_ip_tmui_lfi",
+                "Path": "modules/exploit/unix/f5/big_ip_tmui_lfi",
                 "Name": "F5 Big-IP TMUI Local File Inclusion",
-                "Module": "exploit/multi/f5/big_ip_tmui_lfi",
+                "Module": "exploit/unix/f5/big_ip_tmui_lfi",
                 "Authors": [
                     "enty8080"
                 ],
@@ -355,13 +355,13 @@
                 "Comments": [
                     ""
                 ],
-                "Platform": "multi",
+                "Platform": "unix",
                 "Risk": "high"
             },
             "f5/big_ip_tmui_rce": {
-                "Path": "modules/exploit/multi/f5/big_ip_tmui_rce",
+                "Path": "modules/exploit/unix/f5/big_ip_tmui_rce",
                 "Name": "F5 Big-IP TMUI Remote Code Execution",
-                "Module": "exploit/multi/f5/big_ip_tmui_rce",
+                "Module": "exploit/unix/f5/big_ip_tmui_rce",
                 "Authors": [
                     "enty8080"
                 ],
@@ -372,13 +372,13 @@
                 "Comments": [
                     ""
                 ],
-                "Platform": "multi",
+                "Platform": "unix",
                 "Risk": "high"
             },
             "f5/big_ip_icontrol_rce": {
-                "Path": "modules/exploit/multi/f5/big_ip_icontrol_rce",
+                "Path": "modules/exploit/unix/f5/big_ip_icontrol_rce",
                 "Name": "F5 Big-IP iControl Remote Code Execution",
-                "Module": "exploit/multi/f5/big_ip_icontrol_rce",
+                "Module": "exploit/unix/f5/big_ip_icontrol_rce",
                 "Authors": [
                     "enty8080"
                 ],
@@ -389,13 +389,13 @@
                 "Comments": [
                     ""
                 ],
-                "Platform": "multi",
+                "Platform": "unix",
                 "Risk": "high"
             },
             "nostromo/remote_code_execution": {
-                "Path": "modules/exploit/multi/nostromo/remote_code_execution",
+                "Path": "modules/exploit/unix/nostromo/remote_code_execution",
                 "Name": "Nostromo Httpd Remote Code Execution",
-                "Module": "exploit/multi/nostromo/remote_code_execution",
+                "Module": "exploit/unix/nostromo/remote_code_execution",
                 "Authors": [
                     "enty8080"
                 ],
@@ -406,13 +406,13 @@
                 "Comments": [
                     ""
                 ],
-                "Platform": "multi",
+                "Platform": "unix",
                 "Risk": "high"
             },
             "ssh/libssh_code_execution": {
-                "Path": "modules/exploit/multi/ssh/libssh_code_execution",
+                "Path": "modules/exploit/unix/ssh/libssh_code_execution",
                 "Name": "SSH LibSSH Code Execution",
-                "Module": "exploit/multi/ssh/libssh_code_execution",
+                "Module": "exploit/unix/ssh/libssh_code_execution",
                 "Authors": [
                     "enty8080"
                 ],
@@ -423,13 +423,13 @@
                 "Comments": [
                     ""
                 ],
-                "Platform": "multi",
+                "Platform": "unix",
                 "Risk": "medium"
             },
             "cctv/goahead_password_disclosure": {
-                "Path": "modules/exploit/multi/cctv/goahead_password_disclosure",
+                "Path": "modules/exploit/unix/cctv/goahead_password_disclosure",
                 "Name": "CCTV GoAhead Camera Password Disclosure",
-                "Module": "exploit/multi/cctv/goahead_password_disclosure",
+                "Module": "exploit/unix/cctv/goahead_password_disclosure",
                 "Authors": [
                     "enty8080"
                 ],
@@ -440,13 +440,13 @@
                 "Comments": [
                     ""
                 ],
-                "Platform": "multi",
+                "Platform": "unix",
                 "Risk": "high"
             },
             "netwave/ipcamera_information_disclosure": {
-                "Path": "modules/exploit/multi/netwave/ipcamera_information_disclosure",
+                "Path": "modules/exploit/unix/netwave/ipcamera_information_disclosure",
                 "Name": "Netwave IP Camera Information Disclosure",
-                "Module": "exploit/multi/netwave/ipcamera_information_disclosure",
+                "Module": "exploit/unix/netwave/ipcamera_information_disclosure",
                 "Authors": [
                     "enty8080"
                 ],
@@ -457,7 +457,7 @@
                 "Comments": [
                     ""
                 ],
-                "Platform": "multi",
+                "Platform": "unix",
                 "Risk": "high"
             }
         }
