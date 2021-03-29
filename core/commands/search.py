@@ -50,9 +50,11 @@ class HatSploitCommand(Command):
             plugins_data = list()
             plugins = plugins[database]
             for plugin in sorted(plugins.keys()):
-                if keyword in plugin:
+                if keyword in plugin or keyword in plugins[plugin]['Description']:
                     name = plugin.replace(keyword, self.RED + keyword + self.END)
-                    plugins_data.append((number, name, plugins[plugin]['Description']))
+                    description = plugins[plugin]['Description'].replace(keyword, self.RED + keyword + self.END)
+
+                    plugins_data.append((number, name, description))
                     number += 1
             if plugins_data:
                 self.print_table("Plugins (" + database + ")", headers, *plugins_data)
@@ -65,12 +67,14 @@ class HatSploitCommand(Command):
             modules_data = list()
             for information in modules[database].keys():
                 for platform in sorted(modules[database][information].keys()):
-                    for module in sorted(modules[database][infotmation][platform].keys()):
-                        if keyword in information + '/' + platform + '/' + module:
-                            current_module = modules[database][information][platform]
+                    for module in sorted(modules[database][information][platform].keys()):
+                        current_module = modules[database][information][platform]
+                        if keyword in information + '/' + platform + '/' + module or keyword in current_module[module]['Description']:
                             name = current_module[module]['Module'].replace(keyword, self.RED + keyword + self.END)
+                            description = current_module[module]['Description'].replace(keyword, self.RED + keyword + self.END)
+
                             modules_data.append((number, name, current_module[module]['Risk'],
-                                                current_module[module]['Description']))
+                                                description))
                             number += 1
             if modules_data:
                 self.print_table(" Modules (" + database + ")", headers, *modules_data)
@@ -85,11 +89,13 @@ class HatSploitCommand(Command):
             for platform in sorted(payloads[database].keys()):
                 for architecture in sorted(payloads[database][platform].keys()):
                     for payload in sorted(payloads[database][platform][architecture].keys()):
-                        if keyword in platform + '/' + architecture + '/' + payload:
-                            current_payload = payloads[database][platform][architecture][payload]
+                        current_payload = payloads[database][platform][architecture][payload]
+                        if keyword in platform + '/' + architecture + '/' + payload or keyword in current_payload['Description']:
                             name = current_payload['Payload'].replace(keyword, self.RED + keyword + self.END)
+                            description = current_payload['Description'].replace(keyword, self.RED + keyword + self.END)
+
                             payloads_data.append((number, current_payload['Category'], name,
-                                                current_payload['Risk'], current_payload['Description']))
+                                                current_payload['Risk'], description))
                             number += 1
             if payloads_data:
                 self.print_table("Payloads (" + database + ")", headers, *payloads_data)
