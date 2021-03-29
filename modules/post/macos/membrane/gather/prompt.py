@@ -50,7 +50,7 @@ class HatSploitModule(Module, SessionTools):
         'SESSION': {
             'Description': "Session to run on.",
             'Value': 0,
-            'Type': "integer",
+            'Type': "session",
             'Required': True
         }
     }
