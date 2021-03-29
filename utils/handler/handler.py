@@ -74,7 +74,6 @@ class Handler(TCP):
         path = location + '/' + filename
 
         echo_stream = "printf '{}' >> {}"
-        echo_prefix = "\\"
         echo_max_length = 100
 
         size = len(payload)
