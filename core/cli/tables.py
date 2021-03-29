@@ -39,12 +39,15 @@ class Tables:
         header_separator = kwargs.get("header_separator", "-")
 
         if not all(map(lambda x: len(x) == len(headers), args)):
-            self.badges.output_empty("Headers and table rows tuples should be the same length.")
+            self.badges.output_error("Headers and table rows tuples should be the same length.")
             return
 
         def custom_len(x):
+            x = str(x)
             try:
-                return len(x) - 11 if '\033' in x or 0
+                if '\033' in x:
+                    return len(x) - 9
+                return len(x)
             except TypeError:
                 return 0
 
@@ -70,9 +73,15 @@ class Tables:
         for arg in args:
             content_line = "    "
             for idx, element in enumerate(arg):
+                element = str(element)
+                fill_line = fill[idx]
+
+                if '\033' in element:
+                    fill_line = fill[idx] + 9
+
                 content_line = "".join((
                     content_line,
-                    "{:<{}}".format(str(element), fill[idx])
+                    "{:<{}}".format(element, fill_line)
                 ))
             self.badges.output_empty(content_line)
         self.badges.output_empty("")
