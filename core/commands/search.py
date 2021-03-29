@@ -31,6 +31,10 @@ from core.base.storage import LocalStorage
 class HatSploitCommand(Command):
     local_storage = LocalStorage()
 
+    usage = ""
+    usage += "search [options] <keyword>\n\n"
+    usage += "  -w, --where [playloads|modules|plugins]  Select where search.\n"
+
     details = {
         'Category': "core",
         'Name': "search",
@@ -101,8 +105,19 @@ class HatSploitCommand(Command):
                 self.print_table("Payloads (" + database + ")", headers, *payloads_data)
 
     def run(self, argc, argv):
-        keyword = argv[0]
-
-        self.show_payloads(keyword)
-        self.show_modules(keyword)
-        self.show_plugins(keyword)
+        if argv[0] not in ['-w', '--where']:
+            self.show_payloads(argv[0])
+            self.show_modules(argv[0])
+            self.show_plugins(argv[0])
+        else:
+            if argc < 3:
+                self.output_usage(self.details['Usage'])
+            else:
+                if argv[1] == 'payloads':
+                    self.show_payloads(argv[2])
+                elif argv[1] == 'modules':
+                    self.show_modules(argv[2])
+                elif argv[1] == 'plugins':
+                    self.show_plugins(argv[2])
+                else:
+                    self.output_usage(self.details['Usage'])
