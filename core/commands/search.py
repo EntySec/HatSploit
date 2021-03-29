@@ -88,7 +88,7 @@ class HatSploitCommand(Command):
                         if keyword in platform + '/' + architecture + '/' + payload:
                             current_payload = payloads[database][platform][architecture][payload]
                             name = current_payload['Payload'].replace(keyword, self.RED + keyword + self.END)
-                            payloads_data.append((number, current_payload['Category'], current_payload['Payload'],
+                            payloads_data.append((number, current_payload['Category'], name,
                                                 current_payload['Risk'], current_payload['Description']))
                             number += 1
             if payloads_data:
