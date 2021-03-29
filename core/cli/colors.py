@@ -45,5 +45,10 @@ class Colors:
 
     REMOVE = '\033[1K\r'
     CLEAR = '\033[H\033[J'
-
     NEWLINE = '\n'
+
+    colors = {
+        BLACK, RED, GREEN, YELLOW, BLUE, PURPLE, CYAN, WHITE,
+        END, BOLD, DARK, BENT, LINE, TWINK, BACK,
+        REMOVE, CLEAR, NEWLINE
+    }
