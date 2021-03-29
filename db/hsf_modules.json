@@ -363,7 +363,7 @@
                 "Authors": [
                     "enty8080"
                 ],
-                "Description": "Remote Code Execution in iControl REST.",
+                "Description": "Remote Code Execution in F5 BIG-IP iControl REST.",
                 "Dependencies": [
                     ""
                 ],
