@@ -46,7 +46,7 @@ class Tables:
             x = str(x)
             try:
                 if '\033' in x:
-                    return len(x) - 9
+                    return len(x) - 9 * x.count('\033') // 2
                 return len(x)
             except TypeError:
                 return 0
@@ -77,7 +77,7 @@ class Tables:
                 fill_line = fill[idx]
 
                 if '\033' in element:
-                    fill_line = fill[idx] + 9
+                    fill_line = fill[idx] + 9 * element.count('\033') // 2
 
                 content_line = "".join((
                     content_line,
