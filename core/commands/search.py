@@ -24,12 +24,12 @@
 # SOFTWARE.
 #
 
-from core.base.execute import Execute
 from core.lib.command import Command
+from core.base.storage import LocalStorage
 
 
 class HatSploitCommand(Command):
-    execute = Execute()
+    local_storage = LocalStorage()
 
     details = {
         'Category': "core",
