@@ -42,7 +42,7 @@ class HatSploitCommand(Command):
             'enty8080'
         ],
         'Description': "Search payloads, modules and plugins.",
-        'Usage': "search <keyword>",
+        'Usage': usage,
         'MinArgs': 1
     }
 
