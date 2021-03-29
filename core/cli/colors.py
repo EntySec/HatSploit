@@ -45,5 +45,4 @@ class Colors:
 
     REMOVE = '\033[1K\r'
     CLEAR = '\033[H\033[J'
-
     NEWLINE = '\n'

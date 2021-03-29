@@ -199,10 +199,10 @@
     },
     "exploit": {
         "iphoneos": {
-            "mobile_safari_app/webkit_filter_dos": {
-                "Path": "modules/exploit/iphoneos/mobile_safari_app/webkit_filter_dos",
-                "Name": "iPhoneOS MobileSafari.app WebKit Filter DoS",
-                "Module": "exploit/iphoneos/mobile_safari_app/webkit_filter_dos",
+            "safari/webkit_filter_dos": {
+                "Path": "modules/exploit/iphoneos/safari/webkit_filter_dos",
+                "Name": "iPhoneOS Safari WebKit Filter DoS",
+                "Module": "exploit/iphoneos/safari/webkit_filter_dos",
                 "Authors": [
                     "enty8080"
                 ],
@@ -254,6 +254,23 @@
             }
         },
         "multi": {
+            "linksys/eseries_tmunblock_rce": {
+                "Path": "modules/exploit/multi/linksys/eseries_tmunblock_rce",
+                "Name": "Linksys E-Series tmUnblock Remote Code Execution",
+                "Module": "exploit/multi/linksys/eseries_tmunblock_rce",
+                "Authors": [
+                    "enty8080"
+                ],
+                "Description": "Remote Code Execution in Linksys E-Series.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Platform": "multi",
+                "Risk": "high"
+            },
             "bluetooth/ble_write": {
                 "Path": "modules/exploit/multi/bluetooth/ble_write",
                 "Name": "Bluetooth Low Energy Write",
@@ -305,10 +322,10 @@
                 "Platform": "multi",
                 "Risk": "high"
             },
-            "icewarp_webmail/local_file_inclusion": {
-                "Path": "modules/exploit/multi/icewarp_webmail/local_file_inclusion",
+            "icewarp/webmail_file_inclusion": {
+                "Path": "modules/exploit/multi/icewarp/webmail_file_inclusion",
                 "Name": "IceWarp WebMail Local File Inclusion",
-                "Module": "exploit/multi/icewarp_webmail/local_file_inclusion",
+                "Module": "exploit/multi/icewarp/webmail_file_inclusion",
                 "Authors": [
                     "enty8080"
                 ],
@@ -322,10 +339,10 @@
                 "Platform": "multi",
                 "Risk": "high"
             },
-            "f5_big_ip_tmui/local_file_inclusion": {
-                "Path": "modules/exploit/multi/f5_big_ip_tmui/local_file_inclusion",
+            "f5/big_ip_tmui_lfi": {
+                "Path": "modules/exploit/multi/f5/big_ip_tmui_lfi",
                 "Name": "F5 Big-IP TMUI Local File Inclusion",
-                "Module": "exploit/multi/f5_big_ip_tmui/local_file_inclusion",
+                "Module": "exploit/multi/f5/big_ip_tmui_lfi",
                 "Authors": [
                     "enty8080"
                 ],
@@ -339,10 +356,10 @@
                 "Platform": "multi",
                 "Risk": "high"
             },
-            "f5_big_ip_tmui/remote_code_execution": {
-                "Path": "modules/exploit/multi/f5_big_ip_tmui/remote_code_execution",
+            "f5/big_ip_tmui_rce": {
+                "Path": "modules/exploit/multi/f5/big_ip_tmui_rce",
                 "Name": "F5 Big-IP TMUI Remote Code Execution",
-                "Module": "exploit/multi/f5_big_ip_tmui/remote_code_execution",
+                "Module": "exploit/multi/f5/big_ip_tmui_rce",
                 "Authors": [
                     "enty8080"
                 ],
@@ -356,14 +373,14 @@
                 "Platform": "multi",
                 "Risk": "high"
             },
-            "f5_big_ip_icontrol/remote_code_execution": {
-                "Path": "modules/exploit/multi/f5_big_ip_icontrol/remote_code_execution",
+            "f5/big_ip_icontrol_rce": {
+                "Path": "modules/exploit/multi/f5/big_ip_icontrol_rce",
                 "Name": "F5 Big-IP iControl Remote Code Execution",
-                "Module": "exploit/multi/f5_big_ip_icontrol/remote_code_execution",
+                "Module": "exploit/multi/f5/big_ip_icontrol_rce",
                 "Authors": [
                     "enty8080"
                 ],
-                "Description": "Remote Code Execution in iControl REST.",
+                "Description": "Remote Code Execution in F5 BIG-IP iControl REST.",
                 "Dependencies": [
                     ""
                 ],
@@ -373,10 +390,10 @@
                 "Platform": "multi",
                 "Risk": "high"
             },
-            "nostromo_httpd/remote_code_execution": {
-                "Path": "modules/exploit/multi/nostromo_httpd/remote_code_execution",
+            "nostromo/remote_code_execution": {
+                "Path": "modules/exploit/multi/nostromo/remote_code_execution",
                 "Name": "Nostromo Httpd Remote Code Execution",
-                "Module": "exploit/multi/nostromo_httpd/remote_code_execution",
+                "Module": "exploit/multi/nostromo/remote_code_execution",
                 "Authors": [
                     "enty8080"
                 ],
@@ -407,10 +424,10 @@
                 "Platform": "multi",
                 "Risk": "medium"
             },
-            "cctv_goahead_camera/password_disclosure": {
-                "Path": "modules/exploit/multi/cctv_goahead_camera/password_disclosure",
+            "cctv/goahead_password_disclosure": {
+                "Path": "modules/exploit/multi/cctv/goahead_password_disclosure",
                 "Name": "CCTV GoAhead Camera Password Disclosure",
-                "Module": "exploit/multi/cctv_goahead_camera/password_disclosure",
+                "Module": "exploit/multi/cctv/goahead_password_disclosure",
                 "Authors": [
                     "enty8080"
                 ],
@@ -424,10 +441,10 @@
                 "Platform": "multi",
                 "Risk": "high"
             },
-            "netwave_ip_camera/information_disclosure": {
-                "Path": "modules/exploit/multi/netwave_ip_camera/information_disclosure",
+            "netwave/ipcamera_information_disclosure": {
+                "Path": "modules/exploit/multi/netwave/ipcamera_information_disclosure",
                 "Name": "Netwave IP Camera Information Disclosure",
-                "Module": "exploit/multi/netwave_ip_camera/information_disclosure",
+                "Module": "exploit/multi/netwave/ipcamera_information_disclosure",
                 "Authors": [
                     "enty8080"
                 ],
