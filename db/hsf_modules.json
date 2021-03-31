@@ -273,6 +273,74 @@
             }
         },
         "unix": {
+            "asus/rt_nt16_password_disclosure": {
+                "Path": "modules/exploit/unix/asus/rt_nt16_password_disclosure",
+                "Name": "Asus RT-N16 Password Disclosure",
+                "Module": "exploit/unix/asus/rt_nt16_password_disclosure",
+                "Authors": [
+                    "enty8080"
+                ],
+                "Description": "Asus RT-N16 password disclosure exploit.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Platform": "unix",
+                "Risk": "high"
+            },
+            "fhem/local_file_inclusion": {
+                "Path": "modules/exploit/unix/fhem/local_file_inclusion",
+                "Name": "FHEM Local File Inclusion",
+                "Module": "exploit/unix/fhem/local_file_inclusion",
+                "Authors": [
+                    "enty8080"
+                ],
+                "Description": "Local File Inclusion in FHEM <= 6.0.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Platform": "unix",
+                "Risk": "high"
+            },
+            "selea/anpr_file_inclusion": {
+                "Path": "modules/exploit/unix/selea/anpr_file_inclusion",
+                "Name": "Selea ANPR Local File Inclusion",
+                "Module": "exploit/unix/selea/anpr_file_inclusion",
+                "Authors": [
+                    "enty8080"
+                ],
+                "Description": "Local File Inclusion in Selea ANPR Camera.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Platform": "unix",
+                "Risk": "high"
+            },
+            "selea/anpr_password_disclosure": {
+                "Path": "modules/exploit/unix/selea/anpr_password_disclosure",
+                "Name": "Selea ANPR Camera Password Disclosure",
+                "Module": "exploit/unix/selea/anpr_password_disclosure",
+                "Authors": [
+                    "enty8080"
+                ],
+                "Description": "Selea ANPR Camera password disclosure exploit.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Platform": "unix",
+                "Risk": "high"
+            },
             "linksys/eseries_tmunblock_rce": {
                 "Path": "modules/exploit/unix/linksys/eseries_tmunblock_rce",
                 "Name": "Linksys E-Series tmUnblock Remote Code Execution",
