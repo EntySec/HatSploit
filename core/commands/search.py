@@ -106,17 +106,17 @@ class HatSploitCommand(Command):
 
     def run(self, argc, argv):
         if argv[0] not in ['-w', '--where']:
-            self.show_payloads(argv[0])
             self.show_modules(argv[0])
+            self.show_payloads(argv[0])
             self.show_plugins(argv[0])
         else:
             if argc < 3:
                 self.output_usage(self.details['Usage'])
             else:
-                if argv[1] == 'payloads':
-                    self.show_payloads(argv[2])
-                elif argv[1] == 'modules':
+                if argv[1] == 'modules':
                     self.show_modules(argv[2])
+                elif argv[1] == 'payloads':
+                    self.show_payloads(argv[2])
                 elif argv[1] == 'plugins':
                     self.show_plugins(argv[2])
                 else:
