@@ -148,7 +148,7 @@ class Console:
             else:
                 header += f"    --=( {self.colors.YELLOW}HatSploit Framework {version}{self.colors.END}\n"
             header += f"--==--=( Developed by EntySec ({self.colors.LINE}https://entysec.netlify.app/{self.colors.END})\n"
-            header += f"    --=( {payloads_total} payloads | {modules_total} modules | {plugins_total} plugins\n"
+            header += f"    --=( {modules_total} modules | {payloads_total} payloads | {plugins_total} plugins\n"
             header += f"{self.colors.END}"
             self.badges.output_empty(header)
 
