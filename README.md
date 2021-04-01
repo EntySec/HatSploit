@@ -1,4 +1,4 @@
-<h3 align="center"><img src="https://github.com/EntySec/HatSploit/blob/main/logo/logo.png" alt="logo" height="250px"></h3>
+<h3 align="center"><img src="https://hatsploit.netlify.app/images/logo-footer.png" alt="logo" height="250px"></h3>
 
 <p align="center">
     <b>HatSploit Framework</b><br>
