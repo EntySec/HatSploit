@@ -9,7 +9,7 @@
     <br>enables you to write, test, and execute exploit code.
     <br>
     <br>
-    <img src="https://hatsploit.netlify.app/images/banner/preview.gif" alt="preview">
+    <img src="https://hatsploit.netlify.app/images/banner/banner-hero.png" alt="preview">
     <br>
     <br>
     <b>Useful links:</b><br>
