@@ -63,6 +63,9 @@ class Badges:
     def output_information(self, message, start='\033[1K\r', end='\n'):
         self.output_empty(self.I + message, start=start, end=end)
 
+    def output_multi(self, message):
+        self.output_empty(f"\r{self.P}{message}", end='')
+
     def input_empty(self, message):
         output = ""
         out = self.io.input(message)[0]
