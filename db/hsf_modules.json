@@ -198,7 +198,43 @@
         }
     },
     "exploit": {
+        "macos": {
+            "xnu/memory_corruption_dos": {
+                "Path": "modules/exploit/macos/xnu/memory_corruption_dos",
+                "Name": "macOS XNU Memory Corruption DoS",
+                "Module": "exploit/macos/xnu/memory_corruption_dos",
+                "Authors": [
+                    "enty8080"
+                ],
+                "Description": "macOS 10.0 till 10.13.6 XNU kernel memory corruption DoS.",
+                "Dependencies": [
+                    "scapy"
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Platform": "macos",
+                "Risk": "high"
+            }
+        },
         "iphoneos": {
+            "xnu/memory_corruption_dos": {
+                "Path": "modules/exploit/iphoneos/xnu/memory_corruption_dos",
+                "Name": "iPhoneOS XNU Memory Corruption DoS",
+                "Module": "exploit/iphoneos/xnu/memory_corruption_dos",
+                "Authors": [
+                    "enty8080"
+                ],
+                "Description": "iPhoneOS 1.0.0 till 11.4.1 XNU kernel memory corruption DoS.",
+                "Dependencies": [
+                    "scapy"
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Platform": "iphoneos",
+                "Risk": "high"
+            },
             "safari/webkit_filter_dos": {
                 "Path": "modules/exploit/iphoneos/safari/webkit_filter_dos",
                 "Name": "iPhoneOS Safari WebKit Filter DoS",
