@@ -93,23 +93,6 @@
                 "Platform": "multi",
                 "Risk": "low"
             },
-            "sniffer/user_agent_sniffer": {
-                "Path": "modules/auxiliary/multi/sniffer/user_agent_sniffer",
-                "Name": "User Agent Sniffer",
-                "Module": "auxiliary/multi/sniffer/user_agent_sniffer",
-                "Authors": [
-                    "enty8080"
-                ],
-                "Description": "Sniff User-Agent through URL.",
-                "Dependencies": [
-                    ""
-                ],
-                "Comments": [
-                    ""
-                ],
-                "Platform": "multi",
-                "Risk": "medium"
-            },
             "scanner/directory_scanner": {
                 "Path": "modules/auxiliary/multi/scanner/directory_scanner",
                 "Name": "Directory Scanner",
