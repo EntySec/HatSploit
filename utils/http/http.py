@@ -28,7 +28,7 @@
 # Based on threat6/routersploit http module
 #
 
-import http.client
+import http.server
 import socketserver
 
 import requests
