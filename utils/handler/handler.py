@@ -79,12 +79,12 @@ class Handler(TCP):
         size = len(payload)
         num_parts = int(size / echo_max_length) + 1
 
-        self.badges.output_process(f"Uploading to {path}...")
         for i in range(0, num_parts):
             current = i * echo_max_length
             block = self.bytes_to_octal(payload[current:current + echo_max_length])
             command = echo_stream.format(block, path)
 
+            self.badges.output_multi(f"Uploading payload... ({str(current)}/{str(size)})")
             if encode:
                 sender(*args, (command + '\n').encode())
             else:
