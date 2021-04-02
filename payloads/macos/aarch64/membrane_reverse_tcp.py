@@ -28,7 +28,7 @@ import base64
 
 from core.base.config import Config
 from core.lib.payload import Payload
-from data.payloads.macos.x64.membrane_reverse_tcp.core.session import HatSploitSession
+from data.payloads.macos.aarch64.membrane_reverse_tcp.core.session import HatSploitSession
 from utils.tcp.tcp import TCPClient
 
 
