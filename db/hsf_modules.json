@@ -367,6 +367,42 @@
                 "Platform": "unix",
                 "Risk": "high"
             },
+            "linksys/wap54gv3_debug_rce": {
+                "Path": "modules/exploit/unix/linksys/wap54gv3_debug_rce",
+                "Name": "Linksys WAP54Gv3 debug Remote Code Execution",
+                "Module": "exploit/unix/linksys/wap54gv3_debug_rce",
+                "Authors": [
+                    "Ivan Nikolsky (enty8080)",
+                    "Phil Purviance"
+                ],
+                "Description": "Remote Code Execution in Linksys WAP54Gv3.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Platform": "unix",
+                "Risk": "high"
+            },
+            "linksys/wrt120n_tmunblock_admin_reset": {
+                "Path": "modules/exploit/unix/linksys/wrt120n_tmunblock_admin_reset",
+                "Name": "Linksys WRT120N tmUnblock Admin Reset",
+                "Module": "exploit/unix/linksys/wrt120n_tmunblock_admin_reset",
+                "Authors": [
+                    "Ivan Nikolsky (enty8080)",
+                    "Craig Heffner"
+                ],
+                "Description": "Linksys WRT120N admin password reset.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Platform": "unix",
+                "Risk": "high"
+            },
             "linksys/eseries_tmunblock_rce": {
                 "Path": "modules/exploit/unix/linksys/eseries_tmunblock_rce",
                 "Name": "Linksys E-Series tmUnblock Remote Code Execution",
@@ -394,6 +430,24 @@
                     "HeadlessZeke (headlesszeke)"
                 ],
                 "Description": "Remote Code Execution in Linksys WVBR0 25.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Platform": "unix",
+                "Risk": "high"
+            },
+            "dvr/camera_credentials_disclosure": {
+                "Path": "modules/exploit/unix/dvr/camera_credentials_disclosure",
+                "Name": "DVR Camera Credentials Disclosure",
+                "Module": "exploit/unix/dvr/camera_credentials_disclosure",
+                "Authors": [
+                    "Ivan Nikolsky (enty8080)",
+                    "ezelf"
+                ],
+                "Description": "DVR Camera credentials disclosure.",
                 "Dependencies": [
                     ""
                 ],
