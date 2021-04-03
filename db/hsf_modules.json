@@ -331,6 +331,24 @@
                 "Platform": "unix",
                 "Risk": "high"
             },
+            "selea/anpr_authenticated_rce": {
+                "Path": "modules/exploit/unix/selea/anpr_authenticated_rce",
+                "Name": "Selea ANPR Camera Authenticated RCE",
+                "Module": "exploit/unix/selea/anpr_authenticated_rce",
+                "Authors": [
+                    "Ivan Nikolsky (enty8080)",
+                    "LiquidWorm (liquidworm)"
+                ],
+                "Description": "Selea ANPR Camera authenticated remote code execution.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Platform": "unix",
+                "Risk": "high"
+            },
             "selea/anpr_file_inclusion": {
                 "Path": "modules/exploit/unix/selea/anpr_file_inclusion",
                 "Name": "Selea ANPR Local File Inclusion",
