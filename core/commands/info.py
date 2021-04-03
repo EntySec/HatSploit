@@ -36,7 +36,7 @@ class HatSploitCommand(Command):
         'Category': "module",
         'Name': "info",
         'Authors': [
-            'enty8080'
+            'Ivan Nikolsky (enty8080)'
         ],
         'Description': "Show module information.",
         'Usage': "info [<module>]",

@@ -33,7 +33,7 @@ class HatSploitModule(Module, SessionTools):
         'Name': "macOS Membrane Transfer Download",
         'Module': "post/macos/membrane/transfer/download",
         'Authors': [
-            'enty8080'
+            'Ivan Nikolsky (enty8080)'
         ],
         'Description': "Download remote file.",
         'Dependencies': [

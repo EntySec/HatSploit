@@ -10,7 +10,7 @@
                 "Name": "Netcat Shell Reverse TCP",
                 "Payload": "unix/generic/netcat_reverse_tcp",
                 "Authors": [
-                    "enty8080"
+                    "Ivan Nikolsky (enty8080)"
                 ],
                 "Description": "Netcat shell reverse TCP payload.",
                 "Dependencies": [
@@ -30,7 +30,7 @@
                 "Name": "Perl Shell Reverse TCP",
                 "Payload": "unix/generic/perl_reverse_tcp",
                 "Authors": [
-                    "enty8080"
+                    "Ivan Nikolsky (enty8080)"
                 ],
                 "Description": "Perl shell reverse TCP payload.",
                 "Dependencies": [
@@ -50,7 +50,7 @@
                 "Name": "Ruby Shell Reverse TCP",
                 "Payload": "unix/generic/ruby_reverse_tcp",
                 "Authors": [
-                    "enty8080"
+                    "Ivan Nikolsky (enty8080)"
                 ],
                 "Description": "Ruby shell reverse TCP payload.",
                 "Dependencies": [
@@ -70,7 +70,7 @@
                 "Name": "Bash Shell Reverse TCP",
                 "Payload": "unix/generic/bash_reverse_tcp",
                 "Authors": [
-                    "enty8080"
+                    "Ivan Nikolsky (enty8080)"
                 ],
                 "Description": "Bash shell reverse TCP payload.",
                 "Dependencies": [
@@ -94,7 +94,7 @@
                 "Name": "macOS aarch64 Membrane Reverse TCP",
                 "Payload": "macos/aarch64/membrane_reverse_tcp",
                 "Authors": [
-                    "enty8080"
+                    "Ivan Nikolsky (enty8080)"
                 ],
                 "Description": "Membrane reverse TCP payload for macOS aarch64.",
                 "Dependencies": [
@@ -116,7 +116,7 @@
                 "Name": "macOS x64 Membrane Reverse TCP",
                 "Payload": "macos/x64/membrane_reverse_tcp",
                 "Authors": [
-                    "enty8080"
+                    "Ivan Nikolsky (enty8080)"
                 ],
                 "Description": "Membrane reverse TCP payload for macOS x64.",
                 "Dependencies": [
@@ -136,7 +136,7 @@
                 "Name": "macOS x64 Say",
                 "Payload": "macos/x64/say",
                 "Authors": [
-                    "enty8080"
+                    "Ivan Nikolsky (enty8080)"
                 ],
                 "Description": "Say payload for macOS x64.",
                 "Dependencies": [
@@ -156,7 +156,7 @@
                 "Name": "macOS x64 Shell Bind TCP",
                 "Payload": "macos/x64/shell_bind_tcp",
                 "Authors": [
-                    "enty8080"
+                    "Ivan Nikolsky (enty8080)"
                 ],
                 "Description": "Shell bind TCP payload for macOS x64.",
                 "Dependencies": [
@@ -176,7 +176,7 @@
                 "Name": "macOS x64 Shell Reverse TCP",
                 "Payload": "macos/x64/shell_reverse_tcp",
                 "Authors": [
-                    "enty8080"
+                    "Ivan Nikolsky (enty8080)"
                 ],
                 "Description": "Shell reverse TCP payload for macOS x64.",
                 "Dependencies": [
@@ -200,7 +200,7 @@
                 "Name": "Android armle Shell Reverse TCP",
                 "Payload": "android/armle/shell_reverse_tcp",
                 "Authors": [
-                    "enty8080"
+                    "Ivan Nikolsky (enty8080)"
                 ],
                 "Description": "Shell reverse TCP payload for Android armle.",
                 "Dependencies": [
@@ -224,7 +224,7 @@
                 "Name": "Linux aarch64 Membrane Reverse TCP",
                 "Payload": "linux/aarch64/membrane_reverse_tcp",
                 "Authors": [
-                    "enty8080"
+                    "Ivan Nikolsky (enty8080)"
                 ],
                 "Description": "Membrane reverse TCP payload for Linux aarch64.",
                 "Dependencies": [
@@ -246,7 +246,7 @@
                 "Name": "Linux armle Shell Bind TCP",
                 "Payload": "linux/armle/shell_bind_tcp",
                 "Authors": [
-                    "enty8080"
+                    "Ivan Nikolsky (enty8080)"
                 ],
                 "Description": "Shell bind TCP payload for Linux armle.",
                 "Dependencies": [
@@ -266,7 +266,7 @@
                 "Name": "Linux armle Shell Reverse TCP",
                 "Payload": "linux/armle/shell_reverse_tcp",
                 "Authors": [
-                    "enty8080"
+                    "Ivan Nikolsky (enty8080)"
                 ],
                 "Description": "Shell reverse TCP payload for Linux armle.",
                 "Dependencies": [
@@ -288,7 +288,7 @@
                 "Name": "Linux mipsbe Shell Bind TCP",
                 "Payload": "linux/mipsbe/shell_bind_tcp",
                 "Authors": [
-                    "enty8080"
+                    "Ivan Nikolsky (enty8080)"
                 ],
                 "Description": "Shell bind TCP payload for Linux mipsbe.",
                 "Dependencies": [
@@ -308,7 +308,7 @@
                 "Name": "Linux mipsbe Shell Reverse TCP",
                 "Payload": "linux/mipsbe/shell_reverse_tcp",
                 "Authors": [
-                    "enty8080"
+                    "Ivan Nikolsky (enty8080)"
                 ],
                 "Description": "Shell reverse TCP payload for Linux mipsbe.",
                 "Dependencies": [
@@ -330,7 +330,7 @@
                 "Name": "Linux mipsle Shell Bind TCP",
                 "Payload": "linux/mipsle/shell_bind_tcp",
                 "Authors": [
-                    "enty8080"
+                    "Ivan Nikolsky (enty8080)"
                 ],
                 "Description": "Shell bind TCP payload for Linux mipsle.",
                 "Dependencies": [
@@ -350,7 +350,7 @@
                 "Name": "Linux mipsle Shell Reverse TCP",
                 "Payload": "linux/mipsle/shell_reverse_tcp",
                 "Authors": [
-                    "enty8080"
+                    "Ivan Nikolsky (enty8080)"
                 ],
                 "Description": "Shell reverse TCP payload for Linux mipsle.",
                 "Dependencies": [
@@ -372,7 +372,7 @@
                 "Name": "Linux x64 Membrane Reverse TCP",
                 "Payload": "linux/x64/membrane_reverse_tcp",
                 "Authors": [
-                    "enty8080"
+                    "Ivan Nikolsky (enty8080)"
                 ],
                 "Description": "Membrane reverse TCP payload for Linux x64.",
                 "Dependencies": [
@@ -392,7 +392,7 @@
                 "Name": "Linux x64 Shell Bind TCP",
                 "Payload": "linux/x64/shell_bind_tcp",
                 "Authors": [
-                    "enty8080"
+                    "Ivan Nikolsky (enty8080)"
                 ],
                 "Description": "Shell bind TCP payload for Linux x64.",
                 "Dependencies": [
@@ -412,7 +412,7 @@
                 "Name": "Linux x64 Shell Reverse TCP",
                 "Payload": "linux/x64/shell_reverse_tcp",
                 "Authors": [
-                    "enty8080"
+                    "Ivan Nikolsky (enty8080)"
                 ],
                 "Description": "Shell reverse TCP payload for Linux x64.",
                 "Dependencies": [
@@ -434,7 +434,7 @@
                 "Name": "Linux x86 Shell Bind TCP",
                 "Payload": "linux/x86/shell_bind_tcp",
                 "Authors": [
-                    "enty8080"
+                    "Ivan Nikolsky (enty8080)"
                 ],
                 "Description": "Shell bind TCP payload for Linux x86.",
                 "Dependencies": [
@@ -454,7 +454,7 @@
                 "Name": "Linux x86 Shell Reverse TCP",
                 "Payload": "linux/x86/shell_reverse_tcp",
                 "Authors": [
-                    "enty8080"
+                    "Ivan Nikolsky (enty8080)"
                 ],
                 "Description": "Shell reverse TCP payload for Linux x86.",
                 "Dependencies": [

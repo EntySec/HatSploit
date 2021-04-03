@@ -35,7 +35,7 @@ class HatSploitPayload(Payload, PayloadGenerator, TCPClient):
         'Name': "Linux mipsle Shell Reverse TCP",
         'Payload': "linux/mipsle/shell_reverse_tcp",
         'Authors': [
-            'enty8080'
+            'Ivan Nikolsky (enty8080)'
         ],
         'Description': "Shell reverse TCP payload for Linux mipsle.",
         'Dependencies': [

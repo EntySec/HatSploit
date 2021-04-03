@@ -40,7 +40,7 @@ class HatSploitPayload(Payload, TCPClient):
         'Name': "Linux aarch64 Membrane Reverse TCP",
         'Payload': "linux/aarch64/membrane_reverse_tcp",
         'Authors': [
-            'enty8080'
+            'Ivan Nikolsky (enty8080)'
         ],
         'Description': "Membrane reverse TCP payload for Linux aarch64.",
         'Dependencies': [

@@ -9,7 +9,7 @@
                 "Name": "Jailbreak Installation Checker",
                 "Module": "auxiliary/iphoneos/checker/jailbroken_or_not",
                 "Authors": [
-                    "enty8080"
+                    "Ivan Nikolsky (enty8080)"
                 ],
                 "Description": "Check if remote iPhone jailbroken.",
                 "Dependencies": [
@@ -28,7 +28,7 @@
                 "Name": "ADB Installation Checker",
                 "Module": "auxiliary/android/checker/check_adb_installation",
                 "Authors": [
-                    "enty8080"
+                    "Ivan Nikolsky (enty8080)"
                 ],
                 "Description": "Check if remote Android device has ADB installation.",
                 "Dependencies": [
@@ -47,7 +47,7 @@
                 "Name": "Bluetooth Low Energy Scanner",
                 "Module": "auxiliary/multi/scanner/ble_scanner",
                 "Authors": [
-                    "enty8080"
+                    "Ivan Nikolsky (enty8080)"
                 ],
                 "Description": "Scan for bluetooth low energy devices.",
                 "Dependencies": [
@@ -64,7 +64,7 @@
                 "Name": "Network Scanner",
                 "Module": "auxiliary/multi/scanner/network_scanner",
                 "Authors": [
-                    "enty8080"
+                    "Ivan Nikolsky (enty8080)"
                 ],
                 "Description": "Scan local network.",
                 "Dependencies": [
@@ -81,7 +81,7 @@
                 "Name": "Port Scanner",
                 "Module": "auxiliary/multi/scanner/port_scanner",
                 "Authors": [
-                    "enty8080"
+                    "Ivan Nikolsky (enty8080)"
                 ],
                 "Description": "Scan host for opened ports.",
                 "Dependencies": [
@@ -98,7 +98,7 @@
                 "Name": "Directory Scanner",
                 "Module": "auxiliary/multi/scanner/directory_scanner",
                 "Authors": [
-                    "enty8080"
+                    "Ivan Nikolsky (enty8080)"
                 ],
                 "Description": "Website directory scanner.",
                 "Dependencies": [
@@ -115,7 +115,7 @@
                 "Name": "Apache Users Scanner",
                 "Module": "auxiliary/multi/scanner/apache_users",
                 "Authors": [
-                    "enty8080"
+                    "Ivan Nikolsky (enty8080)"
                 ],
                 "Description": "Scan website apache users.",
                 "Dependencies": [
@@ -132,7 +132,7 @@
                 "Name": "PMA Scanner",
                 "Module": "auxiliary/multi/scanner/pma_scanner",
                 "Authors": [
-                    "enty8080"
+                    "Ivan Nikolsky (enty8080)"
                 ],
                 "Description": "Scan website PHP My Admin.",
                 "Dependencies": [
@@ -149,7 +149,7 @@
                 "Name": "Bluetooth Low Energy Enumerate",
                 "Module": "auxiliary/multi/enumerate/ble_enumerate",
                 "Authors": [
-                    "enty8080"
+                    "Ivan Nikolsky (enty8080)"
                 ],
                 "Description": "Enumerate bluetooth low energy devices characteristics.",
                 "Dependencies": [
@@ -166,7 +166,7 @@
                 "Name": "Multi Payload Generator",
                 "Module": "auxiliary/multi/payload/generator",
                 "Authors": [
-                    "enty8080"
+                    "Ivan Nikolsky (enty8080)"
                 ],
                 "Description": "Multi Payload Generator.",
                 "Dependencies": [
@@ -187,7 +187,8 @@
                 "Name": "macOS XNU Memory Corruption DoS",
                 "Module": "exploit/macos/xnu/memory_corruption_dos",
                 "Authors": [
-                    "enty8080"
+                    "Ivan Nikolsky (enty8080)",
+                    "Kevin Backhouse (kevinbackhouse)"
                 ],
                 "Description": "macOS 10.0 till 10.13.6 XNU kernel memory corruption DoS.",
                 "Dependencies": [
@@ -206,7 +207,8 @@
                 "Name": "iPhoneOS XNU Memory Corruption DoS",
                 "Module": "exploit/iphoneos/xnu/memory_corruption_dos",
                 "Authors": [
-                    "enty8080"
+                    "Ivan Nikolsky (enty8080)",
+                    "Kevin Backhouse (kevinbackhouse)"
                 ],
                 "Description": "iPhoneOS 1.0.0 till 11.4.1 XNU kernel memory corruption DoS.",
                 "Dependencies": [
@@ -223,7 +225,8 @@
                 "Name": "iPhoneOS Safari WebKit Filter DoS",
                 "Module": "exploit/iphoneos/safari/webkit_filter_dos",
                 "Authors": [
-                    "enty8080"
+                    "Ivan Nikolsky (enty8080)",
+                    "Sabri Haddouche (pwnsdx)"
                 ],
                 "Description": "iPhoneOS 9.1 till 12.1 MobileSafari.app WebKit Filter DoS.",
                 "Dependencies": [
@@ -240,7 +243,7 @@
                 "Name": "iPhoneOS SSH Cydia.app Default Password",
                 "Module": "exploit/iphoneos/ssh/cydia_default_password",
                 "Authors": [
-                    "enty8080"
+                    "Ivan Nikolsky (enty8080)"
                 ],
                 "Description": "Bypass iPhoneOS SSH authorization using Cydia.app default SSH password.",
                 "Dependencies": [
@@ -259,7 +262,7 @@
                 "Name": "Android ADB Remote Code Execution",
                 "Module": "exploit/android/adb/remote_code_execution",
                 "Authors": [
-                    "enty8080"
+                    "Ivan Nikolsky (enty8080)"
                 ],
                 "Description": "Remote Code Execution in Android ADB.",
                 "Dependencies": [
@@ -278,7 +281,7 @@
                 "Name": "Bluetooth Low Energy Write",
                 "Module": "exploit/multi/bluetooth/ble_write",
                 "Authors": [
-                    "enty8080"
+                    "Ivan Nikolsky (enty8080)"
                 ],
                 "Description": "Write data to bluetooth low energy device.",
                 "Dependencies": [
@@ -297,7 +300,8 @@
                 "Name": "Asus RT-N16 Password Disclosure",
                 "Module": "exploit/unix/asus/rt_nt16_password_disclosure",
                 "Authors": [
-                    "enty8080"
+                    "Ivan Nikolsky (enty8080)",
+                    "Harry Sintonen (piru)"
                 ],
                 "Description": "Asus RT-N16 password disclosure exploit.",
                 "Dependencies": [
@@ -314,7 +318,8 @@
                 "Name": "FHEM Local File Inclusion",
                 "Module": "exploit/unix/fhem/local_file_inclusion",
                 "Authors": [
-                    "enty8080"
+                    "Ivan Nikolsky (enty8080)",
+                    "Emre Övünç (EmreOvunc)"
                 ],
                 "Description": "Local File Inclusion in FHEM <= 6.0.",
                 "Dependencies": [
@@ -331,7 +336,8 @@
                 "Name": "Selea ANPR Local File Inclusion",
                 "Module": "exploit/unix/selea/anpr_file_inclusion",
                 "Authors": [
-                    "enty8080"
+                    "Ivan Nikolsky (enty8080)",
+                    "LiquidWorm (liquidworm)"
                 ],
                 "Description": "Local File Inclusion in Selea ANPR Camera.",
                 "Dependencies": [
@@ -348,7 +354,8 @@
                 "Name": "Selea ANPR Camera Password Disclosure",
                 "Module": "exploit/unix/selea/anpr_password_disclosure",
                 "Authors": [
-                    "enty8080"
+                    "Ivan Nikolsky (enty8080)",
+                    "LiquidWorm (liquidworm)"
                 ],
                 "Description": "Selea ANPR Camera password disclosure exploit.",
                 "Dependencies": [
@@ -365,7 +372,8 @@
                 "Name": "Linksys E-Series tmUnblock Remote Code Execution",
                 "Module": "exploit/unix/linksys/eseries_tmunblock_rce",
                 "Authors": [
-                    "enty8080"
+                    "Ivan Nikolsky (enty8080)",
+                    "Johannes Ullrich (jullrich)"
                 ],
                 "Description": "Remote Code Execution in Linksys E-Series.",
                 "Dependencies": [
@@ -382,7 +390,8 @@
                 "Name": "Linksys WVBR0 25 Remote Code Execution",
                 "Module": "exploit/unix/linksys/wvbr0_25_rce",
                 "Authors": [
-                    "enty8080"
+                    "Ivan Nikolsky (enty8080)",
+                    "HeadlessZeke (headlesszeke)"
                 ],
                 "Description": "Remote Code Execution in Linksys WVBR0 25.",
                 "Dependencies": [
@@ -399,7 +408,7 @@
                 "Name": "Reverse TCP Stager",
                 "Module": "exploit/unix/stager/reverse_tcp",
                 "Authors": [
-                    "enty8080"
+                    "Ivan Nikolsky (enty8080)"
                 ],
                 "Description": "Reverse TCP Stager.",
                 "Dependencies": [
@@ -416,7 +425,7 @@
                 "Name": "Bind TCP Stager",
                 "Module": "exploit/unix/stager/bind_tcp",
                 "Authors": [
-                    "enty8080"
+                    "Ivan Nikolsky (enty8080)"
                 ],
                 "Description": "Bind TCP Stager.",
                 "Dependencies": [
@@ -433,7 +442,8 @@
                 "Name": "IceWarp WebMail Local File Inclusion",
                 "Module": "exploit/unix/icewarp/webmail_file_inclusion",
                 "Authors": [
-                    "enty8080"
+                    "Ivan Nikolsky (enty8080)",
+                    "Jameel Nabbo (JameelNabbo)"
                 ],
                 "Description": "Local File Inclusion in IceWarp <= 10.4.4 WebMail.",
                 "Dependencies": [
@@ -450,7 +460,8 @@
                 "Name": "F5 Big-IP TMUI Local File Inclusion",
                 "Module": "exploit/unix/f5/big_ip_tmui_lfi",
                 "Authors": [
-                    "enty8080"
+                    "Ivan Nikolsky (enty8080)",
+                    "Carlos E. Vieira"
                 ],
                 "Description": "Local File Inclusion in F5 BIG-IP Traffic Management User Interface (TMUI).",
                 "Dependencies": [
@@ -467,7 +478,8 @@
                 "Name": "F5 Big-IP TMUI Remote Code Execution",
                 "Module": "exploit/unix/f5/big_ip_tmui_rce",
                 "Authors": [
-                    "enty8080"
+                    "Ivan Nikolsky (enty8080)",
+                    "Mikhail Klyuchnikov"
                 ],
                 "Description": "Remote Code Execution in F5 BIG-IP Traffic Management User Interface (TMUI).",
                 "Dependencies": [
@@ -484,7 +496,8 @@
                 "Name": "F5 Big-IP iControl Remote Code Execution",
                 "Module": "exploit/unix/f5/big_ip_icontrol_rce",
                 "Authors": [
-                    "enty8080"
+                    "Ivan Nikolsky (enty8080)",
+                    "Al1ex (Al1ex)"
                 ],
                 "Description": "Remote Code Execution in F5 BIG-IP iControl REST.",
                 "Dependencies": [
@@ -501,7 +514,8 @@
                 "Name": "Nostromo Httpd Remote Code Execution",
                 "Module": "exploit/unix/nostromo/remote_code_execution",
                 "Authors": [
-                    "enty8080"
+                    "Ivan Nikolsky (enty8080)",
+                    "sp0re (sp0re)"
                 ],
                 "Description": "Remote Code Execution in Nostromo Httpd.",
                 "Dependencies": [
@@ -518,7 +532,8 @@
                 "Name": "SSH LibSSH Code Execution",
                 "Module": "exploit/unix/ssh/libssh_code_execution",
                 "Authors": [
-                    "enty8080"
+                    "Ivan Nikolsky (enty8080)",
+                    "Peter Winter-Smith (peterwintersmith)"
                 ],
                 "Description": "SSH LibSSH unauthorized access Remote Code Execution.",
                 "Dependencies": [
@@ -535,7 +550,8 @@
                 "Name": "CCTV GoAhead Camera Password Disclosure",
                 "Module": "exploit/unix/cctv/goahead_password_disclosure",
                 "Authors": [
-                    "enty8080"
+                    "Ivan Nikolsky (enty8080)",
+                    "Pierre Kim (pierrekim)"
                 ],
                 "Description": "CCTV GoAhead Camera password disclosure exploit.",
                 "Dependencies": [
@@ -552,7 +568,8 @@
                 "Name": "Netwave IP Camera Information Disclosure",
                 "Module": "exploit/unix/netwave/ipcamera_information_disclosure",
                 "Authors": [
-                    "enty8080"
+                    "Ivan Nikolsky (enty8080)",
+                    "spiritnull"
                 ],
                 "Description": "Netwave IP Camera information disclosure exploit.",
                 "Dependencies": [
@@ -573,7 +590,7 @@
                 "Name": "Linux Membrane Transfer Download",
                 "Module": "post/linux/membrane/transfer/download",
                 "Authors": [
-                    "enty8080"
+                    "Ivan Nikolsky (enty8080)"
                 ],
                 "Description": "Download remote file.",
                 "Dependencies": [
@@ -590,7 +607,7 @@
                 "Name": "Linux Membrane Transfer Upload",
                 "Module": "post/linux/membrane/transfer/upload",
                 "Authors": [
-                    "enty8080"
+                    "Ivan Nikolsky (enty8080)"
                 ],
                 "Description": "Upload local file.",
                 "Dependencies": [
@@ -609,7 +626,7 @@
                 "Name": "macOS Membrane Gather Volume",
                 "Module": "post/macos/membrane/gather/getvol",
                 "Authors": [
-                    "enty8080"
+                    "Ivan Nikolsky (enty8080)"
                 ],
                 "Description": "Get device volume level.",
                 "Dependencies": [
@@ -626,7 +643,7 @@
                 "Name": "macOS Membrane Gather Prompt",
                 "Module": "post/macos/membrane/gather/prompt",
                 "Authors": [
-                    "enty8080"
+                    "Ivan Nikolsky (enty8080)"
                 ],
                 "Description": "Prompt user to type password.",
                 "Dependencies": [
@@ -643,7 +660,7 @@
                 "Name": "macOS Membrane Transfer Download",
                 "Module": "post/macos/membrane/transfer/download",
                 "Authors": [
-                    "enty8080"
+                    "Ivan Nikolsky (enty8080)"
                 ],
                 "Description": "Download remote file.",
                 "Dependencies": [
@@ -660,7 +677,7 @@
                 "Name": "macOS Membrane Transfer Upload",
                 "Module": "post/macos/membrane/transfer/upload",
                 "Authors": [
-                    "enty8080"
+                    "Ivan Nikolsky (enty8080)"
                 ],
                 "Description": "Upload local file.",
                 "Dependencies": [
@@ -677,7 +694,7 @@
                 "Name": "macOS Membrane Trolling Say",
                 "Module": "post/macos/membrane/trolling/say",
                 "Authors": [
-                    "enty8080"
+                    "Ivan Nikolsky (enty8080)"
                 ],
                 "Description": "Say text message on device.",
                 "Dependencies": [

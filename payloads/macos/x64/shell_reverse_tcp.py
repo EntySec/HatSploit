@@ -35,7 +35,7 @@ class HatSploitPayload(Payload, PayloadGenerator, TCPClient):
         'Name': "macOS x64 Shell Reverse TCP",
         'Payload': "macos/x64/shell_reverse_tcp",
         'Authors': [
-            'enty8080'
+            'Ivan Nikolsky (enty8080)'
         ],
         'Description': "Shell reverse TCP payload for macOS x64.",
         'Dependencies': [

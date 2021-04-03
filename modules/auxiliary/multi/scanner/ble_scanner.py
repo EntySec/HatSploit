@@ -32,7 +32,7 @@ class HatSploitModule(Module, BluetoothClient):
         'Name': "Bluetooth Low Energy Scanner",
         'Module': "auxiliary/multi/scanner/ble_scanner",
         'Authors': [
-            'enty8080'
+            'Ivan Nikolsky (enty8080)'
         ],
         'Description': "Scan for bluetooth low energy devices.",
         'Dependencies': [

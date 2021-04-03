@@ -33,7 +33,7 @@ class HatSploitModule(Module, TCPClient):
         'Name': "ADB Installation Checker",
         'Module': "auxiliary/android/checker/check_adb_installation",
         'Authors': [
-            'enty8080'
+            'Ivan Nikolsky (enty8080)'
         ],
         'Description': "Check if remote Android device has ADB installation.",
         'Dependencies': [

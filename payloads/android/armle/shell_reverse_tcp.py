@@ -35,7 +35,7 @@ class HatSploitPayload(Payload, PayloadGenerator, TCPClient):
         'Name': "Android armle Shell Reverse TCP",
         'Payload': "android/armle/shell_reverse_tcp",
         'Authors': [
-            'enty8080'
+            'Ivan Nikolsky (enty8080)'
         ],
         'Description': "Shell reverse TCP payload for Android armle.",
         'Dependencies': [

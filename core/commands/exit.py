@@ -42,7 +42,7 @@ class HatSploitCommand(Command):
         'Category': "core",
         'Name': "exit",
         'Authors': [
-            'enty8080'
+            'Ivan Nikolsky (enty8080)'
         ],
         'Description': "Exit HatSploit Framework.",
         'Usage': usage,

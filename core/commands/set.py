@@ -36,7 +36,7 @@ class HatSploitCommand(Command):
         'Category': "module",
         'Name': "set",
         'Authors': [
-            'enty8080'
+            'Ivan Nikolsky (enty8080)'
         ],
         'Description': "Set an option value.",
         'Usage': "set <option> <value>",

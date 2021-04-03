@@ -33,7 +33,7 @@ class HatSploitModule(Module, SessionTools):
         'Name': "macOS Membrane Trolling Say",
         'Module': "post/macos/membrane/trolling/say",
         'Authors': [
-            'enty8080'
+            'Ivan Nikolsky (enty8080)'
         ],
         'Description': "Say text message on device.",
         'Dependencies': [

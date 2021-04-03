@@ -40,7 +40,7 @@ class HatSploitModule(Module, HTTPClient):
         'Name': "PMA Scanner",
         'Module': "auxiliary/multi/scanner/pma_scanner",
         'Authors': [
-            'enty8080'
+            'Ivan Nikolsky (enty8080)'
         ],
         'Description': "Scan website PHP My Admin.",
         'Dependencies': [

@@ -37,7 +37,7 @@ class HatSploitCommand(Command):
         'Category': "module",
         'Name': "back",
         'Authors': [
-            'enty8080'
+            'Ivan Nikolsky (enty8080)'
         ],
         'Description': "Return to the previous module.",
         'Usage': "back",

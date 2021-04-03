@@ -34,7 +34,7 @@ class HatSploitPayload(Payload, PayloadGenerator):
         'Name': "Linux armle Shell Bind TCP",
         'Payload': "linux/armle/shell_bind_tcp",
         'Authors': [
-            'enty8080'
+            'Ivan Nikolsky (enty8080)'
         ],
         'Description': "Shell bind TCP payload for Linux armle.",
         'Dependencies': [

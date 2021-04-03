@@ -42,7 +42,7 @@ class HatSploitCommand(Command):
         'Category': "jobs",
         'Name': "jobs",
         'Authors': [
-            'enty8080'
+            'Ivan Nikolsky (enty8080)'
         ],
         'Description': "Manage active jobs.",
         'Usage': usage,

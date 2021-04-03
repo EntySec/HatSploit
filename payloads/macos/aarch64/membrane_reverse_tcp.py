@@ -40,7 +40,7 @@ class HatSploitPayload(Payload, TCPClient):
         'Name': "macOS aarch64 Membrane Reverse TCP",
         'Payload': "macos/aarch64/membrane_reverse_tcp",
         'Authors': [
-            'enty8080'
+            'Ivan Nikolsky (enty8080)'
         ],
         'Description': "Membrane reverse TCP payload for macOS aarch64.",
         'Dependencies': [

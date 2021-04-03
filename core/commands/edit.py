@@ -39,7 +39,7 @@ class HatSploitCommand(Command):
         'Category': "developer",
         'Name': "edit",
         'Authors': [
-            'enty8080'
+            'Ivan Nikolsky (enty8080)'
         ],
         'Description': "Open module in editor.",
         'Usage': "edit <module>",
