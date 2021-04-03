@@ -6,7 +6,7 @@
         "Path": "plugins/cowsay",
         "Name": "cowsay",
         "Authors": [
-            "enty8080"
+            "Ivan Nikolsky (enty8080)"
         ],
         "Description": "Cowsay plugin for HatSploit.",
         "Dependencies": [
