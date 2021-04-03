@@ -39,7 +39,7 @@ class HatSploitCommand(Command):
         'Category': "core",
         'Name': "search",
         'Authors': [
-            'enty8080'
+            'Ivan Nikolsky (enty8080)'
         ],
         'Description': "Search payloads, modules and plugins.",
         'Usage': usage,

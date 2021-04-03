@@ -33,7 +33,7 @@ class HatSploitModule(Module, SessionTools):
         'Name': "macOS Membrane Transfer Upload",
         'Module': "post/macos/membrane/transfer/upload",
         'Authors': [
-            'enty8080'
+            'Ivan Nikolsky (enty8080)'
         ],
         'Description': "Upload local file.",
         'Dependencies': [

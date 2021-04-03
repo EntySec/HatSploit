@@ -37,7 +37,7 @@ class HatSploitModule(Module, HTTPClient):
         'Name': "Apache Users Scanner",
         'Module': "auxiliary/multi/scanner/apache_users",
         'Authors': [
-            'enty8080'
+            'Ivan Nikolsky (enty8080)'
         ],
         'Description': "Scan website apache users.",
         'Dependencies': [

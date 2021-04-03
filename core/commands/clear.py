@@ -32,7 +32,7 @@ class HatSploitCommand(Command):
         'Category': "core",
         'Name': "clear",
         'Authors': [
-            'enty8080'
+            'Ivan Nikolsky (enty8080)'
         ],
         'Description': "Clear terminal window.",
         'Usage': "clear",

@@ -33,7 +33,7 @@ class HatSploitModule(Module, SessionTools):
         'Name': "macOS Membrane Gather Volume",
         'Module': "post/macos/membrane/gather/getvol",
         'Authors': [
-            'enty8080'
+            'Ivan Nikolsky (enty8080)'
         ],
         'Description': "Get device volume level.",
         'Dependencies': [

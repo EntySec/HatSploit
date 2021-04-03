@@ -32,7 +32,7 @@ class HatSploitModule(Module, BluetoothClient):
         'Name': "Bluetooth Low Energy Enumerate",
         'Module': "auxiliary/multi/enumerate/ble_enumerate",
         'Authors': [
-            'enty8080'
+            'Ivan Nikolsky (enty8080)'
         ],
         'Description': "Enumerate bluetooth low energy devices characteristics.",
         'Dependencies': [

@@ -33,7 +33,7 @@ class HatSploitModule(Module):
         'Name': "Linux Membrane Transfer Upload",
         'Module': "post/linux/membrane/transfer/upload",
         'Authors': [
-            'enty8080'
+            'Ivan Nikolsky (enty8080)'
         ],
         'Description': "Upload local file.",
         'Dependencies': [

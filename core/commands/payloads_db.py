@@ -43,7 +43,7 @@ class HatSploitCommand(Command):
         'Category': "database",
         'Name': "payloads_db",
         'Authors': [
-            'enty8080'
+            'Ivan Nikolsky (enty8080)'
         ],
         'Description': "Manage payloads databases.",
         'Usage': usage,

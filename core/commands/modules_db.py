@@ -43,7 +43,7 @@ class HatSploitCommand(Command):
         'Category': "database",
         'Name': "modules_db",
         'Authors': [
-            'enty8080'
+            'Ivan Nikolsky (enty8080)'
         ],
         'Description': "Manage modules databases.",
         'Usage': usage,

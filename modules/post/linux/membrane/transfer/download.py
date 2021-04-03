@@ -33,7 +33,7 @@ class HatSploitModule(Module, SessionTools):
         'Name': "Linux Membrane Transfer Download",
         'Module': "post/linux/membrane/transfer/download",
         'Authors': [
-            'enty8080'
+            'Ivan Nikolsky (enty8080)'
         ],
         'Description': "Download remote file.",
         'Dependencies': [

@@ -37,7 +37,7 @@ class HatSploitCommand(Command):
         'Category': "core",
         'Name': "help",
         'Authors': [
-            'enty8080'
+            'Ivan Nikolsky (enty8080)'
         ],
         'Description': "Show available commands.",
         'Usage': "help",

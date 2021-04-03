@@ -34,7 +34,7 @@ class HatSploitModule(Module):
         'Name': "Network Scanner",
         'Module': "auxiliary/multi/scanner/network_scanner",
         'Authors': [
-            'enty8080'
+            'Ivan Nikolsky (enty8080)'
         ],
         'Description': "Scan local network.",
         'Dependencies': [

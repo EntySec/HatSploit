@@ -33,7 +33,7 @@ class HatSploitModule(Module, SessionTools):
         'Name': "macOS Membrane Gather Prompt",
         'Module': "post/macos/membrane/gather/prompt",
         'Authors': [
-            'enty8080'
+            'Ivan Nikolsky (enty8080)'
         ],
         'Description': "Prompt user to type password.",
         'Dependencies': [

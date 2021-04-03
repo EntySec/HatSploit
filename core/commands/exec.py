@@ -35,7 +35,7 @@ class HatSploitCommand(Command):
         'Category': "developer",
         'Name': "exec",
         'Authors': [
-            'enty8080'
+            'Ivan Nikolsky (enty8080)'
         ],
         'Description': "Execute local system command.",
         'Usage': "exec <command>",

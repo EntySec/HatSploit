@@ -36,7 +36,7 @@ class HatSploitModule(Module, HTTPClient):
         'Name': "Directory Scanner",
         'Module': "auxiliary/multi/scanner/directory_scanner",
         'Authors': [
-            'enty8080'
+            'Ivan Nikolsky (enty8080)'
         ],
         'Description': "Website directory scanner.",
         'Dependencies': [

@@ -33,7 +33,7 @@ class HatSploitModule(Module, TCPClient):
         'Name': "Jailbreak Installation Checker",
         'Module': "auxiliary/iphoneos/checker/jailbroken_or_not",
         'Authors': [
-            'enty8080'
+            'Ivan Nikolsky (enty8080)'
         ],
         'Description': "Check if remote iPhone jailbroken.",
         'Dependencies': [

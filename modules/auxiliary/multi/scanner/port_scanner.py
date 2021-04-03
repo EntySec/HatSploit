@@ -33,7 +33,7 @@ class HatSploitModule(Module, TCPClient):
         'Name': "Port Scanner",
         'Module': "auxiliary/multi/scanner/port_scanner",
         'Authors': [
-            'enty8080'
+            'Ivan Nikolsky (enty8080)'
         ],
         'Description': "Scan host for opened ports.",
         'Dependencies': [

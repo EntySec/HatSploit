@@ -37,7 +37,7 @@ class HatSploitCommand(Command):
         'Category': "developer",
         'Name': "sleep",
         'Authors': [
-            'enty8080'
+            'Ivan Nikolsky (enty8080)'
         ],
         'Description': "Sleep for specified seconds.",
         'Usage': "sleep <seconds>",

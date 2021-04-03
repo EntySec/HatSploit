@@ -46,7 +46,7 @@ class HatSploitCommand(Command):
         'Category': "module",
         'Name': "run",
         'Authors': [
-            'enty8080'
+            'Ivan Nikolsky (enty8080)'
         ],
         'Description': "Run current module.",
         'Usage': usage,
