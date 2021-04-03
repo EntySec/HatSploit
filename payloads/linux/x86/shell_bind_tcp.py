@@ -34,7 +34,7 @@ class HatSploitPayload(Payload, PayloadGenerator):
         'Name': "Linux x86 Shell Bind TCP",
         'Payload': "linux/x86/shell_bind_tcp",
         'Authors': [
-            'enty8080'
+            'Ivan Nikolsky (enty8080)'
         ],
         'Description': "Shell bind TCP payload for Linux x86.",
         'Dependencies': [

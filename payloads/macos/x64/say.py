@@ -36,7 +36,7 @@ class HatSploitPayload(Payload, PayloadGenerator):
         'Name': "macOS x64 Say",
         'Payload': "macos/x64/say",
         'Authors': [
-            'enty8080'
+            'Ivan Nikolsky (enty8080)'
         ],
         'Description': "Say payload for macOS x64.",
         'Dependencies': [

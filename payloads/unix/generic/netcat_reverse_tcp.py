@@ -34,7 +34,7 @@ class HatSploitPayload(Payload, TCPClient):
         'Name': "Netcat Shell Reverse TCP",
         'Payload': "unix/generic/netcat_reverse_tcp",
         'Authors': [
-            'enty8080'
+            'Ivan Nikolsky (enty8080)'
         ],
         'Description': "Netcat shell reverse TCP payload.",
         'Dependencies': [

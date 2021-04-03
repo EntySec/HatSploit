@@ -34,7 +34,7 @@ class HatSploitPayload(Payload, TCPClient):
         'Name': "Perl Shell Reverse TCP",
         'Payload': "unix/generic/perl_reverse_tcp",
         'Authors': [
-            'enty8080'
+            'Ivan Nikolsky (enty8080)'
         ],
         'Description': "Perl shell reverse TCP payload.",
         'Dependencies': [
