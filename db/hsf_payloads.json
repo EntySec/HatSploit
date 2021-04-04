@@ -2,6 +2,30 @@
     "__database__": {
         "type": "payloads"
     },
+    "windows": {
+        "generic": {
+            "powershell_reverse_tcp": {
+                "Path": "payloads/windows/generic/powershell_reverse_tcp",
+                "Category": "single",
+                "Name": "Powershell Reverse TCP",
+                "Payload": "unix/generic/powershell_reverse_tcp",
+                "Authors": [
+                    "Ivan Nikolsky (enty8080)"
+                ],
+                "Description": "Powershell reverse TCP payload.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Architecture": "generic",
+                "Platform": "windows",
+                "Risk": "high",
+                "Type": "reverse_tcp"
+            }
+        }
+    },
     "unix": {
         "generic": {
             "netcat_reverse_tcp": {
