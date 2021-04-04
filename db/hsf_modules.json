@@ -295,6 +295,24 @@
             }
         },
         "unix": {
+            "huawei/hg360_information_disclosure": {
+                "Path": "modules/exploit/unix/huawei/hg360_information_disclosure",
+                "Name": "Huawei HG360 Information Disclosure",
+                "Module": "exploit/unix/huawei/hg360_information_disclosure",
+                "Authors": [
+                    "Ivan Nikolsky (enty8080)",
+                    "Eslam Medhat"
+                ],
+                "Description": "Huawei HG360 information disclosure exploit.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Platform": "unix",
+                "Risk": "high"
+            },
             "asus/rt_nt16_password_disclosure": {
                 "Path": "modules/exploit/unix/asus/rt_nt16_password_disclosure",
                 "Name": "Asus RT-N16 Password Disclosure",
