@@ -366,6 +366,66 @@
             }
         },
         "x64": {
+            "fork_bomb": {
+                "Path": "payloads/linux/x64/fork_bomb",
+                "Category": "stager",
+                "Name": "Linux x64 Fork Bomb",
+                "Payload": "linux/x64/fork_bomb",
+                "Authors": [
+                    "Ivan Nikolsky (enty8080)"
+                ],
+                "Description": "Fork bomb payload for Linux x64.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Architecture": "x64",
+                "Platform": "linux",
+                "Risk": "low",
+                "Type": "one_side"
+            },
+            "kill_all": {
+                "Path": "payloads/linux/x64/kill_all",
+                "Category": "stager",
+                "Name": "Linux x64 Kill All Processes",
+                "Payload": "linux/x64/kill_all",
+                "Authors": [
+                    "Ivan Nikolsky (enty8080)"
+                ],
+                "Description": "Kill all processes payload for Linux x64.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Architecture": "x64",
+                "Platform": "linux",
+                "Risk": "low",
+                "Type": "one_side"
+            },
+            "shutdown": {
+                "Path": "payloads/linux/x64/shutdown",
+                "Category": "stager",
+                "Name": "Linux x64 Shutdown",
+                "Payload": "linux/x64/shutdown",
+                "Authors": [
+                    "Ivan Nikolsky (enty8080)"
+                ],
+                "Description": "Shutdown payload for Linux x64.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Architecture": "x64",
+                "Platform": "linux",
+                "Risk": "low",
+                "Type": "one_side"
+            },
             "membrane_reverse_tcp": {
                 "Path": "payloads/linux/x64/membrane_reverse_tcp",
                 "Category": "stager",
