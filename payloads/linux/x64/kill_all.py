@@ -45,7 +45,7 @@ class HatSploitPayload(Payload, PayloadGenerator):
         ],
         'Architecture': "x64",
         'Platform': "linux",
-        'Risk': "high",
+        'Risk': "low",
         'Type': "one_side"
     }
 
