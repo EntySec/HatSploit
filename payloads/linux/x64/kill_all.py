@@ -30,7 +30,7 @@ from utils.payload.payload import PayloadGenerator
 
 class HatSploitPayload(Payload, PayloadGenerator):
     details = {
-        'Category': "single",
+        'Category': "stager",
         'Name': "Linux x64 Kill All Processes",
         'Payload': "linux/x64/kill_all",
         'Authors': [
