@@ -68,7 +68,7 @@ class Handler(TCP):
             byte_octals.append(byte_octal)
         return ''.join(byte_octals)
 
-    def echo_stage(self, payload, sender, args=[], payload_args=None, location='/tmp', encode=False):
+    def printf_stage(self, payload, sender, args=[], payload_args=None, location='/tmp', encode=False):
         self.badges.output_process("Sending payload stage...")
         filename = binascii.hexlify(os.urandom(8)).decode()
         path = location + '/' + filename
@@ -104,7 +104,7 @@ class Handler(TCP):
         session.details['Platform'] = payload['Platform']
         return session
 
-    def handle_session(self, host, port, payload, sender=None, args=[], location='/tmp', timeout=None, method=None):
+    def handle_session(self, host, port, payload, sender=None, args=[], location='/tmp', timeout=None, method=None, post="echo"):
         if payload['Payload'] is None:
             self.badges.output_error("Payload stage is not found!")
             return False
@@ -112,7 +112,8 @@ class Handler(TCP):
         if sender is not None:
             session = payload['Session'] if payload['Session'] is not None else HatSploitSession
             if payload['Category'].lower() == 'stager':
-                self.echo_stage(payload['Payload'], sender, args, payload['Args'], location)
+                if post.lower() == 'printf':
+                    self.printf_stage(payload['Payload'], sender, args, payload['Args'], location)
             elif payload['Category'].lower() == 'single':
                 sender(*args, payload['Payload'])
             else:
@@ -132,7 +133,8 @@ class Handler(TCP):
                         return False
 
                 if payload['Category'].lower() == 'stager':
-                    self.echo_stage(payload['Payload'], new_session.send, args, payload['Args'], location, encode=True)
+                    if post.lower() == 'printf':
+                        self.printf_stage(payload['Payload'], new_session.send, args, payload['Args'], location, encode=True)
                 elif payload['Category'].lower() == 'single':
                     new_session.send_command(payload['Payload'])
                 else:
