@@ -295,6 +295,24 @@
             }
         },
         "unix": {
+            "dlink/dir645_credentials_disclosure": {
+                "Path": "modules/exploit/unix/dlink/dir645_credentials_disclosure",
+                "Name": "D-Link DIR-645 Credentials Disclosure",
+                "Module": "exploit/unix/dlink/dir645_credentials_disclosure",
+                "Authors": [
+                    "Ivan Nikolsky (enty8080)",
+                    "Roberto Paleari"
+                ],
+                "Description": "D-Link DIR-645 < 1.03 credentials disclosure exploit.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Platform": "unix",
+                "Risk": "high"
+            },
             "huawei/hg360_information_disclosure": {
                 "Path": "modules/exploit/unix/huawei/hg360_information_disclosure",
                 "Name": "Huawei HG360 Information Disclosure",
