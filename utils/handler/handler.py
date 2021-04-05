@@ -25,6 +25,7 @@
 #
 
 import os
+import requests
 import binascii
 
 from core.base.sessions import Sessions
