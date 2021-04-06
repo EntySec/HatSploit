@@ -306,6 +306,26 @@
             }
         },
         "mipsbe": {
+            "reboot": {
+                "Path": "payloads/linux/mipsbe/reboot",
+                "Category": "stager",
+                "Name": "Linux mipsbe Reboot",
+                "Payload": "linux/mipsbe/reboot",
+                "Authors": [
+                    "Ivan Nikolsky (enty8080)"
+                ],
+                "Description": "Reboot payload for Linux mipsbe.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Architecture": "mipsbe",
+                "Platform": "linux",
+                "Risk": "low",
+                "Type": "one_side"
+            },
             "shell_bind_tcp": {
                 "Path": "payloads/linux/mipsbe/shell_bind_tcp",
                 "Category": "stager",
@@ -348,6 +368,26 @@
             }
         },
         "mipsle": {
+            "reboot": {
+                "Path": "payloads/linux/mipsle/reboot",
+                "Category": "stager",
+                "Name": "Linux mipsle Reboot",
+                "Payload": "linux/mipsle/reboot",
+                "Authors": [
+                    "Ivan Nikolsky (enty8080)"
+                ],
+                "Description": "Reboot payload for Linux mipsle.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Architecture": "mipsle",
+                "Platform": "linux",
+                "Risk": "low",
+                "Type": "one_side"
+            },
             "shell_bind_tcp": {
                 "Path": "payloads/linux/mipsle/shell_bind_tcp",
                 "Category": "stager",
@@ -390,6 +430,26 @@
             }
         },
         "x64": {
+            "reboot": {
+                "Path": "payloads/linux/x64/reboot",
+                "Category": "stager",
+                "Name": "Linux x64 Reboot",
+                "Payload": "linux/x64/reboot",
+                "Authors": [
+                    "Ivan Nikolsky (enty8080)"
+                ],
+                "Description": "Reboot payload for Linux x64.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Architecture": "x64",
+                "Platform": "linux",
+                "Risk": "low",
+                "Type": "one_side"
+            },
             "fork_bomb": {
                 "Path": "payloads/linux/x64/fork_bomb",
                 "Category": "stager",
