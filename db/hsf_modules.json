@@ -349,10 +349,10 @@
                 "Platform": "unix",
                 "Risk": "high"
             },
-            "asus/rt_nt16_password_disclosure": {
-                "Path": "modules/exploit/unix/asus/rt_nt16_password_disclosure",
+            "asus/rt_n16_password_disclosure": {
+                "Path": "modules/exploit/unix/asus/rt_n16_password_disclosure",
                 "Name": "Asus RT-N16 Password Disclosure",
-                "Module": "exploit/unix/asus/rt_nt16_password_disclosure",
+                "Module": "exploit/unix/asus/rt_n16_password_disclosure",
                 "Authors": [
                     "Ivan Nikolsky (enty8080)",
                     "Harry Sintonen (piru)"
