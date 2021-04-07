@@ -331,15 +331,15 @@
                 "Platform": "unix",
                 "Risk": "high"
             },
-            "huawei/hg360_information_disclosure": {
-                "Path": "modules/exploit/unix/huawei/hg360_information_disclosure",
-                "Name": "Huawei HG360 Information Disclosure",
-                "Module": "exploit/unix/huawei/hg360_information_disclosure",
+            "huawei/hg630_information_disclosure": {
+                "Path": "modules/exploit/unix/huawei/hg630_information_disclosure",
+                "Name": "Huawei HG630 Information Disclosure",
+                "Module": "exploit/unix/huawei/hg630_information_disclosure",
                 "Authors": [
                     "Ivan Nikolsky (enty8080)",
                     "Eslam Medhat"
                 ],
-                "Description": "Huawei HG360 information disclosure exploit.",
+                "Description": "Huawei HG630 information disclosure exploit.",
                 "Dependencies": [
                     ""
                 ],
