@@ -160,5 +160,5 @@ class StringTools:
 
     @staticmethod
     def lzs_decompress(data, window=RingList(2048)):
-        result, window = LZSDecompress(data[fpos:], window)
+        result, window = LZSDecompress(data, window)
         return result
