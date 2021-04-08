@@ -295,7 +295,7 @@
             }
         },
         "unix": {
-            "rompager/multi_password_dislosure": {
+            "rompager/multi_password_disclosure": {
                 "Path": "modules/exploit/unix/rompager/multi_password_disclosure",
                 "Name": "RomPager Multi Password Disclosure",
                 "Module": "exploit/unix/rompager/multi_password_disclosure",
