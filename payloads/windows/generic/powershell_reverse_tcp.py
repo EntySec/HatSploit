@@ -32,7 +32,7 @@ class HatSploitPayload(Payload, TCPClient):
     details = {
         'Category': "single",
         'Name': "Powershell Reverse TCP",
-        'Payload': "unix/generic/powershell_reverse_tcp",
+        'Payload': "windows/generic/powershell_reverse_tcp",
         'Authors': [
             'Ivan Nikolsky (enty8080)'
         ],
