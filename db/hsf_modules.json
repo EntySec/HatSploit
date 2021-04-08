@@ -310,7 +310,7 @@
                     ""
                 ],
                 "Platform": "unix",
-                "Risk": "high
+                "Risk": "high"
             },
             "dlink/hedwig_code_execution": {
                 "Path": "modules/exploit/unix/dlink/hedwig_code_execution",
