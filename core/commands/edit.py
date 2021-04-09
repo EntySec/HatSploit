@@ -27,11 +27,13 @@
 import os
 
 from core.base.storage import LocalStorage
+from core.base.config import Config
 from core.lib.command import Command
 from core.modules.modules import Modules
 
 
 class HatSploitCommand(Command):
+    config = Config()
     modules = Modules()
     local_storage = LocalStorage()
 

