@@ -330,6 +330,24 @@
                 "Platform": "unix",
                 "Risk": "high"
             },
+            "dlink/hedwig_reboot_dos": {
+                "Path": "modules/exploit/unix/dlink/hedwig_reboot_dos",
+                "Name": "D-Link hedwig reboot DoS",
+                "Module": "exploit/unix/dlink/hedwig_reboot_dos",
+                "Authors": [
+                    "Ivan Nikolsky (enty8080)",
+                    "Roberto Paleari"
+                ],
+                "Description": "Reboot DoS in D-Link DIR-645 <= 1.03, DIR-300 <= 2.14, DIR-600.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Platform": "unix",
+                "Risk": "high"
+            },
             "dlink/dir645_credentials_disclosure": {
                 "Path": "modules/exploit/unix/dlink/dir645_credentials_disclosure",
                 "Name": "D-Link DIR-645 Credentials Disclosure",
@@ -501,6 +519,24 @@
                     "Johannes Ullrich (jullrich)"
                 ],
                 "Description": "Remote Code Execution in Linksys E-Series.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Platform": "unix",
+                "Risk": "high"
+            },
+            "linksys/eseries_tmunblock_dos": {
+                "Path": "modules/exploit/unix/linksys/eseries_tmunblock_dos",
+                "Name": "Linksys E-Series tmUnblock DoS",
+                "Module": "exploit/unix/linksys/eseries_tmunblock_dos",
+                "Authors": [
+                    "Ivan Nikolsky (enty8080)",
+                    "Johannes Ullrich (jullrich)"
+                ],
+                "Description": "DoS in Linksys E-Series.",
                 "Dependencies": [
                     ""
                 ],
