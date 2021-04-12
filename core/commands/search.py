@@ -33,7 +33,7 @@ class HatSploitCommand(Command):
 
     usage = ""
     usage += "search [options] <keyword>\n\n"
-    usage += "  -w, --where [playloads|modules|plugins]  Select where search.\n"
+    usage += "  -w, --where [payloads|modules|plugins]  Select where search.\n"
 
     details = {
         'Category': "core",
