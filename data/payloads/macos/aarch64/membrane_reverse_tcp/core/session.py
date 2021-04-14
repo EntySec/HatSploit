@@ -28,10 +28,8 @@ import os
 
 from core.lib.session import Session
 from utils.tcp.tcp import TCPClient
-from utils.string.string import StringTools
-from utils.fs.fs import FSTools
 
-class HatSploitSession(Session, TCPClient, StringTools, FSTools):
+class HatSploitSession(Session, TCPClient):
     details = {
         'Platform': "macos",
         'Type': "membrane"
