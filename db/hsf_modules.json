@@ -763,42 +763,6 @@
         }
     },
     "post": {
-        "linux": {
-            "membrane/transfer/download": {
-                "Path": "modules/post/linux/membrane/transfer/download",
-                "Name": "Linux Membrane Transfer Download",
-                "Module": "post/linux/membrane/transfer/download",
-                "Authors": [
-                    "Ivan Nikolsky (enty8080)"
-                ],
-                "Description": "Download remote file.",
-                "Dependencies": [
-                    ""
-                ],
-                "Comments": [
-                    ""
-                ],
-                "Platform": "linux",
-                "Risk": "high"
-            },
-            "membrane/transfer/upload": {
-                "Path": "modules/post/linux/membrane/transfer/upload",
-                "Name": "Linux Membrane Transfer Upload",
-                "Module": "post/linux/membrane/transfer/upload",
-                "Authors": [
-                    "Ivan Nikolsky (enty8080)"
-                ],
-                "Description": "Upload local file.",
-                "Dependencies": [
-                    ""
-                ],
-                "Comments": [
-                    ""
-                ],
-                "Platform": "linux",
-                "Risk": "medium"
-            }
-        },
         "macos": {
             "membrane/gather/getvol": {
                 "Path": "modules/post/macos/membrane/gather/getvol",
@@ -833,40 +797,6 @@
                 ],
                 "Platform": "macos",
                 "Risk": "high"
-            },
-            "membrane/transfer/download": {
-                "Path": "modules/post/macos/membrane/transfer/download",
-                "Name": "macOS Membrane Transfer Download",
-                "Module": "post/macos/membrane/transfer/download",
-                "Authors": [
-                    "Ivan Nikolsky (enty8080)"
-                ],
-                "Description": "Download remote file.",
-                "Dependencies": [
-                    ""
-                ],
-                "Comments": [
-                    ""
-                ],
-                "Platform": "macos",
-                "Risk": "high"
-            },
-            "membrane/transfer/upload": {
-                "Path": "modules/post/macos/membrane/transfer/upload",
-                "Name": "macOS Membrane Transfer Upload",
-                "Module": "post/macos/membrane/transfer/upload",
-                "Authors": [
-                    "Ivan Nikolsky (enty8080)"
-                ],
-                "Description": "Upload local file.",
-                "Dependencies": [
-                    ""
-                ],
-                "Comments": [
-                    ""
-                ],
-                "Platform": "macos",
-                "Risk": "medium"
             },
             "membrane/trolling/say": {
                 "Path": "modules/post/macos/membrane/trolling/say",
