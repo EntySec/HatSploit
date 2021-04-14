@@ -81,7 +81,7 @@ class HatSploitModule(Module, SessionTools):
             """
             self.output_process("Waiting for user to type password...")
 
-            status, output = session.send_command("osascript", payload, timeout=None)
+            status, output = session.send_command("osascript", payload)
             if not status:
                 self.output_error("Failed to prompt user to type password!")
             else:
