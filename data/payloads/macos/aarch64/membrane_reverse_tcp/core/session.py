@@ -47,9 +47,9 @@ class HatSploitSession(Session, TCPClient):
 
         output = self.send_cmd(command + '\n', output, timeout)
 
-        if "error" in output:
+        if "Unrecognized command:" in output:
             return False, ""
         return True, output
 
     def interact(self):
-        self.interactive('\n')
+        self.interactive()
