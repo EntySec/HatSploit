@@ -41,7 +41,7 @@ class HatSploitSession(Session, TCPClient):
     def close(self):
         self.disconnect()
 
-    def send_command(self, command, arguments=None, output=True, timeout=10):
+    def send_command(self, command, arguments=None, output=True, timeout=None):
         if arguments:
             command += " " + arguments
 
