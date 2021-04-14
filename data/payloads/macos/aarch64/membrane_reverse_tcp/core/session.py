@@ -46,6 +46,7 @@ class HatSploitSession(Session, TCPClient):
             command += " " + arguments
 
         output = self.send_cmd(command + '\n', output, timeout)
+        output = output.replace('\nmembrane% ', "")
 
         if "Unrecognized command:" in output:
             return False, ""
