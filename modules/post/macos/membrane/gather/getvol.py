@@ -60,9 +60,8 @@ class HatSploitModule(Module, SessionTools):
         session = self.get_session(self.details['Platform'], "membrane", session)
         if session:
             self.output_process("Getting device volume level...")
-            payload = "output volume of (get volume settings)"
+            status, output = session.send_command("getvol")
 
-            status, output = session.send_command("osascript", payload)
             if not status:
                 self.output_error("Failed to get device volume level!")
             else:
