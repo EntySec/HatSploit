@@ -198,11 +198,6 @@ class Handler(TCP):
                     remote_host = host
                     if not new_session:
                         return False
-                    
-                self.badges.output_process("Cleaning up...")
-                sender(*args, f"rm {path}")
-                if post.lower == 'wget':
-                    requests.delete(wget_container)
 
                 if payload['Category'].lower() == 'stager':
                     if post.lower() == 'printf':
@@ -239,10 +234,11 @@ class Handler(TCP):
             new_session, remote_host = self.listen_session(host, port, timeout, session)
             if not new_session and not remote_host:
                 return False
-            
-        self.badges.output_process("Cleaning up...")
-        sender(*args, f"rm {path}\n".encode())
-        if post.lower == 'wget':
+
+        if payload['Category'].lower() == 'stager':
+            self.badges.output_process("Cleaning up...")
+            sender(*args, f"rm {path}\n".encode())
+            if post.lower == 'wget':
                 requests.delete(wget_container)
 
         new_session = self.set_session_details(payload, new_session)
