@@ -169,18 +169,19 @@ class Handler(TCP):
             self.badges.output_error("Payload stage is not found!")
             return False
 
+        encode = False
         if sender is not None:
             session = payload['Session'] if payload['Session'] is not None else HatSploitSession
             if payload['Category'].lower() == 'stager':
                 if post.lower() == 'printf':
-                    path = self.printf_stage(payload['Payload'], sender, args, payload['Args'], delim, location)
+                    path = self.printf_stage(payload['Payload'], sender, args, payload['Args'], delim, location, encode)
                 elif post.lower() == 'echo':
-                    path = self.echo_stage(payload['Payload'], sender, args, payload['Args'], delim, location)
+                    path = self.echo_stage(payload['Payload'], sender, args, payload['Args'], delim, location, encode)
                 elif post.lower() == 'wget':
-                    wget_container, path = self.wget_stage(payload['Payload'], sender, args, payload['Args'], delim, location)
+                    wget_container, path = self.wget_stage(payload['Payload'], sender, args, payload['Args'], delim, location, encode)
                 else:
                     self.output_warning("Invalid post method, using printf by default.")
-                    self.printf_stage(payload['Payload'], sender, args, payload['Args'], delim, location)
+                    self.printf_stage(payload['Payload'], sender, args, payload['Args'], delim, location, encode)
             elif payload['Category'].lower() == 'single':
                 sender(*args, payload['Payload'])
             else:
@@ -188,6 +189,7 @@ class Handler(TCP):
                 return False
         else:
             if method is not None:
+                encode = True
                 if method.lower() == 'reverse_tcp':
                     new_session, remote_host = self.listen_session(host, port, timeout, HatSploitSession)
                     if not new_session and not remote_host:
@@ -201,14 +203,14 @@ class Handler(TCP):
 
                 if payload['Category'].lower() == 'stager':
                     if post.lower() == 'printf':
-                        path = self.printf_stage(payload['Payload'], new_session.send, args, payload['Args'], delim, location, encode=True)
+                        path = self.printf_stage(payload['Payload'], new_session.send, args, payload['Args'], delim, location, encode)
                     elif post.lower() == 'echo':
-                        path = self.echo_stage(payload['Payload'], new_session.send, args, payload['Args'], delim, location, encode=True)
+                        path = self.echo_stage(payload['Payload'], new_session.send, args, payload['Args'], delim, location, encode)
                     elif post.lower() == 'wget':
-                        wget_container, path = self.wget_stage(payload['Payload'], new_session.send, args, payload['Args'], delim, location, encode=True)
+                        wget_container, path = self.wget_stage(payload['Payload'], new_session.send, args, payload['Args'], delim, location, encode)
                     else:
                         self.output_warning("Invalid post method, using printf by default.")
-                        self.printf_stage(payload['Payload'], new_session.send, args, payload['Args'], delim, location, encode=True)
+                        self.printf_stage(payload['Payload'], new_session.send, args, payload['Args'], delim, location, encode)
                 elif payload['Category'].lower() == 'single':
                     new_session.send_command(payload['Payload'])
                 else:
@@ -237,7 +239,10 @@ class Handler(TCP):
 
         if payload['Category'].lower() == 'stager':
             self.badges.output_process("Cleaning up...")
-            sender(*args, f"rm {path}\n".encode())
+            if encode:
+                sender(*args, f"rm {path}\n".encode())
+            else:
+                sender(*args, f"rm {path}")
             if post.lower == 'wget':
                 requests.delete(wget_container)
 
