@@ -1,0 +1,617 @@
+{
+    "__database__": {
+        "type": "payloads"
+    },
+    "windows": {
+        "generic": {
+            "powershell_reverse_tcp": {
+                "Path": "payloads/windows/generic/powershell_reverse_tcp",
+                "Category": "single",
+                "Name": "Powershell Reverse TCP",
+                "Payload": "windows/generic/powershell_reverse_tcp",
+                "Authors": [
+                    "Ivan Nikolsky (enty8080)"
+                ],
+                "Description": "Powershell reverse TCP payload.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Architecture": "generic",
+                "Platform": "windows",
+                "Risk": "high",
+                "Type": "reverse_tcp"
+            }
+        }
+    },
+    "unix": {
+        "generic": {
+            "netcat_reverse_tcp": {
+                "Path": "payloads/unix/generic/netcat_reverse_tcp",
+                "Category": "single",
+                "Name": "Netcat Shell Reverse TCP",
+                "Payload": "unix/generic/netcat_reverse_tcp",
+                "Authors": [
+                    "Ivan Nikolsky (enty8080)"
+                ],
+                "Description": "Netcat shell reverse TCP payload.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Architecture": "generic",
+                "Platform": "unix",
+                "Risk": "high",
+                "Type": "reverse_tcp"
+            },
+            "perl_reverse_tcp": {
+                "Path": "payloads/unix/generic/perl_reverse_tcp",
+                "Category": "single",
+                "Name": "Perl Shell Reverse TCP",
+                "Payload": "unix/generic/perl_reverse_tcp",
+                "Authors": [
+                    "Ivan Nikolsky (enty8080)"
+                ],
+                "Description": "Perl shell reverse TCP payload.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Architecture": "generic",
+                "Platform": "unix",
+                "Risk": "high",
+                "Type": "reverse_tcp"
+            },
+            "ruby_reverse_tcp": {
+                "Path": "payloads/unix/generic/ruby_reverse_tcp",
+                "Category": "single",
+                "Name": "Ruby Shell Reverse TCP",
+                "Payload": "unix/generic/ruby_reverse_tcp",
+                "Authors": [
+                    "Ivan Nikolsky (enty8080)"
+                ],
+                "Description": "Ruby shell reverse TCP payload.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Architecture": "generic",
+                "Platform": "unix",
+                "Risk": "high",
+                "Type": "reverse_tcp"
+            },
+            "bash_reverse_tcp": {
+                "Path": "payloads/unix/generic/bash_reverse_tcp",
+                "Category": "single",
+                "Name": "Bash Shell Reverse TCP",
+                "Payload": "unix/generic/bash_reverse_tcp",
+                "Authors": [
+                    "Ivan Nikolsky (enty8080)"
+                ],
+                "Description": "Bash shell reverse TCP payload.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Architecture": "generic",
+                "Platform": "unix",
+                "Risk": "high",
+                "Type": "reverse_tcp"
+            }
+        }
+    },
+    "macos": {
+        "aarch64": {
+            "membrane_reverse_tcp": {
+                "Path": "payloads/macos/aarch64/membrane_reverse_tcp",
+                "Category": "stager",
+                "Name": "macOS aarch64 Membrane Reverse TCP",
+                "Payload": "macos/aarch64/membrane_reverse_tcp",
+                "Authors": [
+                    "Ivan Nikolsky (enty8080)"
+                ],
+                "Description": "Membrane reverse TCP payload for macOS aarch64.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Architecture": "aarch64",
+                "Platform": "macos",
+                "Risk": "high",
+                "Type": "reverse_tcp"
+            }
+        },
+        "x64": {
+            "membrane_reverse_tcp": {
+                "Path": "payloads/macos/x64/membrane_reverse_tcp",
+                "Category": "stager",
+                "Name": "macOS x64 Membrane Reverse TCP",
+                "Payload": "macos/x64/membrane_reverse_tcp",
+                "Authors": [
+                    "Ivan Nikolsky (enty8080)"
+                ],
+                "Description": "Membrane reverse TCP payload for macOS x64.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Architecture": "x64",
+                "Platform": "macos",
+                "Risk": "high",
+                "Type": "reverse_tcp"
+            },
+            "say": {
+                "Path": "payloads/macos/x64/say",
+                "Category": "stager",
+                "Name": "macOS x64 Say",
+                "Payload": "macos/x64/say",
+                "Authors": [
+                    "Ivan Nikolsky (enty8080)"
+                ],
+                "Description": "Say payload for macOS x64.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Architecture": "x64",
+                "Platform": "macos",
+                "Risk": "low",
+                "Type": "one_side"
+            },
+            "shell_bind_tcp": {
+                "Path": "payloads/macos/x64/shell_bind_tcp",
+                "Category": "stager",
+                "Name": "macOS x64 Shell Bind TCP",
+                "Payload": "macos/x64/shell_bind_tcp",
+                "Authors": [
+                    "Ivan Nikolsky (enty8080)"
+                ],
+                "Description": "Shell bind TCP payload for macOS x64.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Architecture": "x64",
+                "Platform": "macos",
+                "Risk": "high",
+                "Type": "bind_tcp"
+            },
+            "shell_reverse_tcp": {
+                "Path": "payloads/macos/x64/shell_reverse_tcp",
+                "Category": "stager",
+                "Name": "macOS x64 Shell Reverse TCP",
+                "Payload": "macos/x64/shell_reverse_tcp",
+                "Authors": [
+                    "Ivan Nikolsky (enty8080)"
+                ],
+                "Description": "Shell reverse TCP payload for macOS x64.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Architecture": "x64",
+                "Platform": "macos",
+                "Risk": "high",
+                "Type": "reverse_tcp"
+            }
+        }
+    },
+    "android": {
+        "armle": {
+            "shell_reverse_tcp": {
+                "Path": "payloads/android/armle/shell_reverse_tcp",
+                "Category": "stager",
+                "Name": "Android armle Shell Reverse TCP",
+                "Payload": "android/armle/shell_reverse_tcp",
+                "Authors": [
+                    "Ivan Nikolsky (enty8080)"
+                ],
+                "Description": "Shell reverse TCP payload for Android armle.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Architecture": "armle",
+                "Platform": "android",
+                "Risk": "high",
+                "Type": "bind_tcp"
+            }
+        }
+    },
+    "linux": {
+        "aarch64": {
+            "membrane_reverse_tcp": {
+                "Path": "payloads/linux/aarch64/membrane_reverse_tcp",
+                "Category": "stager",
+                "Name": "Linux aarch64 Membrane Reverse TCP",
+                "Payload": "linux/aarch64/membrane_reverse_tcp",
+                "Authors": [
+                    "Ivan Nikolsky (enty8080)"
+                ],
+                "Description": "Membrane reverse TCP payload for Linux aarch64.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Architecture": "aarch64",
+                "Platform": "linux",
+                "Risk": "high",
+                "Type": "reverse_tcp"
+            }
+        },
+        "armle": {
+            "shell_bind_tcp": {
+                "Path": "payloads/linux/armle/shell_bind_tcp",
+                "Category": "stager",
+                "Name": "Linux armle Shell Bind TCP",
+                "Payload": "linux/armle/shell_bind_tcp",
+                "Authors": [
+                    "Ivan Nikolsky (enty8080)"
+                ],
+                "Description": "Shell bind TCP payload for Linux armle.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Architecture": "armle",
+                "Platform": "linux",
+                "Risk": "high",
+                "Type": "bind_tcp"
+            },
+            "shell_reverse_tcp": {
+                "Path": "payloads/linux/armle/shell_reverse_tcp",
+                "Category": "stager",
+                "Name": "Linux armle Shell Reverse TCP",
+                "Payload": "linux/armle/shell_reverse_tcp",
+                "Authors": [
+                    "Ivan Nikolsky (enty8080)"
+                ],
+                "Description": "Shell reverse TCP payload for Linux armle.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Architecture": "armle",
+                "Platform": "linux",
+                "Risk": "high",
+                "Type": "reverse_tcp"
+            }
+        },
+        "mipsbe": {
+            "reboot": {
+                "Path": "payloads/linux/mipsbe/reboot",
+                "Category": "stager",
+                "Name": "Linux mipsbe Reboot",
+                "Payload": "linux/mipsbe/reboot",
+                "Authors": [
+                    "Ivan Nikolsky (enty8080)"
+                ],
+                "Description": "Reboot payload for Linux mipsbe.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Architecture": "mipsbe",
+                "Platform": "linux",
+                "Risk": "low",
+                "Type": "one_side"
+            },
+            "shell_bind_tcp": {
+                "Path": "payloads/linux/mipsbe/shell_bind_tcp",
+                "Category": "stager",
+                "Name": "Linux mipsbe Shell Bind TCP",
+                "Payload": "linux/mipsbe/shell_bind_tcp",
+                "Authors": [
+                    "Ivan Nikolsky (enty8080)"
+                ],
+                "Description": "Shell bind TCP payload for Linux mipsbe.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Architecture": "mipsbe",
+                "Platform": "linux",
+                "Risk": "high",
+                "Type": "bind_tcp"
+            },
+            "shell_reverse_tcp": {
+                "Path": "payloads/linux/mipsbe/shell_reverse_tcp",
+                "Category": "stager",
+                "Name": "Linux mipsbe Shell Reverse TCP",
+                "Payload": "linux/mipsbe/shell_reverse_tcp",
+                "Authors": [
+                    "Ivan Nikolsky (enty8080)"
+                ],
+                "Description": "Shell reverse TCP payload for Linux mipsbe.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Architecture": "mipsbe",
+                "Platform": "linux",
+                "Risk": "high",
+                "Type": "reverse_tcp"
+            }
+        },
+        "mipsle": {
+            "reboot": {
+                "Path": "payloads/linux/mipsle/reboot",
+                "Category": "stager",
+                "Name": "Linux mipsle Reboot",
+                "Payload": "linux/mipsle/reboot",
+                "Authors": [
+                    "Ivan Nikolsky (enty8080)"
+                ],
+                "Description": "Reboot payload for Linux mipsle.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Architecture": "mipsle",
+                "Platform": "linux",
+                "Risk": "low",
+                "Type": "one_side"
+            },
+            "shell_bind_tcp": {
+                "Path": "payloads/linux/mipsle/shell_bind_tcp",
+                "Category": "stager",
+                "Name": "Linux mipsle Shell Bind TCP",
+                "Payload": "linux/mipsle/shell_bind_tcp",
+                "Authors": [
+                    "Ivan Nikolsky (enty8080)"
+                ],
+                "Description": "Shell bind TCP payload for Linux mipsle.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Architecture": "mipsle",
+                "Platform": "linux",
+                "Risk": "high",
+                "Type": "bind_tcp"
+            },
+            "shell_reverse_tcp": {
+                "Path": "payloads/linux/mipsle/shell_reverse_tcp",
+                "Category": "stager",
+                "Name": "Linux mipsle Shell Reverse TCP",
+                "Payload": "linux/mipsle/shell_reverse_tcp",
+                "Authors": [
+                    "Ivan Nikolsky (enty8080)"
+                ],
+                "Description": "Shell reverse TCP payload for Linux mipsle.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Architecture": "mipsle",
+                "Platform": "linux",
+                "Risk": "high",
+                "Type": "reverse_tcp"
+            }
+        },
+        "x64": {
+            "reboot": {
+                "Path": "payloads/linux/x64/reboot",
+                "Category": "stager",
+                "Name": "Linux x64 Reboot",
+                "Payload": "linux/x64/reboot",
+                "Authors": [
+                    "Ivan Nikolsky (enty8080)"
+                ],
+                "Description": "Reboot payload for Linux x64.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Architecture": "x64",
+                "Platform": "linux",
+                "Risk": "low",
+                "Type": "one_side"
+            },
+            "fork_bomb": {
+                "Path": "payloads/linux/x64/fork_bomb",
+                "Category": "stager",
+                "Name": "Linux x64 Fork Bomb",
+                "Payload": "linux/x64/fork_bomb",
+                "Authors": [
+                    "Ivan Nikolsky (enty8080)"
+                ],
+                "Description": "Fork bomb payload for Linux x64.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Architecture": "x64",
+                "Platform": "linux",
+                "Risk": "low",
+                "Type": "one_side"
+            },
+            "kill_all": {
+                "Path": "payloads/linux/x64/kill_all",
+                "Category": "stager",
+                "Name": "Linux x64 Kill All Processes",
+                "Payload": "linux/x64/kill_all",
+                "Authors": [
+                    "Ivan Nikolsky (enty8080)"
+                ],
+                "Description": "Kill all processes payload for Linux x64.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Architecture": "x64",
+                "Platform": "linux",
+                "Risk": "low",
+                "Type": "one_side"
+            },
+            "shutdown": {
+                "Path": "payloads/linux/x64/shutdown",
+                "Category": "stager",
+                "Name": "Linux x64 Shutdown",
+                "Payload": "linux/x64/shutdown",
+                "Authors": [
+                    "Ivan Nikolsky (enty8080)"
+                ],
+                "Description": "Shutdown payload for Linux x64.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Architecture": "x64",
+                "Platform": "linux",
+                "Risk": "low",
+                "Type": "one_side"
+            },
+            "membrane_reverse_tcp": {
+                "Path": "payloads/linux/x64/membrane_reverse_tcp",
+                "Category": "stager",
+                "Name": "Linux x64 Membrane Reverse TCP",
+                "Payload": "linux/x64/membrane_reverse_tcp",
+                "Authors": [
+                    "Ivan Nikolsky (enty8080)"
+                ],
+                "Description": "Membrane reverse TCP payload for Linux x64.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Architecture": "x64",
+                "Platform": "linux",
+                "Risk": "high",
+                "Type": "reverse_tcp"
+            },
+            "shell_bind_tcp": {
+                "Path": "payloads/linux/x64/shell_bind_tcp",
+                "Category": "stager",
+                "Name": "Linux x64 Shell Bind TCP",
+                "Payload": "linux/x64/shell_bind_tcp",
+                "Authors": [
+                    "Ivan Nikolsky (enty8080)"
+                ],
+                "Description": "Shell bind TCP payload for Linux x64.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Architecture": "x64",
+                "Platform": "linux",
+                "Risk": "high",
+                "Type": "bind_tcp"
+            },
+            "shell_reverse_tcp": {
+                "Path": "payloads/linux/x64/shell_reverse_tcp",
+                "Category": "stager",
+                "Name": "Linux x64 Shell Reverse TCP",
+                "Payload": "linux/x64/shell_reverse_tcp",
+                "Authors": [
+                    "Ivan Nikolsky (enty8080)"
+                ],
+                "Description": "Shell reverse TCP payload for Linux x64.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Architecture": "x64",
+                "Platform": "linux",
+                "Risk": "high",
+                "Type": "reverse_tcp"
+            }
+        },
+        "x86": {
+            "shell_bind_tcp": {
+                "Path": "payloads/linux/x86/shell_bind_tcp",
+                "Category": "stager",
+                "Name": "Linux x86 Shell Bind TCP",
+                "Payload": "linux/x86/shell_bind_tcp",
+                "Authors": [
+                    "Ivan Nikolsky (enty8080)"
+                ],
+                "Description": "Shell bind TCP payload for Linux x86.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Architecture": "x86",
+                "Platform": "linux",
+                "Risk": "high",
+                "Type": "bind_tcp"
+            },
+            "shell_reverse_tcp": {
+                "Path": "payloads/linux/x86/shell_reverse_tcp",
+                "Category": "stager",
+                "Name": "Linux x86 Shell Reverse TCP",
+                "Payload": "linux/x86/shell_reverse_tcp",
+                "Authors": [
+                    "Ivan Nikolsky (enty8080)"
+                ],
+                "Description": "Shell reverse TCP payload for Linux x86.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Architecture": "x86",
+                "Platform": "linux",
+                "Risk": "high",
+                "Type": "reverse_tcp"
+            }
+        }
+    }
+}

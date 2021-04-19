@@ -1,0 +1,820 @@
+{
+    "__database__": {
+        "type": "modules"
+    },
+    "auxiliary": {
+        "iphoneos": {
+            "checker/jailbroken_or_not": {
+                "Path": "modules/auxiliary/iphoneos/checker/jailbroken_or_not",
+                "Name": "Jailbreak Installation Checker",
+                "Module": "auxiliary/iphoneos/checker/jailbroken_or_not",
+                "Authors": [
+                    "Ivan Nikolsky (enty8080)"
+                ],
+                "Description": "Check if remote iPhone jailbroken.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Platform": "iphoneos",
+                "Risk": "low"
+            }
+        },
+        "android": {
+            "checker/check_adb_installation": {
+                "Path": "modules/auxiliary/android/checker/check_adb_installation",
+                "Name": "ADB Installation Checker",
+                "Module": "auxiliary/android/checker/check_adb_installation",
+                "Authors": [
+                    "Ivan Nikolsky (enty8080)"
+                ],
+                "Description": "Check if remote Android device has ADB installation.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Platform": "android",
+                "Risk": "low"
+            }
+        },
+        "multi": {
+            "scanner/ble_scanner": {
+                "Path": "modules/auxiliary/multi/scanner/ble_scanner",
+                "Name": "Bluetooth Low Energy Scanner",
+                "Module": "auxiliary/multi/scanner/ble_scanner",
+                "Authors": [
+                    "Ivan Nikolsky (enty8080)"
+                ],
+                "Description": "Scan for bluetooth low energy devices.",
+                "Dependencies": [
+                    "bluepy"
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Platform": "multi",
+                "Risk": "high"
+            },
+            "scanner/network_scanner": {
+                "Path": "modules/auxiliary/multi/scanner/network_scanner",
+                "Name": "Network Scanner",
+                "Module": "auxiliary/multi/scanner/network_scanner",
+                "Authors": [
+                    "Ivan Nikolsky (enty8080)"
+                ],
+                "Description": "Scan local network.",
+                "Dependencies": [
+                    "scapy"
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Platform": "multi",
+                "Risk": "low"
+            },
+            "scanner/port_scanner": {
+                "Path": "modules/auxiliary/multi/scanner/port_scanner",
+                "Name": "Port Scanner",
+                "Module": "auxiliary/multi/scanner/port_scanner",
+                "Authors": [
+                    "Ivan Nikolsky (enty8080)"
+                ],
+                "Description": "Scan host for opened ports.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Platform": "multi",
+                "Risk": "low"
+            },
+            "scanner/directory_scanner": {
+                "Path": "modules/auxiliary/multi/scanner/directory_scanner",
+                "Name": "Directory Scanner",
+                "Module": "auxiliary/multi/scanner/directory_scanner",
+                "Authors": [
+                    "Ivan Nikolsky (enty8080)"
+                ],
+                "Description": "Website directory scanner.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Platform": "multi",
+                "Risk": "medium"
+            },
+            "scanner/apache_users": {
+                "Path": "modules/auxiliary/multi/scanner/apache_users",
+                "Name": "Apache Users Scanner",
+                "Module": "auxiliary/multi/scanner/apache_users",
+                "Authors": [
+                    "Ivan Nikolsky (enty8080)"
+                ],
+                "Description": "Scan website apache users.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Platform": "multi",
+                "Risk": "medium"
+            },
+            "scanner/pma_scanner": {
+                "Path": "modules/auxiliary/multi/scanner/pma_scanner",
+                "Name": "PMA Scanner",
+                "Module": "auxiliary/multi/scanner/pma_scanner",
+                "Authors": [
+                    "Ivan Nikolsky (enty8080)"
+                ],
+                "Description": "Scan website PHP My Admin.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Platform": "multi",
+                "Risk": "medium"
+            },
+            "enumerate/ble_enumerate": {
+                "Path": "modules/auxiliary/multi/enumerate/ble_enumerate",
+                "Name": "Bluetooth Low Energy Enumerate",
+                "Module": "auxiliary/multi/enumerate/ble_enumerate",
+                "Authors": [
+                    "Ivan Nikolsky (enty8080)"
+                ],
+                "Description": "Enumerate bluetooth low energy devices characteristics.",
+                "Dependencies": [
+                    "bluepy"
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Platform": "multi",
+                "Risk": "high"
+            },
+            "payload/generator": {
+                "Path": "modules/auxiliary/multi/payload/generator",
+                "Name": "Multi Payload Generator",
+                "Module": "auxiliary/multi/payload/generator",
+                "Authors": [
+                    "Ivan Nikolsky (enty8080)"
+                ],
+                "Description": "Multi Payload Generator.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Platform": "multi",
+                "Risk": "high"
+            }
+        }
+    },
+    "exploit": {
+        "macos": {
+            "xnu/memory_corruption_dos": {
+                "Path": "modules/exploit/macos/xnu/memory_corruption_dos",
+                "Name": "macOS XNU Memory Corruption DoS",
+                "Module": "exploit/macos/xnu/memory_corruption_dos",
+                "Authors": [
+                    "Ivan Nikolsky (enty8080)",
+                    "Kevin Backhouse (kevinbackhouse)"
+                ],
+                "Description": "macOS 10.0 till 10.13.6 XNU kernel memory corruption DoS.",
+                "Dependencies": [
+                    "scapy"
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Platform": "macos",
+                "Risk": "high"
+            }
+        },
+        "iphoneos": {
+            "xnu/memory_corruption_dos": {
+                "Path": "modules/exploit/iphoneos/xnu/memory_corruption_dos",
+                "Name": "iPhoneOS XNU Memory Corruption DoS",
+                "Module": "exploit/iphoneos/xnu/memory_corruption_dos",
+                "Authors": [
+                    "Ivan Nikolsky (enty8080)",
+                    "Kevin Backhouse (kevinbackhouse)"
+                ],
+                "Description": "iPhoneOS 1.0.0 till 11.4.1 XNU kernel memory corruption DoS.",
+                "Dependencies": [
+                    "scapy"
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Platform": "iphoneos",
+                "Risk": "high"
+            },
+            "safari/webkit_filter_dos": {
+                "Path": "modules/exploit/iphoneos/safari/webkit_filter_dos",
+                "Name": "iPhoneOS Safari WebKit Filter DoS",
+                "Module": "exploit/iphoneos/safari/webkit_filter_dos",
+                "Authors": [
+                    "Ivan Nikolsky (enty8080)",
+                    "Sabri Haddouche (pwnsdx)"
+                ],
+                "Description": "iPhoneOS 9.1 till 12.1 MobileSafari.app WebKit Filter DoS.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Platform": "iphoneos",
+                "Risk": "high"
+            },
+            "ssh/cydia_default_password": {
+                "Path": "modules/exploit/iphoneos/ssh/cydia_default_password",
+                "Name": "iPhoneOS SSH Cydia.app Default Password",
+                "Module": "exploit/iphoneos/ssh/cydia_default_password",
+                "Authors": [
+                    "Ivan Nikolsky (enty8080)"
+                ],
+                "Description": "Bypass iPhoneOS SSH authorization using Cydia.app default SSH password.",
+                "Dependencies": [
+                    "paramiko"
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Platform": "iphoneos",
+                "Risk": "medium"
+            }
+        },
+        "android": {
+            "adb/remote_code_execution": {
+                "Path": "modules/exploit/android/adb/remote_code_execution",
+                "Name": "Android ADB Remote Code Execution",
+                "Module": "exploit/android/adb/remote_code_execution",
+                "Authors": [
+                    "Ivan Nikolsky (enty8080)"
+                ],
+                "Description": "Remote Code Execution in Android ADB.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Platform": "android",
+                "Risk": "high"
+            }
+        },
+        "multi": {
+            "bluetooth/ble_write": {
+                "Path": "modules/exploit/multi/bluetooth/ble_write",
+                "Name": "Bluetooth Low Energy Write",
+                "Module": "exploit/multi/bluetooth/ble_write",
+                "Authors": [
+                    "Ivan Nikolsky (enty8080)"
+                ],
+                "Description": "Write data to bluetooth low energy device.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Platform": "multi",
+                "Risk": "high"
+            }
+        },
+        "unix": {
+            "rompager/multi_password_disclosure": {
+                "Path": "modules/exploit/unix/rompager/multi_password_disclosure",
+                "Name": "RomPager Multi Password Disclosure",
+                "Module": "exploit/unix/rompager/multi_password_disclosure",
+                "Authors": [
+                    "Ivan Nikolsky (enty8080)"
+                ],
+                "Description": "RomPager multiple devices password disclosure.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Platform": "unix",
+                "Risk": "high"
+            },
+            "dlink/hedwig_code_execution": {
+                "Path": "modules/exploit/unix/dlink/hedwig_code_execution",
+                "Name": "D-Link hedwig Remote Code Execution",
+                "Module": "exploit/unix/dlink/hedwig_code_execution",
+                "Authors": [
+                    "Ivan Nikolsky (enty8080)",
+                    "Roberto Paleari"
+                ],
+                "Description": "Remote Code Execution in D-Link DIR-645 <= 1.03, DIR-300 <= 2.14, DIR-600.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Platform": "unix",
+                "Risk": "high"
+            },
+            "dlink/hedwig_reboot_dos": {
+                "Path": "modules/exploit/unix/dlink/hedwig_reboot_dos",
+                "Name": "D-Link hedwig reboot DoS",
+                "Module": "exploit/unix/dlink/hedwig_reboot_dos",
+                "Authors": [
+                    "Ivan Nikolsky (enty8080)",
+                    "Roberto Paleari"
+                ],
+                "Description": "Reboot DoS in D-Link DIR-645 <= 1.03, DIR-300 <= 2.14, DIR-600.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Platform": "unix",
+                "Risk": "high"
+            },
+            "dlink/dir645_credentials_disclosure": {
+                "Path": "modules/exploit/unix/dlink/dir645_credentials_disclosure",
+                "Name": "D-Link DIR-645 Credentials Disclosure",
+                "Module": "exploit/unix/dlink/dir645_credentials_disclosure",
+                "Authors": [
+                    "Ivan Nikolsky (enty8080)",
+                    "Roberto Paleari"
+                ],
+                "Description": "D-Link DIR-645 < 1.03 credentials disclosure exploit.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Platform": "unix",
+                "Risk": "high"
+            },
+            "huawei/hg630_information_disclosure": {
+                "Path": "modules/exploit/unix/huawei/hg630_information_disclosure",
+                "Name": "Huawei HG630 Information Disclosure",
+                "Module": "exploit/unix/huawei/hg630_information_disclosure",
+                "Authors": [
+                    "Ivan Nikolsky (enty8080)",
+                    "Eslam Medhat"
+                ],
+                "Description": "Huawei HG630 information disclosure exploit.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Platform": "unix",
+                "Risk": "high"
+            },
+            "asus/rt_n16_password_disclosure": {
+                "Path": "modules/exploit/unix/asus/rt_n16_password_disclosure",
+                "Name": "Asus RT-N16 Password Disclosure",
+                "Module": "exploit/unix/asus/rt_n16_password_disclosure",
+                "Authors": [
+                    "Ivan Nikolsky (enty8080)",
+                    "Harry Sintonen (piru)"
+                ],
+                "Description": "Asus RT-N16 password disclosure exploit.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Platform": "unix",
+                "Risk": "high"
+            },
+            "fhem/local_file_inclusion": {
+                "Path": "modules/exploit/unix/fhem/local_file_inclusion",
+                "Name": "FHEM Local File Inclusion",
+                "Module": "exploit/unix/fhem/local_file_inclusion",
+                "Authors": [
+                    "Ivan Nikolsky (enty8080)",
+                    "Emre Övünç (EmreOvunc)"
+                ],
+                "Description": "Local File Inclusion in FHEM <= 6.0.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Platform": "unix",
+                "Risk": "high"
+            },
+            "selea/anpr_authenticated_rce": {
+                "Path": "modules/exploit/unix/selea/anpr_authenticated_rce",
+                "Name": "Selea ANPR Camera Authenticated RCE",
+                "Module": "exploit/unix/selea/anpr_authenticated_rce",
+                "Authors": [
+                    "Ivan Nikolsky (enty8080)",
+                    "LiquidWorm (liquidworm)"
+                ],
+                "Description": "Selea ANPR Camera authenticated remote code execution.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Platform": "unix",
+                "Risk": "high"
+            },
+            "selea/anpr_file_inclusion": {
+                "Path": "modules/exploit/unix/selea/anpr_file_inclusion",
+                "Name": "Selea ANPR Local File Inclusion",
+                "Module": "exploit/unix/selea/anpr_file_inclusion",
+                "Authors": [
+                    "Ivan Nikolsky (enty8080)",
+                    "LiquidWorm (liquidworm)"
+                ],
+                "Description": "Local File Inclusion in Selea ANPR Camera.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Platform": "unix",
+                "Risk": "high"
+            },
+            "selea/anpr_password_disclosure": {
+                "Path": "modules/exploit/unix/selea/anpr_password_disclosure",
+                "Name": "Selea ANPR Camera Password Disclosure",
+                "Module": "exploit/unix/selea/anpr_password_disclosure",
+                "Authors": [
+                    "Ivan Nikolsky (enty8080)",
+                    "LiquidWorm (liquidworm)"
+                ],
+                "Description": "Selea ANPR Camera password disclosure exploit.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Platform": "unix",
+                "Risk": "high"
+            },
+            "linksys/wap54gv3_debug_rce": {
+                "Path": "modules/exploit/unix/linksys/wap54gv3_debug_rce",
+                "Name": "Linksys WAP54Gv3 debug Remote Code Execution",
+                "Module": "exploit/unix/linksys/wap54gv3_debug_rce",
+                "Authors": [
+                    "Ivan Nikolsky (enty8080)",
+                    "Phil Purviance"
+                ],
+                "Description": "Remote Code Execution in Linksys WAP54Gv3.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Platform": "unix",
+                "Risk": "high"
+            },
+            "linksys/wrt120n_tmunblock_admin_reset": {
+                "Path": "modules/exploit/unix/linksys/wrt120n_tmunblock_admin_reset",
+                "Name": "Linksys WRT120N tmUnblock Admin Reset",
+                "Module": "exploit/unix/linksys/wrt120n_tmunblock_admin_reset",
+                "Authors": [
+                    "Ivan Nikolsky (enty8080)",
+                    "Craig Heffner"
+                ],
+                "Description": "Linksys WRT120N admin password reset.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Platform": "unix",
+                "Risk": "high"
+            },
+            "linksys/eseries_tmunblock_rce": {
+                "Path": "modules/exploit/unix/linksys/eseries_tmunblock_rce",
+                "Name": "Linksys E-Series tmUnblock Remote Code Execution",
+                "Module": "exploit/unix/linksys/eseries_tmunblock_rce",
+                "Authors": [
+                    "Ivan Nikolsky (enty8080)",
+                    "Johannes Ullrich (jullrich)"
+                ],
+                "Description": "Remote Code Execution in Linksys E-Series.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Platform": "unix",
+                "Risk": "high"
+            },
+            "linksys/eseries_tmunblock_dos": {
+                "Path": "modules/exploit/unix/linksys/eseries_tmunblock_dos",
+                "Name": "Linksys E-Series tmUnblock DoS",
+                "Module": "exploit/unix/linksys/eseries_tmunblock_dos",
+                "Authors": [
+                    "Ivan Nikolsky (enty8080)",
+                    "Johannes Ullrich (jullrich)"
+                ],
+                "Description": "DoS in Linksys E-Series.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Platform": "unix",
+                "Risk": "high"
+            },
+            "linksys/wvbr0_25_rce": {
+                "Path": "modules/exploit/unix/linksys/wvbr0_25_rce",
+                "Name": "Linksys WVBR0 25 Remote Code Execution",
+                "Module": "exploit/unix/linksys/wvbr0_25_rce",
+                "Authors": [
+                    "Ivan Nikolsky (enty8080)",
+                    "HeadlessZeke (headlesszeke)"
+                ],
+                "Description": "Remote Code Execution in Linksys WVBR0 25.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Platform": "unix",
+                "Risk": "high"
+            },
+            "dvr/camera_credentials_disclosure": {
+                "Path": "modules/exploit/unix/dvr/camera_credentials_disclosure",
+                "Name": "DVR Camera Credentials Disclosure",
+                "Module": "exploit/unix/dvr/camera_credentials_disclosure",
+                "Authors": [
+                    "Ivan Nikolsky (enty8080)",
+                    "ezelf"
+                ],
+                "Description": "DVR Camera credentials disclosure.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Platform": "unix",
+                "Risk": "high"
+            },
+            "stager/reverse_tcp": {
+                "Path": "modules/exploit/unix/stager/reverse_tcp",
+                "Name": "Reverse TCP Stager",
+                "Module": "exploit/unix/stager/reverse_tcp",
+                "Authors": [
+                    "Ivan Nikolsky (enty8080)"
+                ],
+                "Description": "Reverse TCP Stager.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Platform": "unix",
+                "Risk": "high"
+            },
+            "stager/bind_tcp": {
+                "Path": "modules/exploit/unix/stager/bind_tcp",
+                "Name": "Bind TCP Stager",
+                "Module": "exploit/unix/stager/bind_tcp",
+                "Authors": [
+                    "Ivan Nikolsky (enty8080)"
+                ],
+                "Description": "Bind TCP Stager.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Platform": "unix",
+                "Risk": "high"
+            },
+            "icewarp/webmail_file_inclusion": {
+                "Path": "modules/exploit/unix/icewarp/webmail_file_inclusion",
+                "Name": "IceWarp WebMail Local File Inclusion",
+                "Module": "exploit/unix/icewarp/webmail_file_inclusion",
+                "Authors": [
+                    "Ivan Nikolsky (enty8080)",
+                    "Jameel Nabbo (JameelNabbo)"
+                ],
+                "Description": "Local File Inclusion in IceWarp <= 10.4.4 WebMail.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Platform": "unix",
+                "Risk": "high"
+            },
+            "f5/big_ip_tmui_lfi": {
+                "Path": "modules/exploit/unix/f5/big_ip_tmui_lfi",
+                "Name": "F5 Big-IP TMUI Local File Inclusion",
+                "Module": "exploit/unix/f5/big_ip_tmui_lfi",
+                "Authors": [
+                    "Ivan Nikolsky (enty8080)",
+                    "Carlos E. Vieira"
+                ],
+                "Description": "Local File Inclusion in F5 BIG-IP Traffic Management User Interface (TMUI).",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Platform": "unix",
+                "Risk": "high"
+            },
+            "f5/big_ip_tmui_rce": {
+                "Path": "modules/exploit/unix/f5/big_ip_tmui_rce",
+                "Name": "F5 Big-IP TMUI Remote Code Execution",
+                "Module": "exploit/unix/f5/big_ip_tmui_rce",
+                "Authors": [
+                    "Ivan Nikolsky (enty8080)",
+                    "Mikhail Klyuchnikov"
+                ],
+                "Description": "Remote Code Execution in F5 BIG-IP Traffic Management User Interface (TMUI).",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Platform": "unix",
+                "Risk": "high"
+            },
+            "f5/big_ip_icontrol_rce": {
+                "Path": "modules/exploit/unix/f5/big_ip_icontrol_rce",
+                "Name": "F5 Big-IP iControl Remote Code Execution",
+                "Module": "exploit/unix/f5/big_ip_icontrol_rce",
+                "Authors": [
+                    "Ivan Nikolsky (enty8080)",
+                    "Al1ex (Al1ex)"
+                ],
+                "Description": "Remote Code Execution in F5 BIG-IP iControl REST.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Platform": "unix",
+                "Risk": "high"
+            },
+            "nostromo/remote_code_execution": {
+                "Path": "modules/exploit/unix/nostromo/remote_code_execution",
+                "Name": "Nostromo Httpd Remote Code Execution",
+                "Module": "exploit/unix/nostromo/remote_code_execution",
+                "Authors": [
+                    "Ivan Nikolsky (enty8080)",
+                    "sp0re (sp0re)"
+                ],
+                "Description": "Remote Code Execution in Nostromo Httpd.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Platform": "unix",
+                "Risk": "high"
+            },
+            "ssh/libssh_code_execution": {
+                "Path": "modules/exploit/unix/ssh/libssh_code_execution",
+                "Name": "SSH LibSSH Code Execution",
+                "Module": "exploit/unix/ssh/libssh_code_execution",
+                "Authors": [
+                    "Ivan Nikolsky (enty8080)",
+                    "Peter Winter-Smith (peterwintersmith)"
+                ],
+                "Description": "SSH LibSSH unauthorized access Remote Code Execution.",
+                "Dependencies": [
+                    "paramiko"
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Platform": "unix",
+                "Risk": "medium"
+            },
+            "cctv/goahead_password_disclosure": {
+                "Path": "modules/exploit/unix/cctv/goahead_password_disclosure",
+                "Name": "CCTV GoAhead Camera Password Disclosure",
+                "Module": "exploit/unix/cctv/goahead_password_disclosure",
+                "Authors": [
+                    "Ivan Nikolsky (enty8080)",
+                    "Pierre Kim (pierrekim)"
+                ],
+                "Description": "CCTV GoAhead Camera password disclosure exploit.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Platform": "unix",
+                "Risk": "high"
+            },
+            "netwave/ipcamera_information_disclosure": {
+                "Path": "modules/exploit/unix/netwave/ipcamera_information_disclosure",
+                "Name": "Netwave IP Camera Information Disclosure",
+                "Module": "exploit/unix/netwave/ipcamera_information_disclosure",
+                "Authors": [
+                    "Ivan Nikolsky (enty8080)",
+                    "spiritnull"
+                ],
+                "Description": "Netwave IP Camera information disclosure exploit.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Platform": "unix",
+                "Risk": "high"
+            }
+        }
+    },
+    "post": {
+        "macos": {
+            "membrane/gather/getvol": {
+                "Path": "modules/post/macos/membrane/gather/getvol",
+                "Name": "macOS Membrane Gather Volume",
+                "Module": "post/macos/membrane/gather/getvol",
+                "Authors": [
+                    "Ivan Nikolsky (enty8080)"
+                ],
+                "Description": "Get device volume level.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Platform": "macos",
+                "Risk": "medium"
+            },
+            "membrane/gather/prompt": {
+                "Path": "modules/post/macos/membrane/gather/prompt",
+                "Name": "macOS Membrane Gather Prompt",
+                "Module": "post/macos/membrane/gather/prompt",
+                "Authors": [
+                    "Ivan Nikolsky (enty8080)"
+                ],
+                "Description": "Prompt user to type password.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Platform": "macos",
+                "Risk": "high"
+            },
+            "membrane/trolling/say": {
+                "Path": "modules/post/macos/membrane/trolling/say",
+                "Name": "macOS Membrane Trolling Say",
+                "Module": "post/macos/membrane/trolling/say",
+                "Authors": [
+                    "Ivan Nikolsky (enty8080)"
+                ],
+                "Description": "Say text message on device.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Platform": "macos",
+                "Risk": "low"
+            }
+        }
+    }
+}
