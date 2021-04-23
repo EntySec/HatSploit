@@ -61,7 +61,7 @@ class HatSploitPayload(Payload, HatVenom):
     }
 
     def run(self):
-        message, executable_format = self.parse_options(self.options)
+        message = self.parse_options(self.options)
 
         message = (message + '\x00').encode()
         call = b'\xe8' + struct.pack("<I", len(message) + 0xd)
