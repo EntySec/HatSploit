@@ -60,7 +60,7 @@ class HatSploitPayload(Payload, HatVenom):
 
     def run(self):
         bind_port = self.parse_options(self.options)
-        bind_port = self.port_to_bytes(bind_port)
+        bind_port = self.port_bytes(bind_port)
 
         self.output_process("Generating shellcode...")
         shellcode = (
