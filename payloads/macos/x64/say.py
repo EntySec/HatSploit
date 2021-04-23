@@ -27,10 +27,10 @@
 import struct
 
 from core.lib.payload import Payload
-from utils.payload.payload import PayloadGenerator
+from utils.hatvenom.hatvenom import HatVenom
 
 
-class HatSploitPayload(Payload, PayloadGenerator):
+class HatSploitPayload(Payload, HatVenom):
     details = {
         'Category': "stager",
         'Name': "macOS x64 Say",
@@ -57,12 +57,6 @@ class HatSploitPayload(Payload, PayloadGenerator):
             'Value': "Hello, Friend!",
             'Type': None,
             'Required': True
-        },
-        'FORMAT': {
-            'Description': "Executable format.",
-            'Value': "macho",
-            'Type': None,
-            'Required': True
         }
     }
 
@@ -71,10 +65,6 @@ class HatSploitPayload(Payload, PayloadGenerator):
 
         message = (message + '\x00').encode()
         call = b'\xe8' + struct.pack("<I", len(message) + 0xd)
-
-        if executable_format not in self.formats.keys():
-            self.output_error("Invalid executable format!")
-            return
 
         self.output_process("Generating shellcode...")
         shellcode = (
@@ -94,6 +84,6 @@ class HatSploitPayload(Payload, PayloadGenerator):
         )
 
         self.output_process("Generating payload...")
-        payload = self.generate(executable_format, 'x64', shellcode)
+        payload = self.generate('macho', 'x64', shellcode)
 
         return payload
