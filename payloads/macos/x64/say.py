@@ -63,16 +63,18 @@ class HatSploitPayload(Payload, HatVenom):
     def run(self):
         message = self.parse_options(self.options)
 
-        message = (message + '\x00').encode()
-        call = b'\xe8' + struct.pack("<I", len(message) + 0xd)
+        offsets = {
+            'message': (message + '\x00').encode(),
+            'call': b'\xe8' + struct.pack("<I", len(message) + 0xd)
+        }
 
         self.output_process("Generating shellcode...")
         shellcode = (
             b"\x48\x31\xC0"          # xor rax,rax
             b"\xB8\x3B\x00\x00\x02"  # mov eax,0x200003b
-            + call +
+            b":call:"
             b"/usr/bin/say\x00"
-            + message +
+            b":message:"
             b"\x48\x8B\x3C\x24"      # mov rdi,[rsp]
             b"\x4C\x8D\x57\x0D"      # lea r10,[rdi+0xd]
             b"\x48\x31\xD2"          # xor rdx,rdx
@@ -84,6 +86,6 @@ class HatSploitPayload(Payload, HatVenom):
         )
 
         self.output_process("Generating payload...")
-        payload = self.generate('macho', 'x64', shellcode)
+        payload = self.generate('macho', 'x64', shellcode, offsets)
 
         return payload
