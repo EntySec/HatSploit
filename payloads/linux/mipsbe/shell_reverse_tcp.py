@@ -25,11 +25,11 @@
 #
 
 from core.lib.payload import Payload
-from utils.payload.payload import PayloadGenerator
+from utils.hatvenom.hatvenom import HatVenom
 from utils.tcp.tcp import TCPClient
 
 
-class HatSploitPayload(Payload, PayloadGenerator, TCPClient):
+class HatSploitPayload(Payload, HatVenom, TCPClient):
     details = {
         'Category': "stager",
         'Name': "Linux mipsbe Shell Reverse TCP",
