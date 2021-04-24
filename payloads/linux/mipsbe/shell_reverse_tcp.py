@@ -128,6 +128,6 @@ class HatSploitPayload(Payload, HatVenom, TCPClient):
         )
 
         self.output_process("Generating payload...")
-        payload = self.generate(executable_format, 'mipsbe', shellcode, offsets)
+        payload = self.generate('elf', 'mipsbe', shellcode, offsets)
 
         return payload
