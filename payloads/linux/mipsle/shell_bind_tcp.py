@@ -59,7 +59,7 @@ class HatSploitPayload(Payload, HatVenom):
     }
 
     def run(self):
-        bind_port, executable_format = self.parse_options(self.options)
+        bind_port = self.parse_options(self.options)
 
         offsets = {
             'bport': bind_port
