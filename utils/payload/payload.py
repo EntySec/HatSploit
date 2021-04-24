@@ -26,6 +26,7 @@
 
 import os
 import struct
+import codecs
 
 from core.base.config import Config
 
@@ -145,7 +146,7 @@ class PayloadGenerator:
     }
 
     @staticmethod
-    def host_to_bytes(host):
+    def ip_to_bytes(host):
         result = b""
         for i in host.split("."):
             result += bytes([int(i)])
@@ -156,15 +157,32 @@ class PayloadGenerator:
         result = "%.4x" % int(port)
         return bytes.fromhex(result)
 
-    def generate(self, file_format, arch, data):
+    @staticmethod
+    def string_to_bytes(string):
+        string = string.encode().hex()
+        string = '\\x' + '\\x'.join(a + b for a, b in zip(string[::2], string[1::2]))
+        return codecs.escape_decode(string, 'hex')[0]
+
+    def generate_payload(self, file_format, arch, data, offsets={}):
         if file_format in self.formats.keys():
+            for offset in offsets.keys():
+                if (':' + offset + ':ip:').encode() in data:
+                    data = data.replace((':' + offset + ':ip:').encode(), self.ip_to_bytes(offsets[offset]))
+                elif (':' + offset + ':port:').encode() in data:
+                    data = data.replace((':' + offset + ':port:').encode(), self.port_to_bytes(offsets[offset]))
+                elif (':' + offset + ':string:').encode() in data:
+                    data = data.replace((':' + offset + ':string:').encode(), self.string_to_bytes(offsets[offset]))
+                elif (':' + offset + ':').encode() in data:
+                    sub = offsets[offset] if type(offsets[offset]) == bytes else codecs.escape_decode(offsets[offset], 'hex')[0]
+                    data = data.replace((':' + offset + ':').encode(), sub)
+                else:
+                    return None
             return self.formats[file_format](self, arch, data)
         return None
 
     def generate_pe(self, arch, data):
         if arch in self.pe_headers.keys():
             pe = self.pe_headers[arch] + data
-
             if arch in ['x86']:
                 pe += b'\xFF' * 4 + b'\x00' * 4 + b'\xFF' * 4
                 content = pe.ljust(1536, b'\x00')
@@ -179,7 +197,6 @@ class PayloadGenerator:
     def generate_elf(self, arch, data):
         if arch in self.elf_headers.keys():
             elf = self.elf_headers[arch] + data
-
             if elf[4] == 1:
                 if arch.endswith("be"):
                     p_filesz = struct.pack(">L", len(elf))
@@ -205,42 +222,18 @@ class PayloadGenerator:
     def generate_macho(self, arch, data):
         if arch in self.macho_templates.keys():
             if os.path.exists(self.macho_templates[arch]):
-                macho_file = open(self.macho_templates[arch], 'rb')
-                macho = macho_file.read()
-                macho_file.close()
+                if len(data) >= len('PAYLOAD:'):
+                    macho_file = open(self.macho_templates[arch], 'rb')
+                    macho = macho_file.read()
+                    macho_file.close()
 
-                payload_index = macho.index(b'PAYLOAD:')
-                content = macho[:payload_index] + data + macho[payload_index + len(data):]
-
-                return content
+                    payload_index = macho.index(b'PAYLOAD:')
+                    content = macho[:payload_index] + data + macho[payload_index + len(data):]
+                    return content
         return None
-
-    @staticmethod
-    def generate_c(arch, data):
-        shellcode = "unsigned char shellcode[] = {\n    \""
-        for idx, x in enumerate(data):
-            if idx % 15 == 0 and idx != 0:
-                shellcode += "\"\n    \""
-            shellcode += "\\x%02x" % x
-        shellcode += "\"\n};\n"
-
-        c = ""
-        c += "#include <stdio.h>\n"
-        c += "#include <string.h>\n"
-        c += "\n"
-        c += shellcode
-        c += "\n"
-        c += "int main()\n"
-        c += "{\n"
-        c += "    int (*ret)() = (int(*)())shellcode;\n"
-        c += "    ret();\n"
-        c += "}\n"
-
-        return c.encode()
 
     formats = {
         'pe': generate_pe,
         'elf': generate_elf,
-        'macho': generate_macho,
-        'c': generate_c
+        'macho': generate_macho
     }

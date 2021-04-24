@@ -27,10 +27,10 @@
 import struct
 
 from core.lib.payload import Payload
-from utils.payload.payload import PayloadGenerator
+from utils.hatvenom.hatvenom import HatVenom
 
 
-class HatSploitPayload(Payload, PayloadGenerator):
+class HatSploitPayload(Payload, HatVenom):
     details = {
         'Category': "stager",
         'Name': "macOS x64 Say",
@@ -57,32 +57,24 @@ class HatSploitPayload(Payload, PayloadGenerator):
             'Value': "Hello, Friend!",
             'Type': None,
             'Required': True
-        },
-        'FORMAT': {
-            'Description': "Executable format.",
-            'Value': "macho",
-            'Type': None,
-            'Required': True
         }
     }
 
     def run(self):
-        message, executable_format = self.parse_options(self.options)
+        message = self.parse_options(self.options)
 
-        message = (message + '\x00').encode()
-        call = b'\xe8' + struct.pack("<I", len(message) + 0xd)
-
-        if executable_format not in self.formats.keys():
-            self.output_error("Invalid executable format!")
-            return
+        offsets = {
+            'message': (message + '\x00').encode(),
+            'call': b'\xe8' + struct.pack("<I", len((message + '\x00').encode()) + 0xd)
+        }
 
         self.output_process("Generating shellcode...")
         shellcode = (
             b"\x48\x31\xC0"          # xor rax,rax
             b"\xB8\x3B\x00\x00\x02"  # mov eax,0x200003b
-            + call +
+            b":call:"
             b"/usr/bin/say\x00"
-            + message +
+            b":message:"
             b"\x48\x8B\x3C\x24"      # mov rdi,[rsp]
             b"\x4C\x8D\x57\x0D"      # lea r10,[rdi+0xd]
             b"\x48\x31\xD2"          # xor rdx,rdx
@@ -94,6 +86,6 @@ class HatSploitPayload(Payload, PayloadGenerator):
         )
 
         self.output_process("Generating payload...")
-        payload = self.generate(executable_format, 'x64', shellcode)
+        payload = self.generate('macho', 'x64', shellcode, offsets)
 
         return payload

