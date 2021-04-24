@@ -65,7 +65,7 @@ class HatSploitPayload(Payload, HatVenom):
 
         offsets = {
             'message': (message + '\x00').encode(),
-            'call': b'\xe8' + struct.pack("<I", len(message) + 0xd)
+            'call': b'\xe8' + struct.pack("<I", len((message + '\x00').encode()) + 0xd)
         }
 
         self.output_process("Generating shellcode...")
