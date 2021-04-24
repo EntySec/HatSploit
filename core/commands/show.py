@@ -95,6 +95,10 @@ class HatSploitCommand(Command):
             self.badges.output_warning("Module has no options.")
             return
 
+        if not hasattr(current_module, "options") and not hasattr(current_module.payload, "options"):
+            self.badges.output_warning("Module has no options.")
+            return
+
         if hasattr(current_module, "options"):
             options_data = list()
             headers = ("Option", "Value", "Required", "Description")
