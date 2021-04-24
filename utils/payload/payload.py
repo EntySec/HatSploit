@@ -173,7 +173,7 @@ class PayloadGenerator:
                 elif (':' + offset + ':string:').encode() in data:
                     data = data.replace((':' + offset + ':string:').encode(), self.string_to_bytes(offsets[offset]))
                 elif (':' + offset + ':').encode() in data:
-                    sub = offsets[offset] if type(offsets[offset]) == bytes else codecs.escape_decode(offsets[offset], 'hex')[0]
+                    sub = offsets[offset] if isinstance(offsets[offset], bytes) else codecs.escape_decode(offsets[offset], 'hex')[0]
                     data = data.replace((':' + offset + ':').encode(), sub)
                 else:
                     return None
