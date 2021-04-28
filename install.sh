@@ -128,7 +128,7 @@ if [[ ! -d /opt ]]; then
 fi
 
 {
-    sudo git clone https://github.com/EntySec/HatSploit.git /opt/hsf
+    sudo git clone --recursive https://github.com/EntySec/HatSploit.git /opt/hsf
 } &> /dev/null
 
 if [[ -d /opt/hsf ]]; then
