@@ -132,7 +132,8 @@ fi
 } &> /dev/null
 
 if [[ -d /opt/hsf ]]; then
-    cd /opt/hsf
+    cd /opt/hsf/deps
+    sudo python3 setup.py install
 else
     echo -e $E"Installation failed!"
     exit 1
@@ -145,6 +146,7 @@ if [[ ! -d /usr/local/bin ]]; then
 fi
 
 {
+    cd /opt/hsf
     sudo cp bin/hsf /usr/local/bin
     sudo chmod +x /usr/local/bin/hsf
     sudo cp bin/hsf /data/data/com.termux/files/usr/bin
