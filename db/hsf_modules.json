@@ -259,6 +259,23 @@
                 "Platform": "unix",
                 "Risk": "high"
             },
+            "dlink/dcs_credentials_disclosure": {
+                "Path": "modules/exploit/unix/dlink/dcs_credentials_disclosure",
+                "Name": "D-Link DCS Credentials Disclosure",
+                "Module": "exploit/unix/dlink/dcs_credentials_disclosure",
+                "Authors": [
+                    "Ivan Nikolsky (enty8080)"
+                ],
+                "Description": "D-Link DCS-2530L < 1.06.01 and DCS-2670L <= 2.02 credentials disclosure exploit.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Platform": "unix",
+                "Risk": "high"
+            },
             "dlink/hedwig_code_execution": {
                 "Path": "modules/exploit/unix/dlink/hedwig_code_execution",
                 "Name": "D-Link hedwig Remote Code Execution",
