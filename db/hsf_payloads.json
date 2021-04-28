@@ -240,6 +240,26 @@
             }
         },
         "armle": {
+            "fork_bomb": {
+                "Path": "payloads/linux/armle/fork_bomb",
+                "Category": "stager",
+                "Name": "Linux armle Fork Bomb",
+                "Payload": "linux/armle/fork_bomb",
+                "Authors": [
+                    "Ivan Nikolsky (enty8080)"
+                ],
+                "Description": "Fork bomb payload for Linux armle.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Architecture": "armle",
+                "Platform": "linux",
+                "Risk": "low",
+                "Type": "one_side"
+            },
             "shell_bind_tcp": {
                 "Path": "payloads/linux/armle/shell_bind_tcp",
                 "Category": "stager",
