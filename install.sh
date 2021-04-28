@@ -132,7 +132,7 @@ fi
 } &> /dev/null
 
 if [[ -d /opt/hsf ]]; then
-    cd /opt/hsf/deps
+    cd /opt/hsf/deps/HatVenom
     sudo python3 setup.py install
 else
     echo -e $E"Installation failed!"
