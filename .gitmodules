@@ -1,3 +1,0 @@
-[submodule "DbConnector"]
-	path = deps/HatVenom
-	url = https://github.com/EntySec/HatVenom
