@@ -42,23 +42,6 @@
             }
         },
         "multi": {
-            "scanner/ble_scanner": {
-                "Path": "modules/auxiliary/multi/scanner/ble_scanner",
-                "Name": "Bluetooth Low Energy Scanner",
-                "Module": "auxiliary/multi/scanner/ble_scanner",
-                "Authors": [
-                    "Ivan Nikolsky (enty8080)"
-                ],
-                "Description": "Scan for bluetooth low energy devices.",
-                "Dependencies": [
-                    "bluepy"
-                ],
-                "Comments": [
-                    ""
-                ],
-                "Platform": "multi",
-                "Risk": "high"
-            },
             "scanner/network_scanner": {
                 "Path": "modules/auxiliary/multi/scanner/network_scanner",
                 "Name": "Network Scanner",
@@ -143,23 +126,6 @@
                 ],
                 "Platform": "multi",
                 "Risk": "medium"
-            },
-            "enumerate/ble_enumerate": {
-                "Path": "modules/auxiliary/multi/enumerate/ble_enumerate",
-                "Name": "Bluetooth Low Energy Enumerate",
-                "Module": "auxiliary/multi/enumerate/ble_enumerate",
-                "Authors": [
-                    "Ivan Nikolsky (enty8080)"
-                ],
-                "Description": "Enumerate bluetooth low energy devices characteristics.",
-                "Dependencies": [
-                    "bluepy"
-                ],
-                "Comments": [
-                    ""
-                ],
-                "Platform": "multi",
-                "Risk": "high"
             },
             "payload/generator": {
                 "Path": "modules/auxiliary/multi/payload/generator",
@@ -272,25 +238,6 @@
                     ""
                 ],
                 "Platform": "android",
-                "Risk": "high"
-            }
-        },
-        "multi": {
-            "bluetooth/ble_write": {
-                "Path": "modules/exploit/multi/bluetooth/ble_write",
-                "Name": "Bluetooth Low Energy Write",
-                "Module": "exploit/multi/bluetooth/ble_write",
-                "Authors": [
-                    "Ivan Nikolsky (enty8080)"
-                ],
-                "Description": "Write data to bluetooth low energy device.",
-                "Dependencies": [
-                    ""
-                ],
-                "Comments": [
-                    ""
-                ],
-                "Platform": "multi",
                 "Risk": "high"
             }
         },
