@@ -24,8 +24,8 @@
 # SOFTWARE.
 #
 
+from hatvenom import HatVenom
 from core.lib.payload import Payload
-from utils.hatvenom.hatvenom import HatVenom
 
 
 class HatSploitPayload(Payload, HatVenom):
