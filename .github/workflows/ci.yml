@@ -10,8 +10,8 @@ jobs:
         run: sudo mkdir /opt/hsf; sudo cp -r * /opt/hsf
       - name: Install HatSploit
         run: cd /opt/hsf; bash install.sh
-      - name: Perform tests
-        run: cd /opt/hsf; sudo touch .accepted; python3 tester.py; echo 'exit' | sudo hsf
+      - name: Perform checks
+        run: cd /opt/hsf; sudo touch .accepted; python3 check.py; echo 'exit' | sudo hsf
   macOS:
     runs-on: macos-latest
     steps:
@@ -20,5 +20,5 @@ jobs:
         run: sudo mkdir /opt/hsf; sudo cp -r * /opt/hsf
       - name: Install HatSploit
         run: cd /opt/hsf; bash install.sh
-      - name: Perform tests
-        run: cd /opt/hsf; sudo touch .accepted; python3 tester.py; echo 'exit' | sudo hsf
+      - name: Perform checks
+        run: cd /opt/hsf; sudo touch .accepted; python3 check.py; echo 'exit' | sudo hsf
