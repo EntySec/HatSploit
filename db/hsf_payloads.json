@@ -111,49 +111,7 @@
         }
     },
     "macos": {
-        "aarch64": {
-            "membrane_reverse_tcp": {
-                "Path": "payloads/macos/aarch64/membrane_reverse_tcp",
-                "Category": "stager",
-                "Name": "macOS aarch64 Membrane Reverse TCP",
-                "Payload": "macos/aarch64/membrane_reverse_tcp",
-                "Authors": [
-                    "Ivan Nikolsky (enty8080)"
-                ],
-                "Description": "Membrane reverse TCP payload for macOS aarch64.",
-                "Dependencies": [
-                    ""
-                ],
-                "Comments": [
-                    ""
-                ],
-                "Architecture": "aarch64",
-                "Platform": "macos",
-                "Risk": "high",
-                "Type": "reverse_tcp"
-            }
-        },
         "x64": {
-            "membrane_reverse_tcp": {
-                "Path": "payloads/macos/x64/membrane_reverse_tcp",
-                "Category": "stager",
-                "Name": "macOS x64 Membrane Reverse TCP",
-                "Payload": "macos/x64/membrane_reverse_tcp",
-                "Authors": [
-                    "Ivan Nikolsky (enty8080)"
-                ],
-                "Description": "Membrane reverse TCP payload for macOS x64.",
-                "Dependencies": [
-                    ""
-                ],
-                "Comments": [
-                    ""
-                ],
-                "Architecture": "x64",
-                "Platform": "macos",
-                "Risk": "high",
-                "Type": "reverse_tcp"
-            },
             "say": {
                 "Path": "payloads/macos/x64/say",
                 "Category": "stager",
@@ -217,28 +175,6 @@
         }
     },
     "linux": {
-        "aarch64": {
-            "membrane_reverse_tcp": {
-                "Path": "payloads/linux/aarch64/membrane_reverse_tcp",
-                "Category": "stager",
-                "Name": "Linux aarch64 Membrane Reverse TCP",
-                "Payload": "linux/aarch64/membrane_reverse_tcp",
-                "Authors": [
-                    "Ivan Nikolsky (enty8080)"
-                ],
-                "Description": "Membrane reverse TCP payload for Linux aarch64.",
-                "Dependencies": [
-                    ""
-                ],
-                "Comments": [
-                    ""
-                ],
-                "Architecture": "aarch64",
-                "Platform": "linux",
-                "Risk": "high",
-                "Type": "reverse_tcp"
-            }
-        },
         "armle": {
             "fork_bomb": {
                 "Path": "payloads/linux/armle/fork_bomb",
@@ -505,26 +441,6 @@
                 "Platform": "linux",
                 "Risk": "low",
                 "Type": "one_side"
-            },
-            "membrane_reverse_tcp": {
-                "Path": "payloads/linux/x64/membrane_reverse_tcp",
-                "Category": "stager",
-                "Name": "Linux x64 Membrane Reverse TCP",
-                "Payload": "linux/x64/membrane_reverse_tcp",
-                "Authors": [
-                    "Ivan Nikolsky (enty8080)"
-                ],
-                "Description": "Membrane reverse TCP payload for Linux x64.",
-                "Dependencies": [
-                    ""
-                ],
-                "Comments": [
-                    ""
-                ],
-                "Architecture": "x64",
-                "Platform": "linux",
-                "Risk": "high",
-                "Type": "reverse_tcp"
             },
             "shell_bind_tcp": {
                 "Path": "payloads/linux/x64/shell_bind_tcp",
