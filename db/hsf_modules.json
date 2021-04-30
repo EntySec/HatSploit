@@ -242,6 +242,40 @@
             }
         },
         "unix": {
+            "oracle/weblogic_console_rce": {
+                "Path": "modules/exploit/unix/oracle/weblogic_console_rce",
+                "Name": "Oracle Weblogic console RCE",
+                "Module": "exploit/unix/oracle/weblogic_console_rce",
+                "Authors": [
+                    "Ivan Nikolsky (enty8080)"
+                ],
+                "Description": "Remote Code Execution in Oracle Weblogic <= 14.1.1.0.0.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Platform": "unix",
+                "Risk": "high"
+            },
+            "oracle/weblogic_console_dos": {
+                "Path": "modules/exploit/unix/oracle/weblogic_console_dos",
+                "Name": "Oracle Weblogic console DoS",
+                "Module": "exploit/unix/oracle/weblogic_console_dos",
+                "Authors": [
+                    "Ivan Nikolsky (enty8080)"
+                ],
+                "Description": "DoS in Oracle Weblogic <= 14.1.1.0.0.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Platform": "unix",
+                "Risk": "high"
+            },
             "rompager/multi_password_disclosure": {
                 "Path": "modules/exploit/unix/rompager/multi_password_disclosure",
                 "Name": "RomPager Multi Password Disclosure",
