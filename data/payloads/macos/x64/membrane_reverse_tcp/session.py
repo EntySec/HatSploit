@@ -45,6 +45,8 @@ class HatSploitSession(Session, TCPClient):
             command += " " + arguments
 
         output = self.send_cmd(command + '\n', output, timeout)
+        output = output.replace('membrane% ', '')
+
         return True, output
 
     def interact(self):
