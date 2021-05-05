@@ -70,4 +70,4 @@ class HatSploitPayload(Payload, HatVenom, StringTools, TCPClient):
         with open('data/membrane/macos/x64/membrane.bin', 'rb') as f:
             payload = f.read()
 
-        return payload, f"bind {bind_port}", HatSploitSession
+        return payload, f"bind '{bind_port}'", HatSploitSession
