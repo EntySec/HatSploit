@@ -70,8 +70,7 @@ class HatSploitPayload(Payload, HatVenom, TCPClient):
     def crypto(string):
         result = ""
         for c in string:
-            magic = chr(ord(c) ^ 5)
-            result += magic
+            result += chr(ord(c) ^ len(string))
         return result
 
     def run(self):
