@@ -155,6 +155,13 @@ class StringTools:
         return strings
 
     @staticmethod
+    def xor_string(string):
+        result = ""
+        for c in string:
+            result += chr(ord(c) ^ len(string))
+        return result
+
+    @staticmethod
     def random_string(length=16, alphabet=string.ascii_letters + string.digits):
         return "".join(random.choice(alphabet) for _ in range(length))
 

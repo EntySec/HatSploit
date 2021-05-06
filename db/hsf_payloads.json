@@ -112,6 +112,46 @@
     },
     "macos": {
         "x64": {
+            "membrane_reverse_tcp": {
+                "Path": "payloads/macos/x64/membrane_reverse_tcp",
+                "Category": "stager",
+                "Name": "macOS x64 Membrane Reverse TCP",
+                "Payload": "macos/x64/membrane_reverse_tcp",
+                "Authors": [
+                    "Ivan Nikolsky (enty8080)"
+                ],
+                "Description": "Membrane reverse TCP payload for macOS x64.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Architecture": "x64",
+                "Platform": "macos",
+                "Risk": "high",
+                "Type": "reverse_tcp"
+            },
+            "membrane_bind_tcp": {
+                "Path": "payloads/macos/x64/membrane_bind_tcp",
+                "Category": "stager",
+                "Name": "macOS x64 Membrane Bind TCP",
+                "Payload": "macos/x64/membrane_bind_tcp",
+                "Authors": [
+                    "Ivan Nikolsky (enty8080)"
+                ],
+                "Description": "Membrane bind TCP payload for macOS x64.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Architecture": "x64",
+                "Platform": "macos",
+                "Risk": "high",
+                "Type": "bind_tcp"
+            },
             "say": {
                 "Path": "payloads/macos/x64/say",
                 "Category": "stager",

