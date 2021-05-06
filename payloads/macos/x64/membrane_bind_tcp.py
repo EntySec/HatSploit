@@ -24,7 +24,6 @@
 # SOFTWARE.
 #
 
-from hatvenom import HatVenom
 from core.lib.payload import Payload
 from utils.string.string import StringTools
 from utils.tcp.tcp import TCPClient
@@ -32,7 +31,7 @@ from utils.tcp.tcp import TCPClient
 from data.membrane.macos.session import HatSploitSession
 
 
-class HatSploitPayload(Payload, HatVenom, StringTools, TCPClient):
+class HatSploitPayload(Payload, StringTools, TCPClient):
     details = {
         'Category': "stager",
         'Name': "macOS x64 Membrane Bind TCP",
