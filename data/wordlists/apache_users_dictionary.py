@@ -24,7 +24,7 @@
 # SOFTWARE.
 #
 
-class dictionary:
+class Dictionary:
     def __init__(self):
         self.paths = ['~root',
                       '~toor',
