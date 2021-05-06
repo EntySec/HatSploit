@@ -25,12 +25,13 @@
 #
 
 from core.lib.module import Module
-from data.modules.auxiliary.multi.scanner.apache_users.dictionary import dictionary
 from utils.http.http import HTTPClient
+
+from data.wordlists.apache_users_dictionary import Dictionary
 
 
 class HatSploitModule(Module, HTTPClient):
-    dictionary = dictionary()
+    dictionary = Dictionary()
     paths = dictionary.paths
 
     details = {
