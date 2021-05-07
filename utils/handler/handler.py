@@ -204,7 +204,11 @@ class Handler(TCP):
                     else:
                         self.printf_stage(payload['Payload'], sender, args, payload['Args'], delim, location, encode)
             elif payload['Category'].lower() == 'single':
-                sender(*args, payload['Payload'])
+                if isinstance(payload['Payload']):
+                    for stage in payload['Payload']:
+                        sender(*args, stage)
+                else:
+                    sender(*args, payload['Payload'])
             else:
                 self.badges.output_error("Invalid payload category!")
                 return False
@@ -253,7 +257,11 @@ class Handler(TCP):
                         else:
                             self.printf_stage(payload['Payload'], new_session.send, args, payload['Args'], delim, location, encode)
                 elif payload['Category'].lower() == 'single':
-                    new_session.send_command(payload['Payload'])
+                    if isinstance(payload['Payload']):
+                        for stage in payload['Payload']:
+                            new_session.send_command(stage)
+                    else:
+                        new_session.send_command(payload['Payload'])
                 else:
                     self.badges.output_error("Invalid payload category!")
                     return False
