@@ -66,7 +66,7 @@ class HatSploitPayload(Payload, StringTools, TCPClient):
         bind_port = self.xor_string(bind_port)
 
         self.output_process("Generating payload...")
-        with open('data/membrane/macos/x64/membrane.bin', 'rb') as f:
+        with open('data/membrane/macos/x64/membrane', 'rb') as f:
             payload = f.read()
 
-        return payload, f"bind {bind_port}", HatSploitSession
+        return payload, f"bind '{bind_port}'", HatSploitSession
