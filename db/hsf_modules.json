@@ -242,6 +242,57 @@
             }
         },
         "unix": {
+            "jvc/t216vpru_credentials_disclosure": {
+                "Path": "modules/exploit/unix/jvc/t216vpru_credentials_disclosure",
+                "Name": "JVC VN-T216VPRU Credentials Disclosure",
+                "Module": "exploit/unix/jvc/t216vpru_credentials_disclosure",
+                "Authors": [
+                    "Ivan Nikolsky (enty8080)"
+                ],
+                "Description": "JVC VN-T216VPRU credentials disclosure.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Platform": "unix",
+                "Risk": "high"
+            },
+            "jvc/t216vpru_file_inclusion": {
+                "Path": "modules/exploit/unix/jvc/t216vpru_file_inclusion",
+                "Name": "JVC VN-T216VPRU Local File Inclusion",
+                "Module": "exploit/unix/jvc/t216vpru_file_inclusion",
+                "Authors": [
+                    "Ivan Nikolsky (enty8080)"
+                ],
+                "Description": "Local File Inclusion in JVC VN-T216VPRU.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Platform": "unix",
+                "Risk": "high"
+            },
+            "multi/32764_credentials_disclosure": {
+                "Path": "modules/exploit/unix/multi/32764_credentials_disclosure",
+                "Name": "TCP 32764 Backdoor Credentials Disclosure",
+                "Module": "exploit/unix/multi/32764_credentials_disclosure",
+                "Authors": [
+                    "Ivan Nikolsky (enty8080)"
+                ],
+                "Description": "Credentials disclosure in multiple devices through TCP 32764 backdoor.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Platform": "unix",
+                "Risk": "high"
+            },
             "oracle/weblogic_console_rce": {
                 "Path": "modules/exploit/unix/oracle/weblogic_console_rce",
                 "Name": "Oracle Weblogic console RCE",
