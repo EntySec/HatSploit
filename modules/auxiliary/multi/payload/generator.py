@@ -68,21 +68,9 @@ class HatSploitModule(Module):
         payload = self.payload['Payload']
 
         if payload:
-            if not isinstance(payload, list):
-                self.output_process(f"Saving to {local_file}...")
-                with open(local_file, 'wb') as f:
-                    f.write(payload.encode() if isinstance(payload, str) else payload)
-                self.output_success(f"Successfully saved to {local_file}!")
-            else:
-                for stage in range(len(payload)-1):
-                    self.output_process(f"Saving to {local_file}.{str(stage)}...")
-                    with open(local_file + '.' + str(stage), 'wb') as f:
-                        f.write(payload[stage].encode() if isinstance(payload, str) else payload[stage])
-                    self.output_success(f"Successfully saved to {local_file}.{str(stage)}!")
-
-                    self.output_process(f"Saving to {local_file}...")
-                    with open(local_file, 'wb') as f:
-                        f.write(payload[-1].encode() if isinstance(payload, str) else payload[-1])
-                    self.output_success(f"Successfully saved to {local_file}!")
+            self.output_process(f"Saving to {local_file}...")
+            with open(local_file, 'wb') as f:
+                f.write(payload.encode() if isinstance(payload, str) else payload)
+            self.output_success(f"Successfully saved to {local_file}!")
         else:
             self.output_error("Failed to generate payload!")
