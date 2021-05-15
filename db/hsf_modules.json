@@ -242,6 +242,40 @@
             }
         },
         "unix": {
+            "siemens/multi_credentials_disclosure": {
+                "Path": "modules/exploit/unix/siemens/multi_credentials_disclosure",
+                "Name": "Siemens Multi Credentials Disclosure",
+                "Module": "exploit/unix/siemens/multi_credentials_disclosure",
+                "Authors": [
+                    "Ivan Nikolsky (enty8080)"
+                ],
+                "Description": "Siemens multiple devices credentials disclosure.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                'Platform": "unix",
+                "Risk": "high"
+            },
+            "siemens/multi_file_inclusion": {
+                "Path": "modules/exploit/siemens/multi_file_inclusion",
+                "Name": "Siemens Multi Local File Inclusion",
+                "Module": "exploit/unix/siemens/multi_file_inclusion",
+                "Authors": [
+                    "Ivan Nikolsky (enty8080)"
+                ],
+                "Description": "Local File Inclusion in Siemens multiple devices.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                "Platform": "unix",
+                "Risk": "high"
+            },
             "jvc/t216vpru_credentials_disclosure": {
                 "Path": "modules/exploit/unix/jvc/t216vpru_credentials_disclosure",
                 "Name": "JVC VN-T216VPRU Credentials Disclosure",
