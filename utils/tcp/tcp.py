@@ -42,6 +42,12 @@ class TCPClient(TCP):
 
     client = None
 
+    def open_socket(self, host, port, timeout=10):
+        s = socket.socket()
+        s.settimeout(timeout)
+        s.connect((host, int(port)))
+        return s
+
     def connect(self, client):
         self.client = telnetlib.Telnet()
         self.client.sock = client
