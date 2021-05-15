@@ -242,6 +242,23 @@
             }
         },
         "unix": {
+            "brickcom/multi_credentials_disclosure": {
+                "Path": "modules/exploit/unix/brickcom/multi_credentials_disclosure",
+                "Name": "Brickcom Multi Credentials Disclosure",
+                "Module": "exploit/unix/brickcom/multi_credentials_disclosure",
+                "Authors": [
+                    "Ivan Nikolsky (enty8080)"
+                ],
+                "Description": "Brickcom multiple devices credentials disclosure.",
+                "Dependencies": [
+                    ""
+                ],
+                "Comments": [
+                    ""
+                ],
+                'Platform": "unix",
+                "Risk": "high"
+            },
             "siemens/multi_credentials_disclosure": {
                 "Path": "modules/exploit/unix/siemens/multi_credentials_disclosure",
                 "Name": "Siemens Multi Credentials Disclosure",
