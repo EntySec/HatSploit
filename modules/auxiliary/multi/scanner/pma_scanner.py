@@ -30,7 +30,7 @@ import sys
 from core.lib.module import Module
 from utils.http.http import HTTPClient
 
-from data.wordlists.pma_disctionary import Dictionary
+from data.wordlists.pma_dictionary import Dictionary
 
 
 class HatSploitModule(Module, HTTPClient):
