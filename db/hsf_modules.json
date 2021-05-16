@@ -277,7 +277,7 @@
                 "Risk": "high"
             },
             "siemens/multi_path_traversal": {
-                "Path": "modules/exploit/siemens/multi_path_traversal",
+                "Path": "modules/exploit/unix/siemens/multi_path_traversal",
                 "Name": "Siemens Multi Path Traversal",
                 "Module": "exploit/unix/siemens/multi_path_traversal",
                 "Authors": [
