@@ -256,7 +256,7 @@
                 "Comments": [
                     ""
                 ],
-                'Platform": "unix",
+                "Platform": "unix",
                 "Risk": "high"
             },
             "siemens/multi_credentials_disclosure": {
