@@ -273,7 +273,7 @@
                 "Comments": [
                     ""
                 ],
-                'Platform": "unix",
+                "Platform": "unix",
                 "Risk": "high"
             },
             "siemens/multi_path_traversal": {
