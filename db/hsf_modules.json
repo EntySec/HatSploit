@@ -276,14 +276,14 @@
                 'Platform": "unix",
                 "Risk": "high"
             },
-            "siemens/multi_file_inclusion": {
-                "Path": "modules/exploit/siemens/multi_file_inclusion",
-                "Name": "Siemens Multi Local File Inclusion",
-                "Module": "exploit/unix/siemens/multi_file_inclusion",
+            "siemens/multi_path_traversal": {
+                "Path": "modules/exploit/siemens/multi_path_traversal",
+                "Name": "Siemens Multi Path Traversal",
+                "Module": "exploit/unix/siemens/multi_path_traversal",
                 "Authors": [
                     "Ivan Nikolsky (enty8080)"
                 ],
-                "Description": "Local File Inclusion in Siemens multiple devices.",
+                "Description": "Path Traversal in Siemens multiple devices.",
                 "Dependencies": [
                     ""
                 ],
@@ -310,14 +310,14 @@
                 "Platform": "unix",
                 "Risk": "high"
             },
-            "jvc/t216vpru_file_inclusion": {
-                "Path": "modules/exploit/unix/jvc/t216vpru_file_inclusion",
-                "Name": "JVC VN-T216VPRU Local File Inclusion",
-                "Module": "exploit/unix/jvc/t216vpru_file_inclusion",
+            "jvc/t216vpru_path_traversal": {
+                "Path": "modules/exploit/unix/jvc/t216vpru_path_traversal",
+                "Name": "JVC VN-T216VPRU Path Traversal",
+                "Module": "exploit/unix/jvc/t216vpru_path_traversal",
                 "Authors": [
                     "Ivan Nikolsky (enty8080)"
                 ],
-                "Description": "Local File Inclusion in JVC VN-T216VPRU.",
+                "Description": "Path Traversal in JVC VN-T216VPRU.",
                 "Dependencies": [
                     ""
                 ],
@@ -502,15 +502,15 @@
                 "Platform": "unix",
                 "Risk": "high"
             },
-            "fhem/local_file_inclusion": {
-                "Path": "modules/exploit/unix/fhem/local_file_inclusion",
-                "Name": "FHEM Local File Inclusion",
-                "Module": "exploit/unix/fhem/local_file_inclusion",
+            "fhem/path_traversal": {
+                "Path": "modules/exploit/unix/fhem/path_traversal",
+                "Name": "FHEM Path Traversal",
+                "Module": "exploit/unix/fhem/path_traversal",
                 "Authors": [
                     "Ivan Nikolsky (enty8080)",
                     "Emre Övünç (EmreOvunc)"
                 ],
-                "Description": "Local File Inclusion in FHEM <= 6.0.",
+                "Description": "Path Traversal in FHEM <= 6.0.",
                 "Dependencies": [
                     ""
                 ],
@@ -538,15 +538,15 @@
                 "Platform": "unix",
                 "Risk": "high"
             },
-            "selea/anpr_file_inclusion": {
-                "Path": "modules/exploit/unix/selea/anpr_file_inclusion",
-                "Name": "Selea ANPR Local File Inclusion",
-                "Module": "exploit/unix/selea/anpr_file_inclusion",
+            "selea/anpr_path_traversal": {
+                "Path": "modules/exploit/unix/selea/anpr_path_traversal",
+                "Name": "Selea ANPR Path Traversal",
+                "Module": "exploit/unix/selea/anpr_path_traversal",
                 "Authors": [
                     "Ivan Nikolsky (enty8080)",
                     "LiquidWorm (liquidworm)"
                 ],
-                "Description": "Local File Inclusion in Selea ANPR Camera.",
+                "Description": "Path Traversal in Selea ANPR Camera.",
                 "Dependencies": [
                     ""
                 ],
@@ -716,15 +716,15 @@
                 "Platform": "unix",
                 "Risk": "high"
             },
-            "icewarp/webmail_file_inclusion": {
-                "Path": "modules/exploit/unix/icewarp/webmail_file_inclusion",
-                "Name": "IceWarp WebMail Local File Inclusion",
-                "Module": "exploit/unix/icewarp/webmail_file_inclusion",
+            "icewarp/webmail_path_traversal": {
+                "Path": "modules/exploit/unix/icewarp/webmail_path_traversal",
+                "Name": "IceWarp WebMail Path Traversal",
+                "Module": "exploit/unix/icewarp/webmail_path_traversal",
                 "Authors": [
                     "Ivan Nikolsky (enty8080)",
                     "Jameel Nabbo (JameelNabbo)"
                 ],
-                "Description": "Local File Inclusion in IceWarp <= 10.4.4 WebMail.",
+                "Description": "Path Traversal in IceWarp <= 10.4.4 WebMail.",
                 "Dependencies": [
                     ""
                 ],
@@ -734,15 +734,15 @@
                 "Platform": "unix",
                 "Risk": "high"
             },
-            "f5/big_ip_tmui_lfi": {
-                "Path": "modules/exploit/unix/f5/big_ip_tmui_lfi",
-                "Name": "F5 Big-IP TMUI Local File Inclusion",
-                "Module": "exploit/unix/f5/big_ip_tmui_lfi",
+            "f5/bigip_tmui_path_traversal": {
+                "Path": "modules/exploit/unix/f5/bigip_tmui_path_traversal",
+                "Name": "F5 Big-IP TMUI Path Traversal",
+                "Module": "exploit/unix/f5/bigip_tmui_path_traversal",
                 "Authors": [
                     "Ivan Nikolsky (enty8080)",
                     "Carlos E. Vieira"
                 ],
-                "Description": "Local File Inclusion in F5 BIG-IP Traffic Management User Interface (TMUI).",
+                "Description": "Path Traversal in F5 BIG-IP Traffic Management User Interface (TMUI).",
                 "Dependencies": [
                     ""
                 ],
@@ -752,10 +752,10 @@
                 "Platform": "unix",
                 "Risk": "high"
             },
-            "f5/big_ip_tmui_rce": {
-                "Path": "modules/exploit/unix/f5/big_ip_tmui_rce",
+            "f5/bigip_tmui_rce": {
+                "Path": "modules/exploit/unix/f5/bigip_tmui_rce",
                 "Name": "F5 Big-IP TMUI Remote Code Execution",
-                "Module": "exploit/unix/f5/big_ip_tmui_rce",
+                "Module": "exploit/unix/f5/bigip_tmui_rce",
                 "Authors": [
                     "Ivan Nikolsky (enty8080)",
                     "Mikhail Klyuchnikov"
@@ -770,10 +770,10 @@
                 "Platform": "unix",
                 "Risk": "high"
             },
-            "f5/big_ip_icontrol_rce": {
-                "Path": "modules/exploit/unix/f5/big_ip_icontrol_rce",
+            "f5/bigip_icontrol_rce": {
+                "Path": "modules/exploit/unix/f5/bigip_icontrol_rce",
                 "Name": "F5 Big-IP iControl Remote Code Execution",
-                "Module": "exploit/unix/f5/big_ip_icontrol_rce",
+                "Module": "exploit/unix/f5/bigip_icontrol_rce",
                 "Authors": [
                     "Ivan Nikolsky (enty8080)",
                     "Al1ex (Al1ex)"
