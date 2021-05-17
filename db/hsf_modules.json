@@ -510,7 +510,7 @@
                     "Ivan Nikolsky (enty8080)",
                     "Emre Övünç (EmreOvunc)"
                 ],
-                "Description": "Path Traversal in FHEM <= 6.0.",
+                "Description": "Path Traversal in FHEM <= 6.0",
                 "Dependencies": [
                     ""
                 ],
