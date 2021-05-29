@@ -69,16 +69,18 @@ class Builder:
             for file in files:
                 if file.endswith('.py') and file != '__init__.py':
                     payload = dest + '/' + file[:-3]
+                    payload_name = payload.strip(payloads_path + '/')
+
                     try:
                         payload_object = self.importer.import_payload(payload)
                     except Exception:
-                        self.badges.output_error(f"Failed to add {payload} to payloads database!")
+                        self.badges.output_error(f"Failed to add {payload_name} to payloads database!")
                         continue
 
                     database.update({
-                        self.payloads.get_platform(payload): {
-                            self.payloads.get_architecture(payload): {
-                                self.payloads.get_name(payload): {
+                        self.payloads.get_platform(payload_name): {
+                            self.payloads.get_architecture(payload_name): {
+                                self.payloads.get_name(payload_name): {
                                     "Path": payload,
                                     "Category": payload_object.details['Category'],
                                     "Name": payload_object.details['Name'],
@@ -95,7 +97,7 @@ class Builder:
                         }
                     })
 
-        with open('database_path', 'w') as f:
+        with open(database_path, 'w') as f:
             json.dump(database, f)
 
     def build_modules_database(self):
@@ -113,16 +115,18 @@ class Builder:
             for file in files:
                 if file.endswith('.py') and file != '__init__.py':
                     module = dest + '/' + file[:-3]
+                    module_name = modules.strip(modules_path + '/')
+
                     try:
                         module_object = self.importer.import_module(module)
                     except Exception:
-                        self.badges.output_error(f"Failed to add {module} to modules database!")
+                        self.badges.output_error(f"Failed to add {module_name} to modules database!")
                         continue
 
                     database.update({
-                        self.modules.get_category(module): {
-                            self.modules.get_platform(module): {
-                                self.modules.get_name(module): {
+                        self.modules.get_category(module_name): {
+                            self.modules.get_platform(module_name): {
+                                self.modules.get_name(module_name): {
                                     "Path": module,
                                     "Name": module_object.details['Name'],
                                     "Module": module_object.details['Module'],
@@ -136,7 +140,7 @@ class Builder:
                         }
                     })
 
-        with open('database_path', 'w') as f:
+        with open(database_path, 'w') as f:
             json.dump(database, f)
 
     def build_plugins_database(self):
@@ -154,14 +158,16 @@ class Builder:
             for file in files:
                 if file.endswith('.py') and file != '__init__.py':
                     plugin = dest + '/' + file[:-3]
+                    plugin_name = plugin.strip(plugins_path + '/')
+
                     try:
                         plugin_object = self.importer.import_plugin(plugin)
                     except Exception:
-                        self.badges.output_error(f"Failed to add {plugin} to plugins database!")
+                        self.badges.output_error(f"Failed to add {plugin_name} to plugins database!")
                         continue
 
                     database.update({
-                        plugin.strip(plugins_path + '/'): {
+                        plugin_name: {
                             "Path": plugin,
                             "Name": plugin_object.details['Name'],
                             "Authors": plugin_object.details['Authors'],
@@ -170,5 +176,5 @@ class Builder:
                         }
                     })
 
-        with open('database_path', 'w') as f:
+        with open(database_path, 'w') as f:
             json.dump(database, f)
