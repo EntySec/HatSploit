@@ -55,6 +55,10 @@ class Builder:
             return True
         return False
 
+    def build_directory(self):
+        if not os.path.exists(self.config.path_config['base_paths']['db_path']):
+            os.mkdir(self.config.path_config['base_paths']['db_path'])
+
     def recursive_update(self, d, u):
         for k, v in u.items():
             if isinstance(d, collections.abc.Mapping):
@@ -69,6 +73,8 @@ class Builder:
 
     def build_payloads_database(self):
         self.badges.output_process("Building stdalone payloads database...")
+        self.build_directory()
+
         database_path = (self.config.path_config['base_paths']['db_path'] +
                         self.config.db_config['base_dbs']['payloads_database'])
         database = {
@@ -115,6 +121,8 @@ class Builder:
 
     def build_modules_database(self):
         self.badges.output_process("Building stdalone modules database...")
+        self.build_directory()
+
         database_path = (self.config.path_config['base_paths']['db_path'] +
                         self.config.db_config['base_dbs']['modules_database'])
         database = {
@@ -158,6 +166,8 @@ class Builder:
 
     def build_plugins_database(self):
         self.badges.output_process("Building stdalone plugins database...")
+        self.build_directory()
+
         database_path = (self.config.path_config['base_paths']['db_path'] +
                         self.config.db_config['base_dbs']['plugins_database'])
         database = {
