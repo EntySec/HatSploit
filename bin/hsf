@@ -57,7 +57,7 @@ class HatSploit:
 
             self.badges.output_empty(terms)
 
-            agree = self.badges.input_question("Accept HatSploit Framework Terms of Service? [Y/n] ")
+            agree = self.badges.input_question("Accept HatSploit Framework Terms of Service? [y/n] ")
             if agree.lower() not in ['y', 'yes']:
                 return False
 
