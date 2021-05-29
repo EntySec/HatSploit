@@ -49,11 +49,6 @@ class HatSploitCommand(Command):
             authors += author + ", "
         authors = authors[:-2]
 
-        dependencies = ""
-        for dependence in current_module['Dependencies']:
-            dependencies += dependence + ", "
-        dependencies = dependencies[:-2]
-
         comments = ""
         for line in current_module['Comments']:
             comments += line + "\n" + (" " * 14)
@@ -70,8 +65,6 @@ class HatSploitCommand(Command):
             self.output_empty("      Authors: " + authors)
         if current_module['Description']:
             self.output_empty("  Description: " + current_module['Description'])
-        if dependencies:
-            self.output_empty(" Dependencies: " + dependencies)
         if comments:
             self.output_empty("     Comments: ")
             self.output_empty("               " + comments)
