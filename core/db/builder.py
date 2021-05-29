@@ -45,12 +45,12 @@ class Builder:
         self.local_storage = LocalStorage()
 
     def check_built(self):
-        if os.path.exists(self.config.path_config['base_paths']['db_path'] +
+        if (os.path.exists(self.config.path_config['base_paths']['db_path'] +
                         self.config.db_config['base_dbs']['modules_database']) and
         os.path.exists(self.config.path_config['base_paths']['db_path'] +
                         self.config.db_config['base_dbs']['payloads_database']) and
         os.path.exists(self.config.path_config['base_paths']['db_path'] +
-                        self.config.db_config['base_dbs']['plugins_database']):
+                        self.config.db_config['base_dbs']['plugins_database'])):
             return True
         return False
 
