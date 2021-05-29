@@ -114,3 +114,6 @@ def check_all():
             badges.output_error("Not all checks passed!")
             sys.exit(1)
     badges.output_success("All checks passed!")
+
+if __name__ == '__main__':
+    check_all()
