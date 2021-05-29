@@ -41,6 +41,7 @@ class Loader:
     def __init__(self):
         self.badges = Badges()
         self.importer = Importer()
+        self.builder = Builder()
         self.config = Config()
 
     def load_update_process(self):
