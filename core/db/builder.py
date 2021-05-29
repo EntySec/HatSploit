@@ -56,8 +56,8 @@ class Builder:
 
     def build_payloads_database(self):
         self.badges.output_process("Building stdalone payloads database...")
-        database_path = self.config.path_config['base_paths']['db_path'] +
-                        self.config.db_config['base_dbs']['payloads_database']
+        database_path = (self.config.path_config['base_paths']['db_path'] +
+                        self.config.db_config['base_dbs']['payloads_database'])
         database = {
             "__database__": {
                 "type": "payloads"
@@ -96,8 +96,8 @@ class Builder:
 
     def build_modules_database(self):
         self.badges.output_process("Building stdalone modules database...")
-        database_path = self.config.path_config['base_paths']['db_path'] +
-                        self.config.db_config['base_dbs']['modules_database']
+        database_path = (self.config.path_config['base_paths']['db_path'] +
+                        self.config.db_config['base_dbs']['modules_database'])
         database = {
             "__database__": {
                 "type": "modules"
@@ -133,8 +133,8 @@ class Builder:
 
     def build_plugins_database(self):
         self.badges.output_process("Building stdalone plugins database...")
-        database_path = self.config.path_config['base_paths']['db_path'] +
-                        self.config.db_config['base_dbs']['plugins_database']
+        database_path = (self.config.path_config['base_paths']['db_path'] +
+                        self.config.db_config['base_dbs']['plugins_database'])
         database = {
             "__database__": {
                 "type": "plugins"
