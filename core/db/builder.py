@@ -27,6 +27,7 @@
 import json
 import os
 
+from core.modules.modules import Modules
 from core.payloads.payloads import Payloads
 from core.base.config import Config
 from core.db.importer import Importer
@@ -36,6 +37,7 @@ from core.cli.badges import Badges
 
 class Builder:
     def __init__(self):
+        self.modules = Modules()
         self.payloads = Payloads()
         self.badges = Badges()
         self.config = Config()
