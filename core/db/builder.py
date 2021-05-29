@@ -129,7 +129,7 @@ class Builder:
             for file in files:
                 if file.endswith('.py') and file != '__init__.py':
                     module = dest + '/' + file[:-3]
-                    module_name = modules.strip(modules_path + '/')
+                    module_name = module.strip(modules_path + '/')
 
                     try:
                         module_object = self.importer.import_module(module)
