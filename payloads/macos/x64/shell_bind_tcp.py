@@ -37,9 +37,6 @@ class HatSploitPayload(Payload, HatVenom):
             'Ivan Nikolsky (enty8080)'
         ],
         'Description': "Shell bind TCP payload for macOS x64.",
-        'Dependencies': [
-            ''
-        ],
         'Comments': [
             ''
         ],

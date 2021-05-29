@@ -37,9 +37,6 @@ class HatSploitPayload(Payload, TCPClient):
             'Ivan Nikolsky (enty8080)'
         ],
         'Description': "Bash shell reverse TCP payload.",
-        'Dependencies': [
-            ''
-        ],
         'Comments': [
             ''
         ],

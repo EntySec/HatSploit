@@ -37,9 +37,6 @@ class HatSploitPayload(Payload, TCPClient):
             'Ivan Nikolsky (enty8080)'
         ],
         'Description': "Powershell reverse TCP payload.",
-        'Dependencies': [
-            ''
-        ],
         'Comments': [
             ''
         ],

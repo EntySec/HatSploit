@@ -38,9 +38,6 @@ class HatSploitPayload(Payload, HatVenom, TCPClient):
             'Ivan Nikolsky (enty8080)'
         ],
         'Description': "Shell reverse TCP payload for Linux mipsbe.",
-        'Dependencies': [
-            ''
-        ],
         'Comments': [
             ''
         ],

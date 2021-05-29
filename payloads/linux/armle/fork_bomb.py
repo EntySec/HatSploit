@@ -36,7 +36,7 @@ class HatSploitPayload(Payload, HatVenom):
         'Authors': [
             'Ivan Nikolsky (enty8080)'
         ],
-        'Description': "Fork bomb payload for Linux armle."
+        'Description': "Fork bomb payload for Linux armle.",
         'Comments': [
             ''
         ],

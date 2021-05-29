@@ -39,9 +39,6 @@ class HatSploitPayload(Payload, HatVenom):
             'Ivan Nikolsky (enty8080)'
         ],
         'Description': "Say payload for macOS x64.",
-        'Dependencies': [
-            ''
-        ],
         'Comments': [
             ''
         ],
