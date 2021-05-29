@@ -48,6 +48,12 @@ class DB:
             }
         }
 
+        payloads_path = 'payloads'
+        for dest, _, files in os.walk(payloads_path):
+            for file in files:
+                if file.endswith('.py') and file != '__init__.py':
+                    payload = dest + '/' + file
+
     def build_modules_database(self):
         self.badges.output_process("Building stdalone modules database...")
         database_path = self.config.path_config['base_paths']['db_path'] +
@@ -58,6 +64,12 @@ class DB:
             }
         }
 
+        modules_path = 'modules'
+        for dest, _, files in os.walk(modules_path):
+            for file in files:
+                if file.endswith('.py') and file != '__init__.py':
+                    module = dest + '/' + file
+
     def build_plugins_database(self):
         self.badges.output_process("Building stdalone plugins database...")
         database_path = self.config.path_config['base_paths']['db_path'] +
@@ -67,6 +79,12 @@ class DB:
                 "type": "plugins"
             }
         }
+
+        plugins_path = 'modules'
+        for dest, _, files in os.walk(plugins_path):
+            for file in files:
+                if file.endswith('.py') and file != '__init__.py':
+                    plugin = dest + '/' + file
 
     def disconnect_payloads_database(self, name):
         if self.local_storage.get("connected_payloads_databases"):
