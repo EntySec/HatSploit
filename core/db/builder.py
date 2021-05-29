@@ -24,6 +24,7 @@
 # SOFTWARE.
 #
 
+import collections
 import json
 import os
 
@@ -54,6 +55,19 @@ class Builder:
             return True
         return False
 
+    @staticmethod
+    def recursive_update(d, u):
+        for k, v in u.items():
+            if isinstance(d, collections.abc.Mapping):
+                if isinstance(v, collections.abc.Mapping):
+                    r = update(d.get(k, {}), v)
+                    d[k] = r
+                else:
+                    d[k] = u[k]
+            else:
+                d = {k: u[k]}
+        return d
+
     def build_payloads_database(self):
         self.badges.output_process("Building stdalone payloads database...")
         database_path = (self.config.path_config['base_paths']['db_path'] +
@@ -77,7 +91,7 @@ class Builder:
                         self.badges.output_error(f"Failed to add {payload_name} to payloads database!")
                         continue
 
-                    database.update({
+                    self.recursive_update(database, {
                         self.payloads.get_platform(payload_name): {
                             self.payloads.get_architecture(payload_name): {
                                 self.payloads.get_name(payload_name): {
@@ -123,7 +137,7 @@ class Builder:
                         self.badges.output_error(f"Failed to add {module_name} to modules database!")
                         continue
 
-                    database.update({
+                    self.recursive_update(database, {
                         self.modules.get_category(module_name): {
                             self.modules.get_platform(module_name): {
                                 self.modules.get_name(module_name): {
@@ -166,7 +180,7 @@ class Builder:
                         self.badges.output_error(f"Failed to add {plugin_name} to plugins database!")
                         continue
 
-                    database.update({
+                    self.recursive_update(database, {
                         plugin_name: {
                             "Path": plugin,
                             "Name": plugin_object.details['Name'],
