@@ -56,7 +56,9 @@ class Loader:
 
     def load_components(self):
         if not self.builder.check_built():
-            self.builder.build_all()
+            agree = self.badges.input_question("Do you want to build stdalone databases? [y/n] ")
+            if agree.lower() in ['y', 'yes']:
+                self.builder.build_all()
         self.importer.import_all()
 
     def load_everything(self):
