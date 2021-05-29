@@ -32,10 +32,8 @@ config.configure()
 from core.db.builder import Builder
 
 builder = Builder()
-if not self.builder.check_built():
-    self.builder.build_modules_database()
-    self.builder.build_payloads_database()
-    self.builder.build_plugins_database()
+if not builder.check_built():
+    builder.build_all()
 
 from checks.perform_checks import PerformChecks
 
