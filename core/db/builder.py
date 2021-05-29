@@ -101,29 +101,27 @@ class Builder:
 
                     try:
                         payload_object = self.importer.import_payload(payload)
-                    except Exception:
-                        self.badges.output_error(f"Failed to add {payload_name} to payloads database!")
-                        continue
-
-                    self.recursive_update(database, {
-                        self.payloads.get_platform(payload_name): {
-                            self.payloads.get_architecture(payload_name): {
-                                self.payloads.get_name(payload_name): {
-                                    "Path": payload,
-                                    "Category": payload_object.details['Category'],
-                                    "Name": payload_object.details['Name'],
-                                    "Payload": payload_object.details['Payload'],
-                                    "Authors": payload_object.details['Authors'],
-                                    "Description": payload_object.details['Description'],
-                                    "Comments": payload_object.details['Comments'],
-                                    "Architecture": payload_object.details['Architecture'],
-                                    "Platform": payload_object.details['Platform'],
-                                    "Risk": payload_object.details['Risk'],
-                                    "Type": payload_object.details['Type']
+                        self.recursive_update(database, {
+                            self.payloads.get_platform(payload_name): {
+                                self.payloads.get_architecture(payload_name): {
+                                    self.payloads.get_name(payload_name): {
+                                        "Path": payload,
+                                        "Category": payload_object.details['Category'],
+                                        "Name": payload_object.details['Name'],
+                                        "Payload": payload_object.details['Payload'],
+                                        "Authors": payload_object.details['Authors'],
+                                        "Description": payload_object.details['Description'],
+                                        "Comments": payload_object.details['Comments'],
+                                        "Architecture": payload_object.details['Architecture'],
+                                        "Platform": payload_object.details['Platform'],
+                                        "Risk": payload_object.details['Risk'],
+                                        "Type": payload_object.details['Type']
+                                    }
                                 }
                             }
-                        }
-                    })
+                        })
+                    except Exception:
+                        self.badges.output_error(f"Failed to add {payload_name} to payloads database!")
 
         with open(database_path, 'w') as f:
             json.dump(database, f)
@@ -148,26 +146,24 @@ class Builder:
 
                     try:
                         module_object = self.importer.import_module(module)
-                    except Exception:
-                        self.badges.output_error(f"Failed to add {module_name} to modules database!")
-                        continue
-
-                    self.recursive_update(database, {
-                        self.modules.get_category(module_name): {
-                            self.modules.get_platform(module_name): {
-                                self.modules.get_name(module_name): {
-                                    "Path": module,
-                                    "Name": module_object.details['Name'],
-                                    "Module": module_object.details['Module'],
-                                    "Authors": module_object.details['Authors'],
-                                    "Description": module_object.details['Description'],
-                                    "Comments": module_object.details['Comments'],
-                                    "Platform": module_object.details['Platform'],
-                                    "Risk": module_object.details['Risk']
+                        self.recursive_update(database, {
+                            self.modules.get_category(module_name): {
+                                self.modules.get_platform(module_name): {
+                                    self.modules.get_name(module_name): {
+                                        "Path": module,
+                                        "Name": module_object.details['Name'],
+                                        "Module": module_object.details['Module'],
+                                        "Authors": module_object.details['Authors'],
+                                        "Description": module_object.details['Description'],
+                                        "Comments": module_object.details['Comments'],
+                                        "Platform": module_object.details['Platform'],
+                                        "Risk": module_object.details['Risk']
+                                    }
                                 }
                             }
-                        }
-                    })
+                        })
+                    except Exception:
+                        self.badges.output_error(f"Failed to add {module_name} to modules database!")
 
         with open(database_path, 'w') as f:
             json.dump(database, f)
@@ -192,19 +188,17 @@ class Builder:
 
                     try:
                         plugin_object = self.importer.import_plugin(plugin)
+                        self.recursive_update(database, {
+                            plugin_name: {
+                                "Path": plugin,
+                                "Name": plugin_object.details['Name'],
+                                "Authors": plugin_object.details['Authors'],
+                                "Description": plugin_object.details['Description'],
+                                "Comments": plugin_object.details['Comments']
+                            }
+                        })
                     except Exception:
                         self.badges.output_error(f"Failed to add {plugin_name} to plugins database!")
-                        continue
-
-                    self.recursive_update(database, {
-                        plugin_name: {
-                            "Path": plugin,
-                            "Name": plugin_object.details['Name'],
-                            "Authors": plugin_object.details['Authors'],
-                            "Description": plugin_object.details['Description'],
-                            "Comments": plugin_object.details['Comments']
-                        }
-                    })
 
         with open(database_path, 'w') as f:
             json.dump(database, f)
