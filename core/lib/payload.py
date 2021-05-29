@@ -40,6 +40,9 @@ class Payload(FMT, Badges, Colors, Parser, Tables):
             ''
         ],
         'Description': "",
+        'Comments': [
+            ''
+        ],
         'Platform': "",
         'Risk': "low",
         'Type': ""
