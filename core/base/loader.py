@@ -44,6 +44,8 @@ class Loader:
         self.builder = Builder()
         self.config = Config()
 
+        self.agree = None
+
     def load_update_process(self):
         remote_config = requests.get('https://raw.githubusercontent.com/EntySec/HatSploit/main/config/core_config.yml',
                                      stream=True)
@@ -55,17 +57,18 @@ class Loader:
             time.sleep(1)
 
     def load_components(self):
-        if not self.builder.check_built():
-            agree = self.badges.input_question("Do you want to build stdalone databases? [y/n] ")
-            if agree.lower() in ['y', 'yes']:
-                self.builder.build_all()
+        if not self.builder.check_built() and self.build in ['y', 'yes']:
+            self.builder.build_all()
         self.importer.import_all()
 
     def load_everything(self):
-        self.load_update_process()
         self.load_components()
 
     def load_all(self):
+        self.load_update_process()
+        if not self.builder.check_built():
+            self.agree = self.badges.input_question("Do you want to build stdalone databases? [y/n] ")
+
         loading_process = threading.Thread(target=self.load_everything)
         loading_process.start()
         base_line = "Loading the HatSploit Framework..."
