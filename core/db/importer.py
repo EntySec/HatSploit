@@ -145,6 +145,7 @@ class Importer:
         self.db.connect_plugins_database('hsf_plugins', self.config.path_config['base_paths']['db_path'] +
                                          self.config.db_config['base_dbs']['plugins_database'])
 
-    def import_all(self):
+    def import_all(self, import_database):
         self.import_commands()
-        self.import_database()
+        if import_database:
+            self.import_database()
