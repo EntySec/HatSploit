@@ -59,15 +59,29 @@ class Builder:
                     payload = dest + '/' + file[:-3]
                     payload_object = self.importer.import_payload(payload)
                     
-                    cache = {
+                    database.update({
                         self.payloads.get_platform(payload): {
                             self.payloads.get_architecture(payload): {
                                 self.payloads.get_name(payload): {
-                                    "Path": payload
+                                    "Path": payload,
+                                    "Category": payload_object.details['Category'],
+                                    "Name": payload_object.details['Name'],
+                                    "Payload": payload_object.details['Payload'],
+                                    "Authors": payload_object.details['Authors'],
+                                    "Description": payload_object.details['Description'],
+                                    "Dependencies": payload_object.details['Dependencies'],
+                                    "Comments": payload_object.details['Comments'],
+                                    "Architecture": payload_object.details['Architecture'],
+                                    "Platform": payload_object.details['Platform'],
+                                    "Risk": payload_object.details['Risk'],
+                                    "Type": payload_object.details['Type']
                                 }
                             }
                         }
-                    }
+                    })
+
+        with open('database_path', 'w') as f:
+            json.dump(database, f)
 
     def build_modules_database(self):
         self.badges.output_process("Building stdalone modules database...")
