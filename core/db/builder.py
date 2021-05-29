@@ -55,12 +55,11 @@ class Builder:
             return True
         return False
 
-    @staticmethod
-    def recursive_update(d, u):
+    def recursive_update(self, d, u):
         for k, v in u.items():
             if isinstance(d, collections.abc.Mapping):
                 if isinstance(v, collections.abc.Mapping):
-                    r = update(d.get(k, {}), v)
+                    r = self.recursive_update(d.get(k, {}), v)
                     d[k] = r
                 else:
                     d[k] = u[k]
