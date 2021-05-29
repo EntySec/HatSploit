@@ -35,10 +35,7 @@ class HatSploitPlugin(Plugin):
         'Authors': [
             'enty8080'
         ],
-        'Description': "Cowsay plugin for HatSploit.",
-        'Dependencies': [
-            ''
-        ],
+        'Description': "Cowsay plugin for HatSploit."
         'Comments': [
             ''
         ]
