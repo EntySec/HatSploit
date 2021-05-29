@@ -35,9 +35,6 @@ class HatSploitModule(Module):
             'Ivan Nikolsky (enty8080)'
         ],
         'Description': "Multi Payload Generator.",
-        'Dependencies': [
-            ''
-        ],
         'Comments': [
             ''
         ],

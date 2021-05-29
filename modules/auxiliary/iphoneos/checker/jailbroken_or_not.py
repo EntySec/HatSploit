@@ -36,9 +36,6 @@ class HatSploitModule(Module, TCPClient):
             'Ivan Nikolsky (enty8080)'
         ],
         'Description': "Check if remote iPhone jailbroken.",
-        'Dependencies': [
-            ''
-        ],
         'Comments': [
             ''
         ],
