@@ -24,8 +24,35 @@
 # SOFTWARE.
 #
 
+import os
+
 from core.base.config import Config
 
 config = Config()
 config.configure()
+
+from core.db.importer import Importer
+from core.cli.badges import Badges
+
+importer = Importer()
+badges = Badges()
+
+def check_modules():
+    one_fail = False
+    self.badges.output_process("Checking all stdalone modules...")
+
+    modules_path = 'modules'
+    for dest, _, files in os.walk(modules_path):
+        for file in files:
+            if file.endswith('.py') and file != '__init__.py':
+                module = dest + '/' + file[:-3]
+                module_name = module[len(f"{modules_path}/"):]
+
+                try:
+                    _ = importer.import_payload(payload)
+                    badges.output_success(f"{module_name}: OK")
+                except Exception:
+                    badges.output_error(f"{module_name}: FAIL")
+                    one_fail = True
+    return one_fail
 
