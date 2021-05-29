@@ -33,6 +33,7 @@ import time
 
 from core.base.config import Config
 from core.cli.badges import Badges
+from core.db.builder import Builder
 from core.db.importer import Importer
 
 
@@ -53,6 +54,10 @@ class Loader:
             time.sleep(1)
 
     def load_components(self):
+        if not self.builder.check_built():
+            self.builder.build_modules_database()
+            self.builder.build_payloads_database()
+            self.builder.build_plugins_database()
         self.importer.import_all()
 
     def load_everything(self):
