@@ -38,9 +38,6 @@ class Plugin(FMT, Badges, Colors, Parser, Tables):
             ''
         ],
         'Description': "",
-        'Dependencies': [
-            ''
-        ],
         'Comments': [
             ''
         ]

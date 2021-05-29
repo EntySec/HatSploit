@@ -33,6 +33,7 @@ import time
 
 from core.base.config import Config
 from core.cli.badges import Badges
+from core.db.builder import Builder
 from core.db.importer import Importer
 
 
@@ -40,7 +41,10 @@ class Loader:
     def __init__(self):
         self.badges = Badges()
         self.importer = Importer()
+        self.builder = Builder()
         self.config = Config()
+
+        self.build = False
 
     def load_update_process(self):
         remote_config = requests.get('https://raw.githubusercontent.com/EntySec/HatSploit/main/config/core_config.yml',
@@ -53,13 +57,20 @@ class Loader:
             time.sleep(1)
 
     def load_components(self):
-        self.importer.import_all()
+        if not self.builder.check_built() and self.build:
+            self.builder.build_all()
+        self.importer.import_all(self.build)
 
     def load_everything(self):
-        self.load_update_process()
         self.load_components()
 
     def load_all(self):
+        self.load_update_process()
+        if not self.builder.check_built():
+            build = self.badges.input_question("Do you want to build stdalone databases? [y/n] ")
+            if build.lower() in ['y', 'yes']:
+                self.build = True
+
         loading_process = threading.Thread(target=self.load_everything)
         loading_process.start()
         base_line = "Loading the HatSploit Framework..."

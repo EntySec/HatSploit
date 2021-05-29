@@ -44,9 +44,6 @@ class HatSploitModule(Module, HTTPClient):
             'Ivan Nikolsky (enty8080)'
         ],
         'Description': "Scan website PHP My Admin.",
-        'Dependencies': [
-            ''
-        ],
         'Comments': [
             ''
         ],

@@ -37,9 +37,6 @@ class HatSploitModule(Module):
             'Ivan Nikolsky (enty8080)'
         ],
         'Description': "Scan local network.",
-        'Dependencies': [
-            'scapy'
-        ],
         'Comments': [
             ''
         ],

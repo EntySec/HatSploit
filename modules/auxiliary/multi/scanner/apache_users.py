@@ -41,9 +41,6 @@ class HatSploitModule(Module, HTTPClient):
             'Ivan Nikolsky (enty8080)'
         ],
         'Description': "Scan website apache users.",
-        'Dependencies': [
-            ''
-        ],
         'Comments': [
             ''
         ],

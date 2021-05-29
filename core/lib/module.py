@@ -39,9 +39,6 @@ class Module(FMT, Badges, Colors, Parser, Tables):
             ''
         ],
         'Description': "",
-        'Dependencies': [
-            ''
-        ],
         'Comments': [
             ''
         ],

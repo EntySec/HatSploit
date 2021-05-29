@@ -297,42 +297,33 @@ class Modules:
     def add_module(self, category, platform, name):
         modules = self.get_module_object(category, platform, name)
 
-        not_installed = list()
-        for dependence in modules['Dependencies']:
-            if not self.importer.import_check(dependence):
-                not_installed.append(dependence)
-        if not not_installed:
-            imported_modules = self.local_storage.get("imported_modules")
-            full_name = self.get_full_name(category, platform, name)
+        imported_modules = self.local_storage.get("imported_modules")
+        full_name = self.get_full_name(category, platform, name)
 
-            if self.check_imported(full_name):
-                module_object = imported_modules[full_name]
+        if self.check_imported(full_name):
+            module_object = imported_modules[full_name]
+            self.add_to_global(module_object)
+        else:
+            module_object = self.import_module(category, platform, name)
+            if module_object:
+                if hasattr(module_object, "payload"):
+                    payload_name = module_object.payload['Value']
+
+                    platform = self.payloads.get_platform(payload_name)
+                    architecture = self.payloads.get_architecture(payload_name)
+                    name = self.payloads.get_name(payload_name)
+
+                    self.badges.output_process("Using default payload " + payload_name + "...")
+
+                    if self.payloads.check_exist(payload_name):
+                        if self.payloads.add_payload(full_name, platform, architecture, name):
+                            self.add_to_global(module_object)
+                        return
+                    self.badges.output_error("Invalid default payload!")
+                    return
                 self.add_to_global(module_object)
             else:
-                module_object = self.import_module(category, platform, name)
-                if module_object:
-                    if hasattr(module_object, "payload"):
-                        payload_name = module_object.payload['Value']
-
-                        platform = self.payloads.get_platform(payload_name)
-                        architecture = self.payloads.get_architecture(payload_name)
-                        name = self.payloads.get_name(payload_name)
-
-                        self.badges.output_process("Using default payload " + payload_name + "...")
-
-                        if self.payloads.check_exist(payload_name):
-                            if self.payloads.add_payload(full_name, platform, architecture, name):
-                                self.add_to_global(module_object)
-                            return
-                        self.badges.output_error("Invalid default payload!")
-                        return
-                    self.add_to_global(module_object)
-                else:
-                    self.badges.output_error("Failed to select module from database!")
-        else:
-            self.badges.output_error("Module depends this dependencies which is not installed:")
-            for dependence in not_installed:
-                self.badges.output_empty("    * " + dependence)
+                self.badges.output_error("Failed to select module from database!")
 
     def add_to_global(self, module_object):
         if self.check_current_module():

@@ -37,9 +37,6 @@ class HatSploitPayload(Payload, HatVenom):
             'Ivan Nikolsky (enty8080)'
         ],
         'Description': "Reboot payload for Linux mipsbe.",
-        'Dependencies': [
-            ''
-        ],
         'Comments': [
             ''
         ],

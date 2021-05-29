@@ -27,6 +27,7 @@
 import json
 import os
 
+from core.base.config import Config
 from core.base.storage import LocalStorage
 from core.cli.badges import Badges
 
@@ -34,6 +35,7 @@ from core.cli.badges import Badges
 class DB:
     def __init__(self):
         self.badges = Badges()
+        self.config = Config()
         self.local_storage = LocalStorage()
 
     def disconnect_payloads_database(self, name):

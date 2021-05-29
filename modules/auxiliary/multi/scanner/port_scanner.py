@@ -36,9 +36,6 @@ class HatSploitModule(Module, TCPClient):
             'Ivan Nikolsky (enty8080)'
         ],
         'Description': "Scan host for opened ports.",
-        'Dependencies': [
-            ''
-        ],
         'Comments': [
             ''
         ],

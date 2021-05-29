@@ -40,7 +40,7 @@ class Payload(FMT, Badges, Colors, Parser, Tables):
             ''
         ],
         'Description': "",
-        'Dependencies': [
+        'Comments': [
             ''
         ],
         'Platform': "",

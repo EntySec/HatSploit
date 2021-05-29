@@ -40,9 +40,6 @@ class HatSploitPayload(Payload, StringTools, TCPClient):
             'Ivan Nikolsky (enty8080)'
         ],
         'Description': "Membrane reverse TCP payload for macOS x64.",
-        'Dependencies': [
-            ''
-        ],
         'Comments': [
             ''
         ],

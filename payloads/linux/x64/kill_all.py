@@ -37,9 +37,6 @@ class HatSploitPayload(Payload, HatVenom):
             'Ivan Nikolsky (enty8080)'
         ],
         'Description': "Kill all processes payload for Linux x64.",
-        'Dependencies': [
-            ''
-        ],
         'Comments': [
             ''
         ],

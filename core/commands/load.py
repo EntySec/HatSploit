@@ -57,25 +57,17 @@ class HatSploitCommand(Command):
 
     def add_plugin(self, database, plugin):
         plugins = self.local_storage.get("plugins")[database][plugin]
-        not_installed = list()
-        for dependence in plugins['Dependencies']:
-            if not self.importer.import_check(dependence):
-                not_installed.append(dependence)
-        if not not_installed:
-            plugin_object = self.import_plugin(database, plugin)
-            if plugin_object:
-                if self.local_storage.get("loaded_plugins"):
-                    self.local_storage.update("loaded_plugins", plugin_object)
-                else:
-                    self.local_storage.set("loaded_plugins", plugin_object)
-                self.local_storage.get("loaded_plugins")[plugin].run()
-                self.output_success("Successfully loaded " + plugin + " plugin!")
+
+        plugin_object = self.import_plugin(database, plugin)
+        if plugin_object:
+            if self.local_storage.get("loaded_plugins"):
+                self.local_storage.update("loaded_plugins", plugin_object)
             else:
-                self.output_error("Failed to load plugin!")
+                self.local_storage.set("loaded_plugins", plugin_object)
+            self.local_storage.get("loaded_plugins")[plugin].run()
+            self.output_success("Successfully loaded " + plugin + " plugin!")
         else:
-            self.output_error("Plugin depends this dependencies which is not installed:")
-            for dependence in not_installed:
-                self.output_empty("    * " + dependence)
+            self.output_error("Failed to load plugin!")
 
     def run(self, argc, argv):
         plugin = argv[0]

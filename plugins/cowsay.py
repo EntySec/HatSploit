@@ -36,9 +36,6 @@ class HatSploitPlugin(Plugin):
             'enty8080'
         ],
         'Description': "Cowsay plugin for HatSploit.",
-        'Dependencies': [
-            ''
-        ],
         'Comments': [
             ''
         ]
