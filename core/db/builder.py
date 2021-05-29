@@ -69,7 +69,11 @@ class Builder:
             for file in files:
                 if file.endswith('.py') and file != '__init__.py':
                     payload = dest + '/' + file[:-3]
-                    payload_object = self.importer.import_payload(payload)
+                    try:
+                        payload_object = self.importer.import_payload(payload)
+                    except Exception:
+                        self.badges.output_error(f"Failed to add {payload} to payloads database!")
+                        continue
 
                     database.update({
                         self.payloads.get_platform(payload): {
@@ -109,7 +113,11 @@ class Builder:
             for file in files:
                 if file.endswith('.py') and file != '__init__.py':
                     module = dest + '/' + file[:-3]
-                    module_object = self.importer.import_module(module)
+                    try:
+                        module_object = self.importer.import_module(module)
+                    except Exception:
+                        self.badges.output_error(f"Failed to add {module} to modules database!")
+                        continue
 
                     database.update({
                         self.modules.get_category(module): {
@@ -146,7 +154,11 @@ class Builder:
             for file in files:
                 if file.endswith('.py') and file != '__init__.py':
                     plugin = dest + '/' + file[:-3]
-                    plugin_object = self.importer.import_plugin(plugin)
+                    try:
+                        plugin_object = self.importer.import_plugin(plugin)
+                    except Exception:
+                        self.badges.output_error(f"Failed to add {plugin} to plugins database!")
+                        continue
 
                     database.update({
                         plugin.strip(plugins_path + '/'): {
