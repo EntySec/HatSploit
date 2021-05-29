@@ -120,6 +120,7 @@ fi
     sudo -H python3 -m pip install -r deps/core_dependencies.txt
     sudo -H python3 -m pip install -r deps/modules_dependencies.txt
     sudo -H python3 -m pip install -r deps/plugins_dependencies.txt
+    sudo -H python3 -m pip install -r deps/payloads_dependencies.txt
 } &> /dev/null
 
 if [[ ! -d /opt ]]; then
