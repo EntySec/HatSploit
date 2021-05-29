@@ -71,7 +71,6 @@ class Builder:
                                     "Payload": payload_object.details['Payload'],
                                     "Authors": payload_object.details['Authors'],
                                     "Description": payload_object.details['Description'],
-                                    "Dependencies": payload_object.details['Dependencies'],
                                     "Comments": payload_object.details['Comments'],
                                     "Architecture": payload_object.details['Architecture'],
                                     "Platform": payload_object.details['Platform'],
@@ -111,7 +110,6 @@ class Builder:
                                     "Module": module_object.details['Module'],
                                     "Authors": module_object.details['Authors'],
                                     "Description": module_object.details['Description'],
-                                    "Dependencies": module_object.details['Dependencies'],
                                     "Comments": module_object.details['Comments'],
                                     "Platform": module_object.details['Platform'],
                                     "Risk": module_object.details['Risk']
@@ -146,7 +144,6 @@ class Builder:
                             "Name": plugin_object.details['Name'],
                             "Authors": plugin_object.details['Authors'],
                             "Description": plugin_object.details['Description'],
-                            "Dependencies": plugin_object.details['Dependencies'],
                             "Comments": plugin_object.details['Comments']
                         }
                     })
