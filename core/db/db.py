@@ -27,6 +27,7 @@
 import json
 import os
 
+from core.base.config import Config
 from core.base.storage import LocalStorage
 from core.cli.badges import Badges
 
@@ -34,7 +35,38 @@ from core.cli.badges import Badges
 class DB:
     def __init__(self):
         self.badges = Badges()
+        self.config = Config()
         self.local_storage = LocalStorage()
+
+    def build_payloads_database(self):
+        self.badges.output_process("Building stdalone payloads database...")
+        database_path = self.config.path_config['base_paths']['db_path'] +
+                        self.config.db_config['base_dbs']['payloads_database']
+        database = {
+            "__database__": {
+                "type": "payloads"
+            }
+        }
+
+    def build_modules_database(self):
+        self.badges.output_process("Building stdalone modules database...")
+        database_path = self.config.path_config['base_paths']['db_path'] +
+                        self.config.db_config['base_dbs']['modules_database']
+        database = {
+            "__database__": {
+                "type": "modules"
+            }
+        }
+
+    def build_plugins_database(self):
+        self.badges.output_process("Building stdalone plugins database...")
+        database_path = self.config.path_config['base_paths']['db_path'] +
+                        self.config.db_config['base_dbs']['plugins_database']
+        database = {
+            "__database__": {
+                "type": "plugins"
+            }
+        }
 
     def disconnect_payloads_database(self, name):
         if self.local_storage.get("connected_payloads_databases"):
