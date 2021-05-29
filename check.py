@@ -29,13 +29,3 @@ from core.base.config import Config
 config = Config()
 config.configure()
 
-from core.db.builder import Builder
-
-builder = Builder()
-if not builder.check_built():
-    builder.build_all()
-
-from checks.perform_checks import PerformChecks
-
-perform_checks = PerformChecks()
-perform_checks.perform_checks()
