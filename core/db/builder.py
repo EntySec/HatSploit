@@ -58,7 +58,7 @@ class Builder:
                 if file.endswith('.py') and file != '__init__.py':
                     payload = dest + '/' + file[:-3]
                     payload_object = self.importer.import_payload(payload)
-                    
+
                     database.update({
                         self.payloads.get_platform(payload): {
                             self.payloads.get_architecture(payload): {
@@ -97,7 +97,29 @@ class Builder:
         for dest, _, files in os.walk(modules_path):
             for file in files:
                 if file.endswith('.py') and file != '__init__.py':
-                    module = dest + '/' + file
+                    module = dest + '/' + file[:-3]
+                    module_object = self.importer.import_module(module)
+
+                    database.update({
+                        self.modules.get_category(module): {
+                            self.modules.get_platform(module): {
+                                self.modules.get_name(module): {
+                                    "Path": module,
+                                    "Name": module_object.details['Name'],
+                                    "Module": module_object.details['Module'],
+                                    "Authors": module_object.details['Authors'],
+                                    "Description": module_object.details['Description'],
+                                    "Dependencies": module_object.details['Dependencies'],
+                                    "Comments": module_object.details['Comments'],
+                                    "Platform": module_object.details['Platform'],
+                                    "Risk": module_object.details['Risk'],
+                                }
+                            }
+                        }
+                    })
+
+        with open('database_path', 'w') as f:
+            json.dump(database, f)
 
     def build_plugins_database(self):
         self.badges.output_process("Building stdalone plugins database...")
