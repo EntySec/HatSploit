@@ -56,9 +56,7 @@ class Loader:
 
     def load_components(self):
         if not self.builder.check_built():
-            self.builder.build_modules_database()
-            self.builder.build_payloads_database()
-            self.builder.build_plugins_database()
+            self.builder.build_all()
         self.importer.import_all()
 
     def load_everything(self):
