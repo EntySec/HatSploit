@@ -112,7 +112,7 @@ class Builder:
                                     "Dependencies": module_object.details['Dependencies'],
                                     "Comments": module_object.details['Comments'],
                                     "Platform": module_object.details['Platform'],
-                                    "Risk": module_object.details['Risk'],
+                                    "Risk": module_object.details['Risk']
                                 }
                             }
                         }
@@ -131,8 +131,23 @@ class Builder:
             }
         }
 
-        plugins_path = 'modules'
+        plugins_path = 'plugins'
         for dest, _, files in os.walk(plugins_path):
             for file in files:
                 if file.endswith('.py') and file != '__init__.py':
-                    plugin = dest + '/' + file
+                    plugin = dest + '/' + file[:-3]
+                    plugin_object = self.importer.import_plugin(plugin)
+
+                    database.update({
+                        plugin.strip(plugins_path + '/'): {
+                            "Path": plugin,
+                            "Name": plugin_object.details['Name'],
+                            "Authors": plugin_object.details['Authors'],
+                            "Description": plugin_object.details['Description'],
+                            "Dependencies": plugin_object.details['Dependencies'],
+                            "Comments": plugin_object.details['Comments']
+                        }
+                    })
+
+        with open('database_path', 'w') as f:
+            json.dump(database, f)
