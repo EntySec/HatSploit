@@ -1,2 +1,4 @@
+setuptools
+setuptools-rust
 pyyaml
 requests
