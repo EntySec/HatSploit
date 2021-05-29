@@ -44,6 +44,16 @@ class Builder:
         self.importer = Importer()
         self.local_storage = LocalStorage()
 
+    def check_built(self):
+        if os.path.exists(self.config.path_config['base_paths']['db_path'] +
+                        self.config.db_config['base_dbs']['modules_database']) and
+        os.path.exists(self.config.path_config['base_paths']['db_path'] +
+                        self.config.db_config['base_dbs']['payloads_database']) and
+        os.path.exists(self.config.path_config['base_paths']['db_path'] +
+                        self.config.db_config['base_dbs']['plugins_database']):
+            return True
+        return False
+
     def build_payloads_database(self):
         self.badges.output_process("Building stdalone payloads database...")
         database_path = self.config.path_config['base_paths']['db_path'] +
