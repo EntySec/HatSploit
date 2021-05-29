@@ -175,21 +175,11 @@ class Payloads:
     def add_payload(self, module_name, platform, architecture, name):
         payloads = self.get_payload_object(platform, architecture, name)
 
-        not_installed = list()
-        for dependence in payloads['Dependencies']:
-            if not self.importer.import_check(dependence):
-                not_installed.append(dependence)
-        if not not_installed:
-            full_name = self.get_full_name(platform, architecture, name)
+        full_name = self.get_full_name(platform, architecture, name)
 
-            if not self.check_imported(module_name, full_name):
-                payload_object = self.import_payload(module_name, platform, architecture, name)
-                if not payload_object:
-                    self.badges.output_error("Failed to select payload from database!")
-                    return False
-        else:
-            self.badges.output_error("Payload depends this dependencies which is not installed:")
-            for dependence in not_installed:
-                self.badges.output_empty("    * " + dependence)
-            return False
+        if not self.check_imported(module_name, full_name):
+            payload_object = self.import_payload(module_name, platform, architecture, name)
+            if not payload_object:
+                self.badges.output_error("Failed to select payload from database!")
+                return False
         return True
