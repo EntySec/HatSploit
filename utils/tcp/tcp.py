@@ -71,7 +71,7 @@ class TCPClient:
             sock = sock.connect((host, int(port)))
             sock.close()
             return True
-        except:
+        except Exception:
             return False
     
     def open(self, host, port, timeout=10):
