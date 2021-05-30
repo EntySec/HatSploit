@@ -57,27 +57,21 @@ class HatSploitModule(Module, TCPClient):
             'Value': "0-65535",
             'Type': "port_range",
             'Required': True
-        },
-        'TIMEOUT': {
-            'Description': "Timeout for scan.",
-            'Value': 0.5,
-            'Type': "number",
-            'Required': True
         }
     }
 
-    def check_port(self, remote_host, port, timeout):
+    def check_port(self, remote_host, port):
         target = remote_host + '/' + str(port)
-        if self.check_tcp_port(remote_host, port, float(timeout)):
+        if self.check_tcp_port(remote_host, port):
             self.output_success(f"{target} - opened")
 
     def run(self):
-        remote_host, ports_range, timeout = self.parse_options(self.options)
+        remote_host, ports_range = self.parse_options(self.options)
 
         start = int(ports_range.split('-')[0].strip())
         end = int(ports_range.split('-')[1].strip())
 
         self.output_process(f"Scanning {remote_host}...")
         for port in range(start, end):
-            thread = threading.Thread(target=self.check_port, args=[remote_host, port, timeout])
+            thread = threading.Thread(target=self.check_port, args=[remote_host, port,])
             thread.start()
