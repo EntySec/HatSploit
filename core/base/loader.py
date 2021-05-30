@@ -67,7 +67,7 @@ class Loader:
     def load_all(self):
         self.load_update_process()
         if not self.builder.check_built():
-            build = self.badges.input_question("Do you want to build stdalone databases? (recommended) [y/n] ")
+            build = self.badges.input_question("Do you want to build and connect stdalone databases? [y/n] ")
             if build.lower() in ['y', 'yes']:
                 self.build = True
 
