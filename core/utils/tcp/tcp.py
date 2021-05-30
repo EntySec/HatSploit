@@ -85,7 +85,7 @@ class TCP:
             raise self.exceptions.GlobalException
         return server
 
-    def listen(self, local_host, local_port, timeout=None):
+    def listen_port(self, local_host, local_port, timeout=None):
         try:
             server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
