@@ -60,14 +60,11 @@ class Builder:
             os.mkdir(self.config.path_config['base_paths']['db_path'])
 
     def build_all(self):
-        self.badges.output_process("Building stdalone databases...")
         self.build_directory()
 
         self.build_modules_database()
         self.build_payloads_database()
         self.build_plugins_database()
-
-        self.badges.output_success("Done building stdalone databases!")
 
     def recursive_update(self, d, u):
         for k, v in u.items():
@@ -82,8 +79,6 @@ class Builder:
         return d
 
     def build_payloads_database(self):
-        self.badges.output_process("Building stdalone payloads database...")
-
         database_path = (self.config.path_config['base_paths']['db_path'] +
                         self.config.db_config['base_dbs']['payloads_database'])
         database = {
@@ -127,8 +122,6 @@ class Builder:
             json.dump(database, f)
 
     def build_modules_database(self):
-        self.badges.output_process("Building stdalone modules database...")
-
         database_path = (self.config.path_config['base_paths']['db_path'] +
                         self.config.db_config['base_dbs']['modules_database'])
         database = {
@@ -169,8 +162,6 @@ class Builder:
             json.dump(database, f)
 
     def build_plugins_database(self):
-        self.badges.output_process("Building stdalone plugins database...")
-
         database_path = (self.config.path_config['base_paths']['db_path'] +
                         self.config.db_config['base_dbs']['plugins_database'])
         database = {
