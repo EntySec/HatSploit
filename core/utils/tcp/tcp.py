@@ -35,6 +35,17 @@ class TCP:
         self.badges = Badges()
         self.exceptions = Exceptions()
 
+    @staticmethod
+    def check_tcp_port(host, port, timeout=10):
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        sock.settimeout(timeout)
+        try:
+            sock = sock.connect((host, int(port)))
+            sock.close()
+            return True
+        except Exception:
+            return False
+
     def connect(self, remote_host, remote_port, timeout=None):
         address = remote_host + ':' + str(remote_port)
         self.badges.output_process("Connecting to " + address + "...")
