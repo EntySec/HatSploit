@@ -74,9 +74,7 @@ class HatSploitModule(Module):
                 headers = ("Host", "MAC")
                 for _, received in result:
                     net_data.append((received.psrc, received.hwsrc))
-                self.output_empty("")
                 self.print_table("Network Devices", headers, *net_data)
-                self.output_empty("")
             else:
                 self.output_warning("No hosts detected in local network.")
         except Exception:
