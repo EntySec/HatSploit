@@ -68,7 +68,7 @@ class TCP:
         except:
             return False
 
-    def connect_host(self, remote_host, remote_port, timeout=None):
+    def connect(self, remote_host, remote_port, timeout=None):
         address = remote_host + ':' + str(remote_port)
         self.badges.output_process("Connecting to " + address + "...")
         try:
@@ -85,7 +85,7 @@ class TCP:
             raise self.exceptions.GlobalException
         return server
 
-    def listen_port(self, local_host, local_port, timeout=None):
+    def listen(self, local_host, local_port, timeout=None):
         try:
             server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
