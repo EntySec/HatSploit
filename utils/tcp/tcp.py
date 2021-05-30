@@ -68,11 +68,13 @@ class TCPClient:
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         sock.settimeout(timeout)
         try:
-            sock = sock.connect((host, int(port)))
-            sock.close()
-            return True
+            conn = sock.connect((host, int(port)))
+            conn.close()
         except Exception:
+            sock.close()
             return False
+        sock.close()
+        return True
     
     def open(self, host, port, timeout=10):
         sock = socket.socket()
