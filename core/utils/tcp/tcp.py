@@ -41,7 +41,7 @@ class TCP:
         sock.settimeout(timeout)
 
         sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        connected = sock.connect_ex((host, int(port))) is 0
+        connected = sock.connect_ex((host, int(port))) == 0
 
         sock.close()
         return connected
