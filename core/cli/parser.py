@@ -36,3 +36,10 @@ class Parser:
                 return values[0]
             return values
         return str(options[option]['Value'])
+
+    @staticmethod
+    def parse_ports_range(ports_range):
+        start = int(ports_range.split('-')[0].strip())
+        end = int(ports_range.split('-')[1].strip())
+
+        return start, end
