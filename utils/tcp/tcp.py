@@ -64,17 +64,15 @@ class TCPClient:
         return output.decode().strip()
 
     @staticmethod
-    def check_tcp_port(host, port, timeout=10):
-        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    def check_tcp_port(host, port, timeout=0.5):
+        sock = socket.socket()
         sock.settimeout(timeout)
-        try:
-            conn = sock.connect((host, int(port)))
-            conn.close()
-        except Exception:
-            sock.close()
-            return False
+
+        sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        connected = sock.connect_ex((host, int(port))) is 0
+
         sock.close()
-        return True
+        return connected
     
     def open(self, host, port, timeout=10):
         sock = socket.socket()
