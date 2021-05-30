@@ -35,39 +35,6 @@ class TCP:
         self.badges = Badges()
         self.exceptions = Exceptions()
 
-    @staticmethod
-    def get_local_host():
-        try:
-            server = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-            server.connect(("192.168.1.1", 80))
-            local_host = server.getsockname()[0]
-            server.close()
-            local_host = local_host
-        except Exception:
-            local_host = "127.0.0.1"
-        return local_host
-
-    @staticmethod
-    def tcp_request(host, port, data, buffer_size=1024, timeout=10):
-        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        sock.settimeout(timeout)
-        sock.connect((host, int(port)))
-        sock.send(data.encode())
-        output = sock.recv(buffer_size)
-        sock.close()
-        return output.decode().strip()
-
-    @staticmethod
-    def check_tcp_port(host, port, timeout=10):
-        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        sock.settimeout(timeout)
-        try:
-            sock = sock.connect((host, int(port)))
-            sock.close()
-            return True
-        except:
-            return False
-
     def connect(self, remote_host, remote_port, timeout=None):
         address = remote_host + ':' + str(remote_port)
         self.badges.output_process("Connecting to " + address + "...")
