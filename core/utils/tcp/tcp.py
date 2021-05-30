@@ -37,14 +37,11 @@ class TCP:
 
     @staticmethod
     def check_tcp_port(host, port, timeout=0.5):
-        sock = socket.socket()
-        sock.settimeout(timeout)
-
-        sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        connected = sock.connect_ex((host, int(port))) == 0
-
-        sock.close()
-        return connected
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
+            sock.settimeout(1)
+            if sock.connect_ex((host, int(port))) == 0:
+                return True
+        return False
 
     def connect(self, remote_host, remote_port, timeout=None):
         address = remote_host + ':' + str(remote_port)
