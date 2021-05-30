@@ -24,6 +24,8 @@
 # SOFTWARE.
 #
 
+import threading
+
 from core.lib.module import Module
 from utils.tcp.tcp import TCPClient
 
@@ -64,6 +66,11 @@ class HatSploitModule(Module, TCPClient):
         }
     }
 
+    def check_port(self, remote_host, port, timeout):
+        target = remote_host + '/' + str(port)
+        if self.check_tcp_port(remote_host, port, float(timeout)):
+            self.output_success(f"{target} - opened")
+
     def run(self):
         remote_host, ports_range, timeout = self.parse_options(self.options)
 
@@ -72,7 +79,5 @@ class HatSploitModule(Module, TCPClient):
 
         self.output_process(f"Scanning {remote_host}...")
         for port in range(start, end):
-            target = remote_host + '/' + str(port)
-
-            if self.check_tcp_port(remote_host, port, float(timeout)):
-                self.output_success(f"{target} - opened")
+            thread = threading.Thread(target=self.check_port, args=[remote_host, port, timeout])
+            thread.start()
