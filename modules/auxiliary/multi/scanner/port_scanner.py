@@ -73,5 +73,5 @@ class HatSploitModule(Module, TCPClient):
 
         self.output_process(f"Scanning {remote_host}...")
         for port in range(start, end):
-            thread = threading.Thread(target=self.check_port, args=[remote_host, port,])
+            thread = threading.Thread(target=self.check_port, args=[remote_host, port])
             thread.start()
