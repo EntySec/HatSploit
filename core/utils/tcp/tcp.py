@@ -68,7 +68,7 @@ class TCP:
         except:
             return False
 
-    def connect(self, remote_host, remote_port, timeout=None):
+    def connect_host(self, remote_host, remote_port, timeout=None):
         address = remote_host + ':' + str(remote_port)
         self.badges.output_process("Connecting to " + address + "...")
         try:
