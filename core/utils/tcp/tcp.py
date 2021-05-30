@@ -61,11 +61,12 @@ class TCP:
     def check_tcp_port(host, port, timeout=10):
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         sock.settimeout(timeout)
-        if sock.connect_ex((host, int(port))) == 0:
+        try:
+            sock = sock.connect((host, int(port)))
             sock.close()
             return True
-        sock.close()
-        return False
+        except:
+            return False
 
     def connect(self, remote_host, remote_port, timeout=None):
         address = remote_host + ':' + str(remote_port)
