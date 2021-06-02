@@ -25,7 +25,6 @@
 #
 
 import time
-import threading
 
 from core.lib.module import Module
 from utils.tcp.tcp import TCPClient
@@ -72,7 +71,4 @@ class HatSploitModule(Module, TCPClient):
 
         self.output_process(f"Scanning {remote_host}...")
         for port in range(start, end):
-            time.sleep(0.01) # cool down
-
-            thread = threading.Thread(target=self.check_port, args=[remote_host, port])
-            thread.start()
+            self.check_port(remote_host, port)
