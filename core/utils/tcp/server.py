@@ -30,18 +30,10 @@ from core.cli.badges import Badges
 from core.base.exceptions import Exceptions
 
 
-class TCP:
+class Server:
     def __init__(self):
         self.badges = Badges()
         self.exceptions = Exceptions()
-
-    @staticmethod
-    def check_tcp_port(host, port, timeout=0.5):
-        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
-            sock.settimeout(1)
-            if sock.connect_ex((host, int(port))) == 0:
-                return True
-        return False
 
     def connect(self, remote_host, remote_port, timeout=None):
         address = remote_host + ':' + str(remote_port)
