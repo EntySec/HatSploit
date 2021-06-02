@@ -24,17 +24,25 @@
 # SOFTWARE.
 #
 
+import socket
 import shutil
 import subprocess
 
-from core.utils.tcp.tcp import TCP
 from core.cli.badges import Badges
 
 
-class ADBClient(TCP):
+class ADBClient:
     badges = Badges()
 
     adb = "adb"
+    port = 5555
+
+    def check_adb_port(self, host, timeout=0.5):
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
+            sock.settimeout(timeout)
+            if sock.connect_ex((host, self.port)) == 0:
+                return True
+        return False
 
     def check_adb_installation(self):
         if shutil.which(self.adb):
@@ -58,7 +66,7 @@ class ADBClient(TCP):
         return True
 
     def connect_adb_client(self, target_addr):
-        if self.check_tcp_port(target_addr, 5555):
+        if self.check_adb_port(target_addr):
             server_log = self.execute_adb_command("connect", target_addr)
 
             if not server_log or "failed" in server_log:
