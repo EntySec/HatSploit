@@ -26,7 +26,6 @@
 
 import re
 import selectors
-import socket
 import sys
 import telnetlib
 import time
@@ -35,22 +34,14 @@ from core.cli.badges import Badges
 
 
 class TelnetSocket:
-    def __init__(self, host, port, timeout=10):
+    def __init__(self, client):
         self.host = host
         self.port = int(port)
 
         self.sock = telnetlib.Telnet()
-        self.timeout = timeout
+        self.sock.sock = client
 
         self.badges = Badges()
-    
-    def connect(self):
-        try:
-            sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            sock.settimeout(self.timeout)
-            self.sock.sock = sock.connect((self.host, self.port))
-        except Exception:
-            self.badges.output_error("Failed to connect!")
             
     def disconnect(self):
         if self.sock.sock:
@@ -133,5 +124,5 @@ class TelnetSocket:
       
 def TelnetClient:
     @staticmethod
-    def open_telnet(host, port, timeout=10):
-        return TelnetSocket(host, port, timeout)
+    def open_telnet(client):
+        return TelnetSocket(client)
