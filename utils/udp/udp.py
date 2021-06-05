@@ -56,5 +56,5 @@ class UDPSocket:
 
 class UDPClient:
     @staticmethod
-    def open(host, port, timeout=10):
+    def open_udp(host, port, timeout=10):
         return UDPSocket(host, port, timeout)
