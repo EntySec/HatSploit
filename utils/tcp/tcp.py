@@ -39,7 +39,7 @@ class TCPSocket:
 
         self.badges = Badges()
 
-    def connect(self, timeout=10):
+    def connect(self):
         try:
             self.sock.connect((self.host, self.port))
         except Exception:
