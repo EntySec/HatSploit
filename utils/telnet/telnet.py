@@ -55,7 +55,7 @@ class TelnetSocket:
         else:
             self.badges.output_error("Socket is not connected!")
 
-    def interactive(self, terminator='\n'):
+    def interact(self, terminator='\n'):
         if self.sock.sock:
             selector = selectors.SelectSelector()
 
