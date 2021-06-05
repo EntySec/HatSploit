@@ -46,14 +46,16 @@ class TelnetSocket:
     def disconnect(self):
         if self.sock.sock:
             self.sock.close()
-        else:
-            self.badges.output_error("Socket is not connected!")
+            return True
+        self.badges.output_error("Socket is not connected!")
+        return False
 
     def send(self, data):
         if self.sock.sock:
             self.sock.write(data)
-        else:
-            self.badges.output_error("Socket is not connected!")
+            return True
+        self.badges.output_error("Socket is not connected!")
+        return False
 
     def interact(self, terminator='\n'):
         if self.sock.sock:
