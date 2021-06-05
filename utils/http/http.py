@@ -24,10 +24,6 @@
 # SOFTWARE.
 #
 
-#
-# Based on threat6/routersploit http module
-#
-
 import http.server
 import socketserver
 
@@ -37,7 +33,6 @@ import urllib3
 
 from core.cli.badges import Badges
 
-HTTP_TIMEOUT = 30.0
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 
@@ -62,12 +57,11 @@ class Handler(http.server.SimpleHTTPRequestHandler):
 class HTTPClient:
     def __init__(self):
         self.badges = Badges()
-        self.handler = Handler
 
     def start_server(self, host, port, payload, forever=True):
         try:
             self.badges.output_process(f"Starting http server on port {str(port)}...")
-            httpd = socketserver.TCPServer((host, int(port)), self.handler)
+            httpd = socketserver.TCPServer((host, int(port)), Handler)
 
             self.badges.output_process("Serving payload on http server...")
             httpd.RequestHandlerClass.payload = payload
@@ -82,8 +76,8 @@ class HTTPClient:
         except Exception:
             self.badges.output_error(f"Failed to start http server on port {str(port)}!")
 
-    def http_request(self, method, host, port, path, ssl=False, session=requests, **kwargs):
-        kwargs.setdefault("timeout", HTTP_TIMEOUT)
+    def http_request(self, method, host, port, path, ssl=False, timeout=10, session=requests, **kwargs):
+        kwargs.setdefault("timeout", timeout)
         kwargs.setdefault("verify", False)
         kwargs.setdefault("allow_redirects", True)
 
