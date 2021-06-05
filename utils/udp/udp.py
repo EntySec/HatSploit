@@ -24,3 +24,37 @@
 # SOFTWARE.
 #
 
+import socket
+
+from core.cli.badges import Badges
+
+
+class UDPSocket:
+    def __init__(self, host, port, timeout=10):
+        self.host = host
+        self.port = int(port)
+        
+        self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        self.sock.settimeout(timeout)
+        
+        self.badges = Badges()
+
+    def send(self, data):
+        try:
+            self.sock.sendto(data, (self.host, self.port))
+        except Exception:
+            self.badges.output_error("Failed to send data!")
+
+    def recv(self, size):
+        response = b""
+        try:
+            response = self.sock.recv(size)
+        except Exception:
+            self.badges.output_error("Failed to read data!")
+        return response
+
+
+class UDPClient:
+    @staticmethod
+    def open(host, port, timeout=10):
+        return UDPSocket(host, port, timeout)
