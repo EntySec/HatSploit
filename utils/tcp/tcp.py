@@ -81,5 +81,6 @@ class TCPClient:
                 return True
         return False
 
-    def open(self, host, port, timeout=10):
+    @staticmethod
+    def open(host, port, timeout=10):
         return TCPSocket(host, port, timeout)
