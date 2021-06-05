@@ -133,5 +133,5 @@ class TelnetSocket:
       
 def TelnetClient:
     @staticmethod
-    def open(host, port, timeout=10):
+    def open_telnet(host, port, timeout=10):
         return TelnetSocket(host, port, timeout)
