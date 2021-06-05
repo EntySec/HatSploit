@@ -45,6 +45,12 @@ class TCPSocket:
         except Exception:
             self.badges.output_error("Failed to connect!")
 
+    def disconnect(self):
+        try:
+            self.sock.close()
+        except Exception:
+            self.badges.output_error("Failed to disconnect!")
+
     def send(self, data):
         try:
             self.sock.send(data)
