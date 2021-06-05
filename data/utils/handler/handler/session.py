@@ -25,27 +25,29 @@
 #
 
 from core.lib.session import Session
-from utils.tcp.tcp import TCPClient
+from utils.tcp.tcp import TelnetClient
 
 
-class HatSploitSession(Session, TCPClient):
+class HatSploitSession(Session, TelnetClient):
+    self.client = None
+
     details = {
         'Platform': "",
         'Type': "shell"
     }
 
     def open(self, client):
-        self.connect(client)
+        self.client = self.open_telnet(client)
 
     def close(self):
-        self.disconnect()
+        self.client.disconnect()
 
     def send_command(self, command, arguments=None, output=True, timeout=10):
         if arguments:
             command += " " + arguments
 
-        output = self.send_cmd(command + '\n', output, timeout)
+        output = self.client.send_cmd(command + '\n', output, timeout)
         return True, output
 
     def interact(self):
-        self.interactive()
+        self.client.interact()
