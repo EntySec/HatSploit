@@ -47,14 +47,14 @@ class TCPSocket:
 
     def send(self, data):
         try:
-            self.pipe.send(data)
+            self.sock.send(data)
         except Exception:
             self.badges.output_error("Failed to send data!")
 
     def recv(self, size):
         response = b""
         try:
-            response = self.pipe.recv(size)
+            response = self.sock.recv(size)
         except Exception:
             self.badges.output_error("Failed to send data!")
         return response
