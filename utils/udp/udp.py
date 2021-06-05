@@ -42,16 +42,17 @@ class UDPSocket:
     def send(self, data):
         try:
             self.sock.sendto(data, (self.host, self.port))
+            return True
         except Exception:
             self.badges.output_error("Failed to send data!")
+        return False
 
     def recv(self, size):
-        response = b""
         try:
-            response = self.sock.recv(size)
+            return self.sock.recv(size)
         except Exception:
             self.badges.output_error("Failed to read data!")
-        return response
+        return b""
 
 
 class UDPClient:
