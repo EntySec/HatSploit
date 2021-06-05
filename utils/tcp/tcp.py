@@ -90,5 +90,5 @@ class TCPClient:
         return False
 
     @staticmethod
-    def open(host, port, timeout=10):
+    def open_tcp(host, port, timeout=10):
         return TCPSocket(host, port, timeout)
