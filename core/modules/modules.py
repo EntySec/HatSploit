@@ -280,6 +280,8 @@ class Modules:
                         self.badges.output_error("Unrecognized option!")
                 else:
                     self.badges.output_error("Unrecognized option!")
+            else:
+                self.badges.output_error("Unrecognized option!")
         else:
             self.badges.output_warning("No module selected.")
 
