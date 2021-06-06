@@ -47,11 +47,4 @@ class HatSploitCommand(Command):
         option = argv[0].upper()
         value = argv[1]
 
-        module = self.modules.get_current_module_object()
-        if hasattr(module, "options"):
-            if option in module.options.keys():
-                self.modules.set_current_module_option(option, value)
-            else:
-                self.output_error("No such module option!")
-        else:
-            self.output_warning("Module does not have options.")
+        self.modules.set_current_module_option(option, value)
