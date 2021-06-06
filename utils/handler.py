@@ -221,11 +221,12 @@ class Handler(Server):
                 self.badges.output_error("Failed to execute payload stage!")
                 return False
 
-        if payload['Type'].lower() == 'one_side':
-            self.badges.output_warning("Payload completed but no session was created.")
-            return True
-
         session = payload['Session'] if payload['Session'] is not None else HatSploitSession
+
+        if payload['Type'].lower() == 'reverse_tcp':
+            new_session, remote_host = self.listen_session(host, port, timeout, session)
+            if not new_session and not remote_host:
+                return False
 
         if payload['Type'].lower() == 'bind_tcp':
             new_session = self.connect_session(host, port, timeout, session)
@@ -233,10 +234,9 @@ class Handler(Server):
             if not new_session:
                 return False
 
-        if payload['Type'].lower() == 'reverse_tcp':
-            new_session, remote_host = self.listen_session(host, port, timeout, session)
-            if not new_session and not remote_host:
-                return False
+        if payload['Type'].lower() == 'one_side':
+            self.badges.output_warning("Payload completed but no session was created.")
+            return True
 
         new_session = self.set_session_details(payload, new_session)
         session_platform = new_session.details['Platform']
