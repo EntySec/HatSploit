@@ -29,7 +29,7 @@ from utils.telnet.telnet import TelnetClient
 
 
 class HatSploitSession(Session, TelnetClient):
-    self.client = None
+    client = None
 
     details = {
         'Platform': "",
