@@ -35,9 +35,6 @@ from core.cli.badges import Badges
 
 class TelnetSocket:
     def __init__(self, client):
-        self.host = host
-        self.port = int(port)
-
         self.sock = telnetlib.Telnet()
         self.sock.sock = client
 
