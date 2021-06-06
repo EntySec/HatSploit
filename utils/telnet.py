@@ -104,7 +104,7 @@ class TelnetSocket:
         self.badges.output_error("Socket is not connected!")
         return None
 
-    def send_cmd(self, command, output=True, timeout=10):
+    def send_command(self, command, output=True, timeout=10):
         if self.sock.sock:
             buffer = command.encode()
             self.send(buffer)
@@ -117,7 +117,7 @@ class TelnetSocket:
                     return output
                 except socket.timeout:
                     self.badges.output_warning("Timeout waiting for response.")
-                    return None
+            return None
         self.badges.output_error("Socket is not connected!")
         return None
       
