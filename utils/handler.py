@@ -42,6 +42,22 @@ class Handler(Server):
     modules = Modules()
     badges = Badges()
 
+    def blinder(self, sender, args=[]):
+        self.output_information("Welcome to Blinder, blind command injection handler.")
+        self.output_information("Blinder is not a reverse shell, just a blind command injection.\n")
+
+        while True:
+            command = self.input_empty("blinder > ")
+            if command:
+                if command == 'exit' or command.isspace():
+                    return
+
+                self.output_process("Sending command to target...")
+                output = sender(*args, command)
+                if output:
+                    self.output_empty(output)
+                    continue
+                self.output_warning("No output returned.")
     def listen_session(self, local_host, local_port, timeout=None, session=HatSploitSession):
         try:
             client, address = self.listen(local_host, local_port, timeout)
