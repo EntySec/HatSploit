@@ -25,7 +25,7 @@
 #
 
 from core.lib.session import Session
-from utils.tcp.tcp import TelnetClient
+from utils.telnet.telnet import TelnetClient
 
 
 class HatSploitSession(Session, TelnetClient):
