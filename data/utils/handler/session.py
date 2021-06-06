@@ -24,3 +24,27 @@
 # SOFTWARE.
 #
 
+from core.lib.session import Session
+from utils.telnet import TelnetClient
+
+
+class HatSploitSession(Session, TelnetClient):
+    client = None
+
+    details = {
+        'Platform': "",
+        'Type': "shell"
+    }
+
+    def open(self, client):
+        self.client = self.open_telnet(client)
+
+    def close(self):
+        self.client.disconnect()
+
+    def send_command(self, command, output=False, timeout=10):
+        output = self.client.send_command(command + '\n', output, timeout)
+        return output
+
+    def interact(self):
+        self.client.interact()

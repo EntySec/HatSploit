@@ -26,7 +26,7 @@
 
 from core.base.config import Config
 from core.lib.module import Module
-from utils.http.http import HTTPClient
+from utils.http import HTTPClient
 
 
 class HatSploitModule(Module, HTTPClient):

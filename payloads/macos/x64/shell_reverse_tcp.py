@@ -26,7 +26,7 @@
 
 from hatvenom import HatVenom
 from core.lib.payload import Payload
-from utils.tcp.tcp import TCPClient
+from utils.tcp import TCPClient
 
 
 class HatSploitPayload(Payload, HatVenom, TCPClient):

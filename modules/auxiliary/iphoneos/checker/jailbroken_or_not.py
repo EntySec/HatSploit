@@ -25,7 +25,7 @@
 #
 
 from core.lib.module import Module
-from utils.tcp.tcp import TCPClient
+from utils.tcp import TCPClient
 
 
 class HatSploitModule(Module, TCPClient):

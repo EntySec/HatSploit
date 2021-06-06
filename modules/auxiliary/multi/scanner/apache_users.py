@@ -25,7 +25,7 @@
 #
 
 from core.lib.module import Module
-from utils.http.http import HTTPClient
+from utils.http import HTTPClient
 
 from data.wordlists.apache_users_dictionary import Dictionary
 

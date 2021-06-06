@@ -26,80 +26,46 @@
 
 import re
 import selectors
-import socket
 import sys
 import telnetlib
 import time
 
-from core.base.exceptions import Exceptions
 from core.cli.badges import Badges
 
 
-class TCPClient:
-    badges = Badges()
-    exceptions = Exceptions()
+class TelnetSocket:
+    def __init__(self, client):
+        self.sock = telnetlib.Telnet()
+        self.sock.sock = client
 
-    client = None
-
-    @staticmethod
-    def get_local_host():
-        try:
-            server = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-            server.connect(("192.168.1.1", 80))
-            local_host = server.getsockname()[0]
-            server.close()
-            local_host = local_host
-        except Exception:
-            local_host = "127.0.0.1"
-        return local_host
-
-    @staticmethod
-    def tcp_request(host, port, data, buffer_size=1024, timeout=10):
-        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        sock.settimeout(timeout)
-        sock.connect((host, int(port)))
-        sock.send(data.encode())
-        output = sock.recv(buffer_size)
-        sock.close()
-        return output.decode().strip()
-
-    @staticmethod
-    def check_tcp_port(host, port, timeout=0.5):
-        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
-            sock.settimeout(timeout)
-            if sock.connect_ex((host, int(port))) == 0:
-                return True
-        return False
-    
-    def open(self, host, port, timeout=10):
-        sock = socket.socket()
-        sock.settimeout(timeout)
-        sock.connect((host, int(port)))
-        return sock
-
-    def connect(self, client):
-        self.client = telnetlib.Telnet()
-        self.client.sock = client
-
+        self.badges = Badges()
+            
     def disconnect(self):
-        self.client.close()
+        if self.sock.sock:
+            self.sock.close()
+            return True
+        self.badges.output_error("Socket is not connected!")
+        return False
 
-    def send(self, buffer):
-        if self.client:
-            self.client.write(buffer)
+    def send(self, data):
+        if self.sock.sock:
+            self.sock.write(data)
+            return True
+        self.badges.output_error("Socket is not connected!")
+        return False
 
-    def interactive(self, terminator='\n'):
-        if self.client:
+    def interact(self, terminator='\n'):
+        if self.sock.sock:
             selector = selectors.SelectSelector()
 
-            selector.register(self.client, selectors.EVENT_READ)
+            selector.register(self.sock, selectors.EVENT_READ)
             selector.register(sys.stdin, selectors.EVENT_READ)
 
             while True:
                 for key, events in selector.select():
-                    if key.fileobj is self.client:
+                    if key.fileobj is self.sock:
                         try:
-                            response = self.client.read_eager()
+                            response = self.sock.read_eager()
                         except Exception:
                             self.badges.output_warning("Connection terminated.")
                             return
@@ -111,31 +77,35 @@ class TCPClient:
                             pass
                         if line == "exit":
                             return
-                        self.client.write((line + terminator).encode())
+                        self.sock.write((line + terminator).encode())
+        else:
+            self.badges.output_error("Socket is not connected!")
 
     def recv(self, timeout=10):
-        if self.client:
+        if self.sock.sock:
             result = b""
             if timeout is not None:
                 timeout = time.time() + timeout
                 while True:
-                    data = self.client.read_very_eager()
+                    data = self.sock.read_very_eager()
                     result += data
                     if data:
                         break
                     if time.time() > timeout:
-                        raise socket.timeout
+                        self.badges.output_warning("Timeout waiting for response.")
+                        return None
             else:
                 while True:
-                    data = self.client.read_very_eager()
+                    data = self.sock.read_very_eager()
                     result += data
                     if data:
                         break
             return result
+        self.badges.output_error("Socket is not connected!")
         return None
 
-    def send_cmd(self, command, output=True, timeout=10):
-        if self.client:
+    def send_command(self, command, output=True, timeout=10):
+        if self.sock.sock:
             buffer = command.encode()
             self.send(buffer)
 
@@ -147,4 +117,11 @@ class TCPClient:
                     return output
                 except socket.timeout:
                     self.badges.output_warning("Timeout waiting for response.")
+            return None
+        self.badges.output_error("Socket is not connected!")
         return None
+      
+class TelnetClient:
+    @staticmethod
+    def open_telnet(client):
+        return TelnetSocket(client)

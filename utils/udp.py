@@ -24,28 +24,38 @@
 # SOFTWARE.
 #
 
-from core.lib.session import Session
-from utils.tcp.tcp import TCPClient
+import socket
+
+from core.cli.badges import Badges
 
 
-class HatSploitSession(Session, TCPClient):
-    details = {
-        'Platform': "",
-        'Type': "shell"
-    }
+class UDPSocket:
+    def __init__(self, host, port, timeout=10):
+        self.host = host
+        self.port = int(port)
+        
+        self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        self.sock.settimeout(timeout)
+        
+        self.badges = Badges()
 
-    def open(self, client):
-        self.connect(client)
+    def send(self, data):
+        try:
+            self.sock.sendto(data, (self.host, self.port))
+            return True
+        except Exception:
+            self.badges.output_error("Failed to send data!")
+        return False
 
-    def close(self):
-        self.disconnect()
+    def recv(self, size):
+        try:
+            return self.sock.recv(size)
+        except Exception:
+            self.badges.output_error("Failed to read data!")
+        return b""
 
-    def send_command(self, command, arguments=None, output=True, timeout=10):
-        if arguments:
-            command += " " + arguments
 
-        output = self.send_cmd(command + '\n', output, timeout)
-        return True, output
-
-    def interact(self):
-        self.interactive()
+class UDPClient:
+    @staticmethod
+    def open_udp(host, port, timeout=10):
+        return UDPSocket(host, port, timeout)
