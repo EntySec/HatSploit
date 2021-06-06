@@ -213,7 +213,7 @@ class Handler(Server):
                         self.output_warning("Invalid post method, using printf by default.")
                         self.printf_stage(payload['Payload'], new_session.send, args, payload['Args'], delim, location, encode)
                 elif payload['Category'].lower() == 'single':
-                    new_session.send_command(payload['Payload'])
+                    new_session.send(payload['Payload'] + '\n')
                 else:
                     self.badges.output_error("Invalid payload category!")
                     return False
