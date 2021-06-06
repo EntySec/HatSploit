@@ -124,7 +124,7 @@ class TelnetSocket:
         self.badges.output_error("Socket is not connected!")
         return None
       
-def TelnetClient:
+class TelnetClient:
     @staticmethod
     def open_telnet(client):
         return TelnetSocket(client)
