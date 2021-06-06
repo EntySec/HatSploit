@@ -42,7 +42,7 @@ class HatSploitSession(Session, TelnetClient):
     def close(self):
         self.client.disconnect()
 
-    def send_command(self, command, output=True, timeout=10):
+    def send_command(self, command, output=False, timeout=10):
         output = self.client.send_command(command + '\n', output, timeout)
         if output:
             output = output.replace('membrane% ', '')
