@@ -24,15 +24,14 @@
 # SOFTWARE.
 #
 
-from hatvenom import HatVenom
 from core.lib.payload import Payload
 
 
-class HatSploitPayload(Payload, HatVenom):
+class HatSploitPayload(Payload):
     details = {
         'Category': "single",
-        'Name': "Linux mipsle Reboot",
-        'Payload': "linux/mipsle/reboot",
+        'Name': "Unix Reboot",
+        'Payload': "unix/generic/reboot",
         'Authors': [
             'Ivan Nikolsky (enty8080)'
         ],
@@ -47,4 +46,7 @@ class HatSploitPayload(Payload, HatVenom):
     }
 
     def run(self):
-        
+        self.output_process("Generating payload...")
+        payload = "/sbin/reboot"
+
+        return payload
