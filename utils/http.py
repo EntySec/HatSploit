@@ -91,10 +91,12 @@ class HTTPClient:
             self.badges.output_error("Invalid URL format: {}!".format(url))
         except requests.exceptions.ConnectionError:
             self.badges.output_error("Connection error: {}!".format(url))
+        except requests.exceptions.ReadTimeout:
+            self.badges.output_warning("Timeout waiting for response.")
         except requests.RequestException as e:
-            self.badges.output_error(e)
-        except socket.error as e:
-            self.badges.output_error(e)
+            self.badges.output_error("Request error: {}!".format(str(e)))
+        except socket.error:
+            self.badges.output_error("Socket is not connected!")
 
         return None
 
