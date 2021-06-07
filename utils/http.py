@@ -76,8 +76,8 @@ class HTTPClient:
         except Exception:
             self.badges.output_error(f"Failed to start http server on port {str(port)}!")
 
-    def http_request(self, method, host, port, path, ssl=False, timeout=10, wait=True, session=requests, **kwargs):
-        if not wait:
+    def http_request(self, method, host, port, path, ssl=False, timeout=10, output=True, session=requests, **kwargs):
+        if not output:
             timeout = 0
         kwargs.setdefault("timeout", timeout)
         kwargs.setdefault("verify", False)
@@ -94,7 +94,7 @@ class HTTPClient:
         except requests.exceptions.ConnectionError:
             self.badges.output_error("Connection error: {}!".format(url))
         except requests.exceptions.ReadTimeout:
-            if wait:
+            if not output:
                 self.badges.output_warning("Timeout waiting for response.")
         except requests.RequestException as e:
             self.badges.output_error("Request error: {}!".format(str(e)))
