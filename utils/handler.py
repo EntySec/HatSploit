@@ -27,6 +27,7 @@
 import os
 import requests
 import binascii
+import threading
 
 from core.base.sessions import Sessions
 from core.base.storage import LocalStorage
@@ -172,16 +173,16 @@ class Handler(Server):
             session = payload['Session'] if payload['Session'] is not None else HatSploitSession
             if payload['Category'].lower() == 'stager':
                 if post.lower() == 'printf':
-                    self.printf_stage(payload['Payload'], sender, args, payload['Args'], delim, location)
+                    threading.Thread(target=self.printf_stage, args=[payload['Payload'], sender, args, payload['Args'], delim, location]).start()
                 elif post.lower() == 'echo':
-                    self.echo_stage(payload['Payload'], sender, args, payload['Args'], delim, location)
+                    threading.Thread(target=self.echo_stage, args=[payload['Payload'], sender, args, payload['Args'], delim, location]).start()
                 elif post.lower() == 'wget':
-                    self.wget_stage(payload['Payload'], sender, args, payload['Args'], delim, location)
+                    threading.Thread(target=self.wget_stage, args=[payload['Payload'], sender, args, payload['Args'], delim, location]).start()
                 else:
                     self.output_warning("Invalid post method, using printf by default.")
-                    self.printf_stage(payload['Payload'], sender, args, payload['Args'], delim, location)
+                    threading.Thread(target=self.printf_stage, args=[payload['Payload'], sender, args, payload['Args'], delim, location]).start()
             elif payload['Category'].lower() == 'single':
-                sender(*args, payload['Payload'])
+                threading.Thread(target=sender, args=[*args, payload['Payload']]).start()
             else:
                 self.badges.output_error("Invalid payload category!")
                 return False
@@ -201,16 +202,16 @@ class Handler(Server):
 
                 if payload['Category'].lower() == 'stager':
                     if post.lower() == 'printf':
-                        self.printf_stage(payload['Payload'], new_session.send_command, args, payload['Args'], delim, location)
+                        threading.Thread(target=self.printf_stage, args=[payload['Payload'], new_session.send_command, args, payload['Args'], delim, location]).start()
                     elif post.lower() == 'echo':
-                        self.echo_stage(payload['Payload'], new_session.send_command, args, payload['Args'], delim, location)
+                        threading.Thread(target=self.echo_stage, args=[payload['Payload'], new_session.send_command, args, payload['Args'], delim, location]).start()
                     elif post.lower() == 'wget':
-                        self.wget_stage(payload['Payload'], new_session.send_command, args, payload['Args'], delim, location)
+                        threading.Thread(target=self.wget_stage, args=[payload['Payload'], new_session.send_command, args, payload['Args'], delim, location]).start()
                     else:
                         self.output_warning("Invalid post method, using printf by default.")
-                        self.printf_stage(payload['Payload'], new_session.send_command, args, payload['Args'], delim, location)
+                        threading.Thread(target=self.printf_stage, args=[payload['Payload'], new_session.send_command, args, payload['Args'], delim, location]).start()
                 elif payload['Category'].lower() == 'single':
-                    new_session.send_command(payload['Payload'])
+                    threading.Thread(target=new_session.send_command, args=[payload['Payload']]).start()
                 else:
                     self.badges.output_error("Invalid payload category!")
                     return False
