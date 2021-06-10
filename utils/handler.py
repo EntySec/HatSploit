@@ -44,8 +44,10 @@ class Handler(Server):
     badges = Badges()
 
     def blinder(self, sender, args=[]):
+        self.output_empty("")
         self.output_information("Welcome to Blinder, blind command injection handler.")
-        self.output_information("Blinder is not a reverse shell, just a blind command injection.\n")
+        self.output_information("Blinder is not a reverse shell, just a blind command injection.")
+        self.output_empty("")
 
         while True:
             command = self.input_empty("blinder > ")
