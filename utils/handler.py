@@ -51,16 +51,14 @@ class Handler(Server):
 
         while True:
             command = self.input_empty("blinder > ")
-            if command:
-                if command == 'exit' or command.isspace():
-                    return
+            if not command.strip() or command == 'exit':
+                return
 
-                self.output_process("Sending command to target...")
-                output = sender(*args, command)
-                if output:
-                    self.output_empty(output)
-                    continue
-                self.output_warning("No output returned.")
+            self.output_process("Sending command to target...")
+            output = sender(*args, command)
+            if output:
+                self.output_empty(f'\n{output}')
+            self.output_empty('')
 
     def listen_session(self, local_host, local_port, timeout=None, session=HatSploitSession):
         try:
