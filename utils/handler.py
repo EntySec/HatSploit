@@ -61,6 +61,7 @@ class Handler(Server):
                     self.output_empty(output)
                     continue
                 self.output_warning("No output returned.")
+
     def listen_session(self, local_host, local_port, timeout=None, session=HatSploitSession):
         try:
             client, address = self.listen(local_host, local_port, timeout)
