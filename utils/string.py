@@ -25,6 +25,7 @@
 #
 
 import re
+import base64
 import random
 import string
 
@@ -160,6 +161,11 @@ class StringTools:
         for c in string:
             result += chr(ord(c) ^ len(string))
         return result
+
+    @staticmethod
+    def base64_string(string):
+        base64.b64encode(string.encode())
+        return string.decode()
 
     @staticmethod
     def random_string(length=16, alphabet=string.ascii_letters + string.digits):
