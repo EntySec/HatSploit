@@ -9,10 +9,6 @@
     <br>enables you to write, test, and execute exploit code.
     <br>
     <br>
-    <b>Useful links:</b><br>
-    <p align="center"><a href="https://hatsploit.netlify.app">HatSploit Framework</a></p>
-    <br>
-    <br>
     <b>Other tools</b><br>
     <br>
     <a href="https://github.com/EntySec/HatSploit">
