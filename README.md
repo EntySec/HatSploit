@@ -29,4 +29,10 @@
     <a href="https://github.com/EntySec/CamRaptor">
         <img src="https://img.shields.io/badge/EntySec-%20CamRaptor-blue.svg">
     </a>
+    <a href="https://github.com/EntySec/membrane">
+        <img src="https://img.shields.io/badge/EntySec-%20membrane-pink.svg">
+    </a>
+    <a href="https://github.com/EntySec/pwny">
+        <img src="https://img.shields.io/badge/EntySec-%20pwny-cyan.svg">
+    </a>
 </p>
