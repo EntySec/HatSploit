@@ -33,6 +33,6 @@
         <img src="https://img.shields.io/badge/EntySec-%20membrane-f34c79.svg">
     </a>
     <a href="https://github.com/EntySec/pwny">
-        <img src="https://img.shields.io/badge/EntySec-%20pwny-cyan.svg">
+        <img src="https://img.shields.io/badge/EntySec-%20pwny-448eff.svg">
     </a>
 </p>
