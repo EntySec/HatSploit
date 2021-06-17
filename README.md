@@ -11,4 +11,26 @@
     <br>
     <b>Useful links:</b><br>
     <p align="center"><a href="https://hatsploit.netlify.app">HatSploit Framework</a></p>
+    <br>
+    <br>
+    <b>Other tools</b><br>
+    <br>
+    <a href="https://github.com/EntySec/HatSploit">
+        <img src="https://img.shields.io/badge/EntySec-%20HatSploit-blue.svg">
+    </a>
+    <a href="https://github.com/EntySec/HatVenom">
+        <img src="https://img.shields.io/badge/EntySec-%20HatVenom-blue.svg">
+    </a>
+    <a href="https://github.com/EntySec/Shreder">
+        <img src="https://img.shields.io/badge/EntySec-%20Shreder-blue.svg">
+    </a>
+    <a href="https://github.com/EntySec/RomBuster">
+        <img src="https://img.shields.io/badge/EntySec-%20RomBuster-blue.svg">
+    </a>
+    <a href="https://github.com/EntySec/CamOver">
+        <img src="https://img.shields.io/badge/EntySec-%20CamOver-blue.svg">
+    </a>
+    <a href="https://github.com/EntySec/CamRaptor">
+        <img src="https://img.shields.io/badge/EntySec-%20CamRaptor-blue.svg">
+    </a>
 </p>
