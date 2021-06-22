@@ -60,20 +60,33 @@ setup(name='hatsploit',
 
 home = os.path.expanduser('~') + '/.hsf'
 
-if not os.path.exists(home):
-    with open('config/path_config.yml', 'r') as f:
-        config = f.read().replace('HOME', home)
+print("Checking for old HatSploit")
 
-    with open('config/path_config.yml', 'w') as f:
-        f.write(config)
+if os.path.exists(home):
+    print("Removing old HatSploit")
+    shutil.rmtree(home)
 
-    os.mkdir(home)
-    shutil.copytree('config', f'{home}/config')
+print("Writing config files")
+with open('config/path_config.yml', 'r') as f:
+    config = f.read().replace('HOME', home)
 
-    shutil.copytree('modules', f'{home}/modules')
-    shutil.copytree('commands', f'{home}/commands')
-    shutil.copytree('payloads', f'{home}/payloads')
-    shutil.copytree('plugins', f'{home}/plugins')
+with open('config/path_config.yml', 'w') as f:
+    f.write(config)
 
-    shutil.copytree('data', f'{home}/data')
-    shutil.copy('TERMS_OF_SERVICE.md', f'{home}/TERMS_OF_SERVICE.md')
+print("Creating HatSploit root structure")
+os.mkdir(home)
+
+print("Copying HatSploit config files")
+shutil.copytree('config', f'{home}/config')
+
+print("Copying HatSploit components")
+shutil.copytree('modules', f'{home}/modules')
+shutil.copytree('commands', f'{home}/commands')
+shutil.copytree('payloads', f'{home}/payloads')
+shutil.copytree('plugins', f'{home}/plugins')
+
+print("Copying HatSploit data")
+shutil.copytree('data', f'{home}/data')
+shutil.copy('TERMS_OF_SERVICE.md', f'{home}/TERMS_OF_SERVICE.md')
+
+print("HatSploit installed on your system")
