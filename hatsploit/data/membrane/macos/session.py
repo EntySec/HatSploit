@@ -32,7 +32,7 @@ class HatSploitSession(Session, TelnetClient):
     client = None
 
     details = {
-        'Platform': "linux",
+        'Platform': "macos",
         'Type': "membrane"
     }
 
