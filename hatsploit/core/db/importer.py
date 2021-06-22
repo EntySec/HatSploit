@@ -81,7 +81,7 @@ class Importer:
 
     def import_payload(self, payload_path):
         try:
-            payload_directory = payload_path
+            payload_directory = payload_path.replace('//', '/')
             payload_file = os.path.split(payload_directory)[1]
             payload_directory = payload_directory.replace('/', '.')
             payload_object = __import__(payload_directory)
@@ -94,7 +94,7 @@ class Importer:
 
     def import_module(self, module_path):
         try:
-            module_directory = module_path
+            module_directory = module_path.replace('//', '/')
             module_file = os.path.split(module_directory)[1]
             module_directory = module_directory.replace('/', '.')
             module_object = __import__(module_directory)
@@ -107,7 +107,7 @@ class Importer:
 
     def import_plugin(self, plugin_path):
         try:
-            plugin_directory = plugin_path
+            plugin_directory = plugin_path.replace('//', '/')
             plugin_file = os.path.split(plugin_directory)[1]
             plugin_directory = plugin_directory.replace('/', '.')
             plugin_object = __import__(plugin_directory)
