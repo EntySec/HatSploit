@@ -33,8 +33,32 @@ from hatsploit.core.base.sessions import Sessions
 from hatsploit.core.base.storage import LocalStorage
 from hatsploit.core.cli.badges import Badges
 from hatsploit.core.modules.modules import Modules
-from hatsploit.data.handler.session import HatSploitSession
 from hatsploit.core.utils.server import Server
+
+from hatsploit.session import Session
+from hatsploit.utils.telnet import TelnetClient
+
+
+class HatSploitSession(Session, TelnetClient):
+    client = None
+
+    details = {
+        'Platform': "",
+        'Type': "shell"
+    }
+
+    def open(self, client):
+        self.client = self.open_telnet(client)
+
+    def close(self):
+        self.client.disconnect()
+
+    def send_command(self, command, output=False, timeout=10):
+        output = self.client.send_command(command + '\n', output, timeout)
+        return output
+
+    def interact(self):
+        self.client.interact()
 
 
 class Handler(Server):
