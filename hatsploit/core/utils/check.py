@@ -48,9 +48,7 @@ class Check:
         for dest, _, files in os.walk(modules_path):
             for file in files:
                 if file.endswith('.py') and file != '__init__.py':
-                    module = (dest + '/' + file[:-3]).replace(
-                        self.config.path_config['base_paths']['root_path'], '', 1
-                    )
+                    module = dest + '/' + file[:-3]
                     module_name = module[len(f"modules/"):]
 
                     try:
@@ -73,9 +71,7 @@ class Check:
         for dest, _, files in os.walk(payloads_path):
             for file in files:
                 if file.endswith('.py') and file != '__init__.py':
-                    payload = (dest + '/' + file[:-3]).replace(
-                        self.config.path_config['base_paths']['root_path'], '', 1
-                    )
+                    payload = dest + '/' + file[:-3]
                     payload_name = payload[len(f"payloads/"):]
 
                     try:
@@ -99,9 +95,7 @@ class Check:
         for dest, _, files in os.walk(plugins_path):
             for file in files:
                 if file.endswith('.py') and file != '__init__.py':
-                    plugin = (dest + '/' + file[:-3]).replace(
-                        self.config.path_config['base_paths']['root_path'], '', 1
-                    )
+                    plugin = dest + '/' + file[:-3]
                     plugin_name = plugin[len(f"plugins/"):]
 
                     try:
