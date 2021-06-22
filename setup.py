@@ -54,6 +54,7 @@ setup(name='hatsploit',
           'scapy',
           'paramiko'
       ],
+      dependency_links=['http://github.com/EntySec/HatVenom'],
       zip_safe=False
 )
 
