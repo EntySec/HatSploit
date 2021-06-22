@@ -27,13 +27,13 @@
 import os
 import sys
 
-from core.base.config import Config
+from hatsploit.core.base.config import Config
 
 config = Config()
 config.configure()
 
-from core.db.importer import Importer
-from core.cli.badges import Badges
+from hatsploit.core.db.importer import Importer
+from hatsploit.core.cli.badges import Badges
 
 importer = Importer()
 badges = Badges()
