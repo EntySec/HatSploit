@@ -7,7 +7,6 @@
 
 from hatsploit.payload import Payload
 from hatsploit.utils.string import StringTools
-from hatsploit.utils.tcp import TCPClient
 
 from hatsploit.session import Session
 from hatsploit.utils.telnet import TelnetClient
@@ -37,7 +36,7 @@ class HatSploitSession(Session, TelnetClient):
         self.client.interact()
 
 
-class HatSploitPayload(Payload, StringTools, TCPClient):
+class HatSploitPayload(Payload, StringTools):
     details = {
         'Category': "stager",
         'Name': "macOS x64 Membrane Bind TCP",
