@@ -82,15 +82,20 @@ class HatSploit:
 def main():
     description = "Modular penetration testing platform that enables you to write, test, and execute exploit code."
     parser = argparse.ArgumentParser(description=description)
-    parser.add_argument('-c', '--check', dest='check', action='store_true', help='Check stdalone modules, payloads and plugins.')
-    parser.add_argument('--no-stdalone', dest='no-stdalone', action='store_true', help='Run HatSploit without stdalone databases.')
-    parser.add_argument('--rebuild-stdalone', dest='rebuild-stdalone', action='store_true', help='Rebuild stdalone databases.')
-    parser.add_argument('--build-stdalone', dest='build-stdalone', action='store_true', help='Build stdalone databases.')
-    parser.add_argument('--delete-stdalone', dest='delete-stdalone', action='store_true', help='Delete stdalone databases.')
+    parser.add_argument('-c', '--check', dest='check_all', action='store_true', help='Check stdalone modules, payloads and plugins.')
+    parser.add_argument('--check-modules', dest='check_modules', action='store_true', help='Check only stdalone modules.')
+    parser.add_argument('--check-payloads', dest='check_payloads', action='store_true', help='Check only stdalone payloads.')
+    parser.add_argument('--check-plugins', dest='check_plugins', action='store_true', help='Check only stdalone plugins.')
     args = parser.parse_args()
 
-    if args.check:
-        self.check.check()
+    if args.check_all:
+        self.check.check_all()
+    elif args.check_modules:
+        self.check.check_modules()
+    elif args.check_payloads:
+        self.check.check_payloads()
+    elif args.check_plugins:
+        self.check.check_plugins()
     else:
         hsf = HatSploit()
 
