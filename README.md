@@ -10,8 +10,6 @@
     <br>
     <br>
     <p align="center"><a href="https://github.com/EntySec/HatSploit/wiki">HatSploit Wiki</a> | <a href="https://github.com/EntySec/HatSploit/wiki/Installation">Installation</a> | <a href="https://github.com/EntySec/HatSploit/wiki/Using-HatSploit">Using HatSploit</a><p>
-    <br>
-    <br>
     <p align="center">
     <b>Other tools</b><br>
     <br>
