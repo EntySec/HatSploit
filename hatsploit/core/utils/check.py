@@ -49,7 +49,7 @@ class Check:
             for file in files:
                 if file.endswith('.py') and file != '__init__.py':
                     module = dest + '/' + file[:-3]
-                    module_name = module[len(f"modules/"):]
+                    module_name = module[len(f"{modules_path}"):]
 
                     try:
                         module_object = self.importer.import_module(module)
@@ -72,7 +72,7 @@ class Check:
             for file in files:
                 if file.endswith('.py') and file != '__init__.py':
                     payload = dest + '/' + file[:-3]
-                    payload_name = payload[len(f"payloads/"):]
+                    payload_name = payload[len(f"{payloads_path}"):]
 
                     try:
                         payload_object = self.importer.import_payload(payload)
@@ -96,7 +96,7 @@ class Check:
             for file in files:
                 if file.endswith('.py') and file != '__init__.py':
                     plugin = dest + '/' + file[:-3]
-                    plugin_name = plugin[len(f"plugins/"):]
+                    plugin_name = plugin[len(f"{plugins_path}"):]
 
                     try:
                         plugin_object = self.importer.import_plugin(plugin)
