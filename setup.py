@@ -25,9 +25,14 @@
 #
 
 import os
+import sys
 import shutil
 
 from setuptools import setup, find_packages
+
+if 'python' in sys.argv[0]:
+    print("Run: pip3 install .")
+    sys.exit()
 
 setup(name='hatsploit',
       version='1.0',
