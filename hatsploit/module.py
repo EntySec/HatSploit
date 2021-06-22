@@ -30,8 +30,12 @@ from hatsploit.core.cli.fmt import FMT
 from hatsploit.core.cli.parser import Parser
 from hatsploit.core.cli.tables import Tables
 
+from hatsploit.core.base.config import Config
+
 
 class Module(FMT, Badges, Colors, Parser, Tables):
+    data_path = Config().path_config['base_paths']['data_path']
+
     details = {
         'Name': "",
         'Module': "",
