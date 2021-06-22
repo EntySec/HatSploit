@@ -33,7 +33,7 @@ from hatsploit.core.base.sessions import Sessions
 from hatsploit.core.base.storage import LocalStorage
 from hatsploit.core.cli.badges import Badges
 from hatsploit.core.modules.modules import Modules
-from data.utils.handler.session import HatSploitSession
+from hatsploit.data.handler.session import HatSploitSession
 from hatsploit.core.utils.server import Server
 
 
