@@ -50,9 +50,6 @@ class HatSploit:
 
         self.root_path = config.path_config['base_paths']['root_path']
 
-    def initialize(self):
-        sys.path.append(self.root_path)
-
     def accept_terms_of_service(self):
         if not os.path.exists(self.root_path + '.accepted'):
             self.badges.output_information("--( The HatSploit Terms of Service )--\n")
@@ -76,9 +73,6 @@ class HatSploit:
             if self.accept_terms_of_service():
                 self.console.shell()
 
-    def clean_up(self):
-        sys.path.remove(self.root_path)
-
 def main():
     description = "Modular penetration testing platform that enables you to write, test, and execute exploit code."
     parser = argparse.ArgumentParser(description=description)
@@ -89,7 +83,6 @@ def main():
     args = parser.parse_args()
 
     hsf = HatSploit()
-    hsf.initialize()
 
     if args.check_all:
         if hsf.check.check_all():
@@ -105,4 +98,3 @@ def main():
             sys.exit(1)
     else:
         hsf.launch()
-        hsf.clean_up()
