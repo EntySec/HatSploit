@@ -31,6 +31,8 @@ import sys
 import threading
 import time
 
+import importlib.util
+
 from hatsploit.core.base.config import Config
 from hatsploit.core.base.exceptions import Exceptions
 from hatsploit.core.base.storage import LocalStorage
@@ -46,16 +48,6 @@ class Importer:
         self.config = Config()
         self.exceptions = Exceptions()
 
-    def get_module(self, mu, name, folderpath):
-        folderpath_list = folderpath.split(".")
-        for i in dir(mu):
-            if i == name:
-                return getattr(mu, name)
-            if i in folderpath_list:
-                i = getattr(mu, i)
-                return self.get_module(i, name, folderpath)
-        return None
-
     @staticmethod
     def import_check(module_name):
         try:
@@ -68,55 +60,47 @@ class Importer:
 
     def import_command(self, command_path):
         try:
-            command_directory = command_path
-            command_file = os.path.split(command_directory)[1]
-            command_directory = command_directory.replace('/', '.')
-            command_object = __import__(command_directory)
-            command_object = self.get_module(command_object, command_file, command_directory)
-            command_object = command_object.HatSploitCommand()
+            spec = importlib.util.spec_from_file_location(command_path, command_path)
+            command = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(command)
+            command = command.HatSploitCommand()
         except Exception as e:
             self.badges.output_information('Reason: ' + str(e))
             raise self.exceptions.GlobalException
-        return command_object
+        return command
 
     def import_payload(self, payload_path):
         try:
-            payload_directory = payload_path
-            payload_file = os.path.split(payload_directory)[1]
-            payload_directory = payload_directory.replace('/', '.')
-            payload_object = __import__(payload_directory)
-            payload_object = self.get_module(payload_object, payload_file, payload_directory)
-            payload_object = payload_object.HatSploitPayload()
+            spec = importlib.util.spec_from_file_location(payload_path, payload_path)
+            payload = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(payload)
+            payload = payload.HatSploitPayload()
         except Exception as e:
             self.badges.output_information('Reason: ' + str(e))
             raise self.exceptions.GlobalException
-        return payload_object
+        return payload
 
     def import_module(self, module_path):
         try:
-            module_directory = module_path
-            module_file = os.path.split(module_directory)[1]
-            module_directory = module_directory.replace('/', '.')
-            module_object = __import__(module_directory)
-            module_object = self.get_module(module_object, module_file, module_directory)
-            module_object = module_object.HatSploitModule()
+            spec = importlib.util.spec_from_file_location(module_path, module_path)
+            module = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(module)
+            module = module.HatSploitModule()
         except Exception as e:
             self.badges.output_information('Reason: ' + str(e))
             raise self.exceptions.GlobalException
-        return module_object
+        return module
 
     def import_plugin(self, plugin_path):
         try:
-            plugin_directory = plugin_path
-            plugin_file = os.path.split(plugin_directory)[1]
-            plugin_directory = plugin_directory.replace('/', '.')
-            plugin_object = __import__(plugin_directory)
-            plugin_object = self.get_module(plugin_object, plugin_file, plugin_directory)
-            plugin_object = plugin_object.HatSploitPlugin()
+            spec = importlib.util.spec_from_file_location(plugin_path, plugin_path)
+            plugin = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(plugin)
+            plugin = plugin.HatSploitPlugin()
         except Exception as e:
             self.badges.output_information('Reason: ' + str(e))
             raise self.exceptions.GlobalException
-        return plugin_object
+        return plugin
 
     def import_commands(self):
         commands = dict()
