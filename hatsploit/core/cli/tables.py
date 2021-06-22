@@ -79,4 +79,4 @@ class Tables:
                     "{:<{}}".format(element, fill_line)
                 ))
             self.badges.output_empty(content_line)
-        self.badges.output_empty("")
+        self.badges.output_empty()
