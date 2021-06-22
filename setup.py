@@ -52,9 +52,9 @@ setup(name='hatsploit',
           'pyyaml',
           'requests',
           'scapy',
-          'paramiko'
+          'paramiko',
+          'hatvenom @ git+http://github.com/EntySec/HatVenom'
       ],
-      dependency_links=['http://github.com/EntySec/HatVenom'],
       zip_safe=False
 )
 
