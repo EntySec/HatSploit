@@ -71,6 +71,7 @@ class Importer:
 
     def import_payload(self, payload_path):
         try:
+            print(payload_path)
             spec = importlib.util.spec_from_file_location(payload_path, payload_path)
             payload = importlib.util.module_from_spec(spec)
             spec.loader.exec_module(payload)
