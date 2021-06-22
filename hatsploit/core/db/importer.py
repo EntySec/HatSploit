@@ -60,6 +60,8 @@ class Importer:
 
     def import_command(self, command_path):
         try:
+            if not command_path.endswith('.py'):
+                command_path = command_path + '.py'
             spec = importlib.util.spec_from_file_location(command_path, command_path)
             command = importlib.util.module_from_spec(spec)
             spec.loader.exec_module(command)
@@ -71,7 +73,8 @@ class Importer:
 
     def import_payload(self, payload_path):
         try:
-            print(payload_path)
+            if not payload_path.endswith('.py'):
+                payload_path = payload_path + '.py'
             spec = importlib.util.spec_from_file_location(payload_path, payload_path)
             payload = importlib.util.module_from_spec(spec)
             spec.loader.exec_module(payload)
@@ -83,6 +86,8 @@ class Importer:
 
     def import_module(self, module_path):
         try:
+            if not module_path.endswith('.py'):
+                module_path = module_path + '.py'
             spec = importlib.util.spec_from_file_location(module_path, module_path)
             module = importlib.util.module_from_spec(spec)
             spec.loader.exec_module(module)
@@ -94,6 +99,8 @@ class Importer:
 
     def import_plugin(self, plugin_path):
         try:
+            if not plugin_path.endswith('.py'):
+                plugin_path = plugin_path + '.py'
             spec = importlib.util.spec_from_file_location(plugin_path, plugin_path)
             plugin = importlib.util.module_from_spec(spec)
             spec.loader.exec_module(plugin)
