@@ -7,14 +7,14 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: Install HatSploit
-        run: python3 setup.py install
+        run: sudo python3 setup.py install
       - name: Perform checks
-        run: cd ~/.hsf; touch .accepted; python3 check.py
+        run: cd ~/.hsf; sudo touch .accepted; python3 check.py
   macOS:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v1
       - name: Install HatSploit
-        run: python3 setup.py install
+        run: sudo python3 setup.py install
       - name: Perform checks
-        run: cd ~/.hsf; touch .accepted; python3 check.py
+        run: cd ~/.hsf; sudo touch .accepted; python3 check.py
