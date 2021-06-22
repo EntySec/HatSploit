@@ -112,15 +112,14 @@ class Importer:
 
     def import_commands(self):
         commands = dict()
-        command_path = self.config.path_config['base_paths']['commands_path']
+        command_path = os.path.split(
+            self.config.path_config['base_paths']['commands_path']
+        )[0]
         try:
             for file in os.listdir(command_path):
                 if file.endswith('py'):
-                    command_file_path = command_path + file[:-3]
-                    command_directory = command_file_path.replace(self.config.path_config['base_paths']['root_path'],
-                                                                  '', 1)
                     try:
-                        command_object = self.import_command(command_directory)
+                        command_object = self.import_command(command_path + '/' + file[:-3])
                         command_name = command_object.details['Name']
                         commands[command_name] = command_object
                         self.local_storage.set("commands", commands)
