@@ -87,7 +87,9 @@ class Builder:
             }
         }
 
-        payloads_path = self.config.path_config['base_paths']['payloads_path']
+        payloads_path = self.config.path_config['base_paths']['payloads_path'].replace(
+            self.config.path_config['base_paths']['root_path'], '', 1)
+
         for dest, _, files in os.walk(payloads_path):
             for file in files:
                 if file.endswith('.py') and file != '__init__.py':
@@ -130,7 +132,9 @@ class Builder:
             }
         }
 
-        modules_path = self.config.path_config['base_paths']['modules_path']
+        modules_path = self.config.path_config['base_paths']['modules_path'].replace(
+            self.config.path_config['base_paths']['root_path'], '', 1)
+
         for dest, _, files in os.walk(modules_path):
             for file in files:
                 if file.endswith('.py') and file != '__init__.py':
@@ -170,7 +174,9 @@ class Builder:
             }
         }
 
-        plugins_path = self.config.path_config['base_paths']['plugins_path']
+        plugins_path = self.config.path_config['base_paths']['plugins_path'].replace(
+            self.config.path_config['base_paths']['root_path'], '', 1)
+
         for dest, _, files in os.walk(plugins_path):
             for file in files:
                 if file.endswith('.py') and file != '__init__.py':
