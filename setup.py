@@ -24,7 +24,9 @@
 # SOFTWARE.
 #
 
-import os, shutil
+import os
+import shutil
+
 from setuptools import setup, find_packages
 
 setup(name='hatsploit',
