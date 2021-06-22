@@ -105,9 +105,9 @@ class Check:
     def check_all(self):
         fails = list()
 
-        fails.append(check_modules())
-        fails.append(check_payloads())
-        fails.append(check_plugins())
+        fails.append(self.check_modules())
+        fails.append(self.check_payloads())
+        fails.append(self.check_plugins())
     
         for fail in fails:
             if fail:
