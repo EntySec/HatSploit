@@ -148,7 +148,7 @@ class Console:
 
         if self.config.core_config['console']['tip']:
             self.tip.print_random_tip()
-            self.badges.output_empty("")
+            self.badges.output_empty()
 
     def shell(self):
         self.start_hsf()
