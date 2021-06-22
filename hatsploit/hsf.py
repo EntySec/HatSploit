@@ -88,21 +88,21 @@ def main():
     parser.add_argument('--check-plugins', dest='check_plugins', action='store_true', help='Check only stdalone plugins.')
     args = parser.parse_args()
 
+    hsf = HatSploit()
+
     if args.check_all:
-        if self.check.check_all():
+        if hsf.check.check_all():
             sys.exit(1)
     elif args.check_modules:
-        if self.check.check_modules():
+        if hsf.check.check_modules():
             sys.exit(1)
     elif args.check_payloads:
-        if self.check.check_payloads():
+        if hsf.check.check_payloads():
             sys.exit(1)
     elif args.check_plugins:
-        if not self.check.check_plugins():
+        if not hsf.check.check_plugins():
             sys.exit(1)
     else:
-        hsf = HatSploit()
-
         hsf.initialize()
         hsf.launch()
         hsf.clean_up()
