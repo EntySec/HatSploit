@@ -89,6 +89,7 @@ def main():
     args = parser.parse_args()
 
     hsf = HatSploit()
+    hsf.initialize()
 
     if args.check_all:
         if hsf.check.check_all():
@@ -103,6 +104,5 @@ def main():
         if not hsf.check.check_plugins():
             sys.exit(1)
     else:
-        hsf.initialize()
         hsf.launch()
         hsf.clean_up()
