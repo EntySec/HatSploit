@@ -42,12 +42,16 @@ class Check:
         one_fail = False
         self.badges.output_process("Checking all stdalone modules...")
 
-        modules_path = 'modules'
+        modules_path = os.path.split(
+            self.config.path_config['base_paths']['modules_path']
+        )[0]
         for dest, _, files in os.walk(modules_path):
             for file in files:
                 if file.endswith('.py') and file != '__init__.py':
-                    module = dest + '/' + file[:-3]
-                    module_name = module[len(f"{modules_path}/"):]
+                    module = (dest + '/' + file[:-3]).replace(
+                        self.config.path_config['base_paths']['root_path'], '', 1
+                    )
+                    module_name = module[len(f"modules/"):]
 
                     try:
                         module_object = self.importer.import_module(module)
@@ -63,12 +67,16 @@ class Check:
         one_fail = False
         self.badges.output_process("Checking all stdalone payloads...")
 
-        payloads_path = 'payloads'
+        payloads_path = os.path.split(
+            self.config.path_config['base_paths']['payloads_path']
+        )[0]
         for dest, _, files in os.walk(payloads_path):
             for file in files:
                 if file.endswith('.py') and file != '__init__.py':
-                    payload = dest + '/' + file[:-3]
-                    payload_name = payload[len(f"{payloads_path}/"):]
+                    payload = (dest + '/' + file[:-3]).replace(
+                        self.config.path_config['base_paths']['root_path'], '', 1
+                    )
+                    payload_name = payload[len(f"payloads/"):]
 
                     try:
                         payload_object = self.importer.import_payload(payload)
@@ -85,12 +93,16 @@ class Check:
         one_fail = False
         self.badges.output_process("Checking all stdalone plugins...")
 
-        plugins_path = 'plugins'
+        plugins_path = os.path.split(
+            self.config.path_config['base_paths']['plugins_path']
+        )[0]
         for dest, _, files in os.walk(plugins_path):
             for file in files:
                 if file.endswith('.py') and file != '__init__.py':
-                    plugin = dest + '/' + file[:-3]
-                    plugin_name = plugin[len(f"{plugins_path}/"):]
+                    plugin = (dest + '/' + file[:-3]).replace(
+                        self.config.path_config['base_paths']['root_path'], '', 1
+                    )
+                    plugin_name = plugin[len(f"plugins/"):]
 
                     try:
                         plugin_object = self.importer.import_plugin(plugin)
