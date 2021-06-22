@@ -89,13 +89,17 @@ def main():
     args = parser.parse_args()
 
     if args.check_all:
-        self.check.check_all()
+        if self.check.check_all():
+            sys.exit(1)
     elif args.check_modules:
-        self.check.check_modules()
+        if self.check.check_modules():
+            sys.exit(1)
     elif args.check_payloads:
-        self.check.check_payloads()
+        if self.check.check_payloads():
+            sys.exit(1)
     elif args.check_plugins:
-        self.check.check_plugins()
+        if not self.check.check_plugins():
+            sys.exit(1)
     else:
         hsf = HatSploit()
 
