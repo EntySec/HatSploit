@@ -24,10 +24,6 @@
 # SOFTWARE.
 #
 
-#
-# Based on threat6/routersploit printer module
-#
-
 from hatsploit.core.cli.badges import Badges
 
 
@@ -39,7 +35,6 @@ class Tables:
         header_separator = kwargs.get("header_separator", "-")
 
         if not all(map(lambda x: len(x) == len(headers), args)):
-            self.badges.output_error("Headers and table rows tuples should be the same length.")
             return
 
         def custom_len(x):
@@ -67,7 +62,7 @@ class Tables:
             ))
 
         self.badges.output_empty('\n' + name.split()[0].title() + name[len(name.split()[0]):] + ':')
-        self.badges.output_empty("")
+        self.badges.output_empty()
         self.badges.output_empty(headers_line)
         self.badges.output_empty(headers_separator_line)
         for arg in args:
