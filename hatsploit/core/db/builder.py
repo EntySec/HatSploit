@@ -88,14 +88,13 @@ class Builder:
         }
 
         payloads_path = self.config.path_config['base_paths']['payloads_path']
-
         for dest, _, files in os.walk(payloads_path):
             for file in files:
                 if file.endswith('.py') and file != '__init__.py':
                     payload = (dest + '/' + file[:-3]).replace(
                         self.config.path_config['base_paths']['root_path'], '', 1
                     )
-                    payload_name = payload[len(f"{payloads_path}/"):]
+                    payload_name = payload[len(f"payloads/"):]
 
                     try:
                         payload_object = self.importer.import_payload(payload)
@@ -134,14 +133,13 @@ class Builder:
         }
 
         modules_path = self.config.path_config['base_paths']['modules_path']
-
         for dest, _, files in os.walk(modules_path):
             for file in files:
                 if file.endswith('.py') and file != '__init__.py':
                     module = (dest + '/' + file[:-3]).replace(
                         self.config.path_config['base_paths']['root_path'], '', 1
                     )
-                    module_name = module[len(f"{modules_path}/"):]
+                    module_name = module[len(f"modules/"):]
 
                     try:
                         module_object = self.importer.import_module(module)
@@ -177,14 +175,13 @@ class Builder:
         }
 
         plugins_path = self.config.path_config['base_paths']['plugins_path']
-
         for dest, _, files in os.walk(plugins_path):
             for file in files:
                 if file.endswith('.py') and file != '__init__.py':
                     plugin = (dest + '/' + file[:-3]).replace(
                         self.config.path_config['base_paths']['root_path'], '', 1
                     )
-                    plugin_name = plugin[len(f"{plugins_path}/"):]
+                    plugin_name = plugin[len(f"plugins/"):]
 
                     try:
                         plugin_object = self.importer.import_plugin(plugin)
