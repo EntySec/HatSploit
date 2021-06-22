@@ -112,5 +112,6 @@ class Check:
         for fail in fails:
             if fail:
                 self.badges.output_error("Not all checks passed!")
-                return
+                return False
         self.badges.output_success("All checks passed!")
+        return True
