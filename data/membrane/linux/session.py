@@ -24,8 +24,8 @@
 # SOFTWARE.
 #
 
-from core.lib.session import Session
-from utils.telnet import TelnetClient
+from hatsploit.session import Session
+from hatsploit.utils.telnet import TelnetClient
 
 
 class HatSploitSession(Session, TelnetClient):
