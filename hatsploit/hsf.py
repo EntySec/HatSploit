@@ -30,6 +30,7 @@ sys.stdout.write("\033]0;HatSploit Framework\007")
 
 import os
 import yaml
+import argparse
 
 from hatsploit.core.base.config import Config
 
@@ -38,12 +39,14 @@ config.configure()
 
 from hatsploit.core.base.console import Console
 from hatsploit.core.cli.badges import Badges
+from hatsploit.core.utils.check import Check
 
 
 class HatSploit:
     def __init__(self):
         self.console = Console()
         self.badges = Badges()
+        self.check = Check()
 
         self.root_path = config.path_config['base_paths']['root_path']
 
@@ -77,8 +80,20 @@ class HatSploit:
         sys.path.remove(self.root_path)
 
 def main():
-    hsf = HatSploit()
+    description = "Modular penetration testing platform that enables you to write, test, and execute exploit code."
+    parser = argparse.ArgumentParser(description=description)
+    parser.add_argument('-c', '--check', dest='check', action='store_true', help='Check stdalone modules, payloads and plugins.')
+    parser.add_argument('--no-stdalone', dest='no-stdalone', action='store_true', help='Run HatSploit without stdalone databases.')
+    parser.add_argument('--rebuild-stdalone', dest='rebuild-stdalone', action='store_true', help='Rebuild stdalone databases.')
+    parser.add_argument('--build-stdalone', dest='build-stdalone', action='store_true', help='Build stdalone databases.')
+    parser.add_argument('--delete-stdalone', dest='delete-stdalone', action='store_true', help='Delete stdalone databases.')
+    args = parser.parse_args()
 
-    hsf.initialize()
-    hsf.launch()
-    hsf.clean_up()
+    if args.check:
+        self.check.check()
+    else:
+        hsf = HatSploit()
+
+        hsf.initialize()
+        hsf.launch()
+        hsf.clean_up()
