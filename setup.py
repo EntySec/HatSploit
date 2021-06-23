@@ -30,6 +30,25 @@ import shutil
 from pathlib import Path
 from setuptools import setup, find_packages
 
+home = str(Path.home()) + '/.hsf'
+if os.path.exists(home):
+    shutil.rmtree(home)
+
+with open('config/path_config.yml', 'r') as f:
+    config = f.read().replace('HOME', home)
+
+with open('config/path_config.yml', 'w') as f:
+    f.write(config)
+
+os.mkdir(home)
+shutil.copytree('config', f'{home}/config')
+shutil.copytree('modules', f'{home}/modules')
+shutil.copytree('commands', f'{home}/commands')
+shutil.copytree('payloads', f'{home}/payloads')
+shutil.copytree('plugins', f'{home}/plugins')
+shutil.copytree('data', f'{home}/data')
+shutil.copy('TERMS_OF_SERVICE.md', f'{home}/TERMS_OF_SERVICE.md')
+
 setup(name='hatsploit',
       version='2.0.0',
       description='Modular penetration testing platform that enables you to write, test, and execute exploit code.',
@@ -58,23 +77,3 @@ setup(name='hatsploit',
       ],
       zip_safe=False
 )
-
-home = str(Path.home()) + '/.hsf'
-print(home)
-if os.path.exists(home):
-    shutil.rmtree(home)
-
-with open('config/path_config.yml', 'r') as f:
-    config = f.read().replace('HOME', home)
-
-with open('config/path_config.yml', 'w') as f:
-    f.write(config)
-
-os.mkdir(home)
-shutil.copytree('config', f'{home}/config')
-shutil.copytree('modules', f'{home}/modules')
-shutil.copytree('commands', f'{home}/commands')
-shutil.copytree('payloads', f'{home}/payloads')
-shutil.copytree('plugins', f'{home}/plugins')
-shutil.copytree('data', f'{home}/data')
-shutil.copy('TERMS_OF_SERVICE.md', f'{home}/TERMS_OF_SERVICE.md')
