@@ -1,0 +1,7 @@
+include hatsploit/TERMS_OF_SERVICE.md
+recursive-include hatsploit/commands *
+recursive-include hatsploit/config *
+recursive-include hatsploit/data *
+recursive-include hatsploit/modules *
+recursive-include hatsploit/payloads *
+recursive-include hatsploit/plugins *
