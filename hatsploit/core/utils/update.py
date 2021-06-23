@@ -24,8 +24,7 @@
 # SOFTWARE.
 #
 
-import os
-import sys
+import subprocess
 import shutil
 
 import requests
@@ -51,7 +50,7 @@ class Update:
         if self.check_update():
             self.badges.output_process("Updating HatSploit Framework...")
             shutil.rmtree(self.config.path_config['root_path'])
-            os.system("pip3 install git+https://github.com/EntySec/HatSploit")
+            subprocess.call('pip3 install git+https://github.com/EntySec/HatSploit', shell=False)
             self.badges.output_success("HatSploit updated successfully!")
             return
         self.badges.output_warning("Your HatSploit is up-to-date.")
