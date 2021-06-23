@@ -3,7 +3,7 @@ on: [pull_request]
 
 jobs:
   Linux:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu
     steps:
       - uses: actions/checkout@v1
       - name: Install HatSploit
