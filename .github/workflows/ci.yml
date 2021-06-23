@@ -3,11 +3,11 @@ on: [pull_request]
 
 jobs:
   Linux:
-    runs-on: ubuntu
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
       - name: Install HatSploit
-        run: sudo pip3 install .
+        run: sudo python3 setup.py install
       - name: Perform checks
         run: hsf -c
   macOS:
