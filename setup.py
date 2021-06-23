@@ -59,6 +59,7 @@ setup(name='hatsploit',
 )
 
 home = os.path.expanduser('~') + '/.hsf'
+print(home)
 if os.path.exists(home):
     shutil.rmtree(home)
 
