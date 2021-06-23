@@ -34,7 +34,7 @@ from hatsploit.core.base.config import Config
 
 
 class Payload(FMT, Badges, Colors, Parser, Tables):
-    data_path = Config().path_config['base_paths']['data_path']
+    data_path = Config().path_config['data_path']
 
     details = {
         'Category': "",

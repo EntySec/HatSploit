@@ -56,10 +56,10 @@ class Console:
         self.modules = Modules()
         self.exceptions = Exceptions()
 
-        self.history = self.config.path_config['base_paths']['history_path']
+        self.history = self.config.path_config['history_path']
 
     def check_install(self):
-        if os.path.exists(self.config.path_config['base_paths']['root_path']):
+        if os.path.exists(self.config.path_config['root_path']):
             return True
         self.badges.output_error("HatSploit is not installed!")
         self.badges.output_information("Consider running ./install.sh")

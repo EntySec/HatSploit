@@ -44,9 +44,9 @@ class Tip:
         self.colors_script = ColorsScript()
 
     def print_random_tip(self):
-        if os.path.exists(self.config.path_config['base_paths']['tips_path']):
+        if os.path.exists(self.config.path_config['tips_path']):
             tips = list()
-            all_tips = os.listdir(self.config.path_config['base_paths']['tips_path'])
+            all_tips = os.listdir(self.config.path_config['tips_path'])
             for tip in all_tips:
                 tips.append(tip)
             if tips:
@@ -54,7 +54,7 @@ class Tip:
                 while not tip:
                     random_tip = random.randint(0, len(tips) - 1)
                     tip = self.colors_script.parse_colors_script(
-                        self.config.path_config['base_paths']['tips_path'] + tips[random_tip])
+                        self.config.path_config['tips_path'] + tips[random_tip])
                 self.badges.output_empty(self.colors.END + "HatSploit Tip: " + tip + self.colors.END)
             else:
                 self.badges.output_warning("No tips detected.")

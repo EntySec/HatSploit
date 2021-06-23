@@ -48,15 +48,24 @@ class HatSploit:
         self.badges = Badges()
         self.check = Check()
 
-        self.root_path = config.path_config['base_paths']['root_path']
+        self.root_path = config.path_config['root_path']
 
     def accept_terms_of_service(self):
         if not os.path.exists(self.root_path + '.accepted'):
             self.badges.output_information("--( The HatSploit Terms of Service )--\n")
+            terms = """
+The HatSploit Framework is designed purely for good and not evil.
 
-            file = open(self.root_path + 'TERMS_OF_SERVICE.md', 'r')
-            terms = file.read()
-            file.close()
+All HatSploit Framework modules are provided for educational purposes.
+Adequate defenses can only be built by researching attack techniques available to malicious actors.
+Using this modules against target systems without prior permission is illegal in most jurisdictions.
+The authors are not liable for any damages from misuse of this information or code.
+
+If you are planning on using HatSploit Framework for malicious purposes that are not authorized by the company
+you are performing assessments for, you are violating the terms of service and license of this Framework.
+
+By accepting our terms of service, you agree that you will only use this tool for lawful purposes only.
+"""
 
             self.badges.output_empty(terms)
 

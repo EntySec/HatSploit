@@ -34,10 +34,10 @@ from hatsploit.core.base.config import Config
 
 
 class Session(FMT, Badges, Colors, Parser, Tables):
-    root_path = Config().path_config['base_paths']['root_path']
-    data_path = Config().path_config['base_paths']['data_path']
-    history_path = Config().path_config['base_paths']['history_path']
-    storage_path = Config().path_config['base_paths']['storage_path']
+    root_path = Config().path_config['root_path']
+    data_path = Config().path_config['data_path']
+    history_path = Config().path_config['history_path']
+    storage_path = Config().path_config['storage_path']
 
     details = {
         'Platform': "",

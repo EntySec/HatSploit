@@ -73,5 +73,5 @@ class Config:
         self.local_storage.set("db_config", self.db_config)
         self.local_storage.set("core_config", self.core_config)
 
-        self.global_storage = GlobalStorage(self.path_config['base_paths']['storage_path'])
+        self.global_storage = GlobalStorage(self.path_config['storage_path'])
         self.global_storage.set_all()
