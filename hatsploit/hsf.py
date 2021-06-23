@@ -85,17 +85,16 @@ def main():
     hsf = HatSploit()
 
     if args.check_all:
-        if hsf.check.check_all():
-            sys.exit(1)
+        if not hsf.check.check_all():
+            sys.exit(0)
     elif args.check_modules:
-        if hsf.check.check_modules():
-            sys.exit(1)
+        if not hsf.check.check_modules():
+            sys.exit(0)
     elif args.check_payloads:
-        if hsf.check.check_payloads():
-            sys.exit(1)
+        if not hsf.check.check_payloads():
+            sys.exit(0)
     elif args.check_plugins:
-        if not hsf.check.check_plugins():
-            sys.exit(1)
+        if hsf.check.check_plugins():
+            sys.exit(0)
     else:
         hsf.launch()
-    sys.exit(0)
