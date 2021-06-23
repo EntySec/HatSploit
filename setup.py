@@ -27,10 +27,8 @@
 import os
 import shutil
 
+from pathlib import Path
 from setuptools import setup, find_packages
-
-home = os.path.expanduser('~') + '/.hsf'
-print(home)
 
 setup(name='hatsploit',
       version='2.0.0',
@@ -61,7 +59,7 @@ setup(name='hatsploit',
       zip_safe=False
 )
 
-home = os.path.expanduser('~') + '/.hsf'
+home = str(Path.home()) + '/.hsf'
 print(home)
 if os.path.exists(home):
     shutil.rmtree(home)
