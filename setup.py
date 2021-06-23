@@ -29,6 +29,9 @@ import shutil
 
 from setuptools import setup, find_packages
 
+home = os.path.expanduser('~') + '/.hsf'
+print(home)
+
 setup(name='hatsploit',
       version='2.0.0',
       description='Modular penetration testing platform that enables you to write, test, and execute exploit code.',
