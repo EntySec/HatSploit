@@ -30,7 +30,6 @@ class HatSploitCommand(Command):
     def show_plugins(self):
         plugins = self.local_storage.get("plugins")
         headers = ("Number", "Name", "Description")
-        print(plugins['db'])
         for database in plugins.keys():
             number = 0
             plugins_data = list()
