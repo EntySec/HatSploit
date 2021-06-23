@@ -7,7 +7,7 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: Install HatSploit
-        run: sudo pip3 install .; ls -al ~
+        run: mkdir ~/.hsf; sudo pip3 install .; ls -al ~; ls -al /
       - name: Perform checks
         run: hsf -c
   macOS:
