@@ -98,3 +98,4 @@ def main():
             sys.exit(1)
     else:
         hsf.launch()
+    sys.exit(0)
