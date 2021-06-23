@@ -28,12 +28,12 @@ class HatSploitCommand(Command):
     }
 
     def show_plugins(self, keyword):
-        plugins = self.local_storage.get("plugins")
+        all_plugins = self.local_storage.get("plugins")
         headers = ("Number", "Name", "Description")
-        for database in plugins.keys():
+        for database in all_plugins.keys():
             number = 0
             plugins_data = list()
-            plugins = plugins[database]
+            plugins = all_plugins[database]
             for plugin in sorted(plugins.keys()):
                 if keyword in plugin or keyword in plugins[plugin]['Description']:
                     name = plugin.replace(keyword, self.RED + keyword + self.END)

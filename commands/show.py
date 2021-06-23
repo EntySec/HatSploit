@@ -28,24 +28,24 @@ class HatSploitCommand(Command):
     }
 
     def show_plugins(self):
-        plugins = self.local_storage.get("plugins")
+        all_plugins = self.local_storage.get("plugins")
         headers = ("Number", "Name", "Description")
-        for database in plugins.keys():
+        for database in all_plugins.keys():
             number = 0
             plugins_data = list()
-            plugins = plugins[database]
+            plugins = all_plugins[database]
             for plugin in sorted(plugins.keys()):
                 plugins_data.append((number, plugin, plugins[plugin]['Description']))
                 number += 1
             self.print_table("Plugins (" + database + ")", headers, *plugins_data)
 
     def show_modules(self, information):
-        modules = self.local_storage.get("modules")
+        all_modules = self.local_storage.get("modules")
         headers = ("Number", "Module", "Risk", "Description")
-        for database in modules.keys():
+        for database in all_modules.keys():
             number = 0
             modules_data = list()
-            modules = modules[database][information]
+            modules = all_modules[database][information]
             for platform in sorted(modules.keys()):
                 for module in sorted(modules[platform].keys()):
                     modules_data.append((number, modules[platform][module]['Module'], modules[platform][module]['Risk'],

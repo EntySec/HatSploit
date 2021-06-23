@@ -5,14 +5,11 @@
 # Current source: https://github.com/EntySec/HatSploit
 #
 
-from hatsploit.core.base.config import Config
 from hatsploit.module import Module
 from hatsploit.utils.http import HTTPClient
 
 
 class HatSploitModule(Module, HTTPClient):
-    config = Config()
-
     details = {
         'Name': "Directory Scanner",
         'Module': "auxiliary/multi/scanner/directory_scanner",
@@ -53,10 +50,7 @@ class HatSploitModule(Module, HTTPClient):
         ssl = ssl in ['yes', 'y']
 
         self.output_process(f"Scanning {remote_host}...")
-        file = open(
-            self.config.path_config['base_paths']['data_path'] +
-            'wordlists/directories.txt'
-        )
+        file = open(self.data_path + 'wordlists/directories.txt')
         directories = list(filter(None, file.read().split('\n')))
         file.close()
 
