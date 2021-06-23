@@ -90,8 +90,8 @@ class Console:
 
             except (KeyboardInterrupt, EOFError, self.exceptions.GlobalException):
                 pass
-            except Exception as e:
-                self.badges.output_error("An error occurred: " + str(e) + "!")
+            #except Exception as e:
+            #    self.badges.output_error("An error occurred: " + str(e) + "!")
 
     def enable_history_file(self):
         if not os.path.exists(self.history):
