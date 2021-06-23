@@ -43,7 +43,7 @@ class Check:
         self.badges.output_process("Checking all stdalone modules...")
 
         modules_path = os.path.split(
-            self.config.path_config['base_paths']['modules_path']
+            self.config.path_config['modules_path']
         )[0]
         for dest, _, files in os.walk(modules_path):
             for file in files:
@@ -66,7 +66,7 @@ class Check:
         self.badges.output_process("Checking all stdalone payloads...")
 
         payloads_path = os.path.split(
-            self.config.path_config['base_paths']['payloads_path']
+            self.config.path_config['payloads_path']
         )[0]
         for dest, _, files in os.walk(payloads_path):
             for file in files:
@@ -90,7 +90,7 @@ class Check:
         self.badges.output_process("Checking all stdalone plugins...")
 
         plugins_path = os.path.split(
-            self.config.path_config['base_paths']['plugins_path']
+            self.config.path_config['plugins_path']
         )[0]
         for dest, _, files in os.walk(plugins_path):
             for file in files:

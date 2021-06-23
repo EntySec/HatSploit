@@ -27,8 +27,6 @@
 import os
 import yaml
 
-from pathlib import Path
-
 from hatsploit.core.base.storage import GlobalStorage
 from hatsploit.core.base.storage import LocalStorage
 from hatsploit.core.cli.badges import Badges
@@ -39,15 +37,26 @@ class Config:
         self.badges = Badges()
         self.local_storage = LocalStorage()
 
-        self.base_path = str(Path.home()) + '/.hsf/'
+        self.base_path = f'{os.path.dirname(__file__)}/../../'
         self.config_path = self.base_path + 'config/'
 
         self.db_config_file = self.config_path + 'db_config.yml'
-        self.path_config_file = self.config_path + 'path_config.yml'
         self.core_config_file = self.config_path + 'core_config.yml'
 
         self.db_config = self.local_storage.get("db_config")
-        self.path_config = self.local_storage.get("path_config")
+        self.path_config = {
+            'root_path': self.base_path,
+            'db_path': f'{self.base_path}db/',
+            'data_path': f'{self.base_path}data/',
+            'tips_path': f'{self.base_path}data/tips/',
+            'banners_path': f'{self.base_path}data/banners/',
+            'modules_path': f'{self.base_path}modules/',
+            'plugins_path': f'{self.base_path}plugins/',
+            'commands_path': f'{self.base_path}commands/',
+            'payloads_path': f'{self.base_path}payloads/',
+            'history_path': f'{self.base_path}.history',
+            'storage_path': f'{self.base_path}config/storage.json'
+        }
         self.core_config = self.local_storage.get("core_config")
 
     @staticmethod
@@ -56,16 +65,13 @@ class Config:
 
     def configure(self):
         db_config = self.get_config_file(open(self.db_config_file))
-        path_config = self.get_config_file(open(self.path_config_file))
         core_config = self.get_config_file(open(self.core_config_file))
 
         self.db_config = db_config
-        self.path_config = path_config
         self.core_config = core_config
 
         self.local_storage.set("db_config", self.db_config)
-        self.local_storage.set("path_config", self.path_config)
         self.local_storage.set("core_config", self.core_config)
 
-        self.global_storage = GlobalStorage(self.path_config['base_paths']['storage_path'])
+        self.global_storage = GlobalStorage(self.path_config['storage_path'])
         self.global_storage.set_all()

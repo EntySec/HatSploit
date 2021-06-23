@@ -14,7 +14,7 @@ from hatsploit.command import Command
 class HatSploitCommand(Command):
     config = Config()
 
-    storage_path = config.path_config['base_paths']['storage_path']
+    storage_path = config.path_config['storage_path']
 
     local_storage = LocalStorage()
     global_storage = GlobalStorage(storage_path)

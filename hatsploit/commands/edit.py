@@ -52,7 +52,7 @@ class HatSploitCommand(Command):
                 module_path = self.local_storage.get(
                     "modules"
                 )[database][module_category][module_platform][module_name]['Path']
-                edit_mode = editor + " " + self.config.path_config['base_paths']['root_path'] + module_path
+                edit_mode = editor + " " + self.config.path_config['root_path'] + module_path
                 self.execute.execute_system(edit_mode)
             else:
                 self.output_error("Can not edit already used module!")

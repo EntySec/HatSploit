@@ -44,9 +44,9 @@ class Banner:
         self.colors_script = ColorsScript()
 
     def print_random_banner(self):
-        if os.path.exists(self.config.path_config['base_paths']['banners_path']):
+        if os.path.exists(self.config.path_config['banners_path']):
             banners = list()
-            all_banners = os.listdir(self.config.path_config['base_paths']['banners_path'])
+            all_banners = os.listdir(self.config.path_config['banners_path'])
             for banner in all_banners:
                 banners.append(banner)
             if banners:
@@ -54,7 +54,7 @@ class Banner:
                 while not banner:
                     random_banner = random.randint(0, len(banners) - 1)
                     banner = self.colors_script.parse_colors_script(
-                        self.config.path_config['base_paths']['banners_path'] + banners[random_banner])
+                        self.config.path_config['banners_path'] + banners[random_banner])
                 self.badges.output_empty(self.colors.END + banner + self.colors.END)
             else:
                 self.badges.output_warning("No banners detected.")

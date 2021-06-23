@@ -24,37 +24,33 @@
 # SOFTWARE.
 #
 
-from hatsploit.core.cli.badges import Badges
-from hatsploit.core.cli.colors import Colors
-from hatsploit.core.cli.fmt import FMT
-from hatsploit.core.cli.parser import Parser
-from hatsploit.core.cli.tables import Tables
+import subprocess
+import shutil
+
+import requests
 
 from hatsploit.core.base.config import Config
+from hatsploit.core.cli.badges import Badges
 
 
-class Payload(FMT, Badges, Colors, Parser, Tables):
-    data_path = Config().path_config['data_path']
+class Update:
+    def __init__(self):
+        self.config = Config()
+        self.badges = Badges()
 
-    details = {
-        'Category': "",
-        'Name': "",
-        'Payload': "",
-        'Authors': [
-            ''
-        ],
-        'Description': "",
-        'Comments': [
-            ''
-        ],
-        'Platform': "",
-        'Risk': "low",
-        'Type': ""
-    }
+    def check_update(self):
+        remote_config = requests.get('https://raw.githubusercontent.com/EntySec/HatSploit/main/config/core_config.yml',
+                                     stream=True).content
+        if self.config.get_config_file(remote_config)['details']['version'] != \
+                self.config.core_config['details']['version']:
+            return True
+        return False
 
-    payload = ""
-    instructions = ""
-    session = None
-
-    def run(self):
-        pass
+    def update(self):
+        if self.check_update():
+            self.badges.output_process("Updating HatSploit Framework...")
+            shutil.rmtree(self.config.path_config['root_path'])
+            subprocess.call('pip3 install git+https://github.com/EntySec/HatSploit', shell=False)
+            self.badges.output_success("HatSploit updated successfully!")
+            return
+        self.badges.output_warning("Your HatSploit is up-to-date.")

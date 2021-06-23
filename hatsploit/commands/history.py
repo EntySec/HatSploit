@@ -17,8 +17,8 @@ class HatSploitCommand(Command):
     config = Config()
     local_storage = LocalStorage()
 
-    history = config.path_config['base_paths']['history_path']
-    storage_path = config.path_config['base_paths']['storage_path']
+    history = config.path_config['history_path']
+    storage_path = config.path_config['storage_path']
 
     global_storage = GlobalStorage(storage_path)
 

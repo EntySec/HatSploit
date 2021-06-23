@@ -25,7 +25,6 @@
 #
 
 import os
-import requests
 import string
 import sys
 import threading
@@ -35,6 +34,7 @@ from hatsploit.core.base.config import Config
 from hatsploit.core.cli.badges import Badges
 from hatsploit.core.db.builder import Builder
 from hatsploit.core.db.importer import Importer
+from hatsploit.core.utils.update import Update
 
 
 class Loader:
@@ -43,17 +43,14 @@ class Loader:
         self.importer = Importer()
         self.builder = Builder()
         self.config = Config()
+        self.update = Update()
 
         self.build = True
 
     def load_update_process(self):
-        remote_config = requests.get('https://raw.githubusercontent.com/EntySec/HatSploit/main/config/core_config.yml',
-                                     stream=True)
-        remote_config = remote_config.content
-        if self.config.get_config_file(remote_config)['details']['version'] != \
-                self.config.core_config['details']['version']:
+        if self.update.check_update():
             self.badges.output_warning("Your HatSploit Framework is out-dated.")
-            self.badges.output_information("Consider running ./update.sh")
+            self.badges.output_information("Consider running hsf --update")
             time.sleep(1)
 
     def load_components(self):
