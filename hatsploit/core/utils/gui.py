@@ -28,7 +28,5 @@ from hatsploit.base.sessions import Sessions
 
 
 class SessionsGUI:
-    def __init__(self):
-        self.sessions = Sessions()
-
     def start(self):
+        pass
