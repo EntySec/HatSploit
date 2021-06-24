@@ -46,7 +46,7 @@ class HatSploitModule(Module, HTTPClient):
         remote_host, remote_port = self.parse_options(self.options)
 
         self.output_process(f"Scanning {remote_host}...")
-        file = open(f'{self.config.path_config['data_path']}wordlists/directories.txt')
+        file = open(f"{self.config.path_config['data_path']}wordlists/directories.txt")
         directories = list(filter(None, file.read().split('\n')))
         file.close()
 
