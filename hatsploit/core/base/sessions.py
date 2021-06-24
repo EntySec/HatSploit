@@ -33,6 +33,10 @@ class Sessions:
         self.badges = Badges()
         self.local_storage = LocalStorage()
 
+    def get_all_sessions(self):
+        sessions = self.local_storage.get("sessions")
+        return sessions
+
     def add_session(self, session_platform, session_type, session_host, session_port, session_object):
         if not self.local_storage.get("sessions"):
             self.local_storage.set("sessions", dict())
