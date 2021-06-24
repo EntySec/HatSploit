@@ -24,7 +24,7 @@
 # SOFTWARE.
 #
 
-from hatsploit.core.modules.module import Modules
+from hatsploit.core.modules.modules import Modules
 
 
 class Modules(Modules):
