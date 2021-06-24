@@ -5,7 +5,7 @@
 # Current source: https://github.com/EntySec/HatSploit
 #
 
-from hatsploit.payload import Payload
+from hatsploit.base.payload import Payload
 
 
 class HatSploitPayload(Payload):

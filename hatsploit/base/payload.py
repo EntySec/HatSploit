@@ -24,34 +24,33 @@
 # SOFTWARE.
 #
 
-from hatsploit.core.base.storage import LocalStorage
+from hatsploit.core.cli.badges import Badges
+from hatsploit.core.cli.colors import Colors
+from hatsploit.core.cli.fmt import FMT
+from hatsploit.core.cli.parser import Parser
+from hatsploit.core.cli.tables import Tables
 
 
-class Plugins:
-    def __init__(self):
-        self.local_storage = LocalStorage()
+class Payload(FMT, Badges, Colors, Parser, Tables):
+    details = {
+        'Category': "",
+        'Name': "",
+        'Payload': "",
+        'Authors': [
+            ''
+        ],
+        'Description': "",
+        'Comments': [
+            ''
+        ],
+        'Platform': "",
+        'Risk': "low",
+        'Type': ""
+    }
 
-    def check_exist(self, name):
-        all_plugins = self.local_storage.get("plugins")
-        if all_plugins:
-            for database in all_plugins.keys():
-                plugins = all_plugins[database]
-                if name in plugins.keys():
-                    return True
-        return False
+    payload = ""
+    instructions = ""
+    session = None
 
-    def check_loaded(self, name):
-        loaded_plugins = self.local_storage.get("loaded_plugins")
-        if loaded_plugins:
-            if name in loaded_plugins:
-                return True
-        return False
-
-    def get_database(self, name):
-        all_plugins = self.local_storage.get("plugins")
-        if all_plugins:
-            for database in all_plugins.keys():
-                plugins = all_plugins[database]
-                if name in plugins.keys():
-                    return database
-        return None
+    def run(self):
+        pass

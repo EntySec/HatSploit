@@ -27,8 +27,8 @@
 import json
 import os
 
-from hatsploit.core.base.config import Config
-from hatsploit.core.base.storage import LocalStorage
+from hatsploit.base.config import Config
+from hatsploit.base.storage import LocalStorage
 from hatsploit.core.cli.badges import Badges
 
 

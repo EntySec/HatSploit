@@ -7,10 +7,10 @@
 
 import readline
 
-from hatsploit.core.base.config import Config
-from hatsploit.core.base.storage import GlobalStorage
-from hatsploit.core.base.storage import LocalStorage
-from hatsploit.command import Command
+from hatsploit.base.config import Config
+from hatsploit.base.storage import GlobalStorage
+from hatsploit.base.storage import LocalStorage
+from hatsploit.base.command import Command
 
 
 class HatSploitCommand(Command):

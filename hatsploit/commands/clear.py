@@ -5,7 +5,7 @@
 # Current source: https://github.com/EntySec/HatSploit
 #
 
-from hatsploit.command import Command
+from hatsploit.base.command import Command
 
 
 class HatSploitCommand(Command):

@@ -6,7 +6,7 @@
 #
 
 from hatsploit.core.base.execute import Execute
-from hatsploit.command import Command
+from hatsploit.base.command import Command
 
 
 class HatSploitCommand(Command):

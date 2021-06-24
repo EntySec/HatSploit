@@ -24,35 +24,34 @@
 # SOFTWARE.
 #
 
-from setuptools import setup, find_packages
+from hatsploit.base.storage import LocalStorage
 
-setup(name='hatsploit',
-      version='2.0.0',
-      description='Modular penetration testing platform that enables you to write, test, and execute exploit code.',
-      url='http://github.com/EntySec/HatSploit',
-      author='EntySec',
-      author_email='entysec@gmail.com',
-      license='MIT',
-      python_requires='>=3.7.0',
-      packages=find_packages(),
-      include_package_data=True,
-      entry_points={
-          "console_scripts": [
-                "hsf = hatsploit.hsf:main"
-          ]
-      },
-      classifiers=[
-          "Programming Language :: Python",
-          "Programming Language :: Python :: 3",
-          "Programming Language :: Python :: 3.8",
-      ],
-      install_requires=[
-          'pyyaml',
-          'requests',
-          'scapy',
-          'paramiko',
-          #'pyqt5',
-          'hatvenom @ git+http://github.com/EntySec/HatVenom'
-      ],
-      zip_safe=False
-)
+
+class Plugins:
+    def __init__(self):
+        self.local_storage = LocalStorage()
+
+    def check_exist(self, name):
+        all_plugins = self.local_storage.get("plugins")
+        if all_plugins:
+            for database in all_plugins.keys():
+                plugins = all_plugins[database]
+                if name in plugins.keys():
+                    return True
+        return False
+
+    def check_loaded(self, name):
+        loaded_plugins = self.local_storage.get("loaded_plugins")
+        if loaded_plugins:
+            if name in loaded_plugins:
+                return True
+        return False
+
+    def get_database(self, name):
+        all_plugins = self.local_storage.get("plugins")
+        if all_plugins:
+            for database in all_plugins.keys():
+                plugins = all_plugins[database]
+                if name in plugins.keys():
+                    return database
+        return None

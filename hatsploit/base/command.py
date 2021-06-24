@@ -30,28 +30,18 @@ from hatsploit.core.cli.fmt import FMT
 from hatsploit.core.cli.parser import Parser
 from hatsploit.core.cli.tables import Tables
 
-from hatsploit.core.base.config import Config
 
-
-class Session(FMT, Badges, Colors, Parser, Tables):
-    root_path = Config().path_config['root_path']
-    data_path = Config().path_config['data_path']
-    history_path = Config().path_config['history_path']
-    storage_path = Config().path_config['storage_path']
-
+class Command(FMT, Badges, Colors, Parser, Tables):
     details = {
-        'Platform': "",
-        'Type': ""
+        'Category': "",
+        'Name': "",
+        'Authors': [
+            ''
+        ],
+        'Description': "",
+        'Usage': "",
+        'MinArgs': 0
     }
 
-    def open(self, client):
-        pass
-
-    def close(self):
-        pass
-
-    def send_command(self, command, arguments=None, timeout=10):
-        return True, None
-
-    def interact(self):
+    def run(self, argc, argv):
         pass
