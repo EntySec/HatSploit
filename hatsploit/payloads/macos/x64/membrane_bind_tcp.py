@@ -71,7 +71,7 @@ class HatSploitPayload(Payload, StringTools):
         bind_port = self.xor_string(bind_port)
 
         self.output_process("Generating payload...")
-        with open(f'{self.config.path_config['data_path']}membrane/macos/x64/membrane', 'rb') as f:
+        with open(f"{self.config.path_config['data_path']}membrane/macos/x64/membrane", 'rb') as f:
             payload = f.read()
 
         return payload, f"bind '{bind_port}'", HatSploitSession
