@@ -24,9 +24,34 @@
 # SOFTWARE.
 #
 
+from PyQt5.QtWidgets import *
+from PyQt5.QtGui import *
+from PyQt5.QtCore import *
+
 from hatsploit.base.sessions import Sessions
 
 
-class SessionsGUI:
+class SessionsGUI(QMainWindow):
+    sessions = Sessions()
+
+    def window(self):
+        self.i = 0
+
+        self.listWidget = myListWidget()
+        self.listWidget.resize(640, 480)
+        self.listWidget.setWindowTitle('HatSploit Sessions')
+
+        self.listWidget.itemClicked.connect(self.listWidget.Clicked)
+        self.listWidget.show()
+
+        self.qTimer = QTimer()
+        self.qTimer.setInterval(1000)
+
+        self.qTimer.timeout.connect(self.get_sessions)
+        self.qTimer.start()
+
+    def get_sessions(self):
+        return
+
     def start(self):
-        pass
+        return
