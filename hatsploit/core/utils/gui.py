@@ -24,14 +24,10 @@
 # SOFTWARE.
 #
 
-from PyQt5.QtWidgets import *
-from PyQt5.QtGui import *
-from PyQt5.QtCore import *
-
 from hatsploit.base.sessions import Sessions
 
 
-class SessionsGUI(QMainWindow):
+class SessionsGUI():
     sessions = Sessions()
 
     def window(self):
