@@ -51,6 +51,7 @@ setup(name='hatsploit',
           'requests',
           'scapy',
           'paramiko',
+          'pyqt5',
           'hatvenom @ git+http://github.com/EntySec/HatVenom'
       ],
       zip_safe=False
