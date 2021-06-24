@@ -35,20 +35,7 @@ class SessionsGUI(QMainWindow):
     sessions = Sessions()
 
     def window(self):
-        self.i = 0
-
-        self.listWidget = myListWidget()
-        self.listWidget.resize(640, 480)
-        self.listWidget.setWindowTitle('HatSploit Sessions')
-
-        self.listWidget.itemClicked.connect(self.listWidget.Clicked)
-        self.listWidget.show()
-
-        self.qTimer = QTimer()
-        self.qTimer.setInterval(1000)
-
-        self.qTimer.timeout.connect(self.get_sessions)
-        self.qTimer.start()
+        return
 
     def get_sessions(self):
         return
