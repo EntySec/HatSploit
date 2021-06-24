@@ -30,7 +30,7 @@ import sys
 import threading
 import time
 
-from hatsploit.core.base.config import Config
+from hatsploit.base.config import Config
 from hatsploit.core.cli.badges import Badges
 from hatsploit.core.db.builder import Builder
 from hatsploit.core.db.importer import Importer

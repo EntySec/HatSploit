@@ -30,10 +30,10 @@ import sys
 import threading
 
 from hatsploit.core.base.exceptions import Exceptions
-from hatsploit.core.base.storage import LocalStorage
+from hatsploit.base.storage import LocalStorage
 from hatsploit.core.cli.badges import Badges
 from hatsploit.core.cli.tables import Tables
-from hatsploit.core.modules.modules import Modules
+from hatsploit.base.modules import Modules
 
 
 class Jobs:

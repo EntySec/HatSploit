@@ -32,7 +32,7 @@ import os
 import yaml
 import argparse
 
-from hatsploit.core.base.config import Config
+from hatsploit.base.config import Config
 
 config = Config()
 config.configure()

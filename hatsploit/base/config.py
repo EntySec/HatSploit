@@ -27,8 +27,8 @@
 import os
 import yaml
 
-from hatsploit.core.base.storage import GlobalStorage
-from hatsploit.core.base.storage import LocalStorage
+from hatsploit.base.storage import GlobalStorage
+from hatsploit.base.storage import LocalStorage
 from hatsploit.core.cli.badges import Badges
 
 
@@ -37,7 +37,7 @@ class Config:
         self.badges = Badges()
         self.local_storage = LocalStorage()
 
-        self.base_path = f'{os.path.dirname(__file__)}/../../'
+        self.base_path = f'{os.path.dirname(__file__)}/../'
         self.config_path = self.base_path + 'config/'
 
         self.db_config_file = self.config_path + 'db_config.yml'

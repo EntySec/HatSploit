@@ -5,7 +5,7 @@
 # Current source: https://github.com/EntySec/HatSploit
 #
 
-from hatsploit.module import Module
+from hatsploit.base.module import Module
 
 
 class HatSploitModule(Module):

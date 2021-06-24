@@ -6,7 +6,7 @@
 #
 
 from hatvenom import HatVenom
-from hatsploit.payload import Payload
+from hatsploit.base.payload import Payload
 
 
 class HatSploitPayload(Payload, HatVenom):

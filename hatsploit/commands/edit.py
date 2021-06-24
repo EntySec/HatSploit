@@ -7,10 +7,10 @@
 
 import os
 
-from hatsploit.core.base.storage import LocalStorage
-from hatsploit.core.base.config import Config
-from hatsploit.command import Command
-from hatsploit.core.modules.modules import Modules
+from hatsploit.base.storage import LocalStorage
+from hatsploit.base.config import Config
+from hatsploit.base.command import Command
+from hatsploit.base.modules import Modules
 
 
 class HatSploitCommand(Command):

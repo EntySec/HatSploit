@@ -24,7 +24,7 @@
 # SOFTWARE.
 #
 
-from hatsploit.core.base.sessions import Sessions
+from hatsploit.base.sessions import Sessions
 
 class SessionTools:
     sessions = Sessions()

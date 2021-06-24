@@ -5,11 +5,11 @@
 # Current source: https://github.com/EntySec/HatSploit
 #
 
-from hatsploit.payload import Payload
+from hatsploit.base.payload import Payload
 from hatsploit.utils.string import StringTools
 from hatsploit.utils.tcp import TCPClient
 
-from hatsploit.session import Session
+from hatsploit.base.session import Session
 from hatsploit.utils.telnet import TelnetClient
 
 
