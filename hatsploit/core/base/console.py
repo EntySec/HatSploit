@@ -25,6 +25,7 @@
 #
 
 import os
+import sys
 import readline
 
 from hatsploit.core.base.config import Config
