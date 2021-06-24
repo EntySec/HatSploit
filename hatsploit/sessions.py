@@ -27,18 +27,5 @@
 from hatsploit.core.base.sessions import Sessions
 
 
-class Sessions:
-    def __init__(self):
-        self.sessions = Sessions()
-
-    def get_all_sessions(self):
-        return self.sessions.get_all_sessions()
-
-    def get_session(self, session_platform, session_type, session_id):
-        return self.sessions.get_session(session_platform, session_type, session_id)
-
-    def close_session(self, session_platform, session_id):
-        self.sessions.close_session(session_platform, session_id)
-
-    def interact(self, session_platform, session_id):
-        self.sessions.spawn_interactive_connection(session_platform, session_id):
+class Sessions(Sessions):
+    pass
