@@ -1,8 +1,8 @@
 The HatSploit Framework is designed purely for good and not evil. 
 
-All HatSploit Framework modules are provided for educational purposes. 
+All HatSploit Framework functional are provided for educational purposes. 
 Adequate defenses can only be built by researching attack techniques available to malicious actors. 
-Using this modules against target systems without prior permission is illegal in most jurisdictions. 
+Using this functional against target systems without prior permission is illegal in most jurisdictions. 
 The authors are not liable for any damages from misuse of this information or code.
 
 If you are planning on using HatSploit Framework for malicious purposes that are not authorized by the company 
