@@ -13,7 +13,7 @@ class HatSploitPayload(Payload, TCPClient):
     details = {
         'Category': "single",
         'Name': "AppleScript Reverse TCP",
-        'Payload': "unix/generic/applescript_reverse_tcp",
+        'Payload': "macos/generic/applescript_reverse_tcp",
         'Authors': [
             'Ivan Nikolsky (enty8080)'
         ],
