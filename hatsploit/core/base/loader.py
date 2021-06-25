@@ -54,8 +54,8 @@ class Loader:
             time.sleep(1)
 
     def load_components(self):
-        if not self.builder.check_stdalone_built() and self.build:
-            self.builder.build_stdalone()
+        if not self.builder.check_base_built() and self.build:
+            self.builder.build_base()
         self.importer.import_all(self.build)
 
     def load_everything(self):
@@ -63,8 +63,8 @@ class Loader:
 
     def load_all(self):
         self.load_update_process()
-        if not self.builder.check_stdalone_built():
-            build = self.badges.input_question("Do you want to build and connect stdalone databases? [y/n] ")
+        if not self.builder.check_base_built():
+            build = self.badges.input_question("Do you want to build and connect base databases? [y/n] ")
             if build.lower() in ['y', 'yes']:
                 self.build = True
             else:
