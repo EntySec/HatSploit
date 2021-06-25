@@ -54,8 +54,8 @@ class Loader:
             time.sleep(1)
 
     def load_components(self):
-        if not self.builder.check_built() and self.build:
-            self.builder.build_all_stdalone()
+        if not self.builder.check_stdalone_built() and self.build:
+            self.builder.build_stdalone()
         self.importer.import_all(self.build)
 
     def load_everything(self):
