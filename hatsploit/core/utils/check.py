@@ -40,7 +40,7 @@ class Check:
 
     def check_modules(self):
         one_fail = False
-        self.badges.output_process("Checking all stdalone modules...")
+        self.badges.output_process("Checking all base modules...")
 
         modules_path = os.path.split(
             self.config.path_config['modules_path']
@@ -63,7 +63,7 @@ class Check:
 
     def check_payloads(self):
         one_fail = False
-        self.badges.output_process("Checking all stdalone payloads...")
+        self.badges.output_process("Checking all base payloads...")
 
         payloads_path = os.path.split(
             self.config.path_config['payloads_path']
@@ -87,7 +87,7 @@ class Check:
 
     def check_plugins(self):
         one_fail = False
-        self.badges.output_process("Checking all stdalone plugins...")
+        self.badges.output_process("Checking all base plugins...")
 
         plugins_path = os.path.split(
             self.config.path_config['plugins_path']
