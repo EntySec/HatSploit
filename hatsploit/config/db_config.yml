@@ -22,7 +22,7 @@
 # SOFTWARE.
 #
 
-base_dbs:
+stdalone_dbs:
     modules_database_name: "stdalone_modules"
     payloads_database_name: "stdalone_payloads"
     plugins_database_name: "stdalone_plugins"
