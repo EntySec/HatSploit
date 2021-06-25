@@ -81,7 +81,7 @@ class Payloads:
                                                 self.local_storage.get("current_module_number")).details['Module']
         return None
 
-    def import_payload(self, name):
+    def import_payload(self, module_name, name):
         payloads = self.get_payload_object(name)
         try:
             payload_object = self.importer.import_payload(payloads['Path'])
@@ -136,7 +136,7 @@ class Payloads:
         payloads = self.get_payload_object(name)
 
         if not self.check_imported(module_name, name):
-            payload_object = self.import_payload(name)
+            payload_object = self.import_payload(module_name, name)
             if not payload_object:
                 self.badges.output_error("Failed to select payload from database!")
                 return False
