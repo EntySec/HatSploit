@@ -6,7 +6,7 @@
 #
 
 from hatvenom import HatVenom
-from hatsploit.base.payload import Payload
+from hatsploit.lib.payload import Payload
 from hatsploit.utils.tcp import TCPClient
 
 

@@ -28,10 +28,10 @@ import os
 import subprocess
 import sys
 
-from hatsploit.base.storage import LocalStorage
+from hatsploit.lib.storage import LocalStorage
 from hatsploit.core.cli.badges import Badges
 from hatsploit.core.cli.fmt import FMT
-from hatsploit.base.modules import Modules
+from hatsploit.lib.modules import Modules
 
 
 class Execute:

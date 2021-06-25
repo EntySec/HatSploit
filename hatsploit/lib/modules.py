@@ -26,12 +26,12 @@
 
 import os
 
-from hatsploit.base.sessions import Sessions
-from hatsploit.base.storage import LocalStorage
+from hatsploit.lib.sessions import Sessions
+from hatsploit.lib.storage import LocalStorage
 from hatsploit.core.base.types import Types
 from hatsploit.core.cli.badges import Badges
 from hatsploit.core.db.importer import Importer
-from hatsploit.base.payloads import Payloads
+from hatsploit.lib.payloads import Payloads
 
 
 class Modules:

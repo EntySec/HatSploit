@@ -27,7 +27,7 @@
 import copy
 import os
 
-from hatsploit.base.storage import LocalStorage
+from hatsploit.lib.storage import LocalStorage
 from hatsploit.core.cli.badges import Badges
 from hatsploit.core.db.importer import Importer
 

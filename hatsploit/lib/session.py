@@ -30,7 +30,7 @@ from hatsploit.core.cli.fmt import FMT
 from hatsploit.core.cli.parser import Parser
 from hatsploit.core.cli.tables import Tables
 
-from hatsploit.base.config import Config
+from hatsploit.lib.config import Config
 
 
 class Session(FMT, Badges, Colors, Parser, Tables):

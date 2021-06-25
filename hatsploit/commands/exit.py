@@ -7,8 +7,8 @@
 
 import sys
 
-from hatsploit.base.jobs import Jobs
-from hatsploit.base.command import Command
+from hatsploit.lib.jobs import Jobs
+from hatsploit.lib.command import Command
 
 
 class HatSploitCommand(Command):

@@ -5,9 +5,9 @@
 # Current source: https://github.com/EntySec/HatSploit
 #
 
-from hatsploit.base.storage import LocalStorage
-from hatsploit.base.command import Command
-from hatsploit.base.plugins import Plugins
+from hatsploit.lib.storage import LocalStorage
+from hatsploit.lib.command import Command
+from hatsploit.lib.plugins import Plugins
 
 
 class HatSploitCommand(Command):

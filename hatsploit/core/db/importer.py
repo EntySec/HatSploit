@@ -33,9 +33,9 @@ import time
 
 import importlib.util
 
-from hatsploit.base.config import Config
+from hatsploit.lib.config import Config
 from hatsploit.core.base.exceptions import Exceptions
-from hatsploit.base.storage import LocalStorage
+from hatsploit.lib.storage import LocalStorage
 from hatsploit.core.cli.badges import Badges
 from hatsploit.core.db.db import DB
 

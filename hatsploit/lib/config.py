@@ -27,8 +27,8 @@
 import os
 import yaml
 
-from hatsploit.base.storage import GlobalStorage
-from hatsploit.base.storage import LocalStorage
+from hatsploit.lib.storage import GlobalStorage
+from hatsploit.lib.storage import LocalStorage
 from hatsploit.core.cli.badges import Badges
 
 

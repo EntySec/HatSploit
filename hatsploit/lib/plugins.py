@@ -24,7 +24,7 @@
 # SOFTWARE.
 #
 
-from hatsploit.base.storage import LocalStorage
+from hatsploit.lib.storage import LocalStorage
 
 
 class Plugins:
