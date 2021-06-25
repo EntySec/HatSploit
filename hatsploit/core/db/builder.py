@@ -45,7 +45,7 @@ class Builder:
         self.importer = Importer()
         self.local_storage = LocalStorage()
 
-    def check_built(self):
+    def check_stdalone_built(self):
         if (os.path.exists(self.config.path_config['db_path'] +
                         self.config.db_config['base_dbs']['modules_database']) and
         os.path.exists(self.config.path_config['db_path'] +
@@ -55,16 +55,20 @@ class Builder:
             return True
         return False
 
-    def build_directory(self):
-        if not os.path.exists(self.config.path_config['db_path']):
-            os.mkdir(self.config.path_config['db_path'])
+    def build_stdalone(self):
+        if not self.check_stdalone_built():
+            if not os.path.exists(self.config.path_config['db_path']):
+                os.mkdir(self.config.path_config['db_path'])
 
-    def build_all(self):
-        self.build_directory()
-
-        self.build_modules_database()
-        self.build_payloads_database()
-        self.build_plugins_database()
+            self.build_modules_database(self.config.path_config['modules_path'],
+                                        (self.config.path_config['db_path'] + 
+                                         self.config.db_config['base_dbs']['modules_database']))
+            self.build_payloads_database(self.config.path_config['payloads_path'],
+                                        (self.config.path_config['db_path'] + 
+                                         self.config.db_config['base_dbs']['payloads_database']))
+            self.build_plugins_database(self.config.path_config['plugins_path'],
+                                        (self.config.path_config['db_path'] + 
+                                         self.config.db_config['base_dbs']['plugins_database']))
 
     def recursive_update(self, d, u):
         for k, v in u.items():
@@ -78,18 +82,15 @@ class Builder:
                 d = {k: u[k]}
         return d
 
-    def build_payloads_database(self):
-        database_path = (self.config.path_config['db_path'] +
-                        self.config.db_config['base_dbs']['payloads_database'])
+    def build_payloads_database(self, input_path, output_path):
+        database_path = output_path
         database = {
             "__database__": {
                 "type": "payloads"
             }
         }
 
-        payloads_path = os.path.split(
-            self.config.path_config['payloads_path']
-        )[0]
+        payloads_path = os.path.normpath(input_path)
         for dest, _, files in os.walk(payloads_path):
             for file in files:
                 if file.endswith('.py') and file != '__init__.py':
@@ -123,18 +124,15 @@ class Builder:
         with open(database_path, 'w') as f:
             json.dump(database, f)
 
-    def build_modules_database(self):
-        database_path = (self.config.path_config['db_path'] +
-                        self.config.db_config['base_dbs']['modules_database'])
+    def build_modules_database(self, input_path, output_path):
+        database_path = output_path
         database = {
             "__database__": {
                 "type": "modules"
             }
         }
 
-        modules_path = os.path.split(
-            self.config.path_config['modules_path']
-        )[0]
+        modules_path = os.path.normpath(input_path)
         for dest, _, files in os.walk(modules_path):
             for file in files:
                 if file.endswith('.py') and file != '__init__.py':
@@ -165,18 +163,15 @@ class Builder:
         with open(database_path, 'w') as f:
             json.dump(database, f)
 
-    def build_plugins_database(self):
-        database_path = (self.config.path_config['db_path'] +
-                        self.config.db_config['base_dbs']['plugins_database'])
+    def build_plugins_database(self, input_path, output_path):
+        database_path = output_path
         database = {
             "__database__": {
                 "type": "plugins"
             }
         }
 
-        plugins_path = os.path.split(
-            self.config.path_config['plugins_path']
-        )[0]
+        plugins_path = os.path.normpath(input_path)
         for dest, _, files in os.walk(plugins_path):
             for file in files:
                 if file.endswith('.py') and file != '__init__.py':

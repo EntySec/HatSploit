@@ -7,18 +7,21 @@
 
 from hatsploit.base.storage import LocalStorage
 from hatsploit.core.db.db import DB
+from hatsploit.core.db.builder import Builder
 from hatsploit.base.command import Command
 
 
 class HatSploitCommand(Command):
     db = DB()
+    builder = Builder()
     local_storage = LocalStorage()
 
     usage = ""
     usage += "payloads_db <option> [arguments]\n\n"
-    usage += "  -l, --list                   List all connected payloads databases.\n"
-    usage += "  -d, --disconnect <name>      Disconnect specified payloads database.\n"
-    usage += "  -c, --connect <name> <path>  Connect new payloads database.\n"
+    usage += "  -l, --list                        List all connected payloads databases.\n"
+    usage += "  -d, --disconnect <name>           Disconnect specified payloads database.\n"
+    usage += "  -c, --connect <name> <path>       Connect new payloads database.\n"
+    usage += "  -b, --build <path> <output_path>  Build payloads database from payloads path.\n"
 
     details = {
         'Category': "database",
@@ -50,6 +53,11 @@ class HatSploitCommand(Command):
                 self.output_usage(self.details['Usage'])
             else:
                 self.db.disconnect_payloads_database(argv[1])
+        elif choice in ['-b', '--build']:
+            if argc < 3:
+                self.output_usage(self.details['Usage'])
+            else:
+                self.builder.build_payloads_database(argv[1], argv[2])
         elif choice in ['-c', '--connect']:
             if argc < 3:
                 self.output_usage(self.details['Usage'])
