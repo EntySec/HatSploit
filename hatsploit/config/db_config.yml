@@ -23,6 +23,9 @@
 #
 
 base_dbs:
-    payloads_database: "stdalone_payloads.json"
+    modules_database_name: "stdalone_modules"
+    payloads_database_name: "stdalone_payloads"
+    plugins_database_name: "stdalone_plugins"
     modules_database: "stdalone_modules.json"
+    payloads_database: "stdalone_payloads.json"
     plugins_database: "stdalone_plugins.json"
