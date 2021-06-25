@@ -5,8 +5,8 @@
 # Current source: https://github.com/EntySec/HatSploit
 #
 
-from hatsploit.base.module import Module
-from hatsploit.base.config import Config
+from hatsploit.lib.module import Module
+from hatsploit.lib.config import Config
 from hatsploit.utils.http import HTTPClient
 
 

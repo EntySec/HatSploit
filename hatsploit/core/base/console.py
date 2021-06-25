@@ -28,16 +28,16 @@ import os
 import sys
 import readline
 
-from hatsploit.base.config import Config
+from hatsploit.lib.config import Config
 from hatsploit.core.base.exceptions import Exceptions
 from hatsploit.core.base.execute import Execute
 from hatsploit.core.base.io import IO
-from hatsploit.base.jobs import Jobs
+from hatsploit.lib.jobs import Jobs
 from hatsploit.core.base.loader import Loader
-from hatsploit.base.storage import LocalStorage
+from hatsploit.lib.storage import LocalStorage
 from hatsploit.core.cli.badges import Badges
 from hatsploit.core.cli.colors import Colors
-from hatsploit.base.modules import Modules
+from hatsploit.lib.modules import Modules
 from hatsploit.core.utils.ui.banner import Banner
 from hatsploit.core.utils.ui.tip import Tip
 

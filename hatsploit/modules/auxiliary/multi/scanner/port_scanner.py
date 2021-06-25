@@ -7,7 +7,7 @@
 
 import time
 
-from hatsploit.base.module import Module
+from hatsploit.lib.module import Module
 from hatsploit.utils.tcp import TCPClient
 
 

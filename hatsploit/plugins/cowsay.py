@@ -7,7 +7,7 @@
 
 import textwrap
 
-from hatsploit.base.plugin import Plugin
+from hatsploit.lib.plugin import Plugin
 
 
 class HatSploitPlugin(Plugin):

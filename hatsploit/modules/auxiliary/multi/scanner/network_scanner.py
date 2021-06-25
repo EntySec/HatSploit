@@ -7,7 +7,7 @@
 
 import scapy.all
 
-from hatsploit.base.module import Module
+from hatsploit.lib.module import Module
 
 
 class HatSploitModule(Module):

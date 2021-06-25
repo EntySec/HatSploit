@@ -28,11 +28,11 @@ import collections
 import json
 import os
 
-from hatsploit.base.modules import Modules
-from hatsploit.base.payloads import Payloads
-from hatsploit.base.config import Config
+from hatsploit.lib.modules import Modules
+from hatsploit.lib.payloads import Payloads
+from hatsploit.lib.config import Config
 from hatsploit.core.db.importer import Importer
-from hatsploit.base.storage import LocalStorage
+from hatsploit.lib.storage import LocalStorage
 from hatsploit.core.cli.badges import Badges
 
 

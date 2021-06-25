@@ -27,7 +27,7 @@
 import os
 import random
 
-from hatsploit.base.config import Config
+from hatsploit.lib.config import Config
 from hatsploit.core.cli.badges import Badges
 from hatsploit.core.cli.colors import Colors
 from hatsploit.core.cli.parser import Parser

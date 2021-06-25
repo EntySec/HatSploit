@@ -29,7 +29,7 @@ import shutil
 
 import requests
 
-from hatsploit.base.config import Config
+from hatsploit.lib.config import Config
 from hatsploit.core.cli.badges import Badges
 
 

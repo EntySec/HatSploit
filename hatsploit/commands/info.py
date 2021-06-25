@@ -5,9 +5,9 @@
 # Current source: https://github.com/EntySec/HatSploit
 #
 
-from hatsploit.base.command import Command
+from hatsploit.lib.command import Command
 
-from hatsploit.base.modules import Modules
+from hatsploit.lib.modules import Modules
 
 
 class HatSploitCommand(Command):

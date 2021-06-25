@@ -29,13 +29,13 @@ import requests
 import binascii
 import threading
 
-from hatsploit.base.sessions import Sessions
-from hatsploit.base.storage import LocalStorage
+from hatsploit.lib.sessions import Sessions
+from hatsploit.lib.storage import LocalStorage
 from hatsploit.core.cli.badges import Badges
-from hatsploit.base.modules import Modules
+from hatsploit.lib.modules import Modules
 from hatsploit.core.utils.server import Server
 
-from hatsploit.base.session import Session
+from hatsploit.lib.session import Session
 from hatsploit.utils.telnet import TelnetClient
 
 
