@@ -9,7 +9,9 @@ from hatsploit.base.module import Module
 from hatsploit.base.sessions import Sessions
 
 
-class HatSploitModule(Module, Sessions):
+class HatSploitModule(Module):
+    sessions = Sessions()
+
     details = {
         'Name': "macOS Shell Suspend",
         'Module': "post/macos/shell/suspend",
@@ -27,7 +29,7 @@ class HatSploitModule(Module, Sessions):
     options = {
         'SESSION': {
             'Description': "Session to run on.",
-            'Value': None,
+            'Value': 0,
             'Type': "session",
             'Required': True
         }
