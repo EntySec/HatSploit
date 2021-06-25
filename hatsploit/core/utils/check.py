@@ -42,22 +42,19 @@ class Check:
         one_fail = False
         self.badges.output_process("Checking all base modules...")
 
-        modules_path = os.path.split(
-            self.config.path_config['modules_path']
-        )[0]
+        modules_path = os.path.normpath(self.config.path_config['modules_path'])
         for dest, _, files in os.walk(modules_path):
             for file in files:
                 if file.endswith('.py') and file != '__init__.py':
                     module = dest + '/' + file[:-3]
-                    module_name = module[len(f"{modules_path}/"):]
 
                     try:
                         module_object = self.importer.import_module(module)
                         keys = ['Name', 'Module', 'Authors', 'Description', 'Comments', 'Platform', 'Risk']
                         assert(all(key in module_object.details for key in keys))
-                        self.badges.output_success(f"{module_name}: OK")
+                        self.badges.output_success(f"{module}: OK")
                     except Exception:
-                        self.badges.output_error(f"{module_name}: FAIL")
+                        self.badges.output_error(f"{module}: FAIL")
                         one_fail = True
         return one_fail
 
@@ -65,23 +62,20 @@ class Check:
         one_fail = False
         self.badges.output_process("Checking all base payloads...")
 
-        payloads_path = os.path.split(
-            self.config.path_config['payloads_path']
-        )[0]
+        payloads_path = os.path.normpath(self.config.path_config['payloads_path'])
         for dest, _, files in os.walk(payloads_path):
             for file in files:
                 if file.endswith('.py') and file != '__init__.py':
                     payload = dest + '/' + file[:-3]
-                    payload_name = payload[len(f"{payloads_path}/"):]
 
                     try:
                         payload_object = self.importer.import_payload(payload)
                         keys = ['Category', 'Name', 'Payload', 'Authors', 'Description',
                                 'Comments', 'Architecture', 'Platform', 'Risk', 'Type']
                         assert(all(key in payload_object.details for key in keys))
-                        self.badges.output_success(f"{payload_name}: OK")
+                        self.badges.output_success(f"{payload}: OK")
                     except Exception:
-                        self.badges.output_error(f"{payload_name}: FAIL")
+                        self.badges.output_error(f"{payload}: FAIL")
                         one_fail = True
         return one_fail
 
@@ -89,22 +83,19 @@ class Check:
         one_fail = False
         self.badges.output_process("Checking all base plugins...")
 
-        plugins_path = os.path.split(
-            self.config.path_config['plugins_path']
-        )[0]
+        plugins_path = os.path.normpath(self.config.path_config['plugins_path'])
         for dest, _, files in os.walk(plugins_path):
             for file in files:
                 if file.endswith('.py') and file != '__init__.py':
                     plugin = dest + '/' + file[:-3]
-                    plugin_name = plugin[len(f"{plugins_path}/"):]
 
                     try:
                         plugin_object = self.importer.import_plugin(plugin)
                         keys = ['Name', 'Authors', 'Description', 'Comments']
                         assert(all(key in plugin_object.details for key in keys))
-                        self.badges.output_success(f"{plugin_name}: OK")
+                        self.badges.output_success(f"{plugin}: OK")
                     except Exception:
-                        self.badges.output_error(f"{plugin_name}: FAIL")
+                        self.badges.output_error(f"{plugin}: FAIL")
                         one_fail = True
         return one_fail
 
