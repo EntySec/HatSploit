@@ -132,7 +132,7 @@ class Payloads:
                     return imported_payloads[current_module_name][name]
         return None
 
-    def add_payload(self, name):
+    def add_payload(self, module_name, name):
         payloads = self.get_payload_object(name)
 
         if not self.check_imported(module_name, name):
