@@ -66,7 +66,7 @@ class Sessions:
         self.local_storage.update("sessions", sessions)
         return session_id
 
-    def check_session_exist(self, session_platform, session_id):
+    def check_exist(self, session_platform, session_id):
         sessions = self.local_storage.get("sessions")
         if sessions:
             if session_platform in sessions.keys():
