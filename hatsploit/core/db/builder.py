@@ -56,7 +56,7 @@ class Builder:
         return False
 
     def build_base(self):
-        if not self.check_stdalone_built():
+        if not self.check_base_built():
             if not os.path.exists(self.config.path_config['db_path']):
                 os.mkdir(self.config.path_config['db_path'])
 
