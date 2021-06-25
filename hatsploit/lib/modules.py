@@ -193,7 +193,7 @@ class Modules:
                         valid += 1
 
                     if valid == 4:
-                        if not self.payloads.add_payload(value):
+                        if not self.payloads.add_payload(module_name, value):
                             self.badges.output_error("Invalid payload, expected valid payload!")
                             return
                         self.badges.output_information(option + " ==> " + value)
@@ -269,7 +269,7 @@ class Modules:
                     self.badges.output_process("Using default payload " + payload_name + "...")
 
                     if self.payloads.check_exist(payload_name):
-                        if self.payloads.add_payload(payload_name):
+                        if self.payloads.add_payload(name, payload_name):
                             self.add_to_global(module_object)
                         return
                     self.badges.output_error("Invalid default payload!")
