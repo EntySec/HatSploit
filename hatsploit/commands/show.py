@@ -30,7 +30,7 @@ class HatSploitCommand(Command):
     def show_plugins(self):
         all_plugins = self.local_storage.get("plugins")
         headers = ("Number", "Name", "Description")
-        for database in all_plugins.keys():
+        for database in sorted(all_plugins.keys()):
             number = 0
             plugins_data = list()
             plugins = all_plugins[database]
@@ -42,31 +42,28 @@ class HatSploitCommand(Command):
     def show_modules(self, information):
         all_modules = self.local_storage.get("modules")
         headers = ("Number", "Module", "Risk", "Description")
-        for database in all_modules.keys():
+        for database in sorted(all_modules.keys()):
             number = 0
             modules_data = list()
-            modules = all_modules[database][information]
-            for platform in sorted(modules.keys()):
-                for module in sorted(modules[platform].keys()):
-                    modules_data.append((number, modules[platform][module]['Module'], modules[platform][module]['Risk'],
-                                         modules[platform][module]['Description']))
+            modules = all_modules[database]
+            for module in sorted(modules.keys()):
+                if information == module.split('/')[0]:
+                    modules_data.append((number, modules[module]['Module'], modules[module]['Risk'],
+                                         modules[module]['Description']))
                     number += 1
             self.print_table(information.title() + " Modules (" + database + ")", headers, *modules_data)
 
     def show_payloads(self):
-        payloads = self.local_storage.get("payloads")
+        all_payloads = self.local_storage.get("payloads")
         headers = ("Number", "Category", "Payload", "Risk", "Description")
-
-        for database in sorted(payloads.keys()):
+        for database in sorted(all_payloads.keys()):
             number = 0
             payloads_data = list()
-            for platform in sorted(payloads[database].keys()):
-                for architecture in sorted(payloads[database][platform].keys()):
-                    for payload in sorted(payloads[database][platform][architecture].keys()):
-                        current_payload = payloads[database][platform][architecture][payload]
-                        payloads_data.append((number, current_payload['Category'], current_payload['Payload'],
-                                              current_payload['Risk'], current_payload['Description']))
-                        number += 1
+            payloads = all_payloads[database]
+            for payload in sorted(payloads.keys()):
+                payloads_data.append((number, payloads[payload]['Category'], payloads[payload]['Payload'],
+                                      payloads[payload]['Risk'], payloads[payload]['Description']))
+                number += 1
             self.print_table("Payloads (" + database + ")", headers, *payloads_data)
 
     def show_options(self):
@@ -149,8 +146,10 @@ class HatSploitCommand(Command):
         informations = list()
         if modules:
             for database in sorted(modules.keys()):
-                for category in sorted(modules[database].keys()):
-                    informations.append(category)
+                for module in sorted(modules[database].keys()):
+                    info = module.split('/')[0]
+                    if info not in informations:
+                        informations.append(info)
 
         if payloads:
             if information == "payloads":

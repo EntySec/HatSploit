@@ -24,7 +24,6 @@
 # SOFTWARE.
 #
 
-import collections
 import json
 import os
 
@@ -70,18 +69,6 @@ class Builder:
                                         (self.config.path_config['db_path'] + 
                                          self.config.db_config['base_dbs']['plugins_database']))
 
-    def recursive_update(self, d, u):
-        for k, v in u.items():
-            if isinstance(d, collections.abc.Mapping):
-                if isinstance(v, collections.abc.Mapping):
-                    r = self.recursive_update(d.get(k, {}), v)
-                    d[k] = r
-                else:
-                    d[k] = u[k]
-            else:
-                d = {k: u[k]}
-        return d
-
     def build_payloads_database(self, input_path, output_path):
         database_path = output_path
         database = {
@@ -95,31 +82,28 @@ class Builder:
             for file in files:
                 if file.endswith('.py') and file != '__init__.py':
                     payload = dest + '/' + file[:-3]
-                    payload_name = payload[len(f"{payloads_path}/"):]
 
                     try:
                         payload_object = self.importer.import_payload(payload)
-                        self.recursive_update(database, {
-                            self.payloads.get_platform(payload_name): {
-                                self.payloads.get_architecture(payload_name): {
-                                    self.payloads.get_name(payload_name): {
-                                        "Path": payload,
-                                        "Category": payload_object.details['Category'],
-                                        "Name": payload_object.details['Name'],
-                                        "Payload": payload_object.details['Payload'],
-                                        "Authors": payload_object.details['Authors'],
-                                        "Description": payload_object.details['Description'],
-                                        "Comments": payload_object.details['Comments'],
-                                        "Architecture": payload_object.details['Architecture'],
-                                        "Platform": payload_object.details['Platform'],
-                                        "Risk": payload_object.details['Risk'],
-                                        "Type": payload_object.details['Type']
-                                    }
-                                }
+                        payload_name = payload_object.details['Payload']
+
+                        database.update({
+                            payload_name: {
+                                "Path": payload,
+                                "Category": payload_object.details['Category'],
+                                "Name": payload_object.details['Name'],
+                                "Payload": payload_object.details['Payload'],
+                                "Authors": payload_object.details['Authors'],
+                                "Description": payload_object.details['Description'],
+                                "Comments": payload_object.details['Comments'],
+                                "Architecture": payload_object.details['Architecture'],
+                                "Platform": payload_object.details['Platform'],
+                                "Risk": payload_object.details['Risk'],
+                                "Type": payload_object.details['Type']
                             }
                         })
                     except Exception:
-                        self.badges.output_error(f"Failed to add {payload_name} to payloads database!")
+                        self.badges.output_error(f"Failed to add {payload} to payloads database!")
 
         with open(database_path, 'w') as f:
             json.dump(database, f)
@@ -137,28 +121,25 @@ class Builder:
             for file in files:
                 if file.endswith('.py') and file != '__init__.py':
                     module = dest + '/' + file[:-3]
-                    module_name = module[len(f"{modules_path}/"):]
 
                     try:
                         module_object = self.importer.import_module(module)
-                        self.recursive_update(database, {
-                            self.modules.get_category(module_name): {
-                                self.modules.get_platform(module_name): {
-                                    self.modules.get_name(module_name): {
-                                        "Path": module,
-                                        "Name": module_object.details['Name'],
-                                        "Module": module_object.details['Module'],
-                                        "Authors": module_object.details['Authors'],
-                                        "Description": module_object.details['Description'],
-                                        "Comments": module_object.details['Comments'],
-                                        "Platform": module_object.details['Platform'],
-                                        "Risk": module_object.details['Risk']
-                                    }
-                                }
+                        module_name = module_object.details['Module']
+
+                        database.update({
+                            module_name: {
+                                "Path": module,
+                                "Name": module_object.details['Name'],
+                                "Module": module_object.details['Module'],
+                                "Authors": module_object.details['Authors'],
+                                "Description": module_object.details['Description'],
+                                "Comments": module_object.details['Comments'],
+                                "Platform": module_object.details['Platform'],
+                                "Risk": module_object.details['Risk']
                             }
                         })
                     except Exception:
-                        self.badges.output_error(f"Failed to add {module_name} to modules database!")
+                        self.badges.output_error(f"Failed to add {module} to modules database!")
 
         with open(database_path, 'w') as f:
             json.dump(database, f)
@@ -176,11 +157,12 @@ class Builder:
             for file in files:
                 if file.endswith('.py') and file != '__init__.py':
                     plugin = dest + '/' + file[:-3]
-                    plugin_name = plugin[len(f"{plugins_path}/"):]
 
                     try:
                         plugin_object = self.importer.import_plugin(plugin)
-                        self.recursive_update(database, {
+                        plugin_name = plugin_object.details['Name']
+
+                        database.update({
                             plugin_name: {
                                 "Path": plugin,
                                 "Name": plugin_object.details['Name'],
@@ -190,7 +172,7 @@ class Builder:
                             }
                         })
                     except Exception:
-                        self.badges.output_error(f"Failed to add {plugin_name} to plugins database!")
+                        self.badges.output_error(f"Failed to add {plugin} to plugins database!")
 
         with open(database_path, 'w') as f:
             json.dump(database, f)

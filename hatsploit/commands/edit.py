@@ -32,10 +32,6 @@ class HatSploitCommand(Command):
     def run(self, argc, argv):
         module = argv[0]
 
-        module_category = self.modules.get_category(module)
-        module_platform = self.modules.get_platform(module)
-        module_name = self.modules.get_name(module)
-
         try:
             if not os.environ['EDITOR']:
                 self.output_warning("Shell variable EDITOR not set.")
@@ -51,7 +47,7 @@ class HatSploitCommand(Command):
                 database = self.modules.get_database(module)
                 module_path = self.local_storage.get(
                     "modules"
-                )[database][module_category][module_platform][module_name]['Path']
+                )[database][module]['Path']
                 edit_mode = editor + " " + self.config.path_config['root_path'] + module_path
                 self.execute.execute_system(edit_mode)
             else:

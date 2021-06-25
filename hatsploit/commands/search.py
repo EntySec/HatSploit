@@ -45,43 +45,37 @@ class HatSploitCommand(Command):
                 self.print_table("Plugins (" + database + ")", headers, *plugins_data)
 
     def show_modules(self, keyword):
-        modules = self.local_storage.get("modules")
+        all_modules = self.local_storage.get("modules")
         headers = ("Number", "Module", "Risk", "Description")
-        for database in modules.keys():
+        for database in all_modules.keys():
             number = 0
             modules_data = list()
-            for information in modules[database].keys():
-                for platform in sorted(modules[database][information].keys()):
-                    for module in sorted(modules[database][information][platform].keys()):
-                        current_module = modules[database][information][platform]
-                        if keyword in information + '/' + platform + '/' + module or keyword in current_module[module]['Description']:
-                            name = current_module[module]['Module'].replace(keyword, self.RED + keyword + self.END)
-                            description = current_module[module]['Description'].replace(keyword, self.RED + keyword + self.END)
+            modules = all_modules[database]
+            for module in sorted(modules.keys()):
+                if keyword in module or keyword in modules[module]['Description']:
+                    name = module.replace(keyword, self.RED + keyword + self.END)
+                    description = modules[module]['Description'].replace(keyword, self.RED + keyword + self.END)
 
-                            modules_data.append((number, name, current_module[module]['Risk'],
-                                                description))
-                            number += 1
+                    modules_data.append((number, name, modules[module]['Risk'], description))
+                    number += 1
             if modules_data:
                 self.print_table("Modules (" + database + ")", headers, *modules_data)
 
     def show_payloads(self, keyword):
-        payloads = self.local_storage.get("payloads")
+        all_payloads = self.local_storage.get("payloads")
         headers = ("Number", "Category", "Payload", "Risk", "Description")
-
-        for database in sorted(payloads.keys()):
+        for database in all_payloads.keys():
             number = 0
             payloads_data = list()
-            for platform in sorted(payloads[database].keys()):
-                for architecture in sorted(payloads[database][platform].keys()):
-                    for payload in sorted(payloads[database][platform][architecture].keys()):
-                        current_payload = payloads[database][platform][architecture][payload]
-                        if keyword in platform + '/' + architecture + '/' + payload or keyword in current_payload['Description']:
-                            name = current_payload['Payload'].replace(keyword, self.RED + keyword + self.END)
-                            description = current_payload['Description'].replace(keyword, self.RED + keyword + self.END)
+            payloads = all_payloads[database]
+            for payload in sorted(payloads.keys()):
+                if keyword in payload or keyword in payloads[payload]['Description']:
+                    name = payload.replace(keyword, self.RED + keyword + self.END)
+                    description = payloads[payload]['Description'].replace(keyword, self.RED + keyword + self.END)
 
-                            payloads_data.append((number, current_payload['Category'], name,
-                                                current_payload['Risk'], description))
-                            number += 1
+                    payloads_data.append((number, payloads[payload]['Category'], name,
+                                          payloads[payload]['Risk'], description))
+                    number += 1
             if payloads_data:
                 self.print_table("Payloads (" + database + ")", headers, *payloads_data)
 

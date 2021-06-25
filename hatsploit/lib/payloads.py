@@ -24,7 +24,6 @@
 # SOFTWARE.
 #
 
-import copy
 import os
 
 from hatsploit.lib.storage import LocalStorage
@@ -39,70 +38,30 @@ class Payloads:
         self.badges = Badges()
 
     def check_exist(self, name):
-        if self.check_style(name):
-            all_payloads = self.local_storage.get("payloads")
-            if all_payloads:
-                for database in all_payloads.keys():
-                    payloads = all_payloads[database]
+        all_payloads = self.local_storage.get("payloads")
+        if all_payloads:
+            for database in all_payloads.keys():
+                payloads = all_payloads[database]
 
-                    platform = self.get_platform(name)
-                    architecture = self.get_architecture(name)
-
-                    if platform in payloads.keys():
-                        if architecture in payloads[platform].keys():
-                            payload = self.get_name(name)
-                            if payload in payloads[platform][architecture].keys():
-                                return True
+                if name in payloads.keys():
+                    return True
         return False
 
-    @staticmethod
-    def check_style(name):
-        if len(name.split('/')) >= 3:
-            return True
-        return False
-
-    def get_platform(self, name):
-        if self.check_style(name):
-            return name.split('/')[0]
-        return None
-
-    def get_architecture(self, name):
-        if self.check_style(name):
-            return name.split('/')[1]
-        return None
-
-    def get_name(self, name):
-        if self.check_style(name):
-            return os.path.join(*(name.split(os.path.sep)[2:]))
-        return None
-
-    def get_payload_object(self, platform, architecture, name):
-        payload_full_name = self.get_full_name(platform, architecture, name)
-        if self.check_exist(payload_full_name):
-            database = self.get_database(payload_full_name)
-            return self.local_storage.get("payloads")[database][platform][architecture][name]
+    def get_payload_object(self, name):
+        if self.check_exist(name):
+            database = self.get_database(name)
+            return self.local_storage.get("payloads")[database][name]
         return None
 
     def get_database(self, name):
-        if self.check_style(name):
-            all_payloads = self.local_storage.get("payloads")
-            if all_payloads:
-                for database in all_payloads.keys():
-                    payloads = all_payloads[database]
+        all_payloads = self.local_storage.get("payloads")
+        if all_payloads:
+            for database in all_payloads.keys():
+                payloads = all_payloads[database]
 
-                    platform = self.get_platform(name)
-                    architecture = self.get_architecture(name)
-
-                    if platform in payloads.keys():
-                        if architecture in payloads[platform].keys():
-                            payload = self.get_name(name)
-                            if payload in payloads[platform][architecture].keys():
-                                return database
+                if name in payloads.keys():
+                    return database
         return None
-
-    @staticmethod
-    def get_full_name(platform, architecture, name):
-        return platform + '/' + architecture + '/' + name
 
     def check_current_module(self):
         if self.local_storage.get("current_module"):
@@ -121,8 +80,8 @@ class Payloads:
                                                 self.local_storage.get("current_module_number")).details['Module']
         return None
 
-    def import_payload(self, module_name, platform, architecture, name):
-        payloads = self.get_payload_object(platform, architecture, name)
+    def import_payload(self, module_name, name):
+        payloads = self.get_payload_object(name)
         try:
             payload_object = self.importer.import_payload(payloads['Path'])
             current_module_name = module_name
@@ -131,18 +90,18 @@ class Payloads:
             if imported_payloads:
                 if current_module_name in imported_payloads.keys():
                     imported_payloads[current_module_name].update({
-                        payload_object.details['Payload']: copy.copy(payload_object)
+                        payload_object.details['Payload']: payload_object
                     })
                 else:
                     imported_payloads.update({
                         current_module_name: {
-                            payload_object.details['Payload']: copy.copy(payload_object)
+                            payload_object.details['Payload']: payload_object
                         }
                     })
             else:
                 imported_payloads = {
                     current_module_name: {
-                        payload_object.details['Payload']: copy.copy(payload_object)
+                        payload_object.details['Payload']: payload_object
                     }
                 }
             self.local_storage.set("imported_payloads", imported_payloads)
@@ -172,13 +131,11 @@ class Payloads:
                     return imported_payloads[current_module_name][name]
         return None
 
-    def add_payload(self, module_name, platform, architecture, name):
-        payloads = self.get_payload_object(platform, architecture, name)
+    def add_payload(self, module_name, name):
+        payloads = self.get_payload_object(name)
 
-        full_name = self.get_full_name(platform, architecture, name)
-
-        if not self.check_imported(module_name, full_name):
-            payload_object = self.import_payload(module_name, platform, architecture, name)
+        if not self.check_imported(module_name, name):
+            payload_object = self.import_payload(module_name, name)
             if not payload_object:
                 self.badges.output_error("Failed to select payload from database!")
                 return False

@@ -44,20 +44,13 @@ class Modules:
         self.importer = Importer()
 
     def check_exist(self, name):
-        if self.check_style(name):
-            all_modules = self.local_storage.get("modules")
-            if all_modules:
-                for database in all_modules.keys():
-                    modules = all_modules[database]
+        all_modules = self.local_storage.get("modules")
+        if all_modules:
+            for database in all_modules.keys():
+                modules = all_modules[database]
 
-                    category = self.get_category(name)
-                    platform = self.get_platform(name)
-
-                    if category in modules.keys():
-                        if platform in modules[category].keys():
-                            module = self.get_name(name)
-                            if module in modules[category][platform].keys():
-                                return True
+                if name in modules.keys():
+                    return True
         return False
 
     def check_imported(self, name):
@@ -67,23 +60,16 @@ class Modules:
                 return True
         return False
 
-    @staticmethod
-    def check_style(name):
-        if len(name.split('/')) >= 3:
-            return True
-        return False
-
     def check_current_module(self):
         if self.local_storage.get("current_module"):
             if len(self.local_storage.get("current_module")) > 0:
                 return True
         return False
 
-    def get_module_object(self, category, platform, name):
-        module_full_name = self.get_full_name(category, platform, name)
-        if self.check_exist(module_full_name):
-            database = self.get_database(module_full_name)
-            return self.local_storage.get("modules")[database][category][platform][name]
+    def get_module_object(self, name):
+        if self.check_exist(name):
+            database = self.get_database(name)
+            return self.local_storage.get("modules")[database][name]
         return None
 
     def get_current_module_object(self):
@@ -104,40 +90,14 @@ class Modules:
         return None
 
     def get_database(self, name):
-        if self.check_style(name):
-            all_modules = self.local_storage.get("modules")
-            if all_modules:
-                for database in all_modules.keys():
-                    modules = all_modules[database]
+        all_modules = self.local_storage.get("modules")
+        if all_modules:
+            for database in all_modules.keys():
+                modules = all_modules[database]
 
-                    category = self.get_category(name)
-                    platform = self.get_platform(name)
-
-                    if category in modules.keys():
-                        if platform in modules[category].keys():
-                            module = self.get_name(name)
-                            if module in modules[category][platform].keys():
-                                return database
+                if name in modules.keys():
+                    return database
         return None
-
-    def get_category(self, name):
-        if self.check_style(name):
-            return name.split('/')[0]
-        return None
-
-    def get_platform(self, name):
-        if self.check_style(name):
-            return name.split('/')[1]
-        return None
-
-    def get_name(self, name):
-        if self.check_style(name):
-            return os.path.join(*(name.split(os.path.sep)[2:]))
-        return None
-
-    @staticmethod
-    def get_full_name(category, platform, name):
-        return category + '/' + platform + '/' + name
 
     def compare_types(self, value_type, value):
         if value_type and not value_type.lower == 'all':
@@ -219,11 +179,7 @@ class Modules:
                 if self.payloads.check_exist(value):
                     module_name = self.get_current_module_name()
 
-                    platform = self.payloads.get_platform(value)
-                    architecture = self.payloads.get_architecture(value)
-                    name = self.payloads.get_name(value)
-
-                    payload = self.payloads.get_payload_object(platform, architecture, name)
+                    payload = self.payloads.get_payload_object(value)
                     module_payload = current_module.payload
 
                     valid = 0
@@ -237,7 +193,7 @@ class Modules:
                         valid += 1
 
                     if valid == 4:
-                        if not self.payloads.add_payload(module_name, platform, architecture, name):
+                        if not self.payloads.add_payload(module_name, value):
                             self.badges.output_error("Invalid payload, expected valid payload!")
                             return
                         self.badges.output_information(option + " ==> " + value)
@@ -285,40 +241,35 @@ class Modules:
         else:
             self.badges.output_warning("No module selected.")
 
-    def import_module(self, category, platform, name):
-        modules = self.get_module_object(category, platform, name)
+    def import_module(self, name):
+        modules = self.get_module_object(name)
         try:
             module_object = self.importer.import_module(modules['Path'])
             if not self.local_storage.get("imported_modules"):
                 self.local_storage.set("imported_modules", dict())
-            self.local_storage.update("imported_modules", {self.get_full_name(category, platform, name): module_object})
+            self.local_storage.update("imported_modules", {name: module_object})
         except Exception:
             return None
         return module_object
 
-    def add_module(self, category, platform, name):
-        modules = self.get_module_object(category, platform, name)
+    def add_module(self, name):
+        modules = self.get_module_object(name)
 
         imported_modules = self.local_storage.get("imported_modules")
-        full_name = self.get_full_name(category, platform, name)
 
-        if self.check_imported(full_name):
-            module_object = imported_modules[full_name]
+        if self.check_imported(name):
+            module_object = imported_modules[name]
             self.add_to_global(module_object)
         else:
-            module_object = self.import_module(category, platform, name)
+            module_object = self.import_module(name)
             if module_object:
                 if hasattr(module_object, "payload"):
                     payload_name = module_object.payload['Value']
 
-                    platform = self.payloads.get_platform(payload_name)
-                    architecture = self.payloads.get_architecture(payload_name)
-                    name = self.payloads.get_name(payload_name)
-
                     self.badges.output_process("Using default payload " + payload_name + "...")
 
                     if self.payloads.check_exist(payload_name):
-                        if self.payloads.add_payload(full_name, platform, architecture, name):
+                        if self.payloads.add_payload(name, payload_name):
                             self.add_to_global(module_object)
                         return
                     self.badges.output_error("Invalid default payload!")

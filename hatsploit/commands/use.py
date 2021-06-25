@@ -32,12 +32,8 @@ class HatSploitCommand(Command):
     def run(self, argc, argv):
         module = argv[0]
 
-        category = self.modules.get_category(module)
-        platform = self.modules.get_platform(module)
-        name = self.modules.get_name(module)
-
         if not self.check_if_already_used(module):
             if self.modules.check_exist(module):
-                self.modules.add_module(category, platform, name)
+                self.modules.add_module(module)
             else:
                 self.output_error("Invalid module!")
