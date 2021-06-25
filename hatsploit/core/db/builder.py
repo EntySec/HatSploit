@@ -45,30 +45,30 @@ class Builder:
         self.importer = Importer()
         self.local_storage = LocalStorage()
 
-    def check_stdalone_built(self):
+    def check_base_built(self):
         if (os.path.exists(self.config.path_config['db_path'] +
-                        self.config.db_config['stdalone_dbs']['modules_database']) and
+                        self.config.db_config['base_dbs']['modules_database']) and
         os.path.exists(self.config.path_config['db_path'] +
-                        self.config.db_config['stdalone_dbs']['payloads_database']) and
+                        self.config.db_config['base_dbs']['payloads_database']) and
         os.path.exists(self.config.path_config['db_path'] +
-                        self.config.db_config['stdalone_dbs']['plugins_database'])):
+                        self.config.db_config['base_dbs']['plugins_database'])):
             return True
         return False
 
-    def build_stdalone(self):
+    def build_base(self):
         if not self.check_stdalone_built():
             if not os.path.exists(self.config.path_config['db_path']):
                 os.mkdir(self.config.path_config['db_path'])
 
             self.build_modules_database(self.config.path_config['modules_path'],
                                         (self.config.path_config['db_path'] + 
-                                         self.config.db_config['stdalone_dbs']['modules_database']))
+                                         self.config.db_config['base_dbs']['modules_database']))
             self.build_payloads_database(self.config.path_config['payloads_path'],
                                         (self.config.path_config['db_path'] + 
-                                         self.config.db_config['stdalone_dbs']['payloads_database']))
+                                         self.config.db_config['base_dbs']['payloads_database']))
             self.build_plugins_database(self.config.path_config['plugins_path'],
                                         (self.config.path_config['db_path'] + 
-                                         self.config.db_config['stdalone_dbs']['plugins_database']))
+                                         self.config.db_config['base_dbs']['plugins_database']))
 
     def recursive_update(self, d, u):
         for k, v in u.items():
