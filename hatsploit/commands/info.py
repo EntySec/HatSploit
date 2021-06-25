@@ -56,11 +56,7 @@ class HatSploitCommand(Command):
 
     def get_module_information(self, module):
         if self.modules.check_exist(module):
-            category = self.modules.get_category(module)
-            platform = self.modules.get_platform(module)
-            name = self.modules.get_name(module)
-
-            module = self.modules.get_module_object(category, platform, name)
+            module = self.modules.get_module_object(module)
             self.format_module_information(module)
         else:
             self.output_error("Invalid module!")
