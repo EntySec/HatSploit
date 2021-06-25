@@ -30,7 +30,8 @@ class HatSploitModule(Module, Sessions):
             'Value': None,
             'Type': "session",
             'Required': True
-        },
+        }
+    }
 
     def run(self):
         session = self.parse_options(self.options)
