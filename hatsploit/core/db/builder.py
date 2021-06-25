@@ -90,7 +90,7 @@ class Builder:
             }
         }
 
-        payloads_path = os.path.split(input_path)[0]
+        payloads_path = os.path.normpath(input_path)
         for dest, _, files in os.walk(payloads_path):
             for file in files:
                 if file.endswith('.py') and file != '__init__.py':
@@ -132,7 +132,7 @@ class Builder:
             }
         }
 
-        modules_path = os.path.split(input_path)[0]
+        modules_path = os.path.normpath(input_path)
         for dest, _, files in os.walk(modules_path):
             for file in files:
                 if file.endswith('.py') and file != '__init__.py':
@@ -171,7 +171,7 @@ class Builder:
             }
         }
 
-        plugins_path = os.path.split(input_path)[0]
+        plugins_path = os.path.normpath(input_path)
         for dest, _, files in os.walk(plugins_path):
             for file in files:
                 if file.endswith('.py') and file != '__init__.py':
