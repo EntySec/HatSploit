@@ -124,17 +124,13 @@ class Console:
 
             if payloads:
                 for database in payloads.keys():
-                    for payload_platform in payloads[database].keys():
-                        for payload_architecture in payloads[database][payload_platform].keys():
-                            payloads_total += len(payloads[database][payload_platform][payload_architecture])
+                    payloads_total += len(payloads[database])
             if plugins:
                 for database in plugins.keys():
                     plugins_total += len(plugins[database])
             if modules:
                 for database in modules.keys():
-                    for module_category in modules[database].keys():
-                        for module_platform in modules[database][module_category].keys():
-                            modules_total += len(modules[database][module_category][module_platform])
+                    modules_total += len(modules[database])
 
             header = ""
             header += f"{self.colors.END}\n"
