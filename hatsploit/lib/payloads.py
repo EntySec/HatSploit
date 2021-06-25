@@ -44,8 +44,8 @@ class Payloads:
             for database in all_payloads.keys():
                 payloads = all_payloads[database]
 
-                 if name in payloads.keys():
-                     return True
+                if name in payloads.keys():
+                    return True
         return False
 
     def get_payload_object(self, name):
