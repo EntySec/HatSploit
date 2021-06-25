@@ -6,12 +6,10 @@
 #
 
 from hatsploit.base.module import Module
-from hatsploit.base.sessions import Sessions
+from hatsploit.utils.sessions import Sessions
 
 
-class HatSploitModule(Module):
-    sessions = Sessions()
-
+class HatSploitModule(Module, Sessions):
     details = {
         'Name': "macOS Shell Suspend",
         'Module': "post/macos/shell/suspend",
@@ -38,5 +36,5 @@ class HatSploitModule(Module):
     def run(self):
         session = self.parse_options(self.options)
 
-        session = self.sessions.get_session('shell', 'macos', session)
+        session = self.get_session('shell', 'macos', session)
         session.send_command("/System/Library/CoreServices/Menu\ Extras/User.menu/Contents/Resources/CGSession -suspend")
