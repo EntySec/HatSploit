@@ -24,7 +24,6 @@
 # SOFTWARE.
 #
 
-import copy
 import os
 
 from hatsploit.lib.storage import LocalStorage
@@ -91,18 +90,18 @@ class Payloads:
             if imported_payloads:
                 if current_module_name in imported_payloads.keys():
                     imported_payloads[current_module_name].update({
-                        payload_object.details['Payload']: copy.copy(payload_object)
+                        payload_object.details['Payload']: payload_object
                     })
                 else:
                     imported_payloads.update({
                         current_module_name: {
-                            payload_object.details['Payload']: copy.copy(payload_object)
+                            payload_object.details['Payload']: payload_object
                         }
                     })
             else:
                 imported_payloads = {
                     current_module_name: {
-                        payload_object.details['Payload']: copy.copy(payload_object)
+                        payload_object.details['Payload']: payload_object
                     }
                 }
             self.local_storage.set("imported_payloads", imported_payloads)
