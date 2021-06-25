@@ -22,10 +22,10 @@
 # SOFTWARE.
 #
 
-stdalone_dbs:
-    modules_database_name: "stdalone_modules"
-    payloads_database_name: "stdalone_payloads"
-    plugins_database_name: "stdalone_plugins"
-    modules_database: "stdalone_modules.json"
-    payloads_database: "stdalone_payloads.json"
-    plugins_database: "stdalone_plugins.json"
+base_dbs:
+    modules_database_name: "modules"
+    payloads_database_name: "payloads"
+    plugins_database_name: "plugins"
+    modules_database: "modules.json"
+    payloads_database: "payloads.json"
+    plugins_database: "plugins.json"
