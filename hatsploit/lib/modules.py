@@ -44,20 +44,13 @@ class Modules:
         self.importer = Importer()
 
     def check_exist(self, name):
-        if self.check_style(name):
-            all_modules = self.local_storage.get("modules")
-            if all_modules:
-                for database in all_modules.keys():
-                    modules = all_modules[database]
+        all_modules = self.local_storage.get("modules")
+        if all_modules:
+            for database in all_modules.keys():
+                modules = all_modules[database]
 
-                    category = self.get_category(name)
-                    platform = self.get_platform(name)
-
-                    if category in modules.keys():
-                        if platform in modules[category].keys():
-                            module = self.get_name(name)
-                            if module in modules[category][platform].keys():
-                                return True
+                if name in modules.keys():
+                    return True
         return False
 
     def check_imported(self, name):
@@ -65,12 +58,6 @@ class Modules:
         if imported_modules:
             if name in imported_modules.keys():
                 return True
-        return False
-
-    @staticmethod
-    def check_style(name):
-        if len(name.split('/')) >= 3:
-            return True
         return False
 
     def check_current_module(self):
@@ -104,40 +91,14 @@ class Modules:
         return None
 
     def get_database(self, name):
-        if self.check_style(name):
-            all_modules = self.local_storage.get("modules")
-            if all_modules:
-                for database in all_modules.keys():
-                    modules = all_modules[database]
+        all_modules = self.local_storage.get("modules")
+        if all_modules:
+            for database in all_modules.keys():
+                modules = all_modules[database]
 
-                    category = self.get_category(name)
-                    platform = self.get_platform(name)
-
-                    if category in modules.keys():
-                        if platform in modules[category].keys():
-                            module = self.get_name(name)
-                            if module in modules[category][platform].keys():
-                                return database
+                if name in modules.keys():
+                    return database
         return None
-
-    def get_category(self, name):
-        if self.check_style(name):
-            return name.split('/')[0]
-        return None
-
-    def get_platform(self, name):
-        if self.check_style(name):
-            return name.split('/')[1]
-        return None
-
-    def get_name(self, name):
-        if self.check_style(name):
-            return os.path.join(*(name.split(os.path.sep)[2:]))
-        return None
-
-    @staticmethod
-    def get_full_name(category, platform, name):
-        return category + '/' + platform + '/' + name
 
     def compare_types(self, value_type, value):
         if value_type and not value_type.lower == 'all':
