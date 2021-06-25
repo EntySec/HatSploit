@@ -129,12 +129,12 @@ class Importer:
             pass
 
     def import_database(self):
-        self.db.connect_modules_database('hsf_modules', self.config.path_config['db_path'] +
-                                         self.config.db_config['base_dbs']['modules_database'])
-        self.db.connect_payloads_database('hsf_payloads', self.config.path_config['db_path'] +
-                                          self.config.db_config['base_dbs']['payloads_database'])
-        self.db.connect_plugins_database('hsf_plugins', self.config.path_config['db_path'] +
-                                         self.config.db_config['base_dbs']['plugins_database'])
+        self.db.connect_modules_database(self.config.db_config['base_dbs']['modules_database_name'],
+                                         self.config.path_config['db_path'] + self.config.db_config['base_dbs']['modules_database'])
+        self.db.connect_payloads_database(self.config.db_config['base_dbs']['payloads_database_name'],
+                                          self.config.path_config['db_path'] + self.config.db_config['base_dbs']['payloads_database'])
+        self.db.connect_plugins_database(self.config.db_config['base_dbs']['plugins_database_name'],
+                                         self.config.path_config['db_path'] + self.config.db_config['base_dbs']['plugins_database'])
 
     def import_all(self, import_database):
         self.import_commands()
