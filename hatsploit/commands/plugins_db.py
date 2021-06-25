@@ -21,7 +21,7 @@ class HatSploitCommand(Command):
     usage += "  -l, --list                        List all connected plugins databases.\n"
     usage += "  -d, --disconnect <name>           Disconnect specified plugins database.\n"
     usage += "  -c, --connect <name> <path>       Connect new plugins database.\n"
-    usage += "  -b, --build <path> <output_path>  Build plugins database from plugins path."
+    usage += "  -b, --build <path> <output_path>  Build plugins database from plugins path.\n"
 
     details = {
         'Category': "database",
