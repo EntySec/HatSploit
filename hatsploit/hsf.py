@@ -90,10 +90,10 @@ By accepting our terms of service, you agree that you will only use this tool fo
 def main():
     description = "Modular penetration testing platform that enables you to write, test, and execute exploit code."
     parser = argparse.ArgumentParser(description=description)
-    parser.add_argument('-c', '--check', dest='check_all', action='store_true', help='Check stdalone modules, payloads and plugins.')
-    parser.add_argument('--check-modules', dest='check_modules', action='store_true', help='Check only stdalone modules.')
-    parser.add_argument('--check-payloads', dest='check_payloads', action='store_true', help='Check only stdalone payloads.')
-    parser.add_argument('--check-plugins', dest='check_plugins', action='store_true', help='Check only stdalone plugins.')
+    parser.add_argument('-c', '--check', dest='check_all', action='store_true', help='Check base modules, payloads and plugins.')
+    parser.add_argument('--check-modules', dest='check_modules', action='store_true', help='Check only base modules.')
+    parser.add_argument('--check-payloads', dest='check_payloads', action='store_true', help='Check only base payloads.')
+    parser.add_argument('--check-plugins', dest='check_plugins', action='store_true', help='Check only base plugins.')
     parser.add_argument('-u', '--update', dest='update', action='store_true', help='Update HatSploit Framework.')
     parser.add_argument('--sessions-gui', dest='sessions_gui', action='store_true', help='Start sessions GUI with HatSploit Framework.')
     args = parser.parse_args()
