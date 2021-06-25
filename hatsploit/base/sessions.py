@@ -76,7 +76,7 @@ class Sessions:
 
     def spawn_interactive_connection(self, session_platform, session_id):
         sessions = self.local_storage.get("sessions")
-        if self.check_session_exist(session_platform, session_id):
+        if self.check_exist(session_platform, session_id):
             self.badges.output_process("Interacting with session " + str(session_id) + "...")
             self.badges.output_success("Interactive connection spawned!")
             self.badges.output_information("Type commands below.\n")
@@ -87,7 +87,7 @@ class Sessions:
 
     def close_session(self, session_platform, session_id):
         sessions = self.local_storage.get("sessions")
-        if self.check_session_exist(session_platform, session_id):
+        if self.check_exist(session_platform, session_id):
             try:
                 sessions[session_platform][int(session_id)]['object'].close()
                 del sessions[session_platform][int(session_id)]
@@ -102,7 +102,7 @@ class Sessions:
 
     def get_session(self, session_platform, session_type, session_id):
         sessions = self.local_storage.get("sessions")
-        if self.check_session_exist(session_platform, session_id):
+        if self.check_exist(session_platform, session_id):
             if session_type == sessions[session_platform][int(session_id)]['type']:
                 return sessions[session_platform][int(session_id)]['object']
             self.badges.output_error("Session with invalid type!")
