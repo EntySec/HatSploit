@@ -147,7 +147,9 @@ class HatSploitCommand(Command):
         if modules:
             for database in sorted(modules.keys()):
                 for module in sorted(modules[database].keys()):
-                    informations.append(module.split('/')[0])
+                    information = module.split('/')[0]
+                    if information not in informations:
+                        informations.append(information)
 
         if payloads:
             if information == "payloads":
