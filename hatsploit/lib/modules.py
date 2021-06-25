@@ -164,6 +164,7 @@ class Modules:
             if value_type.lower() == 'session':
                 module_platform = self.get_current_module_platform()
                 if not self.sessions.check_exist(module_platform, value):
+                    self.badges.output_error("Invalid value, expected valid session!")
                     return False
         return True
 
@@ -205,7 +206,7 @@ class Modules:
                         return
                     self.badges.output_error("Incompatible payload type, category or platform!")
                     return
-                self.badges.output_error("Invalid payload, expected valid payload!")
+                self.badges.output_error("Invalid value, expected valid payload!")
                 return
 
             if hasattr(current_module, "options"):
