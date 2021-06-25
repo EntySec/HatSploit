@@ -127,7 +127,7 @@ class Builder:
                         module_name = module_object.details['Module']
 
                         database.update({
-                            self.modules.get_name(module_name): {
+                            module_name: {
                                 "Path": module,
                                 "Name": module_object.details['Name'],
                                 "Module": module_object.details['Module'],
