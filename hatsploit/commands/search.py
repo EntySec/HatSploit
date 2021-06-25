@@ -73,9 +73,9 @@ class HatSploitCommand(Command):
                     name = payload.replace(keyword, self.RED + keyword + self.END)
                     description = payloads[payload]['Description'].replace(keyword, self.RED + keyword + self.END)
 
-                            payloads_data.append((number, payloads[payload]['Category'], name,
-                                                payloads[payload]['Risk'], description))
-                            number += 1
+                    payloads_data.append((number, payloads[payload]['Category'], name,
+                                          payloads[payload]['Risk'], description))
+                    number += 1
             if payloads_data:
                 self.print_table("Payloads (" + database + ")", headers, *payloads_data)
 
