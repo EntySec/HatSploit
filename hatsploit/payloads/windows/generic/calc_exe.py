@@ -6,10 +6,9 @@
 #
 
 from hatsploit.lib.payload import Payload
-from hatsploit.utils.tcp import TCPClient
 
 
-class HatSploitPayload(Payload, TCPClient):
+class HatSploitPayload(Payload):
     details = {
         'Category': "single",
         'Name': "Windows Calculator",
@@ -28,8 +27,6 @@ class HatSploitPayload(Payload, TCPClient):
     }
 
     def run(self):
-        local_host, local_port = self.parse_options(self.options)
-
         self.output_process("Generating payload...")
         payload = "C:\Windows\System32\calc.exe"
 
