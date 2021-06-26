@@ -70,7 +70,7 @@ class TelnetSocket:
                             self.badges.output_warning("Connection terminated.")
                             return
                         if response:
-                            self.badges.output_empty(response.decode(), start='', end='')
+                            self.badges.output_empty(response.decode(errors='ignore'), start='', end='')
                     elif key.fileobj is sys.stdin:
                         line = sys.stdin.readline().strip()
                         if not line:
@@ -112,7 +112,7 @@ class TelnetSocket:
             if output:
                 try:
                     output = self.recv(timeout)
-                    output = output.decode().strip()
+                    output = output.decode(errors='ignore').strip()
 
                     return output
                 except socket.timeout:
