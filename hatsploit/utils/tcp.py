@@ -75,13 +75,18 @@ class TCPClient:
     def get_local_host():
         try:
             server = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-            server.connect(("192.168.1.1", 80))
+            server.connect(("8.8.8.8", 53))
             local_host = server.getsockname()[0]
             server.close()
             local_host = local_host
         except Exception:
             local_host = "127.0.0.1"
         return local_host
+
+    def convert_to_local(host):
+        if host in ['0.0.0.0']:
+            return self.get_local_host()
+        return host
 
     @staticmethod
     def check_tcp_port(host, port, timeout=0.5):
