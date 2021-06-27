@@ -69,10 +69,8 @@ class HatSploitCommand(Command):
                 self.output_error("Missed some required options!")
             else:
                 try:
-                    self.output_process(f"Running {current_module.details['Module']} module...")
                     if current_payload:
                         payload_name = current_module.payload['Value']
-                        self.output_process(f"Configuring {payload_name} payload...")
 
                         payload_data = current_payload.run()
                         payload, args, session = None, None, None
