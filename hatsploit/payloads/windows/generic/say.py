@@ -13,7 +13,7 @@ from hatsploit.lib.payload import Payload
 
 class HatSploitPayload(Payload, HatVenom):
     details = {
-        'Category': "stager",
+        'Category': "single",
         'Name': "Windows Say",
         'Payload': "windows/generic/say",
         'Authors': [
