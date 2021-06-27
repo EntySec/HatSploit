@@ -38,7 +38,7 @@ class HatSploitSession(Session, TelnetClient):
         self.client.interact()
 
 
-class HatSploitPayload(Payload, StringTools, TCPClient):
+class HatSploitPayload(Payload, StringTools):
     config = Config()
 
     details = {
