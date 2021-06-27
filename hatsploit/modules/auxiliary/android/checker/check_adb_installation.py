@@ -14,7 +14,7 @@ class HatSploitModule(Module, TCPClient):
         'Name': "ADB Installation Checker",
         'Module': "auxiliary/android/checker/check_adb_installation",
         'Authors': [
-            'Ivan Nikolsky (enty8080)' # module developer
+            'Ivan Nikolsky (enty8080) - module developer'
         ],
         'Description': "Check if remote Android device has ADB installation.",
         'Comments': [
