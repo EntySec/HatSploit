@@ -13,7 +13,7 @@ class HatSploitModule(Module):
         'Name': "Multi Payload Generator",
         'Module': "auxiliary/multi/payload/generator",
         'Authors': [
-            'Ivan Nikolsky (enty8080)' # module developer
+            'Ivan Nikolsky (enty8080) - module developer'
         ],
         'Description': "Multi Payload Generator.",
         'Comments': [
