@@ -9,7 +9,7 @@ from hatsploit.lib.payload import Payload
 from hatsploit.utils.tcp import TCPClient
 
 
-class HatSploitPayload(Payload, TCPClient):
+class HatSploitPayload(Payload):
     details = {
         'Category': "single",
         'Name': "Ruby Shell Reverse TCP",
