@@ -10,7 +10,7 @@ from hatsploit.lib.payload import Payload
 from hatsploit.utils.tcp import TCPClient
 
 
-class HatSploitPayload(Payload, HatVenom, TCPClient):
+class HatSploitPayload(Payload, HatVenom):
     details = {
         'Category': "stager",
         'Name': "Linux x64 Shell Reverse TCP",
