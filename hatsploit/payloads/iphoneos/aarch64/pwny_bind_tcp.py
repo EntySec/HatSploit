@@ -70,7 +70,6 @@ class HatSploitPayload(Payload, StringTools):
         bind_port = self.parse_options(self.options)
         bind_port = self.xor_string(bind_port)
 
-        self.output_process("Generating payload...")
         with open(f"{self.config.path_config['data_path']}pwny/iphoneos/aarch64/pwny", 'rb') as f:
             payload = f.read()
 
