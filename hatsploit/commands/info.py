@@ -43,7 +43,9 @@ class HatSploitCommand(Command):
         if current_module['Module']:
             self.output_empty("       Module: " + current_module['Module'])
         if authors:
-            self.output_empty("      Authors: " + authors)
+            self.output_empty("      Authors: ")
+            for author in current_module['Authors']:
+                self.output_empty("               " + author)
         if current_module['Description']:
             self.output_empty("  Description: " + current_module['Description'])
         if comments:
