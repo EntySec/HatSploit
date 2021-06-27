@@ -15,7 +15,7 @@ class HatSploitPayload(Payload, HatVenom):
         'Name': "Linux x64 Reboot",
         'Payload': "linux/x64/reboot",
         'Authors': [
-            'Ivan Nikolsky (enty8080)'
+            'Ivan Nikolsky (enty8080) - payload developer'
         ],
         'Description': "Reboot payload for Linux x64.",
         'Comments': [

@@ -16,7 +16,7 @@ class HatSploitPayload(Payload, HatVenom, TCPClient):
         'Name': "Linux x86 Shell Reverse TCP",
         'Payload': "linux/x86/shell_reverse_tcp",
         'Authors': [
-            'Ivan Nikolsky (enty8080)'
+            'Ivan Nikolsky (enty8080) - payload developer'
         ],
         'Description': "Shell reverse TCP payload for Linux x86.",
         'Comments': [

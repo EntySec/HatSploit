@@ -20,7 +20,7 @@ class HatSploitCommand(Command):
         'Category': "core",
         'Name': "show",
         'Authors': [
-            'Ivan Nikolsky (enty8080)'
+            'Ivan Nikolsky (enty8080) - command developer'
         ],
         'Description': "Show specified information.",
         'Usage': "show <information>",

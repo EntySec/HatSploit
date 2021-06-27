@@ -11,23 +11,23 @@ from hatsploit.lib.payload import Payload
 class HatSploitPayload(Payload):
     details = {
         'Category': "single",
-        'Name': "Unix Reboot",
-        'Payload': "unix/generic/reboot",
+        'Name': "Windows Calculator",
+        'Payload': "windows/generic/calc_exe",
         'Authors': [
             'Ivan Nikolsky (enty8080) - payload developer'
         ],
-        'Description': "Reboot payload for unix.",
+        'Description': "Windows calc.exe payload.",
         'Comments': [
             ''
         ],
         'Architecture': "generic",
-        'Platform': "unix",
-        'Risk': "low",
+        'Platform': "windows",
+        'Risk': "high",
         'Type': "one_side"
     }
 
     def run(self):
         self.output_process("Generating payload...")
-        payload = "reboot"
+        payload = "C:\Windows\System32\calc.exe"
 
         return payload

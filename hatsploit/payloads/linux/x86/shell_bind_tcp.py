@@ -15,7 +15,7 @@ class HatSploitPayload(Payload, HatVenom):
         'Name': "Linux x86 Shell Bind TCP",
         'Payload': "linux/x86/shell_bind_tcp",
         'Authors': [
-            'Ivan Nikolsky (enty8080)'
+            'Ivan Nikolsky (enty8080) - payload developer'
         ],
         'Description': "Shell bind TCP payload for Linux x86.",
         'Comments': [

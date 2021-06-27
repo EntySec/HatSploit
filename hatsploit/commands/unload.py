@@ -18,7 +18,7 @@ class HatSploitCommand(Command):
         'Category': "plugin",
         'Name': "unload",
         'Authors': [
-            'Ivan Nikolsky (enty8080)'
+            'Ivan Nikolsky (enty8080) - command developer'
         ],
         'Description': "Unload specified loaded plugin.",
         'Usage': "unload <plugin>",

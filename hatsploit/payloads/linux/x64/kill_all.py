@@ -15,7 +15,7 @@ class HatSploitPayload(Payload, HatVenom):
         'Name': "Linux x64 Kill All Processes",
         'Payload': "linux/x64/kill_all",
         'Authors': [
-            'Ivan Nikolsky (enty8080)'
+            'Ivan Nikolsky (enty8080) - payload developer'
         ],
         'Description': "Kill all processes payload for Linux x64.",
         'Comments': [

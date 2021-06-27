@@ -30,7 +30,7 @@ class HatSploitCommand(Command):
         'Category': "developer",
         'Name': "storage",
         'Authors': [
-            'Ivan Nikolsky (enty8080)'
+            'Ivan Nikolsky (enty8080) - command developer'
         ],
         'Description': "Manage storage variables.",
         'Usage': usage,

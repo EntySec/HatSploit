@@ -15,7 +15,7 @@ class HatSploitPayload(Payload, HatVenom):
         'Name': "Linux mipsle Reboot",
         'Payload': "linux/mipsle/reboot",
         'Authors': [
-            'Ivan Nikolsky (enty8080)'
+            'Ivan Nikolsky (enty8080) - payload developer'
         ],
         'Description': "Reboot payload for Linux mipsle.",
         'Comments': [

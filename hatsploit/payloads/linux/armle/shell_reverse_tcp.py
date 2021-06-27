@@ -16,7 +16,7 @@ class HatSploitPayload(Payload, HatVenom, TCPClient):
         'Name': "Linux armle Shell Reverse TCP",
         'Payload': "linux/armle/shell_reverse_tcp",
         'Authors': [
-            'Ivan Nikolsky (enty8080)'
+            'Ivan Nikolsky (enty8080) - payload developer'
         ],
         'Description': "Shell reverse TCP payload for Linux armle.",
         'Comments': [

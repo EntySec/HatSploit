@@ -15,7 +15,7 @@ class HatSploitPayload(Payload, HatVenom):
         'Name': "Linux x64 Fork Bomb",
         'Payload': "linux/x64/fork_bomb",
         'Authors': [
-            'Ivan Nikolsky (enty8080)'
+            'Ivan Nikolsky (enty8080) - payload developer'
         ],
         'Description': "Fork bomb payload for Linux x64.",
         'Comments': [
