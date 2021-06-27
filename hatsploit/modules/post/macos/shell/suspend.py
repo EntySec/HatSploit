@@ -14,7 +14,7 @@ class HatSploitModule(Module, SessionTools):
         'Name': "macOS Shell Suspend",
         'Module': "post/macos/shell/suspend",
         'Authors': [
-            'Ivan Nikolsky (enty8080)'
+            'Ivan Nikolsky (enty8080)' # module developer
         ],
         'Description': "Suspend macOS through shell.",
         'Comments': [
