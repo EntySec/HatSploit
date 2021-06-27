@@ -41,10 +41,11 @@ class HatSploitPayload(Payload, HatVenom):
     def run(self):
         message = self.parse_options(self.options)
 
-        payload = (
-            "powershell Add-Type -AssemblyName System.speech;"
+        source = (
+            "Add-Type -AssemblyName System.speech;"
             "$speak = New-Object System.Speech.Synthesis.SpeechSynthesizer;"
             f"$speak.Speak('{message}')"
         )
 
+        payload = f"powershell -w hidden -nop -c {source}"
         return payload
