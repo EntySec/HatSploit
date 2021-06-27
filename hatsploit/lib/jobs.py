@@ -77,8 +77,9 @@ class Jobs:
         return False
 
     def stop_all_jobs(self):
-        for job_id in list(self.local_storage.get("jobs").keys()):
-            self.delete_job(job_id)
+        if not self.check_jobs():
+            for job_id in list(self.local_storage.get("jobs").keys()):
+                self.delete_job(job_id)
 
     def stop_job(self, job):
         if job.is_alive():
