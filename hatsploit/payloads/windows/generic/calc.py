@@ -12,7 +12,7 @@ class HatSploitPayload(Payload):
     details = {
         'Category': "single",
         'Name': "Windows Calculator",
-        'Payload': "windows/generic/calc_exe",
+        'Payload': "windows/generic/calc",
         'Authors': [
             'Ivan Nikolsky (enty8080) - payload developer'
         ],
