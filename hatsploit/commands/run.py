@@ -53,20 +53,20 @@ class HatSploitCommand(Command):
         if self.modules.check_current_module():
             current_module = self.modules.get_current_module_object()
             current_payload = self.payloads.get_current_payload()
-            missed = 0
+            missed = ""
             if hasattr(current_module, "options"):
                 for option in current_module.options.keys():
                     current_option = current_module.options[option]
                     if not current_option['Value'] and current_option['Value'] != 0 and current_option['Required']:
-                        missed += 1
+                        missed += option + ', '
             if current_payload:
                 if hasattr(current_payload, "options"):
                     for option in current_payload.options.keys():
                         current_option = current_payload.options[option]
                         if not current_option['Value'] and current_option['Value'] != 0 and current_option['Required']:
-                            missed += 1
-            if missed > 0:
-                self.output_error("Missed some required options!")
+                            missed += option + ', '
+            if len(missed) > 0:
+                self.output_error(f"These options failed to validate: {missed[:-2]}!")
             else:
                 try:
                     if current_payload:
