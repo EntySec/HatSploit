@@ -15,7 +15,7 @@ class HatSploitPayload(Payload, TCPClient):
         'Name': "Powershell Reverse TCP",
         'Payload': "windows/generic/powershell_reverse_tcp",
         'Authors': [
-            'Ivan Nikolsky (enty8080)'
+            'Ivan Nikolsky (enty8080) - payload developer'
         ],
         'Description': "Powershell reverse TCP payload.",
         'Comments': [

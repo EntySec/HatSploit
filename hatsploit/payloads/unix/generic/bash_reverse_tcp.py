@@ -15,7 +15,7 @@ class HatSploitPayload(Payload, TCPClient):
         'Name': "Bash Shell Reverse TCP",
         'Payload': "unix/generic/bash_reverse_tcp",
         'Authors': [
-            'Ivan Nikolsky (enty8080)'
+            'Ivan Nikolsky (enty8080) - payload developer'
         ],
         'Description': "Bash shell reverse TCP payload.",
         'Comments': [

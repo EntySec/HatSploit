@@ -14,7 +14,7 @@ class HatSploitPayload(Payload):
         'Name': "Unix Reboot",
         'Payload': "unix/generic/reboot",
         'Authors': [
-            'Ivan Nikolsky (enty8080)'
+            'Ivan Nikolsky (enty8080) - payload developer'
         ],
         'Description': "Reboot payload for unix.",
         'Comments': [

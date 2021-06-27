@@ -15,7 +15,7 @@ class HatSploitPayload(Payload, HatVenom):
         'Name': "Linux x64 Shutdown",
         'Payload': "linux/x64/shutdown",
         'Authors': [
-            'Ivan Nikolsky (enty8080)'
+            'Ivan Nikolsky (enty8080) - payload developer'
         ],
         'Description': "Shutdown payload for Linux x64.",
         'Comments': [

@@ -45,7 +45,7 @@ class HatSploitPayload(Payload, StringTools):
         'Name': "iPhoneOS aarch64 Pwny Bind TCP",
         'Payload': "iphoneos/aarch64/pwny_bind_tcp",
         'Authors': [
-            'Ivan Nikolsky (enty8080)'
+            'Ivan Nikolsky (enty8080) - payload developer'
         ],
         'Description': "Pwny bind TCP payload for iPhoneOS aarch64.",
         'Comments': [

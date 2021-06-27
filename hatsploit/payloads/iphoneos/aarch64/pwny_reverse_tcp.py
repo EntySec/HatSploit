@@ -46,7 +46,7 @@ class HatSploitPayload(Payload, StringTools, TCPClient):
         'Name': "iPhoneOS aarch64 Pwny Reverse TCP",
         'Payload': "iphoneos/aarch64/pwny_reverse_tcp",
         'Authors': [
-            'Ivan Nikolsky (enty8080)'
+            'Ivan Nikolsky (enty8080) - payload developer'
         ],
         'Description': "Pwny reverse TCP payload for iPhoneOS aarch64.",
         'Comments': [
