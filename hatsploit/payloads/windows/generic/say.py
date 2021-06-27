@@ -41,21 +41,10 @@ class HatSploitPayload(Payload, HatVenom):
     def run(self):
         message = self.parse_options(self.options)
 
-        self.output_process("Generating payload...")
-        payload = """
-Function Invoke-VoiceTroll
-{
-    [CmdletBinding()]
-    Param (
-        [Parameter(Mandatory = $True, Position = 0)]
-        [ValidateNotNullOrEmpty()]
-        [String] $VoiceText
-    )
-    Set-StrictMode -version 2
-    Add-Type -AssemblyName System.Speech
-    $synth = New-Object -TypeName System.Speech.Synthesis.SpeechSynthesizer
-    $synth.Speak($VoiceText)
-}
-Invoke-VoiceTroll"""
+        payload = (
+            "powershell Add-Type -AssemblyName System.speech;"
+            "$speak = New-Object System.Speech.Synthesis.SpeechSynthesizer;"
+            f"$speak.Speak('{message}')"
+        )
 
         return payload
