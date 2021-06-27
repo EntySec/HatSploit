@@ -9,7 +9,7 @@ from hatsploit.lib.payload import Payload
 from hatsploit.utils.tcp import TCPClient
 
 
-class HatSploitPayload(Payload, TCPClient):
+class HatSploitPayload(Payload):
     details = {
         'Category': "single",
         'Name': "Windows PowerShell Reverse TCP",
@@ -30,7 +30,7 @@ class HatSploitPayload(Payload, TCPClient):
     options = {
         'LHOST': {
             'Description': "Local host.",
-            'Value': get_local_host(),
+            'Value': TCPClient.get_local_host(),
             'Type': "ip",
             'Required': True
         },
