@@ -74,6 +74,7 @@ class HTTPClient:
             else:
                 self.badges.output_process("Listening for connections...")
                 httpd.handle_request()
+            httpd.server_close()
         except Exception:
             self.badges.output_error(f"Failed to start http server on port {str(port)}!")
 
