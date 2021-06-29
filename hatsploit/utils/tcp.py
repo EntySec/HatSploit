@@ -83,7 +83,7 @@ class TCPClient:
             local_host = "127.0.0.1"
         return local_host
 
-    def convert_to_local(host):
+    def convert_to_local(self, host):
         if host in ['0.0.0.0']:
             return self.get_local_host()
         return host

