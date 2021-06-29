@@ -349,10 +349,12 @@ class Handler(Server):
                             ]
                         )
                 elif payload['Category'].lower() == 'single':
-                    threading.Thread(
+                    t = threading.Thread(
                         target=new_session.send_command,
                         args=[payload['Payload']]
-                    ).start()
+                    )
+                    t.setDaemon(True)
+                    t.start()
                     '''
                     self.do_job(
                         "Handler Stage",
