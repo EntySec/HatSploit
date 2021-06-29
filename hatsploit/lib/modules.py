@@ -161,9 +161,17 @@ class Modules:
                     self.badges.output_error("Invalid value, expected valid boolean!")
                     return False
 
-            if value_type.lower() == 'session':
+            if 'session' in value_type.lower():
+                session = value_type.lower().replace(' ', '')
+                session = session.split('->')
+
+                session_type = ""
+                if len(session) == 2:
+                    session_type = session[1]
+
                 module_platform = self.get_current_module_platform()
-                if not self.sessions.check_exist(module_platform, value):
+
+                if not self.sessions.check_exist(module_platform, value, session_type):
                     self.badges.output_error("Invalid value, expected valid session!")
                     return False
         return True
