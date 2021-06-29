@@ -73,6 +73,7 @@ class Server:
                 self.badges.output_process("Listening for connections...")
                 httpd.handle_request()
             httpd.server_close()
+            httpd.shutdown()
         except Exception:
             self.badges.output_error(f"Failed to start HTTP server on port {str(port)}!")
 
