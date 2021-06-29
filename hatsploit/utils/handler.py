@@ -373,7 +373,6 @@ class Handler(Server):
                 return False
 
         if payload['Type'].lower() == 'one_side':
-            self.badges.output_warning("Payload completed but no session was created.")
             return True
 
         new_session = self.set_session_details(payload, new_session)
