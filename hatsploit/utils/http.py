@@ -24,9 +24,6 @@
 # SOFTWARE.
 #
 
-import http.server
-import socketserver
-
 import requests
 import socket
 import urllib3
@@ -35,47 +32,10 @@ from hatsploit.core.cli.badges import Badges
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
-class Handler(http.server.SimpleHTTPRequestHandler):
-    def log_request(self, fmt, *args):
-        pass
-
-    def do_GET(self):
-        self.badges = Badges()
-
-        if self.path == self.payload_path:
-            self.badges.output_success(f"Connection from {self.client_address[0]}!")
-            self.badges.output_process("Sending payload stage...")
-
-            self.send_response(200)
-            self.send_header("Content-type", "text/html")
-            self.end_headers()
-
-            self.wfile.write(bytes(self.payload, "utf8"))
-            self.badges.output_success("Payload sent successfully!")
-
 
 class HTTPClient:
     def __init__(self):
         self.badges = Badges()
-
-    def start_server(self, host, port, payload, forever=True, path='/'):
-        try:
-            self.badges.output_process(f"Starting http server on port {str(port)}...")
-            httpd = socketserver.TCPServer((host, int(port)), Handler)
-
-            self.badges.output_process("Serving payload on http server...")
-            httpd.RequestHandlerClass.payload_path = path
-            httpd.RequestHandlerClass.payload = payload
-
-            if forever:
-                while True:
-                    self.badges.output_process("Listening for connections...")
-                    httpd.handle_request()
-            else:
-                self.badges.output_process("Listening for connections...")
-                httpd.handle_request()
-        except Exception:
-            self.badges.output_error(f"Failed to start http server on port {str(port)}!")
 
     def http_request(self, method, host, port, path='/', ssl=False, timeout=10, output=True, session=requests, **kwargs):
         if not output:

