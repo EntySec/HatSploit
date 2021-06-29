@@ -41,7 +41,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         self.badges = Badges()
 
         if self.path == self.payload_path:
-            self.badges.output_success(f"Connection from {self.client_address[0]}!")
+            self.badges.output_process(f"Connecting to {self.client_address[0]}...")
             self.badges.output_process("Sending payload stage...")
 
             self.send_response(200)
@@ -49,7 +49,6 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             self.end_headers()
 
             self.wfile.write(bytes(self.payload, "utf8"))
-            self.badges.output_success("Payload sent successfully!")
 
 
 class Server:
