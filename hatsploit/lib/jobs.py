@@ -92,7 +92,7 @@ class Jobs:
                 raise self.exceptions.GlobalException
 
     def start_job(self, job_function, job_arguments):
-        self.job_process = threading.Tread(target=job_function, args=job_arguments)
+        self.job_process = threading.Thread(target=job_function, args=job_arguments)
         self.job_process.setDaemon(True)
         self.job_process.start()
 
