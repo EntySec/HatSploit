@@ -28,8 +28,6 @@ import os
 import requests
 import binascii
 
-import threading
-
 from hatsploit.lib.sessions import Sessions
 from hatsploit.lib.storage import LocalStorage
 from hatsploit.core.cli.badges import Badges
@@ -349,19 +347,11 @@ class Handler(Server):
                             ]
                         )
                 elif payload['Category'].lower() == 'single':
-                    t = threading.Thread(
-                        target=new_session.send_command,
-                        args=[payload['Payload']]
-                    )
-                    t.setDaemon(True)
-                    t.start()
-                    '''
                     self.do_job(
                         "Handler Stage",
                         new_session.send_command,
                         [payload['Payload']]
                     )
-                    '''
                 else:
                     self.badges.output_error("Invalid payload category!")
                     return False
