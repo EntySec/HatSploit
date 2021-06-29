@@ -66,11 +66,15 @@ class Sessions:
         self.local_storage.update("sessions", sessions)
         return session_id
 
-    def check_exist(self, session_platform, session_id):
+    def check_exist(self, session_platform, session_id, session_type=""):
         sessions = self.local_storage.get("sessions")
         if sessions:
             if session_platform in sessions.keys():
                 if int(session_id) in sessions[session_platform].keys():
+                    if session_type:
+                        if sessions[session_platform][int(session_id)]['type'] == session_type:
+                            return True
+                        return False
                     return True
         return False
 
