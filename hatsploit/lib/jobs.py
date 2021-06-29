@@ -36,24 +36,6 @@ from hatsploit.core.cli.tables import Tables
 from hatsploit.lib.modules import Modules
 
 
-class Job(threading.Thread):
-    def run(self):
-        self.exc = None
-        try:
-            if hasattr(self, '_Thread__target'):
-                self.ret = self._Thread__target(*self._Thread__args, **self._Thread__kwargs)
-            else:
-                self.ret = self._target(*self._args, **self._kwargs)
-        except BaseException as e:
-            self.exc = e
-
-    def join(self):
-        super(Job, self).join()
-        if self.exc:
-            raise self.exc
-        return self.ret
-
-
 class Jobs:
     def __init__(self):
         self.exceptions = Exceptions()
@@ -110,7 +92,7 @@ class Jobs:
                 raise self.exceptions.GlobalException
 
     def start_job(self, job_function, job_arguments):
-        self.job_process = Job(target=job_function, args=job_arguments)
+        self.job_process = threading.Tread(target=job_function, args=job_arguments)
         self.job_process.setDaemon(True)
         self.job_process.start()
 
