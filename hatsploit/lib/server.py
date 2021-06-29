@@ -62,7 +62,6 @@ class Server:
             self.badges.output_process(f"Starting HTTP server on port {str(port)}...")
             httpd = socketserver.TCPServer((host, int(port)), Handler)
 
-            self.badges.output_process("Serving payload on HTTP server...")
             httpd.RequestHandlerClass.payload_path = path
             httpd.RequestHandlerClass.payload = payload
 
