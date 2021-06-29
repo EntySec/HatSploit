@@ -27,12 +27,12 @@
 import os
 import requests
 import binascii
-import threading
 
 from hatsploit.lib.sessions import Sessions
 from hatsploit.lib.storage import LocalStorage
 from hatsploit.core.cli.badges import Badges
 from hatsploit.lib.modules import Modules
+from hatsploit.lib.jobs import Jobs
 from hatsploit.lib.server import Server
 
 from hatsploit.lib.session import Session
@@ -65,6 +65,7 @@ class Handler(Server):
     sessions = Sessions()
     local_storage = LocalStorage()
     modules = Modules()
+    jobs = Jobs()
     badges = Badges()
 
     def blinder(self, sender, args=[]):
@@ -192,6 +193,20 @@ class Handler(Server):
         session.details['Platform'] = payload['Platform']
         return session
 
+    def do_job(self, name, target, args):
+        module = self.modules.get_current_module_name()
+        if module:
+            module_name = module
+        else:
+            module_name = 'handler'
+
+        self.jobs.create_job(
+            name,
+            module_name,
+            target,
+            args
+        )
+
     def handle_session(self, host, port, payload, sender=None, args=[],
                        delim=';', location='/tmp', timeout=10, method=None, post="printf"):
         if payload['Payload'] is None:
@@ -202,9 +217,10 @@ class Handler(Server):
             session = payload['Session'] if payload['Session'] is not None else HatSploitSession
             if payload['Category'].lower() == 'stager':
                 if post.lower() == 'printf':
-                    threading.Thread(
-                        target=self.printf_stage,
-                        args=[
+                    self.do_job(
+                        "Handler printf Stage",
+                        self.printf_stage,
+                        [
                             payload['Payload'],
                             sender,
                             args,
@@ -212,11 +228,12 @@ class Handler(Server):
                             delim,
                             location
                         ]
-                    ).start()
+                    )
                 elif post.lower() == 'echo':
-                    threading.Thread(
-                        target=self.echo_stage,
-                        args=[
+                    self.do_job(
+                        "Handler echo Stage",
+                        self.echo_stage,
+                        [
                             payload['Payload'],
                             sender,
                             args,
@@ -224,11 +241,12 @@ class Handler(Server):
                             delim,
                             location
                         ]
-                    ).start()
+                    )
                 elif post.lower() == 'wget':
-                    threading.Thread(
-                        target=self.wget_stage,
-                        args=[
+                    self.do_job(
+                        "Handler wget Stage",
+                        self.wget_stage,
+                        [
                             payload['Payload'],
                             sender,
                             args,
@@ -236,12 +254,13 @@ class Handler(Server):
                             delim,
                             location
                         ]
-                    ).start()
+                    )
                 else:
                     self.output_warning("Invalid post method, using printf by default.")
-                    threading.Thread(
-                        target=self.printf_stage,
-                        args=[
+                    self.do_job(
+                        "Handler printf Stage",
+                        self.printf_stage,
+                        [
                             payload['Payload'],
                             sender,
                             args,
@@ -249,12 +268,13 @@ class Handler(Server):
                             delim,
                             location
                         ]
-                    ).start()
+                    )
             elif payload['Category'].lower() == 'single':
-                threading.Thread(
-                    target=sender,
-                    args=[*args, payload['Payload']]
-                ).start()
+                self.do_job(
+                    "Handler Stage",
+                    sender,
+                    [*args, payload['Payload']]
+                )
             else:
                 self.badges.output_error("Invalid payload category!")
                 return False
@@ -274,9 +294,10 @@ class Handler(Server):
 
                 if payload['Category'].lower() == 'stager':
                     if post.lower() == 'printf':
-                        threading.Thread(
-                            target=self.printf_stage,
-                            args=[
+                        self.do_job(
+                            "Handler printf Stage",
+                            self.printf_stage,
+                            [
                                 payload['Payload'],
                                 new_session.send_command,
                                 args,
@@ -284,11 +305,12 @@ class Handler(Server):
                                 delim,
                                 location
                             ]
-                        ).start()
+                        )
                     elif post.lower() == 'echo':
-                        threading.Thread(
-                            target=self.echo_stage,
-                            args=[
+                        self.do_job(
+                            "Handler echo Stage",
+                            self.echo_stage,
+                            [
                                 payload['Payload'],
                                 new_session.send_command,
                                 args,
@@ -296,11 +318,12 @@ class Handler(Server):
                                 delim,
                                 location
                             ]
-                        ).start()
+                        )
                     elif post.lower() == 'wget':
-                        threading.Thread(
-                            target=self.wget_stage,
-                            args=[
+                        self.do_job(
+                            "Handler wget Stage",
+                            self.wget_stage,
+                            [
                                 payload['Payload'],
                                 new_session.send_command,
                                 args,
@@ -308,12 +331,13 @@ class Handler(Server):
                                 delim,
                                 location
                             ]
-                        ).start()
+                        )
                     else:
                         self.output_warning("Invalid post method, using printf by default.")
-                        threading.Thread(
-                            target=self.printf_stage,
-                            args=[
+                        self.do_job(
+                            "Handler printf Stage",
+                            self.printf_stage,
+                            [
                                 payload['Payload'],
                                 new_session.send_command,
                                 args,
@@ -321,12 +345,13 @@ class Handler(Server):
                                 delim,
                                 location
                             ]
-                        ).start()
+                        )
                 elif payload['Category'].lower() == 'single':
-                    threading.Thread(
-                        target=new_session.send_command,
-                        args=[payload['Payload']]
-                    ).start()
+                    self.do_job(
+                        "Handler Stage",
+                        new_session.send_command,
+                        [payload['Payload']]
+                    )
                 else:
                     self.badges.output_error("Invalid payload category!")
                     return False
