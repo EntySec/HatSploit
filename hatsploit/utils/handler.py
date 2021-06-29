@@ -351,7 +351,7 @@ class Handler(Server):
                 elif payload['Category'].lower() == 'single':
                     threading.Thread(
                         target=new_session.send_command,
-                        [payload['Payload']]
+                        args=[payload['Payload']]
                     ).start()
                     '''
                     self.do_job(
