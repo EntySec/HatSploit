@@ -75,7 +75,7 @@ class Server:
                 httpd.handle_request()
             httpd.server_close()
         except Exception:
-            self.badges.output_error(f"Failed to start http server on port {str(port)}!")
+            self.badges.output_error(f"Failed to start HTTP server on port {str(port)}!")
 
     def connect(self, remote_host, remote_port, timeout=None):
         address = remote_host + ':' + str(remote_port)
