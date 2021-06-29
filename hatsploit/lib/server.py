@@ -49,6 +49,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             self.end_headers()
 
             self.wfile.write(bytes(self.payload, "utf8"))
+            self.badges.output_process("Executing payload...")
 
 
 class Server:
@@ -58,10 +59,10 @@ class Server:
 
     def start_server(self, host, port, payload, forever=False, path='/'):
         try:
-            self.badges.output_process(f"Starting http server on port {str(port)}...")
+            self.badges.output_process(f"Starting HTTP server on port {str(port)}...")
             httpd = socketserver.TCPServer((host, int(port)), Handler)
 
-            self.badges.output_process("Serving payload on http server...")
+            self.badges.output_process("Serving payload on HTTP server...")
             httpd.RequestHandlerClass.payload_path = path
             httpd.RequestHandlerClass.payload = payload
 
