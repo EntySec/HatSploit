@@ -277,7 +277,6 @@ class Handler(Server):
                         ]
                     )
             elif payload['Category'].lower() == 'single':
-                self.badges.output_process("Executing payload...")
                 self.do_job(
                     "Handler Stage",
                     payload,
