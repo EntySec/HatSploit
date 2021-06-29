@@ -193,19 +193,22 @@ class Handler(Server):
         session.details['Platform'] = payload['Platform']
         return session
 
-    def do_job(self, name, target, args):
-        module = self.modules.get_current_module_name()
-        if module:
-            module_name = module
+    def do_job(self, name, payload, target, args):
+        if payload['Type'].lower() == 'one_side':
+            target(*args)
         else:
-            module_name = 'handler'
+            module = self.modules.get_current_module_name()
+            if module:
+                module_name = module
+            else:
+                module_name = 'handler'
 
-        self.jobs.create_job(
-            name,
-            module_name,
-            target,
-            args
-        )
+            self.jobs.create_job(
+                name,
+                module_name,
+                target,
+                args
+            )
 
     def handle_session(self, host, port, payload, sender=None, args=[],
                        delim=';', location='/tmp', timeout=10, method=None, post="printf"):
@@ -219,6 +222,7 @@ class Handler(Server):
                 if post.lower() == 'printf':
                     self.do_job(
                         "Handler printf Stage",
+                        payload,
                         self.printf_stage,
                         [
                             payload['Payload'],
@@ -232,6 +236,7 @@ class Handler(Server):
                 elif post.lower() == 'echo':
                     self.do_job(
                         "Handler echo Stage",
+                        payload,
                         self.echo_stage,
                         [
                             payload['Payload'],
@@ -245,6 +250,7 @@ class Handler(Server):
                 elif post.lower() == 'wget':
                     self.do_job(
                         "Handler wget Stage",
+                        payload,
                         self.wget_stage,
                         [
                             payload['Payload'],
@@ -259,6 +265,7 @@ class Handler(Server):
                     self.output_warning("Invalid post method, using printf by default.")
                     self.do_job(
                         "Handler printf Stage",
+                        payload,
                         self.printf_stage,
                         [
                             payload['Payload'],
@@ -270,8 +277,10 @@ class Handler(Server):
                         ]
                     )
             elif payload['Category'].lower() == 'single':
+                self.badges.output_process("Executing payload...")
                 self.do_job(
                     "Handler Stage",
+                    payload,
                     sender,
                     [*args, payload['Payload']]
                 )
@@ -296,6 +305,7 @@ class Handler(Server):
                     if post.lower() == 'printf':
                         self.do_job(
                             "Handler printf Stage",
+                            payload,
                             self.printf_stage,
                             [
                                 payload['Payload'],
@@ -309,6 +319,7 @@ class Handler(Server):
                     elif post.lower() == 'echo':
                         self.do_job(
                             "Handler echo Stage",
+                            payload,
                             self.echo_stage,
                             [
                                 payload['Payload'],
@@ -322,6 +333,7 @@ class Handler(Server):
                     elif post.lower() == 'wget':
                         self.do_job(
                             "Handler wget Stage",
+                            payload,
                             self.wget_stage,
                             [
                                 payload['Payload'],
@@ -336,6 +348,7 @@ class Handler(Server):
                         self.output_warning("Invalid post method, using printf by default.")
                         self.do_job(
                             "Handler printf Stage",
+                            payload,
                             self.printf_stage,
                             [
                                 payload['Payload'],
@@ -347,8 +360,10 @@ class Handler(Server):
                             ]
                         )
                 elif payload['Category'].lower() == 'single':
+                    self.badges.output_process("Executing payload...")
                     self.do_job(
                         "Handler Stage",
+                        payload,
                         new_session.send_command,
                         [payload['Payload']]
                     )
@@ -373,6 +388,7 @@ class Handler(Server):
                 return False
 
         if payload['Type'].lower() == 'one_side':
+            self.output_warning("Payload completed, but not session was opened")
             return True
 
         new_session = self.set_session_details(payload, new_session)
