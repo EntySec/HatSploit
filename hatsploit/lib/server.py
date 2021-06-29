@@ -57,7 +57,7 @@ class Server:
         self.badges = Badges()
         self.exceptions = Exceptions()
 
-    def start_server(self, host, port, payload, forever=True, path='/'):
+    def start_server(self, host, port, payload, forever=False, path='/'):
         try:
             self.badges.output_process(f"Starting http server on port {str(port)}...")
             httpd = socketserver.TCPServer((host, int(port)), Handler)
