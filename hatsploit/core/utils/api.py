@@ -60,8 +60,8 @@ class SessionManager(Resource):
                 return output, 200
             return "", 200
 
-        if args['close'] and args['id']:
-            self.sessions.close_session(args['id'])
+        if args['close']:
+            self.sessions.close_session(args['close'])
             return "", 200
 
         if args['count']:
