@@ -96,7 +96,7 @@ def main():
     parser.add_argument('--check-payloads', dest='check_payloads', action='store_true', help='Check only base payloads.')
     parser.add_argument('--check-plugins', dest='check_plugins', action='store_true', help='Check only base plugins.')
     parser.add_argument('-u', '--update', dest='update', action='store_true', help='Update HatSploit Framework.')
-    parser.add_argument('--rest-api', dest='rest_api_port', help='Run HatSploit with REST API.')
+    parser.add_argument('--rest-api', dest='rest_api_port', type=int, help='Run HatSploit with REST API.')
     args = parser.parse_args()
 
     hsf = HatSploit()
@@ -115,12 +115,12 @@ def main():
             sys.exit(0)
     elif args.update:
         hsf.update.update()
-    elif args.rest_api:
+    elif args.rest_api_port:
         hsf.jobs.create_job(
             "HatSploit REST API",
             "None",
             hsf.api.init,
-            args=[int(args.rest_api)]
+            args=[int(args.rest_api_port)]
         )
         hsf.launch()
     else:
