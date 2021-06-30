@@ -38,7 +38,7 @@ class SessionManager(Resource):
         parser = reqparse.RequestParser()
         parser.add_argument('platform')
         parser.add_argument('type')
-        parser.add_argument('id', type=int)
+        parser.add_argument('id')
         parser.add_argument('command')
         parser.add_argument('close')
         parser.add_argument('count')
