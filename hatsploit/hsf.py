@@ -119,7 +119,7 @@ def main():
         hsf.jobs.create_job(
             "HatSploit REST API",
             "External Job",
-            hsf.api.run
+            hsf.api.init
         )
         hsf.launch()
     else:
