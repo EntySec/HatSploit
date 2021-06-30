@@ -24,7 +24,7 @@
 # SOFTWARE.
 #
 
-from flask import Flask
+from flask import Flask, json
 from flask_restful import Resource, Api, reqparse
 import ast
 
@@ -34,28 +34,26 @@ class SessionManager(Resource):
     sessions = Sessions()
 
     def get(self):
-        # GET /sessions
-        sessions = self.sessions.get_all_sessions()
-        if sessions:
-            return {'data': sessions}, 200
-        return {'data': dict()}, 200
-
-    def post(self):
-        # POST /sessions?platform=windows?type=shell?id=0?command=calc.exe
         parser = reqparse.RequestParser()
-        parser.add_argument('platform', required=True)
-        parser.add_argument('type', required=True)
-        parser.add_argument('id', required=True)
-        parser.add_argument('command', required=True)
+        parser.add_argument('platform', required=False)
+        parser.add_argument('type', required=False)
+        parser.add_argument('id', required=False)
+        parser.add_argument('command', required=False)
         args = parser.parse_args()
 
-        session = self.sessions.get_session(
-            args['platform'], args['type'], args['id']
-        )
+        if args['platform'] and args['type'] and args['id'] and args['command']:
+            session = self.sessions.get_session(
+                args['platform'], args['type'], args['id']
+            )
         
-        if session:
-            return session.send_command(args['command'], output=True), 200
-        return "", 404
+            if session:
+                return session.send_command(args['command'], output=True), 200
+            return "", 200
+
+        sessions = self.sessions.get_all_sessions()
+        if sessions:
+            return {'data': json.dumps(sessions)}, 200
+        return {'data': dict()}, 200
 
 class API:
     def __init__(self):
