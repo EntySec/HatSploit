@@ -36,5 +36,5 @@ class HatSploitModule(Module, SessionTools):
     def run(self):
         session = self.parse_options(self.options)
 
-        session = self.get_session('macos', 'shell', session)
+        session = self.get_session(session)
         session.send_command("/System/Library/CoreServices/Menu\ Extras/User.menu/Contents/Resources/CGSession -suspend")

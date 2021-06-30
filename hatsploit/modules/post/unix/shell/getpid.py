@@ -36,7 +36,7 @@ class HatSploitModule(Module, SessionTools):
     def run(self):
         session = self.parse_options(self.options)
 
-        session = self.get_session('unix', 'shell', session)
+        session = self.get_session(session)
         pid = session.send_command("printf $$", output=True)
 
         self.output_information(f"PID: {pid}")

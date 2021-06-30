@@ -37,18 +37,23 @@ from hatsploit.lib.config import Config
 config = Config()
 config.configure()
 
+from hatsploit.lib.jobs import Jobs
+
 from hatsploit.core.base.console import Console
 from hatsploit.core.cli.badges import Badges
 from hatsploit.core.utils.check import Check
 from hatsploit.core.utils.update import Update
+from hatsploit.core.utils.api import API
 
 
 class HatSploit:
     def __init__(self):
+        self.jobs = Jobs()
         self.console = Console()
         self.badges = Badges()
         self.check = Check()
         self.update = Update()
+        self.api = API()
 
         self.root_path = config.path_config['root_path']
 
@@ -91,6 +96,7 @@ def main():
     parser.add_argument('--check-payloads', dest='check_payloads', action='store_true', help='Check only base payloads.')
     parser.add_argument('--check-plugins', dest='check_plugins', action='store_true', help='Check only base plugins.')
     parser.add_argument('-u', '--update', dest='update', action='store_true', help='Update HatSploit Framework.')
+    parser.add_argument('--rest-api', dest='rest_api_port', type=int, help='Run HatSploit with REST API.')
     args = parser.parse_args()
 
     hsf = HatSploit()
@@ -109,5 +115,13 @@ def main():
             sys.exit(0)
     elif args.update:
         hsf.update.update()
+    elif args.rest_api_port:
+        hsf.jobs.create_job(
+            "HatSploit REST API",
+            "None",
+            hsf.api.init,
+            [args.rest_api_port]
+        )
+        hsf.launch()
     else:
         hsf.launch()
