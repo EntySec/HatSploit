@@ -42,8 +42,6 @@ from hatsploit.core.cli.badges import Badges
 from hatsploit.core.utils.check import Check
 from hatsploit.core.utils.update import Update
 
-from hatsploit.core.utils.gui import SessionsGUI
-
 
 class HatSploit:
     def __init__(self):
@@ -51,8 +49,6 @@ class HatSploit:
         self.badges = Badges()
         self.check = Check()
         self.update = Update()
-
-        self.sessions_gui = SessionsGUI()
 
         self.root_path = config.path_config['root_path']
 
@@ -95,7 +91,6 @@ def main():
     parser.add_argument('--check-payloads', dest='check_payloads', action='store_true', help='Check only base payloads.')
     parser.add_argument('--check-plugins', dest='check_plugins', action='store_true', help='Check only base plugins.')
     parser.add_argument('-u', '--update', dest='update', action='store_true', help='Update HatSploit Framework.')
-    parser.add_argument('--sessions-gui', dest='sessions_gui', action='store_true', help='Start sessions GUI with HatSploit Framework.')
     args = parser.parse_args()
 
     hsf = HatSploit()
@@ -114,8 +109,5 @@ def main():
             sys.exit(0)
     elif args.update:
         hsf.update.update()
-    elif args.sessions_gui:
-        hsf.sessions_gui.start()
-        hsf.launch()
     else:
         hsf.launch()
