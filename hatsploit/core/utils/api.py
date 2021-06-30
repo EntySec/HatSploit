@@ -36,12 +36,12 @@ class SessionManager(Resource):
 
     def get(self):
         parser = reqparse.RequestParser()
-        parser.add_argument('platform', required=False)
-        parser.add_argument('type', required=False)
-        parser.add_argument('id', required=False)
-        parser.add_argument('command', required=False)
-        parser.add_argument('close', required=False)
-        parser.add_argument('count', required=False)
+        parser.add_argument('platform')
+        parser.add_argument('type')
+        parser.add_argument('id', type=int)
+        parser.add_argument('command')
+        parser.add_argument('close', action='store_true')
+        parser.add_argument('count', action='store_true')
         args = parser.parse_args()
 
         if args['platform'] and args['type'] and args['id'] and args['command']:
