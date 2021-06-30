@@ -35,6 +35,15 @@ class SessionManager(Resource):
     sessions = Sessions()
 
     def get(self):
+        ## HatSploit REST API
+        #
+        # /sessions?list=all            - list all sessions
+        # /sessions?command=whoami&id=0 - execute command in session
+        # /sessions?close=0             - close session
+        # /sessions?count=all           - counet all sessions
+        #
+        ##
+
         parser = reqparse.RequestParser()
         parser.add_argument('id')
         parser.add_argument('list')
@@ -84,8 +93,8 @@ class API:
 
     def init(self):
         self.api.add_resource(SessionManager, '/sessions')
-        #self.app.logger.disabled = True
-        #log = logging.getLogger('werkzeug')
-        #log.disabled = True
+        self.app.logger.disabled = True
+        log = logging.getLogger('werkzeug')
+        log.disabled = True
         self.app.run()
     
