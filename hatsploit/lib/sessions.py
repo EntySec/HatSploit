@@ -50,6 +50,7 @@ class Sessions:
                 'port': session_port,
                 'object': session_object
             }
+        }
 
         self.local_storage.update("sessions", sessions)
         return session_id
