@@ -46,14 +46,20 @@ class SessionManager(Resource):
             session = self.sessions.get_session(
                 args['platform'], args['type'], args['id']
             )
-        
+
             if session:
                 return session.send_command(args['command'], output=True), 200
             return "", 200
 
         sessions = self.sessions.get_all_sessions()
         if sessions:
-            return {'data': json.dumps(sessions)}, 200
+            data = dict()
+            for platform in sessions:
+                for session_id in sessions:
+                    data[platform][session_id]['type'] = sessions[platform][session_id]['type']
+                    data[platform][session_id]['host'] = sessions[platform][session_id]['host']
+                    data[platform][session_id]['port'] = sessions[platform][session_id]['port']
+            return {'data': data}, 200
         return {'data': dict()}, 200
 
 class API:
