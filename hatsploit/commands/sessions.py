@@ -48,12 +48,12 @@ class HatSploitCommand(Command):
             else:
                 self.output_warning("No opened sessions available.")
         elif argv[0] in ['-c', '--close']:
-            if argc < 3:
+            if argc < 2:
                 self.output_usage(self.details['Usage'])
             else:
                 self.sessions.close_session(argv[1])
         elif argv[0] in ['-i', '--interact']:
-            if argc < 3:
+            if argc < 2:
                 self.output_usage(self.details['Usage'])
             else:
                 self.sessions.spawn_interactive_connection(argv[1])
