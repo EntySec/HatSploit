@@ -74,7 +74,8 @@ class SessionManager(Resource):
         if sessions:
             for platform in sessions.keys():
                 for session_id in sessions[platform].keys():
-                    del sessions[platform][session_id]['object']
+                    if 'object' in sessions[platform][session_id]:
+                        del sessions[platform][session_id]['object']
             return sessions, 200
         return dict(), 200
 
