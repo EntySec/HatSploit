@@ -42,7 +42,8 @@ class Sessions:
             self.local_storage.set("sessions", dict())
 
         session_id = 0
-        while session_id in self.local_storage.get("sessions"):
+        while (session_id in self.local_storage.get("sessions") or
+               session_id < len(self.local_storage.get("sessions"))):
             session_id += 1
 
         sessions = {
