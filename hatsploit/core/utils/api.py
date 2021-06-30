@@ -40,6 +40,8 @@ class SessionManager(Resource):
         parser.add_argument('type', required=False)
         parser.add_argument('id', required=False)
         parser.add_argument('command', required=False)
+        parser.add_argument('close', required=False)
+        parser.add_argument('count', required=False)
         args = parser.parse_args()
 
         if args['platform'] and args['type'] and args['id'] and args['command']:
@@ -51,16 +53,33 @@ class SessionManager(Resource):
                 return session.send_command(args['command'], output=True), 200
             return "", 200
 
+        elif args['platform'] and args['id'] and args['close']:
+            self.sessions.close_session(
+                args['platform'], args['id']
+            )
+
+            return "", 200
+
+        elif args['count']:
+            sessions = self.sessions.get_all_sessions()
+            if sessions:
+                if args['platform']:
+                    if platform in sessions.keys():
+                        return len(sessions[platform]), 200
+                    return 0, 200
+                return len(sessions), 200
+            return 0, 200
+
         sessions = self.sessions.get_all_sessions()
         if sessions:
             data = dict()
-            for platform in sessions:
-                for session_id in sessions:
+            for platform in sessions.keys():
+                for session_id in sessions[platform].keys():
                     data[platform][session_id]['type'] = sessions[platform][session_id]['type']
                     data[platform][session_id]['host'] = sessions[platform][session_id]['host']
                     data[platform][session_id]['port'] = sessions[platform][session_id]['port']
-            return {'data': data}, 200
-        return {'data': dict()}, 200
+            return data, 200
+        return dict(), 200
 
 class API:
     def __init__(self):
