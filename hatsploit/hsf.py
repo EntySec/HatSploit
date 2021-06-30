@@ -120,7 +120,7 @@ def main():
             "HatSploit REST API",
             "None",
             hsf.api.init,
-            [int(args.rest_api_port)]
+            [args.rest_api_port]
         )
         hsf.launch()
     else:
