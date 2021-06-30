@@ -47,5 +47,5 @@ class HatSploitModule(Module, SessionTools):
             f"[system.Windows.Forms.MessageBox]::show('{message}')"
         )
 
-        session = self.get_session('windows', 'shell', session)
+        session = self.get_session(session)
         session.send_command(f"powershell -w hidden -nop -c {source}")
