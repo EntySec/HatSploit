@@ -27,6 +27,7 @@
 from flask import Flask, json
 from flask_restful import Resource, Api, reqparse
 import ast
+import logging
 
 from hatsploit.lib.sessions import Sessions
 
@@ -63,5 +64,7 @@ class API:
     def init(self):
         self.api.add_resource(SessionManager, '/sessions')
         self.app.logger.disabled = True
+        log = logging.getLogger('werkzeug')
+        log.disabled = True
         self.app.run()
     
