@@ -16,7 +16,7 @@ class HatSploitCommand(Command):
 
     usage = ""
     usage += "sessions <option> [arguments]\n\n"
-    usage += "  -l, --list                   List all opened sessions\n"
+    usage += "  -l, --list                   List all opened sessions.\n"
     usage += "  -i, --interact <session_id>  Interact with specified session.\n"
     usage += "  -c, --close <session_id>     Close specified session.\n"
 
