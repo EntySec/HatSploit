@@ -36,48 +36,46 @@ class SessionManager(Resource):
 
     def get(self):
         parser = reqparse.RequestParser()
-        parser.add_argument('platform')
-        parser.add_argument('type')
         parser.add_argument('id')
+        parser.add_argument('list')
         parser.add_argument('command')
         parser.add_argument('close')
         parser.add_argument('count')
         args = parser.parse_args()
 
-        if args['command'] and args['platform'] and args['type'] and args['id']:
-            session = self.sessions.get_session(
-                args['platform'], args['type'], args['id']
-            )
+        if args['command'] and args['id']:
+            session = self.sessions.get_session(args['id'])
 
             if session:
-                return session.send_command(args['command'], output=True), 200
+                output = session.send_command(args['command'], output=True)
+                return output, 200
             return "", 200
 
-        if args['close'] and args['platform'] and args['id']:
-            self.sessions.close_session(
-                args['platform'], args['id']
-            )
-
+        if args['close'] and args['id']:
+            self.sessions.close_session(args['id'])
             return "", 200
 
         if args['count']:
             sessions = self.sessions.get_all_sessions()
             if sessions:
-                if args['platform']:
-                    if args['platform'] in sessions.keys():
-                        return len(sessions[args['platform']]), 200
-                    return 0, 200
-                return len(sessions), 200
+                if args['count'] == 'all':
+                    return len(sessions), 200
+                counter = 0
+                for session in sessions:
+                    if sessions[session]['platform'] == args['count']:
+                        counter += 1
+                return counter, 200
             return 0, 200
 
-        sessions = self.sessions.get_all_sessions()
-        if sessions:
-            for platform in sessions.keys():
-                for session_id in sessions[platform].keys():
-                    if 'object' in sessions[platform][session_id]:
-                        del sessions[platform][session_id]['object']
-            return sessions, 200
-        return dict(), 200
+        if args['list']:
+            sessions = self.sessions.get_all_sessions()
+            if sessions:
+                for session_id in sessions.keys():
+                    if 'object' in sessions[session_id]:
+                        del sessions[session_id]['object']
+                return sessions, 200
+            return dict(), 200
+        return "", 200
 
 class API:
     def __init__(self):
