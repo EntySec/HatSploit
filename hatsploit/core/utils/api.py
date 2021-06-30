@@ -64,21 +64,18 @@ class SessionManager(Resource):
             sessions = self.sessions.get_all_sessions()
             if sessions:
                 if args['platform']:
-                    if platform in sessions.keys():
-                        return len(sessions[platform]), 200
+                    if args['platform'] in sessions.keys():
+                        return len(sessions[args['platform']]), 200
                     return 0, 200
                 return len(sessions), 200
             return 0, 200
 
         sessions = self.sessions.get_all_sessions()
         if sessions:
-            data = dict()
             for platform in sessions.keys():
                 for session_id in sessions[platform].keys():
-                    data[platform][session_id]['type'] = sessions[platform][session_id]['type']
-                    data[platform][session_id]['host'] = sessions[platform][session_id]['host']
-                    data[platform][session_id]['port'] = sessions[platform][session_id]['port']
-            return data, 200
+                    del sessions[platform][session_id]['object']
+            return sessions, 200
         return dict(), 200
 
 class API:
