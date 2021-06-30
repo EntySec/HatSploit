@@ -44,7 +44,7 @@ class SessionManager(Resource):
         parser.add_argument('count')
         args = parser.parse_args()
 
-        if args['platform'] and args['type'] and args['id'] and args['command']:
+        if args['command'] and args['platform'] and args['type'] and args['id']:
             session = self.sessions.get_session(
                 args['platform'], args['type'], args['id']
             )
@@ -53,14 +53,14 @@ class SessionManager(Resource):
                 return session.send_command(args['command'], output=True), 200
             return "", 200
 
-        elif args['platform'] and args['id'] and args['close']:
+        if args['close'] and args['platform'] and args['id']:
             self.sessions.close_session(
                 args['platform'], args['id']
             )
 
             return "", 200
 
-        elif args['count']:
+        if args['count']:
             sessions = self.sessions.get_all_sessions()
             if sessions:
                 if args['platform']:
