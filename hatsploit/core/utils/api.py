@@ -91,10 +91,10 @@ class API:
         self.app = Flask(__name__)
         self.api = Api(self.app)
 
-    def init(self):
+    def init(self, port=8585):
         self.api.add_resource(SessionManager, '/sessions')
         self.app.logger.disabled = True
         log = logging.getLogger('werkzeug')
         log.disabled = True
-        self.app.run()
+        self.app.run(port=port)
     
