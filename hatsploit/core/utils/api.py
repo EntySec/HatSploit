@@ -40,8 +40,8 @@ class SessionManager(Resource):
         parser.add_argument('type')
         parser.add_argument('id', type=int)
         parser.add_argument('command')
-        parser.add_argument('close', action='store_true')
-        parser.add_argument('count', action='store_true')
+        parser.add_argument('close')
+        parser.add_argument('count')
         args = parser.parse_args()
 
         if args['platform'] and args['type'] and args['id'] and args['command']:
