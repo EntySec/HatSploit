@@ -39,7 +39,7 @@ class SessionManager(Resource):
         # /sessions?list=all            - list all sessions
         # /sessions?command=whoami&id=0 - execute command in session
         # /sessions?close=0             - close session
-        # /sessions?count=all           - counet all sessions
+        # /sessions?count=all           - count all sessions
         #
         ##
 
