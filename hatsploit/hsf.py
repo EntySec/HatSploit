@@ -115,7 +115,7 @@ def main():
             sys.exit(0)
     elif args.update:
         hsf.update.update()
-    elif args.api:
+    elif args.rest_api:
         hsf.jobs.create_job(
             "HatSploit REST API",
             "External Job",
