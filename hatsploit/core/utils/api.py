@@ -78,12 +78,15 @@ class SessionManager(Resource):
 
         if args['list']:
             sessions = self.sessions.get_all_sessions()
+            data = dict()
+
             if sessions:
-                for session_id in sessions.keys():
-                    if 'object' in sessions[session_id]:
-                        del sessions[session_id]['object']
-                return sessions, 200
-            return dict(), 200
+                data.update(sessions)
+                for session in data:
+                    if 'object' in data[session].keys():
+                        del data[session]['object']
+            return data, 200
+
         return "", 200
 
 class API:
