@@ -50,6 +50,8 @@ setup(name='hatsploit',
           'pyyaml',
           'requests',
           'paramiko',
+          'flask',
+          'flask_restful',
           'hatvenom @ git+http://github.com/EntySec/HatVenom'
       ],
       zip_safe=False
