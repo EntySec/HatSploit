@@ -80,10 +80,15 @@ class SessionManager(Resource):
             data = dict()
 
             if sessions:
-                data.update(sessions)
-                for session in data:
-                    if 'object' in data[session].keys():
-                        del data[session]['object']
+                for session in sessions.keys():
+                    data.update({
+                        session: {
+                            'platform': sessions[session]['platform'],
+                            'type': sessions[session]['type'],
+                            'host': sessions[session]['host'],
+                            'port': sessions[session]['port']
+                        }
+                    })
             return data, 200
 
         return "", 200
