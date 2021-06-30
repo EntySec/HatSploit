@@ -41,74 +41,52 @@ class Sessions:
         if not self.local_storage.get("sessions"):
             self.local_storage.set("sessions", dict())
 
-        session_id = 0
-        if session_platform in self.local_storage.get("sessions").keys():
-            sessions = self.local_storage.get("sessions")
-            session_id = len(sessions[session_platform])
-            sessions[session_platform][int(session_id)] = {
+        session_id = len(self.local_storage.get("sessions"))
+        sessions = {
+            session_id: {
+                'platform': session_platform,
                 'type': session_type,
                 'host': session_host,
                 'port': session_port,
                 'object': session_object
             }
-        else:
-            sessions = {
-                session_platform: {
-                    int(session_id): {
-                        'type': session_type,
-                        'host': session_host,
-                        'port': session_port,
-                        'object': session_object
-                    }
-                }
-            }
 
         self.local_storage.update("sessions", sessions)
         return session_id
 
-    def check_exist(self, session_platform, session_id, session_type=""):
+    def check_exist(self, session_id):
         sessions = self.local_storage.get("sessions")
         if sessions:
-            if session_platform in sessions.keys():
-                if int(session_id) in sessions[session_platform].keys():
-                    if session_type:
-                        if sessions[session_platform][int(session_id)]['type'] == session_type:
-                            return True
-                        return False
-                    return True
+            if int(session_id) in sessions.keys():
+                return True
         return False
 
-    def spawn_interactive_connection(self, session_platform, session_id):
+    def spawn_interactive_connection(self, session_id):
         sessions = self.local_storage.get("sessions")
-        if self.check_exist(session_platform, session_id):
+        if self.check_exist(session_id):
             self.badges.output_process("Interacting with session " + str(session_id) + "...")
             self.badges.output_success("Interactive connection spawned!")
             self.badges.output_information("Type commands below.\n")
 
-            sessions[session_platform][int(session_id)]['object'].interact()
+            sessions[int(session_id)]['object'].interact()
         else:
             self.badges.output_error("Invalid session given!")
 
-    def close_session(self, session_platform, session_id):
+    def close_session(self, session_id):
         sessions = self.local_storage.get("sessions")
-        if self.check_exist(session_platform, session_id):
+        if self.check_exist(session_id):
             try:
-                sessions[session_platform][int(session_id)]['object'].close()
-                del sessions[session_platform][int(session_id)]
+                sessions[int(session_id)]['object'].close()
+                del sessions[int(session_id)]
 
-                if not sessions[session_platform]:
-                    del sessions[session_platform]
                 self.local_storage.update("sessions", sessions)
             except Exception:
                 self.badges.output_error("Failed to close session!")
         else:
             self.badges.output_error("Invalid session given!")
 
-    def get_session(self, session_platform, session_type, session_id):
+    def get_session(self, session_id):
         sessions = self.local_storage.get("sessions")
-        if self.check_exist(session_platform, session_id):
-            if session_type == sessions[session_platform][int(session_id)]['type']:
-                return sessions[session_platform][int(session_id)]['object']
-            self.badges.output_error("Session with invalid type!")
-            return None
+        if self.check_exist(session_id):
+            return sessions[int(session_id)]['object']
         return None
