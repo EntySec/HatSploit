@@ -88,8 +88,8 @@ class API:
 
     def init(self):
         self.api.add_resource(SessionManager, '/sessions')
-        self.app.logger.disabled = True
-        log = logging.getLogger('werkzeug')
-        log.disabled = True
+        #self.app.logger.disabled = True
+        #log = logging.getLogger('werkzeug')
+        #log.disabled = True
         self.app.run()
     
