@@ -24,6 +24,9 @@
 # SOFTWARE.
 #
 
+import ipaddress
+import requests
+
 from hatsploit.lib.storage import LocalStorage
 from hatsploit.core.cli.badges import Badges
 
@@ -46,12 +49,25 @@ class Sessions:
                session_id < len(self.local_storage.get("sessions"))):
             session_id += 1
 
+        if ipaddress.ip_address(session_host).is_private:
+            data = requests.get("http://ip.jsontest.com/").json()
+            host = data['ip']
+        else:
+            host = session_host
+
+        data = requests.get(f'https://freegeoip.app/json/{host}').json()
+
+        session_latitude = data['latitude']
+        session_longtitude = data['longtitude']
+
         sessions = {
             session_id: {
                 'platform': session_platform,
                 'type': session_type,
                 'host': session_host,
                 'port': session_port,
+                'latitude': session_latitude,
+                'longtitude': session_longtitude,
                 'object': session_object
             }
         }
