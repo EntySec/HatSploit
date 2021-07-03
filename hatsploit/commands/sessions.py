@@ -36,14 +36,16 @@ class HatSploitCommand(Command):
             sessions = self.local_storage.get("sessions")
             if sessions:
                 sessions_data = list()
-                headers = ("ID", "Platform", "Type", "Host", "Port")
+                headers = ("ID", "Platform", "Type", "Host", "Port", "Latitude", "Longtitude")
                 for session_id in sessions.keys():
                     session_platform = sessions[session_id]['platform']
                     session_type = sessions[session_id]['type']
                     host = sessions[session_id]['host']
                     port = sessions[session_id]['port']
+                    latitude = sessions[session_id]['latitude']
+                    longtitude = sessions[session_id]['longtitude']
 
-                    sessions_data.append((session_id, session_platform, session_type, host, port))
+                    sessions_data.append((session_id, session_platform, session_type, host, port, latitude, longtitude))
                 self.print_table("Opened Sessions", headers, *sessions_data)
             else:
                 self.output_warning("No opened sessions available.")
