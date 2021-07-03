@@ -106,4 +106,3 @@ class API:
         log = logging.getLogger('werkzeug')
         log.disabled = True
         self.app.run(port=int(port))
-    
