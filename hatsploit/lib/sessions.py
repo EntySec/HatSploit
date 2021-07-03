@@ -58,7 +58,7 @@ class Sessions:
         data = requests.get(f'https://freegeoip.app/json/{host}').json()
 
         session_latitude = data['latitude']
-        session_longtitude = data['longtitude']
+        session_longitude = data['longitude']
 
         sessions = {
             session_id: {
@@ -67,7 +67,7 @@ class Sessions:
                 'host': session_host,
                 'port': session_port,
                 'latitude': session_latitude,
-                'longtitude': session_longtitude,
+                'longitude': session_longitude,
                 'object': session_object
             }
         }
