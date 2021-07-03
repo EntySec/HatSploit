@@ -49,16 +49,22 @@ class Sessions:
                session_id < len(self.local_storage.get("sessions"))):
             session_id += 1
 
-        if ipaddress.ip_address(session_host).is_private:
-            data = requests.get("http://ip.jsontest.com/").json()
-            host = data['ip']
-        else:
-            host = session_host
+        session_latitude = '0'
+        session_longitude = '0'
 
-        data = requests.get(f'https://freegeoip.app/json/{host}').json()
+        try:
+            if ipaddress.ip_address(session_host).is_private:
+                data = requests.get("http://ip.jsontest.com/").json()
+                host = data['ip']
+            else:
+                host = session_host
 
-        session_latitude = data['latitude']
-        session_longitude = data['longitude']
+            data = requests.get(f'https://freegeoip.app/json/{host}').json()
+
+            session_latitude = data['latitude']
+            session_longitude = data['longitude']
+        except Exception:
+            pass
 
         sessions = {
             session_id: {
