@@ -49,14 +49,17 @@ class SessionManager(Resource):
         parser.add_argument('command')
         parser.add_argument('close')
         parser.add_argument('count')
+        parser.add_argument('output')
         args = parser.parse_args()
 
         if args['command'] and args['id']:
             session = self.sessions.get_session(args['id'])
 
             if session:
-                output = session.send_command(args['command'], output=True)
-                return output, 200
+                if args['output']:
+                    output = session.send_command(args['command'], output=True)
+                    return output, 200
+                session.send_command(args['command'])
             return "", 200
 
         if args['close']:
