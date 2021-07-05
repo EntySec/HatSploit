@@ -29,9 +29,13 @@ class HatSploitCommand(Command):
 
         if times.isdigit():
             commands = command.split()
-            arguments = ""
+            arguments = list()
+
             if commands:
-                arguments = command.replace(commands[0], "", 1).strip()
+                command = command.replace(commands[0], "", 1).strip()
+
+                for arg in command.split():
+                    arguments.append(arg)
 
             for _ in range(int(times)):
                 self.execute.execute_command(commands, arguments)
