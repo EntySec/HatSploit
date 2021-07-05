@@ -34,15 +34,13 @@ class TCPSocket:
         self.host = host
         self.port = int(port)
 
-        self.sock = None
-        self.timeout = timeout
+        self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.sock.settimeout(self.timeout)
 
         self.badges = Badges()
 
     def connect(self):
         try:
-            self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            self.sock.settimeout(self.timeout)
             self.sock.connect((self.host, self.port))
             return True
         except Exception:
