@@ -35,7 +35,7 @@ class TCPSocket:
         self.port = int(port)
 
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.sock.settimeout(self.timeout)
+        self.sock.settimeout(timeout)
 
         self.badges = Badges()
 
