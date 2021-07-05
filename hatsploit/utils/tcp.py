@@ -41,33 +41,36 @@ class TCPSocket:
 
     def connect(self):
         try:
-            sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            sock.settimeout(self.timeout)
-            self.sock = sock.connect((self.host, self.port))
+            self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            self.sock.settimeout(self.timeout)
+            self.sock.connect((self.host, self.port))
             return True
         except Exception:
             self.badges.output_error("Failed to connect!")
         return False
 
     def disconnect(self):
-        if self.sock:
+        try:
             self.sock.close()
             return True
-        self.badges.output_error("Socket is not connected!")
-        return False
+        except Exception:
+            self.badges.output_error("Socket is not connected!")
+            return False
 
     def send(self, data):
-        if self.sock:
+        try:
             self.sock.send(data)
             return True
-        self.badges.output_error("Socket is not connected!")
-        return False
+        except Exception:
+            self.badges.output_error("Socket is not connected!")
+            return False
 
     def recv(self, size):
-        if self.sock:
+        try:
             return self.sock.recv(size)
-        self.badges.output_error("Socket is not connected!")
-        return b""
+        except Exception:
+            self.badges.output_error("Socket is not connected!")
+            return b""
 
 
 class TCPClient:
