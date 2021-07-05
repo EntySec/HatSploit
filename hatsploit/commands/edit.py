@@ -11,12 +11,14 @@ from hatsploit.lib.storage import LocalStorage
 from hatsploit.lib.config import Config
 from hatsploit.lib.command import Command
 from hatsploit.lib.modules import Modules
+from hatsploit.core.base.execute import Execute
 
 
 class HatSploitCommand(Command):
     config = Config()
     modules = Modules()
     local_storage = LocalStorage()
+    execute = Execute()
 
     details = {
         'Category': "developer",
