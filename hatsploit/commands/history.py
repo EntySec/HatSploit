@@ -64,9 +64,6 @@ class HatSploitCommand(Command):
                     history_file.close()
                     for line in history:
                         self.output_empty("    * " + line)
-
-                    for index in range(1, readline.get_current_history_length()):
-                        self.output_empty("    * " + readline.get_history_item(index))
                 else:
                     self.output_warning("HatSploit history empty.")
             else:
