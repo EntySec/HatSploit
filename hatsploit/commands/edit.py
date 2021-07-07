@@ -51,7 +51,7 @@ class HatSploitCommand(Command):
                     "modules"
                 )[database][module]['Path']
 
-                edit_mode = editor + " " + self.config.path_config['root_path'] + module_path + '.py'
+                edit_mode = editor + ' ' + module_path + '.py'
                 self.execute.execute_system(self.format_commands(edit_mode))
             else:
                 self.output_error("Can not edit already used module!")
