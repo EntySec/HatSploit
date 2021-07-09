@@ -143,7 +143,7 @@ class Handler(Server):
         path = location + '/' + filename
 
         echo_stream = "echo -en '{}' >> {}"
-        echo_max_length = 10
+        echo_max_length = 5
 
         size = len(payload)
         num_parts = int(size / echo_max_length) + 1
@@ -152,6 +152,7 @@ class Handler(Server):
             current = i * echo_max_length
             block = self.bytes_to_octal(payload[current:current + echo_max_length])
             command = echo_stream.format(block, path)
+            print(command)
 
             self.badges.output_multi(f"Uploading payload... ({str(current)}/{str(size)})")
             sender(*args, command)
