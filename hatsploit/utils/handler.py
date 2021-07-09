@@ -108,7 +108,7 @@ class Handler(Server):
     def bytes_to_octal(self, bytes_obj):
         byte_octals = []
         for byte in bytes_obj:
-            byte_octal = '\\' + oct(byte)[2:]
+            byte_octal = '\\\\' + oct(byte)[2:]
             byte_octals.append(byte_octal)
         return ''.join(byte_octals)
 
@@ -151,6 +151,7 @@ class Handler(Server):
         for i in range(0, num_parts):
             current = i * echo_max_length
             block = self.bytes_to_octal(payload[current:current + echo_max_length])
+            print(command)
             command = echo_stream.format(block, path)
 
             self.badges.output_multi(f"Uploading payload... ({str(current)}/{str(size)})")
