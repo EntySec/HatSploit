@@ -142,7 +142,7 @@ class Handler(Server):
         filename = binascii.hexlify(os.urandom(8)).decode()
         path = location + '/' + filename
 
-        echo_stream = "echo -ne '{}' >> {}"
+        echo_stream = "echo -en '{}' >> {}"
         echo_max_length = 10
 
         size = len(payload)
