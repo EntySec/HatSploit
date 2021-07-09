@@ -105,7 +105,7 @@ class Handler(Server):
             self.badges.output_error("Failed to handle session!")
             return None
 
-    def bytes_to_octal(self, bytes_obj, extra_zero=False):
+    def bytes_to_octal(self, bytes_obj):
         byte_octals = []
         for byte in bytes_obj:
             byte_octal = '\\' + oct(byte)[2:]
@@ -142,7 +142,7 @@ class Handler(Server):
         filename = binascii.hexlify(os.urandom(8)).decode()
         path = location + '/' + filename
 
-        echo_stream = "echo -n '{}' >> {}"
+        echo_stream = "echo -ne '{}' >> {}"
         echo_max_length = 100
 
         size = len(payload)
@@ -150,7 +150,7 @@ class Handler(Server):
 
         for i in range(0, num_parts):
             current = i * echo_max_length
-            block = self.bytes_to_octal(payload[current:current + echo_max_length], extra_zero=True)
+            block = self.bytes_to_octal(payload[current:current + echo_max_length])
             command = echo_stream.format(block, path)
 
             self.badges.output_multi(f"Uploading payload... ({str(current)}/{str(size)})")
