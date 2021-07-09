@@ -160,7 +160,7 @@ class Handler(Server):
         self.badges.output_process("Executing payload...")
         args = args if args is not None else ""
 
-        sender(*args, f"chmod 777 {path} {delim} sh -c \"{path} {payload_args} && rm {path} 2>/dev/null &\"")
+        #sender(*args, f"chmod 777 {path} {delim} sh -c \"{path} {payload_args} && rm {path} 2>/dev/null &\"")
     
     def printf_stage(self, payload, sender, args=[], payload_args=None, delim=';',
                      location='/tmp'):
