@@ -151,8 +151,8 @@ class Handler(Server):
         for i in range(0, num_parts):
             current = i * echo_max_length
             block = self.bytes_to_octal(payload[current:current + echo_max_length])
-            print(command)
             command = echo_stream.format(block, path)
+            print(command)
 
             self.badges.output_multi(f"Uploading payload... ({str(current)}/{str(size)})")
             sender(*args, command)
