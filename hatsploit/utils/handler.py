@@ -108,7 +108,7 @@ class Handler(Server):
     def bytes_to_octal(self, bytes_obj, extra_zero=False):
         byte_octals = []
         for byte in bytes_obj:
-            byte_octal = '\\0' if extra_zero else '\\' + oct(byte)[2:]
+            byte_octal = '\\' + oct(byte)[2:]
             byte_octals.append(byte_octal)
         return ''.join(byte_octals)
 
