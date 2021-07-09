@@ -108,7 +108,7 @@ class Handler(Server):
     def bytes_to_octal(self, bytes_obj):
         byte_octals = []
         for byte in bytes_obj:
-            byte_octal = '\\\\' + oct(byte)[2:]
+            byte_octal = '\\' + oct(byte)[2:]
             byte_octals.append(byte_octal)
         return ''.join(byte_octals)
 
@@ -143,7 +143,7 @@ class Handler(Server):
         path = location + '/' + filename
 
         echo_stream = "echo -ne '{}' >> {}"
-        echo_max_length = 5
+        echo_max_length = 10
 
         size = len(payload)
         num_parts = int(size / echo_max_length) + 1
