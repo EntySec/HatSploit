@@ -213,7 +213,7 @@ class Handler(Server):
             )
 
     def handle_session(self, host, port, payload, sender=None, args=[],
-                       delim=';', remote_host=None, location='/tmp', timeout=10, method=None, post="printf"):
+                       delim=';', remote_host=None, location='/tmp', timeout=None, method=None, post="printf"):
         if payload['Payload'] is None:
             self.badges.output_error("Payload stage is not found!")
             return False
