@@ -283,12 +283,14 @@ class Handler(Server):
                         ]
                     )
             elif payload['Category'].lower() == 'single':
+                self.badges.output_process("Sending payload stage...")
                 self.do_job(
                     "Handler Stage",
                     payload,
                     sender,
                     [*args, payload['Payload']]
                 )
+                self.badges.output_process("Executing payload...")
             else:
                 self.badges.output_error("Invalid payload category!")
                 return False
@@ -368,12 +370,14 @@ class Handler(Server):
                             ]
                         )
                 elif payload['Category'].lower() == 'single':
+                    self.badges.output_process("Sending payload stage...")
                     self.do_job(
                         "Handler Stage",
                         payload,
                         new_session.send_command,
                         [payload['Payload']]
                     )
+                    self.badges.output_process("Executing payload...")
                 else:
                     self.badges.output_error("Invalid payload category!")
                     return False
