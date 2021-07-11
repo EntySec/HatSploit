@@ -54,7 +54,7 @@ class Sessions:
 
         try:
             if ipaddress.ip_address(session_host).is_private:
-                data = requests.get("http://ip.jsontest.com/").json()
+                data = requests.get("https://www.myexternalip.com/json").json()
                 host = data['ip']
             else:
                 host = session_host
