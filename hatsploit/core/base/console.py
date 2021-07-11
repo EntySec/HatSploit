@@ -151,7 +151,7 @@ class Console:
         self.launch_shell()
         self.launch_menu()
 
-    def script(self, file, exit=True):
+    def script(self, file, do_shell=False):
         self.start_hsf()
         with open(file, 'r') as f:
             for command in file.split('\n'):
@@ -165,6 +165,6 @@ class Console:
                         arguments.append(arg)
 
                     self.execute.execute_command(commands, arguments)
-        if not exit:
+        if do_shell:
             self.launch_shell()
             self.launch_menu()
