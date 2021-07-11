@@ -155,6 +155,8 @@ class Console:
 
     def script(self, file, do_shell=False):
         self.start_hsf()
+        self.launch_shell()
+
         with open(file, 'r') as f:
             for command in f.read().split('\n'):
                 commands = command.strip().split()
