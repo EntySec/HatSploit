@@ -79,13 +79,12 @@ class Server:
 
     def connect(self, remote_host, remote_port, timeout=None):
         address = remote_host + ':' + str(remote_port)
-        self.badges.output_process("Connecting to " + address + "...")
+        self.badges.output_process("Establishing connection...")
         try:
             server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             server.settimeout(timeout)
 
             server.connect((remote_host, int(remote_port)))
-            self.badges.output_process("Establishing connection...")
         except socket.timeout:
             self.badges.output_warning("Connection timeout.")
             raise self.exceptions.GlobalException
@@ -104,7 +103,6 @@ class Server:
 
             self.badges.output_process("Listening on port " + str(local_port) + "...")
             client, address = server.accept()
-            self.badges.output_process("Connecting to " + address[0] + "...")
             self.badges.output_process("Establishing connection...")
 
             server.close()
