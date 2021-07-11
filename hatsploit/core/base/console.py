@@ -150,3 +150,21 @@ class Console:
         self.start_hsf()
         self.launch_shell()
         self.launch_menu()
+
+    def script(self, file, exit=True):
+        self.start_hsf()
+        with open(file, 'r') as f:
+            for command in file.split('\n'):
+                commands = command.split()
+                arguments = list()
+
+                if commands:
+                    command = command.replace(commands[0], "", 1).strip()
+
+                    for arg in command.split():
+                        arguments.append(arg)
+
+                    self.execute.execute_command(commands, arguments)
+        if not exit:
+            self.launch_shell()
+            self.launch_menu()
