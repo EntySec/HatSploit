@@ -76,7 +76,7 @@ class Loader:
         cycle = 0
         while loading_process.is_alive():
             for char in "/-\|":
-                status = base_line + char + "\r"
+                status = base_line + char + "\033[1K\r"
                 cycle += 1
                 if status[cycle % len(status)] in list(string.ascii_lowercase):
                     status = status[:cycle % len(status)] + status[cycle % len(status)].upper() + status[cycle % len(
