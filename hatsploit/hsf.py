@@ -83,17 +83,14 @@ By accepting our terms of service, you agree that you will only use this tool fo
             return True
         return True
 
-    def launch(self, shell=True, script=None):
+    def launch(self, do_shell=True, script=None):
         if self.console.check_install():
             if self.accept_terms_of_service():
                 if not script:
-                    if shell:
+                    if do_shell:
                         self.console.shell()
                 else:
-                    if shell:
-                        self.console.script(script, exit=False)
-                    else:
-                        self.console.script(script)
+                    self.console.script(script, do_shell)
 
 def main():
     description = "Modular penetration testing platform that enables you to write, test, and execute exploit code."
@@ -137,7 +134,7 @@ def main():
             hsf.badges.output_error(f"Local file: {args.script}: does not exist!")
             sys.exit(1)
         hsf.launch(
-            shell=args.no_exit,
+            do_shell=args.no_exit,
             script=args.script
         )
     else:
