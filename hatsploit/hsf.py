@@ -83,10 +83,17 @@ By accepting our terms of service, you agree that you will only use this tool fo
             return True
         return True
 
-    def launch(self):
+    def launch(self, shell=True, script=None):
         if self.console.check_install():
             if self.accept_terms_of_service():
-                self.console.shell()
+                if not script:
+                    if shell:
+                        self.console.shell()
+                else:
+                    if shell:
+                        self.console.script(script, exit=False)
+                    else:
+                        self.console.script(script)
 
 def main():
     description = "Modular penetration testing platform that enables you to write, test, and execute exploit code."
@@ -97,6 +104,8 @@ def main():
     parser.add_argument('--check-plugins', dest='check_plugins', action='store_true', help='Check only base plugins.')
     parser.add_argument('-u', '--update', dest='update', action='store_true', help='Update HatSploit Framework.')
     parser.add_argument('--rest-api', dest='rest_api_port', type=int, help='Run HatSploit with REST API.')
+    parser.add_argument('-s', '--script', dest='script', help='Execute HatSploit commands from script file.')
+    parser.add_argument('--no-exit', dest='no_exit', action='store_true', help='Do not exit after script execution.')
     args = parser.parse_args()
 
     hsf = HatSploit()
@@ -123,5 +132,13 @@ def main():
             [args.rest_api_port]
         )
         hsf.launch()
+    elif args.script:
+        if not os.path.exists(args.script):
+            hsf.badges.output_error(f"Local file: {args.script}: does not exist!")
+            sys.exit(1)
+        hsf.launch(
+            shell=args.no_exit,
+            script=args.script
+        )
     else:
         hsf.launch()
