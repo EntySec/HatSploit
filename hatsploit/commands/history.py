@@ -59,11 +59,8 @@ class HatSploitCommand(Command):
                 if readline.get_current_history_length() > 0:
                     self.output_information("HatSploit history:")
 
-                    history_file = open(self.history, 'r')
-                    history = [x.strip() for x in history_file.readlines()]
-                    history_file.close()
-                    for line in history:
-                        self.output_empty("    * " + line)
+                    for index in range(1, readline.get_current_history_length()):
+                         self.output_empty("    * " + readline.get_history_item(index))
                 else:
                     self.output_warning("HatSploit history empty.")
             else:
