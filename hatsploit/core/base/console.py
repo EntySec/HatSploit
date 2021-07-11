@@ -98,12 +98,13 @@ class Console:
             open(self.history, 'w').close()
         readline.read_history_file(self.history)
 
-    def launch_shell(self):
+    def launch_history(self):
         using_history = self.local_storage.get("history")
         if using_history:
             self.enable_history_file()
         readline.parse_and_bind("tab: complete")
 
+    def launch_shell(self):
         version = self.config.core_config['details']['version']
         codename = self.config.core_config['details']['codename']
         if self.config.core_config['console']['clear']:
@@ -148,14 +149,15 @@ class Console:
 
     def shell(self):
         self.start_hsf()
+        self.launch_history()
         self.launch_shell()
         self.launch_menu()
 
     def script(self, file, do_shell=False):
         self.start_hsf()
         with open(file, 'r') as f:
-            for command in file.split('\n'):
-                commands = command.split()
+            for command in f.read().split('\n'):
+                commands = command.strip().split()
                 arguments = list()
 
                 if commands:
@@ -166,5 +168,5 @@ class Console:
 
                     self.execute.execute_command(commands, arguments)
         if do_shell:
-            self.launch_shell()
+            self.launch_history()
             self.launch_menu()
