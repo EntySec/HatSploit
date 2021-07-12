@@ -47,9 +47,10 @@ class SessionManager(Resource):
             session = self.sessions.get_session(args['id'])
 
             if session:
-                if args['output'].lower() in ['yes', 'y']:
-                    output = session.send_command(args['command'], output=True)
-                    return output, 200
+                if args['output']:
+                    if args['output'].lower() in ['yes', 'y']:
+                        output = session.send_command(args['command'], output=True)
+                        return output, 200
                 session.send_command(args['command'])
             return "", 200
 
