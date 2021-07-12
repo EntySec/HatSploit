@@ -113,4 +113,4 @@ class API:
         self.app.logger.disabled = True
         log = logging.getLogger('werkzeug')
         log.disabled = True
-        self.app.run(port=int(port))
+        self.app.run(host='127.0.0.1', port=int(port))
