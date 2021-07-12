@@ -34,15 +34,6 @@ class SessionManager(Resource):
     sessions = Sessions()
 
     def get(self):
-        ## HatSploit REST API
-        #
-        # /sessions?list=all            - list all sessions
-        # /sessions?command=whoami&id=0 - execute command in session
-        # /sessions?close=0             - close session
-        # /sessions?count=all           - count all sessions
-        #
-        ##
-
         parser = reqparse.RequestParser()
         parser.add_argument('id')
         parser.add_argument('list')
@@ -56,7 +47,7 @@ class SessionManager(Resource):
             session = self.sessions.get_session(args['id'])
 
             if session:
-                if args['output']:
+                if args['output'].lower() in ['yes', 'y']:
                     output = session.send_command(args['command'], output=True)
                     return output, 200
                 session.send_command(args['command'])
@@ -84,16 +75,29 @@ class SessionManager(Resource):
 
             if sessions:
                 for session in sessions.keys():
-                    data.update({
-                        session: {
-                            'platform': sessions[session]['platform'],
-                            'type': sessions[session]['type'],
-                            'host': sessions[session]['host'],
-                            'port': sessions[session]['port'],
-                            'latitude': sessions[session]['latitude'],
-                            'longitude': sessions[session]['longitude']
-                        }
-                    })
+                    if args['list'] == 'all':
+                        data.update({
+                            session: {
+                                'platform': sessions[session]['platform'],
+                                'type': sessions[session]['type'],
+                                'host': sessions[session]['host'],
+                                'port': sessions[session]['port'],
+                                'latitude': sessions[session]['latitude'],
+                                'longitude': sessions[session]['longitude']
+                            }
+                        })
+                    else:
+                        if sessions[session]['platform'] == args['list']:
+                            data.update({
+                                session: {
+                                    'platform': sessions[session]['platform'],
+                                    'type': sessions[session]['type'],
+                                    'host': sessions[session]['host'],
+                                    'port': sessions[session]['port'],
+                                    'latitude': sessions[session]['latitude'],
+                                    'longitude': sessions[session]['longitude']
+                                }
+                            })
             return data, 200
 
         return "", 200
