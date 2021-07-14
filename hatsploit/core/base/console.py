@@ -168,6 +168,7 @@ class Console:
                     for arg in command.split():
                         arguments.append(arg)
 
+                    self.jobs.stop_dead()
                     self.execute.execute_command(commands, arguments)
         if do_shell:
             self.launch_history()
