@@ -51,6 +51,7 @@ setup(name='hatsploit',
           'requests',
           'paramiko',
           'flask',
+          'flask_cors',
           'flask_restful',
           'hatvenom @ git+http://github.com/EntySec/HatVenom'
       ],
