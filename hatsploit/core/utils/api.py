@@ -25,6 +25,7 @@
 #
 
 from flask import Flask
+from flask_cors import CORS
 from flask_restful import Resource, Api, reqparse
 import logging
 
@@ -106,11 +107,15 @@ class SessionManager(Resource):
 class API:
     def __init__(self):
         self.app = Flask(__name__)
+        CORS(self.app)
+
         self.api = Api(self.app)
 
     def init(self, port):
         self.api.add_resource(SessionManager, '/sessions')
         self.app.logger.disabled = True
+
         log = logging.getLogger('werkzeug')
         log.disabled = True
+
         self.app.run(host='127.0.0.1', port=int(port))
