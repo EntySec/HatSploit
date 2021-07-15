@@ -13,7 +13,7 @@ class HatSploitPayload(Payload):
     details = {
         'Category': "single",
         'Name': "Netcat Shell Reverse TCP",
-        'Payload': "unix/generic/netcat_reverse_tcp",
+        'Payload': "linux/generic/netcat_reverse_tcp",
         'Authors': [
             'Ivan Nikolsky (enty8080) - payload developer'
         ],
@@ -22,7 +22,7 @@ class HatSploitPayload(Payload):
             ''
         ],
         'Architecture': "generic",
-        'Platform': "unix",
+        'Platform': "linux",
         'Risk': "high",
         'Type': "reverse_tcp"
     }
