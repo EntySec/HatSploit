@@ -83,6 +83,9 @@ class HatSploitCommand(Command):
                     self.print_table("Payloads (" + database + ")", headers, *payloads_data)
 
     def run(self, argc, argv):
+        if argv[0] in ['-h', '--help']:
+            self.output_usage(self.details['Usage'])
+            return
         if argv[0] not in ['-w', '--where']:
             self.show_modules(argv[0])
             self.show_payloads(argv[0])
