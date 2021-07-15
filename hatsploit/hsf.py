@@ -100,7 +100,7 @@ def main():
     parser.add_argument('--check-payloads', dest='check_payloads', action='store_true', help='Check only base payloads.')
     parser.add_argument('--check-plugins', dest='check_plugins', action='store_true', help='Check only base plugins.')
     parser.add_argument('-u', '--update', dest='update', action='store_true', help='Update HatSploit Framework.')
-    parser.add_argument('--rest-api', dest='rest_api_port', type=int, help='Run HatSploit with REST API.')
+    parser.add_argument('--rest-api', dest='rest_api_port', type=int, help='Run HatSploit with REST API. [default: 8008]')
     parser.add_argument('-s', '--script', dest='script', help='Execute HatSploit commands from script file.')
     parser.add_argument('--no-exit', dest='no_exit', action='store_true', help='Do not exit after script execution.')
     args = parser.parse_args()
