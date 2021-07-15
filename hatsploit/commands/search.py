@@ -13,7 +13,8 @@ class HatSploitCommand(Command):
     local_storage = LocalStorage()
 
     usage = ""
-    usage += "search [options] <keyword>\n\n"
+    usage += "search [option] [<keyword>]\n\n"
+    usage += "  -h, --help                              Show this help message.\n"
     usage += "  -w, --where [payloads|modules|plugins]  Select where search.\n"
 
     details = {
