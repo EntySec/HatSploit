@@ -28,7 +28,7 @@ class HatSploitModule(Module, SessionTools):
         'SESSION': {
             'Description': "Session to run on.",
             'Value': 0,
-            'Type': "session->shell",
+            'Type': "session->[unix,linux,macos]",
             'Required': True
         }
     }
