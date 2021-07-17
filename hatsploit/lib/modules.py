@@ -164,15 +164,41 @@ class Modules:
             if 'session' in value_type.lower():
                 session = value_type.lower().replace(' ', '')
                 session = session.split('->')
+                
+                session_platforms = []
+                session_platform = self.modules.get_current_module_platform()
+                session_type = "shell"
 
-                session_type = ""
                 if len(session) == 2:
-                    session_type = session[1]
-                session_platform = self.get_current_module_platform()
+                    if session[1].startswith['['] and session[1].endswith(']'):
+                        session_platforms = session[1][1:-1].split(',')
+                    else:
+                        session_type = session[1]
 
-                if not self.sessions.check_exist(session_id, session_platform, session_type):
-                    self.badges.output_error("Invalid value, expected valid session!")
-                    return False
+                elif len(session) == 3:
+                    if session[1].startswith['['] and session[1].endswith(']'):
+                        session_platforms = session[1][1:-1].split(',')
+                    else:
+                        session_type = session[1]
+
+                    if session[2].startswith['['] and session[2].endswith(']'):
+                        session_platforms = session[2][1:-1].split(',')
+                    else:
+                        session_type = session[2]
+
+                if not session_platforms:
+                    if not self.sessions.check_exist(session_id, session_platform, session_type):
+                        self.badges.output_error("Invalid value, expected valid session!")
+                        return False
+                else:
+                    session = 0
+                    for platform in session_platforms:
+                        if self.sessions.check_exist(session_id, session_platform, session_type):
+                            session = 1
+                            break
+                    if not session:
+                        self.badges.output_error("Invalid value, expected valid session!")
+                        return False
         return True
 
     def set_current_module_option(self, option, value):
