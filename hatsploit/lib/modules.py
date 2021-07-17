@@ -170,18 +170,18 @@ class Modules:
                 session_type = "shell"
 
                 if len(session) == 2:
-                    if session[1].startswith['['] and session[1].endswith(']'):
+                    if session[1].startswith('[') and session[1].endswith(']'):
                         session_platforms = session[1][1:-1].split(',')
                     else:
                         session_type = session[1]
 
                 elif len(session) == 3:
-                    if session[1].startswith['['] and session[1].endswith(']'):
+                    if session[1].startswith('[') and session[1].endswith(']'):
                         session_platforms = session[1][1:-1].split(',')
                     else:
                         session_type = session[1]
 
-                    if session[2].startswith['['] and session[2].endswith(']'):
+                    if session[2].startswith('[') and session[2].endswith(']'):
                         session_platforms = session[2][1:-1].split(',')
                     else:
                         session_type = session[2]
