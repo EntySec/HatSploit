@@ -111,7 +111,7 @@ class API:
 
         self.api = Api(self.app)
 
-    def init(self, port):
+    def init(self, port=8008):
         self.api.add_resource(SessionManager, '/sessions')
         self.app.logger.disabled = True
 
