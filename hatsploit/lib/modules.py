@@ -166,7 +166,7 @@ class Modules:
                 session = session.split('->')
                 
                 session_platforms = []
-                session_platform = self.modules.get_current_module_platform()
+                session_platform = self.get_current_module_platform()
                 session_type = "shell"
 
                 if len(session) == 2:
