@@ -9,13 +9,11 @@ import readline
 
 from hatsploit.lib.config import Config
 from hatsploit.lib.storage import GlobalStorage
-from hatsploit.lib.storage import LocalStorage
 from hatsploit.lib.command import Command
 
 
 class HatSploitCommand(Command):
     config = Config()
-    local_storage = LocalStorage()
 
     history = config.path_config['history_path']
     storage_path = config.path_config['storage_path']
@@ -42,11 +40,9 @@ class HatSploitCommand(Command):
     def run(self, argc, argv):
         option = argv[0]
         if option == "on":
-            self.local_storage.set("history", True)
             self.global_storage.set("history", True)
             self.output_information("HatSploit history: on")
         elif option == "off":
-            self.local_storage.set("history", False)
             self.global_storage.set("history", False)
             self.output_information("HatSploit history: off")
         elif option in ['-c', '--clear']:
@@ -54,7 +50,7 @@ class HatSploitCommand(Command):
             with open(self.history, 'w') as history:
                 history.write("")
         elif option in ['-l', '--list']:
-            using_history = self.local_storage.get("history")
+            using_history = self.global_storage.get("history")
             if using_history:
                 if readline.get_current_history_length() > 0:
                     self.output_information("HatSploit history:")
