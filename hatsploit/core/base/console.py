@@ -55,11 +55,13 @@ class Console:
         self.banner = Banner()
         self.colors = Colors()
         self.local_storage = LocalStorage()
-        self.global_storage = GlobalStorage()
         self.modules = Modules()
         self.exceptions = Exceptions()
 
         self.history = self.config.path_config['history_path']
+        self.storage_path = self.config.path_config['storage_path']
+
+        self.global_storage = GlobalStorage(self.storage_path)
 
     def check_install(self):
         if os.path.exists(self.config.path_config['root_path']):
