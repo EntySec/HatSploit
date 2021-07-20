@@ -57,6 +57,8 @@ class Console:
         self.modules = Modules()
         self.exceptions = Exceptions()
 
+        self.history = self.config.path_config['history_path']
+
     def check_install(self):
         if os.path.exists(self.config.path_config['root_path']):
             return True
