@@ -50,16 +50,12 @@ class HatSploitCommand(Command):
             with open(self.history, 'w') as history:
                 history.write("")
         elif option in ['-l', '--list']:
-            using_history = self.global_storage.get("history")
-            if using_history:
-                if readline.get_current_history_length() > 0:
-                    self.output_information("HatSploit history:")
+            if readline.get_current_history_length() > 0:
+                self.output_information("HatSploit history:")
 
-                    for index in range(1, readline.get_current_history_length()):
-                         self.output_empty("    * " + readline.get_history_item(index))
-                else:
-                    self.output_warning("HatSploit history empty.")
+                for index in range(1, readline.get_current_history_length()):
+                     self.output_empty("    * " + readline.get_history_item(index))
             else:
-                self.output_warning("No history detected.")
+                self.output_warning("HatSploit history empty.")
         else:
             self.output_usage(self.details['Usage'])
