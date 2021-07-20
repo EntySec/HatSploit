@@ -8,12 +8,14 @@
 import readline
 
 from hatsploit.lib.config import Config
+from hatsploit.lib.storage import LocalStorage
 from hatsploit.lib.storage import GlobalStorage
 from hatsploit.lib.command import Command
 
 
 class HatSploitCommand(Command):
     config = Config()
+    local_storage = LocalStorage()
 
     history = config.path_config['history_path']
     storage_path = config.path_config['storage_path']
