@@ -103,6 +103,7 @@ class Console:
 
         using_history = self.local_storage.get("history")
         if using_history:
+            readline.set_auto_history(True)
             self.enable_history_file()
 
         readline.parse_and_bind("tab: complete")
