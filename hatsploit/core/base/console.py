@@ -35,6 +35,7 @@ from hatsploit.core.base.io import IO
 from hatsploit.lib.jobs import Jobs
 from hatsploit.core.base.loader import Loader
 from hatsploit.lib.storage import LocalStorage
+from hatsploit.lib.storage import GlobalStorage
 from hatsploit.core.cli.badges import Badges
 from hatsploit.core.cli.colors import Colors
 from hatsploit.lib.modules import Modules
@@ -54,6 +55,7 @@ class Console:
         self.banner = Banner()
         self.colors = Colors()
         self.local_storage = LocalStorage()
+        self.global_storage = GlobalStorage()
         self.modules = Modules()
         self.exceptions = Exceptions()
 
@@ -85,7 +87,7 @@ class Console:
 
                 self.jobs.stop_dead()
                 self.execute.execute_command(commands, arguments)
-                if self.local_storage.get("history"):
+                if self.global_storage.get("history"):
                     readline.write_history_file(self.history)
 
             except (KeyboardInterrupt, EOFError, self.exceptions.GlobalException):
@@ -99,7 +101,7 @@ class Console:
         readline.read_history_file(self.history)
 
     def launch_history(self):
-        using_history = self.local_storage.get("history")
+        using_history = self.global_storage.get("history")
         if using_history:
             self.enable_history_file()
         readline.parse_and_bind("tab: complete")
