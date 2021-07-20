@@ -41,21 +41,30 @@ class HatSploitCommand(Command):
         option = argv[0]
         if option == "on":
             self.global_storage.set("history", True)
+            self.global_storage.set_all()
             self.output_information("HatSploit history: on")
         elif option == "off":
             self.global_storage.set("history", False)
+            self.global_storage.set_all()
+            readline.clear_history()
+            with open(self.history, 'w') as history:
+                history.write("")
             self.output_information("HatSploit history: off")
         elif option in ['-c', '--clear']:
             readline.clear_history()
             with open(self.history, 'w') as history:
                 history.write("")
         elif option in ['-l', '--list']:
-            if readline.get_current_history_length() > 0:
-                self.output_information("HatSploit history:")
+            using_history = self.local_storage.get("history")
+            if using_history:
+                if readline.get_current_history_length() > -1:
+                    self.output_information("HatSploit history:")
 
-                for index in range(1, readline.get_current_history_length()):
-                     self.output_empty("    * " + readline.get_history_item(index))
+                    for index in range(1, readline.get_current_history_length()+1):
+                        self.output_empty("    * " + readline.get_history_item(index))
+                else:
+                    self.output_warning("HatSploit history empty.")
             else:
-                self.output_warning("HatSploit history empty.")
+                self.output_warning("No HatSploit history detected.")
         else:
             self.output_usage(self.details['Usage'])
