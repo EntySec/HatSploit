@@ -102,7 +102,7 @@ class Console:
         using_history = self.local_storage.get("history")
         if using_history:
             self.enable_history_file()
-        readline.parse_and_bind("tab: complete")
+            readline.parse_and_bind("tab: complete")
 
     def launch_shell(self):
         version = self.config.core_config['details']['version']
