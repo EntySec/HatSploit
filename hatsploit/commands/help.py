@@ -60,7 +60,7 @@ class HatSploitCommand(Command):
             commands = current_module.commands
             for command in sorted(commands.keys()):
                 commands_data.append((command, commands[command]['Description']))
-            self.print_table("Custom Commands", headers, *commands_data)
+            self.print_table("Module Commands", headers, *commands_data)
 
     def run(self, argc, argv):
         self.format_base_commands()
