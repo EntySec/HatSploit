@@ -15,7 +15,7 @@ class HatSploitCommand(Command):
     local_storage = LocalStorage()
 
     details = {
-        'Category': "module",
+        'Category': "modules",
         'Name': "back",
         'Authors': [
             'Ivan Nikolsky (enty8080) - command developer'
