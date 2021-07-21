@@ -6,7 +6,6 @@
 #
 
 from hatsploit.lib.command import Command
-
 from hatsploit.lib.modules import Modules
 
 
