@@ -17,7 +17,7 @@ class HatSploitCommand(Command):
     importer = Importer()
 
     details = {
-        'Category': "plugin",
+        'Category': "plugins",
         'Name': "load",
         'Authors': [
             'Ivan Nikolsky (enty8080) - command developer'
