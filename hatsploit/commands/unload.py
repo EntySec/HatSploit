@@ -15,7 +15,7 @@ class HatSploitCommand(Command):
     plugins = Plugins()
 
     details = {
-        'Category': "plugin",
+        'Category': "plugins",
         'Name': "unload",
         'Authors': [
             'Ivan Nikolsky (enty8080) - command developer'
