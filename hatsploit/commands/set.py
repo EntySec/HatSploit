@@ -14,7 +14,7 @@ class HatSploitCommand(Command):
     modules = Modules()
 
     details = {
-        'Category': "module",
+        'Category': "modules",
         'Name': "set",
         'Authors': [
             'Ivan Nikolsky (enty8080) - command developer'
