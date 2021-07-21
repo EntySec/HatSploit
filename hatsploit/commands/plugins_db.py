@@ -24,7 +24,7 @@ class HatSploitCommand(Command):
     usage += "  -b, --build <path> <output_path>  Build plugins database from plugins path.\n"
 
     details = {
-        'Category': "database",
+        'Category': "databases",
         'Name': "plugins_db",
         'Authors': [
             'Ivan Nikolsky (enty8080) - command developer'
