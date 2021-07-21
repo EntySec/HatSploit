@@ -24,7 +24,7 @@ class HatSploitCommand(Command):
     usage += "  -j, --job   Run current module as a background job.\n"
 
     details = {
-        'Category': "module",
+        'Category': "modules",
         'Name': "run",
         'Authors': [
             'Ivan Nikolsky (enty8080) - command developer'
