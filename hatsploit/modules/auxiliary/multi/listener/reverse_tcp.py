@@ -11,31 +11,25 @@ from hatsploit.utils.handler import Handler
 
 class HatSploitModule(Module, Handler):
     details = {
-        'Name': "Reverse TCP Stager",
-        'Module': "exploit/unix/stager/reverse_tcp",
+        'Name': "Reverse TCP Listener",
+        'Module': "auxiliary/multi/reverse_tcp",
         'Authors': [
             'Ivan Nikolsky (enty8080) - module developer'
         ],
-        'Description': "Reverse TCP Stager.",
+        'Description': "Reverse TCP listener.",
         'Comments': [
             ''
         ],
-        'Platform': "unix",
+        'Platform': "multi",
         'Risk': "high"
     }
 
     payload = {
         'Description': "Payload to use.",
-        'Value': "unix/generic/bash_reverse_tcp",
+        'Value': "unix/generic/netcat_reverse_tcp",
         'Categories': None,
         'Architectures': None,
-        'Platforms': [
-            'unix',
-            'linux',
-            'macos',
-            'iphoneos',
-            'android'
-        ],
+        'Platforms': None,
         'Types': None
     }
 
