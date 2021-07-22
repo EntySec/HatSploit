@@ -12,7 +12,7 @@ from hatsploit.utils.handler import Handler
 class HatSploitModule(Module, Handler):
     details = {
         'Name': "Reverse TCP Listener",
-        'Module': "auxiliary/multi/reverse_tcp",
+        'Module': "auxiliary/multi/listener/reverse_tcp",
         'Authors': [
             'Ivan Nikolsky (enty8080) - module developer'
         ],
