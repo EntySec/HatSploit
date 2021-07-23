@@ -54,15 +54,15 @@ class Sessions:
 
         try:
             if ipaddress.ip_address(session_host).is_private:
-                data = requests.get("https://www.myexternalip.com/json").json()
+                data = requests.get("https://www.myexternalip.com/json", timeout=3).json()
                 host = data['ip']
             else:
                 host = session_host
 
-            data = requests.get(f'https://freegeoip.app/json/{host}').json()
+            data = requests.get(f"http://ipinfo.io/{host}", timeout=3).json()['loc'].split(',')
 
-            session_latitude = data['latitude']
-            session_longitude = data['longitude']
+            session_latitude = data[0]
+            session_longitude = data[1]
         except Exception:
             pass
 
