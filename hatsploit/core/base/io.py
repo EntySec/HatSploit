@@ -49,6 +49,7 @@ class IO:
             with open(spool, 'a') as f:
                 f.write(start + message + end)
                 f.flush()
+
         if self.local_storage.get("current_prompt") and self.local_storage.get("active_input"):
             prompt = start + self.local_storage.get("current_prompt") + readline.get_line_buffer()
             sys.stdout.write(prompt)
@@ -57,10 +58,13 @@ class IO:
     def input(self, prompt_message=""):
         self.local_storage.set("current_prompt", prompt_message)
         self.local_storage.set("active_input", True)
+
         commands = input(self.colors.REMOVE + prompt_message)
         commands = self.fmt.format_commands(commands)
+
         arguments = list()
         if commands:
             arguments = commands[1:]
+
         self.local_storage.set("active_input", False)
         return commands, arguments
