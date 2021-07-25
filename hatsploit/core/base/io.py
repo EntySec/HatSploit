@@ -46,7 +46,7 @@ class IO:
         sys.stdout.flush()
 
         if use_spool:
-            with open(spool, 'a') as f:
+            with open(use_spool, 'a') as f:
                 f.write(start + message + end)
                 f.flush()
 
@@ -63,7 +63,7 @@ class IO:
 
         commands = input(self.colors.REMOVE + prompt_message)
         if use_spool:
-            with open(spool, 'a') as f:
+            with open(use_spool, 'a') as f:
                 f.write(self.colors.REMOVE + prompt_message + commands + '\n')
                 f.flush()
 
