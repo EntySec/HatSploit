@@ -5,12 +5,16 @@
 # Current source: https://github.com/EntySec/HatSploit
 #
 
-from hatsploit.lib.storage import LocalStorage
+from hatsploit.lib.config import Config
+from hatsploit.lib.storage import GlobalStorage
 from hatsploit.lib.command import Command
 
 
 class HatSploitCommand(Command):
-    local_storage = LocalStorage()
+    config = Config()
+
+    storage_path = config.path_config['storage_path']
+    global_storage = GlobalStorage(storage_path)
 
     usage = ""
     usage += "spool <option>\n\n"
@@ -33,10 +37,12 @@ class HatSploitCommand(Command):
             if argc < 2:
                 self.output_usage(self.details['Usage'])
             else:
-                self.local_storage.set("spool", argv[1])
+                self.global_storage.set("spool", argv[1])
+                self.global_storage.set_all()
                 self.output_information("HatSploit spool: on")
         elif option == "off":
-            self.local_storage.set("spool", None)
+            self.global_storage.set("spool", None)
+            self.global_storage.set_all()
             self.output_information("HatSploit spool: off")
         else:
             self.output_usage(self.details['Usage'])
