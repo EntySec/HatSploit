@@ -64,7 +64,7 @@ class IO:
         commands = input(self.colors.REMOVE + prompt_message)
         if use_spool:
             with open(spool, 'a') as f:
-                f.write(self.colors.REMOVE + prompt_message + commands)
+                f.write(self.colors.REMOVE + prompt_message + commands + '\n')
                 f.flush()
 
         commands = self.fmt.format_commands(commands)
