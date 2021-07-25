@@ -137,7 +137,7 @@ def main():
                 "None",
                 hsf.api.init
             )
-        if args.no_startup():
+        if args.no_startup:
             hsf.launch()
         else:
             if os.path.exists(hsf.root_path + 'startup.hsf'):
@@ -148,7 +148,7 @@ def main():
         if not os.path.exists(args.script):
             hsf.badges.output_error(f"Local file: {args.script}: does not exist!")
             sys.exit(1)
-        if args.no_startup():
+        if args.no_startup:
             hsf.launch(
                 do_shell=args.no_exit,
                 script=args.script
@@ -162,7 +162,7 @@ def main():
                     script=args.script
                 )
     else:
-        if args.no_startup():
+        if args.no_startup:
             hsf.launch()
         else:
             if os.path.exists(hsf.root_path + 'startup.hsf'):
