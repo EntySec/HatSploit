@@ -56,13 +56,20 @@ class IO:
             sys.stdout.flush()
 
     def input(self, prompt_message=""):
+        use_spool = self.local_storage.get("spool")
+
         self.local_storage.set("current_prompt", prompt_message)
         self.local_storage.set("active_input", True)
 
         commands = input(self.colors.REMOVE + prompt_message)
-        commands = self.fmt.format_commands(commands)
+        if use_spool:
+            with open(spool, 'a') as f:
+                f.write(self.colors.REMOVE + prompt_message + commands)
+                f.flush()
 
+        commands = self.fmt.format_commands(commands)
         arguments = list()
+
         if commands:
             arguments = commands[1:]
 
