@@ -39,11 +39,14 @@ class IO:
         self.local_storage = LocalStorage()
         self.fmt = FMT()
 
-    def output(self, message="", start='\033[1K\r', end='\n', spool=None):
+    def output(self, message="", start='\033[1K\r', end='\n'):
+        use_spool = self.local_storage.get("spool")
+
         sys.stdout.write(start + message + end)
         sys.stdout.flush()
-        if spool is not None or not spool.isspace():
-            with open(spool, 'w') as f:
+
+        if use_spool:
+            with open(spool, 'a') as f:
                 f.write(start + message + end)
                 f.flush()
         if self.local_storage.get("current_prompt") and self.local_storage.get("active_input"):
