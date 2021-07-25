@@ -61,10 +61,16 @@ class IO:
         self.local_storage.set("current_prompt", prompt_message)
         self.local_storage.set("active_input", True)
 
-        commands = input(self.colors.REMOVE + prompt_message)
         if use_spool:
             with open(use_spool, 'a') as f:
-                f.write(self.colors.REMOVE + prompt_message + commands + '\n')
+                f.write(self.colors.REMOVE + prompt_message)
+                f.flush()
+
+        commands = input(self.colors.REMOVE + prompt_message)
+
+        if use_spool:
+            with open(use_spool, 'a') as f:
+                f.write(commands + '\n')
                 f.flush()
 
         commands = self.fmt.format_commands(commands)
