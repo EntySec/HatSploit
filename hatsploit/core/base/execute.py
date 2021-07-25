@@ -62,7 +62,9 @@ class Execute:
                 self.execute_command(commands, arguments)
 
     def execute_builtin_method(self, commands, arguments):
-        if commands[0][0] == '!':
+        if commands[0][0] == '#':
+            return True
+        elif commands[0][0] == '!':
             if len(commands[0]) > 1:
                 commands[0] = commands[0].replace('!', '', 1)
                 self.execute_system(commands)
