@@ -139,7 +139,7 @@ class Console:
             header = ""
             header += f"{self.colors.END}\n"
             if codename and not codename.isspace():
-                header += f"    --=( {self.colors.YELLOW}HatSploit Framework {codename} {version}{self.colors.END}\n"
+                header += f"    --=( {self.colors.YELLOW}HatSploit Framework {version} {codename}{self.colors.END}\n"
             else:
                 header += f"    --=( {self.colors.YELLOW}HatSploit Framework {version}{self.colors.END}\n"
             header += f"--==--=( Developed by EntySec ({self.colors.LINE}https://entysec.netlify.app/{self.colors.END})\n"
