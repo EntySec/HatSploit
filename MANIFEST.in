@@ -1,3 +1,4 @@
+include hatsploit/startup.hsf
 recursive-include hatsploit/commands *
 recursive-include hatsploit/config *
 recursive-include hatsploit/data *
