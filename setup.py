@@ -27,7 +27,7 @@
 from setuptools import setup, find_packages
 
 setup(name='hatsploit',
-      version='2.0.0',
+      version='3.0.0',
       description='Modular penetration testing platform that enables you to write, test, and execute exploit code.',
       url='http://github.com/EntySec/HatSploit',
       author='EntySec',
@@ -41,11 +41,6 @@ setup(name='hatsploit',
                 "hsf = hatsploit.hsf:main"
           ]
       },
-      classifiers=[
-          "Programming Language :: Python",
-          "Programming Language :: Python :: 3",
-          "Programming Language :: Python :: 3.8",
-      ],
       install_requires=[
           'pyyaml',
           'requests',
