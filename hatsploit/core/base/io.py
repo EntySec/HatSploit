@@ -40,13 +40,13 @@ class IO:
         self.fmt = FMT()
 
     def output(self, message="", start='\033[1K\r', end='\n'):
-        use_spool = self.local_storage.get("spool")
+        use_log = self.local_storage.get("log")
 
         sys.stdout.write(start + message + end)
         sys.stdout.flush()
 
-        if use_spool:
-            with open(use_spool, 'a') as f:
+        if use_log:
+            with open(use_log, 'a') as f:
                 f.write(start + message + end)
                 f.flush()
 
@@ -56,20 +56,20 @@ class IO:
             sys.stdout.flush()
 
     def input(self, prompt_message=""):
-        use_spool = self.local_storage.get("spool")
+        use_log = self.local_storage.get("log")
 
         self.local_storage.set("current_prompt", prompt_message)
         self.local_storage.set("active_input", True)
 
-        if use_spool:
-            with open(use_spool, 'a') as f:
+        if use_log:
+            with open(use_log, 'a') as f:
                 f.write(self.colors.REMOVE + prompt_message)
                 f.flush()
 
         commands = input(self.colors.REMOVE + prompt_message)
 
-        if use_spool:
-            with open(use_spool, 'a') as f:
+        if use_log:
+            with open(use_log, 'a') as f:
                 f.write(commands + '\n')
                 f.flush()
 

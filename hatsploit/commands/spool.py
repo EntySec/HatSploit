@@ -17,16 +17,16 @@ class HatSploitCommand(Command):
     global_storage = GlobalStorage(storage_path)
 
     usage = ""
-    usage += "spool <option>\n\n"
-    usage += "  on <file>/off  Turn spooling on/off.\n"
+    usage += "log <option>\n\n"
+    usage += "  on <file>/off  Turn logging on/off.\n"
 
     details = {
         'Category': "developer",
-        'Name': "spool",
+        'Name': "log",
         'Authors': [
             'Ivan Nikolsky (enty8080) - command developer'
         ],
-        'Description': "Log HatSploit output to spool file.",
+        'Description': "Log HatSploit output to log file.",
         'Usage': usage,
         'MinArgs': 1
     }
@@ -37,12 +37,12 @@ class HatSploitCommand(Command):
             if argc < 2:
                 self.output_usage(self.details['Usage'])
             else:
-                self.global_storage.set("spool", argv[1])
+                self.global_storage.set("log", argv[1])
                 self.global_storage.set_all()
-                self.output_information("HatSploit spool: on")
+                self.output_information("HatSploit log: on")
         elif option == "off":
-            self.global_storage.set("spool", None)
+            self.global_storage.set("log", None)
             self.global_storage.set_all()
-            self.output_information("HatSploit spool: off")
+            self.output_information("HatSploit log: off")
         else:
             self.output_usage(self.details['Usage'])
