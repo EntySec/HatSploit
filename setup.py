@@ -42,13 +42,14 @@ setup(name='hatsploit',
           ]
       },
       install_requires=[
-          'pyyaml',
-          'requests',
-          'paramiko',
-          'flask',
-          'flask_cors',
-          'flask_restful',
-          'hatvenom @ git+http://github.com/EntySec/HatVenom'
+          'pyyaml',                                           # for parsing JSON
+          'requests',                                         # for manipulating HTTP
+          'paramiko',                                         # for manipulating SSH
+          'adb-shell',                                        # for manipulating ADB
+          'flask',                                            # for REST API
+          'flask_cors',                                       # for REST API
+          'flask_restful',                                    # for REST API
+          'hatvenom @ git+http://github.com/EntySec/HatVenom' # for generating executables
       ],
       zip_safe=False
 )
