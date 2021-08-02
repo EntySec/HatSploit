@@ -62,5 +62,5 @@ class ADBSocket:
 
 class ADBClient:
     @staticmethod
-    def open_tcp(host, port, timeout=10):
+    def open_adb(host, port, timeout=10):
         return ADBSocket(host, port, timeout)
