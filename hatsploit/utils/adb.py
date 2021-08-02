@@ -25,79 +25,42 @@
 #
 
 import socket
-import shutil
-import subprocess
 
 from hatsploit.core.cli.badges import Badges
+from adb_shell.adb_device import AdbDeviceTcp
+
+
+class ADBSocket:
+    def __init__(self, host, port, timeout=10):
+        self.host = host
+        self.port = int(port)
+
+        self.sock = AdbDeviceTcp(self.host,
+                                 self.port,
+                                 default_transport_timeout_s=timeout)
+
+        self.badges = Badges()
+
+    def connect(self):
+        if not self.sock.connect():
+            self.badges.output_error("Failed to connect!")
+            return False
+        return True
+
+    def disconnect(self):
+        self.sock.close()
+
+        return True
+
+    def send_command(self, command):
+        try:
+            return self.sock.shell(command)
+        except Exception:
+            self.badges.output_error("Socket is not connected!")
+            return None
 
 
 class ADBClient:
-    badges = Badges()
-
-    adb = "adb"
-    port = 5555
-
-    def check_adb_port(self, host, timeout=0.5):
-        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
-            sock.settimeout(timeout)
-            if sock.connect_ex((host, self.port)) == 0:
-                return True
-        return False
-
-    def check_adb_installation(self):
-        if shutil.which(self.adb):
-            return True
-        return False
-
-    def start_adb_server(self):
-        server_log = self.execute_adb_command("start-server")
-
-        if not server_log or "failed" in server_log:
-            return False
-        return True
-
-    def stop_adb_server(self):
-        self.execute_adb_command("disconnect", output=False)
-        server_log = self.execute_adb_command("kill-server")
-
-        if server_log:
-            if "cannot" in server_log:
-                return False
-        return True
-
-    def connect_adb_client(self, target_addr):
-        if self.check_adb_port(target_addr):
-            server_log = self.execute_adb_command("connect", target_addr)
-
-            if not server_log or "failed" in server_log:
-                return False
-            return True
-
-    def disconnect_adb_client(self, target_addr):
-        server_log = self.execute_adb_command("disconnect", target_addr)
-
-        if not server_log or "error" in server_log:
-            return False
-        return True
-
-    def check_connected(self, target_addr):
-        device = self.execute_adb_command("devices", f"| grep {target_addr}")
-        device = device.split('\t')
-
-        if len(device) == 2:
-            device_addr = device[0]
-            device_state = device[1]
-
-            if device_addr == target_addr:
-                if device_state == 'device':
-                    return True
-
-        return False
-
-    def execute_adb_command(self, command, arguments="", output=True):
-        if self.check_adb_installation():
-            command_output = subprocess.getoutput(f"{self.adb} {command} {arguments}")
-            if output:
-                return command_output.strip()
-        else:
-            return False
+    @staticmethod
+    def open_tcp(host, port, timeout=10):
+        return ADBSocket(host, port, timeout)
