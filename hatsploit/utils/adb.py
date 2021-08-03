@@ -42,14 +42,15 @@ class ADBSocket:
         self.badges = Badges()
 
     def connect(self):
-        if not self.sock.connect():
+        try:
+            self.sock.connect()
+            return True
+        except Exception:
             self.badges.output_error("Failed to connect!")
-            return False
-        return True
+        return False
 
     def disconnect(self):
         self.sock.close()
-
         return True
 
     def send_command(self, command):
@@ -57,7 +58,7 @@ class ADBSocket:
             return self.sock.shell(command)
         except Exception:
             self.badges.output_error("Socket is not connected!")
-            return None
+        return None
 
 
 class ADBClient:
