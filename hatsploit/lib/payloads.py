@@ -137,6 +137,6 @@ class Payloads:
         if not self.check_imported(module_name, name):
             payload_object = self.import_payload(module_name, name)
             if not payload_object:
-                self.badges.output_error("Failed to select payload from database!")
+                self.badges.print_error("Failed to select payload from database!")
                 return False
         return True

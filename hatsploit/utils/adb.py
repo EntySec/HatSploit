@@ -46,7 +46,7 @@ class ADBSocket:
             self.sock.connect()
             return True
         except Exception:
-            self.badges.output_error("Failed to connect!")
+            self.badges.print_error("Failed to connect!")
         return False
 
     def disconnect(self):
@@ -57,7 +57,7 @@ class ADBSocket:
         try:
             return self.sock.shell(command)
         except Exception:
-            self.badges.output_error("Socket is not connected!")
+            self.badges.print_error("Socket is not connected!")
         return None
 
 

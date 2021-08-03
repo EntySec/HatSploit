@@ -39,7 +39,7 @@ class IO:
         self.local_storage = LocalStorage()
         self.fmt = FMT()
 
-    def output(self, message="", start='\033[1K\r', end='\n'):
+    def print(self, message="", start='\033[1K\r', end='\n'):
         use_log = self.local_storage.get("log")
 
         sys.stdout.write(start + message + end)

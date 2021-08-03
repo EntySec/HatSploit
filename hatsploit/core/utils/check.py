@@ -40,7 +40,7 @@ class Check:
 
     def check_modules(self):
         one_fail = False
-        self.badges.output_process("Checking all base modules...")
+        self.badges.print_process("Checking all base modules...")
 
         modules_path = os.path.normpath(self.config.path_config['modules_path'])
         for dest, _, files in os.walk(modules_path):
@@ -52,15 +52,15 @@ class Check:
                         module_object = self.importer.import_module(module)
                         keys = ['Name', 'Module', 'Authors', 'Description', 'Comments', 'Platform', 'Risk']
                         assert(all(key in module_object.details for key in keys))
-                        self.badges.output_success(f"{module}: OK")
+                        self.badges.print_success(f"{module}: OK")
                     except Exception:
-                        self.badges.output_error(f"{module}: FAIL")
+                        self.badges.print_error(f"{module}: FAIL")
                         one_fail = True
         return one_fail
 
     def check_payloads(self):
         one_fail = False
-        self.badges.output_process("Checking all base payloads...")
+        self.badges.print_process("Checking all base payloads...")
 
         payloads_path = os.path.normpath(self.config.path_config['payloads_path'])
         for dest, _, files in os.walk(payloads_path):
@@ -73,15 +73,15 @@ class Check:
                         keys = ['Category', 'Name', 'Payload', 'Authors', 'Description',
                                 'Comments', 'Architecture', 'Platform', 'Risk', 'Type']
                         assert(all(key in payload_object.details for key in keys))
-                        self.badges.output_success(f"{payload}: OK")
+                        self.badges.print_success(f"{payload}: OK")
                     except Exception:
-                        self.badges.output_error(f"{payload}: FAIL")
+                        self.badges.print_error(f"{payload}: FAIL")
                         one_fail = True
         return one_fail
 
     def check_plugins(self):
         one_fail = False
-        self.badges.output_process("Checking all base plugins...")
+        self.badges.print_process("Checking all base plugins...")
 
         plugins_path = os.path.normpath(self.config.path_config['plugins_path'])
         for dest, _, files in os.walk(plugins_path):
@@ -93,9 +93,9 @@ class Check:
                         plugin_object = self.importer.import_plugin(plugin)
                         keys = ['Name', 'Authors', 'Description', 'Comments']
                         assert(all(key in plugin_object.details for key in keys))
-                        self.badges.output_success(f"{plugin}: OK")
+                        self.badges.print_success(f"{plugin}: OK")
                     except Exception:
-                        self.badges.output_error(f"{plugin}: FAIL")
+                        self.badges.print_error(f"{plugin}: FAIL")
                         one_fail = True
         return one_fail
 
@@ -108,7 +108,7 @@ class Check:
     
         for fail in fails:
             if fail:
-                self.badges.output_error("Not all checks passed!")
+                self.badges.print_error("Not all checks passed!")
                 return False
-        self.badges.output_success("All checks passed!")
+        self.badges.print_success("All checks passed!")
         return True

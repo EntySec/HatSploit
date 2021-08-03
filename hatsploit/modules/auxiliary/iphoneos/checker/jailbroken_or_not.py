@@ -36,8 +36,8 @@ class HatSploitModule(Module, TCPClient):
     def run(self):
         remote_host = self.parse_options(self.options)
 
-        self.output_process(f"Checking {remote_host}...")
+        self.print_process(f"Checking {remote_host}...")
         if self.check_tcp_port(remote_host, 22):
-            self.output_success("Target device may be jailbroken!")
+            self.print_success("Target device may be jailbroken!")
         else:
-            self.output_warning("Looks like target device is not jailbroken.")
+            self.print_warning("Looks like target device is not jailbroken.")

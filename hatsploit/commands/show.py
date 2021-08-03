@@ -70,11 +70,11 @@ class HatSploitCommand(Command):
         current_module = self.modules.get_current_module_object()
 
         if not hasattr(current_module, "options") and not hasattr(current_module, "payload"):
-            self.badges.output_warning("Module has no options.")
+            self.badges.print_warning("Module has no options.")
             return
 
         if not hasattr(current_module, "options") and not hasattr(self.payloads.get_current_payload(), "options"):
-            self.badges.output_warning("Module has no options.")
+            self.badges.print_warning("Module has no options.")
             return
 
         if hasattr(current_module, "options"):
@@ -131,9 +131,9 @@ class HatSploitCommand(Command):
                 usage += "options"
             else:
                 usage = usage[:-2]
-            self.output_information(usage)
+            self.print_information(usage)
         else:
-            self.output_warning("No informations available!")
+            self.print_warning("No informations available!")
 
     def run(self, argc, argv):
         information = argv[0]

@@ -45,7 +45,7 @@ class HatSploitModule(Module, HTTPClient):
     def run(self):
         remote_host, remote_port = self.parse_options(self.options)
 
-        self.output_process(f"Scanning {remote_host}...")
+        self.print_process(f"Scanning {remote_host}...")
         file = open(f"{self.config.path_config['data_path']}wordlists/directories.txt")
         directories = list(filter(None, file.read().split('\n')))
         file.close()
@@ -62,6 +62,6 @@ class HatSploitModule(Module, HTTPClient):
 
             if response is not None:
                 if response.status_code == 200:
-                    self.output_success("[%s] ... [%s %s]" % (path, response.status_code, response.reason))
+                    self.print_success("[%s] ... [%s %s]" % (path, response.status_code, response.reason))
                 else:
-                    self.output_warning("[%s] ... [%s %s]" % (path, response.status_code, response.reason))
+                    self.print_warning("[%s] ... [%s %s]" % (path, response.status_code, response.reason))

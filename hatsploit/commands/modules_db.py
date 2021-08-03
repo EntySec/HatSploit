@@ -47,21 +47,21 @@ class HatSploitCommand(Command):
                     number += 1
                 self.print_table("Connected Modules Databases", headers, *databases_data)
             else:
-                self.output_warning("No modules database connected.")
+                self.print_warning("No modules database connected.")
         elif choice in ['-d', '--disconnect']:
             if argc < 2:
-                self.output_usage(self.details['Usage'])
+                self.print_usage(self.details['Usage'])
             else:
                 self.db.disconnect_modules_database(argv[1])
         elif choice in ['-b', '--build']:
             if argc < 3:
-                self.output_usage(self.details['Usage'])
+                self.print_usage(self.details['Usage'])
             else:
                 self.builder.build_modules_database(argv[1], argv[2])
         elif choice in ['-c', '--connect']:
             if argc < 3:
-                self.output_usage(self.details['Usage'])
+                self.print_usage(self.details['Usage'])
             else:
                 self.db.connect_modules_database(argv[1], argv[2])
         else:
-            self.output_usage(self.details['Usage'])
+            self.print_usage(self.details['Usage'])

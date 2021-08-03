@@ -104,13 +104,13 @@ class Sessions:
     def spawn_interactive_connection(self, session_id):
         sessions = self.local_storage.get("sessions")
         if self.check_exist(session_id):
-            self.badges.output_process("Interacting with session " + str(session_id) + "...")
-            self.badges.output_success("Interactive connection spawned!")
-            self.badges.output_information("Type commands below.\n")
+            self.badges.print_process("Interacting with session " + str(session_id) + "...")
+            self.badges.print_success("Interactive connection spawned!")
+            self.badges.print_information("Type commands below.\n")
 
             sessions[int(session_id)]['object'].interact()
         else:
-            self.badges.output_error("Invalid session given!")
+            self.badges.print_error("Invalid session given!")
 
     def close_session(self, session_id):
         sessions = self.local_storage.get("sessions")
@@ -121,9 +121,9 @@ class Sessions:
 
                 self.local_storage.update("sessions", sessions)
             except Exception:
-                self.badges.output_error("Failed to close session!")
+                self.badges.print_error("Failed to close session!")
         else:
-            self.badges.output_error("Invalid session given!")
+            self.badges.print_error("Invalid session given!")
 
     def get_session(self, session_id):
         sessions = self.local_storage.get("sessions")

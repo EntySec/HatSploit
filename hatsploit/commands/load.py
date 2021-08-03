@@ -46,19 +46,19 @@ class HatSploitCommand(Command):
             else:
                 self.local_storage.set("loaded_plugins", plugin_object)
             self.local_storage.get("loaded_plugins")[plugin].run()
-            self.output_success("Successfully loaded " + plugin + " plugin!")
+            self.print_success("Successfully loaded " + plugin + " plugin!")
         else:
-            self.output_error("Failed to load plugin!")
+            self.print_error("Failed to load plugin!")
 
     def run(self, argc, argv):
         plugin = argv[0]
-        self.output_process("Loading " + plugin + " plugin...")
+        self.print_process("Loading " + plugin + " plugin...")
 
         if not self.plugins.check_loaded(plugin):
             if self.plugins.check_exist(plugin):
                 database = self.plugins.get_database(plugin)
                 self.add_plugin(database, plugin)
             else:
-                self.output_error("Invalid plugin!")
+                self.print_error("Invalid plugin!")
         else:
-            self.output_error("Already loaded!")
+            self.print_error("Already loaded!")

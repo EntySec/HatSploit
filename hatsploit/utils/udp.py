@@ -44,14 +44,14 @@ class UDPSocket:
             self.sock.sendto(data, (self.host, self.port))
             return True
         except Exception:
-            self.badges.output_error("Failed to send data!")
+            self.badges.print_error("Failed to send data!")
         return False
 
     def recv(self, size):
         try:
             return self.sock.recv(size)
         except Exception:
-            self.badges.output_error("Failed to read data!")
+            self.badges.print_error("Failed to read data!")
         return b""
 
 

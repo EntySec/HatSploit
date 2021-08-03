@@ -35,33 +35,33 @@ class HatSploitCommand(Command):
             comments += line + "\n" + (" " * 14)
         comments = comments[:-15]
 
-        self.output_information("Module information:")
-        self.output_empty("")
+        self.print_information("Module information:")
+        self.print_empty("")
 
         if current_module['Name']:
-            self.output_empty("         Name: " + current_module['Name'])
+            self.print_empty("         Name: " + current_module['Name'])
         if current_module['Module']:
-            self.output_empty("       Module: " + current_module['Module'])
+            self.print_empty("       Module: " + current_module['Module'])
         if authors:
-            self.output_empty("      Authors: ")
+            self.print_empty("      Authors: ")
             for author in current_module['Authors']:
-                self.output_empty("               " + author)
+                self.print_empty("               " + author)
         if current_module['Description']:
-            self.output_empty("  Description: " + current_module['Description'])
+            self.print_empty("  Description: " + current_module['Description'])
         if comments:
-            self.output_empty("     Comments: ")
-            self.output_empty("               " + comments)
+            self.print_empty("     Comments: ")
+            self.print_empty("               " + comments)
         if current_module['Risk']:
-            self.output_empty("         Risk: " + current_module['Risk'])
+            self.print_empty("         Risk: " + current_module['Risk'])
 
-        self.output_empty("")
+        self.print_empty("")
 
     def get_module_information(self, module):
         if self.modules.check_exist(module):
             module = self.modules.get_module_object(module)
             self.format_module_information(module)
         else:
-            self.output_error("Invalid module!")
+            self.print_error("Invalid module!")
 
     def run(self, argc, argv):
         if self.modules.check_current_module():
@@ -73,4 +73,4 @@ class HatSploitCommand(Command):
             if argc > 0:
                 self.get_module_information(argv[0])
             else:
-                self.output_usage(self.details['Usage'])
+                self.print_usage(self.details['Usage'])

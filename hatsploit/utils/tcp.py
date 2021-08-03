@@ -44,7 +44,7 @@ class TCPSocket:
             self.sock.connect((self.host, self.port))
             return True
         except Exception:
-            self.badges.output_error("Failed to connect!")
+            self.badges.print_error("Failed to connect!")
         return False
 
     def disconnect(self):
@@ -52,7 +52,7 @@ class TCPSocket:
             self.sock.close()
             return True
         except Exception:
-            self.badges.output_error("Socket is not connected!")
+            self.badges.print_error("Socket is not connected!")
         return False
 
     def send(self, data):
@@ -60,14 +60,14 @@ class TCPSocket:
             self.sock.send(data)
             return True
         except Exception:
-            self.badges.output_error("Socket is not connected!")
+            self.badges.print_error("Socket is not connected!")
         return False
 
     def recv(self, size):
         try:
             return self.sock.recv(size)
         except Exception:
-            self.badges.output_error("Socket is not connected!")
+            self.badges.print_error("Socket is not connected!")
         return b""
 
 

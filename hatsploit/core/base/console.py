@@ -62,8 +62,8 @@ class Console:
     def check_install(self):
         if os.path.exists(self.config.path_config['root_path']):
             return True
-        self.badges.output_error("HatSploit is not installed!")
-        self.badges.output_information("Consider running ./install.sh")
+        self.badges.print_error("HatSploit is not installed!")
+        self.badges.print_information("Consider running ./install.sh")
         return False
 
     def start_hsf(self):
@@ -91,7 +91,7 @@ class Console:
             except (KeyboardInterrupt, EOFError, self.exceptions.GlobalException):
                 pass
             except Exception as e:
-                self.badges.output_error("An error occurred: " + str(e) + "!")
+                self.badges.print_error("An error occurred: " + str(e) + "!")
 
     def enable_history_file(self):
         if not os.path.exists(self.history):
@@ -112,7 +112,7 @@ class Console:
         version = self.config.core_config['details']['version']
         codename = self.config.core_config['details']['codename']
         if self.config.core_config['console']['clear']:
-            self.badges.output_empty(self.colors.CLEAR, end='')
+            self.badges.print_empty(self.colors.CLEAR, end='')
 
         if self.config.core_config['console']['banner']:
             self.banner.print_random_banner()
@@ -145,11 +145,11 @@ class Console:
             header += f"--==--=( Developed by EntySec ({self.colors.LINE}https://entysec.netlify.app/{self.colors.END})\n"
             header += f"    --=( {modules_total} modules | {payloads_total} payloads | {plugins_total} plugins\n"
             header += f"{self.colors.END}"
-            self.badges.output_empty(header)
+            self.badges.print_empty(header)
 
         if self.config.core_config['console']['tip']:
             self.tip.print_random_tip()
-            self.badges.output_empty()
+            self.badges.print_empty()
 
     def shell(self):
         self.start_hsf()

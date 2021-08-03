@@ -59,7 +59,7 @@ class HatSploit:
 
     def accept_terms_of_service(self):
         if not os.path.exists(self.root_path + '.accepted'):
-            self.badges.output_information("--( The HatSploit Terms of Service )--")
+            self.badges.print_information("--( The HatSploit Terms of Service )--")
             terms = """
 This tool is designed for educational purposes only.
 
@@ -73,7 +73,7 @@ you are performing assessments for, you are violating the terms of service and l
 By accepting our terms of service, you agree that you will only use this tool for lawful purposes only.
 """
 
-            self.badges.output_empty(terms)
+            self.badges.print_empty(terms)
 
             agree = self.badges.input_question("Accept HatSploit Framework Terms of Service? [y/n] ")
             if agree.lower() not in ['y', 'yes']:
@@ -146,7 +146,7 @@ def main():
                 hsf.launch()
     elif args.script:
         if not os.path.exists(args.script):
-            hsf.badges.output_error(f"Local file: {args.script}: does not exist!")
+            hsf.badges.print_error(f"Local file: {args.script}: does not exist!")
             sys.exit(1)
         if args.no_startup:
             hsf.launch(

@@ -42,29 +42,29 @@ class Badges:
     Q = colors.WHITE + colors.BOLD + '[?] ' + colors.END
     A = colors.WHITE + colors.BOLD + '[>] ' + colors.END
 
-    def output_empty(self, message="", start='\033[1K\r', end='\n'):
-        self.io.output(message, start=start, end=end)
+    def print_empty(self, message="", start='\033[1K\r', end='\n'):
+        self.io.print(message, start=start, end=end)
 
-    def output_usage(self, message, start='\033[1K\r', end='\n'):
-        self.output_empty("Usage: " + message, start=start, end=end)
+    def print_usage(self, message, start='\033[1K\r', end='\n'):
+        self.print_empty("Usage: " + message, start=start, end=end)
 
-    def output_process(self, message, start='\033[1K\r', end='\n'):
-        self.output_empty(self.P + message, start=start, end=end)
+    def print_process(self, message, start='\033[1K\r', end='\n'):
+        self.print_empty(self.P + message, start=start, end=end)
 
-    def output_success(self, message, start='\033[1K\r', end='\n'):
-        self.output_empty(self.S + message, start=start, end=end)
+    def print_success(self, message, start='\033[1K\r', end='\n'):
+        self.print_empty(self.S + message, start=start, end=end)
 
-    def output_error(self, message, start='\033[1K\r', end='\n'):
-        self.output_empty(self.E + message, start=start, end=end)
+    def print_error(self, message, start='\033[1K\r', end='\n'):
+        self.print_empty(self.E + message, start=start, end=end)
 
-    def output_warning(self, message, start='\033[1K\r', end='\n'):
-        self.output_empty(self.W + message, start=start, end=end)
+    def print_warning(self, message, start='\033[1K\r', end='\n'):
+        self.print_empty(self.W + message, start=start, end=end)
 
-    def output_information(self, message, start='\033[1K\r', end='\n'):
-        self.output_empty(self.I + message, start=start, end=end)
+    def print_information(self, message, start='\033[1K\r', end='\n'):
+        self.print_empty(self.I + message, start=start, end=end)
 
-    def output_multi(self, message):
-        self.output_empty(f"\r{self.P}{message}", end='')
+    def print_multi(self, message):
+        self.print_empty(f"\r{self.P}{message}", end='')
 
     def input_empty(self, message):
         output = ""

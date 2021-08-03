@@ -39,4 +39,4 @@ class HatSploitModule(Module, SessionTools):
         session = self.get_session(session)
         pid = session.send_command("printf $$", output=True)
 
-        self.output_information(f"PID: {pid}")
+        self.print_information(f"PID: {pid}")

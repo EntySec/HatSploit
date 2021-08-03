@@ -89,7 +89,7 @@ class HatSploitCommand(Command):
             self.show_plugins(argv[0])
         else:
             if argc < 3:
-                self.output_usage(self.details['Usage'])
+                self.print_usage(self.details['Usage'])
             else:
                 if argv[1] == 'modules':
                     self.show_modules(argv[2])
@@ -98,4 +98,4 @@ class HatSploitCommand(Command):
                 elif argv[1] == 'plugins':
                     self.show_plugins(argv[2])
                 else:
-                    self.output_usage(self.details['Usage'])
+                    self.print_usage(self.details['Usage'])

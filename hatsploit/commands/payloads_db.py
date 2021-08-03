@@ -47,21 +47,21 @@ class HatSploitCommand(Command):
                     number += 1
                 self.print_table("Connected Payloads Databases", headers, *databases_data)
             else:
-                self.output_warning("No payloads database connected.")
+                self.print_warning("No payloads database connected.")
         elif choice in ['-d', '--disconnect']:
             if argc < 2:
-                self.output_usage(self.details['Usage'])
+                self.print_usage(self.details['Usage'])
             else:
                 self.db.disconnect_payloads_database(argv[1])
         elif choice in ['-b', '--build']:
             if argc < 3:
-                self.output_usage(self.details['Usage'])
+                self.print_usage(self.details['Usage'])
             else:
                 self.builder.build_payloads_database(argv[1], argv[2])
         elif choice in ['-c', '--connect']:
             if argc < 3:
-                self.output_usage(self.details['Usage'])
+                self.print_usage(self.details['Usage'])
             else:
                 self.db.connect_payloads_database(argv[1], argv[2])
         else:
-            self.output_usage(self.details['Usage'])
+            self.print_usage(self.details['Usage'])

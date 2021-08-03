@@ -69,9 +69,9 @@ class Jobs:
     def exit_jobs(self):
         if self.check_jobs():
             return True
-        self.badges.output_warning("You have some running jobs.")
+        self.badges.print_warning("You have some running jobs.")
         if self.badges.input_question("Exit anyway? [y/N] ").lower() in ['yes', 'y']:
-            self.badges.output_process("Stopping all jobs...")
+            self.badges.print_process("Stopping all jobs...")
             self.stop_all_jobs()
             return True
         return False
@@ -104,11 +104,11 @@ class Jobs:
                     self.stop_job(self.local_storage.get("jobs")[job_id]['job_process'])
                     self.local_storage.delete_element("jobs", job_id)
                 except Exception:
-                    self.badges.output_error("Failed to stop job!")
+                    self.badges.print_error("Failed to stop job!")
             else:
-                self.badges.output_error("Invalid job id!")
+                self.badges.print_error("Invalid job id!")
         else:
-            self.badges.output_error("Invalid job id!")
+            self.badges.print_error("Invalid job id!")
 
     def create_job(self, job_name, module_name, job_function, job_arguments=[]):
         self.start_job(job_function, job_arguments)

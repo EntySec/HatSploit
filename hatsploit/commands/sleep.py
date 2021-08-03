@@ -31,4 +31,4 @@ class HatSploitCommand(Command):
         if seconds.replace('.', '', 1).isdigit():
             time.sleep(float(seconds))
         else:
-            self.output_error("Seconds expected!")
+            self.print_error("Seconds expected!")

@@ -35,14 +35,14 @@ class HatSploitCommand(Command):
         option = argv[0]
         if option == "on":
             if argc < 2:
-                self.output_usage(self.details['Usage'])
+                self.print_usage(self.details['Usage'])
             else:
                 self.global_storage.set("log", argv[1])
                 self.global_storage.set_all()
-                self.output_information("HatSploit log: on")
+                self.print_information("HatSploit log: on")
         elif option == "off":
             self.global_storage.set("log", None)
             self.global_storage.set_all()
-            self.output_information("HatSploit log: off")
+            self.print_information("HatSploit log: off")
         else:
-            self.output_usage(self.details['Usage'])
+            self.print_usage(self.details['Usage'])

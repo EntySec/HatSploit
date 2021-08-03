@@ -36,7 +36,7 @@ class HatSploitCommand(Command):
                 self.jobs.stop_all_jobs()
                 sys.exit(0)
             elif argv[0] in ['-h', '--help']:
-                self.output_usage(self.details['Usage'])
+                self.print_usage(self.details['Usage'])
                 return
         if self.jobs.exit_jobs():
             sys.exit(0)

@@ -41,11 +41,11 @@ class HatSploitCommand(Command):
                     jobs_data.append((job_id, jobs[job_id]['job_name'], jobs[job_id]['module_name']))
                 self.print_table("Active Jobs", headers, *jobs_data)
             else:
-                self.output_warning("No running jobs available.")
+                self.print_warning("No running jobs available.")
         elif choice in ['-k', '--kill']:
             if argc < 2:
-                self.output_usage(self.details['Usage'])
+                self.print_usage(self.details['Usage'])
             else:
                 self.jobs.delete_job(argv[1])
         else:
-            self.output_usage(self.details['Usage'])
+            self.print_usage(self.details['Usage'])

@@ -67,7 +67,7 @@ class Importer:
             spec.loader.exec_module(command)
             command = command.HatSploitCommand()
         except Exception as e:
-            self.badges.output_information('Reason: ' + str(e))
+            self.badges.print_information('Reason: ' + str(e))
             raise self.exceptions.GlobalException
         return command
 
@@ -80,7 +80,7 @@ class Importer:
             spec.loader.exec_module(payload)
             payload = payload.HatSploitPayload()
         except Exception as e:
-            self.badges.output_information('Reason: ' + str(e))
+            self.badges.print_information('Reason: ' + str(e))
             raise self.exceptions.GlobalException
         return payload
 
@@ -93,7 +93,7 @@ class Importer:
             spec.loader.exec_module(module)
             module = module.HatSploitModule()
         except Exception as e:
-            self.badges.output_information('Reason: ' + str(e))
+            self.badges.print_information('Reason: ' + str(e))
             raise self.exceptions.GlobalException
         return module
 
@@ -106,7 +106,7 @@ class Importer:
             spec.loader.exec_module(plugin)
             plugin = plugin.HatSploitPlugin()
         except Exception as e:
-            self.badges.output_information('Reason: ' + str(e))
+            self.badges.print_information('Reason: ' + str(e))
             raise self.exceptions.GlobalException
         return plugin
 
@@ -124,7 +124,7 @@ class Importer:
                         commands[command_name] = command_object
                         self.local_storage.set("commands", commands)
                     except Exception:
-                        self.badges.output_error("Failed to load " + file[:-3] + " command!")
+                        self.badges.print_error("Failed to load " + file[:-3] + " command!")
         except Exception:
             pass
 
