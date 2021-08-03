@@ -53,7 +53,7 @@ class TCPSocket:
             return True
         except Exception:
             self.badges.output_error("Socket is not connected!")
-            return False
+        return False
 
     def send(self, data):
         try:
@@ -61,14 +61,14 @@ class TCPSocket:
             return True
         except Exception:
             self.badges.output_error("Socket is not connected!")
-            return False
+        return False
 
     def recv(self, size):
         try:
             return self.sock.recv(size)
         except Exception:
             self.badges.output_error("Socket is not connected!")
-            return b""
+        return b""
 
 
 class TCPClient:
