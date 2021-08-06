@@ -23,7 +23,7 @@
 #
 
 details:
-    codename: "Original"
+    codename: ""
     version: "3.0.0"
 
 console:
