@@ -44,14 +44,14 @@ class HatSploitCommand(Command):
         if option == "on":
             self.global_storage.set("history", True)
             self.global_storage.set_all()
-            self.output_information("HatSploit history: on")
+            self.print_information("HatSploit history: on")
         elif option == "off":
             self.global_storage.set("history", False)
             self.global_storage.set_all()
             readline.clear_history()
             with open(self.history, 'w') as history:
                 history.write("")
-            self.output_information("HatSploit history: off")
+            self.print_information("HatSploit history: off")
         elif option in ['-c', '--clear']:
             readline.clear_history()
             with open(self.history, 'w') as history:
@@ -60,13 +60,13 @@ class HatSploitCommand(Command):
             using_history = self.local_storage.get("history")
             if using_history:
                 if readline.get_current_history_length() > -1:
-                    self.output_information("HatSploit history:")
+                    self.print_information("HatSploit history:")
 
                     for index in range(1, readline.get_current_history_length()+1):
-                        self.output_empty("    * " + readline.get_history_item(index))
+                        self.print_empty("    * " + readline.get_history_item(index))
                 else:
-                    self.output_warning("HatSploit history empty.")
+                    self.print_warning("HatSploit history empty.")
             else:
-                self.output_warning("No HatSploit history detected.")
+                self.print_warning("No HatSploit history detected.")
         else:
-            self.output_usage(self.details['Usage'])
+            self.print_usage(self.details['Usage'])

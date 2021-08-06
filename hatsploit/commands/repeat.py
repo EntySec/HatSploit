@@ -40,4 +40,4 @@ class HatSploitCommand(Command):
             for _ in range(int(times)):
                 self.execute.execute_command(commands, arguments)
         else:
-            self.output_error("Times expected!")
+            self.print_error("Times expected!")

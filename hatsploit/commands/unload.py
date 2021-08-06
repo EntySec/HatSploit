@@ -27,10 +27,10 @@ class HatSploitCommand(Command):
 
     def run(self, argc, argv):
         plugin = argv[0]
-        self.output_process("Unloading " + plugin + " plugin...")
+        self.print_process("Unloading " + plugin + " plugin...")
 
         if self.plugins.check_loaded(plugin):
             self.local_storage.delete_element("loaded_plugins", plugin)
-            self.output_success("Successfully unloaded " + plugin + " plugin!")
+            self.print_success("Successfully unloaded " + plugin + " plugin!")
         else:
-            self.output_error("Plugin not loaded!")
+            self.print_error("Plugin not loaded!")

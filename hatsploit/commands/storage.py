@@ -42,62 +42,62 @@ class HatSploitCommand(Command):
         if type_of_storage == "global":
             choice = argv[1]
             if choice in ['-l', '--list']:
-                self.output_information("Global storage variables:")
+                self.print_information("Global storage variables:")
                 for variable in self.global_storage.get_all():
                     if not str.startswith(variable, '__') and not str.endswith(variable, '__'):
-                        self.output_empty("    * " + variable)
+                        self.print_empty("    * " + variable)
             elif choice in ['-v', '--value']:
                 if argc < 3:
-                    self.output_usage(self.details['Usage'])
+                    self.print_usage(self.details['Usage'])
                 else:
                     if argv[2] in self.global_storage.get_all():
-                        self.output_information(argv[2] + " = " + str(
+                        self.print_information(argv[2] + " = " + str(
                             self.global_storage.get(argv[2])))
             elif choice in ['-s', '--set']:
                 if argc < 4:
-                    self.output_usage(self.details['Usage'])
+                    self.print_usage(self.details['Usage'])
                 else:
                     self.global_storage.set(argv[2], argv[3])
             elif choice in ['-d', '--delete']:
                 if argc < 3:
-                    self.output_usage(self.details['Usage'])
+                    self.print_usage(self.details['Usage'])
                 else:
                     if argv[2] in self.global_storage.get_all():
                         self.global_storage.delete(argv[2])
                     else:
-                        self.output_error("Invalid storage variable name!")
+                        self.print_error("Invalid storage variable name!")
             else:
-                self.output_usage(self.details['Usage'])
+                self.print_usage(self.details['Usage'])
         elif type_of_storage == "local":
             choice = argv[1]
             if choice in ['-l', '--list']:
-                self.output_information("Local storage variables:")
+                self.print_information("Local storage variables:")
                 for variable in self.local_storage.get_all():
                     if not str.startswith(variable, '__') and not str.endswith(variable, '__'):
-                        self.output_empty("    * " + variable)
+                        self.print_empty("    * " + variable)
             elif choice in ['-v', '--value']:
                 if argc < 3:
-                    self.output_usage(self.details['Usage'])
+                    self.print_usage(self.details['Usage'])
                 else:
                     if argv[2] in self.local_storage.get_all():
-                        self.output_information(argv[2] + " = " + str(
+                        self.print_information(argv[2] + " = " + str(
                             self.local_storage.get(argv[2])))
                     else:
-                        self.output_error("Invalid storage variable name!")
+                        self.print_error("Invalid storage variable name!")
             elif choice in ['-s', '--set']:
                 if argc < 4:
-                    self.output_usage(self.details['Usage'])
+                    self.print_usage(self.details['Usage'])
                 else:
                     self.local_storage.set(argv[2], argv[3])
             elif choice in ['-d', '--delete']:
                 if argc < 3:
-                    self.output_usage(self.details['Usage'])
+                    self.print_usage(self.details['Usage'])
                 else:
                     if argv[2] in self.local_storage.get_all():
                         self.local_storage.delete(argv[2])
                     else:
-                        self.output_error("Invalid storage variable name!")
+                        self.print_error("Invalid storage variable name!")
             else:
-                self.output_usage(self.details['Usage'])
+                self.print_usage(self.details['Usage'])
         else:
-            self.output_usage(self.details['Usage'])
+            self.print_usage(self.details['Usage'])

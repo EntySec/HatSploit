@@ -61,10 +61,10 @@ class Tables:
                 "{:<{}}".format(header_separator * len(header), current_line_fill)
             ))
 
-        self.badges.output_empty('\n' + name.split()[0].title() + name[len(name.split()[0]):] + ':')
-        self.badges.output_empty()
-        self.badges.output_empty(headers_line)
-        self.badges.output_empty(headers_separator_line)
+        self.badges.print_empty('\n' + name.split()[0].title() + name[len(name.split()[0]):] + ':')
+        self.badges.print_empty()
+        self.badges.print_empty(headers_line)
+        self.badges.print_empty(headers_separator_line)
         for arg in args:
             content_line = "    "
             for idx, element in enumerate(arg):
@@ -78,5 +78,5 @@ class Tables:
                     content_line,
                     "{:<{}}".format(element, fill_line)
                 ))
-            self.badges.output_empty(content_line)
-        self.badges.output_empty()
+            self.badges.print_empty(content_line)
+        self.badges.print_empty()

@@ -47,7 +47,7 @@ class Execute:
                 if not self.execute_core_command(commands, arguments):
                     if not self.execute_module_command(commands, arguments):
                         if not self.execute_plugin_command(commands, arguments):
-                            self.badges.output_error("Unrecognized command: " + commands[0] + "!")
+                            self.badges.print_error("Unrecognized command: " + commands[0] + "!")
 
     def execute_from_file(self, input_file):
         if os.path.exists(input_file):
@@ -62,28 +62,30 @@ class Execute:
                 self.execute_command(commands, arguments)
 
     def execute_builtin_method(self, commands, arguments):
+        if commands[0][0] == '#':
+            return True
         if commands[0][0] == '!':
             if len(commands[0]) > 1:
                 commands[0] = commands[0].replace('!', '', 1)
                 self.execute_system(commands)
             else:
-                self.badges.output_usage("!<command>")
+                self.badges.print_usage("!<command>")
             return True
         return False
 
     def execute_system(self, commands):
-        self.badges.output_process("Executing system command: " + commands[0] + "\n")
+        self.badges.print_process("Executing system command: " + commands[0] + "\n")
         try:
             subprocess.call(commands)
         except Exception:
-            self.badges.output_error("Unrecognized system command: " + commands[0] + "!")
+            self.badges.print_error("Unrecognized system command: " + commands[0] + "!")
 
     def execute_core_command(self, commands, arguments):
         if self.local_storage.get("commands"):
             if commands[0] in self.local_storage.get("commands").keys():
                 command = self.local_storage.get("commands")[commands[0]]
                 if (len(commands) - 1) < command.details['MinArgs']:
-                    self.badges.output_usage(command.details['Usage'])
+                    self.badges.print_usage(command.details['Usage'])
                 else:
                     command.run(len(arguments), arguments)
                 return True
@@ -114,8 +116,8 @@ class Execute:
     def parse_and_execute_command(self, commands, command, arguments, command_object):
         if hasattr(command_object, commands[0]):
             if (len(commands) - 1) < command['MinArgs']:
-                self.badges.output_usage(command['Usage'])
+                self.badges.print_usage(command['Usage'])
             else:
                 getattr(command_object, commands[0])(len(arguments), arguments)
         else:
-            self.badges.output_error("Failed to execute command!")
+            self.badges.print_error("Failed to execute command!")

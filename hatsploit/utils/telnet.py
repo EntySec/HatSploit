@@ -44,14 +44,14 @@ class TelnetSocket:
         if self.sock.sock:
             self.sock.close()
             return True
-        self.badges.output_error("Socket is not connected!")
+        self.badges.print_error("Socket is not connected!")
         return False
 
     def send(self, data):
         if self.sock.sock:
             self.sock.write(data)
             return True
-        self.badges.output_error("Socket is not connected!")
+        self.badges.print_error("Socket is not connected!")
         return False
 
     def interact(self, terminator='\n'):
@@ -67,10 +67,10 @@ class TelnetSocket:
                         try:
                             response = self.sock.read_eager()
                         except Exception:
-                            self.badges.output_warning("Connection terminated.")
+                            self.badges.print_warning("Connection terminated.")
                             return
                         if response:
-                            self.badges.output_empty(response.decode(errors='ignore'), start='', end='')
+                            self.badges.print_empty(response.decode(errors='ignore'), start='', end='')
                     elif key.fileobj is sys.stdin:
                         line = sys.stdin.readline().strip()
                         if not line:
@@ -79,7 +79,7 @@ class TelnetSocket:
                             return
                         self.sock.write((line + terminator).encode())
         else:
-            self.badges.output_error("Socket is not connected!")
+            self.badges.print_error("Socket is not connected!")
 
     def recv(self, timeout=10):
         if self.sock.sock:
@@ -92,7 +92,7 @@ class TelnetSocket:
                     if data:
                         break
                     if time.time() > timeout:
-                        self.badges.output_warning("Timeout waiting for response.")
+                        self.badges.print_warning("Timeout waiting for response.")
                         return None
             else:
                 while True:
@@ -101,7 +101,7 @@ class TelnetSocket:
                     if data:
                         break
             return result
-        self.badges.output_error("Socket is not connected!")
+        self.badges.print_error("Socket is not connected!")
         return None
 
     def send_command(self, command, output=True, timeout=10):
@@ -116,9 +116,9 @@ class TelnetSocket:
 
                     return output
                 except socket.timeout:
-                    self.badges.output_warning("Timeout waiting for response.")
+                    self.badges.print_warning("Timeout waiting for response.")
             return None
-        self.badges.output_error("Socket is not connected!")
+        self.badges.print_error("Socket is not connected!")
         return None
       
 class TelnetClient:

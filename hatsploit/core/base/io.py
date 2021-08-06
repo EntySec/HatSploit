@@ -39,21 +39,45 @@ class IO:
         self.local_storage = LocalStorage()
         self.fmt = FMT()
 
-    def output(self, message="", start='\033[1K\r', end='\n'):
+    def print(self, message="", start='\033[1K\r', end='\n'):
+        use_log = self.local_storage.get("log")
+
         sys.stdout.write(start + message + end)
         sys.stdout.flush()
+
+        if use_log:
+            with open(use_log, 'a') as f:
+                f.write(start + message + end)
+                f.flush()
+
         if self.local_storage.get("current_prompt") and self.local_storage.get("active_input"):
             prompt = start + self.local_storage.get("current_prompt") + readline.get_line_buffer()
             sys.stdout.write(prompt)
             sys.stdout.flush()
 
     def input(self, prompt_message=""):
+        use_log = self.local_storage.get("log")
+
         self.local_storage.set("current_prompt", prompt_message)
         self.local_storage.set("active_input", True)
+
+        if use_log:
+            with open(use_log, 'a') as f:
+                f.write(self.colors.REMOVE + prompt_message)
+                f.flush()
+
         commands = input(self.colors.REMOVE + prompt_message)
+
+        if use_log:
+            with open(use_log, 'a') as f:
+                f.write(commands + '\n')
+                f.flush()
+
         commands = self.fmt.format_commands(commands)
         arguments = list()
+
         if commands:
             arguments = commands[1:]
+
         self.local_storage.set("active_input", False)
         return commands, arguments

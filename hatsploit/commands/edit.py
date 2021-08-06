@@ -21,7 +21,7 @@ class HatSploitCommand(Command):
     execute = Execute()
 
     details = {
-        'Category': "developer",
+        'Category': "modules",
         'Name': "edit",
         'Authors': [
             'Ivan Nikolsky (enty8080) - command developer'
@@ -36,12 +36,12 @@ class HatSploitCommand(Command):
 
         try:
             if not os.environ['EDITOR']:
-                self.output_warning("Shell variable EDITOR not set.")
+                self.print_warning("Shell variable EDITOR not set.")
                 editor = "vi"
             else:
                 editor = os.environ['EDITOR']
         except KeyError:
-            self.output_warning("Shell variable EDITOR not set.")
+            self.print_warning("Shell variable EDITOR not set.")
             editor = "vi"
 
         if self.modules.check_exist(module):
@@ -54,6 +54,6 @@ class HatSploitCommand(Command):
                 edit_mode = editor + ' ' + module_path + '.py'
                 self.execute.execute_system(self.format_commands(edit_mode))
             else:
-                self.output_error("Can not edit already used module!")
+                self.print_error("Can not edit already used module!")
         else:
-            self.output_error("Invalid module!")
+            self.print_error("Invalid module!")

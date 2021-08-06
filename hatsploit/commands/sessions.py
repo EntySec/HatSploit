@@ -48,16 +48,16 @@ class HatSploitCommand(Command):
                     sessions_data.append((session_id, session_platform, session_type, host, port, latitude, longitude))
                 self.print_table("Opened Sessions", headers, *sessions_data)
             else:
-                self.output_warning("No opened sessions available.")
+                self.print_warning("No opened sessions available.")
         elif argv[0] in ['-c', '--close']:
             if argc < 2:
-                self.output_usage(self.details['Usage'])
+                self.print_usage(self.details['Usage'])
             else:
                 self.sessions.close_session(argv[1])
         elif argv[0] in ['-i', '--interact']:
             if argc < 2:
-                self.output_usage(self.details['Usage'])
+                self.print_usage(self.details['Usage'])
             else:
                 self.sessions.spawn_interactive_connection(argv[1])
         else:
-            self.output_usage(self.details['Usage'])
+            self.print_usage(self.details['Usage'])

@@ -59,7 +59,7 @@ class HatSploit:
 
     def accept_terms_of_service(self):
         if not os.path.exists(self.root_path + '.accepted'):
-            self.badges.output_information("--( The HatSploit Terms of Service )--")
+            self.badges.print_information("--( The HatSploit Terms of Service )--")
             terms = """
 This tool is designed for educational purposes only.
 
@@ -73,7 +73,7 @@ you are performing assessments for, you are violating the terms of service and l
 By accepting our terms of service, you agree that you will only use this tool for lawful purposes only.
 """
 
-            self.badges.output_empty(terms)
+            self.badges.print_empty(terms)
 
             agree = self.badges.input_question("Accept HatSploit Framework Terms of Service? [y/n] ")
             if agree.lower() not in ['y', 'yes']:
@@ -104,6 +104,7 @@ def main():
     parser.add_argument('--port', dest='port', type=int, help='HatSploit REST API port. [default: 8008]')
     parser.add_argument('-s', '--script', dest='script', help='Execute HatSploit commands from script file.')
     parser.add_argument('--no-exit', dest='no_exit', action='store_true', help='Do not exit after script execution.')
+    parser.add_argument('--no-startup', dest='no_startup', action='store_true', help='Do not execute startup.hsf file.')
     args = parser.parse_args()
 
     hsf = HatSploit()
@@ -136,14 +137,35 @@ def main():
                 "None",
                 hsf.api.init
             )
-        hsf.launch()
+        if args.no_startup:
+            hsf.launch()
+        else:
+            if os.path.exists(hsf.root_path + 'startup.hsf'):
+                hsf.launch(script=hsf.root_path + 'startup.hsf')
+            else:
+                hsf.launch()
     elif args.script:
         if not os.path.exists(args.script):
-            hsf.badges.output_error(f"Local file: {args.script}: does not exist!")
+            hsf.badges.print_error(f"Local file: {args.script}: does not exist!")
             sys.exit(1)
-        hsf.launch(
-            do_shell=args.no_exit,
-            script=args.script
-        )
+        if args.no_startup:
+            hsf.launch(
+                do_shell=args.no_exit,
+                script=args.script
+            )
+        else:
+            if os.path.exists(hsf.root_path + 'startup.hsf'):
+                hsf.launch(script=hsf.root_path + 'startup.hsf')
+            else:
+                hsf.launch(
+                    do_shell=args.no_exit,
+                    script=args.script
+                )
     else:
-        hsf.launch()
+        if args.no_startup:
+            hsf.launch()
+        else:
+            if os.path.exists(hsf.root_path + 'startup.hsf'):
+                hsf.launch(script=hsf.root_path + 'startup.hsf')
+            else:
+                hsf.launch()

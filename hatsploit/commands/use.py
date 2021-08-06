@@ -36,4 +36,4 @@ class HatSploitCommand(Command):
             if self.modules.check_exist(module):
                 self.modules.add_module(module)
             else:
-                self.output_error("Invalid module!")
+                self.print_error("Invalid module!")

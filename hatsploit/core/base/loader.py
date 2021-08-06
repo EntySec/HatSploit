@@ -49,8 +49,8 @@ class Loader:
 
     def load_update_process(self):
         if self.update.check_update():
-            self.badges.output_warning("Your HatSploit Framework is out-dated.")
-            self.badges.output_information("Consider running hsf --update")
+            self.badges.print_warning("Your HatSploit Framework is out-dated.")
+            self.badges.print_information("Consider running hsf --update")
             time.sleep(1)
 
     def load_components(self):

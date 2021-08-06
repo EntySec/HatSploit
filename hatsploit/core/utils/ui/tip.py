@@ -55,8 +55,8 @@ class Tip:
                     random_tip = random.randint(0, len(tips) - 1)
                     tip = self.colors_script.parse_colors_script(
                         self.config.path_config['tips_path'] + tips[random_tip])
-                self.badges.output_empty(self.colors.END + "HatSploit Tip: " + tip + self.colors.END)
+                self.badges.print_empty(self.colors.END + "HatSploit Tip: " + tip + self.colors.END)
             else:
-                self.badges.output_warning("No tips detected.")
+                self.badges.print_warning("No tips detected.")
         else:
-            self.badges.output_warning("No tips detected.")
+            self.badges.print_warning("No tips detected.")

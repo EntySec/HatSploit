@@ -26,6 +26,8 @@
 
 import subprocess
 import shutil
+from packaging import version
+import os
 
 import requests
 
@@ -41,16 +43,15 @@ class Update:
     def check_update(self):
         remote_config = requests.get('https://raw.githubusercontent.com/EntySec/HatSploit/main/hatsploit/config/core_config.yml',
                                      stream=True).content
-        if self.config.get_config_file(remote_config)['details']['version'] != \
-                self.config.core_config['details']['version']:
-            return True
-        return False
+        remote_version = self.config.get_config_file(remote_config)['details']['version']
+        local_version = self.config.core_config['details']['version']
+        return version.parse(local_version) < version.parse(remote_version)
 
     def update(self):
         if self.check_update():
-            self.badges.output_process("Updating HatSploit Framework...")
-            shutil.rmtree(self.config.path_config['root_path'])
-            subprocess.call('pip3 install git+https://github.com/EntySec/HatSploit', shell=False)
-            self.badges.output_success("HatSploit updated successfully!")
+            self.badges.print_process("Updating HatSploit Framework...")
+            shutil.rmtree(os.path.abspath(self.config.path_config['root_path']))
+            subprocess.call(['pip3', 'install', 'git+https://github.com/EntySec/HatSploit', '--ignore-installed'], shell=False)
+            self.badges.print_success("HatSploit updated successfully!")
             return
-        self.badges.output_warning("Your HatSploit is up-to-date.")
+        self.badges.print_warning("Your HatSploit is up-to-date.")

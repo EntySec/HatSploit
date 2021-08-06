@@ -51,16 +51,16 @@ class HTTPClient:
         try:
             return getattr(session, method.lower())(url, **kwargs)
         except (requests.exceptions.MissingSchema, requests.exceptions.InvalidSchema):
-            self.badges.output_error("Invalid URL format: {}!".format(url))
+            self.badges.print_error("Invalid URL format: {}!".format(url))
         except requests.exceptions.ConnectionError:
-            self.badges.output_error("Connection error: {}!".format(url))
+            self.badges.print_error("Connection error: {}!".format(url))
         except requests.exceptions.ReadTimeout:
             if not output:
-                self.badges.output_warning("Timeout waiting for response.")
+                self.badges.print_warning("Timeout waiting for response.")
         except requests.RequestException as e:
-            self.badges.output_error("Request error: {}!".format(str(e)))
+            self.badges.print_error("Request error: {}!".format(str(e)))
         except socket.error:
-            self.badges.output_error("Socket is not connected!")
+            self.badges.print_error("Socket is not connected!")
 
         return None
 

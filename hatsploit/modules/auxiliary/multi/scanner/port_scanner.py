@@ -44,12 +44,12 @@ class HatSploitModule(Module, TCPClient):
     def check_port(self, remote_host, port):
         target = remote_host + '/' + str(port)
         if self.check_tcp_port(remote_host, port):
-            self.output_success(f"{target} - opened")
+            self.print_success(f"{target} - opened")
 
     def run(self):
         remote_host, ports_range = self.parse_options(self.options)
         start, end = self.parse_ports_range(ports_range)
 
-        self.output_process(f"Scanning {remote_host}...")
+        self.print_process(f"Scanning {remote_host}...")
         for port in range(start, end):
             self.check_port(remote_host, port)
