@@ -21,7 +21,7 @@ class HatSploitCommand(Command):
     execute = Execute()
 
     details = {
-        'Category': "developer",
+        'Category': "modules",
         'Name': "edit",
         'Authors': [
             'Ivan Nikolsky (enty8080) - command developer'
