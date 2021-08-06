@@ -42,6 +42,7 @@ setup(name='hatsploit',
           ]
       },
       install_requires=[
+          'packaging',                                        # for parsing version number
           'pyyaml',                                           # for parsing JSON
           'requests',                                         # for manipulating HTTP
           'paramiko',                                         # for manipulating SSH
