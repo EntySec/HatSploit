@@ -40,8 +40,8 @@ class Sessions:
         sessions = self.local_storage.get("sessions")
         return sessions
     
-    def close_sessions(self);
-        if self.check_sessions():
+    def close_sessions(self):
+        if not self.local_storage.get("sessions"):
             return True
         self.badges.print_warning("You have some opened sessions.")
         if self.badges.input_question("Exit anyway? [y/N] ").lower() in ['yes', 'y']:
