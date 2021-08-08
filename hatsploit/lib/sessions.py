@@ -39,6 +39,16 @@ class Sessions:
     def get_all_sessions(self):
         sessions = self.local_storage.get("sessions")
         return sessions
+    
+    def close_sessions(self);
+        if self.check_sessions():
+            return True
+        self.badges.print_warning("You have some opened sessions.")
+        if self.badges.input_question("Exit anyway? [y/N] ").lower() in ['yes', 'y']:
+            self.badges.print_process("Closing all session...")
+            self.close_all_sessions()
+            return True
+        return False
 
     def add_session(self, session_platform, session_type, session_host, session_port, session_object):
         if not self.local_storage.get("sessions"):
