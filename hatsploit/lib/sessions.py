@@ -125,6 +125,18 @@ class Sessions:
         else:
             self.badges.print_error("Invalid session given!")
 
+    def close_all_sessions(self):
+        sessions = self.local_storage.get("sessions")
+        if sessions:
+            for session in sessions:
+                try:
+                    sessions[session]['object'].close()
+                    del sessions[session]
+
+                    self.local_storage.update("sessions", sessions)
+                except Exception:
+                    self.badges.print_error("Failed to close session!")
+
     def get_session(self, session_id):
         sessions = self.local_storage.get("sessions")
         if self.check_exist(session_id):
