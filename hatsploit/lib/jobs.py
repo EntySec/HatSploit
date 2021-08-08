@@ -53,11 +53,6 @@ class Jobs:
                 if not jobs[job_id]['job_process'].is_alive():
                     self.delete_job(job_id)
 
-    def check_jobs(self):
-        if not self.local_storage.get("jobs"):
-            return True
-        return False
-
     def check_module_job(self, module_name):
         jobs = self.local_storage.get("jobs")
         if jobs:
@@ -67,7 +62,7 @@ class Jobs:
         return False
 
     def exit_jobs(self):
-        if self.check_jobs():
+        if not self.local_storage.get("jobs"):
             return True
         self.badges.print_warning("You have some running jobs.")
         if self.badges.input_question("Exit anyway? [y/N] ").lower() in ['yes', 'y']:
@@ -77,7 +72,7 @@ class Jobs:
         return False
 
     def stop_all_jobs(self):
-        if not self.check_jobs():
+        if self.local_storage.get("jobs"):
             for job_id in list(self.local_storage.get("jobs").keys()):
                 self.delete_job(job_id)
 
@@ -97,7 +92,7 @@ class Jobs:
         self.job_process.start()
 
     def delete_job(self, job_id):
-        if not self.check_jobs():
+        if self.local_storage.get("jobs"):
             job_id = int(job_id)
             if job_id in list(self.local_storage.get("jobs").keys()):
                 try:
