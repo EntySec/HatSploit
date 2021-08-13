@@ -138,7 +138,7 @@ class Sessions:
     def close_all_sessions(self):
         sessions = self.local_storage.get("sessions")
         if sessions:
-            for session in sessions:
+            for session in list(sessions):
                 try:
                     sessions[session]['object'].close()
                     del sessions[session]
