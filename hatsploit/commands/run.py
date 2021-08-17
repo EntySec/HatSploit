@@ -71,6 +71,7 @@ class HatSploitCommand(Command):
                 try:
                     if current_payload:
                         payload_name = current_module.payload['Value']
+                        raw_payload = current_payload.payload
 
                         payload_data = current_payload.run()
                         payload, args, session = None, None, None
@@ -83,6 +84,7 @@ class HatSploitCommand(Command):
                         else:
                             payload = payload_data
 
+                        current_module.payload['Raw'] = raw_payload
                         current_module.payload['Category'] = current_payload.details['Category']
                         current_module.payload['Platform'] = current_payload.details['Platform']
                         current_module.payload['Type'] = current_payload.details['Type']
