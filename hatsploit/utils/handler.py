@@ -214,7 +214,7 @@ class Handler(Server):
 
     def handle_session(self, host, port, payload, sender=None, args=[],
                        delim=';', remote_host=None, location='/tmp', timeout=None,
-                       method=None, post="printf", linemax=100):
+                       method=None, manual=False, post="printf", linemax=100):
         if payload['Payload'] is None:
             self.badges.print_error("Payload stage is not found!")
             return False
@@ -296,7 +296,6 @@ class Handler(Server):
                 return False
         else:
             if method is not None:
-                encode = True
                 if method.lower() == 'reverse_tcp':
                     new_session, new_remote_host = self.listen_session(host, port, timeout, HatSploitSession)
                     if not new_session and not new_remote_host:
@@ -382,8 +381,9 @@ class Handler(Server):
                     self.badges.print_error("Invalid payload category!")
                     return False
             else:
-                self.badges.print_error("Failed to execute payload stage!")
-                return False
+                if manual is False:
+                    self.badges.print_error("Failed to execute payload stage!")
+                    return False
 
         session = payload['Session'] if payload['Session'] is not None else HatSploitSession
 
