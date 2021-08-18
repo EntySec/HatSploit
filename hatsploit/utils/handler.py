@@ -236,11 +236,7 @@ class Handler(Server):
                         [
                             payload['Raw'],
                             sender,
-                            args,
-                            payload['Args'],
-                            delim,
-                            location,
-                            linemax
+                            args
                         ]
                     )
                 elif post.lower() == 'printf':
@@ -337,8 +333,7 @@ class Handler(Server):
                             [
                                 payload['Raw'],
                                 sender,
-                                args,
-                                payload['Args']
+                                args
                             ]
                         )
                     elif post.lower() == 'printf':
