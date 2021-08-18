@@ -73,10 +73,10 @@ class HatSploitCommand(Command):
                         payload_name = current_module.payload['Value']
                         payload_data = current_payload.run()
                         
-                        raw = ""
-                        args = ""
-                        payload = ""
-                        session = ""
+                        raw = None
+                        args = None
+                        payload = None
+                        session = None
 
                         if isinstance(payload_data, tuple):
                             if isinstance(payload_data[0], list):
