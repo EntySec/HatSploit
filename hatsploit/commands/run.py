@@ -71,10 +71,11 @@ class HatSploitCommand(Command):
                 try:
                     if current_payload:
                         payload_name = current_module.payload['Value']
+                        raw_payload = ""
 
                         payload_data = current_payload.run()
-                        payload, args, session = None, None, None
-                        
+                        payload, args, session = "", "", ""
+
                         if isinstance(payload_data, tuple):
                             if len(payload_data) == 2:
                                 payload, args = payload_data[0], payload_data[1]
@@ -83,6 +84,10 @@ class HatSploitCommand(Command):
                         else:
                             payload = payload_data
 
+                        if isinstance(payload, list):
+                            payload, raw_payload = payload[0], payload[1]
+
+                        current_module.payload['Raw'] = raw_payload
                         current_module.payload['Category'] = current_payload.details['Category']
                         current_module.payload['Platform'] = current_payload.details['Platform']
                         current_module.payload['Type'] = current_payload.details['Type']
