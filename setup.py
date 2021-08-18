@@ -42,6 +42,7 @@ setup(name='hatsploit',
           ]
       },
       install_requires=[
+          'impacket',                                         # for manipulating SMB
           'packaging',                                        # for parsing version number
           'pyyaml',                                           # for parsing JSON
           'requests',                                         # for manipulating HTTP
