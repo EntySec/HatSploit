@@ -53,5 +53,7 @@ class HatSploitPayload(Payload, HatVenom):
 
         shellcode = b""
 
-        payload = self.generate('raw', 'generic', shellcode, offsets)
-        return payload
+        payload = self.generate('pe', 'x64', shellcode, offsets)
+        raw_payload = self.generate('raw', 'generic', shellcode, offsets) # for eternalblue
+
+        return [payload, raw_payload]
