@@ -75,24 +75,24 @@ class HatSploitCommand(Command, HatVenom):
                         payload_name = current_module.payload['Value']
                         payload_data = current_payload.run()
 
-                        executable = 'raw'
-
-                        if current_payload.details['Platform'].lower() in ['linux', 'unix', 'bsd']:
+                        if current_payload.details['Platform'] in ['linux', 'unix', 'bsd']:
                             executable = 'elf'
-                        elif current_payload.details['Platform'].lower() in ['macos', 'iphoneos', 'tvos', 'watchos']:
+                        elif current_payload.details['Platform'] in ['macos', 'iphoneos', 'tvos', 'watchos']:
                             executable = 'macho'
-                        elif current_payload.details['Platform'].lower() in ['windows']:
+                        elif current_payload.details['Platform'] in ['windows']:
                             executable = 'pe'
+                        else:
+                            executable = 'raw'
 
                         if isinstance(payload_data, tuple):
                             raw = self.generate('raw', 'generic', payload_data[0], payload_data[1])
-                            payload = self.generate(executable,
-                                                    current_payload.details['Architecture'].lower(),
+                            payload = self.generate(executable if current_payload.details['Architecture'] != 'generic' else 'raw',
+                                                    current_payload.details['Architecture'],
                                                     payload_data[0], payload_data[1])
                         else:
                             raw = self.generate('raw', 'generic', payload_data)
-                            payload = self.generate(executable,
-                                                    current_payload.details['Architecture'].lower(),
+                            payload = self.generate(executable if current_payload.details['Architecture'] != 'generic' else 'raw',
+                                                    current_payload.details['Architecture'],
                                                     payload_data)
 
                         current_module.payload['Category'] = current_payload.details['Category']
