@@ -5,6 +5,8 @@
 # Current source: https://github.com/EntySec/HatSploit
 #
 
+from hatvenom import HatVenom
+
 from hatsploit.lib.jobs import Jobs
 from hatsploit.lib.storage import LocalStorage
 from hatsploit.lib.command import Command
@@ -12,7 +14,7 @@ from hatsploit.lib.modules import Modules
 from hatsploit.lib.payloads import Payloads
 
 
-class HatSploitCommand(Command):
+class HatSploitCommand(Command, HatVenom):
     payloads = Payloads()
     local_storage = LocalStorage()
     modules = Modules()
@@ -72,31 +74,26 @@ class HatSploitCommand(Command):
                     if current_payload:
                         payload_name = current_module.payload['Value']
                         payload_data = current_payload.run()
-                        
-                        raw = None
-                        args = None
-                        payload = None
-                        session = None
+
+                        executable = 'raw'
+
+                        if current_payload.details['Platform'].lower() in ['linux', 'unix', 'bsd']:
+                            executable = 'elf'
+                        elif current_payload.details['Platform'].lower() in ['macos', 'iphoneos', 'tvos', 'watchos']:
+                            executable = 'macho'
+                        elif current_payload.details['Platform'].lower() in ['windows']:
+                            executable = 'pe'
 
                         if isinstance(payload_data, tuple):
-                            if isinstance(payload_data[0], list):
-                                payload = payload_data[0][0]
-                                raw = payload_data[0][1]
-                            else:
-                                payload = payload_data[0]
-
-                                if isinstance(payload_data[1], dict):
-                                    if 'Args' in payload_data[1]:
-                                        args = payload_data[1]['Args']
-
-                                    if 'Session' in payload_data[1]:
-                                        session = payload_data[1]['Session']
+                            raw = self.generate('raw', 'generic', payload_data[0], payload_data[1])
+                            payload = self.generate(executable,
+                                                    current_payload.details['Architecture'].lower(),
+                                                    payload_data[0], payload_data[1])
                         else:
-                            if isinstance(payload_data, list):
-                                payload = payload_data[0]
-                                raw = payload_data[1]
-                            else:
-                                payload = payload_data
+                            raw = self.generate('raw', 'generic', payload_data)
+                            payload = self.generate(executable,
+                                                    current_payload.details['Architecture'].lower(),
+                                                    payload_data)
 
                         current_module.payload['Category'] = current_payload.details['Category']
                         current_module.payload['Platform'] = current_payload.details['Platform']
@@ -104,8 +101,8 @@ class HatSploitCommand(Command):
 
                         current_module.payload['Raw'] = raw
                         current_module.payload['Payload'] = payload
-                        current_module.payload['Args'] = args
-                        current_module.payload['Session'] = session
+                        current_module.payload['Args'] = None
+                        current_module.payload['Session'] = None
 
                     self.entry_to_module(argc, argv, current_module)
                 except Exception as e:
