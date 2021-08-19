@@ -41,7 +41,7 @@ class HatSploitModule(Module):
         },
         'LPATH': {
             'Description': "Local path.",
-            'Value': "/tmp/payload.bin",
+            'Value': "/tmp/payload",
             'Type': None,
             'Required': True
         }
