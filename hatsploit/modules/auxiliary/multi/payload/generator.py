@@ -33,22 +33,33 @@ class HatSploitModule(Module):
     }
 
     options = {
+        'RAW': {
+            'Description': "Output raw payload.",
+            'Value': "no",
+            'Type': "boolean",
+            'Required': False
+        },
         'LPATH': {
             'Description': "Local path.",
-            'Value': "/tmp/payload.bin",
+            'Value': "/tmp/payload",
             'Type': None,
             'Required': True
         }
     }
 
     def run(self):
-        local_file = self.parse_options(self.options)
+        raw, local_file = self.parse_options(self.options)
+
+        raw_payload = self.payload['Raw']
         payload = self.payload['Payload']
 
         if payload:
             self.print_process(f"Saving to {local_file}...")
             with open(local_file, 'wb') as f:
-                f.write(payload.encode() if isinstance(payload, str) else payload)
+                if raw.lower() in ['yes', 'y']:
+                    f.write(raw_payload.encode() if isinstance(raw_payload, str) else raw_payload)
+                else:
+                    f.write(payload.encode() if isinstance(payload, str) else payload)
             self.print_success(f"Successfully saved to {local_file}!")
         else:
             self.print_error("Failed to generate payload!")
