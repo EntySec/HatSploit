@@ -229,6 +229,10 @@ class Handler(Server):
             session = payload['Session'] if payload['Session'] is not None else HatSploitSession
             if payload['Category'].lower() == 'stager':
                 if post.lower() == 'raw':
+                    if not payload['Raw']:
+                        self.badges.print_error("Payload does not support raw!")
+                        return False
+
                     self.do_job(
                         "Handler raw Stage",
                         payload,
@@ -326,6 +330,10 @@ class Handler(Server):
 
                 if payload['Category'].lower() == 'stager':
                     if post.lower() == 'raw':
+                        if not payload['Raw']:
+                            self.badges.print_error("Payload does not support raw!")
+                            return False
+
                         self.do_job(
                             "Handler raw Stage",
                             payload,
