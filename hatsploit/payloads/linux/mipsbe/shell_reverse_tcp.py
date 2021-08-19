@@ -5,11 +5,13 @@
 # Current source: https://github.com/EntySec/HatSploit
 #
 
+from hatvenom import HatVenom
+
 from hatsploit.lib.payload import Payload
 from hatsploit.utils.tcp import TCPClient
 
 
-class HatSploitPayload(Payload):
+class HatSploitPayload(Payload, HatVenom):
     details = {
         'Category': "stager",
         'Name': "Linux mipsbe Shell Reverse TCP",
