@@ -75,14 +75,12 @@ class HatSploitCommand(Command, HatVenom):
                         payload_name = current_module.payload['Value']
                         payload_data = current_payload.run()
 
-                        if current_payload.details['Platform'] in ['linux', 'unix', 'bsd']:
-                            executable = 'elf'
-                        elif current_payload.details['Platform'] in ['macos', 'iphoneos', 'tvos', 'watchos']:
+                        if current_payload.details['Platform'] in ['macos', 'iphoneos']:
                             executable = 'macho'
                         elif current_payload.details['Platform'] in ['windows']:
                             executable = 'pe'
                         else:
-                            executable = 'raw'
+                            executable = 'elf'
 
                         if isinstance(payload_data, tuple):
                             raw = self.generate('raw', 'generic', payload_data[0], payload_data[1])
