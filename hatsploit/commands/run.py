@@ -71,22 +71,38 @@ class HatSploitCommand(Command):
                 try:
                     if current_payload:
                         payload_name = current_module.payload['Value']
-
                         payload_data = current_payload.run()
-                        payload, args, session = None, None, None
                         
+                        raw = None
+                        args = None
+                        payload = None
+                        session = None
+
                         if isinstance(payload_data, tuple):
-                            if len(payload_data) == 2:
-                                payload, args = payload_data[0], payload_data[1]
-                            elif len(payload_data) == 3:
-                                payload, args, session = payload_data[0], payload_data[1], payload_data[2]
+                            if isinstance(payload_data[0], list):
+                                payload = payload_data[0][0]
+                                raw = payload_data[0][1]
+                            else:
+                                payload = payload_data[0]
+
+                                if isinstance(payload_data[1], dict):
+                                    if 'Args' in payload_data[1]:
+                                        args = payload_data[1]['Args']
+
+                                    if 'Session' in payload_data[1]:
+                                        session = payload_data[1]['Session']
                         else:
-                            payload = payload_data
+                            if isinstance(payload_data, list):
+                                payload = payload_data[0]
+                                raw = payload_data[1]
+                            else:
+                                payload = payload_data
 
                         current_module.payload['Category'] = current_payload.details['Category']
                         current_module.payload['Platform'] = current_payload.details['Platform']
                         current_module.payload['Type'] = current_payload.details['Type']
 
+                        current_module.payload['Raw'] = raw
                         current_module.payload['Payload'] = payload
                         current_module.payload['Args'] = args
                         current_module.payload['Session'] = session
