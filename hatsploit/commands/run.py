@@ -70,6 +70,7 @@ class HatSploitCommand(Command, HatVenom):
             if len(missed) > 0:
                 self.print_error(f"These options failed to validate: {missed[:-2]}!")
             else:
+                self.print_empty("")
                 try:
                     if current_payload:
                         payload_name = current_module.payload['Value']
@@ -105,5 +106,6 @@ class HatSploitCommand(Command, HatVenom):
                     self.entry_to_module(argc, argv, current_module)
                 except Exception as e:
                     self.print_error("An error occurred in module: " + str(e) + "!")
+                self.print_empty("")
         else:
             self.print_warning("No module selected.")
