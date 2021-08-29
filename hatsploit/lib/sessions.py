@@ -24,7 +24,6 @@
 # SOFTWARE.
 #
 
-import ipaddress
 import requests
 
 from hatsploit.lib.storage import LocalStorage
@@ -59,31 +58,12 @@ class Sessions:
                session_id < len(self.local_storage.get("sessions"))):
             session_id += 1
 
-        session_latitude = '0'
-        session_longitude = '0'
-
-        try:
-            if ipaddress.ip_address(session_host).is_private:
-                data = requests.get("https://www.myexternalip.com/json", timeout=3).json()
-                host = data['ip']
-            else:
-                host = session_host
-
-            data = requests.get(f"http://ipinfo.io/{host}", timeout=3).json()['loc'].split(',')
-
-            session_latitude = data[0]
-            session_longitude = data[1]
-        except Exception:
-            pass
-
         sessions = {
             session_id: {
                 'platform': session_platform,
                 'type': session_type,
                 'host': session_host,
                 'port': session_port,
-                'latitude': session_latitude,
-                'longitude': session_longitude,
                 'object': session_object
             }
         }
