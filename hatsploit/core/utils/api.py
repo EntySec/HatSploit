@@ -83,9 +83,7 @@ class SessionManager(Resource):
                                 'platform': sessions[session]['platform'],
                                 'type': sessions[session]['type'],
                                 'host': sessions[session]['host'],
-                                'port': sessions[session]['port'],
-                                'latitude': sessions[session]['latitude'],
-                                'longitude': sessions[session]['longitude']
+                                'port': sessions[session]['port']
                             }
                         })
                     else:
@@ -95,9 +93,7 @@ class SessionManager(Resource):
                                     'platform': sessions[session]['platform'],
                                     'type': sessions[session]['type'],
                                     'host': sessions[session]['host'],
-                                    'port': sessions[session]['port'],
-                                    'latitude': sessions[session]['latitude'],
-                                    'longitude': sessions[session]['longitude']
+                                    'port': sessions[session]['port']
                                 }
                             })
             return data, 200
