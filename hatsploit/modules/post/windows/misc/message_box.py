@@ -48,4 +48,7 @@ class HatSploitModule(Module, SessionTools):
         )
 
         session = self.get_session(session)
-        session.send_command(f"powershell -w hidden -nop -c {source}")
+        if session is not None:
+            session.send_command(f"powershell -w hidden -nop -c {source}")
+        else:
+            self.print_error("Invalid session ID")

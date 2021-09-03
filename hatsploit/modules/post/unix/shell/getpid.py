@@ -37,6 +37,9 @@ class HatSploitModule(Module, SessionTools):
         session = self.parse_options(self.options)
 
         session = self.get_session(session)
-        pid = session.send_command("printf $$", output=True)
+        if session is not None:
+            pid = session.send_command("printf $$", output=True)
 
-        self.print_information(f"PID: {pid}")
+            self.print_information(f"PID: {pid}")
+        else:
+            self.print_error("Invalid session ID")

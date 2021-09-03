@@ -37,4 +37,7 @@ class HatSploitModule(Module, SessionTools):
         session = self.parse_options(self.options)
 
         session = self.get_session(session)
-        session.send_command("/System/Library/CoreServices/Menu\ Extras/User.menu/Contents/Resources/CGSession -suspend")
+        if session is not None:
+            session.send_command("/System/Library/CoreServices/Menu\ Extras/User.menu/Contents/Resources/CGSession -suspend")
+        else:
+            self.print_error("Invalid session ID")
