@@ -23,5 +23,5 @@
 %comment
 
 %end
-Want to add your plugins database? Just use %greenplugins_db -c%end
+Want to add your plugin database? Just use %greenplugins_db -c%end
 %end

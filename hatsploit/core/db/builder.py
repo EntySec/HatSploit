@@ -103,7 +103,7 @@ class Builder:
                             }
                         })
                     except Exception:
-                        self.badges.print_error(f"Failed to add {payload} to payloads database!")
+                        self.badges.print_error(f"Failed to add {payload} to payload database!")
 
         with open(database_path, 'w') as f:
             json.dump(database, f)
@@ -139,7 +139,7 @@ class Builder:
                             }
                         })
                     except Exception:
-                        self.badges.print_error(f"Failed to add {module} to modules database!")
+                        self.badges.print_error(f"Failed to add {module} to module database!")
 
         with open(database_path, 'w') as f:
             json.dump(database, f)
@@ -172,7 +172,7 @@ class Builder:
                             }
                         })
                     except Exception:
-                        self.badges.print_error(f"Failed to add {plugin} to plugins database!")
+                        self.badges.print_error(f"Failed to add {plugin} to plugin database!")
 
         with open(database_path, 'w') as f:
             json.dump(database, f)

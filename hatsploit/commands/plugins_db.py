@@ -18,10 +18,10 @@ class HatSploitCommand(Command):
 
     usage = ""
     usage += "plugins_db <option> [arguments]\n\n"
-    usage += "  -l, --list                        List all connected plugins databases.\n"
-    usage += "  -d, --disconnect <name>           Disconnect specified plugins database.\n"
-    usage += "  -c, --connect <name> <path>       Connect new plugins database.\n"
-    usage += "  -b, --build <path> <output_path>  Build plugins database from plugins path.\n"
+    usage += "  -l, --list                        List all connected plugin databases.\n"
+    usage += "  -d, --disconnect <name>           Disconnect specified plugin database.\n"
+    usage += "  -c, --connect <name> <path>       Connect new plugin database.\n"
+    usage += "  -b, --build <path> <output_path>  Build plugin database from plugins path.\n"
 
     details = {
         'Category': "databases",
@@ -29,7 +29,7 @@ class HatSploitCommand(Command):
         'Authors': [
             'Ivan Nikolsky (enty8080) - command developer'
         ],
-        'Description': "Manage plugins databases.",
+        'Description': "Manage plugin databases.",
         'Usage': usage,
         'MinArgs': 1
     }
@@ -45,9 +45,9 @@ class HatSploitCommand(Command):
                 for name in databases.keys():
                     databases_data.append((number, name, databases[name]['path']))
                     number += 1
-                self.print_table("Connected Plugins Databases", headers, *databases_data)
+                self.print_table("Connected Plugin Databases", headers, *databases_data)
             else:
-                self.print_warning("No plugins database connected.")
+                self.print_warning("No plugin database connected.")
         elif choice in ['-d', '--disconnect']:
             if argc < 2:
                 self.print_usage(self.details['Usage'])

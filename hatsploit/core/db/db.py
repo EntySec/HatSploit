@@ -44,7 +44,7 @@ class DB:
                 self.local_storage.delete_element("connected_payloads_databases", name)
                 self.local_storage.delete_element("payloads", name)
                 return
-        self.badges.print_error("No such payloads database connected!")
+        self.badges.print_error("No such payload database connected!")
 
     def disconnect_modules_database(self, name):
         if self.local_storage.get("connected_modules_databases"):
@@ -52,7 +52,7 @@ class DB:
                 self.local_storage.delete_element("connected_modules_databases", name)
                 self.local_storage.delete_element("modules", name)
                 return
-        self.badges.print_error("No such modules database connected!")
+        self.badges.print_error("No such module database connected!")
 
     def disconnect_plugins_database(self, name):
         if self.local_storage.get("connected_plugins_databases"):
@@ -60,28 +60,28 @@ class DB:
                 self.local_storage.delete_element("connected_plugins_databases", name)
                 self.local_storage.delete_element("plugins", name)
                 return
-        self.badges.print_error("No such plugins database connected!")
+        self.badges.print_error("No such plugin database connected!")
 
     def connect_payloads_database(self, name, path):
         if self.local_storage.get("connected_payloads_databases"):
             if name in self.local_storage.get("connected_payloads_databases"):
-                self.bagdes.print_error("Payloads database already connected!")
+                self.bagdes.print_error("Payload database already connected!")
                 return
         if not os.path.exists(path) or not str.endswith(path, "json"):
-            self.badges.print_error("Not a payloads database!")
+            self.badges.print_error("Not a payload database!")
             return
 
         try:
             database = json.load(open(path))
         except Exception:
-            self.badges.print_error("Failed to connect payloads database!")
+            self.badges.print_error("Failed to connect payload database!")
             return
 
         if '__database__' not in database.keys():
             self.badges.print_error("No __database__ section found!")
             return
         if database['__database__']['type'] != "payloads":
-            self.badges.print_error("Not a payloads database!")
+            self.badges.print_error("Not a payload database!")
             return
         del database['__database__']
 
@@ -106,23 +106,23 @@ class DB:
     def connect_modules_database(self, name, path):
         if self.local_storage.get("connected_modules_databases"):
             if name in self.local_storage.get("connected_modules_databases"):
-                self.bagdes.print_error("Modules database already connected!")
+                self.bagdes.print_error("Module database already connected!")
                 return
         if not os.path.exists(path) or not str.endswith(path, "json"):
-            self.badges.print_error("Not a modules database!")
+            self.badges.print_error("Not a module database!")
             return
 
         try:
             database = json.load(open(path))
         except Exception:
-            self.badges.print_error("Failed to connect modules database!")
+            self.badges.print_error("Failed to connect module database!")
             return
 
         if '__database__' not in database.keys():
             self.badges.print_error("No __database__ section found!")
             return
         if database['__database__']['type'] != "modules":
-            self.badges.print_error("Not a modules database!")
+            self.badges.print_error("Not a module database!")
             return
         del database['__database__']
 
@@ -147,7 +147,7 @@ class DB:
     def connect_plugins_database(self, name, path):
         if self.local_storage.get("connected_plugins_databases"):
             if name in self.local_storage.get("connected_plugins_databases"):
-                self.bagdes.print_error("Plugins database already connected!")
+                self.bagdes.print_error("Plugin database already connected!")
                 return
         if not os.path.exists(path) or not str.endswith(path, "json"):
             self.badges.print_error("Not a database!")
@@ -156,14 +156,14 @@ class DB:
         try:
             database = json.load(open(path))
         except Exception:
-            self.badges.print_error("Failed to connect plugins database!")
+            self.badges.print_error("Failed to connect plugin database!")
             return
 
         if '__database__' not in database.keys():
             self.badges.print_error("No __database__ section found!")
             return
         if database['__database__']['type'] != "plugins":
-            self.badges.print_error("Not a plugins database!")
+            self.badges.print_error("Not a plugin database!")
             return
         del database['__database__']
 

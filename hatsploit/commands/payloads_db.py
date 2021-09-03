@@ -18,10 +18,10 @@ class HatSploitCommand(Command):
 
     usage = ""
     usage += "payloads_db <option> [arguments]\n\n"
-    usage += "  -l, --list                        List all connected payloads databases.\n"
-    usage += "  -d, --disconnect <name>           Disconnect specified payloads database.\n"
-    usage += "  -c, --connect <name> <path>       Connect new payloads database.\n"
-    usage += "  -b, --build <path> <output_path>  Build payloads database from payloads path.\n"
+    usage += "  -l, --list                        List all connected payload databases.\n"
+    usage += "  -d, --disconnect <name>           Disconnect specified payload database.\n"
+    usage += "  -c, --connect <name> <path>       Connect new payload database.\n"
+    usage += "  -b, --build <path> <output_path>  Build payload database from payloads path.\n"
 
     details = {
         'Category': "databases",
@@ -29,7 +29,7 @@ class HatSploitCommand(Command):
         'Authors': [
             'Ivan Nikolsky (enty8080) - command developer'
         ],
-        'Description': "Manage payloads databases.",
+        'Description': "Manage payload databases.",
         'Usage': usage,
         'MinArgs': 1
     }
@@ -45,9 +45,9 @@ class HatSploitCommand(Command):
                 for name in databases.keys():
                     databases_data.append((number, name, databases[name]['path']))
                     number += 1
-                self.print_table("Connected Payloads Databases", headers, *databases_data)
+                self.print_table("Connected Payload Databases", headers, *databases_data)
             else:
-                self.print_warning("No payloads database connected.")
+                self.print_warning("No payload database connected.")
         elif choice in ['-d', '--disconnect']:
             if argc < 2:
                 self.print_usage(self.details['Usage'])
