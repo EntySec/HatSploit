@@ -41,11 +41,12 @@ class HatSploitModule(Module, SessionTools):
 
     def run(self):
         session, message = self.parse_options(self.options)
+        session = self.get_session(session)
 
         source = (
             "[reflection.assembly]::loadwithpartialname('system.windows.forms');"
             f"[system.Windows.Forms.MessageBox]::show('{message}')"
         )
 
-        session = self.get_session(session)
-        session.send_command(f"powershell -w hidden -nop -c {source}")
+        if session:
+            session.send_command(f"powershell -w hidden -nop -c {source}")
