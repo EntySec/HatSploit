@@ -187,13 +187,13 @@ class Modules:
                         session_type = session[2]
 
                 if not session_platforms:
-                    if not self.sessions.check_exist(session_id, session_platform, session_type):
+                    if not self.sessions.check_exist(value, session_platform, session_type):
                         self.badges.print_error("Invalid value, expected valid session!")
                         return False
                 else:
                     session = 0
                     for platform in session_platforms:
-                        if self.sessions.check_exist(session_id, platform.strip(), session_type):
+                        if self.sessions.check_exist(value platform.strip(), session_type):
                             session = 1
                             break
                     if not session:
