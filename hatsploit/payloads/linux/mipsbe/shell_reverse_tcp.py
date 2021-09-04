@@ -5,7 +5,7 @@
 # Current source: https://github.com/EntySec/HatSploit
 #
 
-from socket
+import socket
 
 from hatsploit.lib.payload import Payload
 from hatsploit.utils.tcp import TCPClient
