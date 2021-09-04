@@ -41,17 +41,29 @@ class Update:
         self.badges = Badges()
 
     def check_update(self):
-        remote_config = requests.get('https://raw.githubusercontent.com/EntySec/HatSploit/main/hatsploit/config/core_config.yml',
-                                     stream=True).content
+        try:
+            remote_config = requests.get('https://raw.githubusercontent.com/EntySec/HatSploit/main/hatsploit/config/core_config.yml',
+                                         stream=True).content
+        except requests.ConnectionError:
+            return None
+
         remote_version = self.config.get_config_file(remote_config)['details']['version']
         local_version = self.config.core_config['details']['version']
+
         return version.parse(local_version) < version.parse(remote_version)
 
     def update(self):
-        if self.check_update():
+        check = self.check_update()
+
+        if check is None:
+            self.badges.print_warning("Could not compare HatSploit versions.")
+            return
+
+        if check:
             self.badges.print_process("Updating HatSploit Framework...")
             shutil.rmtree(os.path.abspath(self.config.path_config['root_path']))
             subprocess.call(['pip3', 'install', 'git+https://github.com/EntySec/HatSploit', '--ignore-installed'], shell=False)
             self.badges.print_success("HatSploit updated successfully!")
             return
+
         self.badges.print_warning("Your HatSploit is up-to-date.")

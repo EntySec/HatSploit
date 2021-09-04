@@ -48,7 +48,14 @@ class Loader:
         self.build = True
 
     def load_update_process(self):
-        if self.update.check_update():
+        check = self.update.check_update()
+
+        if check is None:
+            self.badges.print_warning("Could not compare HatSploit versions.")
+            time.sleep(1)
+            return
+
+        if check:
             self.badges.print_warning("Your HatSploit Framework is out-dated.")
             self.badges.print_information("Consider running hsf --update")
             time.sleep(1)
