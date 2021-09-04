@@ -41,11 +41,18 @@ class Update:
         self.badges = Badges()
 
     def check_update(self):
-        remote_config = requests.get('https://raw.githubusercontent.com/EntySec/HatSploit/main/hatsploit/config/core_config.yml',
-                                     stream=True).content
-        remote_version = self.config.get_config_file(remote_config)['details']['version']
-        local_version = self.config.core_config['details']['version']
-        return version.parse(local_version) < version.parse(remote_version)
+        try:
+            remote_config = requests.get('https://raw.githubusercontent.com/EntySec/HatSploit/main/hatsploit/config/core_config.yml',
+                                         stream=True).content
+        except Exception:
+            remote_config = None
+            
+        if remote_config:
+            remote_version = self.config.get_config_file(remote_config)['details']['version']
+            local_version = self.config.core_config['details']['version']
+
+            return version.parse(local_version) < version.parse(remote_version)
+        return remote_config
 
     def update(self):
         if self.check_update():
