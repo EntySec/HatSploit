@@ -193,7 +193,7 @@ class Modules:
                 else:
                     session = 0
                     for platform in session_platforms:
-                        if self.sessions.check_exist(value platform.strip(), session_type):
+                        if self.sessions.check_exist(value, platform.strip(), session_type):
                             session = 1
                             break
                     if not session:
