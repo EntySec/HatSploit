@@ -123,6 +123,8 @@ class HatSploitCommand(Command, HatVenom):
                         current_module.payload['Session'] = None
 
                     self.entry_to_module(argc, argv, current_module)
+                except (KeyboardInterrupt, EOFError):
+                    pass
                 except Exception as e:
                     self.print_error("An error occurred in module: " + str(e) + "!")
         else:
