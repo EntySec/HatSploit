@@ -107,10 +107,11 @@ class Modules:
                     return False
 
             if value_type.lower() == 'ip':
-                if value.startswith('file:') and self.check_current_module():
+                if value.startswith('file:') and len(value) > 5 and self.check_current_module():
                     file = value.split(':')[1]
 
-                    if not self.check_file(file):
+                    if not os.path.isfile(file):
+                        self.badges.print_error("File does not exist!")
                         return False
 
                     with open(file, 'r') as f:
