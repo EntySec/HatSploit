@@ -60,7 +60,11 @@ class HatSploitCommand(Command, HatVenom):
                         if line:
                             run = True
                             current_module.options[option]['Value'] = line
-                            current_module.run()
+                            
+                            try:
+                                current_module.run()
+                            except (KeyboardInterrupt, EOFError):
+                                pass
 
                         current_module.options[option]['Value'] = save
         if not run:
@@ -123,8 +127,6 @@ class HatSploitCommand(Command, HatVenom):
                         current_module.payload['Session'] = None
 
                     self.entry_to_module(argc, argv, current_module)
-                except (KeyboardInterrupt, EOFError):
-                    pass
                 except Exception as e:
                     self.print_error("An error occurred in module: " + str(e) + "!")
         else:
