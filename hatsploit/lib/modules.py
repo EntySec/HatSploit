@@ -99,7 +99,7 @@ class Modules:
                     return database
         return None
 
-    def compare_types(self, value_type, value):
+    def compare_types(self, value_type, value, module=True):
         if value_type and not value_type.lower == 'all':
             if value_type.lower() == 'mac':
                 if not self.types.is_mac(value):
@@ -107,7 +107,7 @@ class Modules:
                     return False
 
             if value_type.lower() == 'ip':
-                if value.startswith('file:') and len(value) > 5 and self.check_current_module():
+                if value.startswith('file:') and len(value) > 5 and module:
                     file = value.split(':')[1]
 
                     if not os.path.isfile(file):
@@ -147,7 +147,7 @@ class Modules:
                     return False
 
             if value_type.lower() == 'port':
-                if value.startswith('file:') and len(value) > 5 and self.check_current_module():
+                if value.startswith('file:') and len(value) > 5 and module:
                     file = value.split(':')[1]
 
                     if not os.path.isfile(file):
@@ -292,7 +292,7 @@ class Modules:
                     if option in current_payload.options.keys():
                         value_type = current_payload.options[option]['Type']
 
-                        if self.compare_types(value_type, value):
+                        if self.compare_types(value_type, value, False):
                             self.badges.print_information(option + " ==> " + value)
                             self.local_storage.set_payload_option(current_module.details['Module'],
                                                                   current_payload.details['Payload'], option, value)
