@@ -48,7 +48,7 @@ class HatSploitCommand(Command, HatVenom):
         run = False
 
         for option in current_module.options:
-            save = current_module.options[option]['Value']
+            save = str(current_module.options[option]['Value'])
 
             if save.startswith('file:') and len(save) > 5:
                 file = save.split(':')[1]
@@ -61,8 +61,6 @@ class HatSploitCommand(Command, HatVenom):
                             run = True
                             current_module.options[option]['Value'] = line
                             current_module.run()
-
-                        current_module.options[option]['Value'] = save
 
         if not run:
             current_module.run()
