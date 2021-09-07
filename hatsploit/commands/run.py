@@ -62,6 +62,7 @@ class HatSploitCommand(Command, HatVenom):
                             current_module.options[option]['Value'] = line
                             current_module.run()
 
+                        current_module.options[option]['Value'] = save
         if not run:
             current_module.run()
 
