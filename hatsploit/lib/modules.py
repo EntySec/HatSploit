@@ -115,9 +115,10 @@ class Modules:
 
                     with open(file, 'r') as f:
                         for line in f.read().split('\n'):
-                            if not self.types.is_ip(line):
-                                self.badges.print_error("File contains invalid value, expected valid IP!")
-                                return False
+                            if line.strip():
+                                if not self.types.is_ip(line.strip()):
+                                    self.badges.print_error("File contains invalid value, expected valid IP!")
+                                    return False
                     return True
 
                 if not self.types.is_ip(value):
