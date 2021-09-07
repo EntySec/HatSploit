@@ -107,6 +107,19 @@ class Modules:
                     return False
 
             if value_type.lower() == 'ip':
+                if value.startswith('file:') and self.check_current_module():
+                    file = value.split(':')[1]
+
+                    if not self.check_file(file):
+                        return False
+
+                    with open(file, 'r') as f:
+                        for line in f.read().split('\n'):
+                            if not self.types.is_ip(line):
+                                self.badges.print_error("File contains invalid value, expected valid IP!")
+                                return False
+                    return True
+
                 if not self.types.is_ip(value):
                     self.badges.print_error("Invalid value, expected valid IP!")
                     return False
