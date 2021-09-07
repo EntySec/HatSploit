@@ -48,10 +48,10 @@ class HatSploitCommand(Command, HatVenom):
         run = False
 
         for option in current_module.options:
-            save = option['Value']
+            save = current_module.options[option]['Value']
 
-            if option['Value'].starswith('file:'):
-                file = option['Value'].split(':')[1]
+            if save.starswith('file:'):
+                file = save.split(':')[1]
 
                 with open(file, 'r') as f:
                     for line in f.read().split('\n'):
