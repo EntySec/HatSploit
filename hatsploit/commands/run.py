@@ -44,7 +44,28 @@ class HatSploitCommand(Command, HatVenom):
                                               current_module.run)
                 self.print_information("Module started as a background job " + str(job_id) + ".")
                 return
-        current_module.run()
+
+        run = False
+
+        for option in current_module.options:
+            save = option['Value']
+
+            if option['Value'].starswith('file:'):
+                file = option['Value'].split(':')[1]
+
+                with open(file, 'r') as f:
+                    for line in f.read().split('\n'):
+                        value = line.strip()
+
+                        if line:
+                            run = True
+                            current_module.options[option]['Value'] = line
+                            current_module.run()
+
+                        current_module.options[option]['Value'] = save
+
+        if not run:
+            current_module.run()
 
     def run(self, argc, argv):
         if argc > 0:
