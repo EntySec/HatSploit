@@ -46,27 +46,11 @@ class HatSploitCommand(Command, HatVenom):
                 return
 
         run = False
+        save = current_module.options
+        
+        current_module.options = {}
+        print(save)
 
-        for option in current_module.options:
-            save = str(current_module.options[option]['Value'])
-
-            if save.startswith('file:') and len(save) > 5:
-                file = save.split(':')[1]
-
-                with open(file, 'r') as f:
-                    for line in f.read().split('\n'):
-                        value = line.strip()
-
-                        if line:
-                            run = True
-                            current_module.options[option]['Value'] = line
-                            
-                            try:
-                                current_module.run()
-                            except (KeyboardInterrupt, EOFError):
-                                pass
-
-                        current_module.options[option]['Value'] = save
         if not run:
             current_module.run()
 
