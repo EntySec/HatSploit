@@ -50,7 +50,7 @@ class HatSploitCommand(Command, HatVenom):
         save = current_module.options
 
         for option in current_module.options:
-            value = current_module[option]['Value']
+            value = current_module.options[option]['Value']
 
             if value.startswith('file:') and len(value) < 5:
                 file = value.split(':')[1]
