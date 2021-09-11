@@ -58,7 +58,7 @@ class HatSploitCommand(Command, HatVenom):
                 with open(file, 'r') as f:
                     values.append(f.read().split('\n'))
 
-        print(value)
+        print(values)
 
         if not run:
             current_module.run()
