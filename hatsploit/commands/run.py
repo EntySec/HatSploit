@@ -46,10 +46,19 @@ class HatSploitCommand(Command, HatVenom):
                 return
 
         run = False
+        values = list()
         save = current_module.options
-        
-        current_module.options = {}
-        print(save)
+
+        for option in current_module.options:
+            value = option['Value']
+
+            if value.startswith('file:') and len(value) < 5:
+                file = value.split(':')[1]
+
+                with open(file, 'r') as f:
+                    values.append(f.read().split('\n'))
+
+        print(value)
 
         if not run:
             current_module.run()
