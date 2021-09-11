@@ -52,7 +52,7 @@ class HatSploitCommand(Command, HatVenom):
         for option in current_module.options:
             value = current_module.options[option]['Value']
 
-            if value.startswith('file:') and len(value) < 5:
+            if value.startswith('file:') and len(value) > 5:
                 file = value.split(':')[1]
 
                 with open(file, 'r') as f:
