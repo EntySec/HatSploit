@@ -107,21 +107,6 @@ class Modules:
                     return False
 
             if value_type.lower() == 'ip':
-                if value.startswith('file:') and len(value) > 5 and module:
-                    file = value.split(':')[1]
-
-                    if not os.path.isfile(file):
-                        self.badges.print_error("File does not exist!")
-                        return False
-
-                    with open(file, 'r') as f:
-                        for line in f.read().split('\n'):
-                            if line.strip():
-                                if not self.types.is_ip(line.strip()):
-                                    self.badges.print_error("File contains invalid value, expected valid IP!")
-                                    return False
-                    return True
-
                 if not self.types.is_ip(value):
                     self.badges.print_error("Invalid value, expected valid IP!")
                     return False
@@ -147,21 +132,6 @@ class Modules:
                     return False
 
             if value_type.lower() == 'port':
-                if value.startswith('file:') and len(value) > 5 and module:
-                    file = value.split(':')[1]
-
-                    if not os.path.isfile(file):
-                        self.badges.print_error("File does not exist!")
-                        return False
-
-                    with open(file, 'r') as f:
-                        for line in f.read().split('\n'):
-                            if line.strip():
-                                if not self.types.is_port(line.strip()):
-                                    self.badges.print_error("File contains invalid value, expected valid port!")
-                                    return False
-                    return True
-
                 if not self.types.is_port(value):
                     self.badges.print_error("Invalid value, expected valid port!")
                     return False
