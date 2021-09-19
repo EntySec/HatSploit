@@ -24,6 +24,7 @@
 # SOFTWARE.
 #
 
+import socket
 import re
 import selectors
 import sys
