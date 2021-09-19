@@ -26,9 +26,9 @@
 
 import subprocess
 import shutil
-from packaging import version
 import os
 
+from packaging import version
 import requests
 
 from hatsploit.lib.config import Config
@@ -46,7 +46,7 @@ class Update:
                                          stream=True).content
         except Exception:
             remote_config = None
-            
+
         if remote_config:
             remote_version = self.config.get_config_file(remote_config)['details']['version']
             local_version = self.config.core_config['details']['version']
@@ -54,7 +54,7 @@ class Update:
             return version.parse(local_version) < version.parse(remote_version)
         return remote_config
 
-    def update(self):
+    def safe_update(self):
         if self.check_update():
             self.badges.print_process("Updating HatSploit Framework...")
             shutil.rmtree(os.path.abspath(self.config.path_config['root_path']))
@@ -62,3 +62,9 @@ class Update:
             self.badges.print_success("HatSploit updated successfully!")
             return
         self.badges.print_warning("Your HatSploit is up-to-date.")
+
+    def force_update(self):
+        self.badges.print_process("Updating HatSploit Framework...")
+        shutil.rmtree(os.path.abspath(self.config.path_config['root_path']))
+        subprocess.call(['pip3', 'install', 'git+https://github.com/EntySec/HatSploit', '--ignore-installed'], shell=False)
+        self.badges.print_success("HatSploit updated successfully!")
