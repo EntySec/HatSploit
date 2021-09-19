@@ -161,19 +161,7 @@ class Console:
         self.start_hsf()
         self.launch_shell()
 
-        with open(file, 'r') as f:
-            for command in f.read().split('\n'):
-                commands = command.strip().split()
-                arguments = list()
-
-                if commands:
-                    command = command.replace(commands[0], "", 1).strip()
-
-                    for arg in command.split():
-                        arguments.append(arg)
-
-                    self.jobs.stop_dead()
-                    self.execute.execute_command(commands, arguments)
+        self.execute.execute_from_file(file)
         if do_shell:
             self.launch_history()
             self.launch_menu()

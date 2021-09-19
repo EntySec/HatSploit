@@ -28,6 +28,7 @@ import os
 import subprocess
 import sys
 
+from hatsploit.lib.jobs import Jobs
 from hatsploit.lib.storage import LocalStorage
 from hatsploit.core.cli.badges import Badges
 from hatsploit.core.cli.fmt import FMT
@@ -36,6 +37,7 @@ from hatsploit.lib.modules import Modules
 
 class Execute:
     def __init__(self):
+        self.jobs = Jobs()
         self.fmt = FMT()
         self.badges = Badges()
         self.local_storage = LocalStorage()
@@ -59,6 +61,7 @@ class Execute:
                 commands = self.fmt.format_commands(line)
                 arguments = commands[1:]
 
+                self.jobs.stop_dead()
                 self.execute_command(commands, arguments)
 
     def execute_builtin_method(self, commands, arguments):

@@ -23,5 +23,5 @@
 %comment
 
 %end
-Want to add your payload database? Just use %greenpayloads_db -c%end
+Want to add your payload database? Just use %greenpayload_db -c%end
 %end

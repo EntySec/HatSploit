@@ -17,7 +17,7 @@ class HatSploitCommand(Command):
     local_storage = LocalStorage()
 
     usage = ""
-    usage += "plugins_db <option> [arguments]\n\n"
+    usage += "plugin_db <option> [arguments]\n\n"
     usage += "  -l, --list                        List all connected plugin databases.\n"
     usage += "  -d, --disconnect <name>           Disconnect specified plugin database.\n"
     usage += "  -c, --connect <name> <path>       Connect new plugin database.\n"
@@ -25,7 +25,7 @@ class HatSploitCommand(Command):
 
     details = {
         'Category': "databases",
-        'Name': "plugins_db",
+        'Name': "plugin_db",
         'Authors': [
             'Ivan Nikolsky (enty8080) - command developer'
         ],

@@ -5,6 +5,7 @@
 # Current source: https://github.com/EntySec/HatSploit
 #
 
+from copy import deepcopy
 from hatvenom import HatVenom
 
 from hatsploit.lib.jobs import Jobs
@@ -37,15 +38,62 @@ class HatSploitCommand(Command, HatVenom):
     }
 
     def entry_to_module(self, argc, argv, current_module):
-        if argc > 0:
-            if argv[0] in ['-j', '--job']:
-                self.print_process("Running module as a background job...")
-                job_id = self.jobs.create_job(current_module.details['Name'], current_module.details['Module'],
-                                              current_module.run)
-                self.print_information("Module started as a background job " + str(job_id) + ".")
-                return
+        values = list()
 
-        current_module.run()
+        for option in current_module.options:
+            opt = current_module.options[option]
+            val = str(opt['Value'])
+
+            if val.startswith('file:') and len(val) > 5:
+                file = val[5:]
+
+                with open(file, 'r') as f:
+                    vals = f.read().strip()
+                    values.append(vals.split('\n'))
+
+        if not values:
+            if argc > 0:
+                if argv[0] in ['-j', '--job']:
+                    self.print_process("Running module as a background job...")
+                    job_id = self.jobs.create_job(current_module.details['Name'], current_module.details['Module'],
+                                                    current_module.run)
+                    self.print_information("Module started as a background job " + str(job_id) + ".")
+                    return
+
+            current_module.run()
+            return
+
+        if not all(len(value) == len(values[0]) for value in values):
+            self.print_error("All files should contain equal number of values!")
+            return
+
+        save = deepcopy(current_module.options)
+        for i in range(0, len(values[0])):
+            count = 0
+
+            for option in current_module.options:
+                opt = current_module.options[option]
+                val = str(opt['Value'])
+
+                if val.startswith('file:') and len(val) > 5:
+                    current_module.options[option]['Value'] = values[count][i]
+                    count += 1
+
+            if argc > 0:
+                if argv[0] in ['-j', '--job']:
+                    self.print_process("Running module as a background job...")
+                    job_id = self.jobs.create_job(current_module.details['Name'], current_module.details['Module'],
+                                                    current_module.run)
+                    self.print_information("Module started as a background job " + str(job_id) + ".")
+                    return
+
+            try:
+                current_module.run()
+            except (KeyboardInterrupt, EOFError):
+                pass
+
+            current_module.options = save
+            save = deepcopy(current_module.options)
 
     def run(self, argc, argv):
         if argc > 0:

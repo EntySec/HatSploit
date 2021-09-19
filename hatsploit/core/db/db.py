@@ -65,7 +65,7 @@ class DB:
     def connect_payloads_database(self, name, path):
         if self.local_storage.get("connected_payloads_databases"):
             if name in self.local_storage.get("connected_payloads_databases"):
-                self.bagdes.print_error("Payload database already connected!")
+                self.badges.print_error("Payload database already connected!")
                 return
         if not os.path.exists(path) or not str.endswith(path, "json"):
             self.badges.print_error("Not a payload database!")
@@ -106,7 +106,7 @@ class DB:
     def connect_modules_database(self, name, path):
         if self.local_storage.get("connected_modules_databases"):
             if name in self.local_storage.get("connected_modules_databases"):
-                self.bagdes.print_error("Module database already connected!")
+                self.badges.print_error("Module database already connected!")
                 return
         if not os.path.exists(path) or not str.endswith(path, "json"):
             self.badges.print_error("Not a module database!")
@@ -147,7 +147,7 @@ class DB:
     def connect_plugins_database(self, name, path):
         if self.local_storage.get("connected_plugins_databases"):
             if name in self.local_storage.get("connected_plugins_databases"):
-                self.bagdes.print_error("Plugin database already connected!")
+                self.badges.print_error("Plugin database already connected!")
                 return
         if not os.path.exists(path) or not str.endswith(path, "json"):
             self.badges.print_error("Not a database!")
