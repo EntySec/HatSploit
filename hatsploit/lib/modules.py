@@ -99,106 +99,130 @@ class Modules:
                     return database
         return None
 
+    def compare_type(self, name, value, checker, module=True):
+        value = str(value)
+
+        if value.startswith('file:') and len(value) > 5 and module:
+            file = value.split(':')[1]
+
+            if not os.path.isfile(file):
+                self.badges.print_error(f"Local file: {file}: does not exist!")
+                return False
+
+            with open(file, 'r') as f:
+                for line in f.read().split('\n'):
+                    if line.strip():
+                        if not checker(line.strip()):
+                            self.badges.print_error(f"File contains invalid value, expected valid {name}!")
+                            return False
+            return True
+
+        if not checker(value):
+           self.badges.print_error(f"Invalid value, expected valid {name}!")
+           return False
+
+        return True
+
+    def compare_session(self, value_type, value):
+        session = value_type.lower().replace(' ', '')
+        session = session.split('->')
+
+        session_platforms = []
+        session_platform = self.get_current_module_platform()
+        session_type = "shell"
+
+        if len(session) == 2:
+            if session[1].startswith('[') and session[1].endswith(']'):
+                session_platforms = session[1][1:-1].split(',')
+            else:
+                session_type = session[1]
+
+        elif len(session) == 3:
+            if session[1].startswith('[') and session[1].endswith(']'):
+                session_platforms = session[1][1:-1].split(',')
+            else:
+                session_type = session[1]
+
+            if session[2].startswith('[') and session[2].endswith(']'):
+                session_platforms = session[2][1:-1].split(',')
+            else:
+                session_type = session[2]
+
+        if not session_platforms:
+            if not self.sessions.check_exist(value, session_platform, session_type):
+                self.badges.print_error("Invalid value, expected valid session!")
+                return False
+        else:
+            session = 0
+            for platform in session_platforms:
+                if self.sessions.check_exist(value, platform.strip(), session_type):
+                    session = 1
+                    break
+
+            if not session:
+                self.badges.print_error("Invalid value, expected valid session!")
+                return False
+
+        return True
+
     def compare_types(self, value_type, value, module=True):
         if value_type and not value_type.lower == 'all':
             if value_type.lower() == 'mac':
-                if not self.types.is_mac(value):
-                    self.badges.print_error("Invalid value, expected valid MAC!")
-                    return False
+                return self.compare_type("MAC", value, self.types.is_mac, module)
 
             if value_type.lower() == 'ip':
-                if not self.types.is_ip(value):
-                    self.badges.print_error("Invalid value, expected valid IP!")
-                    return False
+                return self.compare_type("IP", value, self.types.is_ip, module)
 
             if value_type.lower() == 'ipv4':
-                if not self.types.is_ipv4(value):
-                    self.badges.print_error("Invalid value, expected valid IPv4!")
-                    return False
+                return self.compare_type("IPv4", value, self.types.is_ipv4, module)
 
             if value_type.lower() == 'ipv6':
-                if not self.types.is_ipv6(value):
-                    self.badges.print_error("Invalid value, expected valid IPv6!")
-                    return False
+                return self.compare_type("IPv6", value, self.types.is_ipv6, module)
 
             if value_type.lower() == 'ipv4_range':
-                if not self.types.is_ipv4_range(value):
-                    self.badges.print_error("Invalid value, expected valid IPv4 range!")
-                    return False
+                return self.compare_type("IPv4 range", value, self.types.is_ipv4_range, module)
 
             if value_type.lower() == 'ipv6_range':
-                if not self.types.is_ipv6_range(value):
-                    self.badges.print_error("Invalid value, expected valid IPv6 range!")
-                    return False
+                return self.compare_type("IPv6 range", value, self.types.is_ipv6_range, module)
 
             if value_type.lower() == 'port':
-                if not self.types.is_port(value):
-                    self.badges.print_error("Invalid value, expected valid port!")
-                    return False
+                return self.compare_type("port", value, self.types.is_port, module)
 
             if value_type.lower() == 'port_range':
-                if not self.types.is_port_range(value):
-                    self.badges.print_error("Invalid value, expected valid port range!")
-                    return False
+                return self.compare_type("port range", value, self.types.is_port_range, module)
 
             if value_type.lower() == 'number':
-                if not self.types.is_number(value):
-                    self.badges.print_error("Invalid value, expected valid number!")
-                    return False
+                return self.compare_type("number", value, self.types.is_number, module)
 
             if value_type.lower() == 'integer':
-                if not self.types.is_integer(value):
-                    self.badges.print_error("Invalid value, expected valid integer!")
-                    return False
+                return self.compare_type("integer", value, self.types.is_integer, module)
 
             if value_type.lower() == 'float':
-                if not self.types.is_float(value):
-                    self.badges.print_error("Invalid value, expected valid float!")
-                    return False
+                return self.compare_type("float", value, self.types.is_float, module)
 
             if value_type.lower() == 'boolean':
-                if not self.types.is_boolean(value):
-                    self.badges.print_error("Invalid value, expected valid boolean!")
-                    return False
+                return self.compare_type("boolean", value, self.types.is_boolean, module)
 
             if 'session' in value_type.lower():
-                session = value_type.lower().replace(' ', '')
-                session = session.split('->')
-                
-                session_platforms = []
-                session_platform = self.get_current_module_platform()
-                session_type = "shell"
+                value = str(value)
 
-                if len(session) == 2:
-                    if session[1].startswith('[') and session[1].endswith(']'):
-                        session_platforms = session[1][1:-1].split(',')
-                    else:
-                        session_type = session[1]
+                if value.startswith('file:') and len(value) > 5 and module:
+                    file = value.split(':')[1]
 
-                elif len(session) == 3:
-                    if session[1].startswith('[') and session[1].endswith(']'):
-                        session_platforms = session[1][1:-1].split(',')
-                    else:
-                        session_type = session[1]
-
-                    if session[2].startswith('[') and session[2].endswith(']'):
-                        session_platforms = session[2][1:-1].split(',')
-                    else:
-                        session_type = session[2]
-
-                if not session_platforms:
-                    if not self.sessions.check_exist(value, session_platform, session_type):
-                        self.badges.print_error("Invalid value, expected valid session!")
+                    if not os.path.isfile(file):
+                        self.badges.print_error(f"Local file: {file}: does not exist!")
                         return False
-                else:
-                    session = 0
-                    for platform in session_platforms:
-                        if self.sessions.check_exist(value, platform.strip(), session_type):
-                            session = 1
-                            break
-                    if not session:
-                        self.badges.print_error("Invalid value, expected valid session!")
-                        return False
+
+                    with open(file, 'r') as f:
+                        for line in f.read().split('\n'):
+                            if line.strip():
+                                if not self.compare_session(value_type, line.strip()):
+                                    self.badges.print_error(f"File contains invalid value, expected valid session!")
+                                    return False
+                    return True
+
+                return self.compare_session(value_type, value)
+
         return True
 
     def set_current_module_option(self, option, value):

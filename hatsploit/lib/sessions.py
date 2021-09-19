@@ -77,7 +77,7 @@ class Sessions:
             if int(session_id) in sessions.keys():
                 if session_platform and session_type:
                     if (sessions[int(session_id)]['platform'] == session_platform and
-                        sessions[int(sessions_id)]['type'] == session_type):
+                        sessions[int(session_id)]['type'] == session_type):
                         return True
                     return False
                 if session_platform:
@@ -85,7 +85,7 @@ class Sessions:
                         return True
                     return False
                 if session_type:
-                    if sessions[int(sessions_id)]['type'] == session_type:
+                    if sessions[int(session_id)]['type'] == session_type:
                         return True
                     return False
                 return True
