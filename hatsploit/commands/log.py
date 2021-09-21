@@ -5,6 +5,8 @@
 # Current source: https://github.com/EntySec/HatSploit
 #
 
+import os
+
 from hatsploit.lib.config import Config
 from hatsploit.lib.storage import GlobalStorage
 from hatsploit.lib.command import Command
