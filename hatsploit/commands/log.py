@@ -5,14 +5,12 @@
 # Current source: https://github.com/EntySec/HatSploit
 #
 
-from hatsploit.utils.fs import FSTools
-
 from hatsploit.lib.config import Config
 from hatsploit.lib.storage import GlobalStorage
 from hatsploit.lib.command import Command
 
 
-class HatSploitCommand(Command, FSTools):
+class HatSploitCommand(Command):
     config = Config()
 
     storage_path = config.path_config['storage_path']
@@ -39,9 +37,7 @@ class HatSploitCommand(Command, FSTools):
             if argc < 2:
                 self.print_usage(self.details['Usage'])
             else:
-                exists = self.exists(argv[1])
-
-                if exists[0] and exists[1] == 'file':
+                if os.access(argv[1], os.R_OK):
                     self.global_storage.set("log", argv[1])
                     self.global_storage.set_all()
                     self.print_information("HatSploit log: on")
