@@ -29,6 +29,7 @@ import binascii
 
 from hatsploit.core.cli.badges import Badges
 
+
 class EchoStage:
     badges = Badges()
 
