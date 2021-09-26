@@ -34,7 +34,7 @@ class WgetStage:
     badges = Badges()
 
     def send(self, payload, sender, args=[], payload_args="", delim=';',
-             location='/tmp'):
+             location='/tmp', linemax=100):
         self.badges.print_process("Sending payload stage...")
         filename = binascii.hexlify(os.urandom(8)).decode()
         path = location + '/' + filename
