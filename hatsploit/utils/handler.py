@@ -128,23 +128,26 @@ class Handler(Server):
     def handle_session(self, host, port, payload, sender=None, args=[],
                        delim=';', remote_host=None, location='/tmp', timeout=10,
                        method=None, manual=False, post="printf", linemax=100):
+
         if payload['Payload'] is None:
             self.badges.print_error("Payload stage is not found!")
             return False
 
-        if post.lower() not in self.stages:
-            self.print_error("Invalid post method selected!")
-            return False
+        if post.lower() != 'raw':
+            if post.lower() not in self.stages:
+                self.badges.print_error("Invalid post method selected!")
+                return False
+
+        else:
+            if not payload['Raw']:
+                self.badges.print_error("Payload does not support raw!")
+                return False
 
         if sender is not None:
             session = payload['Session'] if payload['Session'] is not None else HatSploitSession
 
             if payload['Category'].lower() == 'stager':
                 if post.lower() == 'raw':
-                    if not payload['Raw']:
-                        self.badges.print_error("Payload does not support raw!")
-                        return False
-
                     self.do_job(
                         "Handler raw Stage",
                         payload,
@@ -159,7 +162,7 @@ class Handler(Server):
                     self.do_job(
                         f"Handler {post.lower()} Stage",
                         payload,
-                        self.stages[post.lower()],
+                        self.stages[post.lower()].send,
                         [
                             payload['Payload'],
                             sender,
@@ -202,35 +205,31 @@ class Handler(Server):
 
                 if payload['Category'].lower() == 'stager':
                     if post.lower() == 'raw':
-                    if not payload['Raw']:
-                        self.badges.print_error("Payload does not support raw!")
-                        return False
-
-                    self.do_job(
-                        "Handler raw Stage",
-                        payload,
-                        self.raw_stage,
-                        [
-                            payload['Raw'],
-                            sender,
-                            args
-                        ]
-                    )
-                else:
-                    self.do_job(
-                        f"Handler {post.lower()} Stage",
-                        payload,
-                        self.stages[post.lower()],
-                        [
-                            payload['Payload'],
-                            sender,
-                            args,
-                            payload['Args'],
-                            delim,
-                            location,
-                            linemax
-                        ]
-                    )
+                        self.do_job(
+                            "Handler raw Stage",
+                            payload,
+                            self.raw_stage,
+                            [
+                                payload['Raw'],
+                                sender,
+                                args
+                            ]
+                        )
+                    else:
+                        self.do_job(
+                            f"Handler {post.lower()} Stage",
+                            payload,
+                            self.stages[post.lower()].send,
+                            [
+                                payload['Payload'],
+                                sender,
+                                args,
+                                payload['Args'],
+                                delim,
+                                location,
+                                linemax
+                            ]
+                        )
 
                 elif payload['Category'].lower() == 'single':
                     self.do_job(
