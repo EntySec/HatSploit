@@ -30,6 +30,7 @@ import binascii
 
 from hatsploit.core.cli.badges import Badges
 
+
 class WgetStage:
     badges = Badges()
 
