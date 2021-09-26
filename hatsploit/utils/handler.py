@@ -211,7 +211,7 @@ class Handler(Server):
                             self.raw_stage,
                             [
                                 payload['Raw'],
-                                sender,
+                                new_session.send_command,
                                 args
                             ]
                         )
@@ -222,7 +222,7 @@ class Handler(Server):
                             self.stages[post.lower()].send,
                             [
                                 payload['Payload'],
-                                sender,
+                                new_session.send_command,
                                 args,
                                 payload['Args'],
                                 delim,
