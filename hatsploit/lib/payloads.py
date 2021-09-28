@@ -32,10 +32,9 @@ from hatsploit.core.db.importer import Importer
 
 
 class Payloads:
-    def __init__(self):
-        self.importer = Importer()
-        self.local_storage = LocalStorage()
-        self.badges = Badges()
+    importer = Importer()
+    local_storage = LocalStorage()
+    badges = Badges()
 
     def check_exist(self, name):
         all_payloads = self.local_storage.get("payloads")

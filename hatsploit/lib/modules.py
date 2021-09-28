@@ -35,13 +35,12 @@ from hatsploit.lib.payloads import Payloads
 
 
 class Modules:
-    def __init__(self):
-        self.types = Types()
-        self.badges = Badges()
-        self.sessions = Sessions()
-        self.payloads = Payloads()
-        self.local_storage = LocalStorage()
-        self.importer = Importer()
+    types = Types()
+    badges = Badges()
+    sessions = Sessions()
+    payloads = Payloads()
+    local_storage = LocalStorage()
+    importer = Importer()
 
     def check_exist(self, name):
         all_modules = self.local_storage.get("modules")

@@ -37,7 +37,7 @@ class Config:
         self.badges = Badges()
         self.local_storage = LocalStorage()
 
-        self.base_path = f'{os.path.dirname(__file__)}/../'
+        self.base_path = f'{os.path.dirname(os.path.dirname(__file__))}/'
         self.config_path = self.base_path + 'config/'
 
         self.db_config_file = self.config_path + 'db_config.yml'
@@ -57,6 +57,7 @@ class Config:
             'history_path': f'{self.base_path}.history',
             'storage_path': f'{self.base_path}config/storage.json'
         }
+
         self.core_config = self.local_storage.get("core_config")
 
     @staticmethod

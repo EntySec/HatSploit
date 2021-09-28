@@ -37,14 +37,13 @@ from hatsploit.lib.modules import Modules
 
 
 class Jobs:
-    def __init__(self):
-        self.exceptions = Exceptions()
-        self.tables = Tables()
-        self.badges = Badges()
-        self.local_storage = LocalStorage()
-        self.modules = Modules()
+    exceptions = Exceptions()
+    tables = Tables()
+    badges = Badges()
+    local_storage = LocalStorage()
+    modules = Modules()
 
-        self.job_process = None
+    job_process = None
 
     def stop_dead(self):
         jobs = self.local_storage.get("jobs")

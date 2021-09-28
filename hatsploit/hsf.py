@@ -47,15 +47,14 @@ from hatsploit.core.utils.api import API
 
 
 class HatSploit:
-    def __init__(self):
-        self.jobs = Jobs()
-        self.console = Console()
-        self.badges = Badges()
-        self.check = Check()
-        self.update = Update()
-        self.api = API()
+    jobs = Jobs()
+    console = Console()
+    badges = Badges()
+    check = Check()
+    update = Update()
+    api = API()
 
-        self.root_path = config.path_config['root_path']
+    root_path = config.path_config['root_path']
 
     def accept_terms_of_service(self):
         if not os.path.exists(self.root_path + '.accepted'):

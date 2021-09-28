@@ -31,9 +31,8 @@ from hatsploit.core.cli.badges import Badges
 
 
 class Sessions:
-    def __init__(self):
-        self.badges = Badges()
-        self.local_storage = LocalStorage()
+    badges = Badges()
+    local_storage = LocalStorage()
 
     def get_all_sessions(self):
         sessions = self.local_storage.get("sessions")
@@ -77,7 +76,7 @@ class Sessions:
             if int(session_id) in sessions.keys():
                 if session_platform and session_type:
                     if (sessions[int(session_id)]['platform'] == session_platform and
-                        sessions[int(session_id)]['type'] == session_type):
+                            sessions[int(session_id)]['type'] == session_type):
                         return True
                     return False
                 if session_platform:

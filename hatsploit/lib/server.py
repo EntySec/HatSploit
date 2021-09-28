@@ -53,9 +53,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
 
 
 class Server:
-    def __init__(self):
-        self.badges = Badges()
-        self.exceptions = Exceptions()
+    badges = Badges()
+    exceptions = Exceptions()
 
     def start_server(self, host, port, payload, forever=False, path='/'):
         try:
