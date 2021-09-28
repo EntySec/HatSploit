@@ -33,10 +33,9 @@ from hatsploit.core.cli.badges import Badges
 
 
 class Check:
-    def __init__(self):
-        self.config = Config()
-        self.importer = Importer()
-        self.badges = Badges()
+    config = Config()
+    importer = Importer()
+    badges = Badges()
 
     def check_modules(self):
         one_fail = False

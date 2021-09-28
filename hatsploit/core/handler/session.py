@@ -24,25 +24,27 @@
 # SOFTWARE.
 #
 
-from hatsploit.core.cli.badges import Badges
+from hatsploit.lib.session import Session
+from hatsploit.utils.telnet import TelnetClient
 
 
-class Blinder:
-    badges = Badges()
+class HatSploitSession(Session, TelnetClient):
+    client = None
 
-    def blinder(self, sender, args=[]):
-        self.badges.print_empty()
-        self.badges.print_information("Welcome to Blinder, blind command injection handler.")
-        self.badges.print_information("Blinder is not a reverse shell, just a blind command injection.")
-        self.badges.print_empty()
+    details = {
+        'Platform': "",
+        'Type': "shell"
+    }
 
-        while True:
-            command = self.badges.input_empty("blinder > ")
-            if not command.strip() or command == 'exit':
-                return
+    def open(self, client):
+        self.client = self.open_telnet(client)
 
-            self.badges.print_process("Sending command to target...")
-            output = sender(*args, command)
-            if output:
-                self.badges.print_empty(f'\n{output}')
-            self.badges.print_empty('')
+    def close(self):
+        self.client.disconnect()
+
+    def send_command(self, command, output=False, timeout=10):
+        output = self.client.send_command(command + '\n', output, timeout)
+        return output
+
+    def interact(self):
+        self.client.interact()

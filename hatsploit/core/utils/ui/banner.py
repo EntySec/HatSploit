@@ -35,13 +35,12 @@ from hatsploit.core.utils.ui.colors_script import ColorsScript
 
 
 class Banner:
-    def __init__(self):
-        self.parser = Parser()
-        self.config = Config()
-        self.badges = Badges()
-        self.colors = Colors()
+    parser = Parser()
+    config = Config()
+    badges = Badges()
+    colors = Colors()
 
-        self.colors_script = ColorsScript()
+    colors_script = ColorsScript()
 
     def print_random_banner(self):
         if os.path.exists(self.config.path_config['banners_path']):

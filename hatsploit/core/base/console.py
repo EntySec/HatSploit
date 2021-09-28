@@ -43,21 +43,21 @@ from hatsploit.core.utils.ui.tip import Tip
 
 
 class Console:
-    def __init__(self):
-        self.io = IO()
-        self.tip = Tip()
-        self.jobs = Jobs()
-        self.execute = Execute()
-        self.loader = Loader()
-        self.config = Config()
-        self.badges = Badges()
-        self.banner = Banner()
-        self.colors = Colors()
-        self.local_storage = LocalStorage()
-        self.modules = Modules()
-        self.exceptions = Exceptions()
+    io = IO()
+    tip = Tip()
+    jobs = Jobs()
+    execute = Execute()
+    loader = Loader()
+    config = Config()
+    badges = Badges()
+    banner = Banner()
+    colors = Colors()
+    local_storage = LocalStorage()
+    modules = Modules()
+    exceptions = Exceptions()
 
-        self.history = self.config.path_config['history_path']
+    history = config.path_config['history_path']
+    prompt = config.core_config['details']['prompt']
 
     def check_install(self):
         if os.path.exists(self.config.path_config['root_path']):
@@ -76,11 +76,12 @@ class Console:
         while True:
             try:
                 if not self.modules.check_current_module():
-                    prompt = '(hsf)> '
+                    prompt = f'({self.prompt})> '
                 else:
                     module = self.modules.get_current_module_name()
                     name = self.modules.get_current_module_object().details['Name']
-                    prompt = '(hsf: ' + module.split('/')[0] + ': ' + self.colors.RED + name + self.colors.END + ')> '
+
+                    prompt = f'({self.prompt}: {module.split("/")[0]}: {self.colors.RED}{name}{self.colors.END})> '
                 commands, arguments = self.io.input(prompt)
 
                 self.jobs.stop_dead()

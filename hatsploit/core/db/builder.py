@@ -36,13 +36,12 @@ from hatsploit.core.cli.badges import Badges
 
 
 class Builder:
-    def __init__(self):
-        self.modules = Modules()
-        self.payloads = Payloads()
-        self.badges = Badges()
-        self.config = Config()
-        self.importer = Importer()
-        self.local_storage = LocalStorage()
+    modules = Modules()
+    payloads = Payloads()
+    badges = Badges()
+    config = Config()
+    importer = Importer()
+    local_storage = LocalStorage()
 
     def check_base_built(self):
         if (os.path.exists(self.config.path_config['db_path'] +

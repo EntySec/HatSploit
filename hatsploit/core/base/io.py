@@ -34,10 +34,9 @@ from hatsploit.core.cli.fmt import FMT
 
 
 class IO:
-    def __init__(self):
-        self.colors = Colors()
-        self.local_storage = LocalStorage()
-        self.fmt = FMT()
+    colors = Colors()
+    local_storage = LocalStorage()
+    fmt = FMT()
 
     def print(self, message="", start='\033[1K\r', end='\n'):
         use_log = self.local_storage.get("log")

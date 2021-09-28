@@ -38,14 +38,13 @@ from hatsploit.core.utils.update import Update
 
 
 class Loader:
-    def __init__(self):
-        self.badges = Badges()
-        self.importer = Importer()
-        self.builder = Builder()
-        self.config = Config()
-        self.update = Update()
+    badges = Badges()
+    importer = Importer()
+    builder = Builder()
+    config = Config()
+    update = Update()
 
-        self.build = True
+    build = True
 
     def load_update_process(self):
         if self.update.check_update():

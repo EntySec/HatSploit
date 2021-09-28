@@ -101,11 +101,10 @@ class SessionManager(Resource):
         return "", 200
 
 class API:
-    def __init__(self):
-        self.app = Flask(__name__)
-        CORS(self.app)
+    app = Flask(__name__)
+    CORS(app)
 
-        self.api = Api(self.app)
+    api = Api(app)
 
     def init(self, port=8008):
         self.api.add_resource(SessionManager, '/sessions')

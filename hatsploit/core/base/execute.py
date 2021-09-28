@@ -36,12 +36,11 @@ from hatsploit.lib.modules import Modules
 
 
 class Execute:
-    def __init__(self):
-        self.jobs = Jobs()
-        self.fmt = FMT()
-        self.badges = Badges()
-        self.local_storage = LocalStorage()
-        self.modules = Modules()
+    jobs = Jobs()
+    fmt = FMT()
+    badges = Badges()
+    local_storage = LocalStorage()
+    modules = Modules()
 
     def execute_command(self, commands, arguments):
         if commands:

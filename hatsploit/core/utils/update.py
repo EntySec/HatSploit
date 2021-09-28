@@ -36,9 +36,8 @@ from hatsploit.core.cli.badges import Badges
 
 
 class Update:
-    def __init__(self):
-        self.config = Config()
-        self.badges = Badges()
+    config = Config()
+    badges = Badges()
 
     def check_update(self):
         try:

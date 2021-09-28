@@ -41,12 +41,11 @@ from hatsploit.core.db.db import DB
 
 
 class Importer:
-    def __init__(self):
-        self.db = DB()
-        self.badges = Badges()
-        self.local_storage = LocalStorage()
-        self.config = Config()
-        self.exceptions = Exceptions()
+    db = DB()
+    badges = Badges()
+    local_storage = LocalStorage()
+    config = Config()
+    exceptions = Exceptions()
 
     @staticmethod
     def import_check(module_name):

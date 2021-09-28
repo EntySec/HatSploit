@@ -24,25 +24,27 @@
 # SOFTWARE.
 #
 
+from hatsploit.lib.server import Server
 from hatsploit.core.cli.badges import Badges
 
 
-class Blinder:
-    badges = Badges()
+class Handle(Server):
+    def listen_session(self, local_host, local_port, session, timeout=None):
+        try:
+            client, address = self.listen(local_host, local_port, timeout)
+            session = session()
+            session.open(client)
+            return session, address
+        except Exception:
+            self.badges.print_error("Failed to handle session!")
+            return None, None
 
-    def blinder(self, sender, args=[]):
-        self.badges.print_empty()
-        self.badges.print_information("Welcome to Blinder, blind command injection handler.")
-        self.badges.print_information("Blinder is not a reverse shell, just a blind command injection.")
-        self.badges.print_empty()
-
-        while True:
-            command = self.badges.input_empty("blinder > ")
-            if not command.strip() or command == 'exit':
-                return
-
-            self.badges.print_process("Sending command to target...")
-            output = sender(*args, command)
-            if output:
-                self.badges.print_empty(f'\n{output}')
-            self.badges.print_empty('')
+    def connect_session(self, remote_host, remote_port, session, timeout=None):
+        try:
+            client = self.connect(remote_host, remote_port, timeout)
+            session = session()
+            session.open(client)
+            return session
+        except Exception:
+            self.badges.print_error("Failed to handle session!")
+            return None

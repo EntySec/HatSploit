@@ -30,34 +30,32 @@ from hatsploit.core.cli.colors import Colors
 
 
 class ColorsScript:
-    def __init__(self):
-        self.colors = Colors()
+    colors = Colors()
+    script_extension = "colors"
 
-        self.script_extension = "colors"
+    commands = {
+        '%black': colors.BLACK,
+        '%red': colors.RED,
+        '%green': colors.GREEN,
+        '%yellow': colors.YELLOW,
+        '%blue': colors.BLUE,
+        '%purple': colors.PURPLE,
+        '%cyan': colors.CYAN,
+        '%white': colors.WHITE,
 
-        self.commands = {
-            '%black': self.colors.BLACK,
-            '%red': self.colors.RED,
-            '%green': self.colors.GREEN,
-            '%yellow': self.colors.YELLOW,
-            '%blue': self.colors.BLUE,
-            '%purple': self.colors.PURPLE,
-            '%cyan': self.colors.CYAN,
-            '%white': self.colors.WHITE,
+        '%end': colors.END,
+        '%bold': colors.BOLD,
+        '%dark': colors.DARK,
+        '%bent': colors.BENT,
+        '%line': colors.LINE,
+        '%twink': colors.TWINK,
+        '%back': colors.BACK,
 
-            '%end': self.colors.END,
-            '%bold': self.colors.BOLD,
-            '%dark': self.colors.DARK,
-            '%bent': self.colors.BENT,
-            '%line': self.colors.LINE,
-            '%twink': self.colors.TWINK,
-            '%back': self.colors.BACK,
+        '%remove': colors.REMOVE,
+        '%clear': colors.CLEAR,
 
-            '%remove': self.colors.REMOVE,
-            '%clear': self.colors.CLEAR,
-
-            '%newline': self.colors.NEWLINE
-        }
+        '%newline': colors.NEWLINE
+    }
 
     @staticmethod
     def _read_file_lines(path):
