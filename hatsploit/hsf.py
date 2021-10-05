@@ -91,6 +91,7 @@ By accepting our terms of service, you agree that you will only use this tool fo
                 else:
                     self.console.script(script, do_shell)
 
+
 def main():
     description = "Modular penetration testing platform that enables you to write, test, and execute exploit code."
     parser = argparse.ArgumentParser(description=description)
