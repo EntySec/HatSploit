@@ -38,6 +38,7 @@ from hatsploit.lib.storage import LocalStorage
 from hatsploit.core.cli.badges import Badges
 from hatsploit.core.cli.colors import Colors
 from hatsploit.lib.modules import Modules
+from hatsploit.lib.payloads import Payloads
 from hatsploit.core.utils.ui.banner import Banner
 from hatsploit.core.utils.ui.tip import Tip
 
@@ -54,10 +55,13 @@ class Console:
     colors = Colors()
     local_storage = LocalStorage()
     modules = Modules()
+    payloads = Payloads()
     exceptions = Exceptions()
 
     history = config.path_config['history_path']
     prompt = config.core_config['details']['prompt']
+
+    handler_options = {}
 
     def check_install(self):
         if os.path.exists(self.config.path_config['root_path']):
@@ -84,8 +88,11 @@ class Console:
                     prompt = f'({self.prompt}: {module.split("/")[0]}: {self.colors.RED}{name}{self.colors.END})> '
                 commands, arguments = self.io.input(prompt)
 
+                self.add_handler_options()
+
                 self.jobs.stop_dead()
                 self.execute.execute_command(commands, arguments)
+
                 if self.local_storage.get("history"):
                     readline.write_history_file(self.history)
 
@@ -166,3 +173,55 @@ class Console:
         if do_shell:
             self.launch_history()
             self.launch_menu()
+
+    def add_handler_options(self):
+        handler_options = {
+            'LHOST': {
+                'Description': "Local host to listen on.",
+                'Value': "0.0.0.0",
+                'Type': "ip",
+                'Required': True
+            },
+            'LPORT': {
+                'Description': "Local port to listen on.",
+                'Value': 8888,
+                'Type': "port",
+                'Required': True
+            },
+            'RBPORT': {
+                'Description': "Remote bind port.",
+                'Value': 8888,
+                'Type': "port",
+                'Required': True
+            }
+        }
+
+        if self.modules.check_current_module():
+            payload = self.payloads.get_current_payload()
+            module = self.modules.get_current_module_name()
+
+            if module not in self.handler_options:
+                self.handler_options[module] = handler_options
+
+            if payload is not None:
+                self.modules.get_current_module_object().options.update(self.handler_options[module])
+
+                for option in self.modules.get_current_module_object().options:
+                    if option.lower() in ['lhost', 'lport', 'rbport']:
+                        self.handler_options[module][option]['Value'] = \
+                            self.modules.get_current_module_object().options[option]['Value']
+
+                if payload.details['Type'] == 'reverse_tcp':
+                    for option in list(self.modules.get_current_module_object().options):
+                        if option.lower() in ['rbport']:
+                            self.modules.get_current_module_object().options.pop(option)
+
+                elif payload.details['Type'] == 'bind_tcp':
+                    for option in list(self.modules.get_current_module_object().options):
+                        if option.lower() in ['lhost', 'lport']:
+                            self.modules.get_current_module_object().options.pop(option)
+
+                else:
+                    for option in list(self.modules.get_current_module_object().options):
+                        if option.lower() in ['lhost', 'lport', 'rbport']:
+                            self.modules.get_current_module_object().options.pop(option)

@@ -28,10 +28,12 @@ from hatsploit.lib.server import Server
 from hatsploit.core.cli.badges import Badges
 
 
-class Handle(Server):
+class Handle:
+    server = Server()
+
     def listen_session(self, local_host, local_port, session, timeout=None):
         try:
-            client, address = self.listen(local_host, local_port, timeout)
+            client, address = self.server.listen(local_host, local_port, timeout)
             session = session()
             session.open(client)
             return session, address
@@ -41,7 +43,7 @@ class Handle(Server):
 
     def connect_session(self, remote_host, remote_port, session, timeout=None):
         try:
-            client = self.connect(remote_host, remote_port, timeout)
+            client = self.server.connect(remote_host, remote_port, timeout)
             session = session()
             session.open(client)
             return session
