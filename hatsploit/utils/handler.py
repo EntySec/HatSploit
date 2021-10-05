@@ -69,9 +69,9 @@ class Handler(Handle, Blinder):
 
         sender(*args, payload)
 
-    def handle_session(self, host, port, payload, sender=None, args=[],
-                       delim=';', remote_host=None, location='/tmp', timeout=10,
-                       method=None, manual=False, post="printf", linemax=100):
+    def handle_session(self, payload, host=None, port=None, sender=None, args=[],
+                       delim=';', location='/tmp', timeout=10, method=None,
+                       manual=False, post="printf", linemax=100):
 
         if payload['Payload'] is None:
             self.badges.print_error("Payload stage is not found!")
@@ -135,11 +135,15 @@ class Handler(Handle, Blinder):
         else:
             if method is not None:
                 if method.lower() == 'reverse_tcp':
+                    if not host and not port:
+                        return False
                     new_session, _ = self.listen_session(host, port, HatSploitSession, timeout)
                     if not new_session:
                         return False
 
                 elif method.lower() == 'bind_tcp':
+                    if not host and port:
+                        return False
                     new_session = self.connect_session(host, port, HatSploitSession, timeout)
                     if not new_session:
                         return False
@@ -196,15 +200,25 @@ class Handler(Handle, Blinder):
                     self.badges.print_error("Failed to execute payload stage!")
                     return False
 
+        module = self.modules.get_current_module_object()
         session = payload['Session'] if payload['Session'] is not None else HatSploitSession
 
         if payload['Type'].lower() == 'reverse_tcp':
-            new_session, new_remote_host = self.listen_session(host, port, session, timeout)
+            new_session, new_remote_host = self.listen_session(
+                module.options['LHOST']['Value'],
+                module.options['LPORT']['Value'],
+                session,
+                timeout
+            )
+
             if not new_session and not new_remote_host:
                 return False
 
         elif payload['Type'].lower() == 'bind_tcp':
-            new_session = self.connect_session(host, port, session, timeout)
+            if not host:
+                host = '127.0.0.1'
+
+            new_session = self.connect_session(host, module.options['RBPORT']['Value'], session, timeout)
             new_remote_host = host
             if not new_session:
                 return False
@@ -221,10 +235,10 @@ class Handler(Handle, Blinder):
         session_type = new_session.details['Type']
         new_session.details['Platform'] = session_platform
 
-        if not remote_host:
-            remote_host = new_remote_host
+        if not host:
+            host = new_remote_host
 
-        session_id = self.sessions.add_session(session_platform, session_type, remote_host, port, new_session)
+        session_id = self.sessions.add_session(session_platform, session_type, host, port, new_session)
         self.badges.print_success(f"Session {str(session_id)} opened!")
         return True
 
