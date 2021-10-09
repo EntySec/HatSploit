@@ -197,31 +197,67 @@ class Console:
         }
 
         if self.modules.check_current_module():
-            payload = self.payloads.get_current_payload()
             module = self.modules.get_current_module_name()
+            current_module = self.modules.get_current_module_object()
 
             if module not in self.handler_options:
                 self.handler_options[module] = handler_options
 
-            if payload is not None:
-                self.modules.get_current_module_object().options.update(self.handler_options[module])
+            if hasattr(current_module, "payload"):
+                if 'BLINDER' not in current_module.options:
+                    current_module.options.update({
+                        'BLINDER': {
+                            'Description': 'Use Blinder.',
+                            'Value': 'yes' if self.payloads.get_current_payload() is None else 'no',
+                            'Type': "boolean",
+                            'Required': True
+                        }
+                    })
 
-                for option in self.modules.get_current_module_object().options:
+            required = True
+            if 'BLINDER' in current_module.options:
+                if current_module.options['BLINDER']['Value'].lower() in ['yes', 'y']:
+                    required = False
+                    current_module.payload['Value'] = None
+
+            payload = self.payloads.get_current_payload()
+
+            if hasattr(current_module, "payload"):
+                current_module.options.update({
+                    'PAYLOAD': {
+                        'Description': 'Payload to use.',
+                        'Value': current_module.payload['Value'],
+                        'Type': "payload",
+                        'Required': required
+                    }
+                })
+
+            if payload is not None:
+                if 'Handler' in current_module.payload:
+                    if not current_module.payload['Handler']:
+                        return
+
+                current_module.options.update(self.handler_options[module])
+
+                for option in current_module.options:
                     if option.lower() in ['lhost', 'lport', 'rbport']:
-                        self.handler_options[module][option]['Value'] = \
-                            self.modules.get_current_module_object().options[option]['Value']
+                        self.handler_options[module][option]['Value'] = current_module.options[option]['Value']
 
                 if payload.details['Type'] == 'reverse_tcp':
-                    for option in list(self.modules.get_current_module_object().options):
+                    for option in list(current_module.options):
                         if option.lower() in ['rbport']:
-                            self.modules.get_current_module_object().options.pop(option)
+                            current_module.options.pop(option)
 
                 elif payload.details['Type'] == 'bind_tcp':
-                    for option in list(self.modules.get_current_module_object().options):
+                    for option in list(current_module.options):
                         if option.lower() in ['lhost', 'lport']:
-                            self.modules.get_current_module_object().options.pop(option)
+                            current_module.options.pop(option)
 
                 else:
-                    for option in list(self.modules.get_current_module_object().options):
+                    for option in list(current_module.options):
                         if option.lower() in ['lhost', 'lport', 'rbport']:
-                            self.modules.get_current_module_object().options.pop(option)
+                            current_module.options.pop(option)
+            else:
+                for option in list(current_module.options):
+                    if option.lower() in ['lhost', 'lport', 'rbport']:
+                        current_module.options.pop(option)
