@@ -69,9 +69,21 @@ class Handler(Handle, Blinder):
 
         sender(*args, payload)
 
-    def handle_session(self, payload, host=None, port=None, sender=None, args=[],
+    def handle_session(self, host=None, port=None, sender=None, args=[],
                        delim=';', location='/tmp', timeout=10, method=None,
                        manual=False, post="printf", linemax=100):
+
+        module = self.modules.get_current_module_object()
+        payload = module.payload
+
+        if 'BLINDER' in module.options:
+            if module.options['BLINDER']['Value'].lower() in ['yes', 'y']:
+                if sender is not None:
+                    self.blinder(sender, args)
+                    return True
+                else:
+                    self.badges.print_warning("Module does not support Blinder, use payload instead.")
+                    return False
 
         if payload['Payload'] is None:
             self.badges.print_error("Payload stage is not found!")
@@ -137,14 +149,14 @@ class Handler(Handle, Blinder):
                 if method.lower() == 'reverse_tcp':
                     if not host and not port:
                         return False
-                    new_session, _ = self.listen_session(host, port, HatSploitSession, timeout)
+                    new_session, _ = self.listen_session(host, port, HatSploitSession, None)
                     if not new_session:
                         return False
 
                 elif method.lower() == 'bind_tcp':
                     if not host and port:
                         return False
-                    new_session = self.connect_session(host, port, HatSploitSession, timeout)
+                    new_session = self.connect_session(host, port, HatSploitSession, None)
                     if not new_session:
                         return False
 
@@ -200,7 +212,6 @@ class Handler(Handle, Blinder):
                     self.badges.print_error("Failed to execute payload stage!")
                     return False
 
-        module = self.modules.get_current_module_object()
         session = payload['Session'] if payload['Session'] is not None else HatSploitSession
 
         if payload['Type'].lower() == 'reverse_tcp':

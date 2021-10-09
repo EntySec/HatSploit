@@ -43,7 +43,7 @@ class Sessions:
             return True
         self.badges.print_warning("You have some opened sessions.")
         if self.badges.input_question("Exit anyway? [y/N] ").lower() in ['yes', 'y']:
-            self.badges.print_process("Closing all session...")
+            self.badges.print_process("Closing all sessions...")
             self.close_all_sessions()
             return True
         return False

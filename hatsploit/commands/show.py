@@ -80,14 +80,7 @@ class HatSploitCommand(Command):
         if hasattr(current_module, "options"):
             options_data = list()
             headers = ("Option", "Value", "Required", "Description")
-            options = current_module.options.copy()
-
-            if hasattr(current_module, "payload"):
-                options['PAYLOAD'] = dict()
-                options['PAYLOAD']['Description'] = current_module.payload['Description']
-                options['PAYLOAD']['Value'] = current_module.payload['Value']
-                options['PAYLOAD']['Type'] = None
-                options['PAYLOAD']['Required'] = True
+            options = current_module.options
 
             for option in sorted(options.keys()):
                 value, required = options[option]['Value'], options[option]['Required']

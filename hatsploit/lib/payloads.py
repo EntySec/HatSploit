@@ -125,14 +125,14 @@ class Payloads:
 
         if hasattr(current_module_object, "payload"):
             name = current_module_object.payload['Value']
-            if current_module_name in imported_payloads.keys():
-                if name in imported_payloads[current_module_name].keys():
-                    return imported_payloads[current_module_name][name]
+
+            if imported_payloads:
+                if current_module_name in imported_payloads.keys():
+                    if name in imported_payloads[current_module_name].keys():
+                        return imported_payloads[current_module_name][name]
         return None
 
     def add_payload(self, module_name, name):
-        payloads = self.get_payload_object(name)
-
         if not self.check_imported(module_name, name):
             payload_object = self.import_payload(module_name, name)
             if not payload_object:

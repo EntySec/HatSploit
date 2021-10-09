@@ -121,7 +121,6 @@ class HatSploitCommand(Command, HatVenom):
             else:
                 try:
                     if current_payload:
-                        payload_name = current_module.payload['Value']
                         payload_data = current_payload.run()
 
                         if current_payload.details['Platform'] in ['macos', 'iphoneos']:
