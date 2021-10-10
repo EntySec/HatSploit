@@ -215,6 +215,8 @@ class Handler(Handle, Blinder):
         session = payload['Session'] if payload['Session'] is not None else HatSploitSession
 
         if payload['Type'].lower() == 'reverse_tcp':
+            port = module.options['LPORT']['Value']
+
             new_session, new_remote_host = self.listen_session(
                 module.options['LHOST']['Value'],
                 module.options['LPORT']['Value'],
@@ -229,7 +231,9 @@ class Handler(Handle, Blinder):
             if not host:
                 host = '127.0.0.1'
 
-            new_session = self.connect_session(host, module.options['RBPORT']['Value'], session, timeout)
+            port = module.options['RBPORT']['Value']
+
+            new_session = self.connect_session(host, port, session, timeout)
             new_remote_host = host
             if not new_session:
                 return False
