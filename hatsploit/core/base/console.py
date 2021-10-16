@@ -80,12 +80,12 @@ class Console:
         while True:
             try:
                 if not self.modules.check_current_module():
-                    prompt = f'({self.prompt})> '
+                    prompt = f'{self.colors.END}({self.prompt})> {self.colors.END}'
                 else:
                     module = self.modules.get_current_module_name()
                     name = self.modules.get_current_module_object().details['Name']
 
-                    prompt = f'({self.prompt}: {module.split("/")[0]}: {self.colors.RED}{name}{self.colors.END})> '
+                    prompt = f'{self.colors.END}({self.prompt}: {module.split("/")[0]}: {self.colors.RED}{name}{self.colors.END})> {self.colors.END}'
                 commands, arguments = self.io.input(prompt)
 
                 self.add_handler_options()
