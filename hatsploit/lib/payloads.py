@@ -26,16 +26,15 @@
 
 import os
 
-from hatsploit.lib.storage import LocalStorage
 from hatsploit.core.cli.badges import Badges
 from hatsploit.core.db.importer import Importer
+from hatsploit.lib.storage import LocalStorage
 
 
 class Payloads:
-    def __init__(self):
-        self.importer = Importer()
-        self.local_storage = LocalStorage()
-        self.badges = Badges()
+    importer = Importer()
+    local_storage = LocalStorage()
+    badges = Badges()
 
     def check_exist(self, name):
         all_payloads = self.local_storage.get("payloads")
@@ -126,14 +125,14 @@ class Payloads:
 
         if hasattr(current_module_object, "payload"):
             name = current_module_object.payload['Value']
-            if current_module_name in imported_payloads.keys():
-                if name in imported_payloads[current_module_name].keys():
-                    return imported_payloads[current_module_name][name]
+
+            if imported_payloads:
+                if current_module_name in imported_payloads.keys():
+                    if name in imported_payloads[current_module_name].keys():
+                        return imported_payloads[current_module_name][name]
         return None
 
     def add_payload(self, module_name, name):
-        payloads = self.get_payload_object(name)
-
         if not self.check_imported(module_name, name):
             payload_object = self.import_payload(module_name, name)
             if not payload_object:

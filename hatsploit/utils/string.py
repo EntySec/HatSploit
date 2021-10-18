@@ -24,10 +24,13 @@
 # SOFTWARE.
 #
 
-import re
 import base64
+import collections
 import random
+import re
+
 import string
+
 
 ##############################################################
 # Lempel-Ziv-Stac decompression
@@ -50,8 +53,6 @@ import string
 # along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.
 #
 ##############################################################
-
-import collections
 
 
 class BitReader:

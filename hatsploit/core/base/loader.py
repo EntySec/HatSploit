@@ -30,22 +30,21 @@ import sys
 import threading
 import time
 
-from hatsploit.lib.config import Config
 from hatsploit.core.cli.badges import Badges
 from hatsploit.core.db.builder import Builder
 from hatsploit.core.db.importer import Importer
 from hatsploit.core.utils.update import Update
+from hatsploit.lib.config import Config
 
 
 class Loader:
-    def __init__(self):
-        self.badges = Badges()
-        self.importer = Importer()
-        self.builder = Builder()
-        self.config = Config()
-        self.update = Update()
+    badges = Badges()
+    importer = Importer()
+    builder = Builder()
+    config = Config()
+    update = Update()
 
-        self.build = True
+    build = True
 
     def load_update_process(self):
         if self.update.check_update():

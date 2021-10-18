@@ -24,7 +24,8 @@
 
 details:
     codename: ""
-    version: "3.0.0"
+    version: "4.0.0"
+    prompt: "hsf"
 
 console:
     clear: true

@@ -30,21 +30,20 @@ import sys
 import threading
 
 from hatsploit.core.base.exceptions import Exceptions
-from hatsploit.lib.storage import LocalStorage
 from hatsploit.core.cli.badges import Badges
 from hatsploit.core.cli.tables import Tables
 from hatsploit.lib.modules import Modules
+from hatsploit.lib.storage import LocalStorage
 
 
 class Jobs:
-    def __init__(self):
-        self.exceptions = Exceptions()
-        self.tables = Tables()
-        self.badges = Badges()
-        self.local_storage = LocalStorage()
-        self.modules = Modules()
+    exceptions = Exceptions()
+    tables = Tables()
+    badges = Badges()
+    local_storage = LocalStorage()
+    modules = Modules()
 
-        self.job_process = None
+    job_process = None
 
     def stop_dead(self):
         jobs = self.local_storage.get("jobs")

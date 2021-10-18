@@ -31,7 +31,8 @@ class Parser:
         if not option:
             values = list()
             for option_name in options.keys():
-                values.append(str(options[option_name]['Value']))
+                if option_name.lower() not in ['lhost', 'lport', 'rbport', 'payload', 'blinder']:
+                    values.append(str(options[option_name]['Value']))
             if len(values) == 1:
                 return values[0]
             return values

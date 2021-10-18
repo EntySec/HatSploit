@@ -29,7 +29,7 @@ from hatsploit.core.cli.badges import Badges
 
 class Tables:
     badges = Badges()
-    
+
     def print_table(self, name, headers, *args, **kwargs) -> None:
         extra_fill = kwargs.get("extra_fill", 4)
         header_separator = kwargs.get("header_separator", "-")

@@ -25,39 +25,43 @@
 #
 
 import os
-import sys
 import readline
+import sys
 
-from hatsploit.lib.config import Config
 from hatsploit.core.base.exceptions import Exceptions
 from hatsploit.core.base.execute import Execute
 from hatsploit.core.base.io import IO
-from hatsploit.lib.jobs import Jobs
 from hatsploit.core.base.loader import Loader
-from hatsploit.lib.storage import LocalStorage
 from hatsploit.core.cli.badges import Badges
 from hatsploit.core.cli.colors import Colors
-from hatsploit.lib.modules import Modules
 from hatsploit.core.utils.ui.banner import Banner
 from hatsploit.core.utils.ui.tip import Tip
+from hatsploit.lib.config import Config
+from hatsploit.lib.jobs import Jobs
+from hatsploit.lib.modules import Modules
+from hatsploit.lib.payloads import Payloads
+from hatsploit.lib.storage import LocalStorage
 
 
 class Console:
-    def __init__(self):
-        self.io = IO()
-        self.tip = Tip()
-        self.jobs = Jobs()
-        self.execute = Execute()
-        self.loader = Loader()
-        self.config = Config()
-        self.badges = Badges()
-        self.banner = Banner()
-        self.colors = Colors()
-        self.local_storage = LocalStorage()
-        self.modules = Modules()
-        self.exceptions = Exceptions()
+    io = IO()
+    tip = Tip()
+    jobs = Jobs()
+    execute = Execute()
+    loader = Loader()
+    config = Config()
+    badges = Badges()
+    banner = Banner()
+    colors = Colors()
+    local_storage = LocalStorage()
+    modules = Modules()
+    payloads = Payloads()
+    exceptions = Exceptions()
 
-        self.history = self.config.path_config['history_path']
+    history = config.path_config['history_path']
+    prompt = config.core_config['details']['prompt']
+
+    handler_options = {}
 
     def check_install(self):
         if os.path.exists(self.config.path_config['root_path']):
@@ -76,15 +80,19 @@ class Console:
         while True:
             try:
                 if not self.modules.check_current_module():
-                    prompt = '(hsf)> '
+                    prompt = f'{self.colors.END}({self.prompt})> '
                 else:
                     module = self.modules.get_current_module_name()
                     name = self.modules.get_current_module_object().details['Name']
-                    prompt = '(hsf: ' + module.split('/')[0] + ': ' + self.colors.RED + name + self.colors.END + ')> '
+
+                    prompt = f'{self.colors.END}({self.prompt}: {module.split("/")[0]}: {self.colors.RED}{name}{self.colors.END})> '
                 commands, arguments = self.io.input(prompt)
+
+                self.add_handler_options()
 
                 self.jobs.stop_dead()
                 self.execute.execute_command(commands, arguments)
+
                 if self.local_storage.get("history"):
                     readline.write_history_file(self.history)
 
@@ -165,3 +173,91 @@ class Console:
         if do_shell:
             self.launch_history()
             self.launch_menu()
+
+    def add_handler_options(self):
+        handler_options = {
+            'LHOST': {
+                'Description': "Local host to listen on.",
+                'Value': "0.0.0.0",
+                'Type': "ip",
+                'Required': True
+            },
+            'LPORT': {
+                'Description': "Local port to listen on.",
+                'Value': 8888,
+                'Type': "port",
+                'Required': True
+            },
+            'RBPORT': {
+                'Description': "Remote bind port.",
+                'Value': 8888,
+                'Type': "port",
+                'Required': True
+            }
+        }
+
+        if self.modules.check_current_module():
+            module = self.modules.get_current_module_name()
+            current_module = self.modules.get_current_module_object()
+
+            if module not in self.handler_options:
+                self.handler_options[module] = handler_options
+
+            if hasattr(current_module, "payload"):
+                if 'BLINDER' not in current_module.options:
+                    current_module.options.update({
+                        'BLINDER': {
+                            'Description': 'Use Blinder.',
+                            'Value': 'yes' if self.payloads.get_current_payload() is None else 'no',
+                            'Type': "boolean",
+                            'Required': True
+                        }
+                    })
+
+            required = True
+            if 'BLINDER' in current_module.options:
+                if current_module.options['BLINDER']['Value'].lower() in ['yes', 'y']:
+                    required = False
+                    current_module.payload['Value'] = None
+
+            payload = self.payloads.get_current_payload()
+
+            if hasattr(current_module, "payload"):
+                current_module.options.update({
+                    'PAYLOAD': {
+                        'Description': 'Payload to use.',
+                        'Value': current_module.payload['Value'],
+                        'Type': "payload",
+                        'Required': required
+                    }
+                })
+
+            if payload is not None:
+                if 'Handler' in current_module.payload:
+                    if not current_module.payload['Handler']:
+                        return
+
+                current_module.options.update(self.handler_options[module])
+
+                for option in current_module.options:
+                    if option.lower() in ['lhost', 'lport', 'rbport']:
+                        self.handler_options[module][option]['Value'] = current_module.options[option]['Value']
+
+                if payload.details['Type'] == 'reverse_tcp':
+                    for option in list(current_module.options):
+                        if option.lower() in ['rbport']:
+                            current_module.options.pop(option)
+
+                elif payload.details['Type'] == 'bind_tcp':
+                    for option in list(current_module.options):
+                        if option.lower() in ['lhost', 'lport']:
+                            current_module.options.pop(option)
+
+                else:
+                    for option in list(current_module.options):
+                        if option.lower() in ['lhost', 'lport', 'rbport']:
+                            current_module.options.pop(option)
+            else:
+                for option in list(current_module.options):
+                    if option.lower() in ['lhost', 'lport', 'rbport']:
+                        current_module.options.pop(option)

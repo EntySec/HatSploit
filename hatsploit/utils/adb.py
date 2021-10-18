@@ -25,9 +25,9 @@
 #
 
 import socket
+from adb_shell.adb_device import AdbDeviceTcp
 
 from hatsploit.core.cli.badges import Badges
-from adb_shell.adb_device import AdbDeviceTcp
 
 
 class ADBSocket:

@@ -33,10 +33,10 @@ class UDPSocket:
     def __init__(self, host, port, timeout=10):
         self.host = host
         self.port = int(port)
-        
+
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.sock.settimeout(timeout)
-        
+
         self.badges = Badges()
 
     def send(self, data):

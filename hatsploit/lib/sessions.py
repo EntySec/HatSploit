@@ -26,25 +26,24 @@
 
 import requests
 
-from hatsploit.lib.storage import LocalStorage
 from hatsploit.core.cli.badges import Badges
+from hatsploit.lib.storage import LocalStorage
 
 
 class Sessions:
-    def __init__(self):
-        self.badges = Badges()
-        self.local_storage = LocalStorage()
+    badges = Badges()
+    local_storage = LocalStorage()
 
     def get_all_sessions(self):
         sessions = self.local_storage.get("sessions")
         return sessions
-    
+
     def close_sessions(self):
         if not self.local_storage.get("sessions"):
             return True
         self.badges.print_warning("You have some opened sessions.")
         if self.badges.input_question("Exit anyway? [y/N] ").lower() in ['yes', 'y']:
-            self.badges.print_process("Closing all session...")
+            self.badges.print_process("Closing all sessions...")
             self.close_all_sessions()
             return True
         return False
@@ -77,7 +76,7 @@ class Sessions:
             if int(session_id) in sessions.keys():
                 if session_platform and session_type:
                     if (sessions[int(session_id)]['platform'] == session_platform and
-                        sessions[int(session_id)]['type'] == session_type):
+                            sessions[int(session_id)]['type'] == session_type):
                         return True
                     return False
                 if session_platform:

@@ -24,13 +24,13 @@
 # SOFTWARE.
 #
 
-import socket
-
 import http.server
+import socket
 import socketserver
+import time
 
-from hatsploit.core.cli.badges import Badges
 from hatsploit.core.base.exceptions import Exceptions
+from hatsploit.core.cli.badges import Badges
 
 
 class Handler(http.server.SimpleHTTPRequestHandler):
@@ -53,9 +53,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
 
 
 class Server:
-    def __init__(self):
-        self.badges = Badges()
-        self.exceptions = Exceptions()
+    badges = Badges()
+    exceptions = Exceptions()
 
     def start_server(self, host, port, payload, forever=False, path='/'):
         try:
@@ -81,10 +80,21 @@ class Server:
         address = remote_host + ':' + str(remote_port)
         self.badges.print_process("Establishing connection...")
         try:
-            server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            server.settimeout(timeout)
+            if timeout is not None:
+                timeout = time.time() + timeout
 
-            server.connect((remote_host, int(remote_port)))
+                while True:
+                    try:
+                        server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                        server.connect((remote_host, int(remote_port)))
+
+                        break
+                    except Exception:
+                        if time.time() > timeout:
+                            raise socket.timeout
+            else:
+                server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                server.connect((remote_host, int(remote_port)))
         except socket.timeout:
             self.badges.print_warning("Connection timeout.")
             raise self.exceptions.GlobalException
@@ -94,8 +104,9 @@ class Server:
         return server
 
     def listen(self, local_host, local_port, timeout=None):
+        server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
         try:
-            server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
             server.settimeout(timeout)
             server.bind((local_host, int(local_port)))

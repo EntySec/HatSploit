@@ -27,16 +27,15 @@
 import json
 import os
 
+from hatsploit.core.cli.badges import Badges
 from hatsploit.lib.config import Config
 from hatsploit.lib.storage import LocalStorage
-from hatsploit.core.cli.badges import Badges
 
 
 class DB:
-    def __init__(self):
-        self.badges = Badges()
-        self.config = Config()
-        self.local_storage = LocalStorage()
+    badges = Badges()
+    config = Config()
+    local_storage = LocalStorage()
 
     def disconnect_payloads_database(self, name):
         if self.local_storage.get("connected_payloads_databases"):

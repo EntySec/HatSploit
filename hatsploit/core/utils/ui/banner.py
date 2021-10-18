@@ -27,21 +27,20 @@
 import os
 import random
 
-from hatsploit.lib.config import Config
 from hatsploit.core.cli.badges import Badges
 from hatsploit.core.cli.colors import Colors
 from hatsploit.core.cli.parser import Parser
 from hatsploit.core.utils.ui.colors_script import ColorsScript
+from hatsploit.lib.config import Config
 
 
 class Banner:
-    def __init__(self):
-        self.parser = Parser()
-        self.config = Config()
-        self.badges = Badges()
-        self.colors = Colors()
+    parser = Parser()
+    config = Config()
+    badges = Badges()
+    colors = Colors()
 
-        self.colors_script = ColorsScript()
+    colors_script = ColorsScript()
 
     def print_random_banner(self):
         if os.path.exists(self.config.path_config['banners_path']):

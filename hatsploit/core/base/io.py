@@ -28,18 +28,17 @@ import os
 import readline
 import sys
 
-from hatsploit.lib.storage import LocalStorage
 from hatsploit.core.cli.colors import Colors
 from hatsploit.core.cli.fmt import FMT
+from hatsploit.lib.storage import LocalStorage
 
 
 class IO:
-    def __init__(self):
-        self.colors = Colors()
-        self.local_storage = LocalStorage()
-        self.fmt = FMT()
+    colors = Colors()
+    local_storage = LocalStorage()
+    fmt = FMT()
 
-    def print(self, message="", start='\033[1K\r', end='\n'):
+    def print(self, message="", start='\r', end='\n'):
         use_log = self.local_storage.get("log")
 
         sys.stdout.write(start + message + end)
@@ -50,16 +49,14 @@ class IO:
                 f.write(start + message + end)
                 f.flush()
 
-        if self.local_storage.get("current_prompt") and self.local_storage.get("active_input"):
+        if self.local_storage.get("current_prompt"):
             prompt = start + self.local_storage.get("current_prompt") + readline.get_line_buffer()
             sys.stdout.write(prompt)
             sys.stdout.flush()
 
     def input(self, prompt_message=""):
         use_log = self.local_storage.get("log")
-
         self.local_storage.set("current_prompt", prompt_message)
-        self.local_storage.set("active_input", True)
 
         if use_log:
             with open(use_log, 'a') as f:
@@ -79,5 +76,5 @@ class IO:
         if commands:
             arguments = commands[1:]
 
-        self.local_storage.set("active_input", False)
+        self.local_storage.set("current_prompt", None)
         return commands, arguments

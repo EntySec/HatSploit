@@ -5,10 +5,10 @@
 # Current source: https://github.com/EntySec/HatSploit
 #
 
-from hatsploit.lib.storage import LocalStorage
-from hatsploit.core.db.db import DB
 from hatsploit.core.db.builder import Builder
+from hatsploit.core.db.db import DB
 from hatsploit.lib.command import Command
+from hatsploit.lib.storage import LocalStorage
 
 
 class HatSploitCommand(Command):

@@ -28,8 +28,7 @@ from hatsploit.lib.storage import LocalStorage
 
 
 class Plugins:
-    def __init__(self):
-        self.local_storage = LocalStorage()
+    local_storage = LocalStorage()
 
     def check_exist(self, name):
         all_plugins = self.local_storage.get("plugins")

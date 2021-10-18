@@ -24,12 +24,13 @@
 # SOFTWARE.
 #
 
+import logging
 from flask import Flask
 from flask_cors import CORS
 from flask_restful import Resource, Api, reqparse
-import logging
 
 from hatsploit.lib.sessions import Sessions
+
 
 class SessionManager(Resource):
     sessions = Sessions()
@@ -100,12 +101,12 @@ class SessionManager(Resource):
 
         return "", 200
 
-class API:
-    def __init__(self):
-        self.app = Flask(__name__)
-        CORS(self.app)
 
-        self.api = Api(self.app)
+class API:
+    app = Flask(__name__)
+    CORS(app)
+
+    api = Api(app)
 
     def init(self, port=8008):
         self.api.add_resource(SessionManager, '/sessions')

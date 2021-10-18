@@ -26,22 +26,21 @@
 
 import os
 
-from hatsploit.lib.sessions import Sessions
-from hatsploit.lib.storage import LocalStorage
 from hatsploit.core.base.types import Types
 from hatsploit.core.cli.badges import Badges
 from hatsploit.core.db.importer import Importer
 from hatsploit.lib.payloads import Payloads
+from hatsploit.lib.sessions import Sessions
+from hatsploit.lib.storage import LocalStorage
 
 
 class Modules:
-    def __init__(self):
-        self.types = Types()
-        self.badges = Badges()
-        self.sessions = Sessions()
-        self.payloads = Payloads()
-        self.local_storage = LocalStorage()
-        self.importer = Importer()
+    types = Types()
+    badges = Badges()
+    sessions = Sessions()
+    payloads = Payloads()
+    local_storage = LocalStorage()
+    importer = Importer()
 
     def check_exist(self, name):
         all_modules = self.local_storage.get("modules")
@@ -118,8 +117,8 @@ class Modules:
             return True
 
         if not checker(value):
-           self.badges.print_error(f"Invalid value, expected valid {name}!")
-           return False
+            self.badges.print_error(f"Invalid value, expected valid {name}!")
+            return False
 
         return True
 
@@ -203,6 +202,37 @@ class Modules:
             if value_type.lower() == 'boolean':
                 return self.compare_type("boolean", value, self.types.is_boolean, module)
 
+            if value_type.lower() == 'payload':
+                if self.payloads.check_exist(value):
+                    current_module = self.get_current_module_object()
+                    module_name = self.get_current_module_name()
+
+                    payload = self.payloads.get_payload_object(value)
+                    module_payload = current_module.payload
+
+                    valid = 0
+                    if module_payload['Types'] is None or payload['Type'] in module_payload['Types']:
+                        valid += 1
+                    if module_payload['Categories'] is None or payload['Category'] in module_payload['Categories']:
+                        valid += 1
+                    if (module_payload['Platforms'] is None
+                            or payload['Platform'] in module_payload['Platforms']
+                            or payload['Platform'] == 'multi'):
+                        valid += 1
+                    if (module_payload['Architectures'] is None
+                            or payload['Architecture'] in module_payload['Architectures']):
+                        valid += 1
+
+                    if valid == 4:
+                        if not self.payloads.add_payload(module_name, value):
+                            self.badges.print_error("Invalid payload, expected valid payload!")
+                            return False
+                        return True
+                    self.badges.print_error("Incompatible payload type, category or platform!")
+                    return False
+                self.badges.print_error("Invalid value, expected valid payload!")
+                return False
+
             if 'session' in value_type.lower():
                 value = str(value)
 
@@ -233,51 +263,26 @@ class Modules:
                 self.badges.print_warning("Module has no options.")
                 return
 
-            if hasattr(current_module, "payload") and option.lower() == "payload":
-                if self.payloads.check_exist(value):
-                    module_name = self.get_current_module_name()
-
-                    payload = self.payloads.get_payload_object(value)
-                    module_payload = current_module.payload
-
-                    valid = 0
-                    if module_payload['Types'] is None or payload['Type'] in module_payload['Types']:
-                        valid += 1
-                    if module_payload['Categories'] is None or payload['Category'] in module_payload['Categories']:
-                        valid += 1
-                    if module_payload['Platforms'] is None or payload['Platform'] in module_payload['Platforms']:
-                        valid += 1
-                    if module_payload['Architectures'] is None or payload['Architecture'] in module_payload['Architectures']:
-                        valid += 1
-
-                    if valid == 4:
-                        if not self.payloads.add_payload(module_name, value):
-                            self.badges.print_error("Invalid payload, expected valid payload!")
-                            return
-                        self.badges.print_information(option + " ==> " + value)
-                        self.local_storage.set_module_payload(
-                            "current_module",
-                            self.local_storage.get("current_module_number"),
-                            value
-                        )
-                        return
-                    self.badges.print_error("Incompatible payload type, category or platform!")
-                    return
-                self.badges.print_error("Invalid value, expected valid payload!")
-                return
-
             if hasattr(current_module, "options"):
                 if option in current_module.options.keys():
                     value_type = current_module.options[option]['Type']
 
                     if self.compare_types(value_type, value):
                         self.badges.print_information(option + " ==> " + value)
-                        self.local_storage.set_module_option(
-                            "current_module",
-                            self.local_storage.get("current_module_number"),
-                            option,
-                            value
-                        )
+
+                        if value_type == 'payload':
+                            self.local_storage.set_module_payload(
+                                "current_module",
+                                self.local_storage.get("current_module_number"),
+                                value
+                            )
+                        else:
+                            self.local_storage.set_module_option(
+                                "current_module",
+                                self.local_storage.get("current_module_number"),
+                                option,
+                                value
+                            )
                     return
 
             if hasattr(current_module, "payload"):
@@ -311,8 +316,6 @@ class Modules:
         return module_object
 
     def add_module(self, name):
-        modules = self.get_module_object(name)
-
         imported_modules = self.local_storage.get("imported_modules")
 
         if self.check_imported(name):
@@ -324,14 +327,17 @@ class Modules:
                 if hasattr(module_object, "payload"):
                     payload_name = module_object.payload['Value']
 
-                    self.badges.print_process("Using default payload " + payload_name + "...")
+                    if payload_name:
+                        self.badges.print_process("Using default payload " + payload_name + "...")
 
-                    if self.payloads.check_exist(payload_name):
-                        if self.payloads.add_payload(name, payload_name):
-                            self.add_to_global(module_object)
+                        if self.payloads.check_exist(payload_name):
+                            if self.payloads.add_payload(name, payload_name):
+                                self.add_to_global(module_object)
+                            return
+
+                        self.badges.print_error("Invalid default payload!")
                         return
-                    self.badges.print_error("Invalid default payload!")
-                    return
+
                 self.add_to_global(module_object)
             else:
                 self.badges.print_error("Failed to select module from database!")
