@@ -46,8 +46,8 @@ class HatSploitPayload(Payload):
         connback_host, connback_port = self.parse_options(self.options)
 
         return (
-                   b""
-               ), {
-                   'cbhost': connback_host,
-                   'cbport': connback_port
-               }
+            b""
+        ), {
+            'cbhost': connback_host,
+            'cbport': connback_port
+        }

