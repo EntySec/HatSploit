@@ -38,4 +38,5 @@ class HatSploitModule(Module, SessionTools):
         session = self.get_session(session)
 
         if session:
-            session.send_command("/System/Library/CoreServices/Menu\ Extras/User.menu/Contents/Resources/CGSession -suspend")
+            session.send_command(
+                "/System/Library/CoreServices/Menu\ Extras/User.menu/Contents/Resources/CGSession -suspend")

@@ -6,8 +6,8 @@
 #
 
 import struct
-
 from hatvenom import HatVenom
+
 from hatsploit.lib.payload import Payload
 
 
