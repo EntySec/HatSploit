@@ -79,9 +79,9 @@ class Handler(Handle, Blinder):
                 if sender is not None:
                     self.blinder(sender, args)
                     return True
-                else:
-                    self.badges.print_warning("Module does not support Blinder, use payload instead.")
-                    return False
+
+                self.badges.print_warning("Module does not support Blinder, use payload instead.")
+                return False
 
         if payload['Payload'] is None:
             self.badges.print_error("Payload stage is not found!")
