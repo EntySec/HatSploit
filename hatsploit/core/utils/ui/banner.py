@@ -27,11 +27,11 @@
 import os
 import random
 
-from hatsploit.lib.config import Config
 from hatsploit.core.cli.badges import Badges
 from hatsploit.core.cli.colors import Colors
 from hatsploit.core.cli.parser import Parser
 from hatsploit.core.utils.ui.colors_script import ColorsScript
+from hatsploit.lib.config import Config
 
 
 class Banner:

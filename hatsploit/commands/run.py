@@ -8,11 +8,11 @@
 from copy import deepcopy
 from hatvenom import HatVenom
 
-from hatsploit.lib.jobs import Jobs
-from hatsploit.lib.storage import LocalStorage
 from hatsploit.lib.command import Command
+from hatsploit.lib.jobs import Jobs
 from hatsploit.lib.modules import Modules
 from hatsploit.lib.payloads import Payloads
+from hatsploit.lib.storage import LocalStorage
 
 
 class HatSploitCommand(Command, HatVenom):
@@ -56,7 +56,7 @@ class HatSploitCommand(Command, HatVenom):
                 if argv[0] in ['-j', '--job']:
                     self.print_process("Running module as a background job...")
                     job_id = self.jobs.create_job(current_module.details['Name'], current_module.details['Module'],
-                                                    current_module.run)
+                                                  current_module.run)
                     self.print_information("Module started as a background job " + str(job_id) + ".")
                     return
 
@@ -83,7 +83,7 @@ class HatSploitCommand(Command, HatVenom):
                 if argv[0] in ['-j', '--job']:
                     self.print_process("Running module as a background job...")
                     job_id = self.jobs.create_job(current_module.details['Name'], current_module.details['Module'],
-                                                    current_module.run)
+                                                  current_module.run)
                     self.print_information("Module started as a background job " + str(job_id) + ".")
                     return
 
@@ -132,14 +132,16 @@ class HatSploitCommand(Command, HatVenom):
 
                         if isinstance(payload_data, tuple):
                             raw = self.generate('raw', 'generic', payload_data[0], payload_data[1])
-                            payload = self.generate(executable if current_payload.details['Architecture'] != 'generic' else 'raw',
-                                                    current_payload.details['Architecture'],
-                                                    payload_data[0], payload_data[1])
+                            payload = self.generate(
+                                executable if current_payload.details['Architecture'] != 'generic' else 'raw',
+                                current_payload.details['Architecture'],
+                                payload_data[0], payload_data[1])
                         else:
                             raw = self.generate('raw', 'generic', payload_data)
-                            payload = self.generate(executable if current_payload.details['Architecture'] != 'generic' else 'raw',
-                                                    current_payload.details['Architecture'],
-                                                    payload_data)
+                            payload = self.generate(
+                                executable if current_payload.details['Architecture'] != 'generic' else 'raw',
+                                current_payload.details['Architecture'],
+                                payload_data)
 
                         current_module.payload['Category'] = current_payload.details['Category']
                         current_module.payload['Platform'] = current_payload.details['Platform']

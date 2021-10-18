@@ -24,6 +24,7 @@
 # SOFTWARE.
 #
 
+import importlib.util
 import json
 import os
 import string
@@ -31,13 +32,11 @@ import sys
 import threading
 import time
 
-import importlib.util
-
-from hatsploit.lib.config import Config
 from hatsploit.core.base.exceptions import Exceptions
-from hatsploit.lib.storage import LocalStorage
 from hatsploit.core.cli.badges import Badges
 from hatsploit.core.db.db import DB
+from hatsploit.lib.config import Config
+from hatsploit.lib.storage import LocalStorage
 
 
 class Importer:
@@ -129,11 +128,14 @@ class Importer:
 
     def import_database(self):
         self.db.connect_modules_database(self.config.db_config['base_dbs']['modules_database_name'],
-                                         self.config.path_config['db_path'] + self.config.db_config['base_dbs']['modules_database'])
+                                         self.config.path_config['db_path'] + self.config.db_config['base_dbs'][
+                                             'modules_database'])
         self.db.connect_payloads_database(self.config.db_config['base_dbs']['payloads_database_name'],
-                                          self.config.path_config['db_path'] + self.config.db_config['base_dbs']['payloads_database'])
+                                          self.config.path_config['db_path'] + self.config.db_config['base_dbs'][
+                                              'payloads_database'])
         self.db.connect_plugins_database(self.config.db_config['base_dbs']['plugins_database_name'],
-                                         self.config.path_config['db_path'] + self.config.db_config['base_dbs']['plugins_database'])
+                                         self.config.path_config['db_path'] + self.config.db_config['base_dbs'][
+                                             'plugins_database'])
 
     def import_all(self, import_database):
         self.import_commands()

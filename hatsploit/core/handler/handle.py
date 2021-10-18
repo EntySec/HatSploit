@@ -24,8 +24,8 @@
 # SOFTWARE.
 #
 
-from hatsploit.lib.server import Server
 from hatsploit.core.cli.badges import Badges
+from hatsploit.lib.server import Server
 
 
 class Handle:

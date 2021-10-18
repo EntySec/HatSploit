@@ -24,8 +24,8 @@
 # SOFTWARE.
 #
 
-import os
 import binascii
+import os
 
 from hatsploit.core.cli.badges import Badges
 

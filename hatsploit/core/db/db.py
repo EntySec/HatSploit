@@ -27,9 +27,9 @@
 import json
 import os
 
+from hatsploit.core.cli.badges import Badges
 from hatsploit.lib.config import Config
 from hatsploit.lib.storage import LocalStorage
-from hatsploit.core.cli.badges import Badges
 
 
 class DB:

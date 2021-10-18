@@ -24,14 +24,13 @@
 # SOFTWARE.
 #
 
+import http.server
 import socket
+import socketserver
 import time
 
-import http.server
-import socketserver
-
-from hatsploit.core.cli.badges import Badges
 from hatsploit.core.base.exceptions import Exceptions
+from hatsploit.core.cli.badges import Badges
 
 
 class Handler(http.server.SimpleHTTPRequestHandler):

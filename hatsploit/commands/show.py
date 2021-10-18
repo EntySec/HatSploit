@@ -5,10 +5,10 @@
 # Current source: https://github.com/EntySec/HatSploit
 #
 
-from hatsploit.lib.storage import LocalStorage
 from hatsploit.lib.command import Command
 from hatsploit.lib.modules import Modules
 from hatsploit.lib.payloads import Payloads
+from hatsploit.lib.storage import LocalStorage
 
 
 class HatSploitCommand(Command):
@@ -101,7 +101,7 @@ class HatSploitCommand(Command):
                 if current_payload:
                     for option in sorted(current_payload.options.keys()):
                         value, required = current_payload.options[option]['Value'], \
-                                        current_payload.options[option]['Required']
+                                          current_payload.options[option]['Required']
                         if required:
                             required = "yes"
                         else:
@@ -109,7 +109,8 @@ class HatSploitCommand(Command):
                         if not value and value != 0:
                             value = ""
                         options_data.append((option, value, required, current_payload.options[option]['Description']))
-                    self.print_table("Payload Options (" + current_payload.details['Payload'] + ")", headers, *options_data)
+                    self.print_table("Payload Options (" + current_payload.details['Payload'] + ")", headers,
+                                     *options_data)
 
     def print_usage(self, informations, plugins, options):
         if informations or plugins or options:

@@ -27,9 +27,9 @@
 import os
 import sys
 
-from hatsploit.lib.config import Config
-from hatsploit.core.db.importer import Importer
 from hatsploit.core.cli.badges import Badges
+from hatsploit.core.db.importer import Importer
+from hatsploit.lib.config import Config
 
 
 class Check:
@@ -50,7 +50,7 @@ class Check:
                     try:
                         module_object = self.importer.import_module(module)
                         keys = ['Name', 'Module', 'Authors', 'Description', 'Comments', 'Platform', 'Risk']
-                        assert(all(key in module_object.details for key in keys))
+                        assert (all(key in module_object.details for key in keys))
                         self.badges.print_success(f"{module}: OK")
                     except Exception:
                         self.badges.print_error(f"{module}: FAIL")
@@ -71,7 +71,7 @@ class Check:
                         payload_object = self.importer.import_payload(payload)
                         keys = ['Category', 'Name', 'Payload', 'Authors', 'Description',
                                 'Comments', 'Architecture', 'Platform', 'Risk', 'Type']
-                        assert(all(key in payload_object.details for key in keys))
+                        assert (all(key in payload_object.details for key in keys))
                         self.badges.print_success(f"{payload}: OK")
                     except Exception:
                         self.badges.print_error(f"{payload}: FAIL")
@@ -91,7 +91,7 @@ class Check:
                     try:
                         plugin_object = self.importer.import_plugin(plugin)
                         keys = ['Name', 'Authors', 'Description', 'Comments']
-                        assert(all(key in plugin_object.details for key in keys))
+                        assert (all(key in plugin_object.details for key in keys))
                         self.badges.print_success(f"{plugin}: OK")
                     except Exception:
                         self.badges.print_error(f"{plugin}: FAIL")
@@ -104,7 +104,7 @@ class Check:
         fails.append(self.check_modules())
         fails.append(self.check_payloads())
         fails.append(self.check_plugins())
-    
+
         for fail in fails:
             if fail:
                 self.badges.print_error("Not all checks passed!")

@@ -28,11 +28,11 @@ import os
 import subprocess
 import sys
 
-from hatsploit.lib.jobs import Jobs
-from hatsploit.lib.storage import LocalStorage
 from hatsploit.core.cli.badges import Badges
 from hatsploit.core.cli.fmt import FMT
+from hatsploit.lib.jobs import Jobs
 from hatsploit.lib.modules import Modules
+from hatsploit.lib.storage import LocalStorage
 
 
 class Execute:

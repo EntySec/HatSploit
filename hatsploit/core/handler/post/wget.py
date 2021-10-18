@@ -24,9 +24,9 @@
 # SOFTWARE.
 #
 
+import binascii
 import os
 import requests
-import binascii
 
 from hatsploit.core.cli.badges import Badges
 
@@ -42,7 +42,7 @@ class Wget:
 
         wget_bin = binascii.hexlify(os.urandom(8)).decode()
         wget_file = binascii.hexlify(os.urandom(8)).decode()
-        
+
         wget_container = f"https://dev.filebin.net/{wget_bin}"
         wget_server = f"https://dev.filebin.net/{wget_bin}/{wget_file}"
 

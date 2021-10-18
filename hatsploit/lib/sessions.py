@@ -26,8 +26,8 @@
 
 import requests
 
-from hatsploit.lib.storage import LocalStorage
 from hatsploit.core.cli.badges import Badges
+from hatsploit.lib.storage import LocalStorage
 
 
 class Sessions:
@@ -37,7 +37,7 @@ class Sessions:
     def get_all_sessions(self):
         sessions = self.local_storage.get("sessions")
         return sessions
-    
+
     def close_sessions(self):
         if not self.local_storage.get("sessions"):
             return True

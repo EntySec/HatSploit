@@ -95,9 +95,11 @@ By accepting our terms of service, you agree that you will only use this tool fo
 def main():
     description = "Modular penetration testing platform that enables you to write, test, and execute exploit code."
     parser = argparse.ArgumentParser(description=description)
-    parser.add_argument('-c', '--check', dest='check_all', action='store_true', help='Check base modules, payloads and plugins.')
+    parser.add_argument('-c', '--check', dest='check_all', action='store_true',
+                        help='Check base modules, payloads and plugins.')
     parser.add_argument('--check-modules', dest='check_modules', action='store_true', help='Check only base modules.')
-    parser.add_argument('--check-payloads', dest='check_payloads', action='store_true', help='Check only base payloads.')
+    parser.add_argument('--check-payloads', dest='check_payloads', action='store_true',
+                        help='Check only base payloads.')
     parser.add_argument('--check-plugins', dest='check_plugins', action='store_true', help='Check only base plugins.')
     parser.add_argument('-u', '--update', dest='update', action='store_true', help='Update HatSploit Framework.')
     parser.add_argument('--rest-api', dest='rest_api', action='store_true', help='Run HatSploit with REST API.')

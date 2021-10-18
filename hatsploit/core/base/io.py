@@ -28,9 +28,9 @@ import os
 import readline
 import sys
 
-from hatsploit.lib.storage import LocalStorage
 from hatsploit.core.cli.colors import Colors
 from hatsploit.core.cli.fmt import FMT
+from hatsploit.lib.storage import LocalStorage
 
 
 class IO:

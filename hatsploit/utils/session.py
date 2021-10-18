@@ -26,6 +26,7 @@
 
 from hatsploit.lib.sessions import Sessions
 
+
 class SessionTools:
     sessions = Sessions()
 

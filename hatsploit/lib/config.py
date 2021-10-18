@@ -27,9 +27,9 @@
 import os
 import yaml
 
+from hatsploit.core.cli.badges import Badges
 from hatsploit.lib.storage import GlobalStorage
 from hatsploit.lib.storage import LocalStorage
-from hatsploit.core.cli.badges import Badges
 
 
 class Config:

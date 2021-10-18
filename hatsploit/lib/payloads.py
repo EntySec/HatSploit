@@ -26,9 +26,9 @@
 
 import os
 
-from hatsploit.lib.storage import LocalStorage
 from hatsploit.core.cli.badges import Badges
 from hatsploit.core.db.importer import Importer
+from hatsploit.lib.storage import LocalStorage
 
 
 class Payloads:

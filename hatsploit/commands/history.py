@@ -7,10 +7,10 @@
 
 import readline
 
-from hatsploit.lib.config import Config
-from hatsploit.lib.storage import LocalStorage
-from hatsploit.lib.storage import GlobalStorage
 from hatsploit.lib.command import Command
+from hatsploit.lib.config import Config
+from hatsploit.lib.storage import GlobalStorage
+from hatsploit.lib.storage import LocalStorage
 
 
 class HatSploitCommand(Command):
@@ -62,7 +62,7 @@ class HatSploitCommand(Command):
                 if readline.get_current_history_length() > -1:
                     self.print_information("HatSploit history:")
 
-                    for index in range(1, readline.get_current_history_length()+1):
+                    for index in range(1, readline.get_current_history_length() + 1):
                         self.print_empty("    * " + readline.get_history_item(index))
                 else:
                     self.print_warning("HatSploit history empty.")

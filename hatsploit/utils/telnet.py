@@ -39,7 +39,7 @@ class TelnetSocket:
         self.sock.sock = client
 
         self.badges = Badges()
-            
+
     def disconnect(self):
         if self.sock.sock:
             self.sock.close()
@@ -120,7 +120,8 @@ class TelnetSocket:
             return None
         self.badges.print_error("Socket is not connected!")
         return None
-      
+
+
 class TelnetClient:
     @staticmethod
     def open_telnet(client):

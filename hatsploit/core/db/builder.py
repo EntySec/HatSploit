@@ -27,12 +27,12 @@
 import json
 import os
 
+from hatsploit.core.cli.badges import Badges
+from hatsploit.core.db.importer import Importer
+from hatsploit.lib.config import Config
 from hatsploit.lib.modules import Modules
 from hatsploit.lib.payloads import Payloads
-from hatsploit.lib.config import Config
-from hatsploit.core.db.importer import Importer
 from hatsploit.lib.storage import LocalStorage
-from hatsploit.core.cli.badges import Badges
 
 
 class Builder:
@@ -45,11 +45,11 @@ class Builder:
 
     def check_base_built(self):
         if (os.path.exists(self.config.path_config['db_path'] +
-                        self.config.db_config['base_dbs']['modules_database']) and
-        os.path.exists(self.config.path_config['db_path'] +
-                        self.config.db_config['base_dbs']['payloads_database']) and
-        os.path.exists(self.config.path_config['db_path'] +
-                        self.config.db_config['base_dbs']['plugins_database'])):
+                           self.config.db_config['base_dbs']['modules_database']) and
+                os.path.exists(self.config.path_config['db_path'] +
+                               self.config.db_config['base_dbs']['payloads_database']) and
+                os.path.exists(self.config.path_config['db_path'] +
+                               self.config.db_config['base_dbs']['plugins_database'])):
             return True
         return False
 
@@ -59,13 +59,13 @@ class Builder:
                 os.mkdir(self.config.path_config['db_path'])
 
             self.build_modules_database(self.config.path_config['modules_path'],
-                                        (self.config.path_config['db_path'] + 
+                                        (self.config.path_config['db_path'] +
                                          self.config.db_config['base_dbs']['modules_database']))
             self.build_payloads_database(self.config.path_config['payloads_path'],
-                                        (self.config.path_config['db_path'] + 
-                                         self.config.db_config['base_dbs']['payloads_database']))
+                                         (self.config.path_config['db_path'] +
+                                          self.config.db_config['base_dbs']['payloads_database']))
             self.build_plugins_database(self.config.path_config['plugins_path'],
-                                        (self.config.path_config['db_path'] + 
+                                        (self.config.path_config['db_path'] +
                                          self.config.db_config['base_dbs']['plugins_database']))
 
     def build_payloads_database(self, input_path, output_path):
