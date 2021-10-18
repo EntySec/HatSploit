@@ -23,7 +23,7 @@
 #
 
 details:
-    codename: "dev"
+    codename: ""
     version: "4.0.0"
     prompt: "hsf"
 
