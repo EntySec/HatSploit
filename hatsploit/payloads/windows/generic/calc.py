@@ -22,7 +22,7 @@ class HatSploitPayload(Payload):
         ],
         'Architecture': "generic",
         'Platform': "windows",
-        'Risk': "high",
+        'Rank': "high",
         'Type': "one_side"
     }
 

@@ -97,7 +97,7 @@ class Builder:
                                 "Comments": payload_object.details['Comments'],
                                 "Architecture": payload_object.details['Architecture'],
                                 "Platform": payload_object.details['Platform'],
-                                "Risk": payload_object.details['Risk'],
+                                "Rank": payload_object.details['Rank'],
                                 "Type": payload_object.details['Type']
                             }
                         })
@@ -134,7 +134,7 @@ class Builder:
                                 "Description": module_object.details['Description'],
                                 "Comments": module_object.details['Comments'],
                                 "Platform": module_object.details['Platform'],
-                                "Risk": module_object.details['Risk']
+                                "Rank": module_object.details['Rank']
                             }
                         })
                     except Exception:

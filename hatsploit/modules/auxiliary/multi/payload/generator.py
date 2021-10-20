@@ -20,7 +20,7 @@ class HatSploitModule(Module):
             ''
         ],
         'Platform': "multi",
-        'Risk': "high"
+        'Rank': "high"
     }
 
     payload = {

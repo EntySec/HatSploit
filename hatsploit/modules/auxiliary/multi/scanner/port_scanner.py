@@ -23,7 +23,7 @@ class HatSploitModule(Module, TCPClient):
             ''
         ],
         'Platform': "multi",
-        'Risk': "low"
+        'Rank': "low"
     }
 
     options = {

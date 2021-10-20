@@ -43,7 +43,7 @@ class Module(FMT, Badges, Colors, Parser, Tables):
             ''
         ],
         'Platform': "",
-        'Risk': ""
+        'Rank': ""
     }
 
     def run(self):

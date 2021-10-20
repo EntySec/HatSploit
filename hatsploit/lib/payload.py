@@ -44,7 +44,7 @@ class Payload(FMT, Badges, Colors, Parser, Tables):
             ''
         ],
         'Platform': "",
-        'Risk': "low",
+        'Rank': "low",
         'Type': ""
     }
 

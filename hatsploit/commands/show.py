@@ -41,28 +41,28 @@ class HatSploitCommand(Command):
 
     def show_modules(self, information):
         all_modules = self.local_storage.get("modules")
-        headers = ("Number", "Module", "Risk", "Description")
+        headers = ("Number", "Module", "Rank", "Description")
         for database in sorted(all_modules.keys()):
             number = 0
             modules_data = list()
             modules = all_modules[database]
             for module in sorted(modules.keys()):
                 if information == module.split('/')[0]:
-                    modules_data.append((number, modules[module]['Module'], modules[module]['Risk'],
+                    modules_data.append((number, modules[module]['Module'], modules[module]['Rank'],
                                          modules[module]['Description']))
                     number += 1
             self.print_table(information.title() + " Modules (" + database + ")", headers, *modules_data)
 
     def show_payloads(self):
         all_payloads = self.local_storage.get("payloads")
-        headers = ("Number", "Category", "Payload", "Risk", "Description")
+        headers = ("Number", "Category", "Payload", "Rank", "Description")
         for database in sorted(all_payloads.keys()):
             number = 0
             payloads_data = list()
             payloads = all_payloads[database]
             for payload in sorted(payloads.keys()):
                 payloads_data.append((number, payloads[payload]['Category'], payloads[payload]['Payload'],
-                                      payloads[payload]['Risk'], payloads[payload]['Description']))
+                                      payloads[payload]['Rank'], payloads[payload]['Description']))
                 number += 1
             self.print_table("Payloads (" + database + ")", headers, *payloads_data)
 

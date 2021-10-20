@@ -22,7 +22,7 @@ class HatSploitPayload(Payload):
         ],
         'Architecture': "armle",
         'Platform': "linux",
-        'Risk': "low",
+        'Rank': "low",
         'Type': "one_side"
     }
 

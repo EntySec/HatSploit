@@ -24,7 +24,7 @@ class HatSploitModule(Module, HTTPClient):
             ''
         ],
         'Platform': "multi",
-        'Risk': "medium"
+        'Rank': "medium"
     }
 
     options = {

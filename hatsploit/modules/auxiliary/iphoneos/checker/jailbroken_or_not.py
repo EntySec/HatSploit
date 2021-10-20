@@ -21,7 +21,7 @@ class HatSploitModule(Module, TCPClient):
             ''
         ],
         'Platform': "iphoneos",
-        'Risk': "low"
+        'Rank': "low"
     }
 
     options = {

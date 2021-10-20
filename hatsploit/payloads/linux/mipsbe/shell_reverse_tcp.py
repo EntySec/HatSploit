@@ -25,7 +25,7 @@ class HatSploitPayload(Payload):
         ],
         'Architecture': "mipsbe",
         'Platform': "linux",
-        'Risk': "high",
+        'Rank': "high",
         'Type': "reverse_tcp"
     }
 

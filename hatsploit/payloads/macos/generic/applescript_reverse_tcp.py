@@ -23,7 +23,7 @@ class HatSploitPayload(Payload):
         ],
         'Architecture': "generic",
         'Platform': "macos",
-        'Risk': "high",
+        'Rank': "high",
         'Type': "reverse_tcp"
     }
 
