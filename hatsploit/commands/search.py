@@ -48,7 +48,7 @@ class HatSploitCommand(Command):
     def show_modules(self, keyword):
         all_modules = self.local_storage.get("modules")
         if all_modules:
-            headers = ("Number", "Module", "Risk", "Description")
+            headers = ("Number", "Module", "Rank", "Description")
             for database in all_modules.keys():
                 number = 0
                 modules_data = list()
@@ -58,7 +58,7 @@ class HatSploitCommand(Command):
                         name = module.replace(keyword, self.RED + keyword + self.END)
                         description = modules[module]['Description'].replace(keyword, self.RED + keyword + self.END)
 
-                        modules_data.append((number, name, modules[module]['Risk'], description))
+                        modules_data.append((number, name, modules[module]['Rank'], description))
                         number += 1
                 if modules_data:
                     self.print_table("Modules (" + database + ")", headers, *modules_data)
@@ -66,7 +66,7 @@ class HatSploitCommand(Command):
     def show_payloads(self, keyword):
         all_payloads = self.local_storage.get("payloads")
         if all_payloads:
-            headers = ("Number", "Category", "Payload", "Risk", "Description")
+            headers = ("Number", "Category", "Payload", "Rank", "Description")
             for database in all_payloads.keys():
                 number = 0
                 payloads_data = list()
@@ -77,7 +77,7 @@ class HatSploitCommand(Command):
                         description = payloads[payload]['Description'].replace(keyword, self.RED + keyword + self.END)
 
                         payloads_data.append((number, payloads[payload]['Category'], name,
-                                              payloads[payload]['Risk'], description))
+                                              payloads[payload]['Rank'], description))
                         number += 1
                 if payloads_data:
                     self.print_table("Payloads (" + database + ")", headers, *payloads_data)

@@ -50,8 +50,8 @@ class HatSploitCommand(Command):
         if comments:
             self.print_empty("     Comments: ")
             self.print_empty("               " + comments)
-        if current_module['Risk']:
-            self.print_empty("         Risk: " + current_module['Risk'])
+        if current_module['Rank']:
+            self.print_empty("         Rank: " + current_module['Rank'])
 
         self.print_empty("")
 
