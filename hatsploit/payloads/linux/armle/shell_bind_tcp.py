@@ -22,7 +22,7 @@ class HatSploitPayload(Payload):
         ],
         'Architecture': "armle",
         'Platform': "linux",
-        'Risk': "high",
+        'Rank': "high",
         'Type': "bind_tcp"
     }
 

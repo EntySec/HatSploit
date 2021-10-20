@@ -21,7 +21,7 @@ class HatSploitModule(Module, SessionTools):
             ''
         ],
         'Platform': "macos",
-        'Risk': "medium"
+        'Rank': "medium"
     }
 
     options = {

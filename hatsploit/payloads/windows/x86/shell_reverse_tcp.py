@@ -23,7 +23,7 @@ class HatSploitPayload(Payload):
         ],
         'Architecture': "x86",
         'Platform': "windows",
-        'Risk': "low",
+        'Rank': "low",
         'Type': "reverse_tcp"
     }
 

@@ -25,7 +25,7 @@ class HatSploitPayload(Payload, HatVenom):
         ],
         'Architecture': "generic",
         'Platform': "windows",
-        'Risk': "low",
+        'Rank': "low",
         'Type': "one_side"
     }
 

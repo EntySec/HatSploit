@@ -21,7 +21,7 @@ class HatSploitModule(Module, SessionTools):
             ''
         ],
         'Platform': "windows",
-        'Risk': "medium"
+        'Rank': "medium"
     }
 
     options = {
