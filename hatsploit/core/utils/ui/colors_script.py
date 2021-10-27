@@ -57,7 +57,7 @@ class ColorsScript:
         '%newline': colors.NEWLINE
     }
 
-    def compile_line(self, line):
+    def parse(self, line):
         if line and line[0:8] != "%comment" and not line.isspace():
             for command in self.commands.keys():
                 line.replace(command, self.commands[command])
