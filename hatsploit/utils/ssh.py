@@ -30,10 +30,12 @@ from hatsploit.core.cli.badges import Badges
 
 
 class SSHSocket:
-    def __init__(self, host, port, timeout=10):
+    def __init__(self, host, port, username=None, password=None, timeout=10):
         self.host = host
         self.port = int(port)
 
+        self.username = username
+        self.password = password
         self.timeout = timeout
 
         self.sock = paramiko.SSHClient()
@@ -41,13 +43,13 @@ class SSHSocket:
 
         self.badges = Badges()
 
-    def connect(self, username, password):
+    def connect(self):
         try:
             self.sock.connect(
                 self.host,
                 port=self.port,
-                username=username,
-                password=password,
+                username=self.username,
+                password=self.password,
                 timeout=self.timeout
             )
 
@@ -66,7 +68,7 @@ class SSHSocket:
 
     def send_command(self, command):
         try:
-            return self.sock.exec_command(data)
+            return self.sock.exec_command(command)
         except Exception:
             self.badges.print_error("Socket is not connected!")
         return None
@@ -74,5 +76,5 @@ class SSHSocket:
 
 class SSHClient:
     @staticmethod
-    def open_ssh(host, port, timeout=10):
-        return SSHSocket(host, port, timeout)
+    def open_ssh(host, port, username=None, password=None, timeout=10):
+        return SSHSocket(host, port, username, password, timeout)
