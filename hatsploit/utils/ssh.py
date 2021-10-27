@@ -24,7 +24,6 @@
 # SOFTWARE.
 #
 
-import socket
 import paramiko
 
 from hatsploit.core.cli.badges import Badges
@@ -76,14 +75,6 @@ class SSHSocket:
 
 
 class SSHClient:
-    @staticmethod
-    def check_ssh_port(host, port, timeout=0.5):
-        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
-            sock.settimeout(timeout)
-            if sock.connect_ex((host, int(port))) == 0:
-                return True
-        return False
-
     @staticmethod
     def open_ssh(host, port, username=None, password=None, timeout=10):
         return SSHSocket(host, port, username, password, timeout)
