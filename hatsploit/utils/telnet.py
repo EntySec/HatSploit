@@ -75,7 +75,7 @@ class TelnetSocket:
                         line = sys.stdin.readline().strip()
                         if not line:
                             pass
-                        if line == "exit":
+                        if line == "quit":
                             return
                         self.sock.write((line + terminator).encode())
         else:

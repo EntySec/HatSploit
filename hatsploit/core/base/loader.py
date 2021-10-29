@@ -24,9 +24,7 @@
 # SOFTWARE.
 #
 
-import os
 import string
-import sys
 import threading
 import time
 
@@ -34,14 +32,12 @@ from hatsploit.core.cli.badges import Badges
 from hatsploit.core.db.builder import Builder
 from hatsploit.core.db.importer import Importer
 from hatsploit.core.utils.update import Update
-from hatsploit.lib.config import Config
 
 
 class Loader:
     badges = Badges()
     importer = Importer()
     builder = Builder()
-    config = Config()
     update = Update()
 
     build = True
@@ -83,7 +79,6 @@ class Loader:
                 elif status[cycle % len(status)] in list(string.ascii_uppercase):
                     status = status[:cycle % len(status)] + status[cycle % len(status)].lower() + status[cycle % len(
                         status) + 1:]
-                sys.stdout.write(self.badges.P + status)
+                self.badges.print_process(status, start='', end='')
                 time.sleep(.1)
-                sys.stdout.flush()
         loading_process.join()
