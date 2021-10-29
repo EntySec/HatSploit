@@ -26,7 +26,6 @@
 
 import logging
 from flask import Flask
-from flask_cors import CORS
 from flask_restful import Resource, Api, reqparse
 
 from hatsploit.lib.sessions import Sessions
@@ -104,8 +103,6 @@ class SessionManager(Resource):
 
 class API:
     app = Flask(__name__)
-    CORS(app)
-
     api = Api(app)
 
     def init(self, port=8008):
