@@ -55,3 +55,94 @@ class DBTools:
 
             del item["lookup_id"]
         return result_temp_dict
+
+    @staticmethod
+    def parse_safari_bookmarks(database):
+        db = sqlite3.connect(database)
+        db.row_factory = sqlite3.Row
+
+        cursor = db.cursor()
+        cursor.execute('''SELECT
+                title,
+                url
+            FROM bookmarks
+            WHERE num_children = 0
+            AND url <> "" ''')
+
+        return list(map(dict,cursor.fetchall()))
+
+    @staticmethod
+    def parse_whatsapp_chat(database, partner):
+        partner = partner.replace(" ", "").replace("+", "")
+        result_arr = {
+            "partner": "",
+            "partner_id": partner,
+            "success": True,
+            "data": []
+        }
+
+        db = sqlite3.connect(database)
+        db.row_factory = sqlite3.Row
+
+        cursor = db.cursor()
+        cursor.execute('''SELECT
+                Z_PK as 'msg_id_pk',
+                ZTEXT as "text",
+                ZISFROMME as "is_from_me",
+                ZMESSAGETYPE as "message_type",
+                ZMESSAGEDATE as "timestamp"
+            FROM ZWAMESSAGE
+            WHERE ZFROMJID like "%{partner}%"
+            OR ZTOJID like "%{partner}%"
+        '''.format(partner=partner))
+
+        all_messages_dict = list(map(dict, cursor.fetchall()))
+        if len(all_messages_dict) > 0:
+            for message in all_messages_dict:
+                if message["text"] is None:
+                    message["text"] = "<unknown message type>"
+
+                message["is_from_me"] = True if message["is_from_me"] == 1 else False
+                if message["message_type"] == 0:
+                    message["message_type"] = "text"
+                elif message["message_type"] == 7:
+                    message["message_type"] = "link"
+                elif message["message_type"] == 8:
+                    message["message_type"] = "file"
+
+                result_arr["data"].append(message)
+        cursor.execute('''SELECT
+            ZPARTNERNAME
+            FROM ZWACHATSESSION
+            WHERE ZCONTACTJID like "%{partner}%"
+        '''.format(partner=partner))
+
+        try:
+            result_arr["partner"] = [str(username[0]) for username in cursor.fetchall()][0]
+        except IndexError:
+            result_arr["success"] = False
+        return result_arr
+
+    @staticmethod
+    def parse_voicemail_chat(database):
+        result_arr = {
+            "total": 0,
+            "data": []
+        }
+
+        db = sqlite3.connect(database)
+        db.row_factory = sqlite3.Row
+
+        cursor = db.cursor()
+        cursor.execute('''SELECT
+                sender,
+                receiver,
+                duration,
+                date as 'timestamp'
+            FROM voicemail
+            ORDER BY date''')
+
+        result_arr["data"] = list(map(dict, cursor.fetchall()))
+        result_arr["total"] = len(result_arr["data"])
+
+        return result_arr
