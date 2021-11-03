@@ -31,7 +31,7 @@ class HatSploitCommand(Command):
     }
 
     def run(self, argc, argv):
-        choice = argv[0]
+        choice = argv[1]
         if choice in ['-l', '--list']:
             if self.local_storage.get("jobs"):
                 jobs_data = list()
@@ -43,9 +43,9 @@ class HatSploitCommand(Command):
             else:
                 self.print_warning("No running jobs available.")
         elif choice in ['-k', '--kill']:
-            if argc < 2:
+            if argc < 3:
                 self.print_usage(self.details['Usage'])
             else:
-                self.jobs.delete_job(argv[1])
+                self.jobs.delete_job(argv[2])
         else:
             self.print_usage(self.details['Usage'])
