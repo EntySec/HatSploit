@@ -39,10 +39,6 @@ class Commands:
 
     def execute_command(self, commands, handler):
         if commands:
-            arguments = list()
-            if len(commands) > 1:
-                arguments = commands[1:]
-
-            if not self.execute.execute_builtin_method(commands, arguments):
-                if not self.execute.execute_custom_command(commands, arguments, handler):
+            if not self.execute.execute_builtin_method(commands):
+                if not self.execute.execute_custom_command(commands, handler):
                     self.badges.print_error("Unrecognized command: " + commands[0] + "!")
