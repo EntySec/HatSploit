@@ -21,4 +21,4 @@ class HatSploitCommand(Command):
     }
 
     def run(self, argc, argv):
-        self.print_empty(self.CLEAR, end='')
+        self.print_empty("%clear", end='')
