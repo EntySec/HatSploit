@@ -48,5 +48,10 @@ class Payload(FMT, Badges, Colors, Parser, Tables):
         'Type': ""
     }
 
+    payload = {
+        'Session': None,
+        'Args': ""
+    }
+
     def run(self):
         pass
