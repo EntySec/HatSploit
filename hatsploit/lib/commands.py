@@ -39,7 +39,9 @@ class Commands:
 
     def execute_command(self, commands, handler):
         if commands:
-            arguments = commands[1:]
+            arguments = list()
+            if len(commands) > 1:
+                arguments = commands[1:]
 
             if not self.execute.execute_builtin_method(commands, arguments):
                 if not self.execute.execute_custom_command(commands, arguments, handler):
