@@ -32,7 +32,7 @@ class HatSploitCommand(Command):
     }
 
     def run(self, argc, argv):
-        module = argv[0]
+        module = argv[1]
 
         try:
             if not os.environ['EDITOR']:
