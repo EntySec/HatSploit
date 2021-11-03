@@ -73,7 +73,7 @@ class IO:
         commands = self.fmt.format_commands(commands)
         arguments = list()
 
-        if commands:
+        if len(commands) > 1:
             arguments = commands[1:]
 
         self.local_storage.set("current_prompt", None)
