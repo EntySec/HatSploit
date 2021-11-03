@@ -34,13 +34,13 @@ class HatSploitCommand(Command):
     }
 
     def run(self, argc, argv):
-        option = argv[0]
+        option = argv[1]
         if option == "on":
-            if argc < 2:
+            if argc < 3:
                 self.print_usage(self.details['Usage'])
             else:
-                if os.access(argv[1], os.R_OK):
-                    self.global_storage.set("log", argv[1])
+                if os.access(argv[2], os.R_OK):
+                    self.global_storage.set("log", argv[2])
                     self.global_storage.set_all()
                     self.print_information("HatSploit log: on")
         elif option == "off":
