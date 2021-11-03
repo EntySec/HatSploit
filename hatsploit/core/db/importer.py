@@ -109,7 +109,7 @@ class Importer:
         return plugin
 
     def import_main_commands(self):
-        self.import_commands(self.config.path_config['commands_path'])
+        commands = self.import_commands(self.config.path_config['commands_path'])
         self.local_storage.set("commands", commands)
 
     def import_commands(self, path):
