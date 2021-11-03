@@ -82,16 +82,19 @@ class Execute:
         except Exception:
             self.badges.print_error("Unrecognized system command: " + commands[0] + "!")
 
-    def execute_core_command(self, commands, arguments):
-        if self.local_storage.get("commands"):
-            if commands[0] in self.local_storage.get("commands").keys():
-                command = self.local_storage.get("commands")[commands[0]]
+    def execute_custom_command(self, commands, arguments, handler):
+        if handler:
+            if commands[0] in handler.keys():
+                command = handler[commands[0]]
                 if (len(commands) - 1) < command.details['MinArgs']:
                     self.badges.print_usage(command.details['Usage'])
                 else:
                     command.run(len(arguments), arguments)
                 return True
         return False
+
+    def execute_core_command(self, commands, arguments):
+        return self.execute_custom_command(self.local_storage.get("commands"))
 
     def execute_module_command(self, commands, arguments):
         if self.modules.check_current_module():
