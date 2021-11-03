@@ -31,9 +31,13 @@ import sys
 from hatsploit.core.base.exceptions import Exceptions
 from hatsploit.core.base.execute import Execute
 from hatsploit.core.base.loader import Loader
+
+from hatsploit.core.cli.fmt import FMT
 from hatsploit.core.cli.badges import Badges
+
 from hatsploit.core.utils.ui.banner import Banner
 from hatsploit.core.utils.ui.tip import Tip
+
 from hatsploit.lib.config import Config
 from hatsploit.lib.jobs import Jobs
 from hatsploit.lib.modules import Modules
@@ -42,17 +46,21 @@ from hatsploit.lib.storage import LocalStorage
 
 
 class Console:
-    tip = Tip()
-    jobs = Jobs()
+    exceptions = Exceptions()
     execute = Execute()
     loader = Loader()
-    config = Config()
+
+    fmt = FMT()
     badges = Badges()
+
     banner = Banner()
-    local_storage = LocalStorage()
+    tip = Tip()
+
+    config = Config()
+    jobs = Jobs()
     modules = Modules()
     payloads = Payloads()
-    exceptions = Exceptions()
+    local_storage = LocalStorage()
 
     history = config.path_config['history_path']
     prompt = config.core_config['details']['prompt']
@@ -85,8 +93,8 @@ class Console:
                 commands = self.badges.input_empty(prompt)
 
                 self.add_handler_options()
-
                 self.jobs.stop_dead()
+
                 self.execute.execute_command(commands)
 
                 if self.local_storage.get("history"):
