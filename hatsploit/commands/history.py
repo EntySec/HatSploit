@@ -40,7 +40,7 @@ class HatSploitCommand(Command):
     }
 
     def run(self, argc, argv):
-        option = argv[0]
+        option = argv[1]
         if option == "on":
             self.global_storage.set("history", True)
             self.global_storage.set_all()
