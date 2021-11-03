@@ -83,19 +83,19 @@ class HatSploitCommand(Command):
                     self.print_table("Payloads (" + database + ")", headers, *payloads_data)
 
     def run(self, argc, argv):
-        if argv[0] not in ['-w', '--where']:
-            self.show_modules(argv[0])
-            self.show_payloads(argv[0])
-            self.show_plugins(argv[0])
+        if argv[1] not in ['-w', '--where']:
+            self.show_modules(argv[1])
+            self.show_payloads(argv[1])
+            self.show_plugins(argv[1])
         else:
-            if argc < 3:
+            if argc < 4:
                 self.print_usage(self.details['Usage'])
             else:
-                if argv[1] == 'modules':
-                    self.show_modules(argv[2])
-                elif argv[1] == 'payloads':
-                    self.show_payloads(argv[2])
-                elif argv[1] == 'plugins':
-                    self.show_plugins(argv[2])
+                if argv[2] == 'modules':
+                    self.show_modules(argv[3])
+                elif argv[2] == 'payloads':
+                    self.show_payloads(argv[3])
+                elif argv[2] == 'plugins':
+                    self.show_plugins(argv[3])
                 else:
                     self.print_usage(self.details['Usage'])
