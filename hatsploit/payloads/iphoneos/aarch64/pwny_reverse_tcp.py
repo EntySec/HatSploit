@@ -64,9 +64,7 @@ class HatSploitPayload(Payload, StringTools):
 
         self.payload.update({
             'Args': self.payload['Args'].format(
-                self.base64_string(
-                    self.xor_string(connback_data)
-                )
+                self.base64_string(connback_data)
             )
         })
 
