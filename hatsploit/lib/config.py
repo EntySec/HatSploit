@@ -48,6 +48,7 @@ class Config:
             'root_path': self.base_path,
             'db_path': f'{self.base_path}db/',
             'data_path': f'{self.base_path}data/',
+            'external_path': f'{self.base_path}external/',
             'tips_path': f'{self.base_path}data/tips/',
             'banners_path': f'{self.base_path}data/banners/',
             'modules_path': f'{self.base_path}modules/',
