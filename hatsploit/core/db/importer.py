@@ -122,11 +122,11 @@ class Importer:
                         command_object = self.import_command(command_path + '/' + file[:-3])
                         command_name = command_object.details['Name']
                         commands[command_name] = command_object
-                        return commands
                     except Exception:
                         self.badges.print_error("Failed to load " + file[:-3] + " command!")
         except Exception:
             pass
+        return commands
 
     def import_database(self):
         self.db.connect_modules_database(self.config.db_config['base_dbs']['modules_database_name'],
