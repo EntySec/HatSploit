@@ -34,7 +34,7 @@ class HatSploitSession(Session, TelnetClient):
     config = Config()
     commands = Commands()
 
-    pwny_commands = config.path_config['external_path'] + 'pwny/commands'
+    pwny = config.path_config['external_path'] + 'pwny/commands'
     client = None
 
     details = {
@@ -82,4 +82,4 @@ class HatSploitSession(Session, TelnetClient):
                 if commands[0] == 'quit':
                     break
 
-                self.commands.execute_command(commands, pwny)
+                self.commands.execute_custom_command(commands, pwny)
