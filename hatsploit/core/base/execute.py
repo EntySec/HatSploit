@@ -62,10 +62,9 @@ class Execute:
 
             for line in file_text:
                 commands = self.fmt.format_commands(line)
-                arguments = commands[1:]
 
                 self.jobs.stop_dead()
-                self.execute_command(commands, arguments)
+                self.execute_command(commands)
 
     def execute_builtin_method(self, commands, arguments):
         if commands[0][0] == '#':
