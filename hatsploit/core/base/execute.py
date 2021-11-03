@@ -44,14 +44,10 @@ class Execute:
 
     def execute_command(self, commands):
         if commands:
-            arguments = list()
-            if len(commands) > 1:
-                arguments = commands[1:]
-
-            if not self.execute_builtin_method(commands, arguments):
-                if not self.execute_core_command(commands, arguments):
-                    if not self.execute_module_command(commands, arguments):
-                        if not self.execute_plugin_command(commands, arguments):
+            if not self.execute_builtin_method(commands):
+                if not self.execute_core_command(commands):
+                    if not self.execute_module_command(commands):
+                        if not self.execute_plugin_command(commands):
                             self.badges.print_error("Unrecognized command: " + commands[0] + "!")
 
     def execute_from_file(self, input_file):
@@ -66,7 +62,7 @@ class Execute:
                 self.jobs.stop_dead()
                 self.execute_command(commands)
 
-    def execute_builtin_method(self, commands, arguments):
+    def execute_builtin_method(self, commands):
         if commands[0][0] == '#':
             return True
         if commands[0][0] == '!':
@@ -85,31 +81,31 @@ class Execute:
         except Exception:
             self.badges.print_error("Unrecognized system command: " + commands[0] + "!")
 
-    def execute_custom_command(self, commands, arguments, handler):
+    def execute_custom_command(self, commands, handler):
         if handler:
             if commands[0] in handler.keys():
                 command = handler[commands[0]]
                 if (len(commands) - 1) < command.details['MinArgs']:
                     self.badges.print_usage(command.details['Usage'])
                 else:
-                    command.run(len(arguments), arguments)
+                    command.run(len(commands), commands)
                 return True
         return False
 
-    def execute_core_command(self, commands, arguments):
-        return self.execute_custom_command(commands, arguments, self.local_storage.get("commands"))
+    def execute_core_command(self, commands):
+        return self.execute_custom_command(commands, self.local_storage.get("commands"))
 
-    def execute_module_command(self, commands, arguments):
+    def execute_module_command(self, commands):
         if self.modules.check_current_module():
             if hasattr(self.modules.get_current_module_object(), "commands"):
                 if commands[0] in self.modules.get_current_module_object().commands.keys():
                     command_object = self.modules.get_current_module_object()
                     command = self.modules.get_current_module_object().commands[commands[0]]
-                    self.parse_and_execute_command(commands, command, arguments, command_object)
+                    self.parse_and_execute_command(commands, command, command_object)
                     return True
         return False
 
-    def execute_plugin_command(self, commands, arguments):
+    def execute_plugin_command(self, commands):
         if self.local_storage.get("loaded_plugins"):
             for plugin in self.local_storage.get("loaded_plugins").keys():
                 if hasattr(self.local_storage.get("loaded_plugins")[plugin], "commands"):
@@ -117,15 +113,15 @@ class Execute:
                         if commands[0] in self.local_storage.get("loaded_plugins")[plugin].commands[label].keys():
                             command_object = self.local_storage.get("loaded_plugins")[plugin]
                             command = command_object.commands[label][commands[0]]
-                            self.parse_and_execute_command(commands, command, arguments, command_object)
+                            self.parse_and_execute_command(commands, command, command_object)
                             return True
         return False
 
-    def parse_and_execute_command(self, commands, command, arguments, command_object):
+    def parse_and_execute_command(self, commands, command, command_object):
         if hasattr(command_object, commands[0]):
             if (len(commands) - 1) < command['MinArgs']:
                 self.badges.print_usage(command['Usage'])
             else:
-                getattr(command_object, commands[0])(len(arguments), arguments)
+                getattr(command_object, commands[0])(len(commands), commands)
         else:
             self.badges.print_error("Failed to execute command!")
