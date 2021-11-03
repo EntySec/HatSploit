@@ -26,7 +26,7 @@ class HatSploitCommand(Command):
     }
 
     def run(self, argc, argv):
-        plugin = argv[0]
+        plugin = argv[1]
         self.print_process("Unloading " + plugin + " plugin...")
 
         if self.plugins.check_loaded(plugin):
