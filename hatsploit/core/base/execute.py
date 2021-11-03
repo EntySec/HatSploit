@@ -42,8 +42,12 @@ class Execute:
     local_storage = LocalStorage()
     modules = Modules()
 
-    def execute_command(self, commands, arguments):
+    def execute_command(self, commands):
         if commands:
+            arguments = list()
+            if len(commands) > 1:
+                arguments = commands[1:]
+
             if not self.execute_builtin_method(commands, arguments):
                 if not self.execute_core_command(commands, arguments):
                     if not self.execute_module_command(commands, arguments):
