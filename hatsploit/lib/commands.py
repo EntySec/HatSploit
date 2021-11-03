@@ -25,11 +25,13 @@
 #
 
 from hatsploit.core.db.importer import Importer
+from hatsploit.core.cli.badges import Badges
 from hatsploit.core.base.execute import Execute
 
 
 class Commands:
     importer = Importer()
+    badges = Badges()
     execute = Execute()
 
     def load_commands(self, path):
