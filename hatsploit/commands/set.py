@@ -24,7 +24,7 @@ class HatSploitCommand(Command):
     }
 
     def run(self, argc, argv):
-        option = argv[0].upper()
-        value = argv[1]
+        option = argv[1].upper()
+        value = argv[2]
 
         self.modules.set_current_module_option(option, value)
