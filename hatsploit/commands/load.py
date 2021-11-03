@@ -51,7 +51,7 @@ class HatSploitCommand(Command):
             self.print_error("Failed to load plugin!")
 
     def run(self, argc, argv):
-        plugin = argv[0]
+        plugin = argv[1]
         self.print_process("Loading " + plugin + " plugin...")
 
         if not self.plugins.check_loaded(plugin):
