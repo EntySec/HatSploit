@@ -165,8 +165,8 @@ class StringTools:
 
     @staticmethod
     def base64_string(string):
-        base64.b64encode(string.encode())
-        return string
+        string = base64.b64encode(string.encode())
+        return string.decode()
 
     @staticmethod
     def random_string(length=16, alphabet=string.ascii_letters + string.digits):
