@@ -61,13 +61,7 @@ class Badges:
 
     def input_empty(self, message):
         line = self.colors_script.parse(message)
-
-        output = ""
-        out = self.io.input(line)[0]
-
-        for command in out:
-            output += command + " "
-        return output.strip()
+        return self.io.input(line)
 
     def input_question(self, message):
         return self.input_empty(f"%bold%white[?]%end {message}")
