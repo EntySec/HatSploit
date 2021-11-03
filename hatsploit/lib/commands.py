@@ -25,10 +25,15 @@
 #
 
 from hatsploit.core.db.importer import Importer
+from hatsploit.core.base.execute import Execute
 
 
-class Loader:
+class Commands:
     importer = Importer()
-    
+    execute = Execute()
+
     def load_commands(self, path):
         return self.importer.import_commands(path)
+
+    def execute_command(self, commands, arguments, handler):
+        return self.execute.execute_command(commands, arguments, handler)
