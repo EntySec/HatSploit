@@ -75,7 +75,7 @@ By accepting our terms of service, you agree that you will only use this tool fo
             self.badges.print_empty(terms)
 
             agree = self.badges.input_question("Accept HatSploit Framework Terms of Service? [y/n] ")
-            if agree.lower() not in ['y', 'yes']:
+            if agree[0].lower() not in ['y', 'yes']:
                 return False
 
             open(self.root_path + '.accepted', 'w').close()
