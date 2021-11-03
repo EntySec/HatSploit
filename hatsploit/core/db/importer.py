@@ -108,11 +108,12 @@ class Importer:
             raise self.exceptions.GlobalException
         return plugin
 
-    def import_commands(self):
+    def import_main_commands(self):
+        self.import_commands(self.config.path_config['commands_path'], "commands")
+
+    def import_commands(self, path, variable):
         commands = dict()
-        command_path = os.path.split(
-            self.config.path_config['commands_path']
-        )[0]
+        command_path = os.path.split(path)[0]
         try:
             for file in os.listdir(command_path):
                 if file.endswith('py'):
@@ -120,7 +121,7 @@ class Importer:
                         command_object = self.import_command(command_path + '/' + file[:-3])
                         command_name = command_object.details['Name']
                         commands[command_name] = command_object
-                        self.local_storage.set("commands", commands)
+                        self.local_storage.set(variable, commands)
                     except Exception:
                         self.badges.print_error("Failed to load " + file[:-3] + " command!")
         except Exception:
@@ -138,6 +139,6 @@ class Importer:
                                              'plugins_database'])
 
     def import_all(self, import_database):
-        self.import_commands()
+        self.import_main_commands()
         if import_database:
             self.import_database()
