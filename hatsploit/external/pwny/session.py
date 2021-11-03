@@ -48,8 +48,21 @@ class HatSploitSession(Session, TelnetClient):
     def close(self):
         self.client.disconnect()
 
-    def send_command(self, command, output=False, timeout=10, end='\n'):
-        output = self.client.send_command(command + end, output, timeout)
+    def send_command(self, command, output=False, timeout=10):
+        command = command.split()
+
+        cmd = command[0]
+        args = ""
+
+        if len(command) > 1:
+            args = ' '.join(command[1:])
+
+        command_data = str({
+            'cmd': cmd,
+            'args': args
+        })
+
+        output = self.client.send_command(command_data, output, timeout)
         return output
 
     def interact(self):
