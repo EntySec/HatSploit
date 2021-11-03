@@ -37,8 +37,10 @@ class Commands:
     def load_commands(self, path):
         return self.importer.import_commands(path)
 
-    def execute_command(self, commands, arguments, handler):
+    def execute_command(self, commands, handler):
         if commands:
+            arguments = commands[1:]
+
             if not self.execute.execute_builtin_method(commands, arguments):
                 if not self.execute.execute_custom_command(commands, arguments, handler):
                     self.badges.print_error("Unrecognized command: " + commands[0] + "!")
