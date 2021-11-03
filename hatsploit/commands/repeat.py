@@ -24,8 +24,8 @@ class HatSploitCommand(Command):
     }
 
     def run(self, argc, argv):
-        times = argv[0]
-        command = argv[1]
+        times = argv[1]
+        command = argv[2]
 
         if times.isdigit():
             commands = command.split()
