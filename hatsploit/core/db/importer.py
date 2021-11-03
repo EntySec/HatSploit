@@ -109,9 +109,10 @@ class Importer:
         return plugin
 
     def import_main_commands(self):
-        self.import_commands(self.config.path_config['commands_path'], "commands")
+        self.import_commands(self.config.path_config['commands_path'])
+        self.local_storage.set("commands", commands)
 
-    def import_commands(self, path, variable):
+    def import_commands(self, path):
         commands = dict()
         command_path = os.path.split(path)[0]
         try:
@@ -121,7 +122,7 @@ class Importer:
                         command_object = self.import_command(command_path + '/' + file[:-3])
                         command_name = command_object.details['Name']
                         commands[command_name] = command_object
-                        self.local_storage.set(variable, commands)
+                        return commands
                     except Exception:
                         self.badges.print_error("Failed to load " + file[:-3] + " command!")
         except Exception:
