@@ -143,14 +143,21 @@ class HatSploitCommand(Command, HatVenom):
                                 current_payload.details['Architecture'],
                                 payload_data)
 
+                        args, session = None, None
+                        if hasattr("payload", current_payload):
+                            if 'Args' in current_payload.payload:
+                                args = current_payload.payload['Args']
+                            if 'Session' in current_payload.payload:
+                                session = cirrent_payload.payload['Session']
+
                         current_module.payload['Category'] = current_payload.details['Category']
                         current_module.payload['Platform'] = current_payload.details['Platform']
                         current_module.payload['Type'] = current_payload.details['Type']
 
                         current_module.payload['Raw'] = raw
                         current_module.payload['Payload'] = payload
-                        current_module.payload['Args'] = None
-                        current_module.payload['Session'] = None
+                        current_module.payload['Args'] = args 
+                        current_module.payload['Session'] = session
 
                     self.entry_to_module(argc, argv, current_module)
                 except Exception as e:
