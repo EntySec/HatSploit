@@ -30,10 +30,8 @@ import sys
 
 from hatsploit.core.base.exceptions import Exceptions
 from hatsploit.core.base.execute import Execute
-from hatsploit.core.base.io import IO
 from hatsploit.core.base.loader import Loader
 from hatsploit.core.cli.badges import Badges
-from hatsploit.core.cli.colors import Colors
 from hatsploit.core.utils.ui.banner import Banner
 from hatsploit.core.utils.ui.tip import Tip
 from hatsploit.lib.config import Config
@@ -44,7 +42,6 @@ from hatsploit.lib.storage import LocalStorage
 
 
 class Console:
-    io = IO()
     tip = Tip()
     jobs = Jobs()
     execute = Execute()
@@ -52,7 +49,6 @@ class Console:
     config = Config()
     badges = Badges()
     banner = Banner()
-    colors = Colors()
     local_storage = LocalStorage()
     modules = Modules()
     payloads = Payloads()
@@ -80,18 +76,18 @@ class Console:
         while True:
             try:
                 if not self.modules.check_current_module():
-                    prompt = f'{self.colors.END}({self.prompt})> '
+                    prompt = f'%end({self.prompt})> '
                 else:
                     module = self.modules.get_current_module_name()
                     name = self.modules.get_current_module_object().details['Name']
 
-                    prompt = f'{self.colors.END}({self.prompt}: {module.split("/")[0]}: {self.colors.RED}{name}{self.colors.END})> '
-                commands, arguments = self.io.input(prompt)
+                    prompt = f'%end({self.prompt}: {module.split("/")[0]}: %red{name}%end)> '
+                commands = self.badges.input_empty(prompt)
 
                 self.add_handler_options()
 
                 self.jobs.stop_dead()
-                self.execute.execute_command(commands, arguments)
+                self.execute.execute_command(commands)
 
                 if self.local_storage.get("history"):
                     readline.write_history_file(self.history)
@@ -120,7 +116,7 @@ class Console:
         version = self.config.core_config['details']['version']
         codename = self.config.core_config['details']['codename']
         if self.config.core_config['console']['clear']:
-            self.badges.print_empty(self.colors.CLEAR, end='')
+            self.badges.print_empty("%clear", end='')
 
         if self.config.core_config['console']['banner']:
             self.banner.print_random_banner()
@@ -145,14 +141,14 @@ class Console:
                     modules_total += len(modules[database])
 
             header = ""
-            header += f"{self.colors.END}\n"
-            if codename and not codename.isspace():
-                header += f"    --=( {self.colors.YELLOW}HatSploit Framework {version} {codename}{self.colors.END}\n"
+            header += "%end\n"
+            if not codename.strip():
+                header += f"    --=( %yellowHatSploit Framework {version} {codename}%end\n"
             else:
-                header += f"    --=( {self.colors.YELLOW}HatSploit Framework {version}{self.colors.END}\n"
-            header += f"--==--=( Developed by EntySec ({self.colors.LINE}https://entysec.netlify.app/{self.colors.END})\n"
+                header += f"    --=( %yellowHatSploit Framework {version}%end\n"
+            header += "--==--=( Developed by EntySec (%linehttps://entysec.netlify.app/%end)\n"
             header += f"    --=( {modules_total} modules | {payloads_total} payloads | {plugins_total} plugins\n"
-            header += f"{self.colors.END}"
+            header += "%end"
             self.badges.print_empty(header)
 
         if self.config.core_config['console']['tip']:
