@@ -5,7 +5,7 @@
 # Current source: https://github.com/EntySec/HatSploit
 #
 
-from hatsploit.core.base.execute import Execute
+from hatsploit.lib.execute import Execute
 from hatsploit.lib.command import Command
 
 
@@ -29,15 +29,8 @@ class HatSploitCommand(Command):
 
         if times.isdigit():
             commands = command.split()
-            arguments = list()
-
-            if commands:
-                command = command.replace(commands[0], "", 1).strip()
-
-                for arg in command.split():
-                    arguments.append(arg)
 
             for _ in range(int(times)):
-                self.execute.execute_command(commands, arguments)
+                self.execute.execute_command(commands)
         else:
             self.print_error("Times expected!")
