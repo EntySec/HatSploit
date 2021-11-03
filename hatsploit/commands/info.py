@@ -64,12 +64,12 @@ class HatSploitCommand(Command):
 
     def run(self, argc, argv):
         if self.modules.check_current_module():
-            if argc > 0:
-                self.get_module_information(argv[0])
+            if argc > 1:
+                self.get_module_information(argv[1])
             else:
                 self.format_module_information(self.modules.get_current_module_object().details)
         else:
-            if argc > 0:
-                self.get_module_information(argv[0])
+            if argc > 1:
+                self.get_module_information(argv[1])
             else:
                 self.print_usage(self.details['Usage'])
