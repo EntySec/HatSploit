@@ -97,7 +97,7 @@ class Execute:
         return False
 
     def execute_core_command(self, commands, arguments):
-        return self.execute_custom_command(self.local_storage.get("commands"))
+        return self.execute_custom_command(commands, arguments, self.local_storage.get("commands"))
 
     def execute_module_command(self, commands, arguments):
         if self.modules.check_current_module():
