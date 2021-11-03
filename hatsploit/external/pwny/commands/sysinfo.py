@@ -21,7 +21,13 @@ class HatSploitCommand(Command):
     }
 
     def run(self, argc, argv):
-        output = self.device.send_command({'cmd':'sysinfo','arg':''}, output=True, end='')
+        output = self.session.send_command(
+            {
+                'cmd': 'sysinfo',
+                'arg': ''
+            },
+            output=True, end=''
+        )
 
         if output:
             self.print_empty(output)
