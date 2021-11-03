@@ -24,5 +24,5 @@ class HatSploitCommand(Command):
     }
 
     def run(self, argc, argv):
-        command = self.format_commands(argv[0])
+        command = self.format_commands(argv[1])
         self.execute.execute_system(command)
