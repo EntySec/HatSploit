@@ -130,7 +130,7 @@ class HatSploitCommand(Command):
             self.print_warning("No informations available!")
 
     def run(self, argc, argv):
-        information = argv[0]
+        information = argv[1]
 
         options = self.modules.check_current_module()
         payloads = self.local_storage.get("payloads")
