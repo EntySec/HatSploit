@@ -63,7 +63,7 @@ class Console:
         if os.path.exists(self.config.path_config['root_path']):
             return True
         self.badges.print_error("HatSploit is not installed!")
-        self.badges.print_information("Consider running ./install.sh")
+        self.badges.print_information("Consider running installation.")
         return False
 
     def start_hsf(self):
