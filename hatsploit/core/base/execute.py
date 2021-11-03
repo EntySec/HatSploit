@@ -50,18 +50,6 @@ class Execute:
                         if not self.execute_plugin_command(commands):
                             self.badges.print_error("Unrecognized command: " + commands[0] + "!")
 
-    def execute_from_file(self, input_file):
-        if os.path.exists(input_file):
-            file = open(input_file, 'r')
-            file_text = file.read().split('\n')
-            file.close()
-
-            for line in file_text:
-                commands = self.fmt.format_commands(line)
-
-                self.jobs.stop_dead()
-                self.execute_command(commands)
-
     def execute_builtin_method(self, commands):
         if commands[0][0] == '#':
             return True
