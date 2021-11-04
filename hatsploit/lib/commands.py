@@ -24,14 +24,20 @@
 # SOFTWARE.
 #
 
+from hatsploit.lib.storage import LocalStorage
+
 from hatsploit.core.db.importer import Importer
 from hatsploit.core.cli.badges import Badges
+from hatsploit.core.cli.tables import Tables
 from hatsploit.core.base.execute import Execute
 
 
 class Commands:
+    local_storage = LocalStorage()
+
     importer = Importer()
     badges = Badges()
+    tables = Tables()
     execute = Execute()
 
     def load_commands(self, path):
@@ -45,3 +51,44 @@ class Commands:
             if not self.execute.execute_builtin_method(commands):
                 if not self.execute.execute_custom_command(commands, handler):
                     self.badges.print_error("Unrecognized command: " + commands[0] + "!")
+
+    def show_custom_commands(self, handler):
+        commands_data = dict()
+        headers = ("Command", "Description")
+        commands = handler
+
+        for command in sorted(commands.keys()):
+            label = commands[command].details['Category']
+            commands_data[label] = list()
+        for command in sorted(commands.keys()):
+            label = commands[command].details['Category']
+            commands_data[label].append((command, commands[command].details['Description']))
+        for label in sorted(commands_data.keys()):
+            self.tables.print_table(label.title() + " Commands", headers, *commands_data[label])
+
+    def show_commands(self):
+        self.show_custom_commands(self.local_storage.get("commands"))
+
+    def show_plugin_commands(self):
+        for plugin in self.local_storage.get("loaded_plugins").keys():
+            loaded_plugin = self.local_storage.get("loaded_plugins")[plugin]
+            if hasattr(loaded_plugin, "commands"):
+                commands_data = dict()
+                headers = ("Command", "Description")
+                commands = loaded_plugin.commands
+                for label in sorted(commands.keys()):
+                    commands_data[label] = list()
+                    for command in sorted(commands[label].keys()):
+                        commands_data[label].append((command, commands[label][command]['Description']))
+                for label in sorted(commands_data.keys()):
+                    self.tables.print_table(label.title() + " Commands", headers, *commands_data[label])
+
+    def show_module_commands(self):
+        current_module = self.modules.get_current_module_object()
+        if hasattr(current_module, "commands"):
+            commands_data = list()
+            headers = ("Command", "Description")
+            commands = current_module.commands
+            for command in sorted(commands.keys()):
+                commands_data.append((command, commands[command]['Description']))
+            self.print_table("Module Commands", headers, *commands_data)
