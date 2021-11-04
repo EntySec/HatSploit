@@ -68,7 +68,7 @@ class Commands:
         for label in sorted(commands_data.keys()):
             self.tables.print_table(label.title() + " Commands", headers, *commands_data[label])
 
-    def show_commands(self):
+    def show_interface_commands(self):
         self.show_custom_commands(self.local_storage.get("commands"))
 
     def show_plugin_commands(self):
