@@ -36,7 +36,7 @@ class HatSploitSession(Session, TelnetClient):
     config = Config()
     commands = Commands()
 
-    pwny = config.path_config['external_path'] + 'pwny/commands'
+    pwny = config.path_config['external_path'] + 'pwny/commands/'
     client = None
 
     details = {
@@ -74,7 +74,7 @@ class HatSploitSession(Session, TelnetClient):
         for command in pwny.keys():
             pwny[command].session = self
 
-        self.print_information(f"Loaded {len(commands)} commands.")
+        self.print_information(f"Loaded {len(pwny)} commands.")
         self.print_empty()
 
         while True:
