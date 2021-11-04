@@ -84,4 +84,8 @@ class HatSploitSession(Session, TelnetClient):
                 if commands[0] == 'quit':
                     break
 
+                elif commands[0] == 'help':
+                    self.commands.show_commands(pwny)
+                    continue
+
                 self.commands.execute_custom_command(commands, pwny)
