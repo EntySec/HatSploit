@@ -116,7 +116,7 @@ class TelnetSocket:
 
                     return output
                 except Exception:
-                    self.badges.print_warning("Timeout waiting for response.")
+                    self.badges.print_error("Socket is not connected!")
             return None
         self.badges.print_error("Socket is not connected!")
         return None
