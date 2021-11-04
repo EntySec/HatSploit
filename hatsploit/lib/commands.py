@@ -25,6 +25,7 @@
 #
 
 from hatsploit.lib.storage import LocalStorage
+from hatsploit.lib.modules import Modules
 
 from hatsploit.core.db.importer import Importer
 from hatsploit.core.cli.badges import Badges
@@ -34,6 +35,7 @@ from hatsploit.core.base.execute import Execute
 
 class Commands:
     local_storage = LocalStorage()
+    modules = Modules()
 
     importer = Importer()
     badges = Badges()
@@ -91,4 +93,4 @@ class Commands:
             commands = current_module.commands
             for command in sorted(commands.keys()):
                 commands_data.append((command, commands[command]['Description']))
-            self.print_table("Module Commands", headers, *commands_data)
+            self.tables.print_table("Module Commands", headers, *commands_data)
