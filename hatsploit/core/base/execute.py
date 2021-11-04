@@ -33,7 +33,6 @@ from hatsploit.core.cli.fmt import FMT
 from hatsploit.lib.jobs import Jobs
 from hatsploit.lib.modules import Modules
 from hatsploit.lib.storage import LocalStorage
-from hatsploit.lib.commands import Commands
 
 
 class Execute:
@@ -54,13 +53,6 @@ class Execute:
 
     def execute_builtin_method(self, commands):
         if commands[0][0] == '#':
-            return True
-        if commands[0][0] == '?':
-            self.commands.show_interface_commands()
-            if self.modules.check_current_module():
-                self.commands.show_module_commands()
-            if self.local_storage.get("loaded_plugins"):
-                self.commands.show_plugin_commands()
             return True
         if commands[0][0] == '!':
             if len(commands[0]) > 1:
