@@ -69,7 +69,7 @@ class HatSploitSession(Session, TelnetClient):
 
     def interact(self):
         self.print_process("Loading Pwny commands...")
-        pwny = self.commands.load_commands(self.pwny_commands)
+        pwny = self.commands.load_commands(self.pwny)
 
         for command in pwny.keys():
             pwny[command].session = self
