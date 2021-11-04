@@ -95,7 +95,6 @@ class Sessions:
         if self.check_exist(session_id):
             self.badges.print_process("Interacting with session " + str(session_id) + "...")
             self.badges.print_success("Interactive connection spawned!")
-            self.badges.print_information("Type %greenquit%end to stop interaction.\n")
 
             sessions[int(session_id)]['object'].interact()
         else:
