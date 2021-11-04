@@ -148,7 +148,7 @@ class HatSploitCommand(Command, HatVenom):
                             if 'Args' in current_payload.payload:
                                 args = current_payload.payload['Args']
                             if 'Session' in current_payload.payload:
-                                session = cirrent_payload.payload['Session']
+                                session = current_payload.payload['Session']
 
                         current_module.payload['Category'] = current_payload.details['Category']
                         current_module.payload['Platform'] = current_payload.details['Platform']
