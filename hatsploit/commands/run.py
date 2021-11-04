@@ -144,7 +144,7 @@ class HatSploitCommand(Command, HatVenom):
                                 payload_data)
 
                         args, session = None, None
-                        if hasattr("payload", current_payload):
+                        if hasattr(current_payload, "payload"):
                             if 'Args' in current_payload.payload:
                                 args = current_payload.payload['Args']
                             if 'Session' in current_payload.payload:
