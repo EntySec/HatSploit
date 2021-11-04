@@ -78,7 +78,7 @@ class HatSploitSession(Session, TelnetClient):
         self.print_empty()
 
         while True:
-            commands = self.input_empty('pwny > ')
+            commands = self.input_empty('%linepwny%end > ')
 
             if commands:
                 if commands[0] == 'quit':
