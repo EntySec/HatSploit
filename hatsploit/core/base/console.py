@@ -169,7 +169,7 @@ class Console:
         self.launch_shell()
         self.launch_menu()
 
-    def script(self, file, do_shell=False):
+    def script(self, input_file, do_shell=False):
         self.start_hsf()
         self.launch_shell()
 
