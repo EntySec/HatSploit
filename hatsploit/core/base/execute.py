@@ -33,6 +33,7 @@ from hatsploit.core.cli.fmt import FMT
 from hatsploit.lib.jobs import Jobs
 from hatsploit.lib.modules import Modules
 from hatsploit.lib.storage import LocalStorage
+from hatsploit.lib.show import Show
 
 
 class Execute:
@@ -41,7 +42,7 @@ class Execute:
     badges = Badges()
     local_storage = LocalStorage()
     modules = Modules()
-    commands = Commands()
+    show = Show()
 
     def execute_command(self, commands):
         if commands:
@@ -53,6 +54,9 @@ class Execute:
 
     def execute_builtin_method(self, commands):
         if commands[0][0] == '#':
+            return True
+        if commands[0][0] == '?':
+            self.show.show_all_commands()
             return True
         if commands[0][0] == '!':
             if len(commands[0]) > 1:
