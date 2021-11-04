@@ -94,3 +94,10 @@ class Commands:
             for command in sorted(commands.keys()):
                 commands_data.append((command, commands[command]['Description']))
             self.tables.print_table("Module Commands", headers, *commands_data)
+
+    def show_all_commands(self):
+        self.show_interface_commands()
+        if self.modules.check_current_module():
+            self.show_module_commands()
+        if self.local_storage.get("loaded_plugins"):
+            self.show_plugin_commands()
