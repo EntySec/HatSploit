@@ -24,6 +24,8 @@
 # SOFTWARE.
 #
 
+import json
+
 from hatsploit.lib.session import Session
 from hatsploit.lib.config import Config
 from hatsploit.lib.commands import Commands
@@ -57,12 +59,12 @@ class HatSploitSession(Session, TelnetClient):
         if len(command) > 1:
             args = ' '.join(command[1:])
 
-        command_data = str({
+        command_data = json.dumps({
             'cmd': cmd,
             'args': args
         })
 
-        output = self.client.send_command(command_data + '\n', output, timeout)
+        output = self.client.send_command(command_data, output, timeout)
         return output
 
     def interact(self):
