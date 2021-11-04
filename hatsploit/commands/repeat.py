@@ -5,12 +5,12 @@
 # Current source: https://github.com/EntySec/HatSploit
 #
 
-from hatsploit.lib.execute import Execute
+from hatsploit.lib.commands import Commands
 from hatsploit.lib.command import Command
 
 
 class HatSploitCommand(Command):
-    execute = Execute()
+    commands = Commands()
 
     details = {
         'Category': "developer",
@@ -31,6 +31,6 @@ class HatSploitCommand(Command):
             commands = command.split()
 
             for _ in range(int(times)):
-                self.execute.execute_command(commands)
+                self.commands.execute_command(commands)
         else:
             self.print_error("Times expected!")
