@@ -10,7 +10,7 @@ from hatsploit.lib.jobs import Jobs
 from hatsploit.lib.modules import Modules
 
 
-class HatSploitCommand(Command, HatVenom):
+class HatSploitCommand(Command):
     modules = Modules()
     jobs = Jobs()
 
@@ -42,7 +42,7 @@ class HatSploitCommand(Command, HatVenom):
                 self.print_process("Running module as a background job...")
                 job_id = self.jobs.create_job(current_module.details['Name'],
                                               current_module.details['Module'],
-                                              self.modules.run_current_module())
+                                              self.modules.run_current_module)
                 self.print_information("Module started as a background job " + str(job_id) + ".")
 
             else:
