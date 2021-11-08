@@ -255,7 +255,7 @@ class Show:
                 sessions_data.append((session_id, session_platform, session_type, host, port))
             self.tables.print_table("Opened Sessions", headers, *sessions_data)
         else:
-            self.tables.print_warning("No opened sessions available.")
+            self.badges.print_warning("No opened sessions available.")
 
     def show_module_information(self, current_module_details):
         current_module = current_module_details
