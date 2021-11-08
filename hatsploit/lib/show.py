@@ -29,6 +29,7 @@ from hatsploit.lib.storage import LocalStorage
 from hatsploit.lib.modules import Modules
 from hatsploit.lib.payloads import Payloads
 
+from hatsploit.core.cli.colors import Colors
 from hatsploit.core.cli.badges import Badges
 from hatsploit.core.cli.tables import Tables
 
@@ -39,6 +40,7 @@ class Show:
     modules = Modules()
     payloads = Payloads()
 
+    colors = Colors()
     badges = Badges()
     tables = Tables()
 
@@ -181,6 +183,61 @@ class Show:
                                       payloads[payload]['Rank'], payloads[payload]['Description']))
                 number += 1
             self.tables.print_table("Payloads (" + database + ")", headers, *payloads_data)
+
+    def show_search_plugins(self, keyword):
+        all_plugins = self.local_storage.get("plugins")
+        if all_plugins:
+            headers = ("Number", "Name", "Description")
+            for database in all_plugins.keys():
+                number = 0
+                plugins_data = list()
+                plugins = all_plugins[database]
+                for plugin in sorted(plugins.keys()):
+                    if keyword in plugin or keyword in plugins[plugin]['Description']:
+                        name = plugin.replace(keyword, self.colors.RED + keyword + self.colors.END)
+                        description = plugins[plugin]['Description'].replace(keyword, self.colors.RED + keyword + self.colors.END)
+
+                        plugins_data.append((number, name, description))
+                        number += 1
+                if plugins_data:
+                    self.tables.print_table("Plugins (" + database + ")", headers, *plugins_data)
+
+    def show_search_modules(self, keyword):
+        all_modules = self.local_storage.get("modules")
+        if all_modules:
+            headers = ("Number", "Module", "Rank", "Description")
+            for database in all_modules.keys():
+                number = 0
+                modules_data = list()
+                modules = all_modules[database]
+                for module in sorted(modules.keys()):
+                    if keyword in module or keyword in modules[module]['Description']:
+                        name = module.replace(keyword, self.colors.RED + keyword + self.colors.END)
+                        description = modules[module]['Description'].replace(keyword, self.colors.RED + keyword + self.colors.END)
+
+                        modules_data.append((number, name, modules[module]['Rank'], description))
+                        number += 1
+                if modules_data:
+                    self.tables.print_table("Modules (" + database + ")", headers, *modules_data)
+
+    def search_show_payloads(self, keyword):
+        all_payloads = self.local_storage.get("payloads")
+        if all_payloads:
+            headers = ("Number", "Category", "Payload", "Rank", "Description")
+            for database in all_payloads.keys():
+                number = 0
+                payloads_data = list()
+                payloads = all_payloads[database]
+                for payload in sorted(payloads.keys()):
+                    if keyword in payload or keyword in payloads[payload]['Description']:
+                        name = payload.replace(keyword, self.colors.RED + keyword + self.colors.END)
+                        description = payloads[payload]['Description'].replace(keyword, self.colors.RED + keyword + self.colors.END)
+
+                        payloads_data.append((number, payloads[payload]['Category'], name,
+                                              payloads[payload]['Rank'], description))
+                        number += 1
+                if payloads_data:
+                    self.tables.print_table("Payloads (" + database + ")", headers, *payloads_data)
 
     def show_options(self):
         current_module = self.modules.get_current_module_object()
