@@ -7,11 +7,9 @@
 
 from hatsploit.lib.command import Command
 from hatsploit.lib.plugins import Plugins
-from hatsploit.lib.storage import LocalStorage
 
 
 class HatSploitCommand(Command):
-    local_storage = LocalStorage()
     plugins = Plugins()
 
     details = {
@@ -26,11 +24,4 @@ class HatSploitCommand(Command):
     }
 
     def run(self, argc, argv):
-        plugin = argv[1]
-        self.print_process("Unloading " + plugin + " plugin...")
-
-        if self.plugins.check_loaded(plugin):
-            self.local_storage.delete_element("loaded_plugins", plugin)
-            self.print_success("Successfully unloaded " + plugin + " plugin!")
-        else:
-            self.print_error("Plugin not loaded!")
+        self.plugins.unload_plugin(argv[1])
