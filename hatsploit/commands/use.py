@@ -24,4 +24,4 @@ class HatSploitCommand(Command):
     }
 
     def run(self, argc, argv):
-        self.module.use_module(argv[1])
+        self.modules.use_module(argv[1])
