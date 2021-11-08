@@ -434,6 +434,7 @@ class Modules:
             else:
                 try:
                     if current_payload:
+                        generator = HatVenom()
                         payload_data = current_payload.run()
 
                         if current_payload.details['Platform'] in ['macos', 'iphoneos']:
@@ -444,14 +445,14 @@ class Modules:
                             executable = 'elf'
 
                         if isinstance(payload_data, tuple):
-                            raw = self.generate('raw', 'generic', payload_data[0], payload_data[1])
-                            payload = self.generate(
+                            raw = generator.generate('raw', 'generic', payload_data[0], payload_data[1])
+                            payload = generator.generate(
                                 executable if current_payload.details['Architecture'] != 'generic' else 'raw',
                                 current_payload.details['Architecture'],
                                 payload_data[0], payload_data[1])
                         else:
-                            raw = self.generate('raw', 'generic', payload_data)
-                            payload = self.generate(
+                            raw = generator.generate('raw', 'generic', payload_data)
+                            payload = generator.generate(
                                 executable if current_payload.details['Architecture'] != 'generic' else 'raw',
                                 current_payload.details['Architecture'],
                                 payload_data)
