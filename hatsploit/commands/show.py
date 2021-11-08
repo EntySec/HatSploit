@@ -7,17 +7,19 @@
 
 from hatsploit.lib.command import Command
 from hatsploit.lib.show import Show
+from hatsploit.lib.modules import Modules
 from hatsploit.lib.storage import LocalStorage
 
 
 class HatSploitCommand(Command):
     local_storage = LocalStorage()
     show = Show()
+    modules = Modules()
 
-    options = self.modules.check_current_module()
-    payloads = self.local_storage.get("payloads")
-    modules = self.local_storage.get("modules")
-    plugins = self.local_storage.get("plugins")
+    options = modules.check_current_module()
+    payloads = local_storage.get("payloads")
+    modules = local_storage.get("modules")
+    plugins = local_storage.get("plugins")
 
     informations = list()
     if modules:
