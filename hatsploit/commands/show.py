@@ -57,6 +57,8 @@ class HatSploitCommand(Command):
         else:
             usage = "show []"
 
+        return usage
+
     def run(self, argc, argv):
         options = self.modules.check_current_module()
         payloads = self.local_storage.get("payloads")
