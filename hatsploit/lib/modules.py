@@ -65,6 +65,12 @@ class Modules:
                 return True
         return False
 
+    def check_if_already_used(self, module):
+        if self.check_current_module():
+            if module == self.get_current_module_name():
+                return True
+        return False
+
     def get_module_object(self, name):
         if self.check_exist(name):
             database = self.get_database(name)
@@ -354,3 +360,10 @@ class Modules:
             self.local_storage.add_array("current_module", '')
             self.local_storage.set_array("current_module", self.local_storage.get("current_module_number"),
                                          module_object)
+
+    def use_module(self, module):
+        if not self.check_if_already_used(module):
+            if self.check_exist(module):
+                self.add_module(module)
+            else:
+                self.badges.print_error("Invalid module!")
