@@ -8,15 +8,11 @@
 import os
 
 from hatsploit.lib.command import Command
-from hatsploit.lib.config import Config
-from hatsploit.lib.storage import GlobalStorage
+from hatsploit.lib.log import Log
 
 
 class HatSploitCommand(Command):
-    config = Config()
-
-    storage_path = config.path_config['storage_path']
-    global_storage = GlobalStorage(storage_path)
+    log = Log()
 
     usage = ""
     usage += "log <option>\n\n"
@@ -39,13 +35,8 @@ class HatSploitCommand(Command):
             if argc < 3:
                 self.print_usage(self.details['Usage'])
             else:
-                if os.access(argv[2], os.R_OK):
-                    self.global_storage.set("log", argv[2])
-                    self.global_storage.set_all()
-                    self.print_information("HatSploit log: on")
+                self.log.enable_log(argv[1])
         elif option == "off":
-            self.global_storage.set("log", None)
-            self.global_storage.set_all()
-            self.print_information("HatSploit log: off")
+            self.log.disable_log()
         else:
             self.print_usage(self.details['Usage'])
