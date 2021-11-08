@@ -29,7 +29,7 @@ class HatSploitCommand(Command):
                 if info not in informations:
                     informations.append(info)
 
-    if informations or plugins or options:
+    if informations or plugins or options or payloads:
         usage = "show ["
 
         if payloads:
@@ -41,7 +41,7 @@ class HatSploitCommand(Command):
         if options:
             usage += "options"
         else:
-            usage = usage[:-2] + "]"
+            usage = usage[:-1] + "]"
     else:
         usage = "show []"
 
@@ -58,18 +58,18 @@ class HatSploitCommand(Command):
 
     def run(self, argc, argv):
         if self.payloads:
-            if information == "payloads":
+            if argv[1] == "payloads":
                 self.show.show_payloads()
                 return
         if self.plugins:
-            if information == "plugins":
+            if argv[1] == "plugins":
                 self.show.show_plugins()
                 return
         if self.options:
-            if information == "options":
+            if argv[1] == "options":
                 self.show.show_options()
                 return
-        if information in self.informations:
-            self.show.show_modules(information)
+        if argv[1] in self.informations:
+            self.show.show_modules(argv[1])
         else:
             self.print_usage(self.details['Usage'])
