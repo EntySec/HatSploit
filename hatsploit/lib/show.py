@@ -28,6 +28,7 @@ from hatsploit.lib.jobs import Jobs
 from hatsploit.lib.storage import LocalStorage
 from hatsploit.lib.modules import Modules
 from hatsploit.lib.payloads import Payloads
+from hatsploit.lib.sessions import Sessions
 
 from hatsploit.core.cli.colors import Colors
 from hatsploit.core.cli.badges import Badges
@@ -39,6 +40,7 @@ class Show:
     local_storage = LocalStorage()
     modules = Modules()
     payloads = Payloads()
+    sessions = Sessions()
 
     colors = Colors()
     badges = Badges()
@@ -238,6 +240,22 @@ class Show:
                         number += 1
                 if payloads_data:
                     self.tables.print_table("Payloads (" + database + ")", headers, *payloads_data)
+
+    def show_sessions(self):
+        sessions = self.local_storage.get("sessions")
+        if sessions:
+            sessions_data = list()
+            headers = ("ID", "Platform", "Type", "Host", "Port")
+            for session_id in sessions.keys():
+                session_platform = sessions[session_id]['platform']
+                session_type = sessions[session_id]['type']
+                host = sessions[session_id]['host']
+                port = sessions[session_id]['port']
+
+                sessions_data.append((session_id, session_platform, session_type, host, port))
+            self.tables.print_table("Opened Sessions", headers, *sessions_data)
+        else:
+            self.tables.print_warning("No opened sessions available.")
 
     def show_module_information(self, current_module_details):
         current_module = current_module_details
