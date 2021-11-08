@@ -8,13 +8,13 @@
 from hatsploit.core.db.builder import Builder
 from hatsploit.core.db.db import DB
 from hatsploit.lib.command import Command
-from hatsploit.lib.storage import LocalStorage
+from hatsploit.lib.show import Show
 
 
 class HatSploitCommand(Command):
     db = DB()
     builder = Builder()
-    local_storage = LocalStorage()
+    show = Show()
 
     usage = ""
     usage += "module_db <option> [arguments]\n\n"
@@ -37,17 +37,7 @@ class HatSploitCommand(Command):
     def run(self, argc, argv):
         choice = argv[1]
         if choice in ['-l', '--list']:
-            if self.local_storage.get("connected_modules_databases"):
-                databases_data = list()
-                number = 0
-                headers = ("Number", "Name", "Path")
-                databases = self.local_storage.get("connected_modules_databases")
-                for name in databases.keys():
-                    databases_data.append((number, name, databases[name]['path']))
-                    number += 1
-                self.print_table("Connected Module Databases", headers, *databases_data)
-            else:
-                self.print_warning("No module database connected.")
+            self.show.show_module_databases()
         elif choice in ['-d', '--disconnect']:
             if argc < 3:
                 self.print_usage(self.details['Usage'])
