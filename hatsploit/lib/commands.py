@@ -44,6 +44,9 @@ class Commands:
     def execute_command(self, commands):
         self.execute.execute_command(commands)
 
+    def execute_system_command(self, commands):
+        self.execute.execute_system(commands)
+
     def execute_custom_command(self, commands, handler):
         if commands:
             if not self.execute.execute_builtin_method(commands):
