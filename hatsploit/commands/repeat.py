@@ -24,13 +24,10 @@ class HatSploitCommand(Command):
     }
 
     def run(self, argc, argv):
-        times = argv[1]
-        command = argv[2]
-
         if times.isdigit():
-            commands = command.split()
+            commands = self.format_commands(argv[2])
 
-            for _ in range(int(times)):
+            for _ in range(int(argv[1])):
                 self.commands.execute_command(commands)
         else:
             self.print_error("Times expected!")
