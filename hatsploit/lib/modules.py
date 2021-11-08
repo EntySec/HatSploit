@@ -473,7 +473,7 @@ class Modules:
                         current_module.payload['Args'] = args 
                         current_module.payload['Session'] = session
 
-                    self.entry_to_module(argc, argv, current_module)
+                    self.entry_to_module(current_module)
                 except Exception as e:
                     self.badges.print_error("An error occurred in module: " + str(e) + "!")
         else:
