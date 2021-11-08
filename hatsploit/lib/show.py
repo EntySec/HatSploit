@@ -239,7 +239,9 @@ class Show:
                 if payloads_data:
                     self.tables.print_table("Payloads (" + database + ")", headers, *payloads_data)
 
-    def show_module_information(self, current_module):
+    def show_module_information(self, current_module_details):
+        current_module = current_module_details
+
         authors = ""
         for author in current_module['Authors']:
             authors += author + ", "
