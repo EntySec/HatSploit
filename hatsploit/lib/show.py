@@ -27,6 +27,7 @@
 from hatsploit.lib.jobs import Jobs
 from hatsploit.lib.storage import LocalStorage
 from hatsploit.lib.modules import Modules
+from hatsploit.lib.payloads import Payloads
 
 from hatsploit.core.cli.badges import Badges
 from hatsploit.core.cli.tables import Tables
@@ -36,6 +37,7 @@ class Show:
     jobs = Jobs()
     local_storage = LocalStorage()
     modules = Modules()
+    payloads = Payloads()
 
     badges = Badges()
     tables = Tables()
@@ -140,3 +142,88 @@ class Show:
             self.tables.print_table("Connected Plugin Databases", headers, *databases_data)
         else:
             self.badges.print_warning("No plugin database connected.")
+
+    def show_plugins(self):
+        all_plugins = self.local_storage.get("plugins")
+        headers = ("Number", "Name", "Description")
+        for database in sorted(all_plugins.keys()):
+            number = 0
+            plugins_data = list()
+            plugins = all_plugins[database]
+            for plugin in sorted(plugins.keys()):
+                plugins_data.append((number, plugin, plugins[plugin]['Description']))
+                number += 1
+            self.tables.print_table("Plugins (" + database + ")", headers, *plugins_data)
+
+    def show_modules(self, information):
+        all_modules = self.local_storage.get("modules")
+        headers = ("Number", "Module", "Rank", "Description")
+        for database in sorted(all_modules.keys()):
+            number = 0
+            modules_data = list()
+            modules = all_modules[database]
+            for module in sorted(modules.keys()):
+                if information == module.split('/')[0]:
+                    modules_data.append((number, modules[module]['Module'], modules[module]['Rank'],
+                                         modules[module]['Description']))
+                    number += 1
+            self.tables.print_table(information.title() + " Modules (" + database + ")", headers, *modules_data)
+
+    def show_payloads(self):
+        all_payloads = self.local_storage.get("payloads")
+        headers = ("Number", "Category", "Payload", "Rank", "Description")
+        for database in sorted(all_payloads.keys()):
+            number = 0
+            payloads_data = list()
+            payloads = all_payloads[database]
+            for payload in sorted(payloads.keys()):
+                payloads_data.append((number, payloads[payload]['Category'], payloads[payload]['Payload'],
+                                      payloads[payload]['Rank'], payloads[payload]['Description']))
+                number += 1
+            self.tables.print_table("Payloads (" + database + ")", headers, *payloads_data)
+
+    def show_options(self):
+        current_module = self.modules.get_current_module_object()
+
+        if not hasattr(current_module, "options") and not hasattr(current_module, "payload"):
+            self.badges.print_warning("Module has no options.")
+            return
+
+        if not hasattr(current_module, "options") and not hasattr(self.payloads.get_current_payload(), "options"):
+            self.badges.print_warning("Module has no options.")
+            return
+
+        if hasattr(current_module, "options"):
+            options_data = list()
+            headers = ("Option", "Value", "Required", "Description")
+            options = current_module.options
+
+            for option in sorted(options.keys()):
+                value, required = options[option]['Value'], options[option]['Required']
+                if required:
+                    required = "yes"
+                else:
+                    required = "no"
+                if not value and value != 0:
+                    value = ""
+                options_data.append((option, value, required, options[option]['Description']))
+            self.tables.print_table("Module Options (" + current_module.details['Module'] + ")", headers, *options_data)
+
+        if hasattr(current_module, "payload"):
+            if hasattr(self.payloads.get_current_payload(), "options"):
+                options_data = list()
+                headers = ("Option", "Value", "Required", "Description")
+                current_payload = self.payloads.get_current_payload()
+                if current_payload:
+                    for option in sorted(current_payload.options.keys()):
+                        value, required = current_payload.options[option]['Value'], \
+                                          current_payload.options[option]['Required']
+                        if required:
+                            required = "yes"
+                        else:
+                            required = "no"
+                        if not value and value != 0:
+                            value = ""
+                        options_data.append((option, value, required, current_payload.options[option]['Description']))
+                    self.tables.print_table("Payload Options (" + current_payload.details['Payload'] + ")", headers,
+                                     *options_data)
