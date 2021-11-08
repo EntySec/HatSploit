@@ -222,7 +222,7 @@ class Show:
                 if modules_data:
                     self.tables.print_table("Modules (" + database + ")", headers, *modules_data)
 
-    def search_show_payloads(self, keyword):
+    def show_search_payloads(self, keyword):
         all_payloads = self.local_storage.get("payloads")
         if all_payloads:
             headers = ("Number", "Category", "Payload", "Rank", "Description")
