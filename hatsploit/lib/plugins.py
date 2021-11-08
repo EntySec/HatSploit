@@ -24,10 +24,14 @@
 # SOFTWARE.
 #
 
+from hatsploit.core.cli.badges import Badges
+from hatsploit.core.db.importer import Importer
 from hatsploit.lib.storage import LocalStorage
 
 
 class Plugins:
+    badges = Badges()
+    importer = Importer()
     local_storage = LocalStorage()
 
     def check_exist(self, name):
@@ -54,3 +58,47 @@ class Plugins:
                 if name in plugins.keys():
                     return database
         return None
+
+    def import_plugin(self, database, plugin):
+        loaded_plugins = dict()
+        plugins = self.local_storage.get("plugins")[database][plugin]
+        try:
+            loaded_plugins[plugin] = self.importer.import_plugin(plugins['Path'])
+        except Exception:
+            return None
+        return loaded_plugins
+
+    def add_plugin(self, database, plugin):
+        plugins = self.local_storage.get("plugins")[database][plugin]
+
+        plugin_object = self.import_plugin(database, plugin)
+        if plugin_object:
+            if self.local_storage.get("loaded_plugins"):
+                self.local_storage.update("loaded_plugins", plugin_object)
+            else:
+                self.local_storage.set("loaded_plugins", plugin_object)
+            self.local_storage.get("loaded_plugins")[plugin].run()
+            self.badges.print_success("Successfully loaded " + plugin + " plugin!")
+        else:
+            self.badges.print_error("Failed to load plugin!")
+
+    def load_plugin(self, plugin):
+        self.badges.print_process("Loading " + plugin + " plugin...")
+
+        if not self.check_loaded(plugin):
+            if self.check_exist(plugin):
+                database = self.get_database(plugin)
+                self.add_plugin(database, plugin)
+            else:
+                self.badges.print_error("Invalid plugin!")
+        else:
+            self.badges.print_error("Already loaded!")
+
+    def unload_plugin(self, plugin):
+        self.badges.print_process("Unloading " + plugin + " plugin...")
+
+        if self.check_loaded(plugin):
+            self.local_storage.delete_element("loaded_plugins", plugin)
+            self.badges.print_success("Successfully unloaded " + plugin + " plugin!")
+        else:
+            self.badges.print_error("Plugin not loaded!")
