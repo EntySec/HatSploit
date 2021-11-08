@@ -51,7 +51,7 @@ class HatSploitCommand(Command):
             if plugins:
                 usage += "plugins|"
             if options:
-                usage += "options"
+                usage += "options]"
             else:
                 usage = usage[:-1] + "]"
         else:
