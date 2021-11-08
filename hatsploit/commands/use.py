@@ -23,17 +23,5 @@ class HatSploitCommand(Command):
         'MinArgs': 1
     }
 
-    def check_if_already_used(self, module):
-        if self.modules.check_current_module():
-            if module == self.modules.get_current_module_name():
-                return True
-        return False
-
     def run(self, argc, argv):
-        module = argv[1]
-
-        if not self.check_if_already_used(module):
-            if self.modules.check_exist(module):
-                self.modules.add_module(module)
-            else:
-                self.print_error("Invalid module!")
+        self.module.use_module(argv[1])
