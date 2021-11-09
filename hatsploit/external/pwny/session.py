@@ -37,7 +37,9 @@ class HatSploitSession(Session, TelnetClient):
     commands = Commands()
 
     pwny = config.path_config['external_path'] + 'pwny/commands/'
+
     client = None
+    terminated = False
 
     details = {
         'Platform': "",
@@ -68,6 +70,10 @@ class HatSploitSession(Session, TelnetClient):
         return output
 
     def interact(self):
+        if self.terminated:
+            self.print_warning("Connection terminated.")
+            return
+
         self.print_process("Loading Pwny commands...")
         pwny = self.commands.load_commands(self.pwny)
 
@@ -89,3 +95,8 @@ class HatSploitSession(Session, TelnetClient):
                     continue
 
                 self.commands.execute_custom_command(commands, pwny)
+
+                if commands[0] == 'exit':
+                    self.terminated = True
+                    self.print_warning("Connection terminated.")
+                    return
