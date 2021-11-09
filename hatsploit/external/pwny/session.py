@@ -70,6 +70,8 @@ class HatSploitSession(Session, TelnetClient):
         return output
 
     def interact(self):
+        self.print_empty()
+
         if self.terminated:
             self.print_warning("Connection terminated.")
             return
