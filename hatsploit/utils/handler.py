@@ -66,7 +66,7 @@ class Handler(Handle, Blinder):
         max_size = 100000
 
         if len(payload) >= max_size and linemax not in range(min_size, max_size):
-            linemax = max_size - linemax
+            linemax = max_size
 
         return linemax
 
