@@ -41,9 +41,9 @@ class Pwny(StringTools):
         ).read()
     }
 
-    def get_payload(self, platform):
-        if platform in self.payloads:
-            return self.payloads[platform]
+    def get_payload(self, arch):
+        if arch in self.payloads:
+            return self.payloads[arch]
         return None
       
     def encode_args(self, connback_host, connback_port):
