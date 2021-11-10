@@ -61,6 +61,15 @@ class Handler(Handle, Blinder):
                 args
             )
 
+    def ensure_linemax(self, payload, linemax):
+        min_size = 10000
+        max_size = 100000
+
+        if len(payload) >= max_size and linemax not in range(min_size, max_size):
+            linemax = len(payload) - linemax
+
+        return linemax
+
     def send(self, payload, sender, args=[]):
         self.badges.print_process("Sending payload stage...")
         self.badges.print_process("Executing payload...")
@@ -96,6 +105,8 @@ class Handler(Handle, Blinder):
             if not payload['Raw']:
                 self.badges.print_error("Payload does not support raw!")
                 return False
+
+        linemax = self.ensure_linemax(payload['Payload'], linemax)
 
         if sender is not None:
             if payload['Category'].lower() == 'stager':
