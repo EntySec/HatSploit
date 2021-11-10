@@ -27,7 +27,6 @@
 import json
 
 from hatsploit.lib.config import Config
-
 from hatsploit.utils.string import StringTools
 
 
