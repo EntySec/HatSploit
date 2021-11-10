@@ -35,10 +35,16 @@ class Pwny(StringTools):
 
     stderr_plug = "2>/dev/null"
 
-    def get_payload(self):
-        return open(
+    payloads = {
+        'aarch64': open(
             self.config.path_config['data_path'] + 'pwny/pwny.aarch64', 'rb'
         ).read()
+    }
+
+    def get_payload(self, platform):
+        if platform in self.payloads:
+            return self.payloads[platform]
+        return None
       
     def encode_args(self, connback_host, connback_port):
         connback_data = json.dumps({
