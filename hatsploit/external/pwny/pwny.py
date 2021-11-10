@@ -34,11 +34,10 @@ class Pwny(StringTools):
     config = Config()
 
     stderr_plug = "2>/dev/null"
+    pwny_path = config.path_config['data_path'] + 'pwny/'
 
     payloads = {
-        'aarch64': open(
-            self.config.path_config['data_path'] + 'pwny/pwny.aarch64', 'rb'
-        ).read()
+        'aarch64': open(pwny_path + 'pwny.aarch64', 'rb').read()
     }
 
     def get_payload(self, arch):
