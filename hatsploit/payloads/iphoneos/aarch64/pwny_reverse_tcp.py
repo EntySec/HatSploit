@@ -46,8 +46,7 @@ class HatSploitPayload(Payload, Pwny):
     }
 
     payload = {
-        'Session': HatSploitSession,
-        'Args': ""
+        'Session': HatSploitSession
     }
 
     def run(self):
@@ -56,4 +55,4 @@ class HatSploitPayload(Payload, Pwny):
         payload_args = self.encode_args(connback_host, connback_port)
         self.payload['Args'] = payload_args
 
-        return self.get_payload()
+        return self.get_payload(self.details['Architecture'])
