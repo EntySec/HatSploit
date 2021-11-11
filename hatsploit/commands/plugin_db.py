@@ -8,13 +8,13 @@
 from hatsploit.core.db.builder import Builder
 from hatsploit.core.db.db import DB
 from hatsploit.lib.command import Command
-from hatsploit.lib.storage import LocalStorage
+from hatsploit.lib.show import Show
 
 
 class HatSploitCommand(Command):
     db = DB()
     builder = Builder()
-    local_storage = LocalStorage()
+    show = Show()
 
     usage = ""
     usage += "plugin_db <option> [arguments]\n\n"
@@ -35,33 +35,23 @@ class HatSploitCommand(Command):
     }
 
     def run(self, argc, argv):
-        choice = argv[0]
+        choice = argv[1]
         if choice in ['-l', '--list']:
-            if self.local_storage.get("connected_plugins_databases"):
-                databases_data = list()
-                number = 0
-                headers = ("Number", "Name", "Path")
-                databases = self.local_storage.get("connected_plugins_databases")
-                for name in databases.keys():
-                    databases_data.append((number, name, databases[name]['path']))
-                    number += 1
-                self.print_table("Connected Plugin Databases", headers, *databases_data)
-            else:
-                self.print_warning("No plugin database connected.")
+            self.show.show_plugin_databases()
         elif choice in ['-d', '--disconnect']:
-            if argc < 2:
+            if argc < 3:
                 self.print_usage(self.details['Usage'])
             else:
-                self.db.disconnect_plugins_database(argv[1])
+                self.db.disconnect_plugins_database(argv[2])
         elif choice in ['-b', '--build']:
-            if argc < 3:
+            if argc < 4:
                 self.print_usage(self.details['Usage'])
             else:
-                self.builder.build_plugins_database(argv[1], argv[2])
+                self.builder.build_plugins_database(argv[2], argv[3])
         elif choice in ['-c', '--connect']:
-            if argc < 3:
+            if argc < 4:
                 self.print_usage(self.details['Usage'])
             else:
-                self.db.connect_plugins_database(argv[1], argv[2])
+                self.db.connect_plugins_database(argv[2], argv[3])
         else:
             self.print_usage(self.details['Usage'])

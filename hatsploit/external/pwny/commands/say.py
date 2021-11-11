@@ -6,22 +6,19 @@
 #
 
 from hatsploit.lib.command import Command
-from hatsploit.lib.plugins import Plugins
 
 
 class HatSploitCommand(Command):
-    plugins = Plugins()
-
     details = {
-        'Category': "plugins",
-        'Name': "unload",
+        'Category': "misc",
+        'Name': "say",
         'Authors': [
             'Ivan Nikolsky (enty8080) - command developer'
         ],
-        'Description': "Unload specified loaded plugin.",
-        'Usage': "unload <plugin>",
+        'Description': "Say message from device.",
+        'Usage': "say <message>",
         'MinArgs': 1
     }
 
     def run(self, argc, argv):
-        self.plugins.unload_plugin(argv[1])
+        self.session.send_command(' '.join(argv))

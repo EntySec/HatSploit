@@ -6,22 +6,19 @@
 #
 
 from hatsploit.lib.command import Command
-from hatsploit.lib.plugins import Plugins
 
 
 class HatSploitCommand(Command):
-    plugins = Plugins()
-
     details = {
-        'Category': "plugins",
-        'Name': "unload",
+        'Category': "core",
+        'Name': "exit",
         'Authors': [
             'Ivan Nikolsky (enty8080) - command developer'
         ],
-        'Description': "Unload specified loaded plugin.",
-        'Usage': "unload <plugin>",
-        'MinArgs': 1
+        'Description': "Terminate Pwny session.",
+        'Usage': "exit",
+        'MinArgs': 0
     }
 
     def run(self, argc, argv):
-        self.plugins.unload_plugin(argv[1])
+        self.session.send_command(' '.join(argv))

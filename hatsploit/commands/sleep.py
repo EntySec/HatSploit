@@ -26,7 +26,7 @@ class HatSploitCommand(Command):
     }
 
     def run(self, argc, argv):
-        seconds = argv[0]
+        seconds = argv[1]
 
         if seconds.replace('.', '', 1).isdigit():
             time.sleep(float(seconds))

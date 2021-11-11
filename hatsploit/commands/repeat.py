@@ -5,12 +5,12 @@
 # Current source: https://github.com/EntySec/HatSploit
 #
 
-from hatsploit.core.base.execute import Execute
+from hatsploit.lib.commands import Commands
 from hatsploit.lib.command import Command
 
 
 class HatSploitCommand(Command):
-    execute = Execute()
+    commands = Commands()
 
     details = {
         'Category': "developer",
@@ -24,20 +24,10 @@ class HatSploitCommand(Command):
     }
 
     def run(self, argc, argv):
-        times = argv[0]
-        command = argv[1]
+        if argv[1].isdigit():
+            commands = self.format_commands(argv[2])
 
-        if times.isdigit():
-            commands = command.split()
-            arguments = list()
-
-            if commands:
-                command = command.replace(commands[0], "", 1).strip()
-
-                for arg in command.split():
-                    arguments.append(arg)
-
-            for _ in range(int(times)):
-                self.execute.execute_command(commands, arguments)
+            for _ in range(int(argv[1])):
+                self.commands.execute_command(commands)
         else:
             self.print_error("Times expected!")

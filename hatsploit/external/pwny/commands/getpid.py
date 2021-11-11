@@ -6,22 +6,24 @@
 #
 
 from hatsploit.lib.command import Command
-from hatsploit.lib.plugins import Plugins
 
 
 class HatSploitCommand(Command):
-    plugins = Plugins()
-
     details = {
-        'Category': "plugins",
-        'Name': "unload",
+        'Category': "gather",
+        'Name': "getpid",
         'Authors': [
             'Ivan Nikolsky (enty8080) - command developer'
         ],
-        'Description': "Unload specified loaded plugin.",
-        'Usage': "unload <plugin>",
-        'MinArgs': 1
+        'Description': "Get Pwny process id.",
+        'Usage': "getpid",
+        'MinArgs': 0
     }
 
     def run(self, argc, argv):
-        self.plugins.unload_plugin(argv[1])
+        output = self.session.send_command(
+            ' '.join(argv), True
+        )
+
+        if output:
+            self.print_empty(output)

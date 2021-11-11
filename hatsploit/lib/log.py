@@ -24,27 +24,28 @@
 # SOFTWARE.
 #
 
+import os
+
+from hatsploit.lib.config import Config
+from hatsploit.lib.storage import GlobalStorage
+
 from hatsploit.core.cli.badges import Badges
 
 
-class Blinder:
+class Log:
+    config = Config()
     badges = Badges()
 
-    def blinder(self, sender, args=[]):
-        self.badges.print_empty()
-        self.badges.print_information("Welcome to Blinder, blind command injection handler.")
-        self.badges.print_information("Blinder is not a reverse shell, just a blind command injection.")
-        self.badges.print_empty()
+    storage_path = config.path_config['storage_path']
+    global_storage = GlobalStorage(storage_path)
 
-        while True:
-            commands = self.badges.input_empty("%lineblinder%end > ")
-            command = ' '.join(commands)
-
-            if not command.strip() or command == 'exit':
-                return
-
-            self.badges.print_process("Sending command to target...")
-            output = sender(*args, command)
-            if output:
-                self.badges.print_empty(f'\n{output}')
-            self.badges.print_empty('')
+    def enable_log(self, filename):
+        if os.access(filename, os.R_OK):
+            self.global_storage.set("log", filename)
+            self.global_storage.set_all()
+            self.badges.print_information("HatSploit log: on")
+    
+    def disable_log(self):
+      self.global_storage.set("log", None)
+      self.global_storage.set_all()
+      self.badges.print_information("HatSploit log: off")

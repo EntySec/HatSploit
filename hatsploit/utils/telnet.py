@@ -56,6 +56,9 @@ class TelnetSocket:
 
     def interact(self, terminator='\n'):
         if self.sock.sock:
+            self.badges.print_information("Type %greenquit%end to stop interaction.")
+            self.badges.print_empty()
+
             selector = selectors.SelectSelector()
 
             selector.register(self.sock, selectors.EVENT_READ)
@@ -116,7 +119,7 @@ class TelnetSocket:
 
                     return output
                 except Exception:
-                    self.badges.print_warning("Timeout waiting for response.")
+                    self.badges.print_error("Socket is not connected!")
             return None
         self.badges.print_error("Socket is not connected!")
         return None

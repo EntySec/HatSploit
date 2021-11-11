@@ -61,6 +61,16 @@ class Handler(Handle, Blinder):
                 args
             )
 
+    def ensure_linemax(self, payload, linemax):
+        min_size = 10000
+        max_size = 100000
+
+        if len(payload) >= max_size and linemax not in range(min_size, max_size):
+            self.badges.print_process("Ensuring payload size...")
+            linemax = max_size
+
+        return linemax
+
     def send(self, payload, sender, args=[]):
         self.badges.print_process("Sending payload stage...")
         self.badges.print_process("Executing payload...")
@@ -69,7 +79,7 @@ class Handler(Handle, Blinder):
 
     def handle_session(self, host=None, port=None, sender=None, args=[],
                        delim=';', location='/tmp', timeout=10, method=None,
-                       manual=False, post="printf", linemax=100):
+                       manual=False, post="printf", linemax=100, ensure=False):
 
         module = self.modules.get_current_module_object()
         payload = module.payload
@@ -96,6 +106,9 @@ class Handler(Handle, Blinder):
             if not payload['Raw']:
                 self.badges.print_error("Payload does not support raw!")
                 return False
+
+        if ensure:
+            linemax = self.ensure_linemax(payload['Payload'], linemax)
 
         if sender is not None:
             if payload['Category'].lower() == 'stager':

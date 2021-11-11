@@ -7,12 +7,12 @@
 
 from hatsploit.lib.command import Command
 from hatsploit.lib.jobs import Jobs
-from hatsploit.lib.storage import LocalStorage
+from hatsploit.lib.show import Show
 
 
 class HatSploitCommand(Command):
     jobs = Jobs()
-    local_storage = LocalStorage()
+    show = Show()
 
     usage = ""
     usage += "jobs <option> [arguments]\n\n"
@@ -31,21 +31,14 @@ class HatSploitCommand(Command):
     }
 
     def run(self, argc, argv):
-        choice = argv[0]
+        choice = argv[1]
         if choice in ['-l', '--list']:
-            if self.local_storage.get("jobs"):
-                jobs_data = list()
-                headers = ("ID", "Name", "Module")
-                jobs = self.local_storage.get("jobs")
-                for job_id in jobs.keys():
-                    jobs_data.append((job_id, jobs[job_id]['job_name'], jobs[job_id]['module_name']))
-                self.print_table("Active Jobs", headers, *jobs_data)
-            else:
-                self.print_warning("No running jobs available.")
+            self.show.show_jobs()
+
         elif choice in ['-k', '--kill']:
-            if argc < 2:
+            if argc < 3:
                 self.print_usage(self.details['Usage'])
             else:
-                self.jobs.delete_job(argv[1])
+                self.jobs.delete_job(argv[2])
         else:
             self.print_usage(self.details['Usage'])

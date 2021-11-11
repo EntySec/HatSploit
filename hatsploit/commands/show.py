@@ -6,15 +6,15 @@
 #
 
 from hatsploit.lib.command import Command
+from hatsploit.lib.show import Show
 from hatsploit.lib.modules import Modules
-from hatsploit.lib.payloads import Payloads
 from hatsploit.lib.storage import LocalStorage
 
 
 class HatSploitCommand(Command):
     local_storage = LocalStorage()
+    show = Show()
     modules = Modules()
-    payloads = Payloads()
 
     details = {
         'Category': "core",
@@ -27,111 +27,39 @@ class HatSploitCommand(Command):
         'MinArgs': 1
     }
 
-    def show_plugins(self):
-        all_plugins = self.local_storage.get("plugins")
-        headers = ("Number", "Name", "Description")
-        for database in sorted(all_plugins.keys()):
-            number = 0
-            plugins_data = list()
-            plugins = all_plugins[database]
-            for plugin in sorted(plugins.keys()):
-                plugins_data.append((number, plugin, plugins[plugin]['Description']))
-                number += 1
-            self.print_table("Plugins (" + database + ")", headers, *plugins_data)
+    def usage(self):
+        options = self.modules.check_current_module()
+        payloads = self.local_storage.get("payloads")
+        modules = self.local_storage.get("modules")
+        plugins = self.local_storage.get("plugins")
 
-    def show_modules(self, information):
-        all_modules = self.local_storage.get("modules")
-        headers = ("Number", "Module", "Rank", "Description")
-        for database in sorted(all_modules.keys()):
-            number = 0
-            modules_data = list()
-            modules = all_modules[database]
-            for module in sorted(modules.keys()):
-                if information == module.split('/')[0]:
-                    modules_data.append((number, modules[module]['Module'], modules[module]['Rank'],
-                                         modules[module]['Description']))
-                    number += 1
-            self.print_table(information.title() + " Modules (" + database + ")", headers, *modules_data)
+        informations = list()
+        if modules:
+            for database in sorted(modules.keys()):
+                for module in sorted(modules[database].keys()):
+                    info = module.split('/')[0]
+                    if info not in informations:
+                        informations.append(info)
 
-    def show_payloads(self):
-        all_payloads = self.local_storage.get("payloads")
-        headers = ("Number", "Category", "Payload", "Rank", "Description")
-        for database in sorted(all_payloads.keys()):
-            number = 0
-            payloads_data = list()
-            payloads = all_payloads[database]
-            for payload in sorted(payloads.keys()):
-                payloads_data.append((number, payloads[payload]['Category'], payloads[payload]['Payload'],
-                                      payloads[payload]['Rank'], payloads[payload]['Description']))
-                number += 1
-            self.print_table("Payloads (" + database + ")", headers, *payloads_data)
+        if informations or plugins or options or payloads:
+            usage = "show ["
 
-    def show_options(self):
-        current_module = self.modules.get_current_module_object()
-
-        if not hasattr(current_module, "options") and not hasattr(current_module, "payload"):
-            self.badges.print_warning("Module has no options.")
-            return
-
-        if not hasattr(current_module, "options") and not hasattr(self.payloads.get_current_payload(), "options"):
-            self.badges.print_warning("Module has no options.")
-            return
-
-        if hasattr(current_module, "options"):
-            options_data = list()
-            headers = ("Option", "Value", "Required", "Description")
-            options = current_module.options
-
-            for option in sorted(options.keys()):
-                value, required = options[option]['Value'], options[option]['Required']
-                if required:
-                    required = "yes"
-                else:
-                    required = "no"
-                if not value and value != 0:
-                    value = ""
-                options_data.append((option, value, required, options[option]['Description']))
-            self.print_table("Module Options (" + current_module.details['Module'] + ")", headers, *options_data)
-
-        if hasattr(current_module, "payload"):
-            if hasattr(self.payloads.get_current_payload(), "options"):
-                options_data = list()
-                headers = ("Option", "Value", "Required", "Description")
-                current_payload = self.payloads.get_current_payload()
-                if current_payload:
-                    for option in sorted(current_payload.options.keys()):
-                        value, required = current_payload.options[option]['Value'], \
-                                          current_payload.options[option]['Required']
-                        if required:
-                            required = "yes"
-                        else:
-                            required = "no"
-                        if not value and value != 0:
-                            value = ""
-                        options_data.append((option, value, required, current_payload.options[option]['Description']))
-                    self.print_table("Payload Options (" + current_payload.details['Payload'] + ")", headers,
-                                     *options_data)
-
-    def print_usage(self, informations, plugins, options):
-        if informations or plugins or options:
-            usage = "Informations: "
-            if self.local_storage.get("payloads"):
-                usage += "payloads, "
+            if payloads:
+                usage += "payloads|"
             for information in informations:
-                usage += information + ", "
+                usage += information + "|"
             if plugins:
-                usage += "plugins, "
+                usage += "plugins|"
             if options:
-                usage += "options"
+                usage += "options]"
             else:
-                usage = usage[:-2]
-            self.print_information(usage)
+                usage = usage[:-1] + "]"
         else:
-            self.print_warning("No informations available!")
+            usage = "show []"
+
+        return usage
 
     def run(self, argc, argv):
-        information = argv[0]
-
         options = self.modules.check_current_module()
         payloads = self.local_storage.get("payloads")
         modules = self.local_storage.get("modules")
@@ -146,18 +74,18 @@ class HatSploitCommand(Command):
                         informations.append(info)
 
         if payloads:
-            if information == "payloads":
-                self.show_payloads()
+            if argv[1] == "payloads":
+                self.show.show_payloads()
                 return
         if plugins:
-            if information == "plugins":
-                self.show_plugins()
+            if argv[1] == "plugins":
+                self.show.show_plugins()
                 return
         if options:
-            if information == "options":
-                self.show_options()
+            if argv[1] == "options":
+                self.show.show_options()
                 return
-        if information in informations:
-            self.show_modules(information)
+        if argv[1] in informations:
+            self.show.show_modules(argv[1])
         else:
-            self.print_usage(informations, plugins, options)
+            self.print_usage(self.usage())

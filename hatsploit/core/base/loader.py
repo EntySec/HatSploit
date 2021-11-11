@@ -60,7 +60,7 @@ class Loader:
         self.load_update_process()
         if not self.builder.check_base_built():
             build = self.badges.input_question("Do you want to build and connect base databases? [y/n] ")
-            if build.lower() in ['y', 'yes']:
+            if build[0].lower() in ['y', 'yes']:
                 self.build = True
             else:
                 self.build = False

@@ -24,27 +24,29 @@
 # SOFTWARE.
 #
 
-from hatsploit.core.cli.badges import Badges
+import json
+
+from hatsploit.lib.config import Config
+from hatsploit.utils.string import StringTools
 
 
-class Blinder:
-    badges = Badges()
+class Pwny(StringTools):
+    config = Config()
 
-    def blinder(self, sender, args=[]):
-        self.badges.print_empty()
-        self.badges.print_information("Welcome to Blinder, blind command injection handler.")
-        self.badges.print_information("Blinder is not a reverse shell, just a blind command injection.")
-        self.badges.print_empty()
+    pwny_path = config.path_config['data_path'] + 'pwny/'
+    payloads = {
+        'aarch64': open(pwny_path + 'pwny.aarch64', 'rb').read()
+    }
 
-        while True:
-            commands = self.badges.input_empty("%lineblinder%end > ")
-            command = ' '.join(commands)
+    def get_payload(self, arch):
+        if arch in self.payloads:
+            return self.payloads[arch]
+        return None
+      
+    def encode_args(self, connback_host, connback_port):
+        connback_data = json.dumps({
+            'host': connback_host,
+            'port': connback_port
+        })
 
-            if not command.strip() or command == 'exit':
-                return
-
-            self.badges.print_process("Sending command to target...")
-            output = sender(*args, command)
-            if output:
-                self.badges.print_empty(f'\n{output}')
-            self.badges.print_empty('')
+        return self.base64_string(connback_data)

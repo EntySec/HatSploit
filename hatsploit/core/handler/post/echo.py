@@ -36,7 +36,7 @@ class Echo:
     def bytes_to_octal(self, bytes_obj):
         byte_octals = []
         for byte in bytes_obj:
-            byte_octal = '\\' + oct(byte)[2:]
+            byte_octal = '\\0' + oct(byte)[2:]
             byte_octals.append(byte_octal)
         return ''.join(byte_octals)
 

@@ -73,7 +73,7 @@ class HatSploitPlugin(Plugin):
         return "\n".join(bubble)
 
     def cowsay(self, argc, argv):
-        message = argv[0]
+        message = argv[1]
         cow = self.ask_cow(message, len(message))
         self.print_empty(cow)
 

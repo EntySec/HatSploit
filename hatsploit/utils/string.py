@@ -165,7 +165,7 @@ class StringTools:
 
     @staticmethod
     def base64_string(string):
-        base64.b64encode(string.encode())
+        string = base64.b64encode(string.encode())
         return string.decode()
 
     @staticmethod

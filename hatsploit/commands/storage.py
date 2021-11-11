@@ -38,63 +38,63 @@ class HatSploitCommand(Command):
     }
 
     def run(self, argc, argv):
-        type_of_storage = argv[0]
+        type_of_storage = argv[1]
         if type_of_storage == "global":
-            choice = argv[1]
+            choice = argv[2]
             if choice in ['-l', '--list']:
                 self.print_information("Global storage variables:")
                 for variable in self.global_storage.get_all():
                     if not str.startswith(variable, '__') and not str.endswith(variable, '__'):
                         self.print_empty("    * " + variable)
             elif choice in ['-v', '--value']:
-                if argc < 3:
-                    self.print_usage(self.details['Usage'])
-                else:
-                    if argv[2] in self.global_storage.get_all():
-                        self.print_information(argv[2] + " = " + str(
-                            self.global_storage.get(argv[2])))
-            elif choice in ['-s', '--set']:
                 if argc < 4:
                     self.print_usage(self.details['Usage'])
                 else:
-                    self.global_storage.set(argv[2], argv[3])
-            elif choice in ['-d', '--delete']:
-                if argc < 3:
+                    if argv[3] in self.global_storage.get_all():
+                        self.print_information(argv[3] + " = " + str(
+                            self.global_storage.get(argv[3])))
+            elif choice in ['-s', '--set']:
+                if argc < 5:
                     self.print_usage(self.details['Usage'])
                 else:
-                    if argv[2] in self.global_storage.get_all():
-                        self.global_storage.delete(argv[2])
+                    self.global_storage.set(argv[3], argv[4])
+            elif choice in ['-d', '--delete']:
+                if argc < 4:
+                    self.print_usage(self.details['Usage'])
+                else:
+                    if argv[3] in self.global_storage.get_all():
+                        self.global_storage.delete(argv[3])
                     else:
                         self.print_error("Invalid storage variable name!")
             else:
                 self.print_usage(self.details['Usage'])
         elif type_of_storage == "local":
-            choice = argv[1]
+            choice = argv[2]
             if choice in ['-l', '--list']:
                 self.print_information("Local storage variables:")
                 for variable in self.local_storage.get_all():
                     if not str.startswith(variable, '__') and not str.endswith(variable, '__'):
                         self.print_empty("    * " + variable)
             elif choice in ['-v', '--value']:
-                if argc < 3:
-                    self.print_usage(self.details['Usage'])
-                else:
-                    if argv[2] in self.local_storage.get_all():
-                        self.print_information(argv[2] + " = " + str(
-                            self.local_storage.get(argv[2])))
-                    else:
-                        self.print_error("Invalid storage variable name!")
-            elif choice in ['-s', '--set']:
                 if argc < 4:
                     self.print_usage(self.details['Usage'])
                 else:
-                    self.local_storage.set(argv[2], argv[3])
-            elif choice in ['-d', '--delete']:
-                if argc < 3:
+                    if argv[3] in self.local_storage.get_all():
+                        self.print_information(argv[3] + " = " + str(
+                            self.local_storage.get(argv[3])))
+                    else:
+                        self.print_error("Invalid storage variable name!")
+            elif choice in ['-s', '--set']:
+                if argc < 5:
                     self.print_usage(self.details['Usage'])
                 else:
-                    if argv[2] in self.local_storage.get_all():
-                        self.local_storage.delete(argv[2])
+                    self.local_storage.set(argv[3], argv[4])
+            elif choice in ['-d', '--delete']:
+                if argc < 4:
+                    self.print_usage(self.details['Usage'])
+                else:
+                    if argv[3] in self.local_storage.get_all():
+                        self.local_storage.delete(argv[3])
                     else:
                         self.print_error("Invalid storage variable name!")
             else:

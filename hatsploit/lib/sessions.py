@@ -42,7 +42,7 @@ class Sessions:
         if not self.local_storage.get("sessions"):
             return True
         self.badges.print_warning("You have some opened sessions.")
-        if self.badges.input_question("Exit anyway? [y/N] ").lower() in ['yes', 'y']:
+        if self.badges.input_question("Exit anyway? [y/N] ")[0].lower() in ['yes', 'y']:
             self.badges.print_process("Closing all sessions...")
             self.close_all_sessions()
             return True
@@ -95,7 +95,6 @@ class Sessions:
         if self.check_exist(session_id):
             self.badges.print_process("Interacting with session " + str(session_id) + "...")
             self.badges.print_success("Interactive connection spawned!")
-            self.badges.print_information("Type %greenquit%end to stop interaction.\n")
 
             sessions[int(session_id)]['object'].interact()
         else:

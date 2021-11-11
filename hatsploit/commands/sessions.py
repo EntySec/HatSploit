@@ -7,12 +7,12 @@
 
 from hatsploit.lib.command import Command
 from hatsploit.lib.sessions import Sessions
-from hatsploit.lib.storage import LocalStorage
+from hatsploit.lib.show import Show
 
 
 class HatSploitCommand(Command):
     sessions = Sessions()
-    local_storage = LocalStorage()
+    show = Show()
 
     usage = ""
     usage += "sessions <option> [arguments]\n\n"
@@ -32,30 +32,17 @@ class HatSploitCommand(Command):
     }
 
     def run(self, argc, argv):
-        if argv[0] in ['-l', '--list']:
-            sessions = self.local_storage.get("sessions")
-            if sessions:
-                sessions_data = list()
-                headers = ("ID", "Platform", "Type", "Host", "Port")
-                for session_id in sessions.keys():
-                    session_platform = sessions[session_id]['platform']
-                    session_type = sessions[session_id]['type']
-                    host = sessions[session_id]['host']
-                    port = sessions[session_id]['port']
-
-                    sessions_data.append((session_id, session_platform, session_type, host, port))
-                self.print_table("Opened Sessions", headers, *sessions_data)
-            else:
-                self.print_warning("No opened sessions available.")
-        elif argv[0] in ['-c', '--close']:
-            if argc < 2:
+        if argv[1] in ['-l', '--list']:
+            self.show.show_sessions()
+        elif argv[1] in ['-c', '--close']:
+            if argc < 3:
                 self.print_usage(self.details['Usage'])
             else:
-                self.sessions.close_session(argv[1])
-        elif argv[0] in ['-i', '--interact']:
-            if argc < 2:
+                self.sessions.close_session(argv[2])
+        elif argv[1] in ['-i', '--interact']:
+            if argc < 3:
                 self.print_usage(self.details['Usage'])
             else:
-                self.sessions.spawn_interactive_connection(argv[1])
+                self.sessions.spawn_interactive_connection(argv[2])
         else:
             self.print_usage(self.details['Usage'])

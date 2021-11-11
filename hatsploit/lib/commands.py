@@ -24,27 +24,34 @@
 # SOFTWARE.
 #
 
+from hatsploit.lib.show import Show
+
+from hatsploit.core.db.importer import Importer
 from hatsploit.core.cli.badges import Badges
+from hatsploit.core.base.execute import Execute
 
 
-class Blinder:
+class Commands:
+    show = Show()
+
+    importer = Importer()
     badges = Badges()
+    execute = Execute()
 
-    def blinder(self, sender, args=[]):
-        self.badges.print_empty()
-        self.badges.print_information("Welcome to Blinder, blind command injection handler.")
-        self.badges.print_information("Blinder is not a reverse shell, just a blind command injection.")
-        self.badges.print_empty()
+    def load_commands(self, path):
+        return self.importer.import_commands(path)
 
-        while True:
-            commands = self.badges.input_empty("%lineblinder%end > ")
-            command = ' '.join(commands)
+    def execute_command(self, commands):
+        self.execute.execute_command(commands)
 
-            if not command.strip() or command == 'exit':
-                return
+    def execute_system_command(self, commands):
+        self.execute.execute_system(commands)
 
-            self.badges.print_process("Sending command to target...")
-            output = sender(*args, command)
-            if output:
-                self.badges.print_empty(f'\n{output}')
-            self.badges.print_empty('')
+    def execute_custom_command(self, commands, handler):
+        if commands:
+            if not self.execute.execute_builtin_method(commands):
+                if not self.execute.execute_custom_command(commands, handler):
+                    self.badges.print_error("Unrecognized command: " + commands[0] + "!")
+
+    def show_commands(self, handler):
+        self.show.show_custom_commands(handler)

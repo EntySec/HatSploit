@@ -5,12 +5,12 @@
 # Current source: https://github.com/EntySec/HatSploit
 #
 
-from hatsploit.core.base.execute import Execute
 from hatsploit.lib.command import Command
+from hatsploit.lib.commands import Commands
 
 
 class HatSploitCommand(Command):
-    execute = Execute()
+    commands = Commands()
 
     details = {
         'Category': "developer",
@@ -24,5 +24,5 @@ class HatSploitCommand(Command):
     }
 
     def run(self, argc, argv):
-        command = self.format_commands(argv[0])
-        self.execute.execute_system(command)
+        commands = self.format_commands(argv[1])
+        self.commands.execute_system_command(commands)
