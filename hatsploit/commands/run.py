@@ -38,7 +38,7 @@ class HatSploitCommand(Command):
                 self.print_usage(self.details['Usage'])
                 return
 
-            elif argv[1] in ['-j', '--job']:
+            if argv[1] in ['-j', '--job']:
                 self.print_process("Running module as a background job...")
                 job_id = self.jobs.create_job(current_module.details['Name'],
                                               current_module.details['Module'],
