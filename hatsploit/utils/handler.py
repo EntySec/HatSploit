@@ -77,6 +77,10 @@ class Handler(Handle, Blinder):
 
         sender(*args, payload)
 
+    def open_session(self, host, port, session_platform, session_type, session):
+        session_id = self.sessions.add_session(session_platform, session_type, host, port, new_session)
+        self.badges.print_success(f"Session {str(session_id)} opened!")
+
     def handle_session(self, host=None, port=None, sender=None, args=[],
                        delim=';', location='/tmp', timeout=10, method=None,
                        manual=False, post="printf", linemax=100, ensure=False):
@@ -264,8 +268,7 @@ class Handler(Handle, Blinder):
         if not host:
             host = new_remote_host
 
-        session_id = self.sessions.add_session(session_platform, session_type, host, port, new_session)
-        self.badges.print_success(f"Session {str(session_id)} opened!")
+        self.open_session(host, port, session_platform, session_type, new_session)
         return True
 
     post = {
