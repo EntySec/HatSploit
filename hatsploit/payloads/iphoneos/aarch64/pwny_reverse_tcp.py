@@ -55,4 +55,5 @@ class HatSploitPayload(Payload, Pwny):
         payload_args = self.encode_args(connback_host, connback_port)
         self.payload['Args'] = payload_args
 
-        return self.get_payload(self.details['Architecture'])
+        return self.get_payload(self.details['Platform'],
+                                self.details['Architecture'])
