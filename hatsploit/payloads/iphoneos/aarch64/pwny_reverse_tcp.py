@@ -5,11 +5,11 @@
 # Current source: https://github.com/EntySec/HatSploit
 #
 
+from pwny import Pwny
+from pwny.session import PwnySession
+
 from hatsploit.lib.payload import Payload
 from hatsploit.utils.tcp import TCPClient
-
-from pwny import Pwny
-from pwny import HatSploitSession
 
 
 class HatSploitPayload(Payload, Pwny):
@@ -46,7 +46,7 @@ class HatSploitPayload(Payload, Pwny):
     }
 
     payload = {
-        'Session': HatSploitSession
+        'Session': PwnySession
     }
 
     def run(self):
