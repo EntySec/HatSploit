@@ -33,10 +33,10 @@ class HatSploitCommand(Command):
         modules = self.local_storage.get("modules")
         plugins = self.local_storage.get("plugins")
 
-        informations = list()
+        informations = []
         if modules:
-            for database in sorted(modules.keys()):
-                for module in sorted(modules[database].keys()):
+            for database in sorted(modules):
+                for module in sorted(modules[database]):
                     info = module.split('/')[0]
                     if info not in informations:
                         informations.append(info)
@@ -65,10 +65,10 @@ class HatSploitCommand(Command):
         modules = self.local_storage.get("modules")
         plugins = self.local_storage.get("plugins")
 
-        informations = list()
+        informations = []
         if modules:
-            for database in sorted(modules.keys()):
-                for module in sorted(modules[database].keys()):
+            for database in sorted(modules):
+                for module in sorted(modules[database]):
                     info = module.split('/')[0]
                     if info not in informations:
                         informations.append(info)

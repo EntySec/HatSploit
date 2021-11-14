@@ -59,13 +59,13 @@ class ColorsScript:
 
     def parse(self, line):
         if line and line[0:8] != "%comment" and not line.isspace():
-            for command in self.commands.keys():
+            for command in self.commands:
                 line = line.replace(command, self.commands[command])
         return line
 
     @staticmethod
     def _read_file_lines(path):
-        lines = list()
+        lines = []
         with open(path) as file:
             for line in file:
                 if line and line[0:8] != "%comment" and not line.isspace():
@@ -74,17 +74,17 @@ class ColorsScript:
 
     @staticmethod
     def _reverse_read_lines(path):
-        lines = list()
+        lines = []
         with open(path) as file:
             for line in reversed(list(file)):
                 lines.append(line)
         return lines
 
     def _reversed_find_last_commands(self, lines):
-        buffer_commands = list()
+        buffer_commands = []
         for line in lines:
             buffer_line = line
-            for command in self.commands.keys():
+            for command in self.commands:
                 if command in buffer_line:
                     buffer_line = buffer_line.replace(command, " ")
             if buffer_line.isspace():
@@ -98,7 +98,7 @@ class ColorsScript:
         line_id = -1
         for _ in range(len(lines)):
             buffer_line = lines[line_id]
-            for command in self.commands.keys():
+            for command in self.commands:
                 if command in buffer_line:
                     buffer_line = buffer_line.replace(command, " ")
             if buffer_line.isspace():
@@ -118,7 +118,7 @@ class ColorsScript:
                 buffer_commands = ""
                 for line in lines:
                     buffer_line = line
-                    for command in self.commands.keys():
+                    for command in self.commands:
                         if command in buffer_line:
                             buffer_line = buffer_line.replace(command, " ")
                     if buffer_line.isspace():
@@ -126,7 +126,7 @@ class ColorsScript:
                     else:
                         line = buffer_commands + line
                         buffer_commands = ""
-                        for command in self.commands.keys():
+                        for command in self.commands:
                             line = line.partition('%comment')[0]
                             line = line.replace(command, self.commands[command])
                         result += line

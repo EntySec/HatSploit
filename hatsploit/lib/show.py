@@ -47,17 +47,17 @@ class Show:
     tables = Tables()
 
     def show_custom_commands(self, handler):
-        commands_data = dict()
+        commands_data = {}
         headers = ("Command", "Description")
         commands = handler
 
-        for command in sorted(commands.keys()):
+        for command in sorted(commands):
             label = commands[command].details['Category']
-            commands_data[label] = list()
-        for command in sorted(commands.keys()):
+            commands_data[label] = []
+        for command in sorted(commands):
             label = commands[command].details['Category']
             commands_data[label].append((command, commands[command].details['Description']))
-        for label in sorted(commands_data.keys()):
+        for label in sorted(commands_data):
             self.tables.print_table(label.title() + " Commands", headers, *commands_data[label])
 
     def show_interface_commands(self):
@@ -67,26 +67,26 @@ class Show:
             self.badges.print_warning("No commands available.")
 
     def show_plugin_commands(self):
-        for plugin in self.local_storage.get("loaded_plugins").keys():
+        for plugin in self.local_storage.get("loaded_plugins"):
             loaded_plugin = self.local_storage.get("loaded_plugins")[plugin]
             if hasattr(loaded_plugin, "commands"):
-                commands_data = dict()
+                commands_data = {}
                 headers = ("Command", "Description")
                 commands = loaded_plugin.commands
-                for label in sorted(commands.keys()):
-                    commands_data[label] = list()
-                    for command in sorted(commands[label].keys()):
+                for label in sorted(commands):
+                    commands_data[label] = []
+                    for command in sorted(commands[label]):
                         commands_data[label].append((command, commands[label][command]['Description']))
-                for label in sorted(commands_data.keys()):
+                for label in sorted(commands_data):
                     self.tables.print_table(label.title() + " Commands", headers, *commands_data[label])
 
     def show_module_commands(self):
         current_module = self.modules.get_current_module_object()
         if hasattr(current_module, "commands"):
-            commands_data = list()
+            commands_data = []
             headers = ("Command", "Description")
             commands = current_module.commands
-            for command in sorted(commands.keys()):
+            for command in sorted(commands):
                 commands_data.append((command, commands[command]['Description']))
             self.tables.print_table("Module Commands", headers, *commands_data)
 
@@ -99,22 +99,22 @@ class Show:
 
     def show_jobs(self):
         if self.local_storage.get("jobs"):
-            jobs_data = list()
+            jobs_data = []
             headers = ("ID", "Name", "Module")
             jobs = self.local_storage.get("jobs")
-            for job_id in jobs.keys():
+            for job_id in jobs:
                 jobs_data.append((job_id, jobs[job_id]['job_name'], jobs[job_id]['module_name']))
             self.tables.print_table("Active Jobs", headers, *jobs_data)
         else:
             self.badges.print_warning("No running jobs available.")
 
     def show_module_databases(self):
-        if self.local_storage.get("connected_modules_databases"):
-            databases_data = list()
+        if self.local_storage.get("connected_module_databases"):
+            databases_data = []
             number = 0
             headers = ("Number", "Name", "Path")
-            databases = self.local_storage.get("connected_modules_databases")
-            for name in databases.keys():
+            databases = self.local_storage.get("connected_module_databases")
+            for name in databases:
                 databases_data.append((number, name, databases[name]['path']))
                 number += 1
             self.tables.print_table("Connected Module Databases", headers, *databases_data)
@@ -122,12 +122,12 @@ class Show:
             self.badges.print_warning("No module database connected.")
 
     def show_payload_databases(self):
-        if self.local_storage.get("connected_payloads_databases"):
-            databases_data = list()
+        if self.local_storage.get("connected_payload_databases"):
+            databases_data = []
             number = 0
             headers = ("Number", "Name", "Path")
             databases = self.local_storage.get("connected_payload_databases")
-            for name in databases.keys():
+            for name in databases:
                 databases_data.append((number, name, databases[name]['path']))
                 number += 1
             self.tables.print_table("Connected Payload Databases", headers, *databases_data)
@@ -135,12 +135,12 @@ class Show:
             self.badges.print_warning("No payload database connected.")
 
     def show_plugin_databases(self):
-        if self.local_storage.get("connected_plugins_databases"):
-            databases_data = list()
+        if self.local_storage.get("connected_plugin_databases"):
+            databases_data = []
             number = 0
             headers = ("Number", "Name", "Path")
-            databases = self.local_storage.get("connected_plugins_databases")
-            for name in databases.keys():
+            databases = self.local_storage.get("connected_plugin_databases")
+            for name in databases:
                 databases_data.append((number, name, databases[name]['path']))
                 number += 1
             self.tables.print_table("Connected Plugin Databases", headers, *databases_data)
@@ -150,11 +150,11 @@ class Show:
     def show_plugins(self):
         all_plugins = self.local_storage.get("plugins")
         headers = ("Number", "Name", "Description")
-        for database in sorted(all_plugins.keys()):
+        for database in sorted(all_plugins):
             number = 0
-            plugins_data = list()
+            plugins_data = []
             plugins = all_plugins[database]
-            for plugin in sorted(plugins.keys()):
+            for plugin in sorted(plugins):
                 plugins_data.append((number, plugin, plugins[plugin]['Description']))
                 number += 1
             self.tables.print_table("Plugins (" + database + ")", headers, *plugins_data)
@@ -162,11 +162,11 @@ class Show:
     def show_modules(self, information):
         all_modules = self.local_storage.get("modules")
         headers = ("Number", "Module", "Rank", "Description")
-        for database in sorted(all_modules.keys()):
+        for database in sorted(all_modules):
             number = 0
-            modules_data = list()
+            modules_data = []
             modules = all_modules[database]
-            for module in sorted(modules.keys()):
+            for module in sorted(modules):
                 if information == module.split('/')[0]:
                     modules_data.append((number, modules[module]['Module'], modules[module]['Rank'],
                                          modules[module]['Description']))
@@ -176,11 +176,11 @@ class Show:
     def show_payloads(self):
         all_payloads = self.local_storage.get("payloads")
         headers = ("Number", "Category", "Payload", "Rank", "Description")
-        for database in sorted(all_payloads.keys()):
+        for database in sorted(all_payloads):
             number = 0
-            payloads_data = list()
+            payloads_data = []
             payloads = all_payloads[database]
-            for payload in sorted(payloads.keys()):
+            for payload in sorted(payloads):
                 payloads_data.append((number, payloads[payload]['Category'], payloads[payload]['Payload'],
                                       payloads[payload]['Rank'], payloads[payload]['Description']))
                 number += 1
@@ -190,11 +190,11 @@ class Show:
         all_plugins = self.local_storage.get("plugins")
         if all_plugins:
             headers = ("Number", "Name", "Description")
-            for database in all_plugins.keys():
+            for database in all_plugins:
                 number = 0
-                plugins_data = list()
+                plugins_data = []
                 plugins = all_plugins[database]
-                for plugin in sorted(plugins.keys()):
+                for plugin in sorted(plugins):
                     if keyword in plugin or keyword in plugins[plugin]['Description']:
                         name = plugin.replace(keyword, self.colors.RED + keyword + self.colors.END)
                         description = plugins[plugin]['Description'].replace(keyword, self.colors.RED + keyword + self.colors.END)
@@ -208,11 +208,11 @@ class Show:
         all_modules = self.local_storage.get("modules")
         if all_modules:
             headers = ("Number", "Module", "Rank", "Description")
-            for database in all_modules.keys():
+            for database in all_modules:
                 number = 0
-                modules_data = list()
+                modules_data = []
                 modules = all_modules[database]
-                for module in sorted(modules.keys()):
+                for module in sorted(modules):
                     if keyword in module or keyword in modules[module]['Description']:
                         name = module.replace(keyword, self.colors.RED + keyword + self.colors.END)
                         description = modules[module]['Description'].replace(keyword, self.colors.RED + keyword + self.colors.END)
@@ -226,11 +226,11 @@ class Show:
         all_payloads = self.local_storage.get("payloads")
         if all_payloads:
             headers = ("Number", "Category", "Payload", "Rank", "Description")
-            for database in all_payloads.keys():
+            for database in all_payloads:
                 number = 0
-                payloads_data = list()
+                payloads_data = []
                 payloads = all_payloads[database]
-                for payload in sorted(payloads.keys()):
+                for payload in sorted(payloads):
                     if keyword in payload or keyword in payloads[payload]['Description']:
                         name = payload.replace(keyword, self.colors.RED + keyword + self.colors.END)
                         description = payloads[payload]['Description'].replace(keyword, self.colors.RED + keyword + self.colors.END)
@@ -244,9 +244,9 @@ class Show:
     def show_sessions(self):
         sessions = self.local_storage.get("sessions")
         if sessions:
-            sessions_data = list()
+            sessions_data = []
             headers = ("ID", "Platform", "Type", "Host", "Port")
-            for session_id in sessions.keys():
+            for session_id in sessions:
                 session_platform = sessions[session_id]['platform']
                 session_type = sessions[session_id]['type']
                 host = sessions[session_id]['host']
@@ -303,11 +303,11 @@ class Show:
             return
 
         if hasattr(current_module, "options"):
-            options_data = list()
+            options_data = []
             headers = ("Option", "Value", "Required", "Description")
             options = current_module.options
 
-            for option in sorted(options.keys()):
+            for option in sorted(options):
                 value, required = options[option]['Value'], options[option]['Required']
                 if required:
                     required = "yes"
@@ -320,11 +320,11 @@ class Show:
 
         if hasattr(current_module, "payload"):
             if hasattr(self.payloads.get_current_payload(), "options"):
-                options_data = list()
+                options_data = []
                 headers = ("Option", "Value", "Required", "Description")
                 current_payload = self.payloads.get_current_payload()
                 if current_payload:
-                    for option in sorted(current_payload.options.keys()):
+                    for option in sorted(current_payload.options):
                         value, required = current_payload.options[option]['Value'], \
                                           current_payload.options[option]['Required']
                         if required:

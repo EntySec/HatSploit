@@ -23,9 +23,9 @@
 #
 
 base_dbs:
-    modules_database_name: "modules"
-    payloads_database_name: "payloads"
-    plugins_database_name: "plugins"
-    modules_database: "modules.json"
-    payloads_database: "payloads.json"
-    plugins_database: "plugins.json"
+    module_database_name: "modules"
+    payload_database_name: "payloads"
+    plugin_database_name: "plugins"
+    module_database: "modules.json"
+    payload_database: "payloads.json"
+    plugin_database: "plugins.json"

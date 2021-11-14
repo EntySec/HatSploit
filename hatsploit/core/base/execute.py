@@ -76,7 +76,7 @@ class Execute:
 
     def execute_custom_command(self, commands, handler):
         if handler:
-            if commands[0] in handler.keys():
+            if commands[0] in handler:
                 command = handler[commands[0]]
                 if (len(commands) - 1) < command.details['MinArgs']:
                     self.badges.print_usage(command.details['Usage'])
@@ -91,7 +91,7 @@ class Execute:
     def execute_module_command(self, commands):
         if self.modules.check_current_module():
             if hasattr(self.modules.get_current_module_object(), "commands"):
-                if commands[0] in self.modules.get_current_module_object().commands.keys():
+                if commands[0] in self.modules.get_current_module_object().commands:
                     command_object = self.modules.get_current_module_object()
                     command = self.modules.get_current_module_object().commands[commands[0]]
                     self.parse_and_execute_command(commands, command, command_object)
@@ -100,10 +100,10 @@ class Execute:
 
     def execute_plugin_command(self, commands):
         if self.local_storage.get("loaded_plugins"):
-            for plugin in self.local_storage.get("loaded_plugins").keys():
+            for plugin in self.local_storage.get("loaded_plugins"):
                 if hasattr(self.local_storage.get("loaded_plugins")[plugin], "commands"):
-                    for label in self.local_storage.get("loaded_plugins")[plugin].commands.keys():
-                        if commands[0] in self.local_storage.get("loaded_plugins")[plugin].commands[label].keys():
+                    for label in self.local_storage.get("loaded_plugins")[plugin].commands:
+                        if commands[0] in self.local_storage.get("loaded_plugins")[plugin].commands[label]:
                             command_object = self.local_storage.get("loaded_plugins")[plugin]
                             command = command_object.commands[label][commands[0]]
                             self.parse_and_execute_command(commands, command, command_object)

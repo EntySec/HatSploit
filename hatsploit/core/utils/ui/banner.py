@@ -44,7 +44,7 @@ class Banner:
 
     def print_random_banner(self):
         if os.path.exists(self.config.path_config['banners_path']):
-            banners = list()
+            banners = []
             all_banners = os.listdir(self.config.path_config['banners_path'])
             for banner in all_banners:
                 banners.append(banner)

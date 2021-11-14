@@ -29,8 +29,8 @@ class Parser:
     @staticmethod
     def parse_options(options, option=None):
         if not option:
-            values = list()
-            for option_name in options.keys():
+            values = []
+            for option_name in options:
                 if option_name.lower() not in ['lhost', 'lport', 'rbport', 'payload', 'blinder']:
                     values.append(str(options[option_name]['Value']))
             if len(values) == 1:

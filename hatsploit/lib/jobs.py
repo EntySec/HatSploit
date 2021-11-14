@@ -55,7 +55,7 @@ class Jobs:
     def check_module_job(self, module_name):
         jobs = self.local_storage.get("jobs")
         if jobs:
-            for job_id in jobs.keys():
+            for job_id in jobs:
                 if jobs[job_id]['module_name'] == module_name:
                     return True
         return False
@@ -72,7 +72,7 @@ class Jobs:
 
     def stop_all_jobs(self):
         if self.local_storage.get("jobs"):
-            for job_id in list(self.local_storage.get("jobs").keys()):
+            for job_id in list(self.local_storage.get("jobs")):
                 self.delete_job(job_id)
 
     def stop_job(self, job):
@@ -93,7 +93,7 @@ class Jobs:
     def delete_job(self, job_id):
         if self.local_storage.get("jobs"):
             job_id = int(job_id)
-            if job_id in list(self.local_storage.get("jobs").keys()):
+            if job_id in list(self.local_storage.get("jobs")):
                 try:
                     self.stop_job(self.local_storage.get("jobs")[job_id]['job_process'])
                     self.local_storage.delete_element("jobs", job_id)
@@ -107,7 +107,7 @@ class Jobs:
     def create_job(self, job_name, module_name, job_function, job_arguments=[]):
         self.start_job(job_function, job_arguments)
         if not self.local_storage.get("jobs"):
-            self.local_storage.set("jobs", dict())
+            self.local_storage.set("jobs", {})
         job_id = len(self.local_storage.get("jobs"))
         job_data = {
             job_id: {

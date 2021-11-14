@@ -113,7 +113,7 @@ class Importer:
         self.local_storage.set("commands", commands)
 
     def import_commands(self, path):
-        commands = dict()
+        commands = {}
         command_path = os.path.split(path)[0]
         try:
             for file in os.listdir(command_path):
@@ -129,15 +129,15 @@ class Importer:
         return commands
 
     def import_database(self):
-        self.db.connect_modules_database(self.config.db_config['base_dbs']['modules_database_name'],
+        self.db.connect_module_database(self.config.db_config['base_dbs']['module_database_name'],
                                          self.config.path_config['db_path'] + self.config.db_config['base_dbs'][
-                                             'modules_database'])
-        self.db.connect_payloads_database(self.config.db_config['base_dbs']['payloads_database_name'],
+                                             'module_database'])
+        self.db.connect_payload_database(self.config.db_config['base_dbs']['payload_database_name'],
                                           self.config.path_config['db_path'] + self.config.db_config['base_dbs'][
-                                              'payloads_database'])
-        self.db.connect_plugins_database(self.config.db_config['base_dbs']['plugins_database_name'],
+                                              'payload_database'])
+        self.db.connect_plugin_database(self.config.db_config['base_dbs']['plugin_database_name'],
                                          self.config.path_config['db_path'] + self.config.db_config['base_dbs'][
-                                             'plugins_database'])
+                                             'plugin_database'])
 
     def import_all(self, import_database):
         self.import_main_commands()

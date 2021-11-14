@@ -39,10 +39,10 @@ class Payloads:
     def check_exist(self, name):
         all_payloads = self.local_storage.get("payloads")
         if all_payloads:
-            for database in all_payloads.keys():
+            for database in all_payloads:
                 payloads = all_payloads[database]
 
-                if name in payloads.keys():
+                if name in payloads:
                     return True
         return False
 
@@ -55,10 +55,10 @@ class Payloads:
     def get_database(self, name):
         all_payloads = self.local_storage.get("payloads")
         if all_payloads:
-            for database in all_payloads.keys():
+            for database in all_payloads:
                 payloads = all_payloads[database]
 
-                if name in payloads.keys():
+                if name in payloads:
                     return database
         return None
 
@@ -87,7 +87,7 @@ class Payloads:
 
             imported_payloads = self.local_storage.get("imported_payloads")
             if imported_payloads:
-                if current_module_name in imported_payloads.keys():
+                if current_module_name in imported_payloads:
                     imported_payloads[current_module_name].update({
                         payload_object.details['Payload']: payload_object
                     })
@@ -113,8 +113,8 @@ class Payloads:
         current_module_name = module_name
 
         if imported_payloads:
-            if current_module_name in imported_payloads.keys():
-                if name in imported_payloads[current_module_name].keys():
+            if current_module_name in imported_payloads:
+                if name in imported_payloads[current_module_name]:
                     return True
         return False
 
@@ -127,8 +127,8 @@ class Payloads:
             name = current_module_object.payload['Value']
 
             if imported_payloads:
-                if current_module_name in imported_payloads.keys():
-                    if name in imported_payloads[current_module_name].keys():
+                if current_module_name in imported_payloads:
+                    if name in imported_payloads[current_module_name]:
                         return imported_payloads[current_module_name][name]
         return None
 

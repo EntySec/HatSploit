@@ -73,10 +73,10 @@ class SessionManager(Resource):
 
         if args['list']:
             sessions = self.sessions.get_all_sessions()
-            data = dict()
+            data = {}
 
             if sessions:
-                for session in sessions.keys():
+                for session in sessions:
                     if args['list'] == 'all':
                         data.update({
                             session: {
