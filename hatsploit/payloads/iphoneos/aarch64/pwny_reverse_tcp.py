@@ -15,7 +15,7 @@ from hatsploit.utils.tcp import TCPClient
 class HatSploitPayload(Payload, Pwny):
     details = {
         'Category': "stager",
-        'Name': "iPhoneOS armle Pwny Reverse TCP",
+        'Name': "iPhoneOS aarch64 Pwny Reverse TCP",
         'Payload': "iphoneos/aarch64/pwny_reverse_tcp",
         'Authors': [
             'Ivan Nikolsky (enty8080) - payload developer'
