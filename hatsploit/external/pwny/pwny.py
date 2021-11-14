@@ -24,6 +24,7 @@
 # SOFTWARE.
 #
 
+import os
 import json
 
 from hatsploit.lib.config import Config
@@ -33,17 +34,13 @@ from hatsploit.utils.string import StringTools
 class Pwny(StringTools):
     config = Config()
 
-    pwny_path = config.path_config['external_path'] + 'pwny/resources/'
-    payloads = {
-        'iphoneos': {
-            'aarch64': open(pwny_path + 'pwny.aarch64', 'rb').read()
-        }
-    }
+    pwny = config.path_config['external_path'] + 'pwny/resources/'
 
     def get_payload(self, platform, arch):
-        if platform in self.payloads:
-            if arch in self.payloads[platform]:
-                return self.payloads[platform][arch]
+        payload = pwny + platform + '/' + arch
+
+        if os.path.exists(payload):
+            return open(payload, 'rb').read()
         return None
 
     def encode_args(self, connback_host, connback_port):
