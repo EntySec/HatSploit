@@ -24,6 +24,7 @@
 # SOFTWARE.
 #
 
+import os
 import json
 
 from hatsploit.lib.session import Session
@@ -77,8 +78,9 @@ class HatSploitSession(Session, TelnetClient):
             return
 
         self.print_process("Loading Pwny commands...")
-        pwny = self.commands.load_commands(self.pwny)
+        commands = self.pwny + self.details['Platform'].lower()
 
+        pwny = self.commands.load_commands(self.pwny)
         for command in pwny.keys():
             pwny[command].session = self
 
