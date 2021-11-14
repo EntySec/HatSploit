@@ -139,13 +139,13 @@ class Console:
             payloads_total = 0
 
             if payloads:
-                for database in payloads.keys():
+                for database in payloads:
                     payloads_total += len(payloads[database])
             if plugins:
-                for database in plugins.keys():
+                for database in plugins:
                     plugins_total += len(plugins[database])
             if modules:
-                for database in modules.keys():
+                for database in modules:
                     modules_total += len(modules[database])
 
             header = ""

@@ -99,7 +99,7 @@ class Check:
         return one_fail
 
     def check_all(self):
-        fails = list()
+        fails = []
 
         fails.append(self.check_modules())
         fails.append(self.check_payloads())

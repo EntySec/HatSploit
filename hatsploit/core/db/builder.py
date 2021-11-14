@@ -45,11 +45,11 @@ class Builder:
 
     def check_base_built(self):
         if (os.path.exists(self.config.path_config['db_path'] +
-                           self.config.db_config['base_dbs']['modules_database']) and
+                           self.config.db_config['base_dbs']['module_database']) and
                 os.path.exists(self.config.path_config['db_path'] +
-                               self.config.db_config['base_dbs']['payloads_database']) and
+                               self.config.db_config['base_dbs']['payload_database']) and
                 os.path.exists(self.config.path_config['db_path'] +
-                               self.config.db_config['base_dbs']['plugins_database'])):
+                               self.config.db_config['base_dbs']['plugin_database'])):
             return True
         return False
 
@@ -58,17 +58,17 @@ class Builder:
             if not os.path.exists(self.config.path_config['db_path']):
                 os.mkdir(self.config.path_config['db_path'])
 
-            self.build_modules_database(self.config.path_config['modules_path'],
+            self.build_module_database(self.config.path_config['modules_path'],
                                         (self.config.path_config['db_path'] +
-                                         self.config.db_config['base_dbs']['modules_database']))
-            self.build_payloads_database(self.config.path_config['payloads_path'],
+                                         self.config.db_config['base_dbs']['module_database']))
+            self.build_payload_database(self.config.path_config['payloads_path'],
                                          (self.config.path_config['db_path'] +
-                                          self.config.db_config['base_dbs']['payloads_database']))
-            self.build_plugins_database(self.config.path_config['plugins_path'],
+                                          self.config.db_config['base_dbs']['payload_database']))
+            self.build_plugin_database(self.config.path_config['plugins_path'],
                                         (self.config.path_config['db_path'] +
-                                         self.config.db_config['base_dbs']['plugins_database']))
+                                         self.config.db_config['base_dbs']['plugin_database']))
 
-    def build_payloads_database(self, input_path, output_path):
+    def build_payload_database(self, input_path, output_path):
         database_path = output_path
         database = {
             "__database__": {
@@ -107,7 +107,7 @@ class Builder:
         with open(database_path, 'w') as f:
             json.dump(database, f)
 
-    def build_modules_database(self, input_path, output_path):
+    def build_module_database(self, input_path, output_path):
         database_path = output_path
         database = {
             "__database__": {
@@ -143,7 +143,7 @@ class Builder:
         with open(database_path, 'w') as f:
             json.dump(database, f)
 
-    def build_plugins_database(self, input_path, output_path):
+    def build_plugin_database(self, input_path, output_path):
         database_path = output_path
         database = {
             "__database__": {

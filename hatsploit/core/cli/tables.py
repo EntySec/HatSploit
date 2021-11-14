@@ -46,7 +46,7 @@ class Tables:
             except TypeError:
                 return 0
 
-        fill = list()
+        fill = []
         headers_line = '    '
         headers_separator_line = '    '
         for idx, header in enumerate(headers):
