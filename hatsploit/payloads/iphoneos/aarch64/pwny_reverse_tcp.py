@@ -8,8 +8,8 @@
 from hatsploit.lib.payload import Payload
 from hatsploit.utils.tcp import TCPClient
 
-from hatsploit.external.pwny.pwny import Pwny
-from hatsploit.external.pwny.session import HatSploitSession
+from pwny import Pwny
+from pwny import HatSploitSession
 
 
 class HatSploitPayload(Payload, Pwny):
