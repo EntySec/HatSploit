@@ -42,16 +42,16 @@ class HatSploitCommand(Command):
             if argc < 3:
                 self.print_usage(self.details['Usage'])
             else:
-                self.db.disconnect_payloads_database(argv[2])
+                self.db.disconnect_payload_database(argv[2])
         elif choice in ['-b', '--build']:
             if argc < 4:
                 self.print_usage(self.details['Usage'])
             else:
-                self.builder.build_payloads_database(argv[2], argv[3])
+                self.builder.build_payload_database(argv[2], argv[3])
         elif choice in ['-c', '--connect']:
             if argc < 4:
                 self.print_usage(self.details['Usage'])
             else:
-                self.db.connect_payloads_database(argv[2], argv[3])
+                self.db.connect_payload_database(argv[2], argv[3])
         else:
             self.print_usage(self.details['Usage'])

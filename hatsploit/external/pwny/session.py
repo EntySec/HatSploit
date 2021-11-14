@@ -81,7 +81,7 @@ class HatSploitSession(Session, TelnetClient):
         commands = self.pwny + self.details['Platform'].lower()
 
         pwny = self.commands.load_commands(commands)
-        for command in pwny.keys():
+        for command in pwny:
             pwny[command].session = self
 
         self.print_information(f"Loaded {len(pwny)} commands.")

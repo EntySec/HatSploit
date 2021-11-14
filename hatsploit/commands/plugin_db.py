@@ -42,16 +42,16 @@ class HatSploitCommand(Command):
             if argc < 3:
                 self.print_usage(self.details['Usage'])
             else:
-                self.db.disconnect_plugins_database(argv[2])
+                self.db.disconnect_plugin_database(argv[2])
         elif choice in ['-b', '--build']:
             if argc < 4:
                 self.print_usage(self.details['Usage'])
             else:
-                self.builder.build_plugins_database(argv[2], argv[3])
+                self.builder.build_plugin_database(argv[2], argv[3])
         elif choice in ['-c', '--connect']:
             if argc < 4:
                 self.print_usage(self.details['Usage'])
             else:
-                self.db.connect_plugins_database(argv[2], argv[3])
+                self.db.connect_plugin_database(argv[2], argv[3])
         else:
             self.print_usage(self.details['Usage'])

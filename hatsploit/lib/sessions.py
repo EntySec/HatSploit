@@ -50,7 +50,7 @@ class Sessions:
 
     def add_session(self, session_platform, session_type, session_host, session_port, session_object):
         if not self.local_storage.get("sessions"):
-            self.local_storage.set("sessions", dict())
+            self.local_storage.set("sessions", {})
 
         session_id = 0
         while (session_id in self.local_storage.get("sessions") or
@@ -73,7 +73,7 @@ class Sessions:
     def check_exist(self, session_id, session_platform=None, session_type=None):
         sessions = self.local_storage.get("sessions")
         if sessions:
-            if int(session_id) in sessions.keys():
+            if int(session_id) in sessions:
                 if session_platform and session_type:
                     if (sessions[int(session_id)]['platform'] == session_platform and
                             sessions[int(session_id)]['type'] == session_type):

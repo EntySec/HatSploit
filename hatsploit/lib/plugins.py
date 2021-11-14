@@ -37,9 +37,9 @@ class Plugins:
     def check_exist(self, name):
         all_plugins = self.local_storage.get("plugins")
         if all_plugins:
-            for database in all_plugins.keys():
+            for database in all_plugins:
                 plugins = all_plugins[database]
-                if name in plugins.keys():
+                if name in plugins:
                     return True
         return False
 
@@ -53,14 +53,14 @@ class Plugins:
     def get_database(self, name):
         all_plugins = self.local_storage.get("plugins")
         if all_plugins:
-            for database in all_plugins.keys():
+            for database in all_plugins:
                 plugins = all_plugins[database]
-                if name in plugins.keys():
+                if name in plugins:
                     return database
         return None
 
     def import_plugin(self, database, plugin):
-        loaded_plugins = dict()
+        loaded_plugins = {}
         plugins = self.local_storage.get("plugins")[database][plugin]
         try:
             loaded_plugins[plugin] = self.importer.import_plugin(plugins['Path'])

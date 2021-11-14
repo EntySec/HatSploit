@@ -48,17 +48,17 @@ class Modules:
     def check_exist(self, name):
         all_modules = self.local_storage.get("modules")
         if all_modules:
-            for database in all_modules.keys():
+            for database in all_modules:
                 modules = all_modules[database]
 
-                if name in modules.keys():
+                if name in modules:
                     return True
         return False
 
     def check_imported(self, name):
         imported_modules = self.local_storage.get("imported_modules")
         if imported_modules:
-            if name in imported_modules.keys():
+            if name in imported_modules:
                 return True
         return False
 
@@ -100,10 +100,10 @@ class Modules:
     def get_database(self, name):
         all_modules = self.local_storage.get("modules")
         if all_modules:
-            for database in all_modules.keys():
+            for database in all_modules:
                 modules = all_modules[database]
 
-                if name in modules.keys():
+                if name in modules:
                     return database
         return None
 
@@ -273,7 +273,7 @@ class Modules:
                 return
 
             if hasattr(current_module, "options"):
-                if option in current_module.options.keys():
+                if option in current_module.options:
                     value_type = current_module.options[option]['Type']
 
                     if self.compare_types(value_type, value):
@@ -297,7 +297,7 @@ class Modules:
             if hasattr(current_module, "payload"):
                 current_payload = self.payloads.get_current_payload()
                 if current_payload and hasattr(current_payload, "options"):
-                    if option in current_payload.options.keys():
+                    if option in current_payload.options:
                         value_type = current_payload.options[option]['Type']
 
                         if self.compare_types(value_type, value, False):
@@ -318,7 +318,7 @@ class Modules:
         try:
             module_object = self.importer.import_module(modules['Path'])
             if not self.local_storage.get("imported_modules"):
-                self.local_storage.set("imported_modules", dict())
+                self.local_storage.set("imported_modules", {})
             self.local_storage.update("imported_modules", {name: module_object})
         except Exception:
             return None
@@ -372,7 +372,7 @@ class Modules:
                 self.badges.print_error("Invalid module!")
 
     def entry_to_module(self, current_module):
-        values = list()
+        values = []
 
         for option in current_module.options:
             opt = current_module.options[option]
@@ -419,13 +419,13 @@ class Modules:
             current_payload = self.payloads.get_current_payload()
             missed = ""
             if hasattr(current_module, "options"):
-                for option in current_module.options.keys():
+                for option in current_module.options:
                     current_option = current_module.options[option]
                     if not current_option['Value'] and current_option['Value'] != 0 and current_option['Required']:
                         missed += option + ', '
             if current_payload:
                 if hasattr(current_payload, "options"):
-                    for option in current_payload.options.keys():
+                    for option in current_payload.options:
                         current_option = current_payload.options[option]
                         if not current_option['Value'] and current_option['Value'] != 0 and current_option['Required']:
                             missed += option + ', '

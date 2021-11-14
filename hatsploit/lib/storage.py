@@ -33,7 +33,7 @@ class GlobalStorage:
 
     def set_all(self):
         storage_variables = json.load(open(self.file))
-        for variable in storage_variables.keys():
+        for variable in storage_variables:
             if storage_variables[variable] == "True":
                 variable_value = True
             elif storage_variables[variable] == "False":
@@ -46,7 +46,7 @@ class GlobalStorage:
 
     def get_all(self):
         storage_variables = json.load(open(self.file))
-        return storage_variables.keys()
+        return storage_variables
 
     def set(self, variable, value):
         storage_variables = json.load(open(self.file))
@@ -59,7 +59,7 @@ class GlobalStorage:
 
     def get(self, variable):
         storage_variables = json.load(open(self.file))
-        if variable in storage_variables.keys():
+        if variable in storage_variables:
             return storage_variables[variable]
         return None
 
@@ -67,7 +67,7 @@ class GlobalStorage:
         storage_variables = json.load(open(self.file))
         old_storage = storage_variables
 
-        if variable in old_storage.keys():
+        if variable in old_storage:
             new_storage = open(self.file, 'w')
 
             del old_storage[variable]
@@ -80,7 +80,7 @@ class GlobalStorage:
 class LocalStorage:
     @staticmethod
     def get_all():
-        return globals().keys()
+        return globals()
 
     @staticmethod
     def add(name):
