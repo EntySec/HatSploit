@@ -42,16 +42,17 @@ setup(name='hatsploit',
           ]
       },
       install_requires=[
-          'impacket',                                         # for manipulating SMB
-          'packaging',                                        # for parsing version number
-          'pyyaml',                                           # for parsing JSON
-          'requests',                                         # for manipulating HTTP
-          'paramiko',                                         # for manipulating SSH
-          'adb-shell',                                        # for manipulating ADB
-          'flask',                                            # for REST API
-          'flask_cors',                                       # for REST API
-          'flask_restful',                                    # for REST API
-          'hatvenom @ git+http://github.com/EntySec/HatVenom' # for generating executables
+          'impacket',                                          # for manipulating SMB
+          'packaging',                                         # for parsing version number
+          'pyyaml',                                            # for parsing JSON
+          'requests',                                          # for manipulating HTTP
+          'paramiko',                                          # for manipulating SSH
+          'adb-shell',                                         # for manipulating ADB
+          'flask',                                             # for REST API
+          'flask_cors',                                        # for REST API
+          'flask_restful',                                     # for REST API
+          'hatvenom @ git+http://github.com/EntySec/HatVenom', # for generating executables
+          'pwny @ git+http://github.com/EntySec/Pwny'          # for implementing Pwny payloads
       ],
       zip_safe=False
 )
