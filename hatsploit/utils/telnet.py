@@ -62,6 +62,7 @@ class TelnetSocket:
 
             if self.collected:
                 self.badges.print_empty(self.collected.decode(errors='ignore'), start='', end='')
+                self.collected = b""
 
             selector = selectors.SelectSelector()
 
@@ -91,6 +92,8 @@ class TelnetSocket:
     def recv(self, timeout=10):
         if self.sock.sock:
             result = self.collected
+            self.collected = b""
+
             if timeout is not None:
                 timeout = time.time() + timeout
                 while True:
@@ -130,7 +133,7 @@ class TelnetSocket:
 
     def is_terminated(self):
         try:
-           self.collected = self.sock.read_eager()
+           self.collected += self.sock.read_eager()
         except Exception:
             return True
         return False
