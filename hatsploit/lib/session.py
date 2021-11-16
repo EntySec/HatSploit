@@ -30,15 +30,8 @@ from hatsploit.core.cli.fmt import FMT
 from hatsploit.core.cli.parser import Parser
 from hatsploit.core.cli.tables import Tables
 
-from hatsploit.lib.config import Config
-
 
 class Session(FMT, Badges, Colors, Parser, Tables):
-    root_path = Config().path_config['root_path']
-    data_path = Config().path_config['data_path']
-    history_path = Config().path_config['history_path']
-    storage_path = Config().path_config['storage_path']
-
     details = {
         'Platform': "",
         'Type': ""
