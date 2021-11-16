@@ -38,7 +38,6 @@ class TelnetSocket:
         self.sock = telnetlib.Telnet()
         self.sock.sock = client
 
-        self.collected = b""
         self.badges = Badges()
 
     def disconnect(self):
@@ -59,10 +58,6 @@ class TelnetSocket:
         if self.sock.sock:
             self.badges.print_information("Type %greenquit%end to stop interaction.")
             self.badges.print_empty()
-
-            if self.collected:
-                self.badges.print_empty(self.collected.decode(errors='ignore'), start='', end='')
-                self.collected = b""
 
             selector = selectors.SelectSelector()
 
@@ -91,12 +86,6 @@ class TelnetSocket:
 
     def recv(self, timeout=10):
         if self.sock.sock:
-            if self.collected:
-                result = self.collected
-
-                self.collected = b""
-                return result
-
             result = b""
 
             if timeout is not None:
@@ -139,13 +128,6 @@ class TelnetSocket:
             return None
         self.badges.print_error("Socket is not connected!")
         return None
-
-    def is_terminated(self):
-        try:
-           self.collected += self.sock.read_very_eager()
-        except Exception:
-            return True
-        return False
 
 
 class TelnetClient:
