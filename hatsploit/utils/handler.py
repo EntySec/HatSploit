@@ -78,7 +78,7 @@ class Handler(Handle, Blinder):
         sender(*args, payload)
 
     def open_session(self, host, port, session_platform, session_type, session):
-        session_id = self.sessions.add_session(session_platform, session_type, host, port, new_session)
+        session_id = self.sessions.add_session(session_platform, session_type, host, port, session)
         self.badges.print_success(f"Session {str(session_id)} opened!")
 
     def handle_session(self, host=None, port=None, sender=None, args=[],
