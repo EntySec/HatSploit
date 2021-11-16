@@ -43,7 +43,7 @@ class HatSploitSession(Session, TelnetClient):
         self.client.disconnect()
 
     def heartbeat(self):
-        return not self.client.is_terminated()
+        return not self.client.terminated
 
     def send_command(self, command, output=False, timeout=10):
         output = self.client.send_command(command + '\n', output, timeout)
