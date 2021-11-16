@@ -127,7 +127,7 @@ class TelnetSocket:
     def is_terminated(self):
         try:
             self.sock.read_eager()
-        except Exeption:
+        except Exception:
             return True
         return False
 
