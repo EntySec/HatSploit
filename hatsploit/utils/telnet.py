@@ -110,8 +110,11 @@ class TelnetSocket:
                 while True:
                     data = self.sock.read_very_eager()
                     result += data
-                    if data:
+
+                    if data or self.collected:
+                        self.collected = b""
                         break
+
             return result
         self.badges.print_error("Socket is not connected!")
         return None
