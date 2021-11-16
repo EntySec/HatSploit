@@ -46,7 +46,7 @@ class Session(FMT, Badges, Colors, Parser, Tables):
     def heartbeat(self):
         pass
 
-    def send_command(self, command, arguments=None, timeout=10):
+    def send_command(self, command, output=False, timeout=10):
         return None
 
     def interact(self):
