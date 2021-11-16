@@ -91,7 +91,13 @@ class TelnetSocket:
 
     def recv(self, timeout=10):
         if self.sock.sock:
-            result = self.collected
+            if self.collected:
+                result = self.collected
+
+                self.collected = b""
+                return result
+
+            result = b""
 
             if timeout is not None:
                 timeout = time.time() + timeout
@@ -99,8 +105,7 @@ class TelnetSocket:
                     data = self.sock.read_very_eager()
                     result += data
 
-                    if data or self.collected:
-                        self.collected = b""
+                    if data:
                         break
 
                     if time.time() > timeout:
@@ -111,8 +116,7 @@ class TelnetSocket:
                     data = self.sock.read_very_eager()
                     result += data
 
-                    if data or self.collected:
-                        self.collected = b""
+                    if data:
                         break
 
             return result
@@ -138,7 +142,7 @@ class TelnetSocket:
 
     def is_terminated(self):
         try:
-           self.collected += self.sock.read_eager()
+           self.collected += self.sock.read_very_eager()
         except Exception:
             return True
         return False
