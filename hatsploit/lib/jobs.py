@@ -104,14 +104,11 @@ class Jobs:
         else:
             self.badges.print_error("Invalid job id!")
 
-    def create_job(self, job_name, module_name, job_function, job_arguments=[], hidden=False):
+    def create_job(self, job_name, module_name, job_function, job_arguments=[]):
         self.start_job(job_function, job_arguments)
         if not self.local_storage.get("jobs"):
             self.local_storage.set("jobs", {})
         job_id = len(self.local_storage.get("jobs"))
-
-        if hidden:
-            job_id = -job_id
 
         job_data = {
             job_id: {
