@@ -38,6 +38,7 @@ class TelnetSocket:
         self.sock = telnetlib.Telnet()
         self.sock.sock = client
 
+        self.terminated = False
         self.badges = Badges()
 
     def disconnect(self):
@@ -71,6 +72,7 @@ class TelnetSocket:
                             response = self.sock.read_eager()
                         except Exception:
                             self.badges.print_warning("Connection terminated.")
+                            self.terminated = True
                             return
                         if response:
                             self.badges.print_empty(response.decode(errors='ignore'), start='', end='')
@@ -124,7 +126,8 @@ class TelnetSocket:
 
                     return output
                 except Exception:
-                    self.badges.print_error("Socket is not connected!")
+                    self.badges.print_warning("Connection terminated.")
+                    self.terminated = True
             return None
         self.badges.print_error("Socket is not connected!")
         return None
