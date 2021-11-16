@@ -99,7 +99,7 @@ class Console:
                     prompt = f'%end({self.prompt}: {module.split("/")[0]}: %red{name}%end)> '
                 commands = self.badges.input_empty(prompt)
 
-                self.jobs.create_job("Console", "console", self.handle_events)
+                self.jobs.create_job("Console", "console", self.handle_events, hidden=True)
                 self.execute.execute_command(commands)
 
                 if self.local_storage.get("history"):
