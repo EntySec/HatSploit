@@ -92,15 +92,17 @@ class TelnetSocket:
     def recv(self, timeout=10):
         if self.sock.sock:
             result = self.collected
-            self.collected = b""
 
             if timeout is not None:
                 timeout = time.time() + timeout
                 while True:
                     data = self.sock.read_very_eager()
                     result += data
-                    if data:
+
+                    if data and not self.collected:
+                        self.collected = b""
                         break
+
                     if time.time() > timeout:
                         self.badges.print_warning("Timeout waiting for response.")
                         return None
