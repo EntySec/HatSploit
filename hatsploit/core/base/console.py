@@ -40,6 +40,7 @@ from hatsploit.core.utils.ui.tip import Tip
 
 from hatsploit.lib.config import Config
 from hatsploit.lib.jobs import Jobs
+from hatsploit.lib.sessions import Sessions
 from hatsploit.lib.modules import Modules
 from hatsploit.lib.payloads import Payloads
 from hatsploit.lib.storage import LocalStorage
@@ -58,6 +59,7 @@ class Console:
 
     config = Config()
     jobs = Jobs()
+    sessions = Sessions()
     modules = Modules()
     payloads = Payloads()
     local_storage = LocalStorage()
@@ -94,6 +96,7 @@ class Console:
 
                 self.add_handler_options()
                 self.jobs.stop_dead()
+                self.sessions.close_dead()
 
                 self.execute.execute_command(commands)
 
