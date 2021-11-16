@@ -54,6 +54,13 @@ class TelnetSocket:
         self.badges.print_error("Socket is not connected!")
         return False
 
+    def heartbeat(self):
+        try:
+            self.sock.read_eager()
+        except Exeption:
+            return False
+        return True
+
     def interact(self, terminator='\n'):
         if self.sock.sock:
             self.badges.print_information("Type %greenquit%end to stop interaction.")
