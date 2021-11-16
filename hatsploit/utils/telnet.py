@@ -99,7 +99,7 @@ class TelnetSocket:
                     data = self.sock.read_very_eager()
                     result += data
 
-                    if data and not self.collected:
+                    if data or self.collected:
                         self.collected = b""
                         break
 
