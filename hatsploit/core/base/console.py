@@ -82,6 +82,11 @@ class Console:
         except Exception:
             sys.exit(1)
 
+    def handle_events(self):
+        self.add_handler_options()
+        self.jobs.stop_dead()
+        self.sessions.close_dead()
+
     def launch_menu(self):
         while True:
             try:
@@ -94,10 +99,7 @@ class Console:
                     prompt = f'%end({self.prompt}: {module.split("/")[0]}: %red{name}%end)> '
                 commands = self.badges.input_empty(prompt)
 
-                self.add_handler_options()
-                self.jobs.stop_dead()
-                self.sessions.close_dead()
-
+                self.jobs.create_job("Console", "console", handle_events)
                 self.execute.execute_command(commands)
 
                 if self.local_storage.get("history"):
