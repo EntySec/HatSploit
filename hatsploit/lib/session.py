@@ -47,7 +47,7 @@ class Session(FMT, Badges, Colors, Parser, Tables):
         pass
 
     def send_command(self, command, arguments=None, timeout=10):
-        return True, None
+        return None
 
     def interact(self):
         pass
