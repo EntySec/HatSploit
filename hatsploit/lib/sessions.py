@@ -38,6 +38,14 @@ class Sessions:
         sessions = self.local_storage.get("sessions")
         return sessions
 
+    def close_dead(self):
+        sessions = self.local_storage.get("sessions")
+        if sessions:
+            for session in list(sessions):
+                if not sessions[session]['object'].heartbeat():
+                    self.badges.print_warning(f"Session {str(session)} is dead (no heartbeat).")
+                    self.close_session(session)
+        
     def close_sessions(self):
         if not self.local_storage.get("sessions"):
             return True
