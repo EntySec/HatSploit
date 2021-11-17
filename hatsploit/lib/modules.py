@@ -371,6 +371,13 @@ class Modules:
             else:
                 self.badges.print_error("Invalid module!")
 
+    def go_back(self):
+        if self.check_current_module():
+            self.local_storage.set("current_module_number", self.local_storage.get("current_module_number") - 1)
+            self.local_storage.set("current_module", self.local_storage.get("current_module")[0:-1])
+            if not self.local_storage.get("current_module"):
+                self.local_storage.set("current_module_number", 0)
+
     def entry_to_module(self, current_module):
         values = []
 
