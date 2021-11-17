@@ -79,12 +79,6 @@ class Console:
     def start_hsf(self):
         try:
             self.loader.load_all()
-            self.jobs.create_job(
-                "HatSploit Console",
-                None,
-                self.update_events,
-                hidden=True
-            )
         except Exception:
             sys.exit(1)
 
@@ -106,7 +100,9 @@ class Console:
                     prompt = f'%end({self.prompt}: {module.split("/")[0]}: %red{name}%end)> '
                 commands = self.badges.input_empty(prompt)
 
+                self.update_events()
                 self.execute.execute_command(commands)
+                self.update_events()
 
                 if self.local_storage.get("history"):
                     readline.write_history_file(self.history)
