@@ -111,9 +111,9 @@ class Jobs:
                 except Exception:
                     self.badges.print_error("Failed to stop job!")
             else:
-                self.badges.print_error("Invalid job id!")
+                self.badges.print_error("Invalid job given!")
         else:
-            self.badges.print_error("Invalid job id!")
+            self.badges.print_error("Invalid job given!")
 
     def create_job(self, job_name, module_name, job_function, job_arguments=[], hidden=False):
         jobs_var = "jobs"
