@@ -82,7 +82,7 @@ By accepting our terms of service, you agree that you will only use this tool fo
             return True
         return True
 
-    def launch(self, do_shell=True, script=None):
+    def launch(self, do_shell=True, script=[]):
         if self.console.check_install():
             if self.accept_terms_of_service():
                 if not script:
@@ -139,13 +139,6 @@ def main():
                 "None",
                 hsf.api.init
             )
-        if args.no_startup:
-            hsf.launch()
-        else:
-            if os.path.exists(hsf.root_path + 'startup.hsf'):
-                hsf.launch(script=hsf.root_path + 'startup.hsf')
-            else:
-                hsf.launch()
     elif args.script:
         if not os.path.exists(args.script):
             hsf.badges.print_error(f"Local file: {args.script}: does not exist!")
@@ -153,20 +146,21 @@ def main():
         if args.no_startup:
             hsf.launch(
                 do_shell=args.no_exit,
-                script=args.script
+                script=[args.script]
             )
         else:
             if os.path.exists(hsf.root_path + 'startup.hsf'):
-                hsf.launch(script=hsf.root_path + 'startup.hsf')
-            hsf.launch(
-                do_shell=args.no_exit,
-                script=args.script
-            )
+                hsf.launch(
+                    do_shell=args.no_exit,
+                    script=[hsf.root_path + 'startup.hsf', args.script]
+                )
+        sys.exit(0)
+    if args.no_startup:
+        hsf.launch()
     else:
-        if args.no_startup:
-            hsf.launch()
+        if os.path.exists(hsf.root_path + 'startup.hsf'):
+            hsf.launch(
+                script=[hsf.root_path + 'startup.hsf']
+            )
         else:
-            if os.path.exists(hsf.root_path + 'startup.hsf'):
-                hsf.launch(script=hsf.root_path + 'startup.hsf')
-            else:
-                hsf.launch()
+            hsf.launch()
