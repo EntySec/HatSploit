@@ -233,14 +233,14 @@ class Handler(Handle, Blinder):
         if payload['Type'].lower() == 'reverse_tcp':
             port = module.options['LPORT']['Value']
 
-            new_session, new_remote_host = self.listen_session(
+            new_session, remote_host = self.listen_session(
                 module.options['LHOST']['Value'],
                 module.options['LPORT']['Value'],
                 session,
                 timeout
             )
 
-            if not new_session and not new_remote_host:
+            if not new_session and not remote_host:
                 return False
 
         elif payload['Type'].lower() == 'bind_tcp':
@@ -250,7 +250,8 @@ class Handler(Handle, Blinder):
             port = module.options['RBPORT']['Value']
 
             new_session = self.connect_session(host, port, session, timeout)
-            new_remote_host = host
+            remote_host = host
+
             if not new_session:
                 return False
 
@@ -266,8 +267,8 @@ class Handler(Handle, Blinder):
         session_type = new_session.details['Type']
         new_session.details['Platform'] = session_platform
 
-        if not host:
-            host = new_remote_host
+        if method is not None:
+            host = remote_host
 
         self.open_session(host, port, session_platform, session_type, new_session)
         return True
