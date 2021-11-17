@@ -58,7 +58,8 @@ class Handler(Handle, Blinder):
                 name,
                 module_name,
                 target,
-                args
+                args,
+                True
             )
 
     def ensure_linemax(self, payload, linemax):
