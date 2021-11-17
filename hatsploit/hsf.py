@@ -158,11 +158,10 @@ def main():
         else:
             if os.path.exists(hsf.root_path + 'startup.hsf'):
                 hsf.launch(script=hsf.root_path + 'startup.hsf')
-            else:
-                hsf.launch(
-                    do_shell=args.no_exit,
-                    script=args.script
-                )
+            hsf.launch(
+                do_shell=args.no_exit,
+                script=args.script
+            )
     else:
         if args.no_startup:
             hsf.launch()
