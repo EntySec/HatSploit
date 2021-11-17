@@ -131,13 +131,15 @@ def main():
                 "HatSploit REST API",
                 "None",
                 hsf.api.init,
-                [args.port]
+                [args.port],
+                True
             )
         else:
             hsf.jobs.create_job(
                 "HatSploit REST API",
                 "None",
-                hsf.api.init
+                hsf.api.init,
+                hidden=True
             )
     elif args.script:
         if not os.path.exists(args.script):
