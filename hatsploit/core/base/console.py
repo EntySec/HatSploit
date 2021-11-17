@@ -175,22 +175,23 @@ class Console:
         self.launch_shell()
         self.launch_menu()
 
-    def script(self, input_file, do_shell=False):
+    def script(self, input_files, do_shell=False):
         self.start_hsf()
         self.launch_shell()
 
-        if os.path.exists(input_file):
-            file = open(input_file, 'r')
-            file_text = file.read().split('\n')
-            file.close()
+        for input_file in input_files:
+            if os.path.exists(input_file):
+                file = open(input_file, 'r')
+                file_text = file.read().split('\n')
+                file.close()
 
-            for line in file_text:
-                commands = self.fmt.format_commands(line)
+                for line in file_text:
+                    commands = self.fmt.format_commands(line)
 
-                self.add_handler_options()
-                self.jobs.stop_dead()
+                    self.add_handler_options()
+                    self.jobs.stop_dead()
 
-                self.execute.execute_command(commands)
+                    self.execute.execute_command(commands)
 
         if do_shell:
             self.launch_history()
