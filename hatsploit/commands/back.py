@@ -7,12 +7,10 @@
 
 from hatsploit.lib.command import Command
 from hatsploit.lib.modules import Modules
-from hatsploit.lib.storage import LocalStorage
 
 
 class HatSploitCommand(Command):
     modules = Modules()
-    local_storage = LocalStorage()
 
     details = {
         'Category': "modules",
@@ -26,8 +24,4 @@ class HatSploitCommand(Command):
     }
 
     def run(self, argc, argv):
-        if self.modules.check_current_module():
-            self.local_storage.set("current_module_number", self.local_storage.get("current_module_number") - 1)
-            self.local_storage.set("current_module", self.local_storage.get("current_module")[0:-1])
-            if not self.local_storage.get("current_module"):
-                self.local_storage.set("current_module_number", 0)
+        self.modules.go_back()
