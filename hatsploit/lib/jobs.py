@@ -52,17 +52,18 @@ class Jobs:
                 if not jobs[job_id]['job_process'].is_alive():
                     self.delete_job(job_id)
 
-    def check_module_job(self, module_name):
-        jobs = self.local_storage.get("jobs")
-        if jobs:
-            for job_id in jobs:
-                if jobs[job_id]['module_name'] == module_name:
-                    return True
-        return False
+        hidden_jobs = self.local_storage.get("hidden_jobs")
+        if hidden_jobs:
+            for job_id in list(hidden_jobs):
+                if not hidden_jobs[job_id]['job_process'].is_alive():
+                    self.delete_job(job_id, True)
 
     def exit_jobs(self):
         if not self.local_storage.get("jobs"):
+            if self.local_storage.get("hidden_jobs"):
+                self.stop_all_jobs()
             return True
+
         self.badges.print_warning("You have some running jobs.")
         if self.badges.input_question("Exit anyway? [y/N] ")[0].lower() in ['yes', 'y']:
             self.badges.print_process("Stopping all jobs...")
@@ -71,9 +72,15 @@ class Jobs:
         return False
 
     def stop_all_jobs(self):
-        if self.local_storage.get("jobs"):
-            for job_id in list(self.local_storage.get("jobs")):
+        jobs = self.local_storage.get("jobs")
+        if jobs:
+            for job_id in list(jobs):
                 self.delete_job(job_id)
+
+        hidden_jobs = self.local_storage.get("hidden_jobs")
+        if hidden_jobs:
+            for job_id in list(hidden_jobs):
+                self.delete_job(job_id, True)
 
     def stop_job(self, job):
         if job.is_alive():
@@ -90,13 +97,17 @@ class Jobs:
         self.job_process.setDaemon(True)
         self.job_process.start()
 
-    def delete_job(self, job_id):
-        if self.local_storage.get("jobs"):
+    def delete_job(self, job_id, hidden=False):
+        jobs_var = "jobs"
+        if hidden:
+            jobs_var = "hidden_jobs"
+
+        if self.local_storage.get(jobs_var):
             job_id = int(job_id)
-            if job_id in list(self.local_storage.get("jobs")):
+            if job_id in list(self.local_storage.get(jobs_var)):
                 try:
-                    self.stop_job(self.local_storage.get("jobs")[job_id]['job_process'])
-                    self.local_storage.delete_element("jobs", job_id)
+                    self.stop_job(self.local_storage.get(jobs_var)[job_id]['job_process'])
+                    self.local_storage.delete_element(jobs_var, job_id)
                 except Exception:
                     self.badges.print_error("Failed to stop job!")
             else:
@@ -104,11 +115,15 @@ class Jobs:
         else:
             self.badges.print_error("Invalid job id!")
 
-    def create_job(self, job_name, module_name, job_function, job_arguments=[]):
+    def create_job(self, job_name, module_name, job_function, job_arguments=[], hidden=False):
+        jobs_var = "jobs"
+        if hidden:
+            jobs_var = "hidden_jobs"
+
         self.start_job(job_function, job_arguments)
-        if not self.local_storage.get("jobs"):
-            self.local_storage.set("jobs", {})
-        job_id = len(self.local_storage.get("jobs"))
+        if not self.local_storage.get(jobs_var):
+            self.local_storage.set(jobs_var, {})
+        job_id = len(self.local_storage.get(jobs_var))
 
         job_data = {
             job_id: {
@@ -117,5 +132,5 @@ class Jobs:
                 'job_process': self.job_process
             }
         }
-        self.local_storage.update("jobs", job_data)
+        self.local_storage.update(jobs_var, job_data)
         return job_id
