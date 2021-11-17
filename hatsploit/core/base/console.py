@@ -82,12 +82,20 @@ class Console:
         except Exception:
             sys.exit(1)
 
-    def update(self):
-        self.jobs.stop_dead()
-        self.sessions.close_dead()
-        self.add_handler_options()
+    def update_events(self):
+        while True:
+            self.jobs.stop_dead()
+            self.sessions.close_dead()
+            self.add_handler_options()
 
     def launch_menu(self):
+        self.jobs.create_job(
+            "HatSploit Console",
+            "HatSploit",
+            self.update_events,
+            hidden=True
+        )
+
         while True:
             try:
                 if not self.modules.check_current_module():
@@ -99,9 +107,7 @@ class Console:
                     prompt = f'%end({self.prompt}: {module.split("/")[0]}: %red{name}%end)> '
                 commands = self.badges.input_empty(prompt)
 
-                self.update()
                 self.execute.execute_command(commands)
-                self.update()
 
                 if self.local_storage.get("history"):
                     readline.write_history_file(self.history)
