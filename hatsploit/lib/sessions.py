@@ -137,4 +137,5 @@ class Sessions:
         sessions = self.local_storage.get("sessions")
         if self.check_exist(session_id):
             return sessions[int(session_id)]['object']
+        self.badges.print_error("Invalid session given!")
         return None
