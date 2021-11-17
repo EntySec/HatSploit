@@ -81,7 +81,7 @@ class Console:
             self.loader.load_all()
             self.jobs.create_job(
                 "HatSploit Console",
-                "HatSploit",
+                None,
                 self.update_events,
                 hidden=True
             )
