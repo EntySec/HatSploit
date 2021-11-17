@@ -83,10 +83,9 @@ class Console:
             sys.exit(1)
 
     def update_events(self):
-        while True:
-            self.jobs.stop_dead()
-            self.sessions.close_dead()
-            self.add_handler_options()
+        self.jobs.stop_dead()
+        self.sessions.close_dead()
+        self.add_handler_options()
 
     def launch_menu(self):
         while True:
