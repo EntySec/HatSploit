@@ -26,11 +26,11 @@
 
 from hatsploit.lib.session import Session
 
-from hatsploit.utils.fs import FSTools
+from hatsploit.core.session.pull import Pull
 from hatsploit.utils.telnet import TelnetClient
 
 
-class HatSploitSession(Session, FSTools, TelnetClient):
+class HatSploitSession(Session, Pull, TelnetClient):
     client = None
 
     details = {
@@ -47,29 +47,23 @@ class HatSploitSession(Session, FSTools, TelnetClient):
     def heartbeat(self):
         return not self.client.terminated
 
-    def send_command(self, command, output=False, timeout=10):
-        output = self.client.send_command(command + '\n', output, timeout)
+    def send_command(self, command, output=False, timeout=10, decode=True):
+        output = self.client.send_command(
+            (command + '\n'),
+            output,
+            timeout,
+            decode
+        )
+
         return output
 
-    def download(self, remote_file, local_path, timeout=None):
-        if self.details['Platform'] != 'windows':
-            command = f'cat "{remote_file}"'
-        else:
-            command = ''
-
-        exists, is_dir = self.exists(local_file)
-        if exists:
-            if is_dir:
-                local_file = local_file + '/' + os.path.split(remote_file)[1]
-
-            data = self.client.send_command(command + '\n', True, timeout, True)
-
-            with open(local_file, 'wb'):
-                f.write(data)
-
-            self.print_success("File has been downloaded!")
-        else:
-            self.print_error("Failed to download file!")
+    def download(self, remote_file, local_file, timeout=None):
+        self.pull(
+            remote_file,
+            local_file,
+            session=self,
+            timeout=timeout
+        )
 
     def interact(self):
         self.client.interact()
