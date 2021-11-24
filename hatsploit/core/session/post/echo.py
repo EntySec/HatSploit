@@ -40,7 +40,7 @@ class Echo:
             byte_octals.append(byte_octal)
         return ''.join(byte_octals)
 
-    def send(self, payload, sender, args=[], payload_args="", delim=';',
+    def post(self, payload, sender, args=[], payload_args="", delim=';',
              location='/tmp', linemax=100):
         self.badges.print_process("Sending payload stage...")
         filename = binascii.hexlify(os.urandom(8)).decode()
