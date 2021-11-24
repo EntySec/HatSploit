@@ -30,7 +30,7 @@ from hatsploit.core.session.post.wget import Wget
 
 
 class Post:
-    methods = {
+    post_methods = {
         'echo': Echo(),
         'printf': Printf(),
         'wget': Wget()
