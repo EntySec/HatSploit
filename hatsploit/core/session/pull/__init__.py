@@ -24,10 +24,36 @@
 # SOFTWARE.
 #
 
+from hatsploit.utils.fs import FSTools
+
 from hatsploit.core.session.pull.cat import Cat
 
 
-class Pull:
+class Pull(FSTools):
     pull_methods = {
         'cat': Cat()
     }
+
+    def pull(self, remote_file, local_file, session, method=None):
+        if not method:
+            if session.details['Platform'] != 'windows':
+                if session.details['Type'] == 'shell':
+                    method = 'cat'
+            else:
+                method = 'powershell'
+
+        if method in self.pull_methods:
+            exists, is_dir = self.exists(local_file)
+            if exists:
+                if is_dir:
+                    local_file = local_file + '/' + os.path.split(remote_file)[1]
+
+                data = self.pull_methods[method].pull(remote_file, session)
+                self.badges.print_process(f"Saving to {local_file}...")
+
+                with open(local_file, 'wb') as file:
+                    file.write(data)
+
+                self.badges.print_success(f"File saved to {local_file}!")
+        else:
+            self.badges.print_error("Invalid pull method!")
