@@ -53,12 +53,11 @@ class HatSploitSession(Session, FSTools, TelnetClient):
 
     def download(self, remote_file, local_path, timeout=None):
         if self.details['Platform'] != 'windows':
-            command = f"cat \"{remote_file}\""
+            command = f'cat "{remote_file}"'
         else:
-            command = ""
+            command = ''
 
-        exists, is_dir = self.exists_directory(local_file)
-
+        exists, is_dir = self.exists(local_file)
         if exists:
             if is_dir:
                 local_file = local_file + '/' + os.path.split(remote_file)[1]
