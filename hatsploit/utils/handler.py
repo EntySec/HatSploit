@@ -104,7 +104,7 @@ class Handler(Handle, Post, Blinder):
             return False
 
         if post.lower() != 'raw':
-            if post.lower() not in self.post:
+            if post.lower() not in self.post_methods:
                 self.badges.print_error("Invalid post method selected!")
                 return False
 
@@ -133,7 +133,7 @@ class Handler(Handle, Post, Blinder):
                     self.do_job(
                         f"Handler",
                         payload,
-                        self.post_methods[post.lower()].send,
+                        self.post_methods[post.lower()].post,
                         [
                             payload['Payload'],
                             sender,
@@ -197,7 +197,7 @@ class Handler(Handle, Post, Blinder):
                         self.do_job(
                             f"Handler",
                             payload,
-                            self.post_methods[post.lower()].send,
+                            self.post_methods[post.lower()].post,
                             [
                                 payload['Payload'],
                                 new_session.send_command,
