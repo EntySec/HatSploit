@@ -28,9 +28,7 @@ from hatsploit.core.cli.badges import Badges
 
 from hatsploit.core.session.blinder import Blinder
 from hatsploit.core.session.handle import Handle
-from hatsploit.core.session.post.echo import Echo
-from hatsploit.core.session.post.printf import Printf
-from hatsploit.core.session.post.wget import Wget
+from hatsploit.core.session.post import Post
 from hatsploit.core.session.session import HatSploitSession
 
 from hatsploit.lib.jobs import Jobs
@@ -39,7 +37,7 @@ from hatsploit.lib.sessions import Sessions
 from hatsploit.lib.storage import LocalStorage
 
 
-class Handler(Handle, Blinder):
+class Handler(Handle, Post, Blinder):
     sessions = Sessions()
     local_storage = LocalStorage()
     modules = Modules()
@@ -134,7 +132,7 @@ class Handler(Handle, Blinder):
                     self.do_job(
                         f"Handler",
                         payload,
-                        self.post[post.lower()].send,
+                        self.post_methods[post.lower()].send,
                         [
                             payload['Payload'],
                             sender,
@@ -198,7 +196,7 @@ class Handler(Handle, Blinder):
                         self.do_job(
                             f"Handler",
                             payload,
-                            self.post[post.lower()].send,
+                            self.post_methods[post.lower()].send,
                             [
                                 payload['Payload'],
                                 new_session.send_command,
@@ -274,9 +272,3 @@ class Handler(Handle, Blinder):
 
         self.open_session(host, port, session_platform, session_type, new_session)
         return True
-
-    post = {
-        'echo': Echo(),
-        'printf': Printf(),
-        'wget': Wget()
-    }
