@@ -38,6 +38,6 @@ class HatSploitModule(Module, SessionTools):
         session = self.get_session(session)
 
         if session:
-            pid = session.send_command("printf $$", output=True)
+            pid = session.send_command("printf $$", True).strip()
             if pid:
                 self.print_information(f"PID: {pid}")
