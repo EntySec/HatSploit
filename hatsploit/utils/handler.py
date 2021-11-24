@@ -25,12 +25,14 @@
 #
 
 from hatsploit.core.cli.badges import Badges
-from hatsploit.core.handler.blinder import Blinder
-from hatsploit.core.handler.handle import Handle
-from hatsploit.core.handler.post.echo import Echo
-from hatsploit.core.handler.post.printf import Printf
-from hatsploit.core.handler.post.wget import Wget
-from hatsploit.core.handler.session import HatSploitSession
+
+from hatsploit.core.session.blinder import Blinder
+from hatsploit.core.session.handle import Handle
+from hatsploit.core.session.post.echo import Echo
+from hatsploit.core.session.post.printf import Printf
+from hatsploit.core.session.post.wget import Wget
+from hatsploit.core.session.session import HatSploitSession
+
 from hatsploit.lib.jobs import Jobs
 from hatsploit.lib.modules import Modules
 from hatsploit.lib.sessions import Sessions
