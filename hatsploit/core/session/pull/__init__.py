@@ -23,3 +23,11 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 #
+
+from hatsploit.core.session.pull.cat import Cat
+
+
+class Pull:
+    pull_methods = {
+        'cat': Cat()
+    }
