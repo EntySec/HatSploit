@@ -51,9 +51,10 @@ class Pull(FSTools):
                 if is_dir:
                     local_file = local_file + '/' + os.path.split(remote_file)[1]
 
+                self.badges.print_process(f"Downloading {remote_file}...")
                 data = self.pull_methods[method].pull(remote_file, session)
-                self.badges.print_process(f"Saving to {local_file}...")
 
+                self.badges.print_process(f"Saving to {local_file}...")
                 with open(local_file, 'wb') as file:
                     file.write(data)
 
