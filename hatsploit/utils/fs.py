@@ -33,7 +33,7 @@ class FSTools:
     badges = Badges()
 
     def exists_dest(self, path):
-        if self.exists_dir(path):
+        if os.path.is_dir(path):
             return True, True
         else:
             directory = os.path.split(path)[0]
@@ -44,7 +44,6 @@ class FSTools:
             if self.exists_dir(directory):
                 return True, False
             else:
-                self.badges.print_error(f"Local directory: {directory}: does not exist!")
                 return False, False
 
     def exists_dir(self, path):
