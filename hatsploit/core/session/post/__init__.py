@@ -23,3 +23,15 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 #
+
+from hatsploit.core.session.post.echo import Echo
+from hatsploit.core.session.post.printf import Printf
+from hatsploit.core.session.post.wget import Wget
+
+
+class Post:
+    methods = {
+        'echo': Echo(),
+        'printf': Printf(),
+        'wget': Wget()
+    }
