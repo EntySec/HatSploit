@@ -123,7 +123,7 @@ class TelnetSocket:
                 try:
                     output = self.recv(timeout)
                     if decode:
-                        output = output.decode(errors='ignore').strip()
+                        output = output.decode(errors='ignore')
 
                     return output
                 except Exception:
