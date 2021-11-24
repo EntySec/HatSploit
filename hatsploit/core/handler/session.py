@@ -25,10 +25,12 @@
 #
 
 from hatsploit.lib.session import Session
+
+from hatsploit.utils.fs import FSTools
 from hatsploit.utils.telnet import TelnetClient
 
 
-class HatSploitSession(Session, TelnetClient):
+class HatSploitSession(Session, FSTools, TelnetClient):
     client = None
 
     details = {
@@ -48,6 +50,27 @@ class HatSploitSession(Session, TelnetClient):
     def send_command(self, command, output=False, timeout=10):
         output = self.client.send_command(command + '\n', output, timeout)
         return output
+
+    def download(self, remote_file, local_path, timeout=None):
+        if self.details['Platform'] != 'windows':
+            command = f"cat \"{remote_file}\""
+        else:
+            command = ""
+
+        exists, is_dir = self.exists_directory(local_file)
+
+        if exists:
+            if is_dir:
+                local_file = local_file + '/' + os.path.split(remote_file)[1]
+
+            data = self.client.send_command(command + '\n', True, timeout, True)
+
+            with open(local_file, 'wb'):
+                f.write(data)
+
+            self.print_success("File has been downloaded!")
+        else:
+            self.print_error("Failed to download file!")
 
     def interact(self):
         self.client.interact()
