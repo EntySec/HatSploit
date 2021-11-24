@@ -26,15 +26,18 @@
 
 from hatsploit.utils.fs import FSTools
 
+from hatsploit.core.cli.badges import Badges
 from hatsploit.core.session.pull.cat import Cat
 
 
 class Pull(FSTools):
+    badges = Badges()
+
     pull_methods = {
         'cat': Cat()
     }
 
-    def pull(self, remote_file, local_file, session, method=None):
+    def pull(self, remote_file, local_file, session, method=None, timeout=None):
         if not method:
             if session.details['Platform'] != 'windows':
                 if session.details['Type'] == 'shell':
