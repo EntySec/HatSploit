@@ -116,19 +116,19 @@ class TelnetSocket:
 
     def send_command(self, command, output=True, timeout=10, decode=True):
         if self.sock.sock:
-            buffer = command.encode()
-            self.send(buffer)
+            try:
+                buffer = command.encode()
+                self.send(buffer)
 
-            if output:
-                try:
+                if output:
                     output = self.recv(timeout)
                     if decode:
                         output = output.decode(errors='ignore')
 
                     return output
-                except Exception:
-                    self.badges.print_warning("Connection terminated.")
-                    self.terminated = True
+            except Exception:
+                self.badges.print_warning("Connection terminated.")
+                self.terminated = True
             return None
         self.badges.print_error("Socket is not connected!")
         return None
