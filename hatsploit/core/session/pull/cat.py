@@ -31,7 +31,6 @@ class Cat:
     badges = Badges()
     
     def pull(self, file, session, timeout=10):
-        self.badges.print_process(f"Downloading {file}...")
         command = f'cat "{file}"'
 
         return session.send_command(
