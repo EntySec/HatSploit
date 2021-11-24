@@ -26,9 +26,10 @@
 
 from hatsploit.core.cli.badges import Badges
 
-from hatsploit.core.session.blinder import Blinder
 from hatsploit.core.session.handle import Handle
 from hatsploit.core.session.post import Post
+from hatsploit.core.session.blinder import Blinder
+
 from hatsploit.core.session.session import HatSploitSession
 
 from hatsploit.lib.jobs import Jobs
