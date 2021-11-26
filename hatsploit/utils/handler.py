@@ -266,6 +266,8 @@ class Handler(Handle, Post, Blinder):
 
         session_platform = payload['Platform']
         session_type = new_session.details['Type']
+
+        new_session.details['Post'] = post
         new_session.details['Platform'] = session_platform
 
         if method is not None:
