@@ -39,7 +39,7 @@ class Pull(FSTools):
         'cat': Cat()
     }
 
-    def pull(self, remote_file, local_path, session, method=None, timeout=None):
+    def pull(self, remote_file, local_path, session, method=None):
         if not method:
             if session.details['Platform'] != 'windows':
                 if session.details['Type'] == 'shell':
@@ -54,7 +54,7 @@ class Pull(FSTools):
                     local_path = local_path + '/' + os.path.split(remote_file)[1]
 
                 self.badges.print_process(f"Downloading {remote_file}...")
-                data = self.pull_methods[method].pull(remote_file, session, timeout)
+                data = self.pull_methods[method].pull(remote_file, session)
 
                 self.badges.print_process(f"Saving to {local_path}...")
                 with open(local_path, 'wb') as file:
