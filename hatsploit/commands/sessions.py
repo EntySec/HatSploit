@@ -16,9 +16,11 @@ class HatSploitCommand(Command):
 
     usage = ""
     usage += "sessions <option> [arguments]\n\n"
-    usage += "  -l, --list                   List all opened sessions.\n"
-    usage += "  -i, --interact <session_id>  Interact with specified session.\n"
-    usage += "  -c, --close <session_id>     Close specified session.\n"
+    usage += "  -l, --list                                              List all opened sessions.\n"
+    usage += "  -i, --interact <session_id>                             Interact with specified session.\n"
+    usage += "  -d, --download <session_id> <remote_file> <local_path>  Download file from session.\n"
+    usage += "  -u, --upload <session_id> <local_file> <remote_path>    Upload file to session.\n"
+    usage += "  -c, --close <session_id>                                Close specified session.\n"
 
     details = {
         'Category': "sessions",
@@ -44,5 +46,15 @@ class HatSploitCommand(Command):
                 self.print_usage(self.details['Usage'])
             else:
                 self.sessions.spawn_interactive_connection(argv[2])
+        elif argv[1] in ['-d', '--download']:
+            if argv < 5:
+                self.print_usage(self.details['Usage'])
+            else:
+                self.sessions.download_from_session(argv[2], argv[3], argv[4])
+        elif argv[1] in ['-u', '--upload']:
+            if argv < 5:
+                self.print_usage(self.details['Usage'])
+            else:
+                self.sessions.upload_to_session(argv[2], argv[3], argv[4])
         else:
             self.print_usage(self.details['Usage'])
