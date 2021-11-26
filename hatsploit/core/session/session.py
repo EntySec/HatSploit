@@ -27,6 +27,8 @@
 from hatsploit.lib.session import Session
 
 from hatsploit.core.session.pull import Pull
+from hatsploit.core.session.push import Push
+
 from hatsploit.utils.telnet import TelnetClient
 
 
