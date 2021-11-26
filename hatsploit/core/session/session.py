@@ -36,6 +36,7 @@ class HatSploitSession(Session, Pull, Push, TelnetClient):
     client = None
 
     details = {
+        'Post': "",
         'Platform': "",
         'Type': "shell"
     }
