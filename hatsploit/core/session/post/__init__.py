@@ -26,12 +26,10 @@
 
 from hatsploit.core.session.post.echo import Echo
 from hatsploit.core.session.post.printf import Printf
-from hatsploit.core.session.post.wget import Wget
 
 
 class Post:
     post_methods = {
         'echo': Echo(),
-        'printf': Printf(),
-        'wget': Wget()
+        'printf': Printf()
     }
