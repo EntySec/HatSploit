@@ -39,7 +39,7 @@ class Pull(FSTools):
         'cat': Cat()
     }
 
-    def pull(self, remote_file, local_file, session, method=None, timeout=None):
+    def pull(self, remote_file, local_path, session, method=None, timeout=None):
         if not method:
             if session.details['Platform'] != 'windows':
                 if session.details['Type'] == 'shell':
@@ -48,18 +48,18 @@ class Pull(FSTools):
                 method = 'powershell'
 
         if method in self.pull_methods:
-            exists, is_dir = self.exists(local_file)
+            exists, is_dir = self.exists(local_path)
             if exists:
                 if is_dir:
-                    local_file = local_file + '/' + os.path.split(remote_file)[1]
+                    local_path = local_path + '/' + os.path.split(remote_file)[1]
 
                 self.badges.print_process(f"Downloading {remote_file}...")
-                data = self.pull_methods[method].pull(remote_file, session)
+                data = self.pull_methods[method].pull(remote_file, session, timeout)
 
-                self.badges.print_process(f"Saving to {local_file}...")
-                with open(local_file, 'wb') as file:
+                self.badges.print_process(f"Saving to {local_path}...")
+                with open(local_path, 'wb') as file:
                     file.write(data)
 
-                self.badges.print_success(f"File saved to {local_file}!")
+                self.badges.print_success(f"File saved to {local_path}!")
         else:
             self.badges.print_error("Invalid pull method!")
