@@ -50,7 +50,7 @@ class HatSploitSession(Session, Pull, Push, TelnetClient):
     def heartbeat(self):
         return not self.client.terminated
 
-    def send_command(self, command, output=False, timeout=10, decode=True):
+    def send_command(self, command, output=False, decode=True):
         output = self.client.send_command(
             (command + '\n'),
             output,
@@ -60,12 +60,11 @@ class HatSploitSession(Session, Pull, Push, TelnetClient):
 
         return output
 
-    def download(self, remote_file, local_path, timeout=None):
+    def download(self, remote_file, local_path):
         self.pull(
             remote_file,
             local_path,
-            session=self,
-            timeout=timeout
+            session=self
         )
 
     def upload(self, local_file, remote_path):
