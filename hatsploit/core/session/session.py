@@ -32,7 +32,7 @@ from hatsploit.core.session.push import Push
 from hatsploit.utils.telnet import TelnetClient
 
 
-class HatSploitSession(Session, Pull, TelnetClient):
+class HatSploitSession(Session, Pull, Push, TelnetClient):
     client = None
 
     details = {
