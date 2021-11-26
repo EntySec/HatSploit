@@ -42,7 +42,7 @@ class Push(FSTools):
         'printf': Printf()
     }
 
-    def push(self, local_file, remote_path, session, method=None, maxchunk=5000):
+    def push(self, local_file, remote_path, session, method=None, chunkmax=5000):
         if not method:
             if session.details['Platform'] != 'windows':
                 if session.details['Type'] == 'shell':
@@ -58,7 +58,7 @@ class Push(FSTools):
                         remote_path,
                         file.read(),
                         session,
-                        maxchunk
+                        chunkmax
                     )
 
                     self.badges.print_process(f"Saving to {remote_path}...")
