@@ -91,23 +91,14 @@ class TelnetSocket:
             result = b""
 
             while True:
-                data = self.sock.read_very_eager()
+                time.sleep(1)
+
+                data = self.sock.read_eager()
                 result += data
 
-                if result and not data:
-                    cont_read = False
-                    cache_size = len(result)
+                if not data:
+                    break
 
-                    while cache_size > 0:
-                        data = self.sock.read_very_eager()
-
-                        if data:
-                            cont_read = True
-
-                        cache_size -= 1
-
-                    if not cont_read:
-                        break
             return result
         else:
             self.badges.print_error("Socket is not connected!")
