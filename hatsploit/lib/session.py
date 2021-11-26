@@ -52,7 +52,7 @@ class Session(FMT, Badges, Colors, Parser, Tables):
     def download(self, remote_file, local_path, timeout=None):
         pass
 
-    def upload(self, local_file, remote_path, timeout=None):
+    def upload(self, local_file, remote_path):
         pass
 
     def interact(self):
