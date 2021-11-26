@@ -30,7 +30,7 @@ from hatsploit.core.cli.badges import Badges
 class Cat:
     badges = Badges()
     
-    def push(self, path, data, session, timeout=10):
+    def push(self, path, data, session):
         command = f'cat >"{path}"'
 
         session.send_command(
