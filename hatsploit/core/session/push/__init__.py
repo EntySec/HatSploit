@@ -44,11 +44,7 @@ class Push(FSTools):
 
     def push(self, local_file, remote_path, session, method=None, chunkmax=5000):
         if not method:
-            if session.details['Platform'] != 'windows':
-                if session.details['Type'] == 'shell':
-                    method = 'echo'
-            else:
-                method = 'certutil'
+            method = session.details['Post']
 
         if method in self.push_methods:
             if self.exists_file(local_file):
