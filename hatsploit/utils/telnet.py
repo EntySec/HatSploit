@@ -38,6 +38,8 @@ class TelnetSocket:
         self.sock = telnetlib.Telnet()
         self.sock.sock = client
 
+        self.trans_delay = 5
+
         self.terminated = False
         self.badges = Badges()
 
@@ -91,13 +93,13 @@ class TelnetSocket:
             result = b""
 
             while True:
-                time.sleep(1)
-
+                time.sleep(self.trans_delay)
                 data = self.sock.read_eager()
-                result += data
 
                 if not data:
                     break
+
+                result += data
 
             return result
         else:
