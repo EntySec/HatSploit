@@ -47,12 +47,12 @@ class HatSploitCommand(Command):
             else:
                 self.sessions.spawn_interactive_connection(argv[2])
         elif argv[1] in ['-d', '--download']:
-            if argv < 5:
+            if argc < 5:
                 self.print_usage(self.details['Usage'])
             else:
                 self.sessions.download_from_session(argv[2], argv[3], argv[4])
         elif argv[1] in ['-u', '--upload']:
-            if argv < 5:
+            if argc < 5:
                 self.print_usage(self.details['Usage'])
             else:
                 self.sessions.upload_to_session(argv[2], argv[3], argv[4])
