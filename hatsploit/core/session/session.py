@@ -67,12 +67,11 @@ class HatSploitSession(Session, Pull, Push, TelnetClient):
             timeout=timeout
         )
 
-    def upload(self, local_file, remote_path, timeout=None):
+    def upload(self, local_file, remote_path):
         self.push(
             local_file,
             remote_path,
-            session=self,
-            timeout=timeout
+            session=self
         )
 
     def interact(self):
