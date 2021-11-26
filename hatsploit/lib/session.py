@@ -49,7 +49,10 @@ class Session(FMT, Badges, Colors, Parser, Tables):
     def send_command(self, command, output=False, timeout=10, decode=True):
         return None
 
-    def download(self, remote_file, local_file, timeout=None):
+    def download(self, remote_file, local_path, timeout=None):
+        pass
+
+    def upload(self, local_file, remote_path, timeout=None):
         pass
 
     def interact(self):
