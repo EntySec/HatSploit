@@ -86,42 +86,40 @@ class TelnetSocket:
         else:
             self.badges.print_error("Socket is not connected!")
 
-    def recv(self, timeout=10):
+    def recvall(self):
         if self.sock.sock:
             result = b""
 
-            if timeout is not None:
-                timeout = time.time() + timeout
-                while True:
-                    data = self.sock.read_very_eager()
-                    result += data
+            while True:
+                data = self.sock.read_very_eager()
+                result += data
 
-                    if result and not data:
+                if result and not data:
+                    cont_read = False
+                    cache_size = len(result)
+
+                    while cache_size > 0:
+                        data = self.sock.read_very_eager()
+
+                        if data:
+                            cont_read = True
+
+                        cache_size -= 1
+
+                    if not cont_read:
                         break
-
-                    if time.time() > timeout:
-                        self.badges.print_warning("Timeout waiting for response.")
-                        return None
-            else:
-                while True:
-                    data = self.sock.read_very_eager()
-                    result += data
-
-                    if result and not data:
-                        break
-
             return result
-        self.badges.print_error("Socket is not connected!")
-        return None
+        else:
+            self.badges.print_error("Socket is not connected!")
 
-    def send_command(self, command, output=True, timeout=10, decode=True):
+    def send_command(self, command, output=True, decode=True):
         if self.sock.sock:
             try:
                 buffer = command.encode()
                 self.send(buffer)
 
                 if output:
-                    output = self.recv(timeout)
+                    output = self.recvall()
                     if decode:
                         output = output.decode(errors='ignore')
 
