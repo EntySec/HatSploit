@@ -30,12 +30,6 @@ from hatsploit.core.cli.badges import Badges
 class Cat:
     badges = Badges()
     
-    def pull(self, file, session, timeout=None):
+    def pull(self, file, session):
         command = f'cat "{file}"'
-
-        return session.send_command(
-            command,
-            True,
-            timeout,
-            False
-        )
+        return session.send_command(command, True, False)
