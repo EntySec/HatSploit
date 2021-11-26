@@ -27,15 +27,28 @@
 from hatsploit.core.cli.badges import Badges
 
 
-class Cat:
+class Echo:
     badges = Badges()
-    
-    def push(self, path, data, session):
-        command = f'cat >"{path}"'
 
-        session.send_command(
-            command,
-            False
-        )
+    def bytes_to_octal(self, bytes_obj):
+        byte_octals = []
+        for byte in bytes_obj:
+            byte_octal = '\\0' + oct(byte)[2:]
+            byte_octals.append(byte_octal)
+        return ''.join(byte_octals)
 
-        session.client.send(data)
+    def push(self, path, data, session, linemax=10000):
+        echo_stream = "echo -en '{}' >> {}"
+        echo_max_length = linemax
+
+        size = len(data)
+        num_parts = int(size / echo_max_length) + 1
+
+        for i in range(0, num_parts):
+            current = i * echo_max_length
+            block = self.bytes_to_octal(data[current:current + echo_max_length])
+            if block:
+                command = echo_stream.format(block, path)
+
+                self.badges.print_multi(f"Uploading to {path}... ({str(current)}/{str(size)})")
+                session.send_command(command, False)
