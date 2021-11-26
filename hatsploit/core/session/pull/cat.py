@@ -32,4 +32,4 @@ class Cat:
     
     def pull(self, file, session):
         command = f'cat "{file}"'
-        return session.send_command(command, True, False)
+        return session.send_command(command, decode=False)
