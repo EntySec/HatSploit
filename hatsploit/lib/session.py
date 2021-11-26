@@ -47,10 +47,10 @@ class Session(FMT, Badges, Colors, Parser, Tables):
     def heartbeat(self):
         pass
 
-    def send_command(self, command, output=False, timeout=10, decode=True):
+    def send_command(self, command, output=False, decode=True):
         return None
 
-    def download(self, remote_file, local_path, timeout=None):
+    def download(self, remote_file, local_path):
         pass
 
     def upload(self, local_file, remote_path):
