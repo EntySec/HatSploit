@@ -96,7 +96,7 @@ class TelnetSocket:
                     data = self.sock.read_very_eager()
                     result += data
 
-                    if data:
+                    if result and not data:
                         break
 
                     if time.time() > timeout:
@@ -107,7 +107,7 @@ class TelnetSocket:
                     data = self.sock.read_very_eager()
                     result += data
 
-                    if data:
+                    if result and not data:
                         break
 
             return result
