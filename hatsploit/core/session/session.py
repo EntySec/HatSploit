@@ -51,14 +51,11 @@ class HatSploitSession(Session, Pull, Push, TelnetClient):
         return not self.client.terminated
 
     def send_command(self, command, output=False, decode=True):
-        output = self.client.send_command(
+        return self.client.send_command(
             (command + '\n'),
             output,
-            timeout,
             decode
         )
-
-        return output
 
     def download(self, remote_file, local_path):
         self.pull(
