@@ -29,29 +29,37 @@ import os
 from hatsploit.utils.fs import FSTools
 
 from hatsploit.core.cli.badges import Badges
-from hatsploit.core.session.push.cat import Cat
+
+from hatsploit.core.session.push.echo import Echo
+from hatsploit.core.session.push.printf import Printf
 
 
 class Push(FSTools):
     badges = Badges()
 
     push_methods = {
-        'cat': Cat()
+        'echo': Echo(),
+        'printf': Printf()
     }
 
-    def push(self, local_file, remote_path, session, method=None):
+    def push(self, local_file, remote_path, session, method=None, maxchunk=5000):
         if not method:
             if session.details['Platform'] != 'windows':
                 if session.details['Type'] == 'shell':
-                    method = 'cat'
+                    method = 'echo'
             else:
-                method = 'powershell'
+                method = 'certutil'
 
         if method in self.push_methods:
             if self.exists_file(local_file):
                 with open(local_file, 'rb') as file:
                     self.badges.print_process(f"Uploading {local_file}...")
-                    self.push_methods[method].push(remote_path, file.read(), session)
+                    self.push_methods[method].push(
+                        remote_path,
+                        file.read(),
+                        session,
+                        maxchunk
+                    )
 
                     self.badges.print_process(f"Saving to {remote_path}...")
                     self.badges.print_success(f"Saved to {remote_path}!")
