@@ -32,7 +32,7 @@ from hatsploit.core.cli.badges import Badges
 class FSTools:
     badges = Badges()
 
-    def exists_dest(self, path):
+    def exists(self, path):
         if os.path.isdir(path):
             return True, True
         directory = os.path.split(path)[0]
