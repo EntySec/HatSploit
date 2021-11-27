@@ -48,7 +48,10 @@ class Echo:
             current = i * echo_max_length
             block = self.bytes_to_octal(data[current:current + echo_max_length])
             if block:
-                command = echo_stream.format(block, path)
+                command = echo_stream.format(block, location)
 
-                self.badges.print_multi(f"Uploading to {path}... ({str(current)}/{str(size)})")
+                self.badges.print_multi(f"Uploading to {location}... ({str(current)}/{str(size)})")
+
+                if isinstance(args, dict):
+                    sender(command, **args)
                 sender(*args, command)
