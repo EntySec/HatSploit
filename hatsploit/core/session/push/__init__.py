@@ -40,12 +40,12 @@ class Push(FSTools):
         'printf': Printf()
     }
 
-    def push(self, file, sender, args=[], push='printf', location='/tmp', linemax=100):
+    def push(self, file, sender, location, args=[], push='printf', linemax=100):
         if push in self.push_methods:
             if self.exists_file(file):
                 with open(file, 'rb') as f:
                     self.badges.print_process(f"Uploading {file}...")
-                    self.push_methods[push].push(f.read(), sender, args, location, linemax)
+                    self.push_methods[push].push(f.read(), location, sender, args, linemax)
 
                     self.badges.print_process(f"Saving to {location}...")
                     self.badges.print_success(f"Saved to {location}!")
