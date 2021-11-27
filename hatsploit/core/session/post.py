@@ -33,7 +33,7 @@ from hatsploit.utils.string import StringTools
 class Post(Push, StringTools):
     badges = Badges()
 
-    self.execute = f"chmod 777 {} {} sh -c \"{} {} &\" {} rm {}"
+    self.execute = ""
 
     def post(self, payload, sender, args=[], payload_args="", post='printf',
              location='/tmp', delim=';', linemax=100):
@@ -51,5 +51,3 @@ class Post(Push, StringTools):
             ))
         else:
             self.badges.print_error("Invalid post method!")
-
-    
