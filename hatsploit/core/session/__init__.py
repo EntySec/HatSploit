@@ -60,7 +60,7 @@ class HatSploitSession(Session, Pull, Push, TelnetClient):
     def download(self, remote_file, local_path):
         self.pull(
             remote_file,
-            session.send_command,
+            self.send_command,
             local_path,
             {
                 'decode': False,
@@ -71,7 +71,7 @@ class HatSploitSession(Session, Pull, Push, TelnetClient):
     def upload(self, local_file, remote_path):
         self.push(
             local_file,
-            session.send_command,
+            self.send_command,
             remote_path
         )
 
