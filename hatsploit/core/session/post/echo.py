@@ -24,13 +24,11 @@
 # SOFTWARE.
 #
 
-import binascii
-import os
-
 from hatsploit.core.cli.badges import Badges
+from hatsploit.core.utils.string import StringTools
 
 
-class Echo:
+class Echo(StringTools):
     badges = Badges()
 
     def bytes_to_octal(self, bytes_obj):
@@ -43,7 +41,8 @@ class Echo:
     def post(self, payload, sender, args=[], payload_args="", delim=';',
              location='/tmp', linemax=100):
         self.badges.print_process("Sending payload stage...")
-        filename = binascii.hexlify(os.urandom(8)).decode()
+
+        filename = self.random_string(8)
         path = location + '/' + filename
 
         echo_stream = "echo -en '{}' >> {}"
