@@ -464,7 +464,7 @@ class Modules:
                                 current_payload.details['Architecture'],
                                 payload_data)
 
-                        args, session = None, None
+                        args, session = "", None
                         if hasattr(current_payload, "payload"):
                             if 'Args' in current_payload.payload:
                                 args = current_payload.payload['Args']
@@ -477,7 +477,7 @@ class Modules:
 
                         current_module.payload['Raw'] = raw
                         current_module.payload['Payload'] = payload
-                        current_module.payload['Args'] = args 
+                        current_module.payload['Args'] = args
                         current_module.payload['Session'] = session
 
                     self.entry_to_module(current_module)
