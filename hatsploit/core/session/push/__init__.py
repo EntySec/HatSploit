@@ -42,22 +42,14 @@ class Push(FSTools):
         'printf': Printf()
     }
 
-    def push(self, local_file, remote_path, session, method=None, chunkmax=5000):
-        if not method:
-            method = session.details['Post']
+    def push(self, file, sender, args=[], push='printf', location='/tmp', linemax=100):
+        if push in self.push_methods:
+            if self.exists_file(file):
+                with open(file, 'rb') as f:
+                    self.badges.print_process(f"Uploading {file}...")
+                    self.push_methods[push].push(f.read(), sender, args, location, linemax)
 
-        if method in self.push_methods:
-            if self.exists_file(local_file):
-                with open(local_file, 'rb') as file:
-                    self.badges.print_process(f"Uploading {local_file}...")
-                    self.push_methods[method].push(
-                        remote_path,
-                        file.read(),
-                        session,
-                        chunkmax
-                    )
-
-                    self.badges.print_process(f"Saving to {remote_path}...")
-                    self.badges.print_success(f"Saved to {remote_path}!")
+                    self.badges.print_process(f"Saving to {location}...")
+                    self.badges.print_success(f"Saved to {location}!")
         else:
             self.badges.print_error("Invalid push method!")
