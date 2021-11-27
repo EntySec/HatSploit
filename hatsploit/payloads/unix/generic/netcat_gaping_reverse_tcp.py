@@ -12,12 +12,12 @@ from hatsploit.utils.tcp import TCPClient
 class HatSploitPayload(Payload):
     details = {
         'Category': "single",
-        'Name': "Netcat Shell Reverse TCP",
-        'Payload': "unix/generic/netcat_reverse_tcp",
+        'Name': "Netcat (-e) Gaping Shell Reverse TCP",
+        'Payload': "unix/generic/netcat_gaping_reverse_tcp",
         'Authors': [
             'Ivan Nikolsky (enty8080) - payload developer'
         ],
-        'Description': "Netcat shell reverse TCP payload.",
+        'Description': "Netcat (-e) gaping shell reverse TCP payload.",
         'Comments': [
             ''
         ],
