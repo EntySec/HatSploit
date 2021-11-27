@@ -54,4 +54,5 @@ class Echo:
 
                 if isinstance(args, dict):
                     sender(command, **args)
-                sender(*args, command)
+                else:
+                    sender(*args, command)
