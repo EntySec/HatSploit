@@ -25,7 +25,7 @@
 #
 
 from hatsploit.core.cli.badges import Badges
-from hatsploit.core.utils.string import StringTools
+from hatsploit.utils.string import StringTools
 
 
 class Echo(StringTools):
