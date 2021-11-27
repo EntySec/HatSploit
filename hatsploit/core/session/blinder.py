@@ -44,7 +44,11 @@ class Blinder:
                 return
 
             self.badges.print_process("Sending command to target...")
-            output = sender(*args, command)
+            if isinstance(args, dict):
+                output = sender(command, **args)
+            else:
+                output = sender(*args, command)
+
             if output:
                 self.badges.print_empty(f'\n{output}')
             self.badges.print_empty('')
