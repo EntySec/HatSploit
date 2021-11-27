@@ -33,7 +33,7 @@ from hatsploit.utils.string import StringTools
 class Post(Push, StringTools):
     badges = Badges()
 
-    post_methods = push_methods
+    post_methods = Push().push_methods
 
     def post(self, payload, sender, args=[], payload_args="", method='printf',
              location='/tmp', delim=';', linemax=100):
