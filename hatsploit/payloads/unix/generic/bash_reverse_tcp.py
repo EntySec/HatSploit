@@ -14,12 +14,12 @@ from hatsploit.utils.tcp import TCPClient
 class HatSploitPayload(Payload):
     details = {
         'Category': "single",
-        'Name': "Bash Shell Reverse TCP",
+        'Name': "BASH Shell Reverse TCP",
         'Payload': "unix/generic/bash_reverse_tcp",
         'Authors': [
             'Ivan Nikolsky (enty8080) - payload developer'
         ],
-        'Description': "Bash shell reverse TCP payload.",
+        'Description': "BASH shell reverse TCP payload.",
         'Comments': [
             ''
         ],
