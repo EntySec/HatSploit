@@ -63,7 +63,8 @@ class HatSploitSession(Session, Pull, Push, TelnetClient):
             session.send_command,
             local_path,
             {
-                'decode': False
+                'decode': False,
+                'output': True
             }
         )
 
