@@ -48,7 +48,10 @@ class Printf:
             current = i * printf_max_length
             block = self.bytes_to_octal(data[current:current + printf_max_length])
             if block:
-                command = printf_stream.format(block, path)
+                command = printf_stream.format(block, location)
 
-                self.badges.print_multi(f"Uploading to {path}... ({str(current)}/{str(size)})")
+                self.badges.print_multi(f"Uploading to {location}... ({str(current)}/{str(size)})")
+
+                if isinstance(args, dict):
+                    sender(command, **args)
                 sender(*args, command)
