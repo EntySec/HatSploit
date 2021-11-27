@@ -53,5 +53,6 @@ class Printf:
                 self.badges.print_multi(f"Uploading to {location}... ({str(current)}/{str(size)})")
 
                 if isinstance(args, dict):
-                    sender(command, **args)
-                sender(*args, command)
+                    output = sender(command, **args)
+                else:
+                    output = sender(*args, command)
