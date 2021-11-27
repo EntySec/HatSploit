@@ -51,4 +51,4 @@ class Echo:
                 command = echo_stream.format(block, path)
 
                 self.badges.print_multi(f"Uploading to {path}... ({str(current)}/{str(size)})")
-                session.send_command(command, False)
+                sender(*args, command)
