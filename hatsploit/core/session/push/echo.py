@@ -37,9 +37,9 @@ class Echo:
             byte_octals.append(byte_octal)
         return ''.join(byte_octals)
 
-    def push(self, path, data, session, chunkmax=5000):
+    def push(self, data, sender, args=[], location='/tmp', linemax=100):
         echo_stream = "echo -en '{}' >> {}"
-        echo_max_length = chunkmax
+        echo_max_length = linemax
 
         size = len(data)
         num_parts = int(size / echo_max_length) + 1
