@@ -37,7 +37,7 @@ class Printf:
             byte_octals.append(byte_octal)
         return ''.join(byte_octals)
 
-    def push(self, data, sender, args=[], location='/tmp', linemax=100):
+    def push(self, data, sender, location, args=[], linemax=100):
         printf_stream = "printf '{}' >> {}"
         printf_max_length = linemax
 
