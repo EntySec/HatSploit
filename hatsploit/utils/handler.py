@@ -103,14 +103,13 @@ class Handler(Handle, Post, Blinder):
             self.badges.print_error("Payload stage is not found!")
             return False
 
-        if post.lower() != 'raw':
-            if post.lower() not in self.post_methods:
-                self.badges.print_error("Invalid post method selected!")
-                return False
-
-        else:
+        if post.lower() == 'raw':
             if not payload['Raw']:
                 self.badges.print_error("Payload does not support raw!")
+                return False
+        else:
+            if post not in self.post_methods:
+                self.badges.print_error("Invalid post method!")
                 return False
 
         if ensure:
@@ -133,14 +132,15 @@ class Handler(Handle, Post, Blinder):
                     self.do_job(
                         f"Handler",
                         payload,
-                        self.post_methods[post.lower()].post,
+                        self.post,
                         [
                             payload['Payload'],
                             sender,
                             args,
                             payload['Args'],
-                            delim,
+                            post,
                             location,
+                            delim,
                             linemax
                         ]
                     )
@@ -197,14 +197,15 @@ class Handler(Handle, Post, Blinder):
                         self.do_job(
                             f"Handler",
                             payload,
-                            self.post_methods[post.lower()].post,
+                            self.post,
                             [
                                 payload['Payload'],
                                 new_session.send_command,
                                 args,
                                 payload['Args'],
-                                delim,
+                                post,
                                 location,
+                                delim,
                                 linemax
                             ]
                         )
