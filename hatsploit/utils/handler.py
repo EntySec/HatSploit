@@ -77,7 +77,10 @@ class Handler(Handle, Post, Blinder):
         self.badges.print_process("Sending payload stage...")
         self.badges.print_process("Executing payload...")
 
-        sender(*args, payload)
+        if isinstance(args, dict):
+            sender(command, **args)
+        else:
+            sender(*args, command)
 
     def open_session(self, host, port, session_platform, session_type, session):
         session_id = self.sessions.add_session(session_platform, session_type, host, port, session)
