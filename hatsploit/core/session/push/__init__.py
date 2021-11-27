@@ -24,8 +24,6 @@
 # SOFTWARE.
 #
 
-import os
-
 from hatsploit.utils.fs import FSTools
 
 from hatsploit.core.cli.badges import Badges
