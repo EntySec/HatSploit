@@ -33,13 +33,13 @@ class Printf:
     def bytes_to_octal(self, bytes_obj):
         byte_octals = []
         for byte in bytes_obj:
-            byte_octal = '\\0' + oct(byte)[2:]
+            byte_octal = '\\' + oct(byte)[2:]
             byte_octals.append(byte_octal)
         return ''.join(byte_octals)
 
-    def push(self, path, data, session, chunkmax=5000):
+    def push(self, data, sender, args=[], location='/tmp', linemax=100):
         printf_stream = "printf '{}' >> {}"
-        printf_max_length = chunkmax
+        printf_max_length = linemax
 
         size = len(data)
         num_parts = int(size / printf_max_length) + 1
@@ -51,4 +51,4 @@ class Printf:
                 command = printf_stream.format(block, path)
 
                 self.badges.print_multi(f"Uploading to {path}... ({str(current)}/{str(size)})")
-                session.send_command(command, False)
+                sender(*args, command)
