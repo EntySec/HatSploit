@@ -17,7 +17,7 @@ class HatSploitModule(Module, SessionTools, DBTools):
 
     details = {
         'Name': "Obtain Safari history",
-        'Module': "post/iphoneos/shell/safari",
+        'Module': "post/iphoneos/shell/safari_history",
         'Authors': [
             'Ivan Nikolsky (enty8080) - module developer'
         ],
