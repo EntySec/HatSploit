@@ -51,10 +51,10 @@ class Session(FMT, Badges, Colors, Parser, Tables):
         return None
 
     def download(self, remote_file, local_path):
-        pass
+        return False
 
     def upload(self, local_file, remote_path):
-        pass
+        return False
 
     def interact(self):
         pass
