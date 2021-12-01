@@ -120,7 +120,8 @@ class TelnetSocket:
                 data_size = len(data) - token_size
 
                 if data[data_size:] == token.encode():
-                    result += data[:token_size-1]
+                    if data_size != 0:
+                        result += data[:token_size-1]
                     break
 
                 result += data
@@ -129,22 +130,37 @@ class TelnetSocket:
         else:
             self.badges.print_error("Socket is not connected!")
 
-    def send_command(self, command, output=True, decode=True, token=None):
+    def send_command(self, command, output=True, decode=True):
         if self.sock.sock:
             try:
                 buffer = command.encode()
                 self.send(buffer)
  
                 if output:
-                    if not token:
-                        output = self.recv()
-                    else:
-                        output = self.recv_until(token)
+                    output = self.recv()
 
                     if decode:
                         output = output.decode(errors='ignore')
 
                     return output
+            except Exception:
+                self.badges.print_warning("Connection terminated.")
+                self.terminated = True
+            return None
+        self.badges.print_error("Socket is not connected!")
+        return None
+
+    def send_token_command(self, command, token, decode=True):
+        if self.sock.sock:
+            try:
+                buffer = command.encode()
+                self.send(buffer)
+
+                output = self.recv_until(token)
+                if decode:
+                    output = output.decode(errors='ignore')
+
+                return output
             except Exception:
                 self.badges.print_warning("Connection terminated.")
                 self.terminated = True
