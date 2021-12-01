@@ -124,6 +124,54 @@ class DBTools:
         return result_arr
 
     @staticmethod
+    def parse_sms_chat(database, partner, imessage=True):
+        partner = partner.replace(" ", "")
+        db = sqlite3.connect(sms_db)
+        result_arr = {
+            "protocol": "{}".format('iMessage' if imessage == True else 'SMS'),
+            "partner": partner,
+            "success": True,
+            "data": []
+        }
+
+        db.row_factory = sqlite3.Row
+        cursor = db.cursor()
+        cursor.execute('''SELECT
+                ROWID
+            FROM chat
+            WHERE guid LIKE '{protocol};%;{partner}' 
+            '''.format(partner=partner, protocol=('iMessage' if imessage == True else 'SMS')))
+
+        try:
+            rowid_chat = list(map(dict,cursor.fetchall()))[0]["ROWID"]
+        except IndexError:
+            result_arr["success"] = False
+            return result_arr
+
+        cursor.execute('''SELECT
+                message_id
+            FROM chat_message_join
+            WHERE chat_id = {row_id}
+            '''.format(row_id=rowid_chat))
+
+        message_id_arr = [int(item[0]) for item  in list(map(list, cursor.fetchall()))]
+        for message_id in message_id_arr:
+            cursor.execute('''SELECT
+                    ROWID as 'message_id',
+                    text,
+                    date as 'timestamp',
+                    is_from_me
+                FROM message
+                WHERE ROWID = {message_id}
+                AND text <> ""
+                ORDER BY date
+                '''.format(message_id=message_id))
+            message_element_arr = list(map(dict, cursor.fetchall()))[0]
+            result_arr["data"].append(message_element_arr)
+
+        return result_arr
+
+    @staticmethod
     def parse_voicemail_chat(database):
         result_arr = {
             "total": 0,
