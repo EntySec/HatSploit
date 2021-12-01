@@ -95,7 +95,7 @@ class TelnetSocket:
 
             while True:
                 try:
-                    data = self.sock.recv(self.recv_size)
+                    data = self.sock.sock.recv(self.recv_size)
                 except Exception:
                     break
 
