@@ -56,6 +56,9 @@ class Pull(FSTools):
 
                     self.badges.print_success(f"File saved to {location}!")
                     return True
+                self.badges.print_error(f"Remote file: {file}: does not exist!")
+                return False
+
             return False
         self.badges.print_error("Invalid pull method!")
         return False
