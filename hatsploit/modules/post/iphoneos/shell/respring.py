@@ -38,5 +38,4 @@ class HatSploitModule(Module, SessionTools):
         session = self.get_session(session)
 
         if session:
-            session.send_command(
-                "killall SpringBoard")
+            session.send_command("killall SpringBoard")
