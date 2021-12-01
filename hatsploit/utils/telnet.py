@@ -38,7 +38,8 @@ class TelnetSocket:
         self.sock = telnetlib.Telnet()
         self.sock.sock = client
 
-        self.recv_size = 2048
+        self.recv_size = 1024 * 10
+        self.recv_delay = 0.5
 
         self.terminated = False
         self.badges = Badges()
@@ -102,6 +103,7 @@ class TelnetSocket:
                     continue
 
                 result += data
+                time.sleep(self.recv_delay)
 
             self.sock.sock.setblocking(True)
             return result
