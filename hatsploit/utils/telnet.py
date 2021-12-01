@@ -107,8 +107,7 @@ class TelnetSocket:
 
             self.sock.sock.setblocking(True)
             return result
-        else:
-            self.badges.print_error("Socket is not connected!")
+        self.badges.print_error("Socket is not connected!")
 
     def recv_until(self, token):
         if self.sock.sock:
@@ -126,8 +125,7 @@ class TelnetSocket:
                 result += data
 
             return result
-        else:
-            self.badges.print_error("Socket is not connected!")
+        self.badges.print_error("Socket is not connected!")
 
     def send_command(self, command, output=True, decode=True):
         if self.sock.sock:
