@@ -51,6 +51,7 @@ class Push(FSTools):
                 self.badges.print_process(f"Saving to {location}...")
                 self.badges.print_success(f"Saved to {location}!")
                 return True
+
             return False
         self.badges.print_error("Invalid push method!")
         return False
