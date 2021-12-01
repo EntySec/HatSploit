@@ -33,7 +33,7 @@ class HatSploitModule(Module, SessionTools, DBTools):
         'SESSION': {
             'Description': "Session to run on.",
             'Value': None,
-            'Type': "session",
+            'Type': "session->[iphoneos,unix,macos]",
             'Required': True
         }
     }
