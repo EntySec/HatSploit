@@ -38,6 +38,8 @@ class TelnetSocket:
         self.sock = telnetlib.Telnet()
         self.sock.sock = client
 
+        self.recv_size = 2048
+
         self.terminated = False
         self.badges = Badges()
 
@@ -89,33 +91,18 @@ class TelnetSocket:
     def recv(self):
         if self.sock.sock:
             result = b""
+            self.sock.sock.setblocking(False)
 
             while True:
-                time.sleep(self.trans_delay)
-                data = self.sock.read_very_eager()
-
-                if not data:
+                try:
+                    data = self.sock.recv(self.recv_size)
+                except Exception:
                     break
 
                 result += data
 
+            self.sock.sock.setblocking(True)
             return result
-        self.badges.print_error("Socket is not connected!")
-
-    def recv(self):
-        if self.sock.sock:
-            result = b""
-
-            while True:
-                data = self.sock.read_very_eager()
-
-                if result and not data:
-                    break
-
-                result += data
-
-            return result
-        self.badges.print_error("Socket is not connected!")
 
     def send_command(self, command, output=True, decode=True):
         if self.sock.sock:
