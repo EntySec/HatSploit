@@ -47,6 +47,7 @@ class Config:
         self.path_config = {
             'root_path': self.base_path,
             'db_path': f'{self.base_path}db/',
+            'loot_path': f'{self.base_path}loot/',
             'data_path': f'{self.base_path}data/',
             'tips_path': f'{self.base_path}data/tips/',
             'banners_path': f'{self.base_path}data/banners/',
