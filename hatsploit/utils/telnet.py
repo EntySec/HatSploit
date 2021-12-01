@@ -103,6 +103,8 @@ class TelnetSocket:
 
             self.sock.sock.setblocking(True)
             return result
+        else:
+            self.badges.print_error("Socket is not connected!")
 
     def send_command(self, command, output=True, decode=True):
         if self.sock.sock:
