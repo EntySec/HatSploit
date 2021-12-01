@@ -43,12 +43,13 @@ class Push(FSTools):
     def push(self, file, sender, location, args=[], method='printf', linemax=100):
         if method in self.push_methods:
             if self.exists_file(file):
+                self.badges.print_process(f"Uploading {file}...")
+
                 with open(file, 'rb') as f:
-                    self.badges.print_process(f"Uploading {file}...")
                     self.push_methods[method].push(f.read(), sender, location, args, linemax)
 
-                    self.badges.print_process(f"Saving to {location}...")
-                    self.badges.print_success(f"Saved to {location}!")
+                self.badges.print_process(f"Saving to {location}...")
+                self.badges.print_success(f"Saved to {location}!")
                 return True
             return False
         self.badges.print_error("Invalid push method!")
