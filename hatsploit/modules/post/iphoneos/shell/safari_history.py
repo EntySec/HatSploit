@@ -47,6 +47,8 @@ class HatSploitModule(Module, SessionTools, DBTools):
                 '/private/var/mobile/Library/Safari/History.db', config.path_config['loot_path'])
             history = self.parse_safari_history(config.path_config['loot_path'] + 'History.db')
 
+            self.print_process("Parsing history database...")
+
             headers = ('Date', 'URL')
             history_data = []
 
