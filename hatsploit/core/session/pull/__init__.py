@@ -49,10 +49,13 @@ class Pull(FSTools):
                 self.badges.print_process(f"Downloading {file}...")
                 data = self.pull_methods[method].pull(sender, file, args)
 
-                self.badges.print_process(f"Saving to {location}...")
-                with open(location, 'wb') as f:
-                    f.write(data)
+                if data:
+                    self.badges.print_process(f"Saving to {location}...")
+                    with open(location, 'wb') as f:
+                        f.write(data)
 
-                self.badges.print_success(f"File saved to {location}!")
-        else:
-            self.badges.print_error("Invalid pull method!")
+                    self.badges.print_success(f"File saved to {location}!")
+                    return True
+            return False
+        self.badges.print_error("Invalid pull method!")
+        return False
