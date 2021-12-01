@@ -31,7 +31,7 @@ class Cat:
     badges = Badges()
     
     def pull(self, sender, location, args=[]):
-        command = f'cat "{file}"'
+        command = f'cat "{location}"'
 
         if isinstance(args, dict):
             return sender(command, **args)
