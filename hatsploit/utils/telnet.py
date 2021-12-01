@@ -120,8 +120,7 @@ class TelnetSocket:
                 data_size = len(data) - token_size
 
                 if data[data_size:] == token.encode():
-                    if data_size != 0:
-                        result += data[:token_size-1]
+                    result += data[:data_size]
                     break
 
                 result += data
