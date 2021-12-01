@@ -29,6 +29,19 @@ import sqlite3
 
 class DBTools:
     @staticmethod
+    def parse_addressbook(database):
+        db = sqlite3.connect(database)
+        db.row_factory = sqlite3.Row
+        
+        cursor = db.cursor()
+        cursor.execute('''SELECT
+                c0First,
+                c16Phone
+            FROM ABPersonFullTextSearch_content''')
+
+        return list(map(dict,cursor.fetchall()))
+
+    @staticmethod
     def parse_safari_history(database):
         db = sqlite3.connect(database)
         db.row_factory = sqlite3.Row
