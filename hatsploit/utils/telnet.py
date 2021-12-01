@@ -112,13 +112,15 @@ class TelnetSocket:
 
     def recv_until(self, token):
         if self.sock.sock:
+            token_size = len(token)
             result = b""
 
             while True:
                 data = self.sock.sock.recv(self.recv_size)
+                data_size = len(data) - token_size
 
-                data_size = len(data) - len(token)
                 if data[data_size:] == token.encode():
+                    result += data[:token_size-1]
                     break
 
                 result += data
