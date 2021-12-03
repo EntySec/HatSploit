@@ -50,8 +50,6 @@ class Echo:
             if block:
                 command = echo_stream.format(block, location)
 
-                self.badges.print_multi(f"Uploading to {location}... ({str(current)}/{str(size)})")
-
                 if isinstance(args, dict):
                     sender(command, **args)
                 else:
