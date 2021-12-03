@@ -58,9 +58,11 @@ class IO:
             sys.stdout.flush()
 
     def input(self, message='', start='%remove', end=''):
-        line = self.colors_script.parse(start + message + end)
-        use_log = self.local_storage.get("log")
+        line = self.colors.script.parse(
+            self.colors.script.readline_join(start + message + end)
+        )
 
+        use_log = self.local_storage.get("log")
         self.local_storage.set("prompt", line)
 
         if use_log:
