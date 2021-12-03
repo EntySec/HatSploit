@@ -267,7 +267,7 @@ class Show:
 
         comments = ""
         for line in current_module['Comments']:
-            comments += line + "\n" + (" " * 14)
+            comments += " " + line + "\n" + (" " * 14)
         comments = comments[:-15]
 
         self.badges.print_information("Module information:")
@@ -285,7 +285,7 @@ class Show:
             self.badges.print_empty("  Description: " + current_module['Description'])
         if comments:
             self.badges.print_empty("     Comments: ")
-            self.badges.print_empty("              " + comments)
+            self.badges.print_empty("               " + comments)
         if current_module['Rank']:
             self.badges.print_empty("         Rank: " + current_module['Rank'])
 
