@@ -34,9 +34,6 @@ class ColorsScript:
     script_extension = "colors"
 
     commands = {
-        '%rstart': colors.RSTART,
-        '%rend': colors.REND,
-
         '%black': colors.BLACK,
         '%red': colors.RED,
         '%green': colors.GREEN,
@@ -64,6 +61,12 @@ class ColorsScript:
         if line and line[0:8] != "%comment" and not line.isspace():
             for command in self.commands:
                 line = line.replace(command, self.commands[command])
+        return line
+
+    def libreadline(self, line):
+        if line and line[0:8] != "%comment" and not line.isspace():
+            for command in self.commands:
+                line = line.replace(command, f'\001{command}\002')
         return line
 
     @staticmethod
