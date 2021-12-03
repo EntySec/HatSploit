@@ -32,13 +32,13 @@ from hatsploit.core.cli.colors import Colors
 from hatsploit.core.cli.fmt import FMT
 from hatsploit.lib.storage import LocalStorage
 
+REMOVE = Colors().REMOVE
 
 class IO:
-    colors = Colors()
     local_storage = LocalStorage()
     fmt = FMT()
 
-    def print(self, message="", start='\r', end='\n'):
+    def print(self, message="", start=REMOVE, end='\n'):
         use_log = self.local_storage.get("log")
 
         sys.stdout.write(start + message + end)
@@ -60,10 +60,10 @@ class IO:
 
         if use_log:
             with open(use_log, 'a') as f:
-                f.write(self.colors.REMOVE + prompt_message)
+                f.write(REMOVE + prompt_message)
                 f.flush()
 
-        commands = input(self.colors.REMOVE + prompt_message)
+        commands = input(REMOVE + prompt_message)
 
         if use_log:
             with open(use_log, 'a') as f:
