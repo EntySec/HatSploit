@@ -53,9 +53,6 @@ class Badges:
     def print_information(self, message, start='%remove', end='%newline'):
         self.print_empty(f"%bold%white[i]%end {message}", start, end)
 
-    def print_multi(self, message):
-        self.print_empty(f"%bold%blue[*]%end {message}", '%remove', '')
-
     def input_empty(self, message='', start='%remove%end', end='%end'):
         return self.io.input(message, start, end)
 
