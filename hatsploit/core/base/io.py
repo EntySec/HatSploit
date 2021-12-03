@@ -58,8 +58,8 @@ class IO:
             sys.stdout.flush()
 
     def input(self, message='', start='%remove%end', end='%end'):
-        line = self.colors.script.parse(
-            self.colors.script.libreadline(start + message + end)
+        line = self.colors_script.parse(
+            self.colors_script.libreadline(start + message + end)
         )
 
         use_log = self.local_storage.get("log")
