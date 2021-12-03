@@ -91,12 +91,12 @@ class Console:
         while True:
             try:
                 if not self.modules.check_current_module():
-                    prompt = f'({self.prompt})> '
+                    prompt = f'%end({self.prompt})> '
                 else:
                     module = self.modules.get_current_module_name()
                     name = self.modules.get_current_module_object().details['Name']
 
-                    prompt = f'({self.prompt}: {module.split("/")[0]}: %red{name}%end)> '
+                    prompt = f'%end({self.prompt}: {module.split("/")[0]}: %red{name}%end)> '
                 commands = self.badges.input_empty(prompt)
 
                 self.update_events()
@@ -107,7 +107,7 @@ class Console:
                     readline.write_history_file(self.history)
 
             except (KeyboardInterrupt, EOFError, self.exceptions.GlobalException):
-                self.badges.print_empty(end='')
+                pass
             except Exception as e:
                 self.badges.print_error("An error occurred: " + str(e) + "!")
 
