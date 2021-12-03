@@ -57,7 +57,7 @@ class IO:
             sys.stdout.write(prompt)
             sys.stdout.flush()
 
-    def input(self, message='', start='%remove', end=''):
+    def input(self, message='', start='%remove%end', end='%end'):
         line = self.colors.script.parse(
             self.colors.script.readline_join(start + message + end)
         )
