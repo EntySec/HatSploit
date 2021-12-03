@@ -107,7 +107,7 @@ class Console:
                     readline.write_history_file(self.history)
 
             except (KeyboardInterrupt, EOFError, self.exceptions.GlobalException):
-                pass
+                self.badges.print_empty(end='')
             except Exception as e:
                 self.badges.print_error("An error occurred: " + str(e) + "!")
 
