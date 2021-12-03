@@ -32,7 +32,7 @@ from hatsploit.core.base.io import IO
 class Badges:
     io = IO()
 
-    def print_empty(self, message="", start='%remove', end='%newline'):
+    def print_empty(self, message='', start='%remove', end='%newline'):
         self.io.print(line, start=start, end=end)
 
     def print_usage(self, message, start='%remove', end='%newline'):
@@ -56,11 +56,11 @@ class Badges:
     def print_multi(self, message):
         self.print_empty(f"%bold%blue[*]%end {message}", start='%remove', end='')
 
-    def input_empty(self, message):
+    def input_empty(self, message='', start='%remove%end', end='%end'):
         return self.io.input(message)
 
-    def input_question(self, message):
+    def input_question(self, message, start='%remove%end', end='%end'):
         return self.input_empty(f"%bold%white[?]%end {message}")
 
-    def input_arrow(self, message):
+    def input_arrow(self, message, start='%remove%end', end='%end'):
         return self.input_empty(f"%bold%white[>]%end {message}")
