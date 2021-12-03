@@ -53,7 +53,6 @@ class ColorsScript:
 
         '%remove': colors.REMOVE,
         '%clear': colors.CLEAR,
-
         '%newline': colors.NEWLINE
     }
 
@@ -90,9 +89,11 @@ class ColorsScript:
         buffer_commands = []
         for line in lines:
             buffer_line = line
+
             for command in self.commands:
                 if command in buffer_line:
                     buffer_line = buffer_line.replace(command, " ")
+
             if buffer_line.isspace():
                 buffer_commands.append(line.strip())
             else:
@@ -104,9 +105,11 @@ class ColorsScript:
         line_id = -1
         for _ in range(len(lines)):
             buffer_line = lines[line_id]
+
             for command in self.commands:
                 if command in buffer_line:
                     buffer_line = buffer_line.replace(command, " ")
+
             if buffer_line.isspace():
                 lines.pop(line_id)
         return lines
@@ -115,27 +118,34 @@ class ColorsScript:
         result = ""
         lines = self._read_file_lines(path)
         reversed_lines = self._reverse_read_lines(path)
+
         last_commands = self._reversed_find_last_commands(reversed_lines)
         last_commands = "".join(map(str, last_commands))
+
         lines = self._remove_empty_lines(lines)
         lines[-1] = lines[-1].strip('\n') + last_commands
+
         if path.endswith(self.script_extension):
             try:
                 buffer_commands = ""
                 for line in lines:
                     buffer_line = line
+
                     for command in self.commands:
                         if command in buffer_line:
                             buffer_line = buffer_line.replace(command, " ")
+
                     if buffer_line.isspace():
                         buffer_commands += line.strip()
                     else:
                         line = buffer_commands + line
                         buffer_commands = ""
+
                         for command in self.commands:
                             line = line.partition('%comment')[0]
                             line = line.replace(command, self.commands[command])
                         result += line
+
                 return result
             except Exception:
                 return None
@@ -144,6 +154,7 @@ class ColorsScript:
 
     def compile_colors_script(self, path, outfile='a.out'):
         result = self.parse_colors_script(path)
+
         if result:
             output = open(outfile, 'wb')
             output.write(result.encode())
