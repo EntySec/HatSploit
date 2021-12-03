@@ -34,6 +34,9 @@ class ColorsScript:
     script_extension = "colors"
 
     commands = {
+        '%rstart': colors.RSTART,
+        '%rend': colors.REND,
+
         '%black': colors.BLACK,
         '%red': colors.RED,
         '%green': colors.GREEN,
