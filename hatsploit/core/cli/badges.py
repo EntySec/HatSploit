@@ -33,34 +33,34 @@ class Badges:
     io = IO()
 
     def print_empty(self, message='', start='%remove', end='%newline'):
-        self.io.print(line, start=start, end=end)
+        self.io.print(message, start, end)
 
     def print_usage(self, message, start='%remove', end='%newline'):
-        self.print_empty(f"Usage: {message}", start=start, end=end)
+        self.print_empty(f"Usage: {message}", start, end)
 
     def print_process(self, message, start='%remove', end='%newline'):
-        self.print_empty(f"%bold%blue[*]%end {message}", start=start, end=end)
+        self.print_empty(f"%bold%blue[*]%end {message}", start, end)
 
     def print_success(self, message, start='%remove', end='%newline'):
-        self.print_empty(f"%bold%green[+]%end {message}", start=start, end=end)
+        self.print_empty(f"%bold%green[+]%end {message}", start, end)
 
     def print_error(self, message, start='%remove', end='%newline'):
-        self.print_empty(f"%bold%red[-]%end {message}", start=start, end=end)
+        self.print_empty(f"%bold%red[-]%end {message}", start, end)
 
     def print_warning(self, message, start='%remove', end='%newline'):
-        self.print_empty(f"%bold%yellow[!]%end {message}", start=start, end=end)
+        self.print_empty(f"%bold%yellow[!]%end {message}", start, end)
 
     def print_information(self, message, start='%remove', end='%newline'):
-        self.print_empty(f"%bold%white[i]%end {message}", start=start, end=end)
+        self.print_empty(f"%bold%white[i]%end {message}", start, end)
 
     def print_multi(self, message):
-        self.print_empty(f"%bold%blue[*]%end {message}", start='%remove', end='')
+        self.print_empty(f"%bold%blue[*]%end {message}", '%remove', '')
 
     def input_empty(self, message='', start='%remove%end', end='%end'):
-        return self.io.input(message)
+        return self.io.input(message, start, end)
 
     def input_question(self, message, start='%remove%end', end='%end'):
-        return self.input_empty(f"%bold%white[?]%end {message}")
+        return self.input_empty(f"%bold%white[?]%end {message}", start, end)
 
     def input_arrow(self, message, start='%remove%end', end='%end'):
-        return self.input_empty(f"%bold%white[>]%end {message}")
+        return self.input_empty(f"%bold%white[>]%end {message}", start, end)
