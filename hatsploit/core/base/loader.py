@@ -79,6 +79,6 @@ class Loader:
                 elif status[cycle % len(status)] in list(string.ascii_uppercase):
                     status = status[:cycle % len(status)] + status[cycle % len(status)].lower() + status[cycle % len(
                         status) + 1:]
-                self.badges.print_process(status, '', '%remove')
+                self.badges.print_process(status, '', '\r')
                 time.sleep(.1)
         loading_process.join()
