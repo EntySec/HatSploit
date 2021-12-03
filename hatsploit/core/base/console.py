@@ -91,12 +91,12 @@ class Console:
         while True:
             try:
                 if not self.modules.check_current_module():
-                    prompt = f'%end({self.prompt})> '
+                    prompt = f'%rstart%end%rend({self.prompt})> '
                 else:
                     module = self.modules.get_current_module_name()
                     name = self.modules.get_current_module_object().details['Name']
 
-                    prompt = f'%end({self.prompt}: {module.split("/")[0]}: %red{name}%end)> '
+                    prompt = f'%rstart%end%rend({self.prompt}: {module.split("/")[0]}: %rstart%red%rend{name}%rstart%end%rend)> '
                 commands = self.badges.input_empty(prompt)
 
                 self.update_events()
