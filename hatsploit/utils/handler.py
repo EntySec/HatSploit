@@ -45,19 +45,13 @@ class Handler(Handle, Post, Blinder):
     jobs = Jobs()
     badges = Badges()
 
-    def do_job(self, name, payload, target, args):
+    def do_job(self, payload, target, args):
         if payload['Type'].lower() == 'one_side':
             target(*args)
         else:
-            module = self.modules.get_current_module_name()
-            if module:
-                module_name = module
-            else:
-                module_name = 'handler'
-
             self.jobs.create_job(
-                name,
-                module_name,
+                None,
+                None,
                 target,
                 args,
                 True
@@ -124,7 +118,6 @@ class Handler(Handle, Post, Blinder):
             if payload['Category'].lower() == 'stager':
                 if post.lower() == 'raw':
                     self.do_job(
-                        "Handler",
                         payload,
                         self.send,
                         [
@@ -135,7 +128,6 @@ class Handler(Handle, Post, Blinder):
                     )
                 else:
                     self.do_job(
-                        f"Handler",
                         payload,
                         self.post,
                         [
@@ -152,7 +144,6 @@ class Handler(Handle, Post, Blinder):
 
             elif payload['Category'].lower() == 'single':
                 self.do_job(
-                    "Handler",
                     payload,
                     self.send,
                     [
@@ -189,7 +180,6 @@ class Handler(Handle, Post, Blinder):
                 if payload['Category'].lower() == 'stager':
                     if post.lower() == 'raw':
                         self.do_job(
-                            "Handler",
                             payload,
                             self.send,
                             [
@@ -200,7 +190,6 @@ class Handler(Handle, Post, Blinder):
                         )
                     else:
                         self.do_job(
-                            f"Handler",
                             payload,
                             self.post,
                             [
@@ -217,7 +206,6 @@ class Handler(Handle, Post, Blinder):
 
                 elif payload['Category'].lower() == 'single':
                     self.do_job(
-                        "Handler",
                         payload,
                         self.send,
                         [
@@ -272,7 +260,7 @@ class Handler(Handle, Post, Blinder):
 
         session_platform = payload['Platform']
         if payload['Platform'] == 'unix':
-            session_platfrom = module.details['Platform']
+            session_platform = module.details['Platform']
 
         session_type = new_session.details['Type']
 
