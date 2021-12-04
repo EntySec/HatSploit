@@ -91,10 +91,12 @@ class Handler(Handle, Post, Blinder):
                        manual=False, post="printf", linemax=100, ensure=False):
 
         module = self.modules.get_current_module_object()
+
+        options = module.options
         payload = module.payload
 
-        if 'BLINDER' in module.options:
-            if module.options['BLINDER']['Value'].lower() in ['yes', 'y']:
+        if 'BLINDER' in options:
+            if options['BLINDER']['Value'].lower() in ['yes', 'y']:
                 if sender is not None:
                     self.blinder(sender, args)
                     return True
@@ -236,11 +238,11 @@ class Handler(Handle, Post, Blinder):
         session = payload['Session'] if payload['Session'] is not None else HatSploitSession
 
         if payload['Type'].lower() == 'reverse_tcp':
-            port = module.options['LPORT']['Value']
+            port = options['LPORT']['Value']
 
             new_session, remote_host = self.listen_session(
-                module.options['LHOST']['Value'],
-                module.options['LPORT']['Value'],
+                options['LHOST']['Value'],
+                options['LPORT']['Value'],
                 session,
                 timeout
             )
@@ -252,7 +254,7 @@ class Handler(Handle, Post, Blinder):
             if not host:
                 host = '127.0.0.1'
 
-            port = module.options['RBPORT']['Value']
+            port = options['RBPORT']['Value']
 
             new_session = self.connect_session(host, port, session, timeout)
             remote_host = host
@@ -269,6 +271,9 @@ class Handler(Handle, Post, Blinder):
             return False
 
         session_platform = payload['Platform']
+        if payload['Platform'] == 'unix':
+            session_platfrom = module.details['Platform']
+
         session_type = new_session.details['Type']
 
         new_session.details['Post'] = post
