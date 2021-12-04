@@ -11,13 +11,13 @@ from hatsploit.utils.session import SessionTools
 
 class HatSploitModule(Module, SessionTools):
     details = {
-        'Name': "Unix Shell Get PID",
-        'Module': "post/unix/shell/getpid",
+        'Name': "iOS Restart SpringBoard",
+        'Module': "post/apple_ios/shell/respring",
         'Authors': [
             'Ivan Nikolsky (enty8080) - module developer'
         ],
-        'Description': "Get current session process id.",
-        'Platform': "unix",
+        'Description': "Restart iOS SpringBoard.app through shell.",
+        'Platform': "apple_ios",
         'Rank': "medium"
     }
 
@@ -25,7 +25,7 @@ class HatSploitModule(Module, SessionTools):
         'SESSION': {
             'Description': "Session to run on.",
             'Value': None,
-            'Type': "session->[unix,linux,macos]",
+            'Type': "session",
             'Required': True
         }
     }
@@ -35,6 +35,4 @@ class HatSploitModule(Module, SessionTools):
         session = self.get_session(session)
 
         if session:
-            pid = session.send_command("printf $$", True).strip()
-            if pid:
-                self.print_information(f"PID: {pid}")
+            session.send_command("killall SpringBoard")

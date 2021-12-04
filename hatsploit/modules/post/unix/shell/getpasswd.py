@@ -17,9 +17,6 @@ class HatSploitModule(Module, SessionTools):
             'Ivan Nikolsky (enty8080) - module developer'
         ],
         'Description': "Get current session /etc/passwd file.",
-        'Comments': [
-            ''
-        ],
         'Platform': "unix",
         'Rank': "medium"
     }
@@ -28,7 +25,7 @@ class HatSploitModule(Module, SessionTools):
         'SESSION': {
             'Description': "Session to run on.",
             'Value': None,
-            'Type': "session->[unix,linux,macos,iphoneos]",
+            'Type': "session->[unix,linux,macos,apple_ios]",
             'Required': True
         },
         'LPATH': {

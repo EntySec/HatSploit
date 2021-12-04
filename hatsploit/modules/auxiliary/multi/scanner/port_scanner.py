@@ -19,9 +19,6 @@ class HatSploitModule(Module, TCPClient):
             'Ivan Nikolsky (enty8080) - module developer'
         ],
         'Description': "Scan host for opened ports.",
-        'Comments': [
-            ''
-        ],
         'Platform': "multi",
         'Rank': "low"
     }

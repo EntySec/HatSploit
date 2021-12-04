@@ -17,9 +17,6 @@ class HatSploitModule(Module, SessionTools):
             'Ivan Nikolsky (enty8080) - module developer'
         ],
         'Description': "Invoke message box on Windows machine.",
-        'Comments': [
-            ''
-        ],
         'Platform': "windows",
         'Rank': "medium"
     }
