@@ -50,13 +50,11 @@ class HatSploitModule(Module, SessionTools, DBTools):
                 self.print_error("Failed to parse bookmarks database!")
                 return
 
-            headers = ('Title', 'URL')
             bookmarks_data = []
-
             for item in bookmarks:
                 bookmarks_data.append((item['title'], item['url']))
 
             if bookmarks_data:
-                self.print_table("Bookmarks", headers, *bookmarks_data)
+                self.print_table("Bookmarks", ('Title', 'URL'), *bookmarks_data)
             else:
                 self.print_warning("No bookmarks available on device.")
