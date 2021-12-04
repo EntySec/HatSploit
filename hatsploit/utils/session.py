@@ -36,7 +36,7 @@ class SessionTools:
         session = self.sessions.get_session(session_id)
         return session
 
-    def download_session(self, session_id, remote_file, local_path=None):
+    def session_download(self, session_id, remote_file, local_path=None):
         session = self.get_session(session_id)
         if session:
             if not local_path:
