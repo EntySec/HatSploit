@@ -12,17 +12,14 @@ from hatsploit.utils.tcp import TCPClient
 class HatSploitPayload(Payload):
     details = {
         'Category': "stager",
-        'Name': "iPhoneOS aarch64 Shell Reverse TCP",
-        'Payload': "iphoneos/aarch64/shell_reverse_tcp",
+        'Name': "iOS aarch64 Shell Reverse TCP",
+        'Payload': "apple_ios/aarch64/shell_reverse_tcp",
         'Authors': [
             'Ivan Nikolsky (enty8080) - payload developer'
         ],
-        'Description': "Shell reverse TCP payload for iPhoneOS aarch64.",
-        'Comments': [
-            ''
-        ],
+        'Description': "Shell reverse TCP payload for iOS aarch64.",
         'Architecture': "aarch64",
-        'Platform': "iphoneos",
+        'Platform': "apple_ios",
         'Rank': "high",
         'Type': "reverse_tcp"
     }

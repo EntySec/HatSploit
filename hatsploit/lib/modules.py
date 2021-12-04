@@ -444,7 +444,7 @@ class Modules:
                         generator = HatVenom()
                         payload_data = current_payload.run()
 
-                        if current_payload.details['Platform'] in ['macos', 'iphoneos']:
+                        if current_payload.details['Platform'] in ['macos', 'apple_ios']:
                             executable = 'macho'
                         elif current_payload.details['Platform'] in ['windows']:
                             executable = 'pe'

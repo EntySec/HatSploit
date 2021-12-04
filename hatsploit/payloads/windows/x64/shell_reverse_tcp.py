@@ -18,9 +18,6 @@ class HatSploitPayload(Payload):
             'Ivan Nikolsky (enty8080) - payload developer'
         ],
         'Description': "Reverse shell TCP payload for Windows x64.",
-        'Comments': [
-            ''
-        ],
         'Architecture': "x64",
         'Platform': "windows",
         'Rank': "low",

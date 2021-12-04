@@ -37,10 +37,7 @@ class Plugin(FMT, Badges, Colors, Parser, Tables):
         'Authors': [
             ''
         ],
-        'Description': "",
-        'Comments': [
-            ''
-        ]
+        'Description': ""
     }
 
     def run(self):

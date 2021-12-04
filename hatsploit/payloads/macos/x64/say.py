@@ -19,9 +19,6 @@ class HatSploitPayload(Payload):
             'Ivan Nikolsky (enty8080) - payload developer'
         ],
         'Description': "Say payload for macOS x64.",
-        'Comments': [
-            ''
-        ],
         'Architecture': "x64",
         'Platform': "macos",
         'Rank': "low",

@@ -18,9 +18,6 @@ class HatSploitPayload(Payload):
             'Ivan Nikolsky (enty8080) - payload developer'
         ],
         'Description': "Shell reverse TCP payload for Linux armle.",
-        'Comments': [
-            ''
-        ],
         'Architecture': "armle",
         'Platform': "linux",
         'Rank': "high",
