@@ -114,6 +114,7 @@ class Show:
             number = 0
             headers = ("Number", "Name", "Path")
             databases = self.local_storage.get("connected_module_databases")
+
             for name in databases:
                 databases_data.append((number, name, databases[name]['path']))
                 number += 1
@@ -127,6 +128,7 @@ class Show:
             number = 0
             headers = ("Number", "Name", "Path")
             databases = self.local_storage.get("connected_payload_databases")
+
             for name in databases:
                 databases_data.append((number, name, databases[name]['path']))
                 number += 1
@@ -140,6 +142,7 @@ class Show:
             number = 0
             headers = ("Number", "Name", "Path")
             databases = self.local_storage.get("connected_plugin_databases")
+
             for name in databases:
                 databases_data.append((number, name, databases[name]['path']))
                 number += 1
@@ -150,86 +153,119 @@ class Show:
     def show_plugins(self):
         all_plugins = self.local_storage.get("plugins")
         headers = ("Number", "Name", "Description")
+        plugins_shorts = {}
+
         for database in sorted(all_plugins):
             number = 0
             plugins_data = []
             plugins = all_plugins[database]
+
             for plugin in sorted(plugins):
                 plugins_data.append((number, plugin, plugins[plugin]['Description']))
+                plugins_shorts.update({number: plugin})
                 number += 1
+
             self.tables.print_table("Plugins (" + database + ")", headers, *plugins_data)
+            self.local_storage.set("plugin_shorts", plugins_shorts)
 
     def show_modules(self, information):
         all_modules = self.local_storage.get("modules")
         headers = ("Number", "Module", "Rank", "Description")
+        modules_shorts = {}
+
         for database in sorted(all_modules):
             number = 0
             modules_data = []
             modules = all_modules[database]
+
             for module in sorted(modules):
                 if information == module.split('/')[0]:
                     modules_data.append((number, modules[module]['Module'], modules[module]['Rank'],
                                          modules[module]['Description']))
+                    modules_shorts.update({number: modules[module]['Module']})
                     number += 1
+
             self.tables.print_table(information.title() + " Modules (" + database + ")", headers, *modules_data)
+            self.local_storage.set("module_shorts", modules_shorts)
 
     def show_payloads(self):
         all_payloads = self.local_storage.get("payloads")
         headers = ("Number", "Category", "Payload", "Rank", "Description")
+        payloads_shorts = {}
+
         for database in sorted(all_payloads):
             number = 0
             payloads_data = []
             payloads = all_payloads[database]
+
             for payload in sorted(payloads):
                 payloads_data.append((number, payloads[payload]['Category'], payloads[payload]['Payload'],
                                       payloads[payload]['Rank'], payloads[payload]['Description']))
+                payloads_shorts.update({number: payloads[payload]['Payload']})
                 number += 1
+
             self.tables.print_table("Payloads (" + database + ")", headers, *payloads_data)
+            self.local_storage.set("payload_shorts", payloads_shorts)
 
     def show_search_plugins(self, keyword):
         all_plugins = self.local_storage.get("plugins")
+        plugins_shorts = {}
+
         if all_plugins:
             headers = ("Number", "Name", "Description")
             for database in all_plugins:
                 number = 0
                 plugins_data = []
                 plugins = all_plugins[database]
+
                 for plugin in sorted(plugins):
                     if keyword in plugin or keyword in plugins[plugin]['Description']:
                         name = plugin.replace(keyword, self.colors.RED + keyword + self.colors.END)
                         description = plugins[plugin]['Description'].replace(keyword, self.colors.RED + keyword + self.colors.END)
 
                         plugins_data.append((number, name, description))
+                        plugins_shorts.update({number: plugin})
+
                         number += 1
                 if plugins_data:
                     self.tables.print_table("Plugins (" + database + ")", headers, *plugins_data)
+                    self.local_storage.set("plugin_shorts", plugins_shorts)
 
     def show_search_modules(self, keyword):
         all_modules = self.local_storage.get("modules")
+        modules_shorts = {}
+
         if all_modules:
             headers = ("Number", "Module", "Rank", "Description")
             for database in all_modules:
                 number = 0
                 modules_data = []
                 modules = all_modules[database]
+
                 for module in sorted(modules):
                     if keyword in module or keyword in modules[module]['Description']:
                         name = module.replace(keyword, self.colors.RED + keyword + self.colors.END)
                         description = modules[module]['Description'].replace(keyword, self.colors.RED + keyword + self.colors.END)
 
                         modules_data.append((number, name, modules[module]['Rank'], description))
+                        modules_shorts.update({number: module})
+
                         number += 1
                 if modules_data:
                     self.tables.print_table("Modules (" + database + ")", headers, *modules_data)
+                    self.local_storage.set("module_shorts", modules_shorts)
 
     def show_search_payloads(self, keyword):
         all_payloads = self.local_storage.get("payloads")
+        payloads_shorts = {}
+
         if all_payloads:
             headers = ("Number", "Category", "Payload", "Rank", "Description")
             for database in all_payloads:
                 number = 0
                 payloads_data = []
                 payloads = all_payloads[database]
+
                 for payload in sorted(payloads):
                     if keyword in payload or keyword in payloads[payload]['Description']:
                         name = payload.replace(keyword, self.colors.RED + keyword + self.colors.END)
@@ -237,9 +273,12 @@ class Show:
 
                         payloads_data.append((number, payloads[payload]['Category'], name,
                                               payloads[payload]['Rank'], description))
+                        payloads_shorts.update({number: payload})
+
                         number += 1
                 if payloads_data:
                     self.tables.print_table("Payloads (" + database + ")", headers, *payloads_data)
+                    self.local_storage.set("payload_shorts", payloads_shorts)
 
     def show_sessions(self):
         sessions = self.local_storage.get("sessions")
