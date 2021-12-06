@@ -49,7 +49,7 @@ class Check:
 
                     try:
                         module_object = self.importer.import_module(module)
-                        keys = ['Name', 'Module', 'Authors', 'Description', 'References', 'Targets', 'Platform', 'Rank']
+                        keys = ['Name', 'Module', 'Authors', 'Description', 'Platform', 'Rank']
                         assert (all(key in module_object.details for key in keys))
                         self.badges.print_success(f"{module}: OK")
                     except Exception:
