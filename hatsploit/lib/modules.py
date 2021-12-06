@@ -365,6 +365,15 @@ class Modules:
                                          module_object)
 
     def use_module(self, module):
+        modules_shorts = self.local_storage.get("module_shorts")
+
+        if modules_shorts:
+            if module.isdigit():
+                module_number = int(module)
+
+                if module_number in modules_shorts:
+                    module = modules_shorts[module_number]
+
         if not self.check_if_already_used(module):
             if self.check_exist(module):
                 self.add_module(module)
