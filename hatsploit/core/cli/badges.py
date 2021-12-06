@@ -27,44 +27,37 @@
 import os
 
 from hatsploit.core.base.io import IO
-from hatsploit.core.utils.ui.colors_script import ColorsScript
 
 
 class Badges:
     io = IO()
-    colors_script = ColorsScript()
 
-    def print_empty(self, message="", start='\033[1K\r', end='\n'):
-        line = self.colors_script.parse(message)
-        self.io.print(line, start=start, end=end)
+    def print_empty(self, message='', start='%remove', end='%newline'):
+        self.io.print(message, start, end)
 
-    def print_usage(self, message, start='\033[1K\r', end='\n'):
-        self.print_empty(f"Usage: {message}", start=start, end=end)
+    def print_usage(self, message, start='%remove', end='%newline'):
+        self.print_empty(f"Usage: {message}", start, end)
 
-    def print_process(self, message, start='\033[1K\r', end='\n'):
-        self.print_empty(f"%bold%blue[*]%end {message}", start=start, end=end)
+    def print_process(self, message, start='%remove', end='%newline'):
+        self.print_empty(f"%bold%blue[*]%end {message}", start, end)
 
-    def print_success(self, message, start='\033[1K\r', end='\n'):
-        self.print_empty(f"%bold%green[+]%end {message}", start=start, end=end)
+    def print_success(self, message, start='%remove', end='%newline'):
+        self.print_empty(f"%bold%green[+]%end {message}", start, end)
 
-    def print_error(self, message, start='\033[1K\r', end='\n'):
-        self.print_empty(f"%bold%red[-]%end {message}", start=start, end=end)
+    def print_error(self, message, start='%remove', end='%newline'):
+        self.print_empty(f"%bold%red[-]%end {message}", start, end)
 
-    def print_warning(self, message, start='\033[1K\r', end='\n'):
-        self.print_empty(f"%bold%yellow[!]%end {message}", start=start, end=end)
+    def print_warning(self, message, start='%remove', end='%newline'):
+        self.print_empty(f"%bold%yellow[!]%end {message}", start, end)
 
-    def print_information(self, message, start='\033[1K\r', end='\n'):
-        self.print_empty(f"%bold%white[i]%end {message}", start=start, end=end)
+    def print_information(self, message, start='%remove', end='%newline'):
+        self.print_empty(f"%bold%white[i]%end {message}", start, end)
 
-    def print_multi(self, message):
-        self.print_empty(f"%bold%blue[*]%end {message}", start='\r', end='')
+    def input_empty(self, message='', start='%remove%end', end='%end'):
+        return self.io.input(message, start, end)
 
-    def input_empty(self, message):
-        line = self.colors_script.parse(message)
-        return self.io.input(line)
+    def input_question(self, message, start='%remove%end', end='%end'):
+        return self.input_empty(f"%bold%white[?]%end {message}", start, end)
 
-    def input_question(self, message):
-        return self.input_empty(f"%bold%white[?]%end {message}")
-
-    def input_arrow(self, message):
-        return self.input_empty(f"%bold%white[>]%end {message}")
+    def input_arrow(self, message, start='%remove%end', end='%end'):
+        return self.input_empty(f"%bold%white[>]%end {message}", start, end)

@@ -32,38 +32,45 @@ from hatsploit.core.cli.colors import Colors
 from hatsploit.core.cli.fmt import FMT
 from hatsploit.lib.storage import LocalStorage
 
+from hatsploit.core.utils.ui.colors_script import ColorsScript
+
 
 class IO:
-    colors = Colors()
     local_storage = LocalStorage()
     fmt = FMT()
+    colors_script = ColorsScript()
 
-    def print(self, message="", start='\r', end='\n'):
+    def print(self, message='', start='%remove', end='%newline'):
+        line = self.colors_script.parse(start + message + end)
         use_log = self.local_storage.get("log")
 
-        sys.stdout.write(start + message + end)
+        sys.stdout.write(line)
         sys.stdout.flush()
 
         if use_log:
             with open(use_log, 'a') as f:
-                f.write(start + message + end)
+                f.write(line)
                 f.flush()
 
-        if self.local_storage.get("current_prompt"):
-            prompt = start + self.local_storage.get("current_prompt") + readline.get_line_buffer()
+        if self.local_storage.get("prompt"):
+            prompt = self.local_storage.get("prompt") + readline.get_line_buffer()
             sys.stdout.write(prompt)
             sys.stdout.flush()
 
-    def input(self, prompt_message=""):
+    def input(self, message='', start='%remove%end', end='%end'):
+        line = self.colors_script.parse(
+            self.colors_script.libreadline(start + message + end)
+        )
+
         use_log = self.local_storage.get("log")
-        self.local_storage.set("current_prompt", prompt_message)
+        self.local_storage.set("prompt", line)
 
         if use_log:
             with open(use_log, 'a') as f:
-                f.write(self.colors.REMOVE + prompt_message)
+                f.write(line)
                 f.flush()
 
-        commands = input(self.colors.REMOVE + prompt_message)
+        commands = input(line)
 
         if use_log:
             with open(use_log, 'a') as f:
@@ -72,5 +79,5 @@ class IO:
 
         commands = self.fmt.format_commands(commands)
 
-        self.local_storage.set("current_prompt", None)
+        self.local_storage.set("prompt", None)
         return commands

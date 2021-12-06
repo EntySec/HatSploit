@@ -18,9 +18,6 @@ class HatSploitPayload(Payload):
             'Ivan Nikolsky (enty8080) - payload developer'
         ],
         'Description': "Shell reverse TCP payload for Linux x86.",
-        'Comments': [
-            ''
-        ],
         'Architecture': "x86",
         'Platform': "linux",
         'Rank': "high",

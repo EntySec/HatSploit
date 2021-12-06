@@ -17,9 +17,6 @@ class HatSploitModule(Module, TCPClient):
             'Ivan Nikolsky (enty8080) - module developer'
         ],
         'Description': "Check if remote Android device has ADB installation.",
-        'Comments': [
-            ''
-        ],
         'Platform': "android",
         'Rank': "low"
     }

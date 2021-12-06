@@ -83,6 +83,15 @@ class Plugins:
             self.badges.print_error("Failed to load plugin!")
 
     def load_plugin(self, plugin):
+        plugins_shorts = self.local_storage.get("plugin_shorts")
+
+        if plugins_shorts:
+            if plugin.isdigit():
+                plugin_number = int(plugin)
+
+                if plugin_number in plugins_shorts:
+                    plugin = plugins_shorts[plugin_number]
+
         self.badges.print_process("Loading " + plugin + " plugin...")
 
         if not self.check_loaded(plugin):
@@ -95,6 +104,15 @@ class Plugins:
             self.badges.print_error("Already loaded!")
 
     def unload_plugin(self, plugin):
+        plugins_shorts = self.local_storage.get("plugin_shorts")
+
+        if plugins_shorts:
+            if plugin.isdigit():
+                plugin_number = int(plugin)
+
+                if plugin_number in plugins_shorts:
+                    plugin = plugins_shorts[plugin_number]
+
         self.badges.print_process("Unloading " + plugin + " plugin...")
 
         if self.check_loaded(plugin):

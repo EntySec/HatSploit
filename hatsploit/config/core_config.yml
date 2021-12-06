@@ -24,11 +24,11 @@
 
 details:
     codename: ""
-    version: "4.0.1"
+    version: "4.1.1"
     prompt: "hsf"
 
 console:
-    clear: true
+    clear: false
     banner: true
     header: true
     tip: true

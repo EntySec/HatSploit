@@ -71,7 +71,7 @@ class Loader:
         cycle = 0
         while loading_process.is_alive():
             for char in "/-\|":
-                status = base_line + char + "\r"
+                status = base_line + char
                 cycle += 1
                 if status[cycle % len(status)] in list(string.ascii_lowercase):
                     status = status[:cycle % len(status)] + status[cycle % len(status)].upper() + status[cycle % len(
@@ -79,6 +79,6 @@ class Loader:
                 elif status[cycle % len(status)] in list(string.ascii_uppercase):
                     status = status[:cycle % len(status)] + status[cycle % len(status)].lower() + status[cycle % len(
                         status) + 1:]
-                self.badges.print_process(status, start='', end='')
+                self.badges.print_process(status, '', '\r')
                 time.sleep(.1)
         loading_process.join()

@@ -25,11 +25,23 @@
 #
 
 from hatsploit.lib.sessions import Sessions
+from hatsploit.lib.config import Config
 
 
 class SessionTools:
     sessions = Sessions()
+    config = Config()
 
     def get_session(self, session_id):
         session = self.sessions.get_session(session_id)
         return session
+
+    def session_download(self, session_id, remote_file, local_path=None):
+        session = self.get_session(session_id)
+        if session:
+            if not local_path:
+                local_path = self.config.path_config['loot_path']
+
+            if session.download(remote_file, local_path):
+                return local_path
+        return None

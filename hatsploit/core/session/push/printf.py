@@ -50,8 +50,6 @@ class Printf:
             if block:
                 command = printf_stream.format(block, location)
 
-                self.badges.print_multi(f"Uploading to {location}... ({str(current)}/{str(size)})")
-
                 if isinstance(args, dict):
                     output = sender(command, **args)
                 else:

@@ -58,6 +58,18 @@ class Execute:
         if commands[0][0] == '?':
             self.show.show_all_commands()
             return True
+        if commands[0][0] == '&':
+            commands[0] = commands[0][1:]
+
+            self.jobs.create_job(
+                commands[0],
+                None,
+                self.execute_command,
+                [commands],
+                True
+            )
+
+            return True
         if commands[0][0] == '!':
             if len(commands[0]) > 1:
                 commands[0] = commands[0].replace('!', '', 1)

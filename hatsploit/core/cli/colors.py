@@ -43,6 +43,6 @@ class Colors:
     TWINK = '\033[5m'
     BACK = '\033[7m'
 
-    REMOVE = '\r'
+    REMOVE = '\033[1K\r'
     CLEAR = '\033[H\033[J'
     NEWLINE = '\n'

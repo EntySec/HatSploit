@@ -20,9 +20,6 @@ class HatSploitModule(Module, HTTPClient):
             'Ivan Nikolsky (enty8080) - module developer'
         ],
         'Description': "Website directory scanner.",
-        'Comments': [
-            ''
-        ],
         'Platform': "multi",
         'Rank': "medium"
     }

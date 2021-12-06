@@ -94,7 +94,6 @@ class Builder:
                                 "Payload": payload_object.details['Payload'],
                                 "Authors": payload_object.details['Authors'],
                                 "Description": payload_object.details['Description'],
-                                "Comments": payload_object.details['Comments'],
                                 "Architecture": payload_object.details['Architecture'],
                                 "Platform": payload_object.details['Platform'],
                                 "Rank": payload_object.details['Rank'],
@@ -132,7 +131,8 @@ class Builder:
                                 "Module": module_object.details['Module'],
                                 "Authors": module_object.details['Authors'],
                                 "Description": module_object.details['Description'],
-                                "Comments": module_object.details['Comments'],
+                                "References": module_object.details['References'],
+                                "Targets": module_object.details['Targets'],
                                 "Platform": module_object.details['Platform'],
                                 "Rank": module_object.details['Rank']
                             }
@@ -166,8 +166,7 @@ class Builder:
                                 "Path": plugin,
                                 "Name": plugin_object.details['Name'],
                                 "Authors": plugin_object.details['Authors'],
-                                "Description": plugin_object.details['Description'],
-                                "Comments": plugin_object.details['Comments']
+                                "Description": plugin_object.details['Description']
                             }
                         })
                     except Exception:

@@ -17,9 +17,6 @@ class HatSploitModule(Module, SessionTools):
             'Ivan Nikolsky (enty8080) - module developer'
         ],
         'Description': "Get current session process id.",
-        'Comments': [
-            ''
-        ],
         'Platform': "unix",
         'Rank': "medium"
     }

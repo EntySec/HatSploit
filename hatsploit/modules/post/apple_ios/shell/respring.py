@@ -11,16 +11,13 @@ from hatsploit.utils.session import SessionTools
 
 class HatSploitModule(Module, SessionTools):
     details = {
-        'Name': "iPhoneOS Restart SpringBoard",
-        'Module': "post/iphoneos/shell/respring",
+        'Name': "iOS Restart SpringBoard",
+        'Module': "post/apple_ios/shell/respring",
         'Authors': [
             'Ivan Nikolsky (enty8080) - module developer'
         ],
-        'Description': "Restart iPhoneOS SpringBoard.app through shell.",
-        'Comments': [
-            ''
-        ],
-        'Platform': "iphoneos",
+        'Description': "Restart iOS SpringBoard.app through shell.",
+        'Platform': "apple_ios",
         'Rank': "medium"
     }
 

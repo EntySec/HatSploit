@@ -20,9 +20,6 @@ class HatSploitPayload(Payload, HatVenom):
             'Ivan Nikolsky (enty8080) - payload developer'
         ],
         'Description': "Message Box payload for Windows.",
-        'Comments': [
-            ''
-        ],
         'Architecture': "generic",
         'Platform': "windows",
         'Rank': "low",

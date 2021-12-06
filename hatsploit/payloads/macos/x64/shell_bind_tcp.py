@@ -17,9 +17,6 @@ class HatSploitPayload(Payload):
             'Ivan Nikolsky (enty8080) - payload developer'
         ],
         'Description': "Shell bind TCP payload for macOS x64.",
-        'Comments': [
-            ''
-        ],
         'Architecture': "x64",
         'Platform': "macos",
         'Rank': "high",

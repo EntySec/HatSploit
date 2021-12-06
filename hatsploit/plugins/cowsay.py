@@ -16,10 +16,7 @@ class HatSploitPlugin(Plugin):
         'Authors': [
             'Ivan Nikolsky (enty8080) - plugin developer'
         ],
-        'Description': "Cowsay plugin for HatSploit.",
-        'Comments': [
-            ''
-        ]
+        'Description': "Cowsay plugin for HatSploit."
     }
 
     commands = {

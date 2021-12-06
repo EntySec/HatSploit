@@ -45,19 +45,13 @@ class Handler(Handle, Post, Blinder):
     jobs = Jobs()
     badges = Badges()
 
-    def do_job(self, name, payload, target, args):
+    def do_job(self, payload, target, args):
         if payload['Type'].lower() == 'one_side':
             target(*args)
         else:
-            module = self.modules.get_current_module_name()
-            if module:
-                module_name = module
-            else:
-                module_name = 'handler'
-
             self.jobs.create_job(
-                name,
-                module_name,
+                None,
+                None,
                 target,
                 args,
                 True
@@ -91,10 +85,12 @@ class Handler(Handle, Post, Blinder):
                        manual=False, post="printf", linemax=100, ensure=False):
 
         module = self.modules.get_current_module_object()
+
+        options = module.options
         payload = module.payload
 
-        if 'BLINDER' in module.options:
-            if module.options['BLINDER']['Value'].lower() in ['yes', 'y']:
+        if 'BLINDER' in options:
+            if options['BLINDER']['Value'].lower() in ['yes', 'y']:
                 if sender is not None:
                     self.blinder(sender, args)
                     return True
@@ -122,7 +118,6 @@ class Handler(Handle, Post, Blinder):
             if payload['Category'].lower() == 'stager':
                 if post.lower() == 'raw':
                     self.do_job(
-                        "Handler",
                         payload,
                         self.send,
                         [
@@ -133,7 +128,6 @@ class Handler(Handle, Post, Blinder):
                     )
                 else:
                     self.do_job(
-                        f"Handler",
                         payload,
                         self.post,
                         [
@@ -150,7 +144,6 @@ class Handler(Handle, Post, Blinder):
 
             elif payload['Category'].lower() == 'single':
                 self.do_job(
-                    "Handler",
                     payload,
                     self.send,
                     [
@@ -187,7 +180,6 @@ class Handler(Handle, Post, Blinder):
                 if payload['Category'].lower() == 'stager':
                     if post.lower() == 'raw':
                         self.do_job(
-                            "Handler",
                             payload,
                             self.send,
                             [
@@ -198,7 +190,6 @@ class Handler(Handle, Post, Blinder):
                         )
                     else:
                         self.do_job(
-                            f"Handler",
                             payload,
                             self.post,
                             [
@@ -215,7 +206,6 @@ class Handler(Handle, Post, Blinder):
 
                 elif payload['Category'].lower() == 'single':
                     self.do_job(
-                        "Handler",
                         payload,
                         self.send,
                         [
@@ -236,11 +226,11 @@ class Handler(Handle, Post, Blinder):
         session = payload['Session'] if payload['Session'] is not None else HatSploitSession
 
         if payload['Type'].lower() == 'reverse_tcp':
-            port = module.options['LPORT']['Value']
+            port = options['LPORT']['Value']
 
             new_session, remote_host = self.listen_session(
-                module.options['LHOST']['Value'],
-                module.options['LPORT']['Value'],
+                options['LHOST']['Value'],
+                options['LPORT']['Value'],
                 session,
                 timeout
             )
@@ -252,7 +242,7 @@ class Handler(Handle, Post, Blinder):
             if not host:
                 host = '127.0.0.1'
 
-            port = module.options['RBPORT']['Value']
+            port = options['RBPORT']['Value']
 
             new_session = self.connect_session(host, port, session, timeout)
             remote_host = host
@@ -269,6 +259,9 @@ class Handler(Handle, Post, Blinder):
             return False
 
         session_platform = payload['Platform']
+        if payload['Platform'] == 'unix':
+            session_platform = module.details['Platform']
+
         session_type = new_session.details['Type']
 
         new_session.details['Post'] = post
