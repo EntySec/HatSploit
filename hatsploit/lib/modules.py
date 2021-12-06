@@ -276,6 +276,16 @@ class Modules:
                 if option in current_module.options:
                     value_type = current_module.options[option]['Type']
 
+                    if value_type == 'payload':
+                        payloads_shorts = self.local_storage.get("payload_shorts")
+
+                        if payloads_shorts:
+                            if value.isdigit():
+                                payload_number = int(value)
+
+                                if payload_number in payloads_shorts:
+                                    value = payloads_shorts[payload_number]
+
                     if self.compare_types(value_type, value):
                         self.badges.print_information(option + " ==> " + value)
 
