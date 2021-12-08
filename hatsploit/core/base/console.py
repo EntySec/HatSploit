@@ -157,8 +157,7 @@ class Console:
 
             header = ""
             header += "%end\n"
-            print(codename)
-            if not codename.strip():
+            if codename:
                 header += f"    --=( %yellowHatSploit Framework {version} {codename}%end\n"
             else:
                 header += f"    --=( %yellowHatSploit Framework {version}%end\n"
