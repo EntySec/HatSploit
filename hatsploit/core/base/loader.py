@@ -24,7 +24,6 @@
 # SOFTWARE.
 #
 
-import os
 import string
 import threading
 import time
@@ -62,10 +61,6 @@ class Loader:
 
     def load_all(self):
         self.load_update_process()
-
-        if not os.path.isdir(self.config.user_path):
-            self.badges.print_process(f"Creating HatSploit workspace at {self.config.user_path}...")
-            os.mkdir(self.config.user_path)
 
         if not self.builder.check_base_built():
             build = self.badges.input_question("Do you want to build and connect base databases? [y/n] ")
