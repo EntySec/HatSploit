@@ -53,6 +53,7 @@ class Config:
             'loot_path': f'{self.user_path}loot/',
             'db_path': f'{self.user_path}db/',
 
+            'accept_path': f'{self.user_path}accept',
             'history_path': f'{self.user_path}history',
             'startup_path': f'{self.user_path}startup.hsf',
 
