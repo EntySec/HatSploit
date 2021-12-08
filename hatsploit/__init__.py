@@ -114,17 +114,22 @@ def main():
     if args.check_all:
         if not hsf.check.check_all():
             sys.exit(0)
+        sys.exit(1)
     elif args.check_modules:
         if not hsf.check.check_modules():
             sys.exit(0)
+        sys.exit(1)
     elif args.check_payloads:
         if not hsf.check.check_payloads():
             sys.exit(0)
+        sys.exit(1)
     elif args.check_plugins:
         if hsf.check.check_plugins():
             sys.exit(0)
+        sys.exit(1)
     elif args.update:
         hsf.update.update()
+        sys.exit(0)
     elif args.rest_api:
         if args.port:
             hsf.jobs.create_job(
