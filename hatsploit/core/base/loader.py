@@ -24,6 +24,7 @@
 # SOFTWARE.
 #
 
+import os
 import string
 import threading
 import time
@@ -33,6 +34,8 @@ from hatsploit.core.db.builder import Builder
 from hatsploit.core.db.importer import Importer
 from hatsploit.core.utils.update import Update
 
+from hatsploit.lib.config import Config
+
 
 class Loader:
     badges = Badges()
@@ -40,6 +43,7 @@ class Loader:
     builder = Builder()
     update = Update()
 
+    config = Config()
     build = True
 
     def load_update_process(self):
@@ -58,6 +62,11 @@ class Loader:
 
     def load_all(self):
         self.load_update_process()
+
+        if not os.path.isdir(self.config.user_path):
+            self.badges.print_process(f"Creating HatSploit workspace at {self.config.user_path}...")
+            os.mkdir(self.config.user_path)
+
         if not self.builder.check_base_built():
             build = self.badges.input_question("Do you want to build and connect base databases? [y/n] ")
             if build[0].lower() in ['y', 'yes']:
