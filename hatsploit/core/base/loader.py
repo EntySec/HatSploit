@@ -81,5 +81,4 @@ class Loader:
                         status) + 1:]
                 self.badges.print_process(status, '', '\r')
                 time.sleep(.1)
-        self.badges.print_empty()
         loading_process.join()
