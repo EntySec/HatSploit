@@ -129,6 +129,7 @@ class Console:
     def launch_shell(self):
         version = self.config.core_config['details']['version']
         codename = self.config.core_config['details']['codename']
+
         if self.config.core_config['console']['clear']:
             self.badges.print_empty("%clear", end='')
 
@@ -156,6 +157,7 @@ class Console:
 
             header = ""
             header += "%end\n"
+            print(codename)
             if not codename.strip():
                 header += f"    --=( %yellowHatSploit Framework {version} {codename}%end\n"
             else:
@@ -163,6 +165,7 @@ class Console:
             header += "--==--=( Developed by EntySec (%linehttps://entysec.netlify.app/%end)\n"
             header += f"    --=( {modules_total} modules | {payloads_total} payloads | {plugins_total} plugins\n"
             header += "%end"
+
             self.badges.print_empty(header)
 
         if self.config.core_config['console']['tip']:
