@@ -54,10 +54,10 @@ class HatSploit:
     update = Update()
     api = API()
 
-    root_path = config.path_config['root_path']
+    path_config = config.path_config
 
     def accept_terms_of_service(self):
-        if not os.path.exists(self.root_path + '.accepted'):
+        if not os.path.exists(self.path_config['accept_path']):
             self.badges.print_information("--( The HatSploit Terms of Service )--")
             terms = """
 This tool is designed for educational purposes only.
@@ -78,7 +78,8 @@ By accepting our terms of service, you agree that you will only use this tool fo
             if agree[0].lower() not in ['y', 'yes']:
                 return False
 
-            open(self.root_path + '.accepted', 'w').close()
+            self.create_workspace()
+            open(self.path_config['accept_path'], 'w').close()
             return True
         return True
 
@@ -151,18 +152,18 @@ def main():
                 script=[args.script]
             )
         else:
-            if os.path.exists(hsf.root_path + 'startup.hsf'):
+            if os.path.exists(hsf.path_config['startup_path']):
                 hsf.launch(
                     do_shell=args.no_exit,
-                    script=[hsf.root_path + 'startup.hsf', args.script]
+                    script=[hsf.path_config['startup_path'], args.script]
                 )
         sys.exit(0)
     if args.no_startup:
         hsf.launch()
     else:
-        if os.path.exists(hsf.root_path + 'startup.hsf'):
+        if os.path.exists(hsf.path_config['startup_path']):
             hsf.launch(
-                script=[hsf.root_path + 'startup.hsf']
+                script=[hsf.path_config['startup_path']]
             )
         else:
             hsf.launch()
