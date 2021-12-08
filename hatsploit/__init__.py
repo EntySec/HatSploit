@@ -78,7 +78,6 @@ By accepting our terms of service, you agree that you will only use this tool fo
             if agree[0].lower() not in ['y', 'yes']:
                 return False
 
-            self.create_workspace()
             open(self.path_config['accept_path'], 'w').close()
             return True
         return True
