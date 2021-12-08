@@ -115,21 +115,26 @@ def main():
         if not hsf.check.check_all():
             sys.exit(1)
         sys.exit(0)
+
     elif args.check_modules:
         if not hsf.check.check_modules():
             sys.exit(1)
         sys.exit(0)
+
     elif args.check_payloads:
         if not hsf.check.check_payloads():
             sys.exit(1)
         sys.exit(0)
+
     elif args.check_plugins:
         if hsf.check.check_plugins():
             sys.exit(1)
         sys.exit(0)
+
     elif args.update:
         hsf.update.update()
         sys.exit(0)
+
     elif args.rest_api:
         if args.port:
             hsf.jobs.create_job(
@@ -139,6 +144,7 @@ def main():
                 [args.port],
                 True
             )
+
         else:
             hsf.jobs.create_job(
                 "HatSploit REST API",
@@ -146,22 +152,27 @@ def main():
                 hsf.api.init,
                 hidden=True
             )
+
     elif args.script:
         if not os.path.exists(args.script):
             hsf.badges.print_error(f"Local file: {args.script}: does not exist!")
             sys.exit(1)
+
         if args.no_startup:
             hsf.launch(
                 do_shell=args.no_exit,
                 script=[args.script]
             )
+
         else:
             if os.path.exists(hsf.path_config['startup_path']):
                 hsf.launch(
                     do_shell=args.no_exit,
                     script=[hsf.path_config['startup_path'], args.script]
                 )
+
         sys.exit(0)
+
     if args.no_startup:
         hsf.launch()
     else:
