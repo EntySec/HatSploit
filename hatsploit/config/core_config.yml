@@ -23,7 +23,7 @@
 #
 
 details:
-    codename: ""
+    codename: "0xdeadbeef"
     version: "4.1.1"
     prompt: "hsf"
 
