@@ -73,7 +73,7 @@ class Console:
         if os.path.exists(self.config.path_config['root_path']):
             workspace = self.config.path_config['user_path']
 
-            if not os.path.exists(workspace):
+            if not os.path.isdir(workspace):
                 self.badges.print_process(f"Creating workspace at {workspace}...")
                 os.mkdir(workspace)
 
