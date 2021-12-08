@@ -28,7 +28,7 @@ details:
     prompt: "hsf"
 
 console:
-    clear: false
+    clear: true
     banner: true
     header: true
     tip: true
