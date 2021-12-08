@@ -55,7 +55,7 @@ class Check:
                     except Exception:
                         self.badges.print_error(f"{module}: FAIL")
                         one_fail = True
-        return one_fail
+        return not one_fail
 
     def check_payloads(self):
         one_fail = False
@@ -76,7 +76,7 @@ class Check:
                     except Exception:
                         self.badges.print_error(f"{payload}: FAIL")
                         one_fail = True
-        return one_fail
+        return not one_fail
 
     def check_plugins(self):
         one_fail = False
@@ -96,7 +96,7 @@ class Check:
                     except Exception:
                         self.badges.print_error(f"{plugin}: FAIL")
                         one_fail = True
-        return one_fail
+        return not one_fail
 
     def check_all(self):
         fails = []
