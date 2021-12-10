@@ -62,6 +62,8 @@ class Config:
             'data_path': f'{self.base_path}data/',
             'tips_path': f'{self.base_path}data/tips/',
             'banners_path': f'{self.base_path}data/banners/',
+            'wordlists_path': f'{self.base_path}data/wordlists/',
+            'exploits_path': f'{self.base_path}data/exploits/',
 
             'modules_path': f'{self.base_path}modules/',
             'plugins_path': f'{self.base_path}plugins/',
