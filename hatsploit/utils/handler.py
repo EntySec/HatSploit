@@ -62,14 +62,13 @@ class Handler(Handle, Post, Blinder):
         max_size = 100000
 
         if len(payload) >= max_size and linemax not in range(min_size, max_size):
-            self.badges.print_process("Ensuring payload size...")
+            self.badges.print_process(f"Ensuring payload size ({str(len(payload))} bytes)")
             linemax = max_size
 
         return linemax
 
     def send(self, payload, sender, args=[]):
-        self.badges.print_process("Sending payload stage...")
-        self.badges.print_process("Executing payload...")
+        self.badges.print_process(f"Sending payload stage ({str(len(payload))} bytes)")
 
         if isinstance(args, dict):
             sender(payload, **args)
@@ -78,7 +77,7 @@ class Handler(Handle, Post, Blinder):
 
     def open_session(self, host, port, session_platform, session_type, session):
         session_id = self.sessions.add_session(session_platform, session_type, host, port, session)
-        self.badges.print_success(f"Session {str(session_id)} opened!")
+        self.badges.print_success(f"{session_type.title()} session {str(session_id)} opened!")
 
     def handle_session(self, host=None, port=None, sender=None, args=[],
                        delim=';', location='/tmp', timeout=10, method=None,
