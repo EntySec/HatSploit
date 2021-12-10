@@ -33,7 +33,7 @@ class HatSploitModule(Module, TCPClient):
     def run(self):
         remote_host = self.parse_options(self.options)
 
-        self.print_process(f"Checking {remote_host}...")
+        self.print_process(f"Checking {remote_host}")
         if self.check_tcp_port(remote_host, 5555):
             self.print_success("Target device may has ADB installation!")
         else:

@@ -51,7 +51,7 @@ class HatSploitModule(Module):
         payload = self.payload['Payload']
 
         if payload:
-            self.print_process(f"Saving to {local_file}...")
+            self.print_process(f"Saving to {local_file}")
             with open(local_file, 'wb') as f:
                 if raw.lower() in ['yes', 'y']:
                     f.write(raw_payload.encode() if isinstance(raw_payload, str) else raw_payload)
