@@ -442,21 +442,25 @@ class Modules:
     def run_current_module(self):
         if self.check_current_module():
             current_module = self.get_current_module_object()
+            current_module_name = self.get_current_module_name()
             current_payload = self.payloads.get_current_payload()
             missed = ""
+
             if hasattr(current_module, "options"):
                 for option in current_module.options:
                     current_option = current_module.options[option]
                     if not current_option['Value'] and current_option['Value'] != 0 and current_option['Required']:
                         missed += option + ', '
+
             if current_payload:
                 if hasattr(current_payload, "options"):
                     for option in current_payload.options:
                         current_option = current_payload.options[option]
                         if not current_option['Value'] and current_option['Value'] != 0 and current_option['Required']:
                             missed += option + ', '
+
             if len(missed) > 0:
-                self.badges.print_error(f"These options failed to validate: {missed[:-2]}!")
+                self.badges.print_error(f"These options are failed to validate: {missed[:-2]}!")
             else:
                 try:
                     if current_payload:
@@ -499,8 +503,11 @@ class Modules:
                         current_module.payload['Args'] = args
                         current_module.payload['Session'] = session
 
+                    self.badges.print_process(f"Running {current_module_name.split('/')[0]} module")
                     self.entry_to_module(current_module)
+                    self.badges.print_success(f"{current_module_name.split('/')[0].title()} module completed!")
                 except Exception as e:
                     self.badges.print_error("An error occurred in module: " + str(e) + "!")
+                    self.badges.print_error(f"{current_module_name.split('/')[0].title()} module failed!")
         else:
             self.badges.print_warning("No module selected.")
