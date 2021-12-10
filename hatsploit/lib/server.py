@@ -108,7 +108,7 @@ class Server:
             server.bind((local_host, int(local_port)))
             server.listen(1)
 
-            self.badges.print_process(f"Starting TCP listener port {str(local_port)}")
+            self.badges.print_process(f"Starting TCP listener on port {str(local_port)}")
             client, address = server.accept()
             self.badges.print_process(f"Establishing connection ({address[0]}:{address[1]} -> {local_host}:{local_port})")
 
