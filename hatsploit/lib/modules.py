@@ -347,7 +347,7 @@ class Modules:
                     payload_name = module_object.payload['Value']
 
                     if payload_name:
-                        self.badges.print_process("Using default payload " + payload_name + "...")
+                        self.badges.print_process(f"Using default payload {payload_name}")
 
                         if self.payloads.check_exist(payload_name):
                             if self.payloads.add_payload(name, payload_name):
@@ -503,11 +503,15 @@ class Modules:
                         current_module.payload['Args'] = args
                         current_module.payload['Session'] = session
 
-                    self.badges.print_process(f"Running {current_module_name.split('/')[0]} module")
+                    self.badges.print_empty()
                     self.entry_to_module(current_module)
+
                     self.badges.print_success(f"{current_module_name.split('/')[0].title()} module completed!")
+                except (KeyboardInterrupt, EOFError):
+                    self.badges.print_warning(f"{current_module_name.split('/')[0].title()} module interrupted.")
+
                 except Exception as e:
-                    self.badges.print_error("An error occurred in module: " + str(e) + "!")
+                    self.badges.print_error(f"An error occurred in module: {str(e)}!")
                     self.badges.print_error(f"{current_module_name.split('/')[0].title()} module failed!")
         else:
             self.badges.print_warning("No module selected.")
