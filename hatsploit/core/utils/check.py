@@ -39,7 +39,7 @@ class Check:
 
     def check_modules(self):
         one_fail = False
-        self.badges.print_process("Checking all base modules...")
+        self.badges.print_process("Checking all base modules")
 
         modules_path = os.path.normpath(self.config.path_config['modules_path'])
         for dest, _, files in os.walk(modules_path):
@@ -59,7 +59,7 @@ class Check:
 
     def check_payloads(self):
         one_fail = False
-        self.badges.print_process("Checking all base payloads...")
+        self.badges.print_process("Checking all base payloads")
 
         payloads_path = os.path.normpath(self.config.path_config['payloads_path'])
         for dest, _, files in os.walk(payloads_path):
@@ -80,7 +80,7 @@ class Check:
 
     def check_plugins(self):
         one_fail = False
-        self.badges.print_process("Checking all base plugins...")
+        self.badges.print_process("Checking all base plugins")
 
         plugins_path = os.path.normpath(self.config.path_config['plugins_path'])
         for dest, _, files in os.walk(plugins_path):

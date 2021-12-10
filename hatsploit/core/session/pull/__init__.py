@@ -46,11 +46,11 @@ class Pull(FSTools):
                 if is_dir:
                     location = location + '/' + os.path.split(file)[1]
 
-                self.badges.print_process(f"Downloading {file}...")
+                self.badges.print_process(f"Downloading {file}")
                 data = self.pull_methods[method].pull(sender, file, args)
 
                 if data:
-                    self.badges.print_process(f"Saving to {location}...")
+                    self.badges.print_process(f"Saving to {location}")
                     with open(location, 'wb') as f:
                         f.write(data)
 

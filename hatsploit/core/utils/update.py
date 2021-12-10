@@ -55,7 +55,7 @@ class Update:
 
     def update(self):
         if self.check_update():
-            self.badges.print_process("Updating HatSploit Framework...")
+            self.badges.print_process("Updating HatSploit Framework")
             shutil.rmtree(os.path.abspath(self.config.path_config['root_path']))
             subprocess.call(['pip3', 'install', 'git+https://github.com/EntySec/HatSploit', '--ignore-installed'],
                             shell=False)

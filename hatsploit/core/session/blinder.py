@@ -43,7 +43,7 @@ class Blinder:
             if not command.strip() or command == 'exit':
                 return
 
-            self.badges.print_process("Sending command to target...")
+            self.badges.print_process("Sending command to target")
             if isinstance(args, dict):
                 output = sender(command, **args)
             else:

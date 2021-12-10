@@ -71,7 +71,7 @@ class Loader:
 
         loading_process = threading.Thread(target=self.load_everything)
         loading_process.start()
-        base_line = "Loading the HatSploit Framework..."
+        base_line = "Loading the HatSploit Framework "
         cycle = 0
         while loading_process.is_alive():
             for char in "/-\|":

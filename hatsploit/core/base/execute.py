@@ -50,7 +50,7 @@ class Execute:
                 if not self.execute_core_command(commands):
                     if not self.execute_module_command(commands):
                         if not self.execute_plugin_command(commands):
-                            self.badges.print_error("Unrecognized command: " + commands[0] + "!")
+                            self.badges.print_error(f"Unrecognized command: {commands[0]}!")
 
     def execute_builtin_method(self, commands):
         if commands[0][0] == '#':
@@ -80,11 +80,11 @@ class Execute:
         return False
 
     def execute_system(self, commands):
-        self.badges.print_process("Executing system command: " + commands[0] + "\n")
+        self.badges.print_process(f"Executing system command: {commands[0]}\n")
         try:
             subprocess.call(commands)
         except Exception:
-            self.badges.print_error("Unrecognized system command: " + commands[0] + "!")
+            self.badges.print_error(f"Unrecognized system command: {commands[0]}!")
 
     def execute_custom_command(self, commands, handler):
         if handler:
