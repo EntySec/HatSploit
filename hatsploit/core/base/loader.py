@@ -48,7 +48,7 @@ class Loader:
     def load_update_process(self):
         if self.update.check_update():
             self.badges.print_warning("Your HatSploit Framework is out-dated.")
-            self.badges.print_information("Consider running hsf --update")
+            self.badges.print_information("Consider running %greenhsf --update%end.")
             time.sleep(1)
 
     def load_components(self):
@@ -71,7 +71,7 @@ class Loader:
 
         loading_process = threading.Thread(target=self.load_everything)
         loading_process.start()
-        base_line = "Loading the HatSploit Framework "
+        base_line = "Loading the HatSploit Framework..."
         cycle = 0
         while loading_process.is_alive():
             for char in "/-\|":

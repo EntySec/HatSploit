@@ -38,7 +38,7 @@ class Post(Push, StringTools):
     def post(self, payload, sender, args=[], payload_args="", method='printf',
              location='/tmp', delim=';', linemax=100):
         if method in self.post_methods:
-            self.badges.print_process(f"Sending payload stage ({str(len(payload))} bytes)")
+            self.badges.print_process(f"Sending payload stage ({str(len(payload))} bytes)...")
 
             filename = self.random_string(8)
             path = location + '/' + filename

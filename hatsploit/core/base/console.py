@@ -74,7 +74,7 @@ class Console:
             workspace = self.config.path_config['user_path']
 
             if not os.path.isdir(workspace):
-                self.badges.print_process(f"Creating workspace at {workspace}")
+                self.badges.print_process(f"Creating workspace at {workspace}...")
                 os.mkdir(workspace)
 
             return True
