@@ -82,7 +82,9 @@ class Handler(Handle, Post, Blinder):
 
     def open_session(self, host, port, session_platform, session_type, session):
         session_id = self.sessions.add_session(session_platform, session_type, host, port, session)
-        self.badges.print_success(f"{session_type.title()} session {str(session_id)} opened at {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}!")
+        time = datetime.datetime.now().astimezone().strftime("%Y-%m-%d %H:%M:%S %Z")
+
+        self.badges.print_success(f"{session_type.title()} session {str(session_id)} opened at {time}!")
 
     def handle_session(self, host=None, port=None, sender=None, args=[],
                        delim=';', location='/tmp', timeout=10, method=None,
