@@ -73,7 +73,7 @@ class Handler(Handle, Post, Blinder):
         if isinstance(payload, bytes):
             self.badges.print_process(f"Sending payload stage ({str(len(payload))} bytes)")
         else:
-            self.badges.print_process("Sending command payload")
+            self.badges.print_process("Sending command payload stage")
 
         if isinstance(args, dict):
             sender(payload, **args)
