@@ -47,6 +47,6 @@ class HatSploitModule(Module, TCPClient):
         remote_host, ports_range = self.parse_options(self.options)
         start, end = self.parse_ports_range(ports_range)
 
-        self.print_process(f"Scanning {remote_host}")
+        self.print_process(f"Scanning {remote_host}...")
         for port in range(start, end):
             self.check_port(remote_host, port)

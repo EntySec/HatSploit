@@ -39,7 +39,7 @@ class HatSploitModule(Module, SessionTools, DBTools):
         local_path = self.session_download(session, bookmarks_path)
 
         if local_path:
-            self.print_process("Parsing bookmarks database")
+            self.print_process("Parsing bookmarks database...")
 
             try:
                 bookmarks = self.parse_safari_bookmarks(local_path + 'Bookmarks.db')
