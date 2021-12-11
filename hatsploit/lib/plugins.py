@@ -92,7 +92,7 @@ class Plugins:
                 if plugin_number in plugins_shorts:
                     plugin = plugins_shorts[plugin_number]
 
-        self.badges.print_process(f"Loading {plugin} plugin")
+        self.badges.print_process(f"Loading {plugin} plugin...")
 
         if not self.check_loaded(plugin):
             if self.check_exist(plugin):
@@ -113,7 +113,7 @@ class Plugins:
                 if plugin_number in plugins_shorts:
                     plugin = plugins_shorts[plugin_number]
 
-        self.badges.print_process(f"Unloading {plugin} plugin")
+        self.badges.print_process(f"Unloading {plugin} plugin...")
 
         if self.check_loaded(plugin):
             self.local_storage.delete_element("loaded_plugins", plugin)

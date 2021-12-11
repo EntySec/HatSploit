@@ -64,16 +64,16 @@ class Handler(Handle, Post, Blinder):
         max_size = 100000
 
         if len(payload) >= max_size and linemax not in range(min_size, max_size):
-            self.badges.print_process(f"Ensuring payload size ({str(len(payload))} bytes)")
+            self.badges.print_process(f"Ensuring payload size ({str(len(payload))} bytes)...")
             linemax = max_size
 
         return linemax
 
     def send(self, payload, sender, args=[]):
         if isinstance(payload, bytes):
-            self.badges.print_process(f"Sending payload stage ({str(len(payload))} bytes)")
+            self.badges.print_process(f"Sending payload stage ({str(len(payload))} bytes)...")
         else:
-            self.badges.print_process("Sending command payload stage")
+            self.badges.print_process("Sending command payload stage...")
 
         if isinstance(args, dict):
             sender(payload, **args)

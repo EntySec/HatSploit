@@ -347,7 +347,7 @@ class Modules:
                     payload_name = module_object.payload['Value']
 
                     if payload_name:
-                        self.badges.print_process(f"Using default payload {payload_name}")
+                        self.badges.print_process(f"Using default payload {payload_name}...")
 
                         if self.payloads.check_exist(payload_name):
                             if self.payloads.add_payload(name, payload_name):

@@ -66,7 +66,7 @@ class Jobs:
 
         self.badges.print_warning("You have some running jobs.")
         if self.badges.input_question("Exit anyway? [y/N] ")[0].lower() in ['yes', 'y']:
-            self.badges.print_process("Stopping all jobs")
+            self.badges.print_process("Stopping all jobs...")
             self.stop_all_jobs()
             return True
         return False

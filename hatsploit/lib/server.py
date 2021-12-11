@@ -41,8 +41,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         self.badges = Badges()
 
         if self.path == self.payload_path:
-            self.badges.print_process(f"Connecting to {self.client_address[0]}")
-            self.badges.print_process(f"Sending payload stage ({str(len(self.payload))} bytes)")
+            self.badges.print_process(f"Connecting to {self.client_address[0]}...")
+            self.badges.print_process(f"Sending payload stage ({str(len(self.payload))} bytes)...")
 
             self.send_response(200)
             self.send_header("Content-type", "text/html")
@@ -57,7 +57,7 @@ class Server:
 
     def start_server(self, host, port, payload, forever=False, path='/'):
         try:
-            self.badges.print_process(f"Starting HTTP listener on port {str(port)}")
+            self.badges.print_process(f"Starting HTTP listener on port {str(port)}...")
             httpd = socketserver.TCPServer((host, int(port)), Handler)
 
             httpd.RequestHandlerClass.payload_path = path
@@ -74,7 +74,7 @@ class Server:
             self.badges.print_error(f"Failed to start HTTP listener on port {str(port)}!")
 
     def connect(self, remote_host, remote_port, timeout=None):
-        self.badges.print_process(f"Establishing connection (0.0.0.0:{remote_port} -> {remote_host}:{remote_port})")
+        self.badges.print_process(f"Establishing connection (0.0.0.0:{remote_port} -> {remote_host}:{remote_port})...")
         try:
             if timeout is not None:
                 timeout = time.time() + timeout
@@ -108,9 +108,9 @@ class Server:
             server.bind((local_host, int(local_port)))
             server.listen(1)
 
-            self.badges.print_process(f"Starting TCP listener on port {str(local_port)}")
+            self.badges.print_process(f"Starting TCP listener on port {str(local_port)}...")
             client, address = server.accept()
-            self.badges.print_process(f"Establishing connection ({address[0]}:{address[1]} -> {local_host}:{local_port})")
+            self.badges.print_process(f"Establishing connection ({address[0]}:{address[1]} -> {local_host}:{local_port})...")
 
             server.close()
         except socket.timeout:
