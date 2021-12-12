@@ -49,7 +49,7 @@ class HatSploitPayload(Payload, Pwny):
     def run(self):
         connback_host, connback_port = self.parse_options(self.options)
 
-        payload_args = self.encode_args(connback_host, connback_port)
+        payload_args = self.encode_args(connback_port, connback_host)
         self.payload['Args'] = payload_args
 
         return self.get_payload(self.details['Platform'],
