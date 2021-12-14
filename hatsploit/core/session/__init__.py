@@ -29,10 +29,10 @@ from hatsploit.lib.session import Session
 from hatsploit.core.session.pull import Pull
 from hatsploit.core.session.push import Push
 
-from hatsploit.utils.telnet import TelnetClient
+from hatsploit.utils.channel import ChannelClient
 
 
-class HatSploitSession(Session, Pull, Push, TelnetClient):
+class HatSploitSession(Session, Pull, Push, ChannelClient):
     client = None
 
     details = {
@@ -42,7 +42,7 @@ class HatSploitSession(Session, Pull, Push, TelnetClient):
     }
 
     def open(self, client):
-        self.client = self.open_telnet(client)
+        self.client = self.open_channel(client)
 
     def close(self):
         self.client.disconnect()
