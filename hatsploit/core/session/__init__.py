@@ -33,7 +33,7 @@ from hatsploit.utils.channel import ChannelClient
 
 
 class HatSploitSession(Session, Pull, Push, ChannelClient):
-    client = None
+    channel = None
 
     details = {
         'Post': "",
@@ -42,16 +42,16 @@ class HatSploitSession(Session, Pull, Push, ChannelClient):
     }
 
     def open(self, client):
-        self.client = self.open_channel(client)
+        self.channel = self.open_channel(client)
 
     def close(self):
-        self.client.disconnect()
+        self.channel.disconnect()
 
     def heartbeat(self):
-        return not self.client.terminated
+        return not self.channel.terminated
 
     def send_command(self, command, output=False, decode=True):
-        return self.client.send_command(
+        return self.channel.send_command(
             (command + '\n'),
             output,
             decode
@@ -76,4 +76,4 @@ class HatSploitSession(Session, Pull, Push, ChannelClient):
         )
 
     def interact(self):
-        self.client.interact()
+        self.channel.interact()
