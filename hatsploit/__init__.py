@@ -112,24 +112,16 @@ def main():
     hsf = HatSploit()
 
     if args.check_all:
-        if not hsf.check.check_all():
-            sys.exit(1)
-        sys.exit(0)
+        sys.exit(hsf.check.check_all())
 
     elif args.check_modules:
-        if not hsf.check.check_modules():
-            sys.exit(1)
-        sys.exit(0)
+        sys.exit(hsf.check.check_modules())
 
     elif args.check_payloads:
-        if not hsf.check.check_payloads():
-            sys.exit(1)
-        sys.exit(0)
+        sys.exit(hsf.check.check_payloads())
 
     elif args.check_plugins:
-        if hsf.check.check_plugins():
-            sys.exit(1)
-        sys.exit(0)
+        sys.exit(hsf.check.check_plugins())
 
     elif args.update:
         hsf.update.update()
