@@ -128,7 +128,7 @@ class ChannelSocket:
         self.badges.print_error("Socket is not connected!")
         return None
 
-    def send_token_command(self, command, token, decode=True):
+    def send_token_command(self, command, token, output=True, decode=True):
         if self.sock.sock:
             try:
                 buffer = command.encode()
@@ -136,10 +136,11 @@ class ChannelSocket:
  
                 output = self.read_until(token)
 
-                if decode:
-                    output = output.decode(errors='ignore')
+                if output:
+                    if decode:
+                        output = output.decode(errors='ignore')
 
-                 return output
+                    return output
             except Exception:
                 self.badges.print_warning("Connection terminated.")
                 self.terminated = True
