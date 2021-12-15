@@ -115,12 +115,12 @@ class ChannelSocket:
                 self.send(buffer)
  
                 if output:
-                    output = self.read()
+                    data = self.read()
 
                     if decode:
-                        output = output.decode(errors='ignore')
+                        data = data.decode(errors='ignore')
 
-                    return output
+                    return data
             except Exception:
                 self.badges.print_warning("Connection terminated.")
                 self.terminated = True
@@ -134,13 +134,13 @@ class ChannelSocket:
                 buffer = command.encode()
                 self.send(buffer)
  
-                output = self.read_until(token)
+                data = self.read_until(token)
 
                 if output:
                     if decode:
-                        output = output.decode(errors='ignore')
+                        data = data.decode(errors='ignore')
 
-                    return output
+                    return data
             except Exception:
                 self.badges.print_warning("Connection terminated.")
                 self.terminated = True
