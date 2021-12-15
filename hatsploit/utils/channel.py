@@ -128,6 +128,25 @@ class ChannelSocket:
         self.badges.print_error("Socket is not connected!")
         return None
 
+    def send_token_command(self, command, token, decode=True):
+        if self.sock.sock:
+            try:
+                buffer = command.encode()
+                self.send(buffer)
+ 
+                output = self.read_until(token)
+
+                if decode:
+                    output = output.decode(errors='ignore')
+
+                 return output
+            except Exception:
+                self.badges.print_warning("Connection terminated.")
+                self.terminated = True
+            return None
+        self.badges.print_error("Socket is not connected!")
+        return None
+
     def interact(self, terminator='\n'):
         if self.sock.sock:
             self.badges.print_information("Type %greenquit%end to stop interaction.")
