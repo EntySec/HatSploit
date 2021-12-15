@@ -38,11 +38,19 @@ class ChannelSocket:
         self.sock = telnetlib.Telnet()
         self.sock.sock = client
 
-        self.recv_size = 1024 ** 2
-        self.recv_delay = 1
+        self.read_size = 1024 ** 2
+        self.read_delay = 1
+
+        self.stashed = b""
 
         self.terminated = False
         self.badges = Badges()
+
+    def stash(self):
+        stashed_data = self.stashed
+        self.stashed = b""
+
+        return stashed_data
 
     def disconnect(self):
         if self.sock.sock:
@@ -58,23 +66,45 @@ class ChannelSocket:
         self.badges.print_error("Socket is not connected!")
         return False
 
-    def recv(self):
+    def read(self):
         if self.sock.sock:
-            result = b""
+            result = self.stash()
             self.sock.sock.setblocking(False)
 
             while True:
                 try:
-                    data = self.sock.sock.recv(self.recv_size)
+                    data = self.sock.sock.recv(self.read_size)
                 except Exception:
                     if result:
                         break
                     continue
 
                 result += data
-                time.sleep(self.recv_delay)
+                time.sleep(self.read_delay)
 
             self.sock.sock.setblocking(True)
+            return result
+        self.badges.print_error("Socket is not connected!")
+
+    def read_until(self, token):
+        if self.sock.sock:
+            token = token.encode()
+            result = self.stash()
+
+            while True:
+                data = self.sock.sock.recv(self.read_size)
+
+                if token in data:
+                    token_index = data.index(token)
+                    token_size = len(token)
+
+                    result += data[:token_index]
+                    self.stash = data[token_index+token_size:]
+
+                    break
+
+                result += data
+
             return result
         self.badges.print_error("Socket is not connected!")
 
@@ -85,7 +115,7 @@ class ChannelSocket:
                 self.send(buffer)
  
                 if output:
-                    output = self.recv()
+                    output = self.read()
 
                     if decode:
                         output = output.decode(errors='ignore')
