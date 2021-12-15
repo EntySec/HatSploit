@@ -99,7 +99,7 @@ class ChannelSocket:
                     token_size = len(token)
 
                     result += data[:token_index]
-                    self.stash = data[token_index+token_size:]
+                    self.stashed = data[token_index+token_size:]
 
                     break
 
@@ -161,7 +161,7 @@ class ChannelSocket:
                 for key, events in selector.select():
                     if key.fileobj is self.sock:
                         try:
-                            response = self.sock.read_eager()
+                            response = self.stash() + self.sock.read_eager()
                         except Exception:
                             self.badges.print_warning("Connection terminated.")
                             self.terminated = True
