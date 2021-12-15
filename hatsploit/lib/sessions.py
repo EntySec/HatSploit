@@ -101,7 +101,7 @@ class Sessions:
     def spawn_interactive_connection(self, session_id):
         sessions = self.local_storage.get("sessions")
         if self.check_exist(session_id):
-            self.badges.print_process("Interacting with session " + str(session_id) + "...")
+            self.badges.print_process(f"Interacting with session {str(session_id)}...")
             self.badges.print_success("Interactive connection spawned!")
 
             sessions[int(session_id)]['object'].interact()

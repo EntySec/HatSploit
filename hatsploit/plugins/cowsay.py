@@ -79,4 +79,4 @@ class HatSploitPlugin(Plugin):
         cow = self.ask_cow(message, len(message))
         self.print_empty(cow)
 
-        self.print_information("Use " + self.GREEN + "cowsay" + self.END + " to call me.")
+        self.print_information("Use %greencowsay%end to call me.")

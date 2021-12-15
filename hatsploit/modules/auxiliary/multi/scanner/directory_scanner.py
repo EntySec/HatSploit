@@ -14,7 +14,7 @@ class HatSploitModule(Module, HTTPClient):
     config = Config()
 
     details = {
-        'Name': "Directory Scanner",
+        'Name': "WEB Directory Scanner",
         'Module': "auxiliary/multi/scanner/directory_scanner",
         'Authors': [
             'Ivan Nikolsky (enty8080) - module developer'
@@ -43,9 +43,9 @@ class HatSploitModule(Module, HTTPClient):
         remote_host, remote_port = self.parse_options(self.options)
 
         self.print_process(f"Scanning {remote_host}...")
-        file = open(f"{self.config.path_config['data_path']}wordlists/directories.txt")
-        directories = list(filter(None, file.read().split('\n')))
-        file.close()
+
+        with open(f"{self.config.path_config['wordlists_path']}directories.txt") as file:
+            directories = list(filter(None, file.read().split('\n')))
 
         for path in directories:
             path = '/' + path.replace("\n", "")

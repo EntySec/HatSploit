@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 #
 # MIT License
 #
@@ -22,13 +24,16 @@
 # SOFTWARE.
 #
 
-details:
-    codename: "plantium"
-    version: "4.1.1"
-    prompt: "hsf"
+from hatsploit.core.cli.badges import Badges
+from hatsploit.lib.config import Config
 
-console:
-    clear: true
-    banner: true
-    header: true
-    tip: true
+
+class Loot:
+    badges = Badges()
+    config = Config()
+
+    def create_loot(self):
+        loot = self.config.path_config['loot_path']
+
+        if not os.path.isdir(loot):
+            os.mkdir(loot)

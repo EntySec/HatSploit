@@ -43,7 +43,7 @@ class HatSploitCommand(Command):
                 job_id = self.jobs.create_job(current_module.details['Name'],
                                               current_module.details['Module'],
                                               self.modules.run_current_module)
-                self.print_information("Module started as a background job " + str(job_id) + ".")
+                self.print_information(f"Module started as a background job {str(job_id)}.")
                 return
 
         self.modules.run_current_module()

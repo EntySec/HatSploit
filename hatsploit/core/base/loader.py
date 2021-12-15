@@ -33,6 +33,8 @@ from hatsploit.core.db.builder import Builder
 from hatsploit.core.db.importer import Importer
 from hatsploit.core.utils.update import Update
 
+from hatsploit.lib.config import Config
+
 
 class Loader:
     badges = Badges()
@@ -40,12 +42,13 @@ class Loader:
     builder = Builder()
     update = Update()
 
+    config = Config()
     build = True
 
     def load_update_process(self):
         if self.update.check_update():
             self.badges.print_warning("Your HatSploit Framework is out-dated.")
-            self.badges.print_information("Consider running hsf --update")
+            self.badges.print_information("Consider running %greenhsf --update%end.")
             time.sleep(1)
 
     def load_components(self):
@@ -58,6 +61,7 @@ class Loader:
 
     def load_all(self):
         self.load_update_process()
+
         if not self.builder.check_base_built():
             build = self.badges.input_question("Do you want to build and connect base databases? [y/n] ")
             if build[0].lower() in ['y', 'yes']:

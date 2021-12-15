@@ -123,7 +123,7 @@ class Importer:
                         command_name = command_object.details['Name']
                         commands[command_name] = command_object
                     except Exception:
-                        self.badges.print_error("Failed to load " + file[:-3] + " command!")
+                        self.badges.print_error(f"Failed to load {file[:-3]} command!")
         except Exception:
             pass
         return commands

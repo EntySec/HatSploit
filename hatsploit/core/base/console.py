@@ -71,6 +71,12 @@ class Console:
 
     def check_install(self):
         if os.path.exists(self.config.path_config['root_path']):
+            workspace = self.config.path_config['user_path']
+
+            if not os.path.isdir(workspace):
+                self.badges.print_process(f"Creating workspace at {workspace}...")
+                os.mkdir(workspace)
+
             return True
         self.badges.print_error("HatSploit is not installed!")
         self.badges.print_information("Consider running installation.")
@@ -109,7 +115,7 @@ class Console:
             except (KeyboardInterrupt, EOFError, self.exceptions.GlobalException):
                 pass
             except Exception as e:
-                self.badges.print_error("An error occurred: " + str(e) + "!")
+                self.badges.print_error(f"An error occurred: {str(e)}!")
 
     def enable_history_file(self):
         if not os.path.exists(self.history):
@@ -129,6 +135,7 @@ class Console:
     def launch_shell(self):
         version = self.config.core_config['details']['version']
         codename = self.config.core_config['details']['codename']
+
         if self.config.core_config['console']['clear']:
             self.badges.print_empty("%clear", end='')
 
@@ -156,13 +163,14 @@ class Console:
 
             header = ""
             header += "%end\n"
-            if not codename.strip():
+            if codename:
                 header += f"    --=( %yellowHatSploit Framework {version} {codename}%end\n"
             else:
                 header += f"    --=( %yellowHatSploit Framework {version}%end\n"
             header += "--==--=( Developed by EntySec (%linehttps://entysec.netlify.app/%end)\n"
             header += f"    --=( {modules_total} modules | {payloads_total} payloads | {plugins_total} plugins\n"
             header += "%end"
+
             self.badges.print_empty(header)
 
         if self.config.core_config['console']['tip']:

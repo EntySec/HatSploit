@@ -165,7 +165,7 @@ class Show:
                 plugins_shorts.update({number: plugin})
                 number += 1
 
-            self.tables.print_table("Plugins (" + database + ")", headers, *plugins_data)
+            self.tables.print_table(f"Plugins ({database})", headers, *plugins_data)
             self.local_storage.set("plugin_shorts", plugins_shorts)
 
     def show_modules(self, information):
@@ -185,7 +185,7 @@ class Show:
                     modules_shorts.update({number: modules[module]['Module']})
                     number += 1
 
-            self.tables.print_table(information.title() + " Modules (" + database + ")", headers, *modules_data)
+            self.tables.print_table(f"{information.title()} Modules ({database})", headers, *modules_data)
             self.local_storage.set("module_shorts", modules_shorts)
 
     def show_payloads(self):
@@ -204,7 +204,7 @@ class Show:
                 payloads_shorts.update({number: payloads[payload]['Payload']})
                 number += 1
 
-            self.tables.print_table("Payloads (" + database + ")", headers, *payloads_data)
+            self.tables.print_table(f"Payloads ({database})", headers, *payloads_data)
             self.local_storage.set("payload_shorts", payloads_shorts)
 
     def show_search_plugins(self, keyword):
@@ -228,7 +228,7 @@ class Show:
 
                         number += 1
                 if plugins_data:
-                    self.tables.print_table("Plugins (" + database + ")", headers, *plugins_data)
+                    self.tables.print_table(f"Plugins ({database})", headers, *plugins_data)
                     self.local_storage.set("plugin_shorts", plugins_shorts)
 
     def show_search_modules(self, keyword):
@@ -252,7 +252,7 @@ class Show:
 
                         number += 1
                 if modules_data:
-                    self.tables.print_table("Modules (" + database + ")", headers, *modules_data)
+                    self.tables.print_table(f"Modules ({database})", headers, *modules_data)
                     self.local_storage.set("module_shorts", modules_shorts)
 
     def show_search_payloads(self, keyword):
@@ -277,7 +277,7 @@ class Show:
 
                         number += 1
                 if payloads_data:
-                    self.tables.print_table("Payloads (" + database + ")", headers, *payloads_data)
+                    self.tables.print_table(f"Payloads ({database})", headers, *payloads_data)
                     self.local_storage.set("payload_shorts", payloads_shorts)
 
     def show_sessions(self):

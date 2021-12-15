@@ -15,14 +15,14 @@ from hatsploit.utils.tcp import TCPClient
 class HatSploitPayload(Payload, Pwny):
     details = {
         'Category': "stager",
-        'Name': "Linux x64 Pwny Reverse TCP",
-        'Payload': "linux/x64/pwny_reverse_tcp",
+        'Name': "macOS x64 Pwny Reverse TCP",
+        'Payload': "macos/x64/pwny_reverse_tcp",
         'Authors': [
             'Ivan Nikolsky (enty8080) - payload developer'
         ],
-        'Description': "Pwny reverse TCP payload for Linux x64.",
+        'Description': "Pwny reverse TCP payload for macOS x64.",
         'Architecture': "x64",
-        'Platform': "linux",
+        'Platform': "macos",
         'Rank': "high",
         'Type': "reverse_tcp"
     }

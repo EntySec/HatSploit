@@ -42,14 +42,13 @@ class Handler(http.server.SimpleHTTPRequestHandler):
 
         if self.path == self.payload_path:
             self.badges.print_process(f"Connecting to {self.client_address[0]}...")
-            self.badges.print_process("Sending payload stage...")
+            self.badges.print_process(f"Sending payload stage ({str(len(self.payload))} bytes)...")
 
             self.send_response(200)
             self.send_header("Content-type", "text/html")
             self.end_headers()
 
             self.wfile.write(bytes(self.payload, "utf8"))
-            self.badges.print_process("Executing payload...")
 
 
 class Server:
@@ -58,7 +57,7 @@ class Server:
 
     def start_server(self, host, port, payload, forever=False, path='/'):
         try:
-            self.badges.print_process(f"Starting HTTP server on port {str(port)}...")
+            self.badges.print_process(f"Starting HTTP listener on port {str(port)}...")
             httpd = socketserver.TCPServer((host, int(port)), Handler)
 
             httpd.RequestHandlerClass.payload_path = path
@@ -66,19 +65,16 @@ class Server:
 
             if forever:
                 while True:
-                    self.badges.print_process("Listening for connections...")
                     httpd.handle_request()
             else:
-                self.badges.print_process("Listening for connections...")
                 httpd.handle_request()
             httpd.server_close()
             httpd.shutdown()
         except Exception:
-            self.badges.print_error(f"Failed to start HTTP server on port {str(port)}!")
+            self.badges.print_error(f"Failed to start HTTP listener on port {str(port)}!")
 
     def connect(self, remote_host, remote_port, timeout=None):
-        address = remote_host + ':' + str(remote_port)
-        self.badges.print_process("Establishing connection...")
+        self.badges.print_process(f"Establishing connection (0.0.0.0:{remote_port} -> {remote_host}:{remote_port})...")
         try:
             if timeout is not None:
                 timeout = time.time() + timeout
@@ -99,7 +95,7 @@ class Server:
             self.badges.print_warning("Connection timeout.")
             raise self.exceptions.GlobalException
         except Exception:
-            self.badges.print_error("Failed to connect to " + address + "!")
+            self.badges.print_error(f"Failed to connect to {remote_host}!")
             raise self.exceptions.GlobalException
         return server
 
@@ -112,9 +108,9 @@ class Server:
             server.bind((local_host, int(local_port)))
             server.listen(1)
 
-            self.badges.print_process("Listening on port " + str(local_port) + "...")
+            self.badges.print_process(f"Starting TCP listener on port {str(local_port)}...")
             client, address = server.accept()
-            self.badges.print_process("Establishing connection...")
+            self.badges.print_process(f"Establishing connection ({address[0]}:{address[1]} -> {local_host}:{local_port})...")
 
             server.close()
         except socket.timeout:
@@ -123,6 +119,6 @@ class Server:
             server.close()
             raise self.exceptions.GlobalException
         except Exception:
-            self.badges.print_error("Failed to listen on port " + str(local_port) + "!")
+            self.badges.print_error(f"Failed to start TCP listener on port {str(port)}!")
             raise self.exceptions.GlobalException
         return client, address[0]

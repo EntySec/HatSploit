@@ -44,7 +44,7 @@ class TCPSocket:
             self.sock.connect((self.host, self.port))
             return True
         except Exception:
-            self.badges.print_error("Failed to connect!")
+            self.badges.print_error(f"Failed to connect to {self.host}!")
         return False
 
     def disconnect(self):

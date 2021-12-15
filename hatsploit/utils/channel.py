@@ -33,16 +33,24 @@ import time
 from hatsploit.core.cli.badges import Badges
 
 
-class TelnetSocket:
+class ChannelSocket:
     def __init__(self, client):
         self.sock = telnetlib.Telnet()
         self.sock.sock = client
 
-        self.recv_size = 1024 ** 2
-        self.recv_delay = 1
+        self.read_size = 1024 ** 2
+        self.read_delay = 1
+
+        self.stashed = b""
 
         self.terminated = False
         self.badges = Badges()
+
+    def stash(self):
+        stashed_data = self.stashed
+        self.stashed = b""
+
+        return stashed_data
 
     def disconnect(self):
         if self.sock.sock:
@@ -58,6 +66,88 @@ class TelnetSocket:
         self.badges.print_error("Socket is not connected!")
         return False
 
+    def read(self):
+        if self.sock.sock:
+            result = self.stash()
+            self.sock.sock.setblocking(False)
+
+            while True:
+                try:
+                    data = self.sock.sock.recv(self.read_size)
+                except Exception:
+                    if result:
+                        break
+                    continue
+
+                result += data
+                time.sleep(self.read_delay)
+
+            self.sock.sock.setblocking(True)
+            return result
+        self.badges.print_error("Socket is not connected!")
+
+    def read_until(self, token):
+        if self.sock.sock:
+            token = token.encode()
+            result = self.stash()
+
+            while True:
+                data = self.sock.sock.recv(self.read_size)
+
+                if token in data:
+                    token_index = data.index(token)
+                    token_size = len(token)
+
+                    result += data[:token_index]
+                    self.stashed = data[token_index+token_size:]
+
+                    break
+
+                result += data
+
+            return result
+        self.badges.print_error("Socket is not connected!")
+
+    def send_command(self, command, output=True, decode=True):
+        if self.sock.sock:
+            try:
+                buffer = command.encode()
+                self.send(buffer)
+ 
+                if output:
+                    data = self.read()
+
+                    if decode:
+                        data = data.decode(errors='ignore')
+
+                    return data
+            except Exception:
+                self.badges.print_warning("Connection terminated.")
+                self.terminated = True
+            return None
+        self.badges.print_error("Socket is not connected!")
+        return None
+
+    def send_token_command(self, command, token, output=True, decode=True):
+        if self.sock.sock:
+            try:
+                buffer = command.encode()
+                self.send(buffer)
+ 
+                data = self.read_until(token)
+
+                if output:
+                    if decode:
+                        data = data.decode(errors='ignore')
+
+                    return data
+            except Exception:
+                self.badges.print_warning("Connection terminated.")
+                self.terminated = True
+            return None
+        self.badges.print_error("Socket is not connected!")
+        return None
+
     def interact(self, terminator='\n'):
         if self.sock.sock:
             self.badges.print_information("Type %greenquit%end to stop interaction.")
@@ -72,7 +162,7 @@ class TelnetSocket:
                 for key, events in selector.select():
                     if key.fileobj is self.sock:
                         try:
-                            response = self.sock.read_eager()
+                            response = self.stash() + self.sock.read_eager()
                         except Exception:
                             self.badges.print_warning("Connection terminated.")
                             self.terminated = True
@@ -89,84 +179,8 @@ class TelnetSocket:
         else:
             self.badges.print_error("Socket is not connected!")
 
-    def recv(self):
-        if self.sock.sock:
-            result = b""
-            self.sock.sock.setblocking(False)
 
-            while True:
-                try:
-                    data = self.sock.sock.recv(self.recv_size)
-                except Exception:
-                    if result:
-                        break
-                    continue
-
-                result += data
-                time.sleep(self.recv_delay)
-
-            self.sock.sock.setblocking(True)
-            return result
-        self.badges.print_error("Socket is not connected!")
-
-    def recv_until(self, token):
-        if self.sock.sock:
-            token_size = len(token)
-            result = b""
-
-            while True:
-                data = self.sock.sock.recv(self.recv_size)
-                data_size = len(data) - token_size
-
-                if data[data_size:] == token.encode():
-                    result += data[:data_size]
-                    break
-
-                result += data
-
-            return result
-        self.badges.print_error("Socket is not connected!")
-
-    def send_command(self, command, output=True, decode=True):
-        if self.sock.sock:
-            try:
-                buffer = command.encode()
-                self.send(buffer)
- 
-                if output:
-                    output = self.recv()
-
-                    if decode:
-                        output = output.decode(errors='ignore')
-
-                    return output
-            except Exception:
-                self.badges.print_warning("Connection terminated.")
-                self.terminated = True
-            return None
-        self.badges.print_error("Socket is not connected!")
-        return None
-
-    def send_token_command(self, command, token, decode=True):
-        if self.sock.sock:
-            try:
-                buffer = command.encode()
-                self.send(buffer)
-
-                output = self.recv_until(token)
-                if decode:
-                    output = output.decode(errors='ignore')
-
-                return output
-            except Exception:
-                self.badges.print_warning("Connection terminated.")
-                self.terminated = True
-            return None
-        self.badges.print_error("Socket is not connected!")
-        return None
-
-
-class TelnetClient:
+class ChannelClient:
     @staticmethod
-    def open_telnet(client):
-        return TelnetSocket(client)
+    def open_channel(client):
+        return ChannelSocket(client)

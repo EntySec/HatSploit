@@ -26,6 +26,7 @@
 
 import os
 import yaml
+import pathlib
 
 from hatsploit.core.cli.badges import Badges
 from hatsploit.lib.storage import GlobalStorage
@@ -37,7 +38,9 @@ class Config:
         self.badges = Badges()
         self.local_storage = LocalStorage()
 
+        self.user_path = f'{pathlib.Path.home()}/.hsf/'
         self.base_path = f'{os.path.dirname(os.path.dirname(__file__))}/'
+
         self.config_path = self.base_path + 'config/'
 
         self.db_config_file = self.config_path + 'db_config.yml'
@@ -45,17 +48,28 @@ class Config:
 
         self.db_config = self.local_storage.get("db_config")
         self.path_config = {
+            'user_path': self.user_path,
+            
+            'loot_path': f'{self.user_path}loot/',
+            'db_path': f'{self.user_path}db/',
+
+            'accept_path': f'{self.user_path}accept',
+            'history_path': f'{self.user_path}history',
+            'startup_path': f'{self.user_path}startup.hsf',
+
             'root_path': self.base_path,
-            'db_path': f'{self.base_path}db/',
-            'loot_path': f'{self.base_path}loot/',
+
             'data_path': f'{self.base_path}data/',
             'tips_path': f'{self.base_path}data/tips/',
             'banners_path': f'{self.base_path}data/banners/',
+            'wordlists_path': f'{self.base_path}data/wordlists/',
+            'exploits_path': f'{self.base_path}data/exploits/',
+
             'modules_path': f'{self.base_path}modules/',
             'plugins_path': f'{self.base_path}plugins/',
             'commands_path': f'{self.base_path}commands/',
             'payloads_path': f'{self.base_path}payloads/',
-            'history_path': f'{self.base_path}.history',
+
             'storage_path': f'{self.base_path}config/storage.json'
         }
 

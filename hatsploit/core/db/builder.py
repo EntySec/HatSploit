@@ -131,8 +131,6 @@ class Builder:
                                 "Module": module_object.details['Module'],
                                 "Authors": module_object.details['Authors'],
                                 "Description": module_object.details['Description'],
-                                "References": module_object.details['References'],
-                                "Targets": module_object.details['Targets'],
                                 "Platform": module_object.details['Platform'],
                                 "Rank": module_object.details['Rank']
                             }
