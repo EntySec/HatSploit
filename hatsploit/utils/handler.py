@@ -86,7 +86,7 @@ class Handler(Handle, Post, Blinder):
 
         self.badges.print_success(f"{session_type.title()} session {str(session_id)} opened at {time}!")
 
-    def handler(self, host=None, sender=None, args=[], delim=';', location='/tmp', post='printf',
+    def module_handler(self, host=None, sender=None, args=[], delim=';', location='/tmp', post='printf',
                 timeout=10, linemax=100, ensure=False):
         module = self.modules.get_current_module_object()
 
@@ -108,8 +108,6 @@ class Handler(Handle, Post, Blinder):
 
         new_host = host
         if payload['Type'] == 'bind_tcp':
-            if not host:
-                return None
             port = options['RBPORT']['Value']
 
         elif payload['Type'] == 'reverse_tcp':
@@ -134,6 +132,25 @@ class Handler(Handle, Post, Blinder):
         remote[0].details['Platform'] = session_platform
 
         self.open_session(new_host if new_host else remote[1], port, session_platform, session_type, remote[0])
+        return True
+
+    def handler(self, host, port, sender, payload, payload_category='stager', payload_type='one_side',
+                payload_args=[], args=[], delim=';', location='/tmp', post='printf', timeout=10, linemax=100,
+                platform='unix', ensure=False, blinder=False, session=None):
+        if not self.send_payload(payload, sender, args, payload_args, delim, location, post, payload_category,
+                                 payload_type, linemax, blinder, ensure):
+            self.badges.print_error("Failed to send payload stage!")
+            return False
+
+        remote = self.handle_session(host, port, payload_type, session, timeout)
+        if not remote:
+            self.badges.print_warning("Payload sent but no session was opened.")
+            return True
+
+        session_type = remote[0].details['Type']
+        remote[0].details['Platform'] = platform
+
+        self.open_session(host, port, platform, session_type, remote[0])
         return True
 
     def handle_session(self, host=None, port=None, payload_type='one_side', session=None, timeout=10):
