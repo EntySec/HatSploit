@@ -136,7 +136,10 @@ class Handler(Handle, Post, Blinder):
         session_type = remote[0].details['Type']
         remote[0].details['Platform'] = platform
 
-        self.open_session(host if host is not None else remote[1], port, platform, session_type, remote[0])
+        if remote[1] not in ('127.0.0.1', '0.0.0.0'):
+            host = remote[1]
+
+        self.open_session(host, port, platform, session_type, remote[0])
         return True
 
     def handle_session(self, host=None, port=None, payload_type='one_side', session=None, timeout=10):
