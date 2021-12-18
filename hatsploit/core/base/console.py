@@ -232,8 +232,8 @@ class Console:
             current_module = self.modules.get_current_module_object()
 
             if hasattr(current_module, "payload"):
-                if 'HandlerOptions' in current_module.payload:
-                    if not current_module.payload['HandlerOptions']:
+                if 'Handler' in current_module.payload:
+                    if not current_module.payload['Handler']:
                         return
 
             if module not in self.handler_options:
