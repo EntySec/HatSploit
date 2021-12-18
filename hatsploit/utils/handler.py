@@ -100,13 +100,7 @@ class Handler(Handle, Post, Blinder):
                     blinder = True
 
         stage = payload['Payload'] if post != 'raw' else payload['Raw']
-        if not self.send_payload(stage, sender, args, payload['Args'], delim, location,
-                          post, payload['Category'], payload['Type'], linemax, blinder,
-                          ensure):
-            self.badges.print_error("Failed to send payload stage!")
-            return False
 
-        new_host = host
         if payload['Type'] == 'bind_tcp':
             port = options['RBPORT']['Value']
 
@@ -117,26 +111,18 @@ class Handler(Handle, Post, Blinder):
         else:
             host, port = None, None
 
-        remote = self.handle_session(host, port, payload['Type'], payload['Session'], timeout)
-        if not remote:
-            self.badges.print_warning("Payload sent but no session was opened.")
-            return True
+        platform = payload['Platform']
+        if platform == 'unix':
+            platform = module.details['Platform']
 
-        session_platform = payload['Platform']
-        if payload['Platform'] == 'unix':
-            session_platform = module.details['Platform']
+        return self.handler(stage, sender, host, port, payload['Category'], payload['Type'],
+                            payload['Args'], delim, location, post, timeout, linemax, platform, ensure,
+                            blinder, payload['Session'])
 
-        session_type = remote[0].details['Type']
-
-        remote[0].details['Post'] = post
-        remote[0].details['Platform'] = session_platform
-
-        self.open_session(new_host if new_host else remote[1], port, session_platform, session_type, remote[0])
-        return True
-
-    def handler(self, host, port, sender, payload, payload_category='stager', payload_type='one_side',
+    def handler(self, payload, sender, host=None, port=None, payload_category='stager', payload_type='one_side',
                 payload_args=[], args=[], delim=';', location='/tmp', post='printf', timeout=10, linemax=100,
                 platform='unix', ensure=False, blinder=False, session=None):
+
         if not self.send_payload(payload, sender, args, payload_args, delim, location, post, payload_category,
                                  payload_type, linemax, blinder, ensure):
             self.badges.print_error("Failed to send payload stage!")
@@ -150,7 +136,7 @@ class Handler(Handle, Post, Blinder):
         session_type = remote[0].details['Type']
         remote[0].details['Platform'] = platform
 
-        self.open_session(host, port, platform, session_type, remote[0])
+        self.open_session(host if host is not None else remote[1], port, platform, session_type, remote[0])
         return True
 
     def handle_session(self, host=None, port=None, payload_type='one_side', session=None, timeout=10):
