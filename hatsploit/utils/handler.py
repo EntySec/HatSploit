@@ -47,8 +47,8 @@ class Handler(Handle, Post, Blinder):
     jobs = Jobs()
     badges = Badges()
 
-    def do_job(self, payload, target, args):
-        if payload['Type'].lower() == 'one_side':
+    def do_job(self, payload_type, target, args):
+        if payload_type == 'one_side':
             target(*args)
         else:
             self.jobs.create_job(
@@ -86,33 +86,97 @@ class Handler(Handle, Post, Blinder):
 
         self.badges.print_success(f"{session_type.title()} session {str(session_id)} opened at {time}!")
 
-    def handle_session(self, host=None, port=None, sender=None, args=[],
-                       delim=';', location='/tmp', timeout=10, method=None,
-                       manual=False, post="printf", linemax=100, ensure=False):
-
+    def handler(self, host=None, sender=None, args=[], delim=';', location='/tmp', post='printf',
+                timeout=10, linemax=100, ensure=False):
         module = self.modules.get_current_module_object()
 
         options = module.options
         payload = module.payload
 
+        blinder = False
         if 'BLINDER' in options:
             if options['BLINDER']['Value'].lower() in ['yes', 'y']:
                 if sender is not None:
-                    self.blinder(sender, args)
-                    return True
+                    blinder = True
 
-                self.badges.print_warning("Module does not support Blinder, use payload instead.")
-                return False
+        stage = payload['Payload'] if post != 'raw' else payload['Raw']
+        if not self.send_payload(stage, sender, args, payload['Args'], delim, location,
+                          post, payload['Category'], payload['Type'], linemax, blinder,
+                          ensure):
+            self.badges.print_error("Failed to send payload stage!")
+            return False
 
-        if payload['Payload'] is None:
+        if payload['Type'] == 'bind_tcp':
+            if not host:
+                return None
+            port = options['RBPORT']['Value']
+
+        elif payload['Type'] == 'reverse_tcp':
+            host = options['LHOST']['Value']
+            port = options['LPORT']['Value']
+            
+        else:
+            host, port = None, None
+
+        remote = self.handle_session(host, port, payload['Type'], payload['Session'], timeout)
+        if not remote:
+            self.badges.print_warning("Payload sent but no session was opened.")
+            return True
+
+        session_platform = payload['Platform']
+        if payload['Platform'] == 'unix':
+            session_platform = module.details['Platform']
+
+        session_type = remote[0].details['Type']
+
+        remote[0].details['Post'] = post
+        remote[0].details['Platform'] = session_platform
+
+        self.open_session(remote[1], port, session_platform, session_type, remote[0])
+        return True
+
+    def handle_session(self, host=None, port=None, payload_type='one_side', session=None, timeout=10):
+        session = session if session is not None else HatSploitSession
+
+        if payload_type == 'reverse_tcp':
+            if not host or not port:
+                return None
+
+            new_session, host = self.listen_session(host, port, session, timeout)
+
+            if not new_session and not host:
+                return None
+
+        elif payload_type == 'bind_tcp':
+            if not host or not port:
+                return None
+
+            new_session = self.connect_session(host, port, session, timeout)
+
+            if not new_session:
+                return None
+
+        elif payload_type == 'one_side':
+            return None
+
+        else:
+            self.badges.print_error("Invalid payload type!")
+            return None
+
+        return new_session, host
+
+    def send_payload(self, payload, sender, args=[], payload_args=[], delim=';',
+                location='/tmp', post='printf', payload_category='stager', payload_type='one_side',
+                linemax=100, blinder=False, ensure=False):
+        if blinder:
+            self.blinder(sender, args)
+            return False
+
+        if payload is None:
             self.badges.print_error("Payload stage is not found!")
             return False
 
-        if post.lower() == 'raw':
-            if not payload['Raw']:
-                self.badges.print_error("Payload does not support raw!")
-                return False
-        else:
+        if post != 'raw':
             if post not in self.post_methods:
                 self.badges.print_error("Invalid post method!")
                 return False
@@ -120,161 +184,36 @@ class Handler(Handle, Post, Blinder):
         if ensure:
             linemax = self.ensure_linemax(payload['Payload'], linemax)
 
-        if sender is not None:
-            if payload['Category'].lower() == 'stager':
-                if post.lower() == 'raw':
-                    self.do_job(
-                        payload,
-                        self.send,
-                        [
-                            payload['Raw'],
-                            sender,
-                            args
-                        ]
-                    )
-                else:
-                    self.do_job(
-                        payload,
-                        self.post,
-                        [
-                            payload['Payload'],
-                            sender,
-                            args,
-                            payload['Args'],
-                            post,
-                            location,
-                            delim,
-                            linemax
-                        ]
-                    )
-
-            elif payload['Category'].lower() == 'single':
+        if payload_category == 'stager':
+            if post != 'raw':
                 self.do_job(
-                    payload,
-                    self.send,
+                    payload_type,
+                    self.post,
                     [
-                        payload['Payload'],
+                        payload,
                         sender,
-                        args
+                        args,
+                        payload_args,
+                        post,
+                        location,
+                        delim,
+                        linemax
                     ]
                 )
 
-            else:
-                self.badges.print_error("Invalid payload category!")
-                return False
-
-        else:
-            if method is not None:
-                if method.lower() == 'reverse_tcp':
-                    if not host and not port:
-                        return False
-                    new_session, _ = self.listen_session(host, port, HatSploitSession, None)
-                    if not new_session:
-                        return False
-
-                elif method.lower() == 'bind_tcp':
-                    if not host and port:
-                        return False
-                    new_session = self.connect_session(host, port, HatSploitSession, None)
-                    if not new_session:
-                        return False
-
-                else:
-                    self.badges.print_error("Invalid payload method!")
-                    return False
-
-                if payload['Category'].lower() == 'stager':
-                    if post.lower() == 'raw':
-                        self.do_job(
-                            payload,
-                            self.send,
-                            [
-                                payload['Raw'],
-                                new_session.send_command,
-                                args
-                            ]
-                        )
-                    else:
-                        self.do_job(
-                            payload,
-                            self.post,
-                            [
-                                payload['Payload'],
-                                new_session.send_command,
-                                args,
-                                payload['Args'],
-                                post,
-                                location,
-                                delim,
-                                linemax
-                            ]
-                        )
-
-                elif payload['Category'].lower() == 'single':
-                    self.do_job(
-                        payload,
-                        self.send,
-                        [
-                            payload['Payload'],
-                            new_session.send_command
-                        ]
-                    )
-
-                else:
-                    self.badges.print_error("Invalid payload category!")
-                    return False
-
-            else:
-                if manual is False:
-                    self.badges.print_error("Failed to execute payload stage!")
-                    return False
-
-        session = payload['Session'] if payload['Session'] is not None else HatSploitSession
-
-        if payload['Type'].lower() == 'reverse_tcp':
-            port = options['LPORT']['Value']
-
-            new_session, remote_host = self.listen_session(
-                options['LHOST']['Value'],
-                options['LPORT']['Value'],
-                session,
-                timeout
+        elif payload_category == 'single' or post == 'raw':
+            self.do_job(
+                payload_type,
+                self.send,
+                [
+                    payload,
+                    sender,
+                    args
+                ]
             )
 
-            if not new_session and not remote_host:
-                return False
-
-        elif payload['Type'].lower() == 'bind_tcp':
-            if not host:
-                host = '127.0.0.1'
-
-            port = options['RBPORT']['Value']
-
-            new_session = self.connect_session(host, port, session, timeout)
-            remote_host = host
-
-            if not new_session:
-                return False
-
-        elif payload['Type'].lower() == 'one_side':
-            self.badges.print_warning("Payload completed but no session was opened.")
-            return True
-
         else:
-            self.badges.print_error("Invalid payload method!")
+            self.badges.print_error("Invalid payload category!")
             return False
 
-        session_platform = payload['Platform']
-        if payload['Platform'] == 'unix':
-            session_platform = module.details['Platform']
-
-        session_type = new_session.details['Type']
-
-        new_session.details['Post'] = post
-        new_session.details['Platform'] = session_platform
-
-        if method is not None:
-            host = remote_host
-
-        self.open_session(host, port, session_platform, session_type, new_session)
         return True
