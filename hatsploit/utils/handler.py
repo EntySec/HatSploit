@@ -106,6 +106,7 @@ class Handler(Handle, Post, Blinder):
             self.badges.print_error("Failed to send payload stage!")
             return False
 
+        new_host = host
         if payload['Type'] == 'bind_tcp':
             if not host:
                 return None
@@ -132,7 +133,7 @@ class Handler(Handle, Post, Blinder):
         remote[0].details['Post'] = post
         remote[0].details['Platform'] = session_platform
 
-        self.open_session(remote[1], port, session_platform, session_type, remote[0])
+        self.open_session(new_host if new_host else remote[1], port, session_platform, session_type, remote[0])
         return True
 
     def handle_session(self, host=None, port=None, payload_type='one_side', session=None, timeout=10):
