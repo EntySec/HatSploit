@@ -116,7 +116,7 @@ class Handler(Handle, Post, Blinder):
             platform = module.details['Platform']
 
         return self.handler(stage, sender, host, port, payload['Category'], payload['Type'],
-                            payload['Args'], delim, location, post, timeout, linemax, platform, ensure,
+                            payload['Args'], args, delim, location, post, timeout, linemax, platform, ensure,
                             blinder, payload['Session'])
 
     def handler(self, payload, sender, host=None, port=None, payload_category='stager', payload_type='one_side',
