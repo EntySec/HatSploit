@@ -26,7 +26,8 @@ class HatSploitModule(Module):
         'Architectures': None,
         'Platforms': None,
         'Types': None,
-        'Handler': False
+
+        'HandlerOptions': False
     }
 
     options = {
