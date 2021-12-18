@@ -58,6 +58,12 @@ class Jobs:
                 if not hidden_jobs[job_id]['job_process'].is_alive():
                     self.delete_job(job_id, True)
 
+    def count_jobs(self):
+        jobs = self.local_storage.get("jobs")
+        if jobs:
+            return len(jobs)
+        return 0
+
     def exit_jobs(self):
         if not self.local_storage.get("jobs"):
             if self.local_storage.get("hidden_jobs"):
@@ -133,4 +139,3 @@ class Jobs:
             }
         }
         self.local_storage.update(jobs_var, job_data)
-        return job_id
