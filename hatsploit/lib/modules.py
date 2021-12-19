@@ -36,6 +36,8 @@ from hatsploit.lib.payloads import Payloads
 from hatsploit.lib.sessions import Sessions
 from hatsploit.lib.storage import LocalStorage
 
+from hatsploit.core.session.platform import Platform
+
 
 class Modules:
     types = Types()
@@ -44,6 +46,8 @@ class Modules:
     payloads = Payloads()
     local_storage = LocalStorage()
     importer = Importer()
+
+    platform = Platform()
 
     def check_exist(self, name):
         all_modules = self.local_storage.get("modules")
@@ -219,20 +223,29 @@ class Modules:
                     payload = self.payloads.get_payload_object(value)
                     module_payload = current_module.payload
 
-                    valid = 0
-                    if module_payload['Types'] is None or payload['Type'] in module_payload['Types']:
-                        valid += 1
-                    if module_payload['Categories'] is None or payload['Category'] in module_payload['Categories']:
-                        valid += 1
-                    if (module_payload['Platforms'] is None
-                            or payload['Platform'] in module_payload['Platforms']
-                            or payload['Platform'] == 'multi'):
-                        valid += 1
-                    if (module_payload['Architectures'] is None
-                            or payload['Architecture'] in module_payload['Architectures']):
-                        valid += 1
+                    valid = True
+                    if module_payload['Types'] is not None: 
+                        if payload['Type'] not in module_payload['Types']:
+                            valid = False
 
-                    if valid == 4:
+                    if module_payload['Categories'] is not None:
+                        if payload['Category'] not in module_payload['Categories']:
+                            valid = False
+
+                    if module_payload['Platforms'] is not None:
+                        if payload['Platform'] not in module_payload['Platforms']:
+                            valid = False
+
+                            for platform in module_payload['Platforms']:
+                                if platform in self.platform.platforms:
+                                    if payload['Platform'] in self.platform.platforms[platform]:
+                                        valid = True
+
+                    if module_payload['Architectures'] is not None:
+                        if payload['Architecture'] not in module_payload['Architectures']:
+                            valid = False
+
+                    if valid::
                         if not self.payloads.add_payload(module_name, value):
                             self.badges.print_error("Invalid payload, expected valid payload!")
                             return False
