@@ -31,6 +31,7 @@ from hatsploit.core.cli.badges import Badges
 from hatsploit.core.session.handle import Handle
 from hatsploit.core.session.post import Post
 from hatsploit.core.session.blinder import Blinder
+from hatsploit.core.session.consts import Consts
 
 from hatsploit.core.session import HatSploitSession
 
@@ -40,7 +41,7 @@ from hatsploit.lib.sessions import Sessions
 from hatsploit.lib.storage import LocalStorage
 
 
-class Handler(Handle, Post, Blinder):
+class Handler(Handle, Post, Blinder, Consts):
     sessions = Sessions()
     local_storage = LocalStorage()
     modules = Modules()
@@ -112,7 +113,7 @@ class Handler(Handle, Post, Blinder):
             host, port = None, None
 
         platform = payload['Platform']
-        if platform == 'unix':
+        if self.platform_like(platform):
             platform = module.details['Platform']
 
         return self.handler(stage, sender, host, port, payload['Category'], payload['Type'],
