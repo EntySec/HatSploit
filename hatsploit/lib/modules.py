@@ -36,7 +36,7 @@ from hatsploit.lib.payloads import Payloads
 from hatsploit.lib.sessions import Sessions
 from hatsploit.lib.storage import LocalStorage
 
-from hatsploit.core.session.platform import Platform
+from hatsploit.core.session.consts import Consts
 
 
 class Modules:
@@ -47,7 +47,7 @@ class Modules:
     local_storage = LocalStorage()
     importer = Importer()
 
-    platform = Platform()
+    consts = Consts()
 
     def check_exist(self, name):
         all_modules = self.local_storage.get("modules")
@@ -237,15 +237,14 @@ class Modules:
                             valid = False
 
                             for platform in module_payload['Platforms']:
-                                if platform in self.platform.platforms:
-                                    if payload['Platform'] in self.platform.platforms[platform]:
-                                        valid = True
+                                if self.consts.platform_like(payload['Platform'], platform):
+                                    valid = True
 
                     if module_payload['Architectures'] is not None:
                         if payload['Architecture'] not in module_payload['Architectures']:
                             valid = False
 
-                    if valid::
+                    if valid:
                         if not self.payloads.add_payload(module_name, value):
                             self.badges.print_error("Invalid payload, expected valid payload!")
                             return False
