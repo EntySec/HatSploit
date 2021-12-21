@@ -26,12 +26,14 @@
 
 import os
 
+from hatsploit.core.base.types import Types
 from hatsploit.core.cli.badges import Badges
 from hatsploit.core.db.importer import Importer
 from hatsploit.lib.storage import LocalStorage
 
 
 class Payloads:
+    types = Types()
     importer = Importer()
     local_storage = LocalStorage()
     badges = Badges()
@@ -51,6 +53,29 @@ class Payloads:
             database = self.get_database(name)
             return self.local_storage.get("payloads")[database][name]
         return None
+
+    def check_module_compatible(self, value, categories, types, platforms, architectures):
+        if self.check_exist(value):
+            payload = self.get_payload_object(value)
+
+            if categories:
+                if payload['Category'] not in categories:
+                    return False
+
+            if types:
+                if payload['Type'] not in types:
+                    return False
+
+            if platforms:
+                if payload['Platform'] not in platforms:
+                    return False
+
+            if architectures:
+                if payload['Architecture'] not in architectures:
+                    return False
+
+            return True
+        return False
 
     def get_database(self, name):
         all_payloads = self.local_storage.get("payloads")

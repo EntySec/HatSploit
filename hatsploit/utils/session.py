@@ -32,8 +32,8 @@ class SessionTools:
     sessions = Sessions()
     config = Config()
 
-    def get_session(self, session_id):
-        session = self.sessions.get_session(session_id)
+    def get_session(self, session_id, session_platform=None, session_architecture=None, session_type=None):
+        session = self.sessions.get_session(session_id, session_platform, session_architecture, session_type)
         return session
 
     def session_download(self, session_id, remote_file, local_path=None):

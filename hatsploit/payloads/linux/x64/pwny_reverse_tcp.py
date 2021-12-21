@@ -23,6 +23,7 @@ class HatSploitPayload(Payload, Pwny):
         'Description': "Pwny reverse TCP payload for Linux x64.",
         'Architecture': "x64",
         'Platform': "linux",
+        'Session': PwnySession,
         'Rank': "high",
         'Type': "reverse_tcp"
     }
@@ -40,10 +41,6 @@ class HatSploitPayload(Payload, Pwny):
             'Type': "port",
             'Required': True
         }
-    }
-
-    payload = {
-        'Session': PwnySession
     }
 
     def run(self):

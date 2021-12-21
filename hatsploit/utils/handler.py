@@ -26,12 +26,12 @@
 
 import datetime
 
+from hatsploit.core.base.types import Types
 from hatsploit.core.cli.badges import Badges
 
 from hatsploit.core.session.handle import Handle
 from hatsploit.core.session.post import Post
 from hatsploit.core.session.blinder import Blinder
-from hatsploit.core.session.consts import Consts
 
 from hatsploit.core.session import HatSploitSession
 
@@ -41,11 +41,12 @@ from hatsploit.lib.sessions import Sessions
 from hatsploit.lib.storage import LocalStorage
 
 
-class Handler(Handle, Post, Blinder, Consts):
+class Handler(Handle, Post, Blinder):
     sessions = Sessions()
     local_storage = LocalStorage()
     modules = Modules()
     jobs = Jobs()
+    types = Types()
     badges = Badges()
 
     def do_job(self, payload_type, target, args):
@@ -81,26 +82,31 @@ class Handler(Handle, Post, Blinder, Consts):
         else:
             sender(*args, payload)
 
-    def open_session(self, host, port, session_platform, session_type, session):
-        session_id = self.sessions.add_session(session_platform, session_type, host, port, session)
+    def open_session(self, host, port, session_platform, session_architecture, session_type, session):
+        session_id = self.sessions.add_session(session_platform, session_architecture, session_type,
+                                               host, port, session)
         time = datetime.datetime.now().astimezone().strftime("%Y-%m-%d %H:%M:%S %Z")
 
         self.badges.print_success(f"{session_type.title()} session {str(session_id)} opened at {time}!")
 
-    def module_handler(self, host=None, sender=None, args=[], delim=';', location='/tmp', post='printf',
-                timeout=10, linemax=100, ensure=False):
+    def module_handler(self, host=None, sender=None, args=[], delim=';', location='/tmp',
+                       method='auto', timeout=10, linemax=100, ensure=False):
         module = self.modules.get_current_module_object()
 
         options = module.options
         payload = module.payload
 
-        blinder = False
         if 'BLINDER' in options:
             if options['BLINDER']['Value'].lower() in ['yes', 'y']:
                 if sender is not None:
-                    blinder = True
+                    self.handler(
+                        sender=sender,
+                        blinder=True
+                    )
 
-        stage = payload['Payload'] if post != 'raw' else payload['Raw']
+                    return True
+
+        stage = payload['Payload'] if method != 'raw' else payload['Raw']
 
         if payload['Type'] == 'bind_tcp':
             port = options['RBPORT']['Value']
@@ -108,39 +114,98 @@ class Handler(Handle, Post, Blinder, Consts):
         elif payload['Type'] == 'reverse_tcp':
             host = options['LHOST']['Value']
             port = options['LPORT']['Value']
-            
+
         else:
             host, port = None, None
 
         platform = payload['Platform']
-        if self.platform_like(platform):
-            platform = module.details['Platform']
+        architecture = payload['Architecture']
 
-        return self.handler(stage, sender, host, port, payload['Category'], payload['Type'],
-                            payload['Args'], args, delim, location, post, timeout, linemax, platform, ensure,
-                            blinder, payload['Session'])
+        if platform in self.types.platforms:
+            module_platform = module.details['Platform']
 
-    def handler(self, payload, sender, host=None, port=None, payload_category='stager', payload_type='one_side',
-                payload_args=[], args=[], delim=';', location='/tmp', post='printf', timeout=10, linemax=100,
-                platform='unix', ensure=False, blinder=False, session=None):
+            if module_platform not in self.types.platforms:
+                platform = module_platform
 
-        if not self.send_payload(payload, sender, args, payload_args, delim, location, post, payload_category,
-                                 payload_type, linemax, blinder, ensure):
+        return self.handler(
+            payload=stage,
+            sender=sender,
+
+            host=host,
+            port=port,
+
+            payload_category=payload['Category'],
+            payload_type=payload['Type'],
+
+            args=args,
+            delim=delim,
+            location=location,
+
+            method=method,
+            timeout=timeout,
+            linemax=linemax,
+
+            platform=platform,
+            architecture=architecture,
+
+            ensure=ensure,
+            blinder=False,
+
+            session=payload['Session']
+        )
+
+    def handler(self, payload=None, sender=None, host=None, port=None, payload_category='stager',
+                payload_type='one_side', args=[], delim=';', location='/tmp', method='auto', timeout=10,
+                linemax=100, platform='generic', architecture='generic', ensure=False, blinder=False,
+                session=None):
+
+        if blinder:
+            self.blinder(sender, args)
+            return True
+
+        if not self.send_payload(
+            payload=payload,
+            sender=sender,
+
+            payload_category=payload_category,
+            payload_type=payload_type,
+
+            args=args,
+            delim=delim,
+            location=location,
+
+            method=method,
+            linemax=linemax,
+
+            platform=platform,
+            ensure=ensure
+        ):
             self.badges.print_error("Failed to send payload stage!")
             return False
 
-        remote = self.handle_session(host, port, payload_type, session, timeout)
+        remote = self.handle_session(
+            host=host,
+            port=port,
+
+            payload_type=payload_type,
+            session=session,
+            timeout=timeout
+        )
+
         if not remote:
             self.badges.print_warning("Payload sent but no session was opened.")
             return True
 
         session_type = remote[0].details['Type']
+
+        remote[0].details['Post'] = method
         remote[0].details['Platform'] = platform
+        remote[0].details['Architecture'] = architecture
 
         if remote[1] not in ('127.0.0.1', '0.0.0.0'):
             host = remote[1]
 
-        self.open_session(host, port, platform, session_type, remote[0])
+        self.open_session(host, port, platform, architecture, session_type, remote[0])
         return True
 
     def handle_session(self, host=None, port=None, payload_type='one_side', session=None, timeout=10):
@@ -173,43 +238,38 @@ class Handler(Handle, Post, Blinder, Consts):
 
         return new_session, host
 
-    def send_payload(self, payload, sender, args=[], payload_args=[], delim=';',
-                location='/tmp', post='printf', payload_category='stager', payload_type='one_side',
-                linemax=100, blinder=False, ensure=False):
-        if blinder:
-            self.blinder(sender, args)
-            return False
-
+    def send_payload(self, payload=None, sender=None, payload_category='stager', payload_type='one_side',
+                     args=[], delim=';', location='/tmp', method='auto', linemax=100, platform='generic',
+                     ensure=False):
         if payload is None:
             self.badges.print_error("Payload stage is not found!")
             return False
 
-        if post != 'raw':
-            if post not in self.post_methods:
-                self.badges.print_error("Invalid post method!")
-                return False
+        if sender is None:
+            self.badges.print_error("No sender found!")
+            return False
 
         if ensure:
             linemax = self.ensure_linemax(payload['Payload'], linemax)
 
         if payload_category == 'stager':
-            if post != 'raw':
+            if method != 'raw':
                 self.do_job(
                     payload_type,
                     self.post,
                     [
+                        platform,
                         payload,
                         sender,
                         args,
-                        payload_args,
-                        post,
+                        method,
                         location,
                         delim,
                         linemax
                     ]
                 )
 
-        elif payload_category == 'single' or post == 'raw':
+        elif payload_category == 'single' or method == 'raw':
             self.do_job(
                 payload_type,
                 self.send,

@@ -56,7 +56,7 @@ class Sessions:
             return True
         return False
 
-    def add_session(self, session_platform, session_type, session_host, session_port, session_object):
+    def add_session(self, session_platform, session_architecture, session_type, session_host, session_port, session_object):
         if not self.local_storage.get("sessions"):
             self.local_storage.set("sessions", {})
 
@@ -68,6 +68,7 @@ class Sessions:
         sessions = {
             session_id: {
                 'platform': session_platform,
+                'architecture': session_architecture,
                 'type': session_type,
                 'host': session_host,
                 'port': session_port,
@@ -78,24 +79,25 @@ class Sessions:
         self.local_storage.update("sessions", sessions)
         return session_id
 
-    def check_exist(self, session_id, session_platform=None, session_type=None):
+    def check_exist(self, session_id, session_platform=None, session_architecture=None, session_type=None):
         sessions = self.local_storage.get("sessions")
         if sessions:
             if int(session_id) in sessions:
-                if session_platform and session_type:
-                    if (sessions[int(session_id)]['platform'] == session_platform and
-                            sessions[int(session_id)]['type'] == session_type):
-                        return True
-                    return False
+                valid = True
+
                 if session_platform:
-                    if sessions[int(session_id)]['platform'] == session_platform:
-                        return True
-                    return False
+                    if sessions[int(session_id)]['platform'] != session_platform:
+                        valid = False
+
                 if session_type:
-                    if sessions[int(session_id)]['type'] == session_type:
-                        return True
-                    return False
-                return True
+                    if sessions[int(session_id)]['type'] != session_type:
+                        valid = False
+
+                if session_architecture:
+                    if sessions[int(session_id)]['architecture'] != session_architecture:
+                        valid = False
+
+                return valid
         return False
 
     def spawn_interactive_connection(self, session_id):
@@ -147,9 +149,9 @@ class Sessions:
                 except Exception:
                     self.badges.print_error("Failed to close session!")
 
-    def get_session(self, session_id):
+    def get_session(self, session_id, session_platform=None, session_architecture=None, session_type=None):
         sessions = self.local_storage.get("sessions")
-        if self.check_exist(session_id):
+        if self.check_exist(session_id, session_platform, session_architecture, session_type):
             return sessions[int(session_id)]['object']
         self.badges.print_error("Invalid session given!")
         return None

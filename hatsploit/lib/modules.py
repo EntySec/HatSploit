@@ -36,8 +36,6 @@ from hatsploit.lib.payloads import Payloads
 from hatsploit.lib.sessions import Sessions
 from hatsploit.lib.storage import LocalStorage
 
-from hatsploit.core.session.consts import Consts
-
 
 class Modules:
     types = Types()
@@ -46,8 +44,6 @@ class Modules:
     payloads = Payloads()
     local_storage = LocalStorage()
     importer = Importer()
-
-    consts = Consts()
 
     def check_exist(self, name):
         all_modules = self.local_storage.get("modules")
@@ -216,42 +212,20 @@ class Modules:
                 return self.compare_type("boolean", value, self.types.is_boolean, module)
 
             if value_type.lower() == 'payload':
-                if self.payloads.check_exist(value):
-                    current_module = self.get_current_module_object()
-                    module_name = self.get_current_module_name()
+                current_module = self.get_current_module_object()
+                module_name = self.get_current_module_name()
+                module_payload = current_module.payload
 
-                    payload = self.payloads.get_payload_object(value)
-                    module_payload = current_module.payload
+                categories = module_payload['Categories']
+                types = module_payload['Types']
+                platforms = module_payload['Platforms']
+                architectures = module_payload['Architectures']
 
-                    valid = True
-                    if module_payload['Types'] is not None: 
-                        if payload['Type'] not in module_payload['Types']:
-                            valid = False
-
-                    if module_payload['Categories'] is not None:
-                        if payload['Category'] not in module_payload['Categories']:
-                            valid = False
-
-                    if module_payload['Platforms'] is not None:
-                        if payload['Platform'] not in module_payload['Platforms']:
-                            valid = False
-
-                            for platform in module_payload['Platforms']:
-                                if self.consts.platform_like(payload['Platform'], platform):
-                                    valid = True
-
-                    if module_payload['Architectures'] is not None:
-                        if payload['Architecture'] not in module_payload['Architectures']:
-                            valid = False
-
-                    if valid:
-                        if not self.payloads.add_payload(module_name, value):
-                            self.badges.print_error("Invalid payload, expected valid payload!")
-                            return False
+                if self.payloads.check_module_compatible(value, categories, types, platforms, architectures):
+                    if self.payloads.add_payload(module_name, value):
                         return True
-                    self.badges.print_error("Incompatible payload type, category or platform!")
-                    return False
-                self.badges.print_error("Invalid value, expected valid payload!")
+
+                self.badges.print_error("Invalid valud, expected valid payload!")
                 return False
 
             if 'session' in value_type.lower():
@@ -300,6 +274,9 @@ class Modules:
 
                     if self.compare_types(value_type, value):
                         self.badges.print_information(option + " ==> " + value)
+
+                        if option.lower() == 'blinder':
+                            current_module.payload['Value'] = None
 
                         if value_type == 'payload':
                             self.local_storage.set_module_payload(
@@ -499,20 +476,17 @@ class Modules:
                                 current_payload.details['Architecture'],
                                 payload_data)
 
-                        args, session = "", None
-                        if hasattr(current_payload, "payload"):
-                            if 'Args' in current_payload.payload:
-                                args = current_payload.payload['Args']
-                            if 'Session' in current_payload.payload:
-                                session = current_payload.payload['Session']
+                        session = None
+                        if 'Session' in current_payload.details:
+                            session = current_payload.details['Session']
 
                         current_module.payload['Category'] = current_payload.details['Category']
                         current_module.payload['Platform'] = current_payload.details['Platform']
+                        current_module.payload['Architecture'] = current_payload.details['Architecture']
                         current_module.payload['Type'] = current_payload.details['Type']
 
                         current_module.payload['Raw'] = raw
                         current_module.payload['Payload'] = payload
-                        current_module.payload['Args'] = args
                         current_module.payload['Session'] = session
 
                     self.badges.print_empty()
