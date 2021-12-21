@@ -454,39 +454,33 @@ class Modules:
             else:
                 try:
                     if current_payload:
-                        generator = HatVenom()
-                        payload_data = current_payload.run()
+                        hatvenom = HatVenom()
 
-                        if current_payload.details['Platform'] in self.types.formats:
-                            executable = self.types.formats[current_payload.details['Platform']]
-                        else:
-                            executable = 'raw'
+                        payload_data = current_payload.run()
+                        payload_details = current_payload.details
+
+                        executable = 'raw'
+                        for executable_format in self.types.formats:
+                            if payload_details['Platform'] in self.types.formats[executable_format]:
+                                executable = executable_format
+                                break
 
                         if isinstance(payload_data, tuple):
-                            raw = generator.generate('raw', 'generic', payload_data[0], payload_data[1])
-                            payload = generator.generate(
-                                executable if current_payload.details['Architecture'] != 'generic' else 'raw',
-                                current_payload.details['Architecture'],
-                                payload_data[0], payload_data[1])
+                            raw = hatvenom.generate('raw', 'generic', payload_data[0], payload_data[1])
+
+                            payload = hatvenom.generate(
+                                executable if payload_details['Architecture'] != 'generic' else 'raw',
+                                payload_details['Architecture'], payload_data[0], payload_data[1])
                         else:
-                            raw = generator.generate('raw', 'generic', payload_data)
-                            payload = generator.generate(
-                                executable if current_payload.details['Architecture'] != 'generic' else 'raw',
-                                current_payload.details['Architecture'],
-                                payload_data)
+                            raw = hatvenom.generate('raw', 'generic', payload_data)
 
-                        session = None
-                        if 'Session' in current_payload.details:
-                            session = current_payload.details['Session']
+                            payload = hatvenom.generate(
+                                executable if payload_details['Architecture'] != 'generic' else 'raw',
+                                payload_details['Architecture'], payload_data)
 
-                        current_module.payload['Category'] = current_payload.details['Category']
-                        current_module.payload['Platform'] = current_payload.details['Platform']
-                        current_module.payload['Architecture'] = current_payload.details['Architecture']
-                        current_module.payload['Type'] = current_payload.details['Type']
-
+                        current_module.payload['Details'] = payload_details
                         current_module.payload['Raw'] = raw
                         current_module.payload['Payload'] = payload
-                        current_module.payload['Session'] = session
 
                     self.badges.print_empty()
                     self.entry_to_module(current_module)
@@ -498,5 +492,10 @@ class Modules:
                 except Exception as e:
                     self.badges.print_error(f"An error occurred in module: {str(e)}!")
                     self.badges.print_error(f"{current_module_name.split('/')[0].title()} module failed!")
+
+                if current_payload:
+                    for key in ['Details', 'Raw', 'Payload']:
+                        if key in current_module.payload:
+                            del current_module.payload[key]
         else:
             self.badges.print_warning("No module selected.")
