@@ -76,6 +76,23 @@ class Types:
         ]
     }
 
+    formats = {
+        'macho': [
+            'macos',
+            'apple_ios'
+        ],
+        'elf': [
+            'unix',
+            'linux',
+            'aix',
+            'bsd',
+            'android'
+        ],
+        'pe': [
+            'windows'
+        ]
+    }
+
     @staticmethod
     def is_mac(mac):
         regexp = r"^[a-f\d]{1,2}:[a-f\d]{1,2}:[a-f\d]{1,2}:[a-f\d]{1,2}:[a-f\d]{1,2}:[a-f\d]{1,2}$"
