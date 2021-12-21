@@ -276,7 +276,8 @@ class Modules:
                         self.badges.print_information(option + " ==> " + value)
 
                         if option.lower() == 'blinder':
-                            current_module.payload['Value'] = None
+                            if value.lower() in ['y', 'yes']:
+                                current_module.payload['Value'] = None
 
                         if value_type == 'payload':
                             self.local_storage.set_module_payload(
@@ -456,12 +457,10 @@ class Modules:
                         generator = HatVenom()
                         payload_data = current_payload.run()
 
-                        if current_payload.details['Platform'] in ['macos', 'apple_ios']:
-                            executable = 'macho'
-                        elif current_payload.details['Platform'] in ['windows']:
-                            executable = 'pe'
+                        if current_payload.details['Platform'] in self.types.formats:
+                            executable = self.types.formats[current_payload.details['Platform']]
                         else:
-                            executable = 'elf'
+                            executable = 'raw'
 
                         if isinstance(payload_data, tuple):
                             raw = generator.generate('raw', 'generic', payload_data[0], payload_data[1])
