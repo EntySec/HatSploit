@@ -240,18 +240,17 @@ class Console:
                 self.handler_options[module] = handler_options
 
             if hasattr(current_module, "payload"):
-                if 'BLINDER' not in current_module.options:
-                    current_module.options.update({
-                        'BLINDER': {
-                            'Description': 'Use Blinder.',
-                            'Value': 'yes' if self.payloads.get_current_payload() is None else 'no',
-                            'Type': "boolean",
-                            'Required': True
-                        }
-                    })
+                current_module.options.update({
+                    'BLINDER': {
+                        'Description': 'Use Blinder.',
+                        'Value': 'yes' if self.payloads.get_current_payload() is None else 'no',
+                        'Type': "boolean",
+                        'Required': True
+                    }
+                })
 
             required = True
-            if 'BLINDER' in current_module.options:
+            if 'BLINDER' in current_module.options and not self.payloads.get_current_payload():
                 if current_module.options['BLINDER']['Value'].lower() in ['yes', 'y']:
                     required = False
                     current_module.payload['Value'] = None

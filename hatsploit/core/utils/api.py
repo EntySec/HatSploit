@@ -81,6 +81,7 @@ class SessionManager(Resource):
                         data.update({
                             session: {
                                 'platform': sessions[session]['platform'],
+                                'architecture': sessions[session]['architecture'],
                                 'type': sessions[session]['type'],
                                 'host': sessions[session]['host'],
                                 'port': sessions[session]['port']
@@ -91,6 +92,7 @@ class SessionManager(Resource):
                             data.update({
                                 session: {
                                     'platform': sessions[session]['platform'],
+                                    'architecture': sessions[session]['architecture'],
                                     'type': sessions[session]['type'],
                                     'host': sessions[session]['host'],
                                     'port': sessions[session]['port']

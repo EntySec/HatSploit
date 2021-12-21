@@ -31,23 +31,42 @@ from hatsploit.utils.fs import FSTools
 from hatsploit.core.cli.badges import Badges
 from hatsploit.core.session.pull.cat import Cat
 
+from hatsploit.core.base.types import Types
+
 
 class Pull(FSTools):
     badges = Badges()
+    types = Types()
 
     pull_methods = {
-        'cat': Cat()
+        'cat': [
+            types.platforms['unix'],
+            Cat()
+        ]
     }
 
-    def pull(self, file, sender, location, args=[], method='cat'):
-        if method in self.pull_methods:
+    def pull(self, platform, file, sender, location, args=[], method='auto'):
+        if method in self.pull_methods or method == 'auto':
+            if method == 'auto':
+                for pull_method in self.pull_methods:
+                    if platform in self.pull_methods[pull_method][0]:
+                        method = pull_method
+
+                if method == 'auto':
+                    self.badges.print_error("Failed to find supported pull method!")
+                    return False
+            else:
+                if platform not in self.pull_methods[method][0]:
+                    self.badges.print_error("Unsupported pull method!")
+                    return False
+
             exists, is_dir = self.exists(location)
             if exists:
                 if is_dir:
                     location = location + '/' + os.path.split(file)[1]
 
                 self.badges.print_process(f"Downloading {file}...")
-                data = self.pull_methods[method].pull(sender, file, args)
+                data = self.pull_methods[method][1].pull(sender, file, args)
 
                 if data:
                     self.badges.print_process(f"Saving to {location}...")

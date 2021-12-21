@@ -38,6 +38,7 @@ class HatSploitSession(Session, Pull, Push, ChannelClient):
     details = {
         'Post': "",
         'Platform': "",
+        'Architecture': "",
         'Type': "shell"
     }
 
@@ -59,10 +60,13 @@ class HatSploitSession(Session, Pull, Push, ChannelClient):
 
     def download(self, remote_file, local_path):
         return self.pull(
-            remote_file,
-            self.send_command,
-            local_path,
-            {
+            platform=self.details['Platform'],
+            file=remote_file,
+
+            sender=self.send_command,
+            location=local_path,
+
+            args={
                 'decode': False,
                 'output': True
             }
@@ -70,9 +74,13 @@ class HatSploitSession(Session, Pull, Push, ChannelClient):
 
     def upload(self, local_file, remote_path):
         return self.push(
-            local_file,
-            self.send_command,
-            remote_path
+            platform=self.details['Platform'],
+            file=local_file,
+
+            sender=self.send_command,
+
+            location=remote_path,
+            method=self.details['Post']
         )
 
     def interact(self):

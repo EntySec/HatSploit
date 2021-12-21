@@ -29,7 +29,7 @@ from hatsploit.core.cli.badges import Badges
 
 class Cat:
     badges = Badges()
-    
+
     def pull(self, sender, location, args=[]):
         command = f'cat "{location}"'
 

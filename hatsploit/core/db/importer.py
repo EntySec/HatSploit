@@ -113,6 +113,9 @@ class Importer:
         self.local_storage.set("commands", commands)
 
     def import_commands(self, path):
+        if not path.endswith('/'):
+            path += '/'
+
         commands = {}
         command_path = os.path.split(path)[0]
         try:

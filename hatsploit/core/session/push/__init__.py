@@ -31,22 +31,44 @@ from hatsploit.core.cli.badges import Badges
 from hatsploit.core.session.push.echo import Echo
 from hatsploit.core.session.push.printf import Printf
 
+from hatsploit.core.base.types import Types
+
 
 class Push(FSTools):
     badges = Badges()
+    types = Types()
 
     push_methods = {
-        'echo': Echo(),
-        'printf': Printf()
+        'printf': [
+            types.platforms['unix'],
+            Printf()
+        ],
+        'echo': [
+            types.platforms['unix'],
+            Echo()
+        ]
     }
 
-    def push(self, file, sender, location, args=[], method='printf', linemax=100):
-        if method in self.push_methods:
+    def push(self, platform, file, sender, location, args=[], method='auto', linemax=100):
+        if method in self.push_methods or method == 'auto':
+            if method == 'auto':
+                for push_method in self.push_methods:
+                    if platform in self.push_methods[push_method][0]:
+                        method = push_method
+
+                if method == 'auto':
+                    self.badges.print_error("Failed to find supported push method!")
+                    return False
+            else:
+                if platform not in self.push_methods[method][0]:
+                    self.badges.print_error("Unsupported push method!")
+                    return False
+
             if self.exists_file(file):
                 self.badges.print_process(f"Uploading {file}...")
 
                 with open(file, 'rb') as f:
-                    self.push_methods[method].push(f.read(), sender, location, args, linemax)
+                    self.push_methods[method][1].push(f.read(), sender, location, args, linemax)
 
                 self.badges.print_process(f"Saving to {location}...")
                 self.badges.print_success(f"Saved to {location}!")

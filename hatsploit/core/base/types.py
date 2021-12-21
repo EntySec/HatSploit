@@ -28,6 +28,54 @@ import re
 
 
 class Types:
+    platforms = {
+        'generic': [
+            'unix',
+            'linux',
+            'aix',
+            'bsd',
+            'macos',
+            'apple_ios',
+            'android',
+            'windows'
+        ],
+        'unix': [
+            'unix',
+            'linux',
+            'aix',
+            'bsd',
+            'macos',
+            'apple_ios',
+            'android'
+        ],
+        'windows': [
+            'windows'
+        ]
+    }
+
+    architectures = {
+        'generic': [
+            'x64',
+            'x86',
+            'aarch64',
+            'armle',
+            'mipsle',
+            'mipsbe'
+        ],
+        'intel': [
+            'x64',
+            'x86'
+        ],
+        'arm': [
+            'aarch64',
+            'armle'
+        ],
+        'mips': [
+            'mipsle',
+            'mipsbe'
+        ]
+    }
+
     @staticmethod
     def is_mac(mac):
         regexp = r"^[a-f\d]{1,2}:[a-f\d]{1,2}:[a-f\d]{1,2}:[a-f\d]{1,2}:[a-f\d]{1,2}:[a-f\d]{1,2}$"
