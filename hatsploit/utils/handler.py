@@ -108,18 +108,23 @@ class Handler(Handle, Post, Blinder):
 
         stage = payload['Payload'] if method != 'raw' else payload['Raw']
 
-        if payload['Type'] == 'bind_tcp':
+        if payload['Details']['Type'] == 'bind_tcp':
             port = options['RBPORT']['Value']
 
-        elif payload['Type'] == 'reverse_tcp':
+        elif payload['Details']['Type'] == 'reverse_tcp':
             host = options['LHOST']['Value']
             port = options['LPORT']['Value']
 
         else:
             host, port = None, None
 
-        platform = payload['Platform']
-        architecture = payload['Architecture']
+        if 'Session' in payload['Details']:
+            session = payload['Details']['Session']
+        else:
+            session = None
+
+        platform = payload['Details']['Platform']
+        architecture = payload['Details']['Architecture']
 
         if platform in self.types.platforms:
             module_platform = module.details['Platform']
@@ -134,8 +139,8 @@ class Handler(Handle, Post, Blinder):
             host=host,
             port=port,
 
-            payload_category=payload['Category'],
-            payload_type=payload['Type'],
+            payload_category=payload['Details']['Category'],
+            payload_type=payload['Details']['Type'],
 
             args=args,
             delim=delim,
@@ -151,7 +156,7 @@ class Handler(Handle, Post, Blinder):
             ensure=ensure,
             blinder=False,
 
-            session=payload['Session']
+            session=session
         )
 
     def handler(self, payload=None, sender=None, host=None, port=None, payload_category='stager',
