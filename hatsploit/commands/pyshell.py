@@ -26,7 +26,7 @@
 
 import platform
 
-from core.lib.command import Command
+from hatsploit.lib.command import Command
 
 
 class HatSploitCommand(Command):
