@@ -46,12 +46,12 @@ class HatSploitCommand(Command):
         self.print_empty()
 
         while True:
-            output = self.input_empty("%bold>>> %end")
+            code = self.input_empty("%bold>>> %end")
 
-            if "exit" in output or "quit" in output:
+            if "exit" in code or "quit" in code:
                 return
             try:
-                exec(output.strip())
+                exec(' '.join(code))
             except SystemExit:
                 return
             except (EOFError, KeyboardInterrupt):
