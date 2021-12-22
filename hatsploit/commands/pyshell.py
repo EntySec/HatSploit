@@ -26,10 +26,10 @@
 
 import platform
 
-from core.lib.command import HatSploitCommand
+from core.lib.command import Command
 
 
-class HatSploitCommand(HatSploitCommand):
+class HatSploitCommand(Command):
     details = {
         'Category': "developer",
         'Name': "pyshell",
@@ -42,13 +42,11 @@ class HatSploitCommand(HatSploitCommand):
     }
 
     def run(self, argc, argv):
-        prompt = "%bold>>> %end"
-
         self.output_information(f"Python {platform.python_version()} console")
         self.output_empty()
 
         while True:
-            output = self.input_empty(prompt)
+            output = self.input_empty("%bold>>> %end")
 
             if "exit" in output or "quit" in output:
                 return
