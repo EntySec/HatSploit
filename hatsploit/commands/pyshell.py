@@ -42,8 +42,8 @@ class HatSploitCommand(Command):
     }
 
     def run(self, argc, argv):
-        self.output_information(f"Python {platform.python_version()} console")
-        self.output_empty()
+        self.print_information(f"Python {platform.python_version()} console")
+        self.print_empty()
 
         while True:
             output = self.input_empty("%bold>>> %end")
@@ -57,4 +57,4 @@ class HatSploitCommand(Command):
             except (EOFError, KeyboardInterrupt):
                 return
             except Exception as e:
-                self.output_error(str(e))
+                self.print_error(str(e))
