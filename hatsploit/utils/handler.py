@@ -90,7 +90,7 @@ class Handler(Handle, Post, Blinder):
         self.badges.print_success(f"{session_type.title()} session {str(session_id)} opened at {time}!")
 
     def module_handler(self, host=None, sender=None, args=[], delim=';', location='/tmp',
-                       method='auto', timeout=10, linemax=100, ensure=False):
+                       method='auto', timeout=None, linemax=100, ensure=False):
         module = self.modules.get_current_module_object()
 
         options = module.options
@@ -161,7 +161,7 @@ class Handler(Handle, Post, Blinder):
         )
 
     def handler(self, payload=None, sender=None, host=None, port=None, payload_category='stager',
-                payload_type='one_side', args=[], delim=';', location='/tmp', method='auto', timeout=10,
+                payload_type='one_side', args=[], delim=';', location='/tmp', method='auto', timeout=None,
                 linemax=100, platform='generic', architecture='generic', ensure=False, blinder=False,
                 session=None):
 
@@ -214,7 +214,7 @@ class Handler(Handle, Post, Blinder):
         self.open_session(host, port, platform, architecture, session_type, remote[0])
         return True
 
-    def handle_session(self, host=None, port=None, payload_type='one_side', session=None, timeout=10):
+    def handle_session(self, host=None, port=None, payload_type='one_side', session=None, timeout=None):
         session = session if session is not None else HatSploitSession
 
         if payload_type == 'reverse_tcp':
