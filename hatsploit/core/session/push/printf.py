@@ -47,6 +47,8 @@ class Printf:
         for i in range(0, num_parts):
             current = i * printf_max_length
             block = self.bytes_to_octal(data[current:current + printf_max_length])
+
+            self.badges.print_process(f"Uploading payload... ({str(current)}/{str(size)})", end='')
             if block:
                 command = printf_stream.format(block, location)
 
