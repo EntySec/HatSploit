@@ -101,6 +101,7 @@ class Handler(Handle, Post, Blinder):
                 if sender is not None:
                     self.handler(
                         sender=sender,
+                        args=args,
                         blinder=True
                     )
 
