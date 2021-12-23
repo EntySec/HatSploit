@@ -47,6 +47,8 @@ class Echo:
         for i in range(0, num_parts):
             current = i * echo_max_length
             block = self.bytes_to_octal(data[current:current + echo_max_length])
+
+            self.badges.print_multi(f"Uploading payload... ({str(current)}/{str(size)})", end='')
             if block:
                 command = echo_stream.format(block, location)
 
