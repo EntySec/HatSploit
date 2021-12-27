@@ -89,8 +89,8 @@ class Handler(Handle, Post, Blinder):
 
         self.badges.print_success(f"{session_type.title()} session {str(session_id)} opened at {time}!")
 
-    def module_handler(self, host=None, sender=None, args=[], concat=None, location=None, background=None,
-                       method=None, timeout=None, linemax=100, ensure=False):
+    def module_handler(self, host=None, sender=None, args=[], concat=None, location=None,
+                       background=None, method=None, timeout=None, linemax=100, ensure=False):
         module = self.modules.get_current_module_object()
 
         options = module.options
