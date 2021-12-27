@@ -46,6 +46,10 @@ class Push(FSTools):
         'echo': [
             types.platforms['unix'],
             Echo()
+        ],
+        'certutil': [
+            types.platforms['windows'],
+            Certutil()
         ]
     }
 
