@@ -164,8 +164,10 @@ class StringTools:
         return result
 
     @staticmethod
-    def base64_string(string):
-        string = base64.b64encode(string.encode())
+    def base64_string(string, encoded=False):
+        if not encoded:
+            string = string.encode()
+        string = base64.b64encode(string)
         return string.decode()
 
     @staticmethod
