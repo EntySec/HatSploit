@@ -42,7 +42,6 @@ class Handler(http.server.SimpleHTTPRequestHandler):
 
         if self.path == self.payload_path:
             self.badges.print_process(f"Connecting to {self.client_address[0]}...")
-            self.badges.print_process(f"Sending payload stage ({str(len(self.payload))} bytes)...")
 
             self.send_response(200)
             self.send_header("Content-type", "text/html")
