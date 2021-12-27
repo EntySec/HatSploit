@@ -31,9 +31,9 @@ class Certutil:
     badges = Badges()
 
     def push(self, data, sender, location, args=[], linemax=100):
-        decoder_stream = "certutil -decode {}.b64 {}.exe"
+        decoder_stream = "certutil -decode {}.b64 {}.exe & del {}.b64"
 
-        echo_stream = "echo '{}' >> {}.b64"
+        echo_stream = "echo {} >> {}.b64"
         echo_max_length = linemax
 
         size = len(data)
