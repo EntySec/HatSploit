@@ -25,6 +25,7 @@
 #
 
 from hatsploit.lib.jobs import Jobs
+from hatsploit.lib.loot import Loot
 from hatsploit.lib.storage import LocalStorage
 from hatsploit.lib.modules import Modules
 from hatsploit.lib.payloads import Payloads
@@ -37,6 +38,7 @@ from hatsploit.core.cli.tables import Tables
 
 class Show:
     jobs = Jobs()
+    loot = Loot()
     local_storage = LocalStorage()
     modules = Modules()
     payloads = Payloads()
@@ -107,6 +109,14 @@ class Show:
             self.tables.print_table("Active Jobs", headers, *jobs_data)
         else:
             self.badges.print_warning("No running jobs available.")
+
+    def show_loot(self):
+        loots = self.loot.list_loot()
+        if loots:
+            headers = ("Loot", "Path", "Time")
+            self.tables.print_table("Collected Loot", headers, *loots)
+        else:
+            self.badges.print_warning("No loot collected yet.")
 
     def show_module_databases(self):
         if self.local_storage.get("connected_module_databases"):
@@ -348,7 +358,7 @@ class Show:
                 if not value and value != 0:
                     value = ""
                 options_data.append((option, value, required, options[option]['Description']))
-            self.tables.print_table("Module Options (" + current_module.details['Module'] + ")", headers, *options_data)
+            self.tables.print_table(f"Module Options ({current_module.details['Module']})", headers, *options_data)
 
         if hasattr(current_module, "payload"):
             if hasattr(self.payloads.get_current_payload(), "options"):
@@ -366,5 +376,5 @@ class Show:
                         if not value and value != 0:
                             value = ""
                         options_data.append((option, value, required, current_payload.options[option]['Description']))
-                    self.tables.print_table("Payload Options (" + current_payload.details['Payload'] + ")", headers,
-                                     *options_data)
+                    self.tables.print_table(f"Payload Options ({current_payload.details['Payload']})", headers,
+                                            *options_data)

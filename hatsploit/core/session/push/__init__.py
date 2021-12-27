@@ -53,14 +53,14 @@ class Push(FSTools):
         ]
     }
 
-    def push(self, platform, file, sender, location, args=[], method='auto', linemax=100):
-        if method in self.push_methods or method == 'auto':
-            if method == 'auto':
+    def push(self, platform, file, sender, location, args=[], method=None, linemax=100):
+        if method in self.push_methods or not method:
+            if not method:
                 for push_method in self.push_methods:
                     if platform in self.push_methods[push_method][0]:
                         method = push_method
 
-                if method == 'auto':
+                if not method:
                     self.badges.print_error("Failed to find supported push method!")
                     return False
             else:

@@ -38,6 +38,8 @@ from hatsploit.core.cli.badges import Badges
 from hatsploit.core.utils.ui.banner import Banner
 from hatsploit.core.utils.ui.tip import Tip
 
+from hatsploit.lib.loot import Loot
+
 from hatsploit.lib.config import Config
 from hatsploit.lib.jobs import Jobs
 from hatsploit.lib.sessions import Sessions
@@ -57,6 +59,8 @@ class Console:
     banner = Banner()
     tip = Tip()
 
+    loot = Loot()
+
     config = Config()
     jobs = Jobs()
     sessions = Sessions()
@@ -72,10 +76,14 @@ class Console:
     def check_install(self):
         if os.path.exists(self.config.path_config['root_path']):
             workspace = self.config.path_config['user_path']
+            loot = self.config.path_config['loot_path']
 
             if not os.path.isdir(workspace):
                 self.badges.print_process(f"Creating workspace at {workspace}...")
                 os.mkdir(workspace)
+
+            if not os.path.isdir(loot):
+                self.loot.create_loot()
 
             return True
         self.badges.print_error("HatSploit is not installed!")

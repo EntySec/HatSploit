@@ -24,37 +24,34 @@
 # SOFTWARE.
 #
 
+import os
+
 from hatsploit.core.cli.badges import Badges
-from hatsploit.utils.string import StringTools
+from hatsploit.lib.config import Config
 
 
-class Certutil(StringTools):
+class Loot:
     badges = Badges()
 
-    def push(self, data, sender, location, args=[], linemax=100):
-        decode_stream = "certutil -decode {}.b64 {}.exe & del {}.b64"
+    loot = Config().path_config['loot_path']
 
-        echo_stream = "echo {} >> {}.b64"
-        echo_max_length = linemax
+    def create_loot(self):
+        self.badges.print_process(f"Creating loot at {self.loot}...")
 
-        size = len(data)
-        num_parts = int(size / echo_max_length) + 1
+        if not os.path.isdir(self.loot):
+            os.mkdir(self.loot)
 
-        for i in range(0, num_parts):
-            current = i * echo_max_length
-            block = self.base64_string(data[current:current + echo_max_length], True)
+    def remove_loot(self, filename):
+        self.badges.print_proces(f"Removing loot {self.loot}{filename}...")
+        os.remove(self.loot + filename)
 
-            self.badges.print_process(f"Uploading payload... ({str(current)}/{str(size)})", end='')
-            if block:
-                command = echo_stream.format(block, location)
+    def list_loot(self):
+        loots = []
 
-                if isinstance(args, dict):
-                    sender(command, **args)
-                else:
-                    sender(*args, command)
+        for loot in os.listdir(self.loot):
+            loots.append((loot, self.loot + loot, os.path.getmtime(
+                    self.loot + loot
+                ).astimezone().strftime("%Y-%m-%d %H:%M:%S %Z")
+            ))
 
-        command = decode_stream.format(location, location)
-        if isinstance(args, dict):
-            sender(command, **args)
-        else:
-            sender(*args, command)
+        return loots

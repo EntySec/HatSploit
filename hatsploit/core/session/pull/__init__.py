@@ -45,14 +45,14 @@ class Pull(FSTools):
         ]
     }
 
-    def pull(self, platform, file, sender, location, args=[], method='auto'):
-        if method in self.pull_methods or method == 'auto':
-            if method == 'auto':
+    def pull(self, platform, file, sender, location, args=[], method=None):
+        if method in self.pull_methods or not method:
+            if not method:
                 for pull_method in self.pull_methods:
                     if platform in self.pull_methods[pull_method][0]:
                         method = pull_method
 
-                if method == 'auto':
+                if not method:
                     self.badges.print_error("Failed to find supported pull method!")
                     return False
             else:
@@ -73,7 +73,7 @@ class Pull(FSTools):
                     with open(location, 'wb') as f:
                         f.write(data)
 
-                    self.badges.print_success(f"File saved to {location}!")
+                    self.badges.print_success(f"Saved to {location}!")
                     return True
                 self.badges.print_error(f"Remote file: {file}: does not exist!")
                 return False
