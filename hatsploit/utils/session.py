@@ -25,12 +25,12 @@
 #
 
 from hatsploit.lib.sessions import Sessions
-from hatsploit.lib.config import Config
+from hatsploit.lib.loot import Loot
 
 
 class SessionTools:
     sessions = Sessions()
-    config = Config()
+    loot = Loot().loot
 
     def get_session(self, session_id, session_platform=None, session_architecture=None, session_type=None):
         session = self.sessions.get_session(session_id, session_platform, session_architecture, session_type)
@@ -40,7 +40,7 @@ class SessionTools:
         session = self.get_session(session_id)
         if session:
             if not local_path:
-                local_path = self.config.path_config['loot_path']
+                local_path = self.loot
 
             if session.download(remote_file, local_path):
                 return local_path

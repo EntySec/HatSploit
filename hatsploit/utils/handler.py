@@ -89,8 +89,8 @@ class Handler(Handle, Post, Blinder):
 
         self.badges.print_success(f"{session_type.title()} session {str(session_id)} opened at {time}!")
 
-    def module_handler(self, host=None, sender=None, args=[], delim=';', location='/tmp',
-                       method='auto', timeout=None, linemax=100, ensure=False):
+    def module_handler(self, host=None, sender=None, args=[], concat=None, location=None, background=None,
+                       method=None, timeout=None, linemax=100, ensure=False):
         module = self.modules.get_current_module_object()
 
         options = module.options
@@ -144,8 +144,9 @@ class Handler(Handle, Post, Blinder):
             payload_type=payload['Details']['Type'],
 
             args=args,
-            delim=delim,
+            concat=concat,
             location=location,
+            background=background,
 
             method=method,
             timeout=timeout,
@@ -161,9 +162,9 @@ class Handler(Handle, Post, Blinder):
         )
 
     def handler(self, payload=None, sender=None, host=None, port=None, payload_category='stager',
-                payload_type='one_side', args=[], delim=';', location='/tmp', method='auto', timeout=None,
-                linemax=100, platform='generic', architecture='generic', ensure=False, blinder=False,
-                session=None):
+                payload_type='one_side', args=[], concat=None, location=None, background=None,
+                method=None, timeout=None, linemax=100, platform='generic', architecture='generic',
+                ensure=False, blinder=False, session=None):
 
         if blinder:
             self.blinder(sender, args)
@@ -177,8 +178,9 @@ class Handler(Handle, Post, Blinder):
             payload_type=payload_type,
 
             args=args,
-            delim=delim,
+            concat=concat,
             location=location,
+            background=background,
 
             method=method,
             linemax=linemax,
@@ -245,8 +247,8 @@ class Handler(Handle, Post, Blinder):
         return new_session, host
 
     def send_payload(self, payload=None, sender=None, payload_category='stager', payload_type='one_side',
-                     args=[], delim=';', location='/tmp', method='auto', linemax=100, platform='generic',
-                     ensure=False):
+                     args=[], concat=None, location=None, background=None, method=None, linemax=100,
+                     platform='generic', ensure=False):
         if payload is None:
             self.badges.print_error("Payload stage is not found!")
             return False
@@ -270,7 +272,8 @@ class Handler(Handle, Post, Blinder):
                         args,
                         method,
                         location,
-                        delim,
+                        concat,
+                        background,
                         linemax
                     ]
                 )
