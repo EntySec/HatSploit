@@ -30,6 +30,7 @@ from hatsploit.core.cli.badges import Badges
 
 from hatsploit.core.session.push.echo import Echo
 from hatsploit.core.session.push.printf import Printf
+from hatsploit.core.session.push.certutil import Certutil
 
 from hatsploit.core.base.types import Types
 
