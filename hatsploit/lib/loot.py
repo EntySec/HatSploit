@@ -42,8 +42,12 @@ class Loot:
             os.mkdir(self.loot)
 
     def remove_loot(self, filename):
-        self.badges.print_proces(f"Removing loot {self.loot}{filename}...")
-        os.remove(self.loot + filename)
+        self.badges.print_process(f"Removing loot {self.loot}{filename}...")
+        if os.path.exists(self.loot + filename):
+            os.remove(self.loot + filename)
+            self.badges.print_success("Loot successfully removed!")
+        else:
+            self.badges.print_error("Invalid loot given!")
 
     def list_loot(self):
         loots = []
