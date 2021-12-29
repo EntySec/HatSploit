@@ -43,8 +43,8 @@ class Loot:
             os.mkdir(self.loot)
 
     def remove_loot(self, filename):
-        self.badges.print_process(f"Removing loot {self.loot}{filename}...")
         if os.path.exists(self.loot + filename):
+            self.badges.print_process(f"Removing loot {self.loot}{filename}...")
             os.remove(self.loot + filename)
             self.badges.print_success("Loot successfully removed!")
         else:
