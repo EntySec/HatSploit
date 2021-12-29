@@ -25,6 +25,7 @@
 #
 
 import os
+import datetime
 
 from hatsploit.core.cli.badges import Badges
 from hatsploit.lib.config import Config
@@ -53,9 +54,10 @@ class Loot:
         loots = []
 
         for loot in os.listdir(self.loot):
-            loots.append((loot, self.loot + loot, os.path.getmtime(
+            loots.append((loot, self.loot + loot, datetime.datetime.fromtimestamp(
+                os.path.getmtime(
                     self.loot + loot
-                ).astimezone().strftime("%Y-%m-%d %H:%M:%S %Z")
+                )).astimezone().strftime("%Y-%m-%d %H:%M:%S %Z")
             ))
 
         return loots
