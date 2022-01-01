@@ -89,9 +89,9 @@ class Handler(Handle, Post, Blinder):
 
         self.badges.print_success(f"{session_type.title()} session {str(session_id)} opened at {time}!")
 
-        if self.local_storage.get("interact"):
+        if self.local_storage.get("auto_interaction"):
             self.badges.print_empty()
-            self.sessions.spawn_interactive_connection(session_id)
+            self.sessions.interact_with_session(session_id)
 
     def module_handler(self, host=None, sender=None, args=[], concat=None, location=None,
                        background=None, method=None, timeout=None, linemax=100, ensure=False):
