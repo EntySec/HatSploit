@@ -22,7 +22,6 @@
 %comment SOFTWARE.
 %comment
 
-%newline
 %end
 $ %boldcat fsociety00.dat%end
 %newline

@@ -22,7 +22,6 @@
 %comment SOFTWARE.
 %comment
 
-%newline
 %end
 Unable to handle kernel NULL pointer dereference at virtual address 0xd34db33f
 EFLAGS: 00010046
