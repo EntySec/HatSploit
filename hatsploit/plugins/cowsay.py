@@ -12,7 +12,8 @@ from hatsploit.lib.plugin import Plugin
 
 class HatSploitPlugin(Plugin):
     details = {
-        'Name': "cowsay",
+        'Name': "HatSploit Cowsay Implementation",
+        'Plugin': "cowsay",
         'Authors': [
             'Ivan Nikolsky (enty8080) - plugin developer'
         ],
