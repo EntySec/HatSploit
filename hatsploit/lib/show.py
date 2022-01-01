@@ -229,7 +229,7 @@ class Show:
                 plugins = all_plugins[database]
 
                 for plugin in sorted(plugins):
-                    if keyword in plugins[plugin]['Plugin'] or keyword in plugins[plugin]['Description']:
+                    if keyword in plugins[plugin]['Plugin'] or keyword in plugins[plugin]['Name']:
                         name = plugins[plugin]['Plugin'].replace(keyword, self.colors.RED + keyword + self.colors.END)
                         description = plugins[plugin]['Name'].replace(keyword, self.colors.RED + keyword + self.colors.END)
 
