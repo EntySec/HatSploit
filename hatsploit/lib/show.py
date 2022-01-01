@@ -162,7 +162,7 @@ class Show:
 
     def show_plugins(self):
         all_plugins = self.local_storage.get("plugins")
-        headers = ("Number", "Name", "Description")
+        headers = ("Number", "Plugin", "Name")
         plugins_shorts = {}
 
         for database in sorted(all_plugins):
@@ -171,8 +171,8 @@ class Show:
             plugins = all_plugins[database]
 
             for plugin in sorted(plugins):
-                plugins_data.append((number, plugin, plugins[plugin]['Description']))
-                plugins_shorts.update({number: plugin})
+                plugins_data.append((number, plugins[plugin]['Plugin'], plugins[plugin]['Name']))
+                plugins_shorts.update({number: plugins[plugin]['Plugin']})
                 number += 1
 
             self.tables.print_table(f"Plugins ({database})", headers, *plugins_data)
@@ -180,7 +180,7 @@ class Show:
 
     def show_modules(self, information):
         all_modules = self.local_storage.get("modules")
-        headers = ("Number", "Module", "Rank", "Description")
+        headers = ("Number", "Module", "Rank", "Name")
         modules_shorts = {}
 
         for database in sorted(all_modules):
@@ -191,7 +191,7 @@ class Show:
             for module in sorted(modules):
                 if information == module.split('/')[0]:
                     modules_data.append((number, modules[module]['Module'], modules[module]['Rank'],
-                                         modules[module]['Description']))
+                                         modules[module]['Name']))
                     modules_shorts.update({number: modules[module]['Module']})
                     number += 1
 
@@ -200,7 +200,7 @@ class Show:
 
     def show_payloads(self):
         all_payloads = self.local_storage.get("payloads")
-        headers = ("Number", "Category", "Payload", "Rank", "Description")
+        headers = ("Number", "Category", "Payload", "Rank", "Name")
         payloads_shorts = {}
 
         for database in sorted(all_payloads):
@@ -210,7 +210,7 @@ class Show:
 
             for payload in sorted(payloads):
                 payloads_data.append((number, payloads[payload]['Category'], payloads[payload]['Payload'],
-                                      payloads[payload]['Rank'], payloads[payload]['Description']))
+                                      payloads[payload]['Rank'], payloads[payload]['Name']))
                 payloads_shorts.update({number: payloads[payload]['Payload']})
                 number += 1
 
@@ -222,19 +222,19 @@ class Show:
         plugins_shorts = {}
 
         if all_plugins:
-            headers = ("Number", "Name", "Description")
+            headers = ("Number", "Plugin", "Name")
             for database in all_plugins:
                 number = 0
                 plugins_data = []
                 plugins = all_plugins[database]
 
                 for plugin in sorted(plugins):
-                    if keyword in plugin or keyword in plugins[plugin]['Description']:
-                        name = plugin.replace(keyword, self.colors.RED + keyword + self.colors.END)
-                        description = plugins[plugin]['Description'].replace(keyword, self.colors.RED + keyword + self.colors.END)
+                    if keyword in plugins[plugin]['Plugin'] or keyword in plugins[plugin]['Description']:
+                        name = plugins[plugin]['Plugin'].replace(keyword, self.colors.RED + keyword + self.colors.END)
+                        description = plugins[plugin]['Name'].replace(keyword, self.colors.RED + keyword + self.colors.END)
 
                         plugins_data.append((number, name, description))
-                        plugins_shorts.update({number: plugin})
+                        plugins_shorts.update({number: plugins[plugin]['Plugin']})
 
                         number += 1
                 if plugins_data:
@@ -246,19 +246,19 @@ class Show:
         modules_shorts = {}
 
         if all_modules:
-            headers = ("Number", "Module", "Rank", "Description")
+            headers = ("Number", "Module", "Rank", "Name")
             for database in all_modules:
                 number = 0
                 modules_data = []
                 modules = all_modules[database]
 
                 for module in sorted(modules):
-                    if keyword in module or keyword in modules[module]['Description']:
-                        name = module.replace(keyword, self.colors.RED + keyword + self.colors.END)
-                        description = modules[module]['Description'].replace(keyword, self.colors.RED + keyword + self.colors.END)
+                    if keyword in modules[module]['Module'] or keyword in modules[module]['Name']:
+                        name = modules[module]['Module'].replace(keyword, self.colors.RED + keyword + self.colors.END)
+                        description = modules[module]['Name'].replace(keyword, self.colors.RED + keyword + self.colors.END)
 
                         modules_data.append((number, name, modules[module]['Rank'], description))
-                        modules_shorts.update({number: module})
+                        modules_shorts.update({number: modules[module]['Module']})
 
                         number += 1
                 if modules_data:
@@ -270,20 +270,20 @@ class Show:
         payloads_shorts = {}
 
         if all_payloads:
-            headers = ("Number", "Category", "Payload", "Rank", "Description")
+            headers = ("Number", "Category", "Payload", "Rank", "Name")
             for database in all_payloads:
                 number = 0
                 payloads_data = []
                 payloads = all_payloads[database]
 
                 for payload in sorted(payloads):
-                    if keyword in payload or keyword in payloads[payload]['Description']:
-                        name = payload.replace(keyword, self.colors.RED + keyword + self.colors.END)
-                        description = payloads[payload]['Description'].replace(keyword, self.colors.RED + keyword + self.colors.END)
+                    if keyword in payloads[payload]['Payload'] or keyword in payloads[payload]['Name']:
+                        name = payloads[payload]['Payload'].replace(keyword, self.colors.RED + keyword + self.colors.END)
+                        description = payloads[payload]['Name'].replace(keyword, self.colors.RED + keyword + self.colors.END)
 
                         payloads_data.append((number, payloads[payload]['Category'], name,
                                               payloads[payload]['Rank'], description))
-                        payloads_shorts.update({number: payload})
+                        payloads_shorts.update({number: payloads[payload]['Payload']})
 
                         number += 1
                 if payloads_data:
