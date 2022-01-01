@@ -55,10 +55,7 @@ class Banner:
                     banner = self.colors_script.parse_colors_script(
                         self.config.path_config['banners_path'] + banners[random_banner])
 
-                self.badges.print_empty()
-                self.badges.print_empty(self.colors.END + banner + self.colors.END)
-                self.badges.print_empty()
-
+                self.badges.print_empty(f"%newline%end{banner}%end%newline")
             else:
                 self.badges.print_warning("No banners detected.")
         else:
