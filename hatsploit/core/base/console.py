@@ -170,20 +170,19 @@ class Console:
                     modules_total += len(modules[database])
 
             header = ""
-            header += "%end\n"
+            header += "%end"
             if codename:
                 header += f"    --=( %yellowHatSploit Framework {version} {codename}%end\n"
             else:
                 header += f"    --=( %yellowHatSploit Framework {version}%end\n"
             header += "--==--=( Developed by EntySec (%linehttps://entysec.netlify.app/%end)\n"
-            header += f"    --=( {modules_total} modules | {payloads_total} payloads | {plugins_total} plugins\n"
+            header += f"    --=( {modules_total} modules | {payloads_total} payloads | {plugins_total} plugins"
             header += "%end"
 
             self.badges.print_empty(header)
 
         if self.config.core_config['console']['tip']:
             self.tip.print_random_tip()
-            self.badges.print_empty()
 
     def shell(self):
         self.start_hsf()
