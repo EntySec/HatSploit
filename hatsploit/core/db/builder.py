@@ -157,7 +157,7 @@ class Builder:
 
                     try:
                         plugin_object = self.importer.import_plugin(plugin)
-                        plugin_name = plugin_object.details['Name']
+                        plugin_name = plugin_object.details['Plugin']
 
                         database.update({
                             plugin_name: {
