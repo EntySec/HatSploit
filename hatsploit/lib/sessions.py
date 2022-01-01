@@ -27,11 +27,19 @@
 import requests
 
 from hatsploit.core.cli.badges import Badges
+from hatsploit.lib.config import Config
+
+from hatsploit.lib.storage import GlobalStorage
 from hatsploit.lib.storage import LocalStorage
 
 
 class Sessions:
     badges = Badges()
+    config = Config()
+
+    storage_path = config.path_config['storage_path']
+
+    global_storage = GlobalStorage(storage_path)
     local_storage = LocalStorage()
 
     def get_all_sessions(self):
@@ -100,7 +108,17 @@ class Sessions:
                 return valid
         return False
 
-    def spawn_interactive_connection(self, session_id):
+    def enable_auto_interaction(self):
+        self.global_storage.set("auto_interaction", True)
+        self.global_storage.set_all()
+        self.badges.print_information("Auto interaction: on")
+
+    def disable_auto_interaction(self):
+        self.global_storage.set("auto_interaction", False)
+        self.global_storage.set_all()
+        self.badges.print_information("Auto interaction: off")
+
+    def interact_with_session(self, session_id):
         sessions = self.local_storage.get("sessions")
         if self.check_exist(session_id):
             self.badges.print_process(f"Interacting with session {str(session_id)}...")
