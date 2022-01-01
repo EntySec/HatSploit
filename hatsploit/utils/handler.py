@@ -36,18 +36,26 @@ from hatsploit.core.session.blinder import Blinder
 from hatsploit.core.session import HatSploitSession
 
 from hatsploit.lib.jobs import Jobs
+from hatsploit.lib.config import Config
 from hatsploit.lib.modules import Modules
 from hatsploit.lib.sessions import Sessions
+
 from hatsploit.lib.storage import LocalStorage
+from hatsploit.lib.storage import GlobalStorage
 
 
 class Handler(Handle, Post, Blinder):
     sessions = Sessions()
-    local_storage = LocalStorage()
     modules = Modules()
     jobs = Jobs()
+    config = Config()
     types = Types()
     badges = Badges()
+
+    storage_path = config.path_config['storage_path']
+
+    global_storage = GlobalStorage(storage_path)
+    local_storage = LocalStorage()
 
     def do_job(self, payload_type, target, args):
         if payload_type == 'one_side':
@@ -88,6 +96,9 @@ class Handler(Handle, Post, Blinder):
         time = datetime.datetime.now().astimezone().strftime("%Y-%m-%d %H:%M:%S %Z")
 
         self.badges.print_success(f"{session_type.title()} session {str(session_id)} opened at {time}!")
+
+        if self.global_storage.get("interact"):
+            self.sessions.spawn_interactive_connection(session_id)
 
     def module_handler(self, host=None, sender=None, args=[], concat=None, location=None,
                        background=None, method=None, timeout=None, linemax=100, ensure=False):
