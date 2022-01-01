@@ -163,6 +163,7 @@ class Builder:
                             plugin_name: {
                                 "Path": plugin,
                                 "Name": plugin_object.details['Name'],
+                                "Plugin": plugin_object.details['Plugin'],
                                 "Authors": plugin_object.details['Authors'],
                                 "Description": plugin_object.details['Description']
                             }
