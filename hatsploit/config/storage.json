@@ -1,5 +1,5 @@
 {
-    "interact": "True",
     "history": "True",
-    "log": "False"
+    "log": "False",
+    "auto_interaction": "True"
 }
