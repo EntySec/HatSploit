@@ -18,8 +18,8 @@ class HatSploitCommand(Command):
         'Authors': [
             'Ivan Nikolsky (enty8080) - command developer'
         ],
-        'Description': "Load specified plugin.",
-        'Usage': "load <plugin>",
+        'Description': "Load specific plugin.",
+        'Usage': "load <plugin|number>",
         'MinArgs': 1
     }
 
