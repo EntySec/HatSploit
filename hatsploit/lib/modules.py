@@ -427,29 +427,31 @@ class Modules:
             current_module.options = save
             save = copy.deepcopy(current_module.options)
 
+    def validate_options(self, module_object):
+        current_module = module_object
+        missed = ""
+
+        if hasattr(current_module, "options"):
+            for option in current_module.options:
+                current_option = current_module.options[option]
+                if not current_option['Value'] and current_option['Value'] != 0 and current_option['Required']:
+                    missed += option + ', '
+
+        return missed
+
     def run_current_module(self):
         if self.check_current_module():
             current_module = self.get_current_module_object()
             current_module_name = self.get_current_module_name()
-            current_payload = self.payloads.get_current_payload()
 
-            missed = ""
+            current_payload = self.payloads.get_current_payload()
             payload_data = {}
 
-            if hasattr(current_module, "options"):
-                for option in current_module.options:
-                    current_option = current_module.options[option]
-                    if not current_option['Value'] and current_option['Value'] != 0 and current_option['Required']:
-                        missed += option + ', '
-
+            missed = self.validate_options(current_module)
             if current_payload:
-                if hasattr(current_payload, "options"):
-                    for option in current_payload.options:
-                        current_option = current_payload.options[option]
-                        if not current_option['Value'] and current_option['Value'] != 0 and current_option['Required']:
-                            missed += option + ', '
+                missed += self.payloads.validate_options(current_payload)
 
-            if len(missed) > 0:
+            if missed:
                 self.badges.print_error(f"These options are failed to validate: {missed[:-2]}!")
             else:
                 try:
