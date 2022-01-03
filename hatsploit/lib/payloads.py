@@ -202,7 +202,12 @@ class Payloads:
                 'Payload': payload,
                 'Raw': raw
             }
-        return None
+        return {
+            'Options': None,
+            'Details': None,
+            'Payload': None,
+            'Raw': None
+        }
 
     def generate_payload(self, name, options={}):
         payload_object = self.get_payload(name)
@@ -211,9 +216,7 @@ class Payloads:
                 for option in options:
                     payload_object.options[option]['Value'] = options[option]
 
-            payload_data = self.run_payload(payload_object)
-            if payload_data:
-                return payload_data['Payload']
+            return self.run_payload(payload_object)['Payload']
         return None
 
     def get_current_payload(self):
