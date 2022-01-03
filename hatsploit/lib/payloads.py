@@ -154,7 +154,17 @@ class Payloads:
 
     def run_payload(self, payload_object):
         hatvenom = HatVenom()
+
         current_payload = payload_object
+        payload_options = None
+
+        if hasattr(current_payload, "options"):
+            payload_options = current_payload.options
+
+            for option in payload_options:
+                current_option = payload_options[option]
+                if not current_option['Value'] and current_option['Value'] != 0 and current_option['Required']:
+                    return None
 
         payload_data = current_payload.run()
         payload_details = current_payload.details
@@ -179,9 +189,10 @@ class Payloads:
                 payload_details['Architecture'], payload_data)
 
         return {
+            'Options': payload_options,
             'Details': payload_details,
-            'Raw': raw,
-            'Payload': payload
+            'Payload': payload,
+            'Raw': raw
         }
 
     def generate_payload(self, name, options={}):
@@ -191,7 +202,9 @@ class Payloads:
                 for option in options:
                     payload_object.options[option]['Value'] = options[option]
 
-            return self.run_payload(payload_object)['Payload']
+            payload_data = self.run_payload(payload_object)
+            if payload_data:
+                return payload_data['Payload']
         return None
 
     def get_current_payload(self):
