@@ -152,48 +152,57 @@ class Payloads:
                     return True
         return False
 
-    def run_payload(self, payload_object):
-        hatvenom = HatVenom()
-
+    def validate_options(self, payload_object):
         current_payload = payload_object
-        payload_options = None
+        missed = ""
 
         if hasattr(current_payload, "options"):
-            payload_options = current_payload.options
-
-            for option in payload_options:
-                current_option = payload_options[option]
+            for option in current_payload.options:
+                current_option = current_payload.options[option]
                 if not current_option['Value'] and current_option['Value'] != 0 and current_option['Required']:
-                    return None
+                    missed += option + ', '
 
-        payload_data = current_payload.run()
-        payload_details = current_payload.details
+        return missed
 
-        executable = 'raw'
-        for executable_format in self.types.formats:
-            if payload_details['Platform'] in self.types.formats[executable_format]:
-                executable = executable_format
-                break
+    def run_payload(self, payload_object):
+        hatvenom = HatVenom()
+        current_payload = payload_object
 
-        if isinstance(payload_data, tuple):
-            raw = hatvenom.generate('raw', 'generic', payload_data[0], payload_data[1])
+        if not self.validate_options(current_payload):
+            payload_options = None
 
-            payload = hatvenom.generate(
-                executable if payload_details['Architecture'] != 'generic' else 'raw',
-                payload_details['Architecture'], payload_data[0], payload_data[1])
-        else:
-            raw = hatvenom.generate('raw', 'generic', payload_data)
+            if hasattr(current_payload, "options"):
+                payload_options = current_payload.options
 
-            payload = hatvenom.generate(
-                executable if payload_details['Architecture'] != 'generic' else 'raw',
-                payload_details['Architecture'], payload_data)
+            payload_data = current_payload.run()
+            payload_details = current_payload.details
 
-        return {
-            'Options': payload_options,
-            'Details': payload_details,
-            'Payload': payload,
-            'Raw': raw
-        }
+            executable = 'raw'
+            for executable_format in self.types.formats:
+                if payload_details['Platform'] in self.types.formats[executable_format]:
+                    executable = executable_format
+                    break
+
+            if isinstance(payload_data, tuple):
+                raw = hatvenom.generate('raw', 'generic', payload_data[0], payload_data[1])
+
+                payload = hatvenom.generate(
+                    executable if payload_details['Architecture'] != 'generic' else 'raw',
+                    payload_details['Architecture'], payload_data[0], payload_data[1])
+            else:
+                raw = hatvenom.generate('raw', 'generic', payload_data)
+
+                payload = hatvenom.generate(
+                    executable if payload_details['Architecture'] != 'generic' else 'raw',
+                    payload_details['Architecture'], payload_data)
+
+            return {
+                'Options': payload_options,
+                'Details': payload_details,
+                'Payload': payload,
+                'Raw': raw
+            }
+        return None
 
     def generate_payload(self, name, options={}):
         payload_object = self.get_payload(name)
