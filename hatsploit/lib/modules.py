@@ -27,8 +27,6 @@
 import os
 import copy
 
-from hatvenom import HatVenom
-
 from hatsploit.core.base.types import Types
 from hatsploit.core.cli.badges import Badges
 from hatsploit.core.db.importer import Importer
@@ -434,7 +432,9 @@ class Modules:
             current_module = self.get_current_module_object()
             current_module_name = self.get_current_module_name()
             current_payload = self.payloads.get_current_payload()
+
             missed = ""
+            payload_data = {}
 
             if hasattr(current_module, "options"):
                 for option in current_module.options:
@@ -454,33 +454,9 @@ class Modules:
             else:
                 try:
                     if current_payload:
-                        hatvenom = HatVenom()
-
-                        payload_data = current_payload.run()
-                        payload_details = current_payload.details
-
-                        executable = 'raw'
-                        for executable_format in self.types.formats:
-                            if payload_details['Platform'] in self.types.formats[executable_format]:
-                                executable = executable_format
-                                break
-
-                        if isinstance(payload_data, tuple):
-                            raw = hatvenom.generate('raw', 'generic', payload_data[0], payload_data[1])
-
-                            payload = hatvenom.generate(
-                                executable if payload_details['Architecture'] != 'generic' else 'raw',
-                                payload_details['Architecture'], payload_data[0], payload_data[1])
-                        else:
-                            raw = hatvenom.generate('raw', 'generic', payload_data)
-
-                            payload = hatvenom.generate(
-                                executable if payload_details['Architecture'] != 'generic' else 'raw',
-                                payload_details['Architecture'], payload_data)
-
-                        current_module.payload['Details'] = payload_details
-                        current_module.payload['Raw'] = raw
-                        current_module.payload['Payload'] = payload
+                        payload_data = self.payloads.run_payload(current_payload)
+                        for entry in payload_data:
+                            current_module.payload[entry] = payload_data[entry]
 
                     self.badges.print_empty()
                     self.entry_to_module(current_module)
@@ -494,8 +470,7 @@ class Modules:
                     self.badges.print_error(f"{current_module_name.split('/')[0].title()} module failed!")
 
                 if current_payload:
-                    for key in ['Details', 'Raw', 'Payload']:
-                        if key in current_module.payload:
-                            del current_module.payload[key]
+                    for entry in payload_data:
+                        del current_module.payload[entry]
         else:
             self.badges.print_warning("No module selected.")
