@@ -26,6 +26,8 @@
 
 import os
 
+from hatvenom import HatVenom
+
 from hatsploit.core.base.types import Types
 from hatsploit.core.cli.badges import Badges
 from hatsploit.core.db.importer import Importer
@@ -104,10 +106,18 @@ class Payloads:
                                                 self.local_storage.get("current_module_number")).details['Module']
         return None
 
-    def import_payload(self, module_name, name):
+    def get_payload(self, name):
         payloads = self.get_payload_object(name)
         try:
             payload_object = self.importer.import_payload(payloads['Path'])
+        except Exception:
+            return None
+        return payload_object
+
+    def import_payload(self, module_name, name):
+        payload_object = self.get_payload(name)
+
+        if payload_object:
             current_module_name = module_name
 
             imported_payloads = self.local_storage.get("imported_payloads")
@@ -129,8 +139,7 @@ class Payloads:
                     }
                 }
             self.local_storage.set("imported_payloads", imported_payloads)
-        except Exception:
-            return None
+
         return payload_object
 
     def check_imported(self, module_name, name):
@@ -142,6 +151,48 @@ class Payloads:
                 if name in imported_payloads[current_module_name]:
                     return True
         return False
+
+    def run_payload(self, payload_object):
+        hatvenom = HatVenom()
+        current_payload = payload_object
+
+        payload_data = current_payload.run()
+        payload_details = current_payload.details
+
+        executable = 'raw'
+        for executable_format in self.types.formats:
+            if payload_details['Platform'] in self.types.formats[executable_format]:
+                executable = executable_format
+                break
+
+        if isinstance(payload_data, tuple):
+            raw = hatvenom.generate('raw', 'generic', payload_data[0], payload_data[1])
+
+            payload = hatvenom.generate(
+                executable if payload_details['Architecture'] != 'generic' else 'raw',
+                payload_details['Architecture'], payload_data[0], payload_data[1])
+        else:
+            raw = hatvenom.generate('raw', 'generic', payload_data)
+
+            payload = hatvenom.generate(
+                executable if payload_details['Architecture'] != 'generic' else 'raw',
+                payload_details['Architecture'], payload_data)
+
+        return {
+            'Details': payload_details,
+            'Raw': raw,
+            'Payload': payload
+        }
+
+    def generate_payload(self, name, options={}):
+        payload_object = self.get_payload(name)
+        if payload_object:
+            if hasattr(payload_object, "options"):
+                for option in options:
+                    payload_object.options[option]['Value'] = options[option]
+
+            return self.run_payload(payload_object)['Payload']
+        return None
 
     def get_current_payload(self):
         imported_payloads = self.local_storage.get("imported_payloads")
