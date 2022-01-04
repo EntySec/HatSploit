@@ -28,6 +28,8 @@ import os
 import readline
 import sys
 
+from hatsploit.utils.handler import HandlerOptions
+
 from hatsploit.core.base.exceptions import Exceptions
 from hatsploit.core.base.execute import Execute
 from hatsploit.core.base.loader import Loader
@@ -71,7 +73,10 @@ class Console:
     history = config.path_config['history_path']
     prompt = config.core_config['details']['prompt']
 
-    handler_options = {}
+    handler_options = {
+        'Module': {},
+        'Payload': {}
+    }
 
     def check_install(self):
         if os.path.exists(self.config.path_config['root_path']):
@@ -213,85 +218,83 @@ class Console:
             self.launch_menu()
 
     def add_handler_options(self):
-        handler_options = {
-            'LHOST': {
-                'Description': "Local host to listen on.",
-                'Value': "0.0.0.0",
-                'Type': "ip",
-                'Required': True
-            },
-            'LPORT': {
-                'Description': "Local port to listen on.",
-                'Value': 8888,
-                'Type': "port",
-                'Required': True
-            },
-            'RBPORT': {
-                'Description': "Remote bind port.",
-                'Value': 8888,
-                'Type': "port",
-                'Required': True
-            }
-        }
-
         if self.modules.check_current_module():
-            module = self.modules.get_current_module_name()
             current_module = self.modules.get_current_module_object()
 
-            if module not in self.handler_options:
-                self.handler_options[module] = handler_options
-
             if hasattr(current_module, "payload"):
+                blinder_option = 'blinder'.upper()
+                payload_option = 'payload'.upper()
+
+                handler_options = HandlerOptions
+
+                module = self.modules.get_current_module_name()
+                current_payload = self.payloads.get_current_payload()
+
+                if module not in self.handler_options['Module']:
+                    self.handler_options['Module'][module] = handler_options['Module']
+
+                current_module.options.update(handler_options['Module'])
+                current_module.options[payload_option] = current_module.payload['Value']
+
                 if current_module.payload['Blinder']:
-                    current_module.options.update({
-                        'BLINDER': {
-                            'Description': 'Use Blinder.',
-                            'Value': 'yes' if self.payloads.get_current_payload() is None else 'no',
-                            'Type': "boolean",
-                            'Required': True
-                        }
-                    })
+                    if not current_payload:
+                        current_module.options[blinder_option]['Value'] = 'yes'
+                    else:
+                        current_module.options[blinder_option]['Value'] = 'no'
+                else:
+                    current_module.options.pop(blinder_option)
 
-            required = True
-            if 'BLINDER' in current_module.options and not self.payloads.get_current_payload():
-                if current_module.options['BLINDER']['Value'].lower() in ['yes', 'y']:
-                    required = False
-                    current_module.payload['Value'] = None
+                required = True
+                if blinder_option in current_module.options and not current_payload:
+                    if current_module.options[blinder_option]['Value'].lower() in ['yes', 'y']:
+                        required = False
 
-            payload = self.payloads.get_current_payload()
+                        current_module.payload['Value'] = None
+                        current_module.options[payload_option] = None
 
-            if hasattr(current_module, "payload"):
-                current_module.options.update({
-                    'PAYLOAD': {
-                        'Description': 'Payload to use.',
-                        'Value': current_module.payload['Value'],
-                        'Type': "payload",
-                        'Required': required
-                    }
-                })
+                if current_payload:
+                    payload = current_module.payload['Value']
 
-            if payload is not None:
-                current_module.options.update(self.handler_options[module])
+                    if payload not in self.handler_options['Payload']:
+                        self.handler_options['Payload'][payload] = handler_options['Payload']
 
-                for option in current_module.options:
-                    if option.lower() in ['lhost', 'lport', 'rbport']:
-                        self.handler_options[module][option]['Value'] = current_module.options[option]['Value']
+                    current_payload.options.update(handler_options['Payload'])
 
-                if payload.details['Type'] == 'reverse_tcp':
-                    for option in list(current_module.options):
-                        if option.lower() in ['rbport']:
-                            current_module.options.pop(option)
+                    if current_payload.details['Type'] == 'reverse_tcp':
+                        for option in list(current_module.options):
+                            if option.lower() == 'rbport':
+                                current_module.options.pop(option)
 
-                elif payload.details['Type'] == 'bind_tcp':
-                    for option in list(current_module.options):
-                        if option.lower() in ['lhost', 'lport']:
-                            current_module.options.pop(option)
+                        for option in list(current_payload.options):
+                            if option.lower() == 'bport':
+                                current_payload.options.pop(option)
 
+                    elif current_payload.details['Type'] == 'bind_tcp':
+                        for option in list(current_module.options):
+                            if option.lower() in ['lhost', 'lport']:
+                                current_module.options.pop(option)
+
+                        for option in list(current_payload.options):
+                            if option.lower() in ['cbhost', 'cbport']:
+                                current_payload.option.pop(option)
+
+                    else:
+                        for option in list(current_module.options):
+                            if option.lower() in ['lhost', 'lport', 'rbport']:
+                                current_module.options.pop(option)
+
+                        for option in list(current_payload.options):
+                            if option.lower() in ['cbhost', 'cbport', 'bport']:
+                                current_payload.options.pop(option)
+
+                    for option in current_module.options:
+                        if option.lower() in ['lhost', 'lport', 'rbport', 'payload', 'blinder']:
+                            self.handler_options['Module'][module][option]['Value'] = current_module.options[option]['Value']
+
+                    for option in current_payload.options:
+                        if option.lower() in ['cbhost', 'cbport', 'bport']:
+                            self.handler_options['Payload'][payload][option]['Value'] = current_payload.options[option]['Value']
                 else:
                     for option in list(current_module.options):
                         if option.lower() in ['lhost', 'lport', 'rbport']:
                             current_module.options.pop(option)
-            else:
-                for option in list(current_module.options):
-                    if option.lower() in ['lhost', 'lport', 'rbport']:
-                        current_module.options.pop(option)
