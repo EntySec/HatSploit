@@ -82,7 +82,7 @@ class HatSploitPlugin(Plugin):
                     self.print_process(f"Closing tunnel {argv[2]}...")
 
                     self.handler.disconnect(self.tunnels[int(argv[2])][1])
-                    self.tunnels.remove(self.tunnels[int(argv[2])][0])
+                    self.tunnels.pop(int(argv[2]))
                 except Exception:
                     self.print_error(f"Invalid tunnel given!")
 
