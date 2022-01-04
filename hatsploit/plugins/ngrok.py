@@ -27,7 +27,7 @@ class HatSploitPlugin(Plugin):
     usage = ""
     usage += "ngrok <option> [arguments]\n\n"
     usage += "  -l, --list               List all active tunnels.\n"
-    usage += "  -f, --forward <port>     Forward port to localhost.\n"
+    usage += "  -o, --open <port>        Open tunnel for specified port.\n"
     usage += "  -c, --close <tunnel_id>  Close tunnel by its id.\n"
     usage += "  -a, --auth <token>       Authenticate ngrok API token.\n"
 
@@ -42,7 +42,7 @@ class HatSploitPlugin(Plugin):
     }
 
     @staticmethod
-    def parse_tunnel(self, tunnel):
+    def parse_tunnel(tunnel):
         tunnel = tunnel.strip('tcp://').split(':')
 
         host = socket.gethostbyname(tunnel[0])
@@ -51,7 +51,7 @@ class HatSploitPlugin(Plugin):
         return host, port
 
     def ngrok(self, argc, argv):
-        if argv[1] in ['-f', '--forward']:
+        if argv[1] in ['-o', '--open']:
             if argc < 2:
                 self.print_usage(self.commands['ngrok']['ngrok']['Usage'])
             else:
