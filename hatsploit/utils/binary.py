@@ -32,7 +32,7 @@ from hatsploit.lib.payloads import Payloads
 class Binary:
     payloads = Payloads()
 
-    def generate_payload(self, name, options={})
+    def generate_payload(self, name, options={}):
         return self.payloads.generate_payload(name, options)
 
     def assemble(self, code, arch):
