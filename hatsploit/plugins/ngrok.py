@@ -21,7 +21,7 @@ class HatSploitPlugin(Plugin):
         'Authors': [
             'Ivan Nikolsky (enty8080) - plugin developer'
         ],
-        'Description': "Forward ports through ngrok service right from HatSploit."
+        'Description': "Manage ngrok service right from HatSploit."
     }
 
     usage = ""
