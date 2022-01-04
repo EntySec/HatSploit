@@ -12,7 +12,7 @@ from hatsploit.lib.plugin import Plugin
 
 
 class HatSploitPlugin(Plugin):
-    tunnels = {}
+    tunnels = []
     handler = ngrok
 
     details = {
