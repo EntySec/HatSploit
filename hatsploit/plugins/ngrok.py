@@ -43,7 +43,7 @@ class HatSploitPlugin(Plugin):
 
     @staticmethod
     def parse_tunnel(tunnel):
-        tunnel = tunnel.strip('tcp://').split(':')
+        tunnel = tunnel.public_url.strip('tcp://').split(':')
 
         host = socket.gethostbyname(tunnel[0])
         port = tunnel[1]
