@@ -36,7 +36,7 @@ class Parser:
             values = []
             for option_name in options:
                 if option_name.lower() not in handler_options['Module']:
-                    if option_name.lower() not in handler_options['Payload']
+                    if option_name.lower() not in handler_options['Payload']:
                         values.append(str(options[option_name]['Value']))
             if len(values) == 1:
                 return values[0]
