@@ -244,13 +244,12 @@ class Console:
                 else:
                     current_module.options.pop(blinder_option)
 
-                required = True
                 if blinder_option in current_module.options and not current_payload:
                     if current_module.options[blinder_option]['Value'].lower() in ['yes', 'y']:
-                        required = False
-
                         current_module.payload['Value'] = None
-                        current_module.options[payload_option] = None
+
+                        current_module.options[payload_option]['Value'] = None
+                        current_module.options[payload_option]['Required'] = False
 
                 if current_payload:
                     payload = current_module.payload['Value']
