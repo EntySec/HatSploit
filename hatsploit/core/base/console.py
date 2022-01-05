@@ -271,7 +271,11 @@ class Console:
                         current_payload.options = {}
 
                     current_payload.options.update(handler_options['Payload'])
-                    special = current_module.payload['Handler']
+
+                    if 'Handler' in current_module.payload:
+                        special = current_module.payload['Handler']
+                    else:
+                        special = []
 
                     if current_payload.details['Type'] == 'reverse_tcp':
                         if 'bind_tcp' not in special:
