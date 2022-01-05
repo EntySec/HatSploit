@@ -221,3 +221,13 @@ class Options:
                         current_payload.handler.update({option: saved_handler_options['Payload'][payload][option]['Value']})
 
                 self.local_storage.set("handler_options", saved_handler_options)
+
+    def add_payload_options(self, current_payload):
+        current_payload.options.update(self.handler_options['Payload'])
+
+        if current_payload.details['Type'] == 'reverse_tcp':
+            self.remove_options(current_payload, ['BPORT'])
+        elif current_payload.details['Type'] == 'bind_tcp':
+            self.remove_options(current_payload, ['RHOST', 'RPORT'])
+        else:
+            self.remove_options(current_payload, ['RHOST', 'RPORT', 'BPORT'])
