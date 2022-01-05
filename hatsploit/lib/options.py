@@ -193,7 +193,7 @@ class Options:
                             self.remove_options(current_module, ['rport'])
                             self.remove_options(current_payload, ['bport'])
                 else:
-                    self.remove_options(current_module, self.handler_options['Payload'])
+                    self.remove_options(current_module, self.handler_options['Module'])
 
                 for option in current_module.options:
                     if option.lower() in self.handler_options['Module']:
