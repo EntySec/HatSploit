@@ -236,7 +236,7 @@ class Console:
                 if not hasattr(current_module, "options"):
                     current_module.options = {}
 
-                current_module.options.update(handler_options['Module'])
+                current_module.options.update(self.handler_options['Module'][module])
                 current_module.options[payload_option]['Value'] = current_module.payload['Value']
 
                 if not current_payload:
@@ -270,7 +270,7 @@ class Console:
                     if not hasattr(current_payload, "options"):
                         current_payload.options = {}
 
-                    current_payload.options.update(handler_options['Payload'])
+                    current_payload.options.update(self.handler_options['Payload'][payload])
 
                     if 'Handler' in current_module.payload:
                         special = current_module.payload['Handler']
