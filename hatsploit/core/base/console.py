@@ -102,9 +102,13 @@ class Console:
             sys.exit(1)
 
     def update_events(self):
+        current_module = self.modules.get_current_module()
+        current_payload = self.payloads.get_current_payload()
+
         self.jobs.stop_dead()
         self.sessions.close_dead()
-        self.options.add_handler_options()
+
+        self.options.add_handler_options(current_module, current_payload)
 
     def launch_menu(self):
         while True:
