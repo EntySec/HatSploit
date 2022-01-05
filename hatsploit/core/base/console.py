@@ -271,33 +271,37 @@ class Console:
                         current_payload.options = {}
 
                     current_payload.options.update(handler_options['Payload'])
+                    special = current_module.payload['Handler']
 
                     if current_payload.details['Type'] == 'reverse_tcp':
-                        for option in list(current_module.options):
-                            if option.lower() == 'rbport':
-                                current_module.options.pop(option)
+                        if 'bind_tcp' not in special:
+                            for option in list(current_module.options):
+                                if option.lower() == 'rbport':
+                                    current_module.options.pop(option)
 
-                        for option in list(current_payload.options):
-                            if option.lower() == 'bport':
-                                current_payload.options.pop(option)
+                            for option in list(current_payload.options):
+                                if option.lower() == 'bport':
+                                    current_payload.options.pop(option)
 
                     elif current_payload.details['Type'] == 'bind_tcp':
-                        for option in list(current_module.options):
-                            if option.lower() in ['lhost', 'lport']:
-                                current_module.options.pop(option)
+                        if 'reverse_tcp' not in special:
+                            for option in list(current_module.options):
+                                if option.lower() in ['lhost', 'lport']:
+                                    current_module.options.pop(option)
 
-                        for option in list(current_payload.options):
-                            if option.lower() in ['cbhost', 'cbport']:
-                                current_payload.option.pop(option)
+                            for option in list(current_payload.options):
+                                if option.lower() in ['cbhost', 'cbport']:
+                                    current_payload.option.pop(option)
 
                     else:
-                        for option in list(current_module.options):
-                            if option.lower() in ['lhost', 'lport', 'rbport']:
-                                current_module.options.pop(option)
+                        if 'reverse_tcp' not in special and 'bind_tcp' not in special:
+                            for option in list(current_module.options):
+                                if option.lower() in ['lhost', 'lport', 'rbport']:
+                                    current_module.options.pop(option)
 
-                        for option in list(current_payload.options):
-                            if option.lower() in ['cbhost', 'cbport', 'bport']:
-                                current_payload.options.pop(option)
+                            for option in list(current_payload.options):
+                                if option.lower() in ['cbhost', 'cbport', 'bport']:
+                                    current_payload.options.pop(option)
 
                     for option in current_module.options:
                         if option.lower() in ['lhost', 'lport', 'rbport', 'payload', 'blinder']:
