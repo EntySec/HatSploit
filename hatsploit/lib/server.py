@@ -73,7 +73,6 @@ class Server:
             self.badges.print_error(f"Failed to start HTTP listener on port {str(port)}!")
 
     def connect(self, remote_host, remote_port, timeout=None):
-        self.badges.print_process(f"Establishing connection (0.0.0.0:{remote_port} -> {remote_host}:{remote_port})...")
         try:
             if timeout is not None:
                 timeout = time.time() + timeout
@@ -83,13 +82,21 @@ class Server:
                         server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                         server.connect((remote_host, int(remote_port)))
 
+                        self.badges.print_process(f"Establishing connection (0.0.0.0:{remote_port} -> {remote_host}:{remote_port})...")
                         break
                     except Exception:
                         if time.time() > timeout:
                             raise socket.timeout
             else:
-                server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-                server.connect((remote_host, int(remote_port)))
+                while True:
+                    try:
+                        server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                        server.connect((remote_host, int(remote_port)))
+
+                        self.badges.print_process(f"Establishing connection (0.0.0.0:{remote_port} -> {remote_host}:{remote_port})...")
+                        break
+                    except Exception:
+                        pass
         except socket.timeout:
             self.badges.print_warning("Connection timeout.")
             raise self.exceptions.GlobalException
