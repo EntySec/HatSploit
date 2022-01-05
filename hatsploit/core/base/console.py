@@ -102,7 +102,7 @@ class Console:
             sys.exit(1)
 
     def update_events(self):
-        current_module = self.modules.get_current_module()
+        current_module = self.modules.get_current_module_object()
         current_payload = self.payloads.get_current_payload()
 
         self.jobs.stop_dead()
