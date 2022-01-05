@@ -223,6 +223,9 @@ class Options:
                 self.local_storage.set("handler_options", saved_handler_options)
 
     def add_payload_options(self, current_payload):
+        if not self.check_options(current_payload):
+            current_payload.options = {}
+
         current_payload.options.update(self.handler_options['Payload'])
 
         if current_payload.details['Type'] == 'reverse_tcp':
