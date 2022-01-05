@@ -227,7 +227,7 @@ class Handler(Handle, Post, Blinder):
 
         session = session if session is not None else HatSploitSession
 
-        if payload.details['Type'] == 'reverse_tcp':
+        if payload['Details']['Type'] == 'reverse_tcp':
             new_session, host = self.listen_session(
                 options['LHOST'],
                 options['LPORT'],
@@ -237,7 +237,7 @@ class Handler(Handle, Post, Blinder):
             if not new_session and not host:
                 return None
 
-        elif payload.details['Type'] == 'bind_tcp':
+        elif payload['Details']['Type'] == 'bind_tcp':
             new_session = self.connect_session(
                 host,
                 options['RPORT'],
