@@ -24,7 +24,7 @@ class HatSploitPayload(Payload):
     }
 
     def run(self):
-        bind_port = self.parse_options(self.options)
+        bind_port = self.handler['BPORT']
 
         return (
             # socket(PF_INET, SOCK_STREAM, IPPROTO_IP) = 3

