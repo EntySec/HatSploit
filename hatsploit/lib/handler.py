@@ -31,7 +31,7 @@ from hatsploit.lib.payloads import Payloads
 from hatsploit.lib.storage import LocalStorage
 
 
-class Options:
+class Handler:
     modules = Modules()
     payloads = Payloads()
     local_storage = LocalStorage()
