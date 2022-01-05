@@ -8,7 +8,6 @@
 import random
 
 from hatsploit.lib.payload import Payload
-from hatsploit.utils.tcp import TCPClient
 
 
 class HatSploitPayload(Payload):
