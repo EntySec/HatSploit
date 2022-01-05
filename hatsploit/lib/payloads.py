@@ -227,15 +227,17 @@ class Payloads:
     def get_current_payload(self):
         imported_payloads = self.local_storage.get("imported_payloads")
         current_module_object = self.get_current_module_object()
-        current_module_name = current_module_object.details['Module']
+        
+        if current_module_object:
+            current_module_name = current_module_object.details['Module']
 
-        if hasattr(current_module_object, "payload"):
-            name = current_module_object.payload['Value']
+            if hasattr(current_module_object, "payload"):
+                name = current_module_object.payload['Value']
 
-            if imported_payloads:
-                if current_module_name in imported_payloads:
-                    if name in imported_payloads[current_module_name]:
-                        return imported_payloads[current_module_name][name]
+                if imported_payloads:
+                    if current_module_name in imported_payloads:
+                        if name in imported_payloads[current_module_name]:
+                            return imported_payloads[current_module_name][name]
         return None
 
     def add_payload(self, module_name, name):
