@@ -26,12 +26,23 @@
 
 
 class Parser:
+    restricted_options = [
+        'lhost',
+        'lport',
+        'rbport',
+        'payload',
+        'blinder',
+        'cbhost',
+        'cbport',
+        'bport'
+    ]
+
     @staticmethod
     def parse_options(options, option=None):
         if not option:
             values = []
             for option_name in options:
-                if option_name.lower() not in ['lhost', 'lport', 'rbport', 'payload', 'blinder']:
+                if option_name.lower() not in self.restricted_options:
                     values.append(str(options[option_name]['Value']))
             if len(values) == 1:
                 return values[0]
