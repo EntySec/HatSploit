@@ -24,7 +24,7 @@
 # SOFTWARE.
 #
 
-from hatsploit.utils.handler import Handler
+from hatsploit.lib.options import Options
 
 
 class Parser:
@@ -32,8 +32,8 @@ class Parser:
         if not option:
             values = []
             for option_name in options:
-                if option_name.lower() not in Handler().handler_options['Module']:
-                    if option_name.lower() not in Handler().handler_options['Payload']:
+                if option_name.lower() not in Options().handler_options['Module']:
+                    if option_name.lower() not in Options().handler_options['Payload']:
                         values.append(str(options[option_name]['Value']))
             if len(values) == 1:
                 return values[0]
