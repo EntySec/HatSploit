@@ -192,7 +192,7 @@ class Options:
                             self.remove_options(current_module, ['rbhost'])
                             self.remove_options(current_payload, ['bport'])
                 else:
-                    self.remove_options(current_module, ['lhost', 'lport', 'rbhost'])
+                    self.remove_options(current_module, ['lhost', 'lport', 'rbport'])
 
                 for option in current_module.options:
                     if option.lower() in ['lhost', 'lport', 'rbport', 'payload', 'blinder']:
