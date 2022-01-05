@@ -96,6 +96,14 @@ class Options:
             if option.lower() in options:
                 target.options.pop(option)
 
+    @staticmethod
+    def check_options(target):
+        if not hasattr(target, "options"):
+            return False
+        if not isinstance(target.options, dict):
+            return False
+        return True
+
     def add_handler_options(self):
         if self.modules.check_current_module():
             current_module = self.modules.get_current_module_object()
@@ -121,7 +129,7 @@ class Options:
                 if module not in saved_handler_options['Module']:
                     saved_handler_options['Module'][module] = handler_options['Module']
 
-                if not hasattr(current_module, "options"):
+                if not self.check_options(current_module):
                     current_module.options = {}
 
                 current_module.options.update(saved_handler_options['Module'][module])
@@ -155,7 +163,7 @@ class Options:
                     if payload not in saved_handler_options['Payload']:
                         saved_handler_options['Payload'][payload] = handler_options['Payload']
 
-                    if not hasattr(current_payload, "options"):
+                    if not self.check_options(current_payload):
                         current_payload.options = {}
 
                     current_payload.options.update(saved_handler_options['Payload'][payload])
