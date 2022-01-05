@@ -233,19 +233,20 @@ class Console:
                 if module not in self.handler_options['Module']:
                     self.handler_options['Module'][module] = handler_options['Module']
 
+                if not hasattr(current_module, "options"):
+                    current_module.options = {}
+
                 current_module.options.update(handler_options['Module'])
                 current_module.options[payload_option]['Value'] = current_module.payload['Value']
 
-                if 'Blinder' in current_module.payload:
-                    if current_module.payload['Blinder']:
-                        if not current_payload:
-                            current_module.options[blinder_option]['Value'] = 'yes'
-                        else:
-                            current_module.options[blinder_option]['Value'] = 'no'
-                    else:
-                        current_module.options.pop(blinder_option)
+                if not current_payload:
+                    current_module.options[blinder_option]['Value'] = 'yes'
                 else:
-                    current_module.options.pop(blinder_option)
+                    current_module.options[blinder_option]['Value'] = 'no'
+
+                if 'Blinder' in current_module.payload:
+                    if not current_module.payload['Blinder']:
+                        current_module.options.pop(blinder_option)
 
                 if blinder_option in current_module.options and not current_payload:
                     if current_module.options[blinder_option]['Value'].lower() in ['yes', 'y']:
@@ -259,6 +260,9 @@ class Console:
 
                     if payload not in self.handler_options['Payload']:
                         self.handler_options['Payload'][payload] = handler_options['Payload']
+
+                    if not hasattr(current_payload, "options"):
+                        current_payload.options = {}
 
                     current_payload.options.update(handler_options['Payload'])
 
