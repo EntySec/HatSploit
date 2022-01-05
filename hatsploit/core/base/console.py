@@ -326,8 +326,9 @@ class Console:
 
                 current_module.handler = self.handler_options['Module'][module]
 
-                for option in current_payload.options:
-                    if option.lower() in ['cbhost', 'cbport', 'bport']:
-                        self.handler_options['Payload'][payload][option]['Value'] = current_payload.options[option]['Value']
+                if current_payload:
+                    for option in current_payload.options:
+                        if option.lower() in ['cbhost', 'cbport', 'bport']:
+                            self.handler_options['Payload'][payload][option]['Value'] = current_payload.options[option]['Value']
 
-                current_payload.handler = self.handler_options['Payload'][payload]
+                    current_payload.handler = self.handler_options['Payload'][payload]
