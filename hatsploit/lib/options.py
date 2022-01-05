@@ -198,13 +198,17 @@ class Options:
                     if option.lower() in ['lhost', 'lport', 'rbport', 'payload', 'blinder']:
                         saved_handler_options['Module'][module][option]['Value'] = current_module.options[option]['Value']
 
-                current_module.handler = saved_handler_options['Module'][module]
+                current_module.handler = {}
+                for option in saved_handler_options['Module'][module]:
+                    current_module.handler.update({option: saved_handler_options['Module'][payload][option]['Value']})
 
                 if current_payload:
                     for option in current_payload.options:
                         if option.lower() in ['cbhost', 'cbport', 'bport']:
                             saved_handler_options['Payload'][payload][option]['Value'] = current_payload.options[option]['Value']
 
-                    current_payload.handler = saved_handler_options['Payload'][payload]
+                    current_payload.handler = {}
+                    for option in saved_handler_options['Payload'][payload]:
+                        current_payload.handler.update({option: saved_handler_options['Payload'][payload][option]['Value']})
 
                 self.local_storage.set("handler_options", saved_handler_options)
