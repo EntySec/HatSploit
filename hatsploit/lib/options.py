@@ -200,7 +200,7 @@ class Options:
 
                 current_module.handler = {}
                 for option in saved_handler_options['Module'][module]:
-                    current_module.handler.update({option: saved_handler_options['Module'][payload][option]['Value']})
+                    current_module.handler.update({option: saved_handler_options['Module'][module][option]['Value']})
 
                 if current_payload:
                     for option in current_payload.options:
