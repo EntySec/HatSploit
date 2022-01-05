@@ -28,8 +28,6 @@ import os
 import readline
 import sys
 
-from hatsploit.utils.handler import HandlerOptions
-
 from hatsploit.core.base.exceptions import Exceptions
 from hatsploit.core.base.execute import Execute
 from hatsploit.core.base.loader import Loader
@@ -44,6 +42,7 @@ from hatsploit.lib.loot import Loot
 
 from hatsploit.lib.config import Config
 from hatsploit.lib.jobs import Jobs
+from hatsploit.lib.options import Options
 from hatsploit.lib.sessions import Sessions
 from hatsploit.lib.modules import Modules
 from hatsploit.lib.payloads import Payloads
@@ -65,6 +64,7 @@ class Console:
 
     config = Config()
     jobs = Jobs()
+    options = Options()
     sessions = Sessions()
     modules = Modules()
     payloads = Payloads()
@@ -104,7 +104,7 @@ class Console:
     def update_events(self):
         self.jobs.stop_dead()
         self.sessions.close_dead()
-        self.add_handler_options()
+        self.options.add_handler_options()
 
     def launch_menu(self):
         while True:
@@ -216,119 +216,3 @@ class Console:
         if do_shell:
             self.launch_history()
             self.launch_menu()
-
-    def add_handler_options(self):
-        if self.modules.check_current_module():
-            current_module = self.modules.get_current_module_object()
-
-            if hasattr(current_module, "payload"):
-                blinder_option = 'blinder'.upper()
-                payload_option = 'payload'.upper()
-
-                handler_options = HandlerOptions
-
-                module = self.modules.get_current_module_name()
-                current_payload = self.payloads.get_current_payload()
-
-                if module not in self.handler_options['Module']:
-                    self.handler_options['Module'][module] = handler_options['Module']
-
-                if not hasattr(current_module, "options"):
-                    current_module.options = {}
-
-                current_module.options.update(self.handler_options['Module'][module])
-                current_module.options[payload_option]['Value'] = current_module.payload['Value']
-
-                if not current_payload:
-                    current_module.options[blinder_option]['Value'] = 'yes'
-                    current_module.options[blinder_option]['Required'] = True
-                else:
-                    current_module.options[blinder_option]['Value'] = 'no'
-                    current_module.options[blinder_option]['Required'] = False
-
-                if 'Blinder' in current_module.payload:
-                    if not current_module.payload['Blinder']:
-                        current_module.options.pop(blinder_option)
-
-                if blinder_option in current_module.options and not current_payload:
-                    if current_module.options[blinder_option]['Value'].lower() in ['yes', 'y']:
-                        current_module.payload['Value'] = None
-
-                        current_module.options[payload_option]['Value'] = None
-                        current_module.options[payload_option]['Required'] = False
-                    else:
-                        current_module.options[payload_option]['Required'] = True
-                else:
-                    current_module.options[payload_option]['Required'] = True
-
-                if current_payload:
-                    payload = current_module.payload['Value']
-
-                    if payload not in self.handler_options['Payload']:
-                        self.handler_options['Payload'][payload] = handler_options['Payload']
-
-                    if not hasattr(current_payload, "options"):
-                        current_payload.options = {}
-
-                    current_payload.options.update(self.handler_options['Payload'][payload])
-
-                    if 'Handler' in current_module.payload:
-                        special = current_module.payload['Handler']
-                    else:
-                        special = []
-
-                    if current_payload.details['Type'] == 'reverse_tcp':
-                        if 'bind_tcp' not in special:
-                            for option in list(current_module.options):
-                                if option.lower() == 'rbport':
-                                    current_module.options.pop(option)
-
-                            for option in list(current_payload.options):
-                                if option.lower() == 'bport':
-                                    current_payload.options.pop(option)
-
-                    elif current_payload.details['Type'] == 'bind_tcp':
-                        if 'reverse_tcp' not in special:
-                            for option in list(current_module.options):
-                                if option.lower() in ['lhost', 'lport']:
-                                    current_module.options.pop(option)
-
-                            for option in list(current_payload.options):
-                                if option.lower() in ['cbhost', 'cbport']:
-                                    current_payload.option.pop(option)
-
-                    else:
-                        if 'reverse_tcp' not in special:
-                            for option in list(current_module.options):
-                                if option.lower() in ['lhost', 'lport']:
-                                    current_module.options.pop(option)
-
-                            for option in list(current_payload.options):
-                                if option.lower() in ['cbhost', 'cbport']:
-                                    current_module.options.pop(option)
-
-                        if 'bind_tcp' not in special:
-                            for option in list(current_module.options):
-                                if option.lower() == 'rbport':
-                                    current_module.options.pop(option)
-
-                            for option in list(current_payload.options):
-                                if option.lower() == 'bport':
-                                    current_payload.options.pop(option)
-                else:
-                    for option in list(current_module.options):
-                        if option.lower() in ['lhost', 'lport', 'rbport']:
-                            current_module.options.pop(option)
-
-                for option in current_module.options:
-                    if option.lower() in ['lhost', 'lport', 'rbport', 'payload', 'blinder']:
-                        self.handler_options['Module'][module][option]['Value'] = current_module.options[option]['Value']
-
-                current_module.handler = self.handler_options['Module'][module]
-
-                if current_payload:
-                    for option in current_payload.options:
-                        if option.lower() in ['cbhost', 'cbport', 'bport']:
-                            self.handler_options['Payload'][payload][option]['Value'] = current_payload.options[option]['Value']
-
-                    current_payload.handler = self.handler_options['Payload'][payload]
