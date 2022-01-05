@@ -102,7 +102,7 @@ class Options:
                 blinder_option = 'blinder'.upper()
                 payload_option = 'payload'.upper()
 
-                handler_options = HandlerOptions
+                handler_options = self.handler_options
 
                 module = self.modules.get_current_module_name()
                 current_payload = self.payloads.get_current_payload()
