@@ -153,7 +153,7 @@ class Handler(Handle, Post, Blinder):
                        background=None, method=None, timeout=None, linemax=100, ensure=False):
         module = self.modules.get_current_module_object()
 
-        options = module.options
+        options = module.handler
         payload = module.payload
 
         if 'BLINDER' in options:
@@ -276,13 +276,13 @@ class Handler(Handle, Post, Blinder):
         self.open_session(host, port, platform, architecture, session_type, remote[0])
         return True
 
-    def module_handle_session(self, payload_type='one_side', session=None, timeout=None):
+    def module_handle_session(self, host=None, session=None, timeout=None):
         module = self.modules.get_current_module_object()
 
-        options = module.options
+        options = module.handler
         session = session if session is not None else HatSploitSession
 
-        if payload_type == 'reverse_tcp':
+        if 'LHOST' in options and 'LPORT' in options:
             new_session, host = self.listen_session(
                 options['LHOST']['Value'],
                 options['LPORT']['Value'],
@@ -292,9 +292,9 @@ class Handler(Handle, Post, Blinder):
             if not new_session and not host:
                 return None
 
-        elif payload_type == 'bind_tcp':
+        elif 'RBPORT' in options:
             new_session = self.connect_session(
-                options['RBHOST'],
+                host,
                 options['RBPORT'],
                 session, timeout
             )
@@ -302,11 +302,7 @@ class Handler(Handle, Post, Blinder):
             if not new_session:
                 return None
 
-        elif payload_type == 'one_side':
-            return None
-
         else:
-            self.badges.print_error("Invalid payload type!")
             return None
 
         return new_session, host
