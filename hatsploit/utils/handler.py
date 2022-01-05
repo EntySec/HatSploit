@@ -95,6 +95,7 @@ class Handler(Handle, Post, Blinder):
     def module_handle(self, host=None, sender=None, args=[], concat=None, location=None,
                        background=None, method=None, timeout=None, linemax=100, ensure=False):
         module = self.modules.get_current_module_object()
+        rhost = host
 
         options = module.handler
         payload = module.payload
@@ -113,6 +114,7 @@ class Handler(Handle, Post, Blinder):
         stage = payload['Payload'] if method != 'raw' else payload['Raw']
 
         if payload['Details']['Type'] == 'bind_tcp':
+            host = options['RBHOST']
             port = options['RBPORT']
 
         elif payload['Details']['Type'] == 'reverse_tcp':
@@ -143,6 +145,8 @@ class Handler(Handle, Post, Blinder):
             host=host,
             port=port,
 
+            rhost=rhost,
+
             payload_category=payload['Details']['Category'],
             payload_type=payload['Details']['Type'],
 
@@ -164,7 +168,7 @@ class Handler(Handle, Post, Blinder):
             session=session
         )
 
-    def handle(self, payload=None, sender=None, host=None, port=None, payload_category='stager',
+    def handle(self, payload=None, sender=None, host=None, port=None, rhost=None, payload_category='stager',
                 payload_type='one_side', args=[], concat=None, location=None, background=None,
                 method=None, timeout=None, linemax=100, platform='generic', architecture='generic',
                 ensure=False, blinder=False, session=None):
@@ -214,12 +218,12 @@ class Handler(Handle, Post, Blinder):
         remote[0].details['Architecture'] = architecture
 
         if remote[1] not in ('127.0.0.1', '0.0.0.0'):
-            host = remote[1]
+            rhost = remote[1]
 
-        self.open_session(host, port, platform, architecture, session_type, remote[0])
+        self.open_session(rhost, port, platform, architecture, session_type, remote[0])
         return True
 
-    def module_handle_session(self, host=None, payload_type='one_side', session=None, timeout=None):
+    def module_handle_session(self, payload_type='one_side', session=None, timeout=None):
         module = self.modules.get_current_module_object()
 
         options = module.handler
@@ -237,7 +241,7 @@ class Handler(Handle, Post, Blinder):
 
         elif payload_type == 'bind_tcp':
             new_session = self.connect_session(
-                host,
+                options['RBHOST'],
                 options['RBPORT'],
                 session, timeout
             )
