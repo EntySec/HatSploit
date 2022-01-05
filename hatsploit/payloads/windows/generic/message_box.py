@@ -5,13 +5,10 @@
 # Current source: https://github.com/EntySec/HatSploit
 #
 
-import struct
-
-from hatvenom import HatVenom
 from hatsploit.lib.payload import Payload
 
 
-class HatSploitPayload(Payload, HatVenom):
+class HatSploitPayload(Payload):
     details = {
         'Category': "single",
         'Name': "Windows Message Box",
