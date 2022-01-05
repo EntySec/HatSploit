@@ -22,7 +22,7 @@ class HatSploitModule(Module, TCPClient):
     }
 
     options = {
-        'RHOST': {
+        'HOST': {
             'Description': "Remote host.",
             'Value': None,
             'Type': "ip",

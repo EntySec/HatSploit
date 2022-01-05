@@ -62,28 +62,28 @@ class Options:
                 'Type': "port",
                 'Required': True
             },
-            'RBPORT': {
-                'Description': "Remote bind port.",
+            'RPORT': {
+                'Description': "Remote port to connect.",
                 'Value': 8888,
                 'Type': "port",
                 'Required': True
             }
         },
         'Payload': {
-            'CBHOST': {
-                'Description': "Connect-back host.",
+            'RHOST': {
+                'Description': "Remote host to connect.",
                 'Value': TCPClient.get_local_host(),
                 'Type': "ip",
                 'Required': True
             },
-            'CBPORT': {
-                'Description': "Connect-back port.",
+            'RPORT': {
+                'Description': "Remote port to connect.",
                 'Value': 8888,
                 'Type': "port",
                 'Required': True
             },
             'BPORT': {
-                'Description': "Bind port.",
+                'Description': "Port to bind to.",
                 'Value': 8888,
                 'Type': "port",
                 'Required': True
@@ -91,7 +91,8 @@ class Options:
         }
     }
 
-    def remove_options(self, target, options):
+    @staticmethod
+    def remove_options(target, options):
         for option in list(target.options):
             if option.lower() in options:
                 target.options.pop(option)
@@ -174,28 +175,28 @@ class Options:
                         special = []
 
                     if current_payload.details['Type'] == 'reverse_tcp':
-                        if 'bind_tcp' not in special:
-                            self.remove_options(current_module, ['rbport'])
+                        if special != 'bind_tcp':
+                            self.remove_options(current_module, ['rport'])
                             self.remove_options(current_payload, ['bport'])
 
                     elif current_payload.details['Type'] == 'bind_tcp':
-                        if 'reverse_tcp' not in special:
+                        if special != 'reverse_tcp':
                             self.remove_options(current_module, ['lhost', 'lport'])
-                            self.remove_options(current_payload, ['cbhost', 'cbport'])
+                            self.remove_options(current_payload, ['rhost', 'rport'])
 
                     else:
-                        if 'reverse_tcp' not in special:
+                        if special == 'reverse_tcp':
                             self.remove_options(current_module, ['lhost', 'lport'])
-                            self.remove_options(current_payload, ['cbhost', 'cbport'])
+                            self.remove_options(current_payload, ['rhost', 'rport'])
 
-                        if 'bind_tcp' not in special:
-                            self.remove_options(current_module, ['rbport'])
+                        if special == 'bind_tcp':
+                            self.remove_options(current_module, ['rport'])
                             self.remove_options(current_payload, ['bport'])
                 else:
-                    self.remove_options(current_module, ['lhost', 'lport', 'rbport'])
+                    self.remove_options(current_module, self.handler_options['Payload'])
 
                 for option in current_module.options:
-                    if option.lower() in ['lhost', 'lport', 'rbport', 'payload', 'blinder']:
+                    if option.lower() in self.handler_options['Module']:
                         saved_handler_options['Module'][module][option]['Value'] = current_module.options[option]['Value']
 
                 current_module.handler = {}
@@ -203,8 +204,10 @@ class Options:
                     current_module.handler.update({option: saved_handler_options['Module'][module][option]['Value']})
 
                 if current_payload:
+                    payload = current_module.payload['Value']
+
                     for option in current_payload.options:
-                        if option.lower() in ['cbhost', 'cbport', 'bport']:
+                        if option.lower() in self.handler_options['Payload']:
                             saved_handler_options['Payload'][payload][option]['Value'] = current_payload.options[option]['Value']
 
                     current_payload.handler = {}
