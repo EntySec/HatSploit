@@ -28,11 +28,13 @@ from hatsploit.utils.tcp import TCPClient
 
 from hatsploit.lib.modules import Modules
 from hatsploit.lib.payloads import Payloads
+from hatsploit.lib.storage import LocalStorage
 
 
 class Options:
     modules = Modules()
     payloads = Payloads()
+    local_storage = LocalStorage()
 
     handler_options = {
         'Module': {
@@ -103,17 +105,26 @@ class Options:
                 payload_option = 'payload'.upper()
 
                 handler_options = self.handler_options
+                saved_handler_options = self.local_storage.get("handler_options")
+
+                if not saved_handler_options:
+                    saved_handler_options = {
+                        'Module': {
+                        },
+                        'Payload': {
+                        }
+                    }
 
                 module = self.modules.get_current_module_name()
                 current_payload = self.payloads.get_current_payload()
 
-                if module not in self.handler_options['Module']:
-                    self.handler_options['Module'][module] = handler_options['Module']
+                if module not in saved_handler_options['Module']:
+                    saved_handler_options['Module'][module] = handler_options['Module']
 
                 if not hasattr(current_module, "options"):
                     current_module.options = {}
 
-                current_module.options.update(self.handler_options['Module'][module])
+                current_module.options.update(saved_handler_options['Module'][module])
                 current_module.options[payload_option]['Value'] = current_module.payload['Value']
 
                 if not current_payload:
@@ -141,13 +152,13 @@ class Options:
                 if current_payload:
                     payload = current_module.payload['Value']
 
-                    if payload not in self.handler_options['Payload']:
-                        self.handler_options['Payload'][payload] = handler_options['Payload']
+                    if payload not in saved_handler_options['Payload']:
+                        saved_handler_options['Payload'][payload] = handler_options['Payload']
 
                     if not hasattr(current_payload, "options"):
                         current_payload.options = {}
 
-                    current_payload.options.update(self.handler_options['Payload'][payload])
+                    current_payload.options.update(saved_handler_options['Payload'][payload])
 
                     if 'Handler' in current_module.payload:
                         special = current_module.payload['Handler']
@@ -177,13 +188,15 @@ class Options:
 
                 for option in current_module.options:
                     if option.lower() in ['lhost', 'lport', 'rbport', 'payload', 'blinder']:
-                        self.handler_options['Module'][module][option]['Value'] = current_module.options[option]['Value']
+                        saved_handler_options['Module'][module][option]['Value'] = current_module.options[option]['Value']
 
-                current_module.handler = self.handler_options['Module'][module]
+                current_module.handler = saved_handler_options['Module'][module]
 
                 if current_payload:
                     for option in current_payload.options:
                         if option.lower() in ['cbhost', 'cbport', 'bport']:
-                            self.handler_options['Payload'][payload][option]['Value'] = current_payload.options[option]['Value']
+                            saved_handler_options['Payload'][payload][option]['Value'] = current_payload.options[option]['Value']
 
-                    current_payload.handler = self.handler_options['Payload'][payload]
+                    current_payload.handler = saved_handler_options['Payload'][payload]
+
+                self.local_storage.set("handler_options", saved_handler_options)
