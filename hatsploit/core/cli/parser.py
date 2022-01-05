@@ -24,19 +24,18 @@
 # SOFTWARE.
 #
 
-from hatsploit.utils.handler import HandlerOptions
+from hatsploit.lib.options import Options
 
 
 class Parser:
-    @staticmethod
-    def parse_options(options, option=None):
-        handler_options = HandlerOptions
+    options = Options()
 
+    def parse_options(self, options, option=None):
         if not option:
             values = []
             for option_name in options:
-                if option_name.lower() not in handler_options['Module']:
-                    if option_name.lower() not in handler_options['Payload']:
+                if option_name.lower() not in self.options.handler_options['Module']:
+                    if option_name.lower() not in self.options.handler_options['Payload']:
                         values.append(str(options[option_name]['Value']))
             if len(values) == 1:
                 return values[0]
