@@ -241,8 +241,10 @@ class Console:
 
                 if not current_payload:
                     current_module.options[blinder_option]['Value'] = 'yes'
+                    current_module.options[blinder_option]['Required'] = True
                 else:
                     current_module.options[blinder_option]['Value'] = 'no'
+                    current_module.options[blinder_option]['Required'] = False
 
                 if 'Blinder' in current_module.payload:
                     if not current_module.payload['Blinder']:
@@ -254,6 +256,10 @@ class Console:
 
                         current_module.options[payload_option]['Value'] = None
                         current_module.options[payload_option]['Required'] = False
+                    else:
+                        current_module.options[payload_option]['Required'] = True
+                else:
+                    current_module.options[payload_option]['Required'] = True
 
                 if current_payload:
                     payload = current_module.payload['Value']
