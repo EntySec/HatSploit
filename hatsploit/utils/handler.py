@@ -100,7 +100,7 @@ class Handler(Handle, Post, Blinder):
         payload = module.payload
 
         if 'BLINDER' in options:
-            if options['BLINDER']['Value'].lower() in ['yes', 'y']:
+            if options['BLINDER'].lower() in ['yes', 'y']:
                 if sender is not None:
                     self.handle(
                         sender=sender,
@@ -113,11 +113,11 @@ class Handler(Handle, Post, Blinder):
         stage = payload['Payload'] if method != 'raw' else payload['Raw']
 
         if payload['Details']['Type'] == 'bind_tcp':
-            port = options['RBPORT']['Value']
+            port = options['RBPORT']
 
         elif payload['Details']['Type'] == 'reverse_tcp':
-            host = options['LHOST']['Value']
-            port = options['LPORT']['Value']
+            host = options['LHOST']
+            port = options['LPORT']
 
         else:
             host, port = None, None
@@ -227,8 +227,8 @@ class Handler(Handle, Post, Blinder):
 
         if 'LHOST' in options and 'LPORT' in options:
             new_session, host = self.listen_session(
-                options['LHOST']['Value'],
-                options['LPORT']['Value'],
+                options['LHOST'],
+                options['LPORT'],
                 session, timeout
             )
 
