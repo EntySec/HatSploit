@@ -31,12 +31,15 @@ from hatvenom import HatVenom
 from hatsploit.core.base.types import Types
 from hatsploit.core.cli.badges import Badges
 from hatsploit.core.db.importer import Importer
+
+from hatsploit.lib.options import Options
 from hatsploit.lib.storage import LocalStorage
 
 
 class Payloads:
     types = Types()
     importer = Importer()
+    options = Options()
     local_storage = LocalStorage()
     badges = Badges()
 
@@ -212,6 +215,8 @@ class Payloads:
     def generate_payload(self, name, options={}):
         payload_object = self.get_payload(name)
         if payload_object:
+            self.options.add_payload_options(payload_object)
+
             if hasattr(payload_object, "options"):
                 for option in options:
                     payload_object.options[option]['Value'] = options[option]
