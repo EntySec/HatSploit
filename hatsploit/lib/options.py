@@ -94,7 +94,7 @@ class Options:
     @staticmethod
     def remove_options(target, options):
         for option in list(target.options):
-            if option.lower() in options:
+            if option.upper() in options:
                 target.options.pop(option)
 
     @staticmethod
@@ -176,27 +176,27 @@ class Options:
 
                     if current_payload.details['Type'] == 'reverse_tcp':
                         if special != 'bind_tcp':
-                            self.remove_options(current_module, ['rport'])
-                            self.remove_options(current_payload, ['bport'])
+                            self.remove_options(current_module, ['RPORT'])
+                            self.remove_options(current_payload, ['BPORT'])
 
                     elif current_payload.details['Type'] == 'bind_tcp':
                         if special != 'reverse_tcp':
-                            self.remove_options(current_module, ['lhost', 'lport'])
-                            self.remove_options(current_payload, ['rhost', 'rport'])
+                            self.remove_options(current_module, ['LHOST', 'LPORT'])
+                            self.remove_options(current_payload, ['RHOST', 'RPORT'])
 
                     else:
                         if special == 'reverse_tcp':
-                            self.remove_options(current_module, ['lhost', 'lport'])
-                            self.remove_options(current_payload, ['rhost', 'rport'])
+                            self.remove_options(current_module, ['LHOST', 'LPORT'])
+                            self.remove_options(current_payload, ['RHOST', 'RPORT'])
 
                         if special == 'bind_tcp':
-                            self.remove_options(current_module, ['rport'])
-                            self.remove_options(current_payload, ['bport'])
+                            self.remove_options(current_module, ['RPORT'])
+                            self.remove_options(current_payload, ['BPORT'])
                 else:
-                    self.remove_options(current_module, self.handler_options['Module'])
+                    self.remove_options(current_module, ['LHOST', 'LPORT', 'RPORT'])
 
                 for option in current_module.options:
-                    if option.lower() in self.handler_options['Module']:
+                    if option.upper() in self.handler_options['Module']:
                         saved_handler_options['Module'][module][option]['Value'] = current_module.options[option]['Value']
 
                 current_module.handler = {}
@@ -207,7 +207,7 @@ class Options:
                     payload = current_module.payload['Value']
 
                     for option in current_payload.options:
-                        if option.lower() in self.handler_options['Payload']:
+                        if option.upper() in self.handler_options['Payload']:
                             saved_handler_options['Payload'][payload][option]['Value'] = current_payload.options[option]['Value']
 
                     current_payload.handler = {}
