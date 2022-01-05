@@ -149,7 +149,7 @@ class Handler(Handle, Post, Blinder):
         if self.local_storage.get("auto_interaction"):
             self.sessions.interact_with_session(session_id)
 
-    def module_handler(self, host=None, sender=None, args=[], concat=None, location=None,
+    def module_handle(self, host=None, sender=None, args=[], concat=None, location=None,
                        background=None, method=None, timeout=None, linemax=100, ensure=False):
         module = self.modules.get_current_module_object()
 
@@ -159,7 +159,7 @@ class Handler(Handle, Post, Blinder):
         if 'BLINDER' in options:
             if options['BLINDER']['Value'].lower() in ['yes', 'y']:
                 if sender is not None:
-                    self.handler(
+                    self.handle(
                         sender=sender,
                         args=args,
                         blinder=True
@@ -193,7 +193,7 @@ class Handler(Handle, Post, Blinder):
             if module_platform not in self.types.platforms:
                 platform = module_platform
 
-        return self.handler(
+        return self.handle(
             payload=stage,
             sender=sender,
 
@@ -221,7 +221,7 @@ class Handler(Handle, Post, Blinder):
             session=session
         )
 
-    def handler(self, payload=None, sender=None, host=None, port=None, payload_category='stager',
+    def handle(self, payload=None, sender=None, host=None, port=None, payload_category='stager',
                 payload_type='one_side', args=[], concat=None, location=None, background=None,
                 method=None, timeout=None, linemax=100, platform='generic', architecture='generic',
                 ensure=False, blinder=False, session=None):
