@@ -7,7 +7,6 @@
 
 from hatsploit.lib.payload import Payload
 
-from hatsploit.utils.tcp import TCPClient
 from hatsploit.utils.string import StringTools
 
 
