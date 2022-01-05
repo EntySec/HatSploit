@@ -219,15 +219,13 @@ class Handler(Handle, Post, Blinder):
         self.open_session(host, port, platform, architecture, session_type, remote[0])
         return True
 
-    def module_handle_session(self, host=None, session=None, timeout=None):
+    def module_handle_session(self, host=None, payload_type='one_side', session=None, timeout=None):
         module = self.modules.get_current_module_object()
 
         options = module.handler
-        payload = module.payload
-
         session = session if session is not None else HatSploitSession
 
-        if payload['Details']['Type'] == 'reverse_tcp':
+        if payload_type == 'reverse_tcp':
             new_session, host = self.listen_session(
                 options['LHOST'],
                 options['LPORT'],
@@ -237,7 +235,7 @@ class Handler(Handle, Post, Blinder):
             if not new_session and not host:
                 return None
 
-        elif payload['Details']['Type'] == 'bind_tcp':
+        elif payload_type == 'bind_tcp':
             new_session = self.connect_session(
                 host,
                 options['RPORT'],
