@@ -24,26 +24,20 @@
 # SOFTWARE.
 #
 
+from hatsploit.utils.handler import HandlerOptions
+
 
 class Parser:
-    restricted_options = [
-        'lhost',
-        'lport',
-        'rbport',
-        'payload',
-        'blinder',
-        'cbhost',
-        'cbport',
-        'bport'
-    ]
-
     @staticmethod
     def parse_options(options, option=None):
+        handler_options = HandlerOptions
+
         if not option:
             values = []
             for option_name in options:
-                if option_name.lower() not in self.restricted_options:
-                    values.append(str(options[option_name]['Value']))
+                if option_name.lower() not in handler_options['Module']:
+                    if option_name.lower() not in handler_options['Payload']
+                        values.append(str(options[option_name]['Value']))
             if len(values) == 1:
                 return values[0]
             return values
