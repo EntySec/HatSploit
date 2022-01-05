@@ -236,11 +236,14 @@ class Console:
                 current_module.options.update(handler_options['Module'])
                 current_module.options[payload_option] = current_module.payload['Value']
 
-                if current_module.payload['Blinder']:
-                    if not current_payload:
-                        current_module.options[blinder_option]['Value'] = 'yes'
+                if 'Blinder' in current_module.payload:
+                    if current_module.payload['Blinder']:
+                        if not current_payload:
+                            current_module.options[blinder_option]['Value'] = 'yes'
+                        else:
+                            current_module.options[blinder_option]['Value'] = 'no'
                     else:
-                        current_module.options[blinder_option]['Value'] = 'no'
+                        current_module.options.pop(blinder_option)
                 else:
                     current_module.options.pop(blinder_option)
 
