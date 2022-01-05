@@ -62,8 +62,8 @@ class Options:
                 'Type': "port",
                 'Required': True
             },
-            'RPORT': {
-                'Description': "Remote port to connect.",
+            'RBPORT': {
+                'Description': "Remote bind port to connect.",
                 'Value': 8888,
                 'Type': "port",
                 'Required': True
@@ -176,7 +176,7 @@ class Options:
 
                     if current_payload.details['Type'] == 'reverse_tcp':
                         if special != 'bind_tcp':
-                            self.remove_options(current_module, ['RPORT'])
+                            self.remove_options(current_module, ['RBPORT'])
                             self.remove_options(current_payload, ['BPORT'])
 
                     elif current_payload.details['Type'] == 'bind_tcp':
@@ -190,10 +190,10 @@ class Options:
                             self.remove_options(current_payload, ['RHOST', 'RPORT'])
 
                         if special != 'bind_tcp':
-                            self.remove_options(current_module, ['RPORT'])
+                            self.remove_options(current_module, ['RBPORT'])
                             self.remove_options(current_payload, ['BPORT'])
                 else:
-                    self.remove_options(current_module, ['LHOST', 'LPORT', 'RPORT'])
+                    self.remove_options(current_module, ['LHOST', 'LPORT', 'RBPORT'])
 
                 for option in current_module.options:
                     if option.upper() in self.handler_options['Module']:
