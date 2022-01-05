@@ -54,7 +54,7 @@ HandlerOptions = {
             'Description': 'Payload to use.',
             'Value': None,
             'Type': "payload",
-            'Required': required
+            'Required': True
         },
         'LHOST': {
             'Description': "Local host to listen on.",
