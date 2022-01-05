@@ -315,15 +315,19 @@ class Console:
                             for option in list(current_payload.options):
                                 if option.lower() == 'bport':
                                     current_payload.options.pop(option)
-
-                    for option in current_module.options:
-                        if option.lower() in ['lhost', 'lport', 'rbport', 'payload', 'blinder']:
-                            self.handler_options['Module'][module][option]['Value'] = current_module.options[option]['Value']
-
-                    for option in current_payload.options:
-                        if option.lower() in ['cbhost', 'cbport', 'bport']:
-                            self.handler_options['Payload'][payload][option]['Value'] = current_payload.options[option]['Value']
                 else:
                     for option in list(current_module.options):
                         if option.lower() in ['lhost', 'lport', 'rbport']:
                             current_module.options.pop(option)
+
+                for option in current_module.options:
+                    if option.lower() in ['lhost', 'lport', 'rbport', 'payload', 'blinder']:
+                        self.handler_options['Module'][module][option]['Value'] = current_module.options[option]['Value']
+
+                current_module.handler = self.handler_options['Module'][module]
+
+                for option in current_payload.options:
+                    if option.lower() in ['cbhost', 'cbport', 'bport']:
+                        self.handler_options['Payload'][payload][option]['Value'] = current_payload.options[option]['Value']
+
+                current_payload.handler = self.handler_options['Payload'][payload]
