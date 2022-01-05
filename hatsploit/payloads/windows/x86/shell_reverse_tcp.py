@@ -24,12 +24,12 @@ class HatSploitPayload(Payload):
     }
 
     def run(self):
-        connback_host = self.handler['CBHOST']
-        connback_port = self.handler['CBPORT']
+        remote_host = self.handler['RHOST']
+        remote_port = self.handler['RPORT']
 
         return (
             b""
         ), {
-            'cbhost': connback_host,
-            'cbport': connback_port
+            'rhost': remote_host,
+            'rport': remote_port
         }

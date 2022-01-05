@@ -28,8 +28,8 @@ class HatSploitPayload(Payload, Pwny):
     }
 
     def run(self):
-        connback_host = self.handler['CBHOST']
-        connback_port = self.handler['CBPORT']
+        remote_host = self.handler['RHOST']
+        remote_port = self.handler['RPORT']
 
         return (
             self.get_template(
@@ -38,7 +38,7 @@ class HatSploitPayload(Payload, Pwny):
             )
         ), {
             'data': self.encode_data(
-                host=connback_host,
-                port=connback_port
+                host=remote_host,
+                port=remote_port
             )
         }

