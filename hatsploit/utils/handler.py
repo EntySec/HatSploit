@@ -35,67 +35,10 @@ from hatsploit.core.session.blinder import Blinder
 
 from hatsploit.core.session import HatSploitSession
 
-from hatsploit.utils.tcp import TCPClient
-
 from hatsploit.lib.jobs import Jobs
 from hatsploit.lib.modules import Modules
 from hatsploit.lib.sessions import Sessions
 from hatsploit.lib.storage import LocalStorage
-
-HandlerOptions = {
-    'Module': {
-        'BLINDER': {
-            'Description': 'Use Blinder.',
-            'Value': None,
-            'Type': "boolean",
-            'Required': True
-        },
-        'PAYLOAD': {
-            'Description': 'Payload to use.',
-            'Value': None,
-            'Type': "payload",
-            'Required': True
-        },
-        'LHOST': {
-            'Description': "Local host to listen on.",
-            'Value': "0.0.0.0",
-            'Type': "ip",
-            'Required': True
-        },
-        'LPORT': {
-            'Description': "Local port to listen on.",
-            'Value': 8888,
-            'Type': "port",
-            'Required': True
-        },
-        'RBPORT': {
-            'Description': "Remote bind port.",
-            'Value': 8888,
-            'Type': "port",
-            'Required': True
-        }
-    },
-    'Payload': {
-        'CBHOST': {
-            'Description': "Connect-back host.",
-            'Value': TCPClient.get_local_host(),
-            'Type': "ip",
-            'Required': True
-        },
-        'CBPORT': {
-            'Description': "Connect-back port.",
-            'Value': 8888,
-            'Type': "port",
-            'Required': True
-        },
-        'BPORT': {
-            'Description': "Bind port.",
-            'Value': 8888,
-            'Type': "port",
-            'Required': True
-        }
-    }
-}
 
 
 class Handler(Handle, Post, Blinder):
