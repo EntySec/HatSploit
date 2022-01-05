@@ -175,7 +175,7 @@ class Options:
 
                     if current_payload.details['Type'] == 'reverse_tcp':
                         if 'bind_tcp' not in special:
-                            self.remove_options(current_module, ['rbhost'])
+                            self.remove_options(current_module, ['rbport'])
                             self.remove_options(current_payload, ['bport'])
 
                     elif current_payload.details['Type'] == 'bind_tcp':
@@ -189,7 +189,7 @@ class Options:
                             self.remove_options(current_payload, ['cbhost', 'cbport'])
 
                         if 'bind_tcp' not in special:
-                            self.remove_options(current_module, ['rbhost'])
+                            self.remove_options(current_module, ['rbport'])
                             self.remove_options(current_payload, ['bport'])
                 else:
                     self.remove_options(current_module, ['lhost', 'lport', 'rbport'])
