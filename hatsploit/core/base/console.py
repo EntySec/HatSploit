@@ -42,7 +42,7 @@ from hatsploit.lib.loot import Loot
 
 from hatsploit.lib.config import Config
 from hatsploit.lib.jobs import Jobs
-from hatsploit.lib.handler import Handler
+from hatsploit.utils.handler import Handler
 from hatsploit.lib.sessions import Sessions
 from hatsploit.lib.modules import Modules
 from hatsploit.lib.payloads import Payloads
