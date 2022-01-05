@@ -5,8 +5,6 @@
 # Current source: https://github.com/EntySec/HatSploit
 #
 
-import random
-
 from hatsploit.lib.payload import Payload
 
 
