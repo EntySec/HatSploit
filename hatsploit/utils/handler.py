@@ -113,7 +113,7 @@ class Handler(Handle, Post, Blinder):
         stage = payload['Payload'] if method != 'raw' else payload['Raw']
 
         if payload['Details']['Type'] == 'bind_tcp':
-            port = options['RBPORT']
+            port = options['RPORT']
 
         elif payload['Details']['Type'] == 'reverse_tcp':
             host = options['LHOST']
@@ -235,10 +235,10 @@ class Handler(Handle, Post, Blinder):
             if not new_session and not host:
                 return None
 
-        elif 'RBPORT' in options:
+        elif 'RPORT' in options:
             new_session = self.connect_session(
                 host,
-                options['RBPORT'],
+                options['RPORT'],
                 session, timeout
             )
 
