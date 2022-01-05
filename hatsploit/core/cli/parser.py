@@ -24,7 +24,7 @@
 # SOFTWARE.
 #
 
-from hatsploit.lib.handler import Handler
+from hatsploit.utils.handler import Handler
 
 
 class Parser:
