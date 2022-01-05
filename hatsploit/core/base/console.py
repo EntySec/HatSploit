@@ -234,7 +234,7 @@ class Console:
                     self.handler_options['Module'][module] = handler_options['Module']
 
                 current_module.options.update(handler_options['Module'])
-                current_module.options[payload_option] = current_module.payload['Value']
+                current_module.options[payload_option]['Value'] = current_module.payload['Value']
 
                 if 'Blinder' in current_module.payload:
                     if current_module.payload['Blinder']:
