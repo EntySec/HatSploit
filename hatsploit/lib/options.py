@@ -24,16 +24,11 @@
 # SOFTWARE.
 #
 
-from hatsploit.lib.modules import Modules
-from hatsploit.lib.payloads import Payloads
 from hatsploit.lib.storage import LocalStorage
-
 from hatsploit.utils.tcp import TCPClient
 
 
 class Options:
-    modules = Modules()
-    payloads = Payloads()
     local_storage = LocalStorage()
 
     handler_options = {
@@ -111,10 +106,8 @@ class Options:
             return False
         return True
 
-    def add_handler_options(self):
-        if self.modules.check_current_module():
-            current_module = self.modules.get_current_module_object()
-
+    def add_handler_options(self, current_module, current_payload):
+        if current_module:
             if hasattr(current_module, "payload"):
                 blinder_option = 'blinder'.upper()
                 payload_option = 'payload'.upper()
@@ -130,8 +123,7 @@ class Options:
                         }
                     }
 
-                module = self.modules.get_current_module_name()
-                current_payload = self.payloads.get_current_payload()
+                module = current_module.details['Module']
 
                 if module not in saved_handler_options['Module']:
                     saved_handler_options['Module'][module] = handler_options['Module']
