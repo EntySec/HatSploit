@@ -28,14 +28,12 @@ from hatsploit.utils.handler import Handler
 
 
 class Parser:
-    handler = Handler()
-
     def parse_options(self, options, option=None):
         if not option:
             values = []
             for option_name in options:
-                if option_name.lower() not in self.handler.handler_options['Module']:
-                    if option_name.lower() not in self.handler.handler_options['Payload']:
+                if option_name.lower() not in Handler().handler_options['Module']:
+                    if option_name.lower() not in Handler().handler_options['Payload']:
                         values.append(str(options[option_name]['Value']))
             if len(values) == 1:
                 return values[0]
