@@ -42,7 +42,7 @@ from hatsploit.lib.loot import Loot
 
 from hatsploit.lib.config import Config
 from hatsploit.lib.jobs import Jobs
-from hatsploit.utils.handler import Handler
+from hatsploit.lib.options import Options
 from hatsploit.lib.sessions import Sessions
 from hatsploit.lib.modules import Modules
 from hatsploit.lib.payloads import Payloads
@@ -64,7 +64,7 @@ class Console:
 
     config = Config()
     jobs = Jobs()
-    handler = Handler()
+    options = Options()
     sessions = Sessions()
     modules = Modules()
     payloads = Payloads()
@@ -104,7 +104,7 @@ class Console:
     def update_events(self):
         self.jobs.stop_dead()
         self.sessions.close_dead()
-        self.handler.add_handler_options()
+        self.options.add_handler_options()
 
     def launch_menu(self):
         while True:
