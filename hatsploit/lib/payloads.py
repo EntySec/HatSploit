@@ -215,7 +215,7 @@ class Payloads:
     def generate_payload(self, name, options={}):
         payload_object = self.get_payload(name)
         if payload_object:
-            self.options.add_payload_options(payload_object)
+            self.options.add_payload_handler(payload_object)
 
             if hasattr(payload_object, "options"):
                 for option in options:
