@@ -210,7 +210,13 @@ class Options:
 
                     current_payload.handler = {}
                     for option in saved_handler_options['Payload'][payload]:
-                        current_payload.handler.update({option: saved_handler_options['Payload'][payload][option]['Value']})
+                        value = saved_handler_options['Payload'][payload][option]['Value']
+
+                        current_payload.handler.update({option: value})
+                        current_module.handler.update({option: value})
+
+                    for option in saved_handler_options['Module'][module]:
+                        current_payload.handler.update({option: saved_handler_options['Module'][module][option]['Value']})
 
                 self.local_storage.set("handler_options", saved_handler_options)
 
