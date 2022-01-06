@@ -29,7 +29,7 @@ from hatvenom import HatVenom
 from hatsploit.lib.payloads import Payloads
 
 
-class Genesis:
+class PayloadTools:
     payloads = Payloads()
 
     def generate_payload(self, name, options={}, raw=False):
