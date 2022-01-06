@@ -221,7 +221,8 @@ class Payloads:
                 for option in options:
                     payload_object.options[option]['Value'] = options[option]
 
-            return self.run_payload(payload_object)['Payload']
+            result = self.run_payload(payload_object)
+            return result['Payload'], result['Raw']
         return None
 
     def get_current_payload(self):
