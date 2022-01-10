@@ -32,6 +32,8 @@ import time
 from hatsploit.core.base.exceptions import Exceptions
 from hatsploit.core.cli.badges import Badges
 
+from hatsploit.lib.jobs import Jobs
+
 
 class Handler(http.server.SimpleHTTPRequestHandler):
     def log_request(self, fmt, *args):
@@ -54,26 +56,37 @@ class Server:
     badges = Badges()
     exceptions = Exceptions()
 
-    def start_server(self, host, port, payload, forever=False, path='/'):
-        try:
-            self.badges.print_process(f"Starting HTTP listener on port {str(port)}...")
-            httpd = socketserver.TCPServer((host, int(port)), Handler)
+    jobs = Jobs()
 
-            httpd.RequestHandlerClass.payload_path = path
-            httpd.RequestHandlerClass.payload = payload
+    def start_server(self, host, port, payload, forever=False, path='/', job=False):
+        def init_server():
+            try:
+                self.badges.print_process(f"Starting HTTP listener on port {str(port)}...")
+                httpd = socketserver.TCPServer((host, int(port)), Handler)
 
-            if forever:
-                while True:
+                httpd.RequestHandlerClass.payload_path = path
+                httpd.RequestHandlerClass.payload = payload
+
+                if forever:
+                    while True:
+                        httpd.handle_request()
+                else:
                     httpd.handle_request()
-            else:
-                httpd.handle_request()
-            httpd.server_close()
-            httpd.shutdown()
-        except Exception:
-            self.badges.print_error(f"Failed to start HTTP listener on port {str(port)}!")
+                httpd.server_close()
+                httpd.shutdown()
+            except Exception:
+                self.badges.print_error(f"Failed to start HTTP listener on port {str(port)}!")
+        if job:
+            self.jobs.create_job(
+                None,
+                None,
+                init_server,
+                hidden=True
+            )
+        else:
+            init_server()
 
     def connect(self, remote_host, remote_port, timeout=None):
-        self.badges.print_process(f"Establishing connection (0.0.0.0:{remote_port} -> {remote_host}:{remote_port})...")
         try:
             if timeout is not None:
                 timeout = time.time() + timeout
@@ -83,13 +96,21 @@ class Server:
                         server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                         server.connect((remote_host, int(remote_port)))
 
+                        self.badges.print_process(f"Establishing connection (0.0.0.0:{remote_port} -> {remote_host}:{remote_port})...")
                         break
                     except Exception:
                         if time.time() > timeout:
                             raise socket.timeout
             else:
-                server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-                server.connect((remote_host, int(remote_port)))
+                while True:
+                    try:
+                        server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                        server.connect((remote_host, int(remote_port)))
+
+                        self.badges.print_process(f"Establishing connection (0.0.0.0:{remote_port} -> {remote_host}:{remote_port})...")
+                        break
+                    except Exception:
+                        pass
         except socket.timeout:
             self.badges.print_warning("Connection timeout.")
             raise self.exceptions.GlobalException

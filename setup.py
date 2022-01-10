@@ -43,7 +43,7 @@ setup(name='hatsploit',
       },
       install_requires=[
           'impacket', 'packaging', 'pyyaml', 'requests', 'paramiko',
-          'adb-shell', 'flask', 'flask_cors', 'flask_restful',
+          'adb-shell', 'flask', 'flask_cors', 'flask_restful', 'pyngrok',
 
           'hatvenom @ git+http://github.com/EntySec/HatVenom',
           'pwny @ git+http://github.com/EntySec/Pwny'

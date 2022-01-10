@@ -27,8 +27,6 @@
 import os
 import copy
 
-from hatvenom import HatVenom
-
 from hatsploit.core.base.types import Types
 from hatsploit.core.cli.badges import Badges
 from hatsploit.core.db.importer import Importer
@@ -429,58 +427,38 @@ class Modules:
             current_module.options = save
             save = copy.deepcopy(current_module.options)
 
+    def validate_options(self, module_object):
+        current_module = module_object
+        missed = ""
+
+        if hasattr(current_module, "options"):
+            for option in current_module.options:
+                current_option = current_module.options[option]
+                if not current_option['Value'] and current_option['Value'] != 0 and current_option['Required']:
+                    missed += option + ', '
+
+        return missed
+
     def run_current_module(self):
         if self.check_current_module():
             current_module = self.get_current_module_object()
             current_module_name = self.get_current_module_name()
+
             current_payload = self.payloads.get_current_payload()
-            missed = ""
+            payload_data = {}
 
-            if hasattr(current_module, "options"):
-                for option in current_module.options:
-                    current_option = current_module.options[option]
-                    if not current_option['Value'] and current_option['Value'] != 0 and current_option['Required']:
-                        missed += option + ', '
-
+            missed = self.validate_options(current_module)
             if current_payload:
-                if hasattr(current_payload, "options"):
-                    for option in current_payload.options:
-                        current_option = current_payload.options[option]
-                        if not current_option['Value'] and current_option['Value'] != 0 and current_option['Required']:
-                            missed += option + ', '
+                missed += self.payloads.validate_options(current_payload)
 
-            if len(missed) > 0:
+            if missed:
                 self.badges.print_error(f"These options are failed to validate: {missed[:-2]}!")
             else:
                 try:
                     if current_payload:
-                        hatvenom = HatVenom()
-
-                        payload_data = current_payload.run()
-                        payload_details = current_payload.details
-
-                        executable = 'raw'
-                        for executable_format in self.types.formats:
-                            if payload_details['Platform'] in self.types.formats[executable_format]:
-                                executable = executable_format
-                                break
-
-                        if isinstance(payload_data, tuple):
-                            raw = hatvenom.generate('raw', 'generic', payload_data[0], payload_data[1])
-
-                            payload = hatvenom.generate(
-                                executable if payload_details['Architecture'] != 'generic' else 'raw',
-                                payload_details['Architecture'], payload_data[0], payload_data[1])
-                        else:
-                            raw = hatvenom.generate('raw', 'generic', payload_data)
-
-                            payload = hatvenom.generate(
-                                executable if payload_details['Architecture'] != 'generic' else 'raw',
-                                payload_details['Architecture'], payload_data)
-
-                        current_module.payload['Details'] = payload_details
-                        current_module.payload['Raw'] = raw
-                        current_module.payload['Payload'] = payload
+                        payload_data = self.payloads.run_payload(current_payload)
+                        for entry in payload_data:
+                            current_module.payload[entry] = payload_data[entry]
 
                     self.badges.print_empty()
                     self.entry_to_module(current_module)
@@ -494,8 +472,7 @@ class Modules:
                     self.badges.print_error(f"{current_module_name.split('/')[0].title()} module failed!")
 
                 if current_payload:
-                    for key in ['Details', 'Raw', 'Payload']:
-                        if key in current_module.payload:
-                            del current_module.payload[key]
+                    for entry in payload_data:
+                        del current_module.payload[entry]
         else:
             self.badges.print_warning("No module selected.")

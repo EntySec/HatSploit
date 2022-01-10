@@ -24,25 +24,18 @@
 # SOFTWARE.
 #
 
-from hatsploit.lib.options import Options
+from hatvenom import HatVenom
+
+from hatsploit.lib.payloads import Payloads
 
 
-class Parser:
-    def parse_options(self, options, option=None):
-        if not option:
-            values = []
-            for option_name in options:
-                if option_name.upper() not in Options().handler_options['Module']:
-                    if option_name.upper() not in Options().handler_options['Payload']:
-                        values.append(str(options[option_name]['Value']))
-            if len(values) == 1:
-                return values[0]
-            return values
-        return str(options[option]['Value'])
+class PayloadTools:
+    payloads = Payloads()
 
-    @staticmethod
-    def parse_ports_range(ports_range):
-        start = int(ports_range.split('-')[0].strip())
-        end = int(ports_range.split('-')[1].strip())
+    def generate_payload(self, name, options={}, raw=False):
+        payload, raw_payload = self.payloads.generate_payload(name, options)
+        return raw_payload if raw else payload
 
-        return start, end
+    def assemble(self, code, arch):
+        hatvenom = HatVenom()
+        return hatvenom.assemble(code, arch)

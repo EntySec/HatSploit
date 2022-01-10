@@ -42,6 +42,7 @@ from hatsploit.lib.loot import Loot
 
 from hatsploit.lib.config import Config
 from hatsploit.lib.jobs import Jobs
+from hatsploit.lib.options import Options
 from hatsploit.lib.sessions import Sessions
 from hatsploit.lib.modules import Modules
 from hatsploit.lib.payloads import Payloads
@@ -63,6 +64,7 @@ class Console:
 
     config = Config()
     jobs = Jobs()
+    options = Options()
     sessions = Sessions()
     modules = Modules()
     payloads = Payloads()
@@ -71,7 +73,10 @@ class Console:
     history = config.path_config['history_path']
     prompt = config.core_config['details']['prompt']
 
-    handler_options = {}
+    handler_options = {
+        'Module': {},
+        'Payload': {}
+    }
 
     def check_install(self):
         if os.path.exists(self.config.path_config['root_path']):
@@ -97,9 +102,13 @@ class Console:
             sys.exit(1)
 
     def update_events(self):
+        current_module = self.modules.get_current_module_object()
+        current_payload = self.payloads.get_current_payload()
+
         self.jobs.stop_dead()
         self.sessions.close_dead()
-        self.add_handler_options()
+
+        self.options.add_handler_options(current_module, current_payload)
 
     def launch_menu(self):
         while True:
@@ -211,86 +220,3 @@ class Console:
         if do_shell:
             self.launch_history()
             self.launch_menu()
-
-    def add_handler_options(self):
-        handler_options = {
-            'LHOST': {
-                'Description': "Local host to listen on.",
-                'Value': "0.0.0.0",
-                'Type': "ip",
-                'Required': True
-            },
-            'LPORT': {
-                'Description': "Local port to listen on.",
-                'Value': 8888,
-                'Type': "port",
-                'Required': True
-            },
-            'RBPORT': {
-                'Description': "Remote bind port.",
-                'Value': 8888,
-                'Type': "port",
-                'Required': True
-            }
-        }
-
-        if self.modules.check_current_module():
-            module = self.modules.get_current_module_name()
-            current_module = self.modules.get_current_module_object()
-
-            if module not in self.handler_options:
-                self.handler_options[module] = handler_options
-
-            if hasattr(current_module, "payload"):
-                current_module.options.update({
-                    'BLINDER': {
-                        'Description': 'Use Blinder.',
-                        'Value': 'yes' if self.payloads.get_current_payload() is None else 'no',
-                        'Type': "boolean",
-                        'Required': True
-                    }
-                })
-
-            required = True
-            if 'BLINDER' in current_module.options and not self.payloads.get_current_payload():
-                if current_module.options['BLINDER']['Value'].lower() in ['yes', 'y']:
-                    required = False
-                    current_module.payload['Value'] = None
-
-            payload = self.payloads.get_current_payload()
-
-            if hasattr(current_module, "payload"):
-                current_module.options.update({
-                    'PAYLOAD': {
-                        'Description': 'Payload to use.',
-                        'Value': current_module.payload['Value'],
-                        'Type': "payload",
-                        'Required': required
-                    }
-                })
-
-            if payload is not None:
-                current_module.options.update(self.handler_options[module])
-
-                for option in current_module.options:
-                    if option.lower() in ['lhost', 'lport', 'rbport']:
-                        self.handler_options[module][option]['Value'] = current_module.options[option]['Value']
-
-                if payload.details['Type'] == 'reverse_tcp':
-                    for option in list(current_module.options):
-                        if option.lower() in ['rbport']:
-                            current_module.options.pop(option)
-
-                elif payload.details['Type'] == 'bind_tcp':
-                    for option in list(current_module.options):
-                        if option.lower() in ['lhost', 'lport']:
-                            current_module.options.pop(option)
-
-                else:
-                    for option in list(current_module.options):
-                        if option.lower() in ['lhost', 'lport', 'rbport']:
-                            current_module.options.pop(option)
-            else:
-                for option in list(current_module.options):
-                    if option.lower() in ['lhost', 'lport', 'rbport']:
-                        current_module.options.pop(option)

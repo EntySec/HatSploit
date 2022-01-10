@@ -92,17 +92,18 @@ class Handler(Handle, Post, Blinder):
         if self.local_storage.get("auto_interaction"):
             self.sessions.interact_with_session(session_id)
 
-    def module_handler(self, host=None, sender=None, args=[], concat=None, location=None,
+    def module_handle(self, host=None, sender=None, args=[], concat=None, location=None,
                        background=None, method=None, timeout=None, linemax=100, ensure=False):
         module = self.modules.get_current_module_object()
+        rhost = host
 
-        options = module.options
+        options = module.handler
         payload = module.payload
 
         if 'BLINDER' in options:
-            if options['BLINDER']['Value'].lower() in ['yes', 'y']:
+            if options['BLINDER'].lower() in ['yes', 'y']:
                 if sender is not None:
-                    self.handler(
+                    self.handle(
                         sender=sender,
                         args=args,
                         blinder=True
@@ -113,11 +114,12 @@ class Handler(Handle, Post, Blinder):
         stage = payload['Payload'] if method != 'raw' else payload['Raw']
 
         if payload['Details']['Type'] == 'bind_tcp':
-            port = options['RBPORT']['Value']
+            host = options['RBHOST']
+            port = options['RBPORT']
 
         elif payload['Details']['Type'] == 'reverse_tcp':
-            host = options['LHOST']['Value']
-            port = options['LPORT']['Value']
+            host = options['LHOST']
+            port = options['LPORT']
 
         else:
             host, port = None, None
@@ -136,12 +138,14 @@ class Handler(Handle, Post, Blinder):
             if module_platform not in self.types.platforms:
                 platform = module_platform
 
-        return self.handler(
+        return self.handle(
             payload=stage,
             sender=sender,
 
             host=host,
             port=port,
+
+            rhost=rhost,
 
             payload_category=payload['Details']['Category'],
             payload_type=payload['Details']['Type'],
@@ -164,7 +168,7 @@ class Handler(Handle, Post, Blinder):
             session=session
         )
 
-    def handler(self, payload=None, sender=None, host=None, port=None, payload_category='stager',
+    def handle(self, payload=None, sender=None, host=None, port=None, rhost=None, payload_category='stager',
                 payload_type='one_side', args=[], concat=None, location=None, background=None,
                 method=None, timeout=None, linemax=100, platform='generic', architecture='generic',
                 ensure=False, blinder=False, session=None):
@@ -214,10 +218,41 @@ class Handler(Handle, Post, Blinder):
         remote[0].details['Architecture'] = architecture
 
         if remote[1] not in ('127.0.0.1', '0.0.0.0'):
-            host = remote[1]
+            rhost = remote[1]
 
-        self.open_session(host, port, platform, architecture, session_type, remote[0])
+        self.open_session(rhost, port, platform, architecture, session_type, remote[0])
         return True
+
+    def module_handle_session(self, payload_type='one_side', session=None, timeout=None):
+        module = self.modules.get_current_module_object()
+
+        options = module.handler
+        session = session if session is not None else HatSploitSession
+
+        if payload_type == 'reverse_tcp':
+            new_session, host = self.listen_session(
+                options['LHOST'],
+                options['LPORT'],
+                session, timeout
+            )
+
+            if not new_session and not host:
+                return None
+
+        elif payload_type == 'bind_tcp':
+            new_session = self.connect_session(
+                options['RBHOST'],
+                options['RBPORT'],
+                session, timeout
+            )
+
+            if not new_session:
+                return None
+
+        else:
+            return None
+
+        return new_session, host
 
     def handle_session(self, host=None, port=None, payload_type='one_side', session=None, timeout=None):
         session = session if session is not None else HatSploitSession

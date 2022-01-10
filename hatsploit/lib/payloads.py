@@ -26,15 +26,20 @@
 
 import os
 
+from hatvenom import HatVenom
+
 from hatsploit.core.base.types import Types
 from hatsploit.core.cli.badges import Badges
 from hatsploit.core.db.importer import Importer
+
+from hatsploit.lib.options import Options
 from hatsploit.lib.storage import LocalStorage
 
 
 class Payloads:
     types = Types()
     importer = Importer()
+    options = Options()
     local_storage = LocalStorage()
     badges = Badges()
 
@@ -104,10 +109,18 @@ class Payloads:
                                                 self.local_storage.get("current_module_number")).details['Module']
         return None
 
-    def import_payload(self, module_name, name):
+    def get_payload(self, name):
         payloads = self.get_payload_object(name)
         try:
             payload_object = self.importer.import_payload(payloads['Path'])
+        except Exception:
+            return None
+        return payload_object
+
+    def import_payload(self, module_name, name):
+        payload_object = self.get_payload(name)
+
+        if payload_object:
             current_module_name = module_name
 
             imported_payloads = self.local_storage.get("imported_payloads")
@@ -129,8 +142,7 @@ class Payloads:
                     }
                 }
             self.local_storage.set("imported_payloads", imported_payloads)
-        except Exception:
-            return None
+
         return payload_object
 
     def check_imported(self, module_name, name):
@@ -143,18 +155,90 @@ class Payloads:
                     return True
         return False
 
+    def validate_options(self, payload_object):
+        current_payload = payload_object
+        missed = ""
+
+        if hasattr(current_payload, "options"):
+            for option in current_payload.options:
+                current_option = current_payload.options[option]
+                if not current_option['Value'] and current_option['Value'] != 0 and current_option['Required']:
+                    missed += option + ', '
+
+        return missed
+
+    def run_payload(self, payload_object):
+        hatvenom = HatVenom()
+        current_payload = payload_object
+
+        if not self.validate_options(current_payload):
+            payload_options = None
+
+            if hasattr(current_payload, "options"):
+                payload_options = current_payload.options
+
+            payload_data = current_payload.run()
+            payload_details = current_payload.details
+
+            executable = 'raw'
+            for executable_format in self.types.formats:
+                if payload_details['Platform'] in self.types.formats[executable_format]:
+                    executable = executable_format
+                    break
+
+            if isinstance(payload_data, tuple):
+                raw = hatvenom.generate('raw', 'generic', payload_data[0], payload_data[1])
+
+                payload = hatvenom.generate(
+                    executable if payload_details['Architecture'] != 'generic' else 'raw',
+                    payload_details['Architecture'], payload_data[0], payload_data[1])
+            else:
+                raw = hatvenom.generate('raw', 'generic', payload_data)
+
+                payload = hatvenom.generate(
+                    executable if payload_details['Architecture'] != 'generic' else 'raw',
+                    payload_details['Architecture'], payload_data)
+
+            return {
+                'Options': payload_options,
+                'Details': payload_details,
+                'Payload': payload,
+                'Raw': raw
+            }
+        return {
+            'Options': None,
+            'Details': None,
+            'Payload': None,
+            'Raw': None
+        }
+
+    def generate_payload(self, name, options={}):
+        payload_object = self.get_payload(name)
+        if payload_object:
+            self.options.add_payload_handler(payload_object)
+
+            if hasattr(payload_object, "options"):
+                for option in options:
+                    payload_object.options[option]['Value'] = options[option]
+
+            result = self.run_payload(payload_object)
+            return result['Payload'], result['Raw']
+        return None
+
     def get_current_payload(self):
         imported_payloads = self.local_storage.get("imported_payloads")
         current_module_object = self.get_current_module_object()
-        current_module_name = current_module_object.details['Module']
+        
+        if current_module_object:
+            current_module_name = current_module_object.details['Module']
 
-        if hasattr(current_module_object, "payload"):
-            name = current_module_object.payload['Value']
+            if hasattr(current_module_object, "payload"):
+                name = current_module_object.payload['Value']
 
-            if imported_payloads:
-                if current_module_name in imported_payloads:
-                    if name in imported_payloads[current_module_name]:
-                        return imported_payloads[current_module_name][name]
+                if imported_payloads:
+                    if current_module_name in imported_payloads:
+                        if name in imported_payloads[current_module_name]:
+                            return imported_payloads[current_module_name][name]
         return None
 
     def add_payload(self, module_name, name):

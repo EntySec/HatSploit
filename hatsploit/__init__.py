@@ -130,7 +130,7 @@ def main():
     elif args.rest_api:
         if args.port:
             hsf.jobs.create_job(
-                "HatSploit REST API",
+                None,
                 None,
                 hsf.api.init,
                 [args.port],
@@ -139,7 +139,7 @@ def main():
 
         else:
             hsf.jobs.create_job(
-                "HatSploit REST API",
+                None,
                 None,
                 hsf.api.init,
                 hidden=True
