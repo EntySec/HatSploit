@@ -1,7 +1,7 @@
 <h3 align="center"><img src="https://hatsploit.netlify.app/images/logo-footer.png" alt="logo" height="250px"></h3>
 
 <p align="center">
-    <b>HatSploit Framework WOW</b><br>
+    <b>HatSploit Framework</b><br>
     <br>
     <a href="https://www.codefactor.io/repository/github/entysec/hatsploit"><img src="https://www.codefactor.io/repository/github/entysec/hatsploit/badge" alt="CodeFactor" /></a><br>
     <br>
