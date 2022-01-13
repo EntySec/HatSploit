@@ -58,33 +58,23 @@ class Server:
 
     jobs = Jobs()
 
-    def start_server(self, host, port, payload, forever=False, path='/', job=False):
-        def init_server():
-            try:
-                self.badges.print_process(f"Starting HTTP listener on port {str(port)}...")
-                httpd = socketserver.TCPServer((host, int(port)), Handler)
+    def start_server(self, host, port, payload, forever=False, path='/'):
+        try:
+            self.badges.print_process(f"Starting HTTP listener on port {str(port)}...")
+            httpd = socketserver.TCPServer((host, int(port)), Handler)
 
-                httpd.RequestHandlerClass.payload_path = path
-                httpd.RequestHandlerClass.payload = payload
+            httpd.RequestHandlerClass.payload_path = path
+            httpd.RequestHandlerClass.payload = payload
 
-                if forever:
-                    while True:
-                        httpd.handle_request()
-                else:
+            if forever:
+                while True:
                     httpd.handle_request()
-                httpd.server_close()
-                httpd.shutdown()
-            except Exception:
-                self.badges.print_error(f"Failed to start HTTP listener on port {str(port)}!")
-        if job:
-            self.jobs.create_job(
-                None,
-                None,
-                init_server,
-                hidden=True
-            )
-        else:
-            init_server()
+            else:
+                httpd.handle_request()
+            httpd.server_close()
+            httpd.shutdown()
+        except Exception:
+            self.badges.print_error(f"Failed to start HTTP listener on port {str(port)}!")
 
     def connect(self, remote_host, remote_port, timeout=None):
         try:
