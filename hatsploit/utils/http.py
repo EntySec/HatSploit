@@ -28,13 +28,18 @@ import requests
 import socket
 import urllib3
 
+from hatsploit.lib.server import Server
 from hatsploit.core.cli.badges import Badges
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 
 class HTTPClient:
+    server = Server()
     badges = Badges()
+
+    def http_server(self, host, port, data, forever=False, path='/'):
+        self.server.start_server(host, port, data, forever, path)
 
     def http_request(self, method, host, port, path='/', ssl=False, timeout=10, output=True, session=requests,
                      **kwargs):
