@@ -32,7 +32,7 @@ from hatsploit.core.cli.tables import Tables
 from hatsploit.core.cli.tools import Tools
 
 
-class Payload(FMT, Badges, Colors, Parser, Tables):
+class Payload(FMT, Badges, Colors, Parser, Tables, Tools):
     details = {
         'Category': "",
         'Name': "",
