@@ -29,6 +29,8 @@ from hatsploit.utils.fs import FSTools
 from hatsploit.core.cli.badges import Badges
 
 from hatsploit.core.session.push.echo import Echo
+from hatsploit.core.session.push.bash_echo import BashEcho
+
 from hatsploit.core.session.push.printf import Printf
 from hatsploit.core.session.push.certutil import Certutil
 
@@ -47,6 +49,10 @@ class Push(FSTools):
         'echo': [
             types.platforms['unix'],
             Echo()
+        ],
+        'bash_echo': [
+            types.platforms['unix'],
+            BashEcho()
         ],
         'certutil': [
             types.platforms['windows'],
