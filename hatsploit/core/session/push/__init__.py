@@ -24,8 +24,9 @@
 # SOFTWARE.
 #
 
-from hatsploit.utils.fs import FSTools
+from collections import OrderedDict
 
+from hatsploit.utils.fs import FSTools
 from hatsploit.core.cli.badges import Badges
 
 from hatsploit.core.session.push.echo import Echo
@@ -41,7 +42,7 @@ class Push(FSTools):
     badges = Badges()
     types = Types()
 
-    push_methods = {
+    push_methods = OrderedDict({
         'printf': [
             types.platforms['unix'],
             Printf()
@@ -58,7 +59,7 @@ class Push(FSTools):
             types.platforms['windows'],
             Certutil()
         ]
-    }
+    })
 
     def push(self, platform, file, sender, location, args=[], method=None, linemax=100):
         if method in self.push_methods or not method:
