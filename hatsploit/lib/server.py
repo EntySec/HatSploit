@@ -43,12 +43,13 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         self.badges = Badges()
 
         if self.path == self.payload_path:
-            self.badges.print_process(f"Connecting to {self.client_address[0]}...")
+            self.badges.print_process(f"Establishing connection ({self.client_address[0]}:{self.client_address[1]} -> {self.local_host}:{self.local_port})...")
 
             self.send_response(200)
             self.send_header("Content-type", "text/html")
             self.end_headers()
 
+            self.badges.print_process(f"Delivering payload page...")
             self.wfile.write(bytes(self.payload, "utf8"))
 
 
@@ -62,6 +63,9 @@ class Server:
         try:
             self.badges.print_process(f"Starting HTTP listener on port {str(port)}...")
             httpd = socketserver.TCPServer((host, int(port)), Handler)
+
+            httpd.RequestHandlerClass.local_host = host
+            httpd.RequestHandlerClass.local_port = port
 
             httpd.RequestHandlerClass.payload_path = path
             httpd.RequestHandlerClass.payload = payload
