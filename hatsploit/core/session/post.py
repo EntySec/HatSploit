@@ -81,6 +81,7 @@ class Post(Push, StringTools):
                 return
 
             self.post_methods[method][1].push(payload, sender, path, args, linemax)
+            self.badges.print_process(command)
             sender(*args, command)
         else:
             self.badges.print_error("Invalid post method!")
