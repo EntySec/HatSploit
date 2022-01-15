@@ -38,7 +38,7 @@ class Echo:
         return ''.join(byte_octals)
 
     def push(self, data, sender, location, args=[], linemax=100):
-        echo_stream = "echo -en '{}' >> {}"
+        echo_stream = "echo -n '{}' >> {}"
         echo_max_length = linemax
 
         size = len(data)
