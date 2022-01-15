@@ -26,6 +26,8 @@
 
 import os
 
+from collections import OrderedDict
+
 from hatsploit.utils.fs import FSTools
 
 from hatsploit.core.cli.badges import Badges
@@ -38,12 +40,12 @@ class Pull(FSTools):
     badges = Badges()
     types = Types()
 
-    pull_methods = {
+    pull_methods = OrderedDict({
         'cat': [
             types.platforms['unix'],
             Cat()
         ]
-    }
+    })
 
     def pull(self, platform, file, sender, location, args=[], method=None):
         if method in self.pull_methods or not method:
