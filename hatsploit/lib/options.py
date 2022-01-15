@@ -188,8 +188,8 @@ class Options:
                             self.remove_options(current_payload.options, ['RHOST', 'RPORT'])
 
                         if special != 'bind_tcp':
-                            self.remove_options(current_module, ['RBHOST', 'RBPORT'])
-                            self.remove_options(current_payload, ['BPORT'])
+                            self.remove_options(current_module.options, ['RBHOST', 'RBPORT'])
+                            self.remove_options(current_payload.options, ['BPORT'])
                 else:
                     self.remove_options(current_module.options, ['LHOST', 'LPORT', 'RBHOST', 'RBPORT'])
 
