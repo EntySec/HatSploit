@@ -29,6 +29,7 @@ from hatsploit.core.cli.colors import Colors
 from hatsploit.core.cli.fmt import FMT
 from hatsploit.core.cli.parser import Parser
 from hatsploit.core.cli.tables import Tables
+from hatsploit.core.cli.tools import Tools
 
 
 class Payload(FMT, Badges, Colors, Parser, Tables):
