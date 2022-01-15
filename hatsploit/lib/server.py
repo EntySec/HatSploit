@@ -44,8 +44,10 @@ class Handler(http.server.SimpleHTTPRequestHandler):
 
         if self.path == self.payload_path:
             self.badges.print_process(
-                (f"Establishing connection ({self.client_address[0]}:{self.client_address[1]}"
-                 f" -> {self.local_host}:{self.local_port})...")
+                (
+                    f"Establishing connection ({self.client_address[0]}:{self.client_address[1]}"
+                    f" -> {self.local_host}:{self.local_port})..."
+                )
             )
 
             self.send_response(200)
