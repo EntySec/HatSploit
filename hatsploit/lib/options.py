@@ -112,7 +112,11 @@ class Options:
                 blinder_option = 'blinder'.upper()
                 payload_option = 'payload'.upper()
 
-                handler_options = self.handler_options
+                handler_options = self.local_storage.get("default_handler_options")
+                if not handler_options:
+                    self.local_storage.set("default_handler_options", self.handler_options)
+                    handler_options = self.handler_options
+
                 saved_handler_options = self.local_storage.get("handler_options")
 
                 if not saved_handler_options:
@@ -194,7 +198,7 @@ class Options:
                     self.remove_options(current_module.options, ['LHOST', 'LPORT', 'RBHOST', 'RBPORT'])
 
                 for option in current_module.options:
-                    if option.upper() in self.handler_options['Module']:
+                    if option.upper() in handler_options['Module']:
                         saved_handler_options['Module'][module][option]['Value'] = current_module.options[option]['Value']
 
                 current_module.handler = {}
@@ -205,7 +209,7 @@ class Options:
                     payload = current_module.payload['Value']
 
                     for option in current_payload.options:
-                        if option.upper() in self.handler_options['Payload']:
+                        if option.upper() in handler_options['Payload']:
                             saved_handler_options['Payload'][payload][option]['Value'] = current_payload.options[option]['Value']
 
                     current_payload.handler = {}
