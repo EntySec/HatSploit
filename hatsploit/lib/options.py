@@ -24,6 +24,8 @@
 # SOFTWARE.
 #
 
+import copy
+
 from hatsploit.lib.storage import LocalStorage
 from hatsploit.utils.tcp import TCPClient
 
@@ -112,11 +114,7 @@ class Options:
                 blinder_option = 'blinder'.upper()
                 payload_option = 'payload'.upper()
 
-                handler_options = self.local_storage.get("default_handler_options")
-                if not handler_options:
-                    self.local_storage.set("default_handler_options", self.handler_options)
-                    handler_options = self.handler_options
-
+                handler_options = copy.deepcopy(self.handler_options)
                 saved_handler_options = self.local_storage.get("handler_options")
 
                 if not saved_handler_options:
