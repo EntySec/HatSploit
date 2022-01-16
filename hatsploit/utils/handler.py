@@ -129,6 +129,11 @@ class Handler(Handle, Post, Blinder):
         else:
             session = None
 
+        if 'Arguments' in payload['Details']:
+            arguments = payload['Details']['Arguments']
+        else:
+            arguments = None
+
         platform = payload['Details']['Platform']
         architecture = payload['Details']['Architecture']
 
@@ -165,13 +170,14 @@ class Handler(Handle, Post, Blinder):
             ensure=ensure,
             blinder=False,
 
-            session=session
+            session=session,
+            arguments=arguments
         )
 
     def handle(self, payload=None, sender=None, host=None, port=None, rhost=None, payload_category='stager',
                 payload_type='one_side', args=[], concat=None, location=None, background=None,
                 method=None, timeout=None, linemax=100, platform='generic', architecture='generic',
-                ensure=False, blinder=False, session=None):
+                ensure=False, blinder=False, session=None, arguments=None):
 
         if blinder:
             self.blinder(sender, args)
@@ -193,7 +199,8 @@ class Handler(Handle, Post, Blinder):
             linemax=linemax,
 
             platform=platform,
-            ensure=ensure
+            ensure=ensure,
+            arguments=arguments
         ):
             self.badges.print_error("Failed to send payload stage!")
             return False
@@ -286,7 +293,7 @@ class Handler(Handle, Post, Blinder):
 
     def send_payload(self, payload=None, sender=None, payload_category='stager', payload_type='one_side',
                      args=[], concat=None, location=None, background=None, method=None, linemax=100,
-                     platform='generic', ensure=False):
+                     platform='generic', ensure=False, arguments=None):
         if payload is None:
             self.badges.print_error("Payload stage is not found!")
             return False
@@ -306,6 +313,7 @@ class Handler(Handle, Post, Blinder):
                     [
                         platform,
                         payload,
+                        arguments,
                         sender,
                         args,
                         method,
