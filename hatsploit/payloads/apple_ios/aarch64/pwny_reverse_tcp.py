@@ -31,14 +31,14 @@ class HatSploitPayload(Payload, Pwny):
         remote_host = self.handler['RHOST']
         remote_port = self.handler['RPORT']
 
+        self.details['Arguments'] = self.encode_data(
+            host=remote_host,
+            port=remote_port
+        )
+
         return (
-            self.get_template(
+            self.get_pwny(
                 self.details['Platform'],
                 self.details['Architecture']
             )
-        ), {
-            'data': self.encode_data(
-                host=remote_host,
-                port=remote_port
-            )
-        }
+        )
