@@ -28,8 +28,9 @@ class HatSploitPayload(Payload, Pwny):
     }
 
     def run(self):
-        remote_host = self.handler['RHOST']
-        remote_port = self.handler['RPORT']
-
-        return self.get_template(self.details['Platform'], self.details['Architecture'],
-                                 remote_host, remote_port)
+        return self.get_template(
+            self.details['Platform'],
+            self.details['Architecture'],
+            self.handler['RHOST'],
+            self.handler['RPORT']
+        )
