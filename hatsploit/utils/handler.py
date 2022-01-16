@@ -313,8 +313,8 @@ class Handler(Handle, Post, Blinder):
                     [
                         platform,
                         payload,
-                        arguments,
                         sender,
+                        arguments,
                         args,
                         method,
                         location,
