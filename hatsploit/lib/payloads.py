@@ -37,6 +37,7 @@ from hatsploit.lib.storage import LocalStorage
 
 
 class Payloads:
+    hatvenom = HatVenom()
     types = Types()
     importer = Importer()
     options = Options()
@@ -168,7 +169,6 @@ class Payloads:
         return missed
 
     def run_payload(self, payload_object):
-        hatvenom = HatVenom()
         current_payload = payload_object
 
         if not self.validate_options(current_payload):
@@ -187,15 +187,15 @@ class Payloads:
                     break
 
             if isinstance(payload_data, tuple):
-                raw = hatvenom.generate('raw', 'generic', payload_data[0], payload_data[1])
+                raw = self.hatvenom.generate('raw', 'generic', payload_data[0], payload_data[1])
 
-                payload = hatvenom.generate(
+                payload = self.hatvenom.generate(
                     executable if payload_details['Architecture'] != 'generic' else 'raw',
                     payload_details['Architecture'], payload_data[0], payload_data[1])
             else:
-                raw = hatvenom.generate('raw', 'generic', payload_data)
+                raw = self.hatvenom.generate('raw', 'generic', payload_data)
 
-                payload = hatvenom.generate(
+                payload = self.hatvenom.generate(
                     executable if payload_details['Architecture'] != 'generic' else 'raw',
                     payload_details['Architecture'], payload_data)
 
