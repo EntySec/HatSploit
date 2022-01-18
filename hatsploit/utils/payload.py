@@ -30,12 +30,12 @@ from hatsploit.lib.payloads import Payloads
 
 
 class PayloadTools:
+    hatvenom = HatVenom()
     payloads = Payloads()
 
     def generate_payload(self, name, options={}, raw=False):
         payload, raw_payload = self.payloads.generate_payload(name, options)
         return raw_payload if raw else payload
 
-    def assemble(self, code, arch):
-        hatvenom = HatVenom()
-        return hatvenom.assemble(code, arch)
+    def assemble(self, arch, code):
+        return self.hatvenom.assemble(arch, code)
