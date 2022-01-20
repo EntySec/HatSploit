@@ -25,12 +25,15 @@
 #
 
 from hatvenom import HatVenom
+from hatloads import HatLoads
 
 from hatsploit.lib.payloads import Payloads
 
 
 class PayloadTools:
     hatvenom = HatVenom()
+    hatloads = HatLoads()
+
     payloads = Payloads()
 
     def generate_payload(self, name, options={}, raw=False):
@@ -39,3 +42,6 @@ class PayloadTools:
 
     def assemble(self, arch, code):
         return self.hatvenom.assemble(arch, code)
+
+    def get_payload(self, platform, arch, payload, options={}):
+        return self.hatloads.get_payload(platform, arch, payload, options)
