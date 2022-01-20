@@ -46,6 +46,7 @@ setup(name='hatsploit',
           'adb-shell', 'flask', 'flask_cors', 'flask_restful', 'pyngrok',
 
           'hatvenom @ git+http://github.com/EntySec/HatVenom',
+          'hatloads @ git+http://github.com/EntySec/HatLoads',
           'pwny @ git+http://github.com/EntySec/Pwny'
       ],
       zip_safe=False
