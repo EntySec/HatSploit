@@ -29,66 +29,82 @@ from flask import Flask
 from flask_restful import Resource, Api, reqparse
 
 from hatsploit.lib.sessions import Sessions
+from hatsploit.lib.config import Config
 
 
 class SessionManager(Resource):
     sessions = Sessions()
+    config = Config()
 
     def get(self):
         parser = reqparse.RequestParser()
+
         parser.add_argument('id')
-        parser.add_argument('list')
         parser.add_argument('command')
+        parser.add_argument('output')
+
+        parser.add_argument('path')
+        parser.add_argument('download')
+        parser.add_argument('upload')
+
         parser.add_argument('close')
         parser.add_argument('count')
-        parser.add_argument('output')
+        parser.add_argument('list')
+
         args = parser.parse_args()
 
-        if args['command'] and args['id']:
-            session = self.sessions.get_session(args['id'])
+        if args['id']:
+            if args['command']:
+                session = self.sessions.get_session(args['id'])
 
-            if session:
-                if args['output']:
-                    if args['output'].lower() in ['yes', 'y']:
-                        output = session.send_command(args['command'], output=True)
-                        return output, 200
-                session.send_command(args['command'])
-            return "", 200
+                if session:
+                    if args['output']:
+                        if args['output'].lower() in ['yes', 'y']:
+                            output = session.send_command(args['command'], output=True)
+                            return output, 200
 
-        if args['close']:
-            self.sessions.close_session(args['close'])
-            return "", 200
+                    session.send_command(args['command'])
+                return "", 200
 
-        if args['count']:
-            sessions = self.sessions.get_all_sessions()
-            if sessions:
-                if args['count'] == 'all':
-                    return len(sessions), 200
-                counter = 0
-                for session in sessions:
-                    if sessions[session]['platform'] == args['count']:
-                        counter += 1
-                return counter, 200
-            return 0, 200
+            elif args['download']:
+                self.sessions.download_from_session(
+                    args['id'],
+                    args['download'],
+                    args['path'] if args['path'] else self.config.path_config['loot_path']
+                )
 
-        if args['list']:
-            sessions = self.sessions.get_all_sessions()
-            data = {}
+            elif args['upload'] and args['path']:
+                self.session.upload_to_session(
+                    args['id'],
+                    args['upload'],
+                    args['path']
+                )
 
-            if sessions:
-                for session in sessions:
-                    if args['list'] == 'all':
-                        data.update({
-                            session: {
-                                'platform': sessions[session]['platform'],
-                                'architecture': sessions[session]['architecture'],
-                                'type': sessions[session]['type'],
-                                'host': sessions[session]['host'],
-                                'port': sessions[session]['port']
-                            }
-                        })
-                    else:
-                        if sessions[session]['platform'] == args['list']:
+        else:
+            if args['close']:
+                self.sessions.close_session(args['close'])
+                return "", 200
+
+        
+            elif args['count']:
+                sessions = self.sessions.get_all_sessions()
+                if sessions:
+                    if args['count'] == 'all':
+                        return len(sessions), 200
+                    counter = 0
+                    for session in sessions:
+                        if sessions[session]['platform'] == args['count']:
+                            counter += 1
+                    return counter, 200
+                return 0, 200
+
+            elif args['list']:
+                sessions = self.sessions.get_all_sessions()
+                data = {}
+
+                if sessions:
+                    for session in sessions:
+                        if args['list'] == 'all':
                             data.update({
                                 session: {
                                     'platform': sessions[session]['platform'],
@@ -98,7 +114,18 @@ class SessionManager(Resource):
                                     'port': sessions[session]['port']
                                 }
                             })
-            return data, 200
+                        else:
+                            if sessions[session]['platform'] == args['list']:
+                                data.update({
+                                    session: {
+                                        'platform': sessions[session]['platform'],
+                                        'architecture': sessions[session]['architecture'],
+                                        'type': sessions[session]['type'],
+                                        'host': sessions[session]['host'],
+                                        'port': sessions[session]['port']
+                                    }
+                                })
+                return data, 200
 
         return "", 200
 
