@@ -52,6 +52,8 @@ class Commands:
             if not self.execute.execute_builtin_method(commands):
                 if not self.execute.execute_custom_command(commands, handler):
                     self.badges.print_error(f"Unrecognized command: {commands[0]}!")
+                    return False
+        return True
 
     def show_commands(self, handler):
         self.show.show_custom_commands(handler)
