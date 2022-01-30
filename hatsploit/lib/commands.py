@@ -47,11 +47,12 @@ class Commands:
     def execute_system_command(self, commands):
         self.execute.execute_system(commands)
 
-    def execute_custom_command(self, commands, handler):
+    def execute_custom_command(self, commands, handler, error=True):
         if commands:
             if not self.execute.execute_builtin_method(commands):
                 if not self.execute.execute_custom_command(commands, handler):
-                    self.badges.print_error(f"Unrecognized command: {commands[0]}!")
+                    if error:
+                        self.badges.print_error(f"Unrecognized command: {commands[0]}!")
                     return False
         return True
 
