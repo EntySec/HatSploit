@@ -39,8 +39,8 @@ class HatSploitPayload(Payload, PayloadTools):
         message = self.parse_options(self.options)
 
         data = (
-            b'\xe8' + struct.pack("<I", len(message.encode() + b'\x00') + 0xd)
-            b'/usr/bin/say\x00'
+            b'\xe8' + struct.pack("<I", len(message.encode() + b'\x00') + 0xd) +
+            b'/usr/bin/say\x00' +
             message.encode() + b'\x00'
         )
 
