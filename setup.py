@@ -29,7 +29,7 @@ from setuptools import setup, find_packages
 setup(name='hatsploit',
       version='5.0.0',
       description='Modular penetration testing platform that enables you to write, test, and execute exploit code.',
-      url='http://github.com/EntySec/HatSploit',
+      url='https://github.com/EntySec/HatSploit',
       author='EntySec',
       author_email='entysec@gmail.com',
       license='MIT',
@@ -45,9 +45,9 @@ setup(name='hatsploit',
           'impacket', 'packaging', 'pyyaml', 'requests', 'paramiko',
           'adb-shell', 'flask', 'flask_cors', 'flask_restful', 'pyngrok',
 
-          'hatvenom @ git+http://github.com/EntySec/HatVenom',
-          'hatloads @ git+http://github.com/EntySec/HatLoads',
-          'pwny @ git+http://github.com/EntySec/Pwny'
+          'hatvenom @ git+https://github.com/EntySec/HatVenom',
+          'hatloads @ git+https://github.com/EntySec/HatLoads',
+          'pwny @ git+https://github.com/EntySec/Pwny'
       ],
       zip_safe=False
 )
