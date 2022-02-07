@@ -6,9 +6,10 @@
 #
 
 from hatsploit.lib.payload import Payload
+from hatsploit.utils.payload import PayloadTools
 
 
-class HatSploitPayload(Payload):
+class HatSploitPayload(Payload, PayloadTools):
     details = {
         'Category': "stager",
         'Name': "Linux x64 Shell Bind TCP",
