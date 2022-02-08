@@ -28,7 +28,7 @@ class HatSploitPayload(Payload, Pwny):
     }
 
     def run(self):
-        return self.get_template(
+        return self.get_pwny(
             self.details['Platform'],
             self.details['Architecture'],
             self.handler['RHOST'],
