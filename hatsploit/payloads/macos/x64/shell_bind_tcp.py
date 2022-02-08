@@ -28,6 +28,6 @@ class HatSploitPayload(Payload, PayloadTools):
         return self.get_payload(
             self.details['Platform'],
             self.details['Architecture'],
-            f'shell_{self.details['Type']}',
+            f"shell_{self.details['Type']}",
             self.handler
         )
