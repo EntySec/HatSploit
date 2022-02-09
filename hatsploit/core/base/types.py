@@ -35,6 +35,7 @@ class Types:
             'aix',
             'bsd',
             'macos',
+            'solaris',
             'apple_ios',
             'android',
             'windows'
@@ -45,6 +46,7 @@ class Types:
             'aix',
             'bsd',
             'macos',
+            'solaris',
             'apple_ios',
             'android'
         ],
@@ -86,6 +88,7 @@ class Types:
             'linux',
             'aix',
             'bsd',
+            'solaris',
             'android'
         ],
         'pe': [
