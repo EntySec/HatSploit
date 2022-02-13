@@ -66,7 +66,7 @@ class SessionManager(Resource):
                     session.send_command(args['command'])
                 return "", 200
 
-            elif args['download']:
+            if args['download']:
                 self.sessions.download_from_session(
                     args['id'],
                     args['download'],
@@ -86,7 +86,7 @@ class SessionManager(Resource):
                 return "", 200
 
         
-            elif args['count']:
+            if args['count']:
                 sessions = self.sessions.get_all_sessions()
                 if sessions:
                     if args['count'] == 'all':
@@ -98,7 +98,7 @@ class SessionManager(Resource):
                     return counter, 200
                 return 0, 200
 
-            elif args['list']:
+            if args['list']:
                 sessions = self.sessions.get_all_sessions()
                 data = {}
 
