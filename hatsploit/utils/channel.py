@@ -86,6 +86,22 @@ class ChannelSocket:
             return result
         self.badges.print_error("Socket is not connected!")
 
+    def print_until(self, token):
+        if self.sock.sock:
+            while True:
+                data = self.sock.sock.recv(self.read_size)
+
+                if token in data:
+                    token_index = data.index(token)
+                    token_size = len(token)
+                    
+                    self.badges.print_empty(data[:token_index])
+                    break
+
+                self.badges.print_empty(data)
+            return None
+        self.badges.print_error("Socket is not connected!")
+
     def read_until(self, token):
         if self.sock.sock:
             token = token.encode()
@@ -128,19 +144,22 @@ class ChannelSocket:
         self.badges.print_error("Socket is not connected!")
         return None
 
-    def send_token_command(self, command, token, output=True, decode=True):
+    def send_token_command(self, command, token, output=True, decode=True, display=False):
         if self.sock.sock:
             try:
                 buffer = command.encode()
                 self.send(buffer)
  
-                data = self.read_until(token)
+                if display:
+                    self.print_until(token)
+                else:
+                    data = self.read_until(token)
 
-                if output:
-                    if decode:
-                        data = data.decode(errors='ignore')
+                    if output:
+                        if decode:
+                            data = data.decode(errors='ignore')
 
-                    return data
+                        return data
             except Exception:
                 self.badges.print_warning("Connection terminated.")
                 self.terminated = True
