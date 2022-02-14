@@ -30,7 +30,7 @@ import OpenSSL
 from hatsploit.lib.loot import Loot
 
 
-class OpenSSLTools:
+class SSLTools:
     loot = Loot().loot
 
     def wrap_client(self, client, protocol=ssl.PROTOCOL_TLS, expire=365, nodename='HatSploit',
