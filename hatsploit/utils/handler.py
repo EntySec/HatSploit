@@ -82,18 +82,22 @@ class Handler(Handle, Post, Blinder):
         else:
             sender(*args, payload)
 
-    def open_session(self, host, port, session_platform, session_architecture, session_type, session):
+    def open_session(self, host, port, session_platform, session_architecture, session_type, session, on_open=None):
         session_id = self.sessions.add_session(session_platform, session_architecture, session_type,
                                                host, port, session)
         time = datetime.datetime.now().astimezone().strftime("%Y-%m-%d %H:%M:%S %Z")
 
         self.badges.print_success(f"{session_type.title()} session {str(session_id)} opened at {time}!")
 
+        if on_open:
+            on_open()
+
         if self.local_storage.get("auto_interaction"):
             self.sessions.interact_with_session(session_id)
 
     def module_handle(self, host=None, sender=None, args=[], concat=None, location=None,
-                       background=None, method=None, timeout=None, linemax=100, ensure=False):
+                      background=None, method=None, timeout=None, linemax=100, ensure=False,
+                      on_open=None):
         module = self.modules.get_current_module_object()
         rhost = host
 
@@ -171,13 +175,14 @@ class Handler(Handle, Post, Blinder):
             blinder=False,
 
             session=session,
-            arguments=arguments
+            arguments=arguments,
+            on_open=on_open
         )
 
     def handle(self, payload=None, sender=None, host=None, port=None, rhost=None, payload_category='stager',
-                payload_type='one_side', args=[], concat=None, location=None, background=None,
-                method=None, timeout=None, linemax=100, platform='generic', architecture='generic',
-                ensure=False, blinder=False, session=None, arguments=None):
+               payload_type='one_side', args=[], concat=None, location=None, background=None,
+               method=None, timeout=None, linemax=100, platform='generic', architecture='generic',
+               ensure=False, blinder=False, session=None, arguments=None, on_open=None):
 
         if blinder:
             self.blinder(sender, args)
@@ -227,7 +232,7 @@ class Handler(Handle, Post, Blinder):
         if remote[1] not in ('127.0.0.1', '0.0.0.0'):
             rhost = remote[1]
 
-        self.open_session(rhost, port, platform, architecture, session_type, remote[0])
+        self.open_session(rhost, port, platform, architecture, session_type, remote[0], on_open)
         return True
 
     def module_handle_session(self, payload_type='one_side', session=None, timeout=None):
