@@ -62,11 +62,11 @@ class OpenSSLTools:
         )
 
     def write_key(self, key, filename):
-        with open(filename, 'w') as f:
+        with open(filename, 'wb') as f:
             f.write(self.dump_key(key))
 
     def write_cert(self, cert, filename):
-        with open(filename, 'w') as f:
+        with open(filename, 'wb') as f:
             f.write(self.dump_cert(cert))
 
     @staticmethod
