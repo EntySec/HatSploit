@@ -53,11 +53,8 @@ class ChannelSocket:
         return stashed_data
 
     def disconnect(self):
-        if self.sock.sock:
-            self.sock.close()
-            return True
-        self.badges.print_error("Socket is not connected!")
-        return False
+        self.sock.close()
+        return True
 
     def send(self, data):
         if self.sock.sock:
