@@ -56,8 +56,8 @@ class OpenSSLTools:
         return ssl.wrap_socket(
             client,
             server_side=True,
-            certfile=keyfile,
-            keyfile=certfile,
+            certfile=certfile,
+            keyfile=keyfile,
             ssl_version=protocol
         )
 
