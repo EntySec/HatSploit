@@ -53,11 +53,8 @@ class ChannelSocket:
         return stashed_data
 
     def disconnect(self):
-        if self.sock.sock:
-            self.sock.close()
-            return True
-        self.badges.print_error("Socket is not connected!")
-        return False
+        self.sock.close()
+        return True
 
     def send(self, data):
         if self.sock.sock:
@@ -84,6 +81,27 @@ class ChannelSocket:
 
             self.sock.sock.setblocking(True)
             return result
+        self.badges.print_error("Socket is not connected!")
+
+    def print_until(self, token):
+        if self.sock.sock:
+            token = token.encode()
+            self.badges.print_empty(self.stash().decode(errors='ignore'), start='', end='')
+
+            while True:
+                data = self.sock.sock.recv(self.read_size)
+
+                if token in data:
+                    token_index = data.index(token)
+                    token_size = len(token)
+
+                    self.badges.print_empty(data[:token_index].decode(errors='ignore'), start='', end='')
+                    self.stashed = data[token_index+token_size:]
+
+                    break
+
+                self.badges.print_empty(data.decode(errors='ignore'), start='', end='')
+            return None
         self.badges.print_error("Socket is not connected!")
 
     def read_until(self, token):
@@ -128,19 +146,22 @@ class ChannelSocket:
         self.badges.print_error("Socket is not connected!")
         return None
 
-    def send_token_command(self, command, token, output=True, decode=True):
+    def send_token_command(self, command, token, output=True, decode=True, display=False):
         if self.sock.sock:
             try:
                 buffer = command.encode()
                 self.send(buffer)
  
-                data = self.read_until(token)
+                if display:
+                    self.print_until(token)
+                else:
+                    data = self.read_until(token)
 
-                if output:
-                    if decode:
-                        data = data.decode(errors='ignore')
+                    if output:
+                        if decode:
+                            data = data.decode(errors='ignore')
 
-                    return data
+                        return data
             except Exception:
                 self.badges.print_warning("Connection terminated.")
                 self.terminated = True
