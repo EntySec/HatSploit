@@ -77,7 +77,7 @@ class OpenSSLTools:
     @staticmethod
     def dump_cert(cert):
         TYPE_PEM = OpenSSL.crypto.FILETYPE_PEM
-        return OpenSSL.crypto.dump_certificate_request(TYPE_PEM, cert)
+        return OpenSSL.crypto.dump_certificate(TYPE_PEM, cert)
 
     @staticmethod
     def generate_key():
