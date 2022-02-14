@@ -88,17 +88,22 @@ class ChannelSocket:
 
     def print_until(self, token):
         if self.sock.sock:
+            token = token.encode()
+            self.badges.print_empty(self.stash().decode(errors='ignore'), start='', end='')
+
             while True:
                 data = self.sock.sock.recv(self.read_size)
 
                 if token in data:
                     token_index = data.index(token)
                     token_size = len(token)
-                    
-                    self.badges.print_empty(data[:token_index])
+
+                    self.badges.print_empty(data[:token_index].decode(errors='ignore'), start='', end='')
+                    self.stashed = data[token_index+token_size:]
+
                     break
 
-                self.badges.print_empty(data)
+                self.badges.print_empty(data.decode(errors='ignore'), start='', end='')
             return None
         self.badges.print_error("Socket is not connected!")
 
