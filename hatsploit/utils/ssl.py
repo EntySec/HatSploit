@@ -44,7 +44,7 @@ class SSLTools:
         TYPE_RSA = OpenSSL.crypto.TYPE_RSA
 
         pubkey = OpenSSL.crypto.PKey()
-        pubkey.generate_type(TYPE_RSA, 2048)
+        pubkey.generate_key(TYPE_RSA, 2048)
 
         return pubkey
 
