@@ -33,38 +33,41 @@ from hatsploit.lib.loot import Loot
 class OpenSSLTools:
     loot = Loot().loot
 
-    def wrap_client(self, client):
+    def wrap_client(self, client, protocol=ssl.PROTOCOL_TLS, nodename='HatSploit',
+                    country='US', state='HatSploit', location='HatSploit',
+                    organization='HatSploit', unit='HatSploit'):
         key = self.generate_key()
-        cert = self.generate_cert(key)
+        cert = self.generate_cert(
+            key,
+            nodename=nodename,
+            country=country,
+            state=state,
+            location=location,
+            organization=organization,
+            unit=unit
+        )
 
-        keyfile = self.write_key(key)
-        certfile = self.write_cert(cert)
+        keyfile = self.loot + 'hatsploit.key'
+        certfile = self.loot + 'hatsploit.crt'
+
+        self.write_key(key, keyfile)
+        self.write_cert(cert, certfile)
 
         return ssl.wrap_socket(
             client,
             server_side=True,
             certfile=keyfile,
             keyfile=certfile,
-            ssl_version=ssl.PROTOCOL_TLS
+            ssl_version=protocol
         )
 
-    def write_key(self, key, filename=None):
-        if not filename:
-            filename = self.loot + 'hatsploit.key'
-
+    def write_key(self, key, filename):
         with open(filename, 'w') as f:
             f.write(self.dump_key(key))
 
-        return filename
-
-    def write_cert(self, cert, filename=None):
-        if not filename:
-            filename = self.loot + 'hatsploit.crt'
-
+    def write_cert(self, cert, filename):
         with open(filename, 'w') as f:
             f.write(self.dump_cert(cert))
-
-        return filename
 
     @staticmethod
     def dump_key(key):
