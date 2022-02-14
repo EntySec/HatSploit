@@ -91,22 +91,15 @@ class OpenSSLTools:
     @staticmethod
     def generate_cert(key, nodename='HatSploit', country='US', state='HatSploit',
                       location='HatSploit', organization='HatSploit', unit='HatSploit'):
-        cert = OpenSSL.crypto.X509Req()
+        cert = OpenSSL.crypto.X509()
         cert.get_subject().CN = nodename
-        cert.get_subject().countryName = country
-        cert.get_subject().stateOrProvinceName = state
-        cert.get_subject().localityName = location
-        cert.get_subject().organizationName = organization
-        cert.get_subject().organizationalUnitName = unit
-
-        x509_extensions = ([
-            OpenSSL.crypto.X509Extension(b"keyUsage", False, b"Digital Signature, Non Repudiation, Key Encipherment"),
-            OpenSSL.crypto.X509Extension(b"basicConstraints", False, b"CA:FALSE"),
-        ])
-
-        cert.add_extensions(x509_extensions)
+        cert.get_subject().C = country
+        cert.get_subject().ST = state
+        cert.get_subject().L = location
+        cert.get_subject().O = organization
+        cert.get_subject().OU = unit
 
         cert.set_pubkey(key)
-        cert.sign(key, "sha1")
+        cert.sign(key, "sha512")
 
         return cert
