@@ -33,12 +33,13 @@ from hatsploit.lib.loot import Loot
 class OpenSSLTools:
     loot = Loot().loot
 
-    def wrap_client(self, client, protocol=ssl.PROTOCOL_TLS, nodename='HatSploit',
-                    country='US', state='HatSploit', location='HatSploit',
-                    organization='HatSploit', unit='HatSploit'):
+    def wrap_client(self, client, protocol=ssl.PROTOCOL_TLS, expire=365, nodename='HatSploit',
+                    country='US', state='HatSploit', location='HatSploit', organization='HatSploit',
+                    unit='HatSploit'):
         key = self.generate_key()
         cert = self.generate_cert(
             key,
+            expire=expire,
             nodename=nodename,
             country=country,
             state=state,
@@ -89,7 +90,7 @@ class OpenSSLTools:
         return key
 
     @staticmethod
-    def generate_cert(key, nodename='HatSploit', country='US', state='HatSploit',
+    def generate_cert(key, expire=365, nodename='HatSploit', country='US', state='HatSploit',
                       location='HatSploit', organization='HatSploit', unit='HatSploit'):
         cert = OpenSSL.crypto.X509()
         cert.get_subject().CN = nodename
@@ -99,7 +100,13 @@ class OpenSSLTools:
         cert.get_subject().O = organization
         cert.get_subject().OU = unit
 
+        cert.gmtime_adj_notBefore(0)
+        cert.gmtime_adj_notAfter(expire * 24 * 60 * 60)
+
+        cert.set_serial_number(0)
+        cert.set_issuer(cert.get_subject())
         cert.set_pubkey(key)
+
         cert.sign(key, "sha512")
 
         return cert
