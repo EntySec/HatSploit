@@ -35,6 +35,7 @@ from hatsploit.core.base.loader import Loader
 from hatsploit.core.cli.fmt import FMT
 from hatsploit.core.cli.badges import Badges
 
+from hatsploit.core.utils.ui.completer import Completer
 from hatsploit.core.utils.ui.banner import Banner
 from hatsploit.core.utils.ui.tip import Tip
 
@@ -57,6 +58,7 @@ class Console:
     fmt = FMT()
     badges = Badges()
 
+    completer = Completer()
     banner = Banner()
     tip = Tip()
 
@@ -149,57 +151,10 @@ class Console:
             readline.set_auto_history(True)
             self.enable_history_file()
 
-        readline.set_completer(self.completer)
+        readline.set_completer(self.completer.completer)
         readline.set_completer_delims(" \t\n;")
 
         readline.parse_and_bind("tab: complete")
-
-    def completer(self, text, state):
-        if state == 0:
-            original_line = readline.get_line_buffer()
-            line = original_line.lstrip()
-
-            stripped = len(original_line) - len(line)
-
-            start_index = readline.get_begidx() - stripped
-            end_index = readline.get_endidx() - stripped
-
-            if start_index > 0:
-                command = self.fmt.format_commands(line)
-
-                if command[0] == "":
-                    complete_function = self.default_completer
-                else:
-                    if command[0] in ['use', 'info']:
-                        complete_function = self.modules_completer
-                    elif command[0] in ['load', 'unload']:
-                        complete_function = self.plugins_completer
-                    else:
-                        complete_function = self.default_completer
-            else:
-                complete_function = self.commands_completer
-
-            self.completions = complete_function(text, line, start_index, end_index)
-
-        try:
-            return self.completions[state]
-        except IndexError:
-            return None
-
-    def plugins_completer(self, text, line, start_index, end_index):
-        return [plugin for plugin in self.local_storage.get("plugins")['plugins'] if plugin.startswith(text)]
-
-    def payloads_completer(self, text, line, start_index, end_index):
-        return [payload for payload in self.local_storage.get("payloads")['payloads'] if payload.startswith(text)]
-
-    def modules_completer(self, text, line, start_index, end_index):
-        return [module for module in self.local_storage.get("modules")['modules'] if module.startswith(text)]
-
-    def commands_completer(self, text, line, start_index, end_index):
-        return [command for command in self.local_storage.get("commands") if command.startswith(text)]
-
-    def default_completer(self, *ignored):
-        return []
 
     def launch_shell(self):
         version = self.config.core_config['details']['version']
