@@ -35,6 +35,7 @@ from hatsploit.core.base.loader import Loader
 from hatsploit.core.cli.fmt import FMT
 from hatsploit.core.cli.badges import Badges
 
+from hatsploit.core.utils.ui.completer import Completer
 from hatsploit.core.utils.ui.banner import Banner
 from hatsploit.core.utils.ui.tip import Tip
 
@@ -57,6 +58,7 @@ class Console:
     fmt = FMT()
     badges = Badges()
 
+    completer = Completer()
     banner = Banner()
     tip = Tip()
 
@@ -77,6 +79,8 @@ class Console:
         'Module': {},
         'Payload': {}
     }
+
+    completion = None
 
     def check_install(self):
         if os.path.exists(self.config.path_config['root_path']):
@@ -146,6 +150,9 @@ class Console:
         if using_history:
             readline.set_auto_history(True)
             self.enable_history_file()
+
+        readline.set_completer(self.completer.completer)
+        readline.set_completer_delims(" \t\n;")
 
         readline.parse_and_bind("tab: complete")
 
