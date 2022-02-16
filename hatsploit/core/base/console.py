@@ -173,7 +173,7 @@ class Console:
                     if command[0] == 'use':
                         complete_function = self.modules_completer
                     elif command[0] in ['load', 'unload']:
-                        complete_function = self.plugins_complerer
+                        complete_function = self.plugins_completer
                     else:
                         complete_function = self.default_completer
             else:
