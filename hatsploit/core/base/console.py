@@ -171,7 +171,6 @@ class Console:
                     complete_function = self.default_completer
                 else:
                     if command[0] in ['use', 'info']:
-                        print('sas')
                         complete_function = self.modules_completer
                     elif command[0] in ['load', 'unload']:
                         complete_function = self.plugins_completer
@@ -187,13 +186,13 @@ class Console:
         except IndexError:
             return None
 
-    def plugins_completer(self, test, line, start_index, end_index):
+    def plugins_completer(self, text, line, start_index, end_index):
         return [plugin for plugin in self.local_storage.get("plugins")['plugins'] if plugin.startswith(text)]
 
-    def payloads_completer(self, test, line, start_index, end_index):
+    def payloads_completer(self, text, line, start_index, end_index):
         return [payload for payload in self.local_storage.get("payloads")['payloads'] if payload.startswith(text)]
 
-    def modules_completer(self, test, line, start_index, end_index):
+    def modules_completer(self, text, line, start_index, end_index):
         return [module for module in self.local_storage.get("modules")['modules'] if module.startswith(text)]
 
     def commands_completer(self, text, line, start_index, end_index):
