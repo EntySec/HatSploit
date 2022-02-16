@@ -78,6 +78,8 @@ class Console:
         'Payload': {}
     }
 
+    completion = None
+
     def check_install(self):
         if os.path.exists(self.config.path_config['root_path']):
             workspace = self.config.path_config['user_path']
@@ -164,6 +166,7 @@ class Console:
 
             if start_index > 0:
                 command = self.fmt.format_commands(line)
+
                 if command[0] == "":
                     complete_function = self.default_completer
                 else:
@@ -176,10 +179,10 @@ class Console:
             else:
                 complete_function = self.commands_completer
 
-            completion_matches = complete_function(text, line, start_index, end_index)
+            self.completions = complete_function(text, line, start_index, end_index)
 
         try:
-            return completion_matches[state]
+            return self.completions[state]
         except IndexError:
             return None
 
