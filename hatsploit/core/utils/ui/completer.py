@@ -27,12 +27,18 @@
 import readline
 
 from hatsploit.core.cli.fmt import FMT
+
 from hatsploit.lib.storage import LocalStorage
+from hatsploit.lib.modules import Modules
+from hatsploit.lib.payloads import Payloads
 
 
 class Completer:
     fmt = FMT()
+
     local_storage = LocalStorage()
+    modules = Modules()
+    payloads = Payloads()
 
     matches = None
 
@@ -56,29 +62,50 @@ class Completer:
                         complete_function = self.modules_completer
                     elif command[0] in ['load', 'unload']:
                         complete_function = self.plugins_completer
+                    elif command[0] == 'set':
+                        complete_function = self.options_completer
                     else:
                         complete_function = self.default_completer
             else:
                 complete_function = self.commands_completer
 
-            self.matches = complete_function(text, line, start_index, end_index)
+            self.matches = complete_function(text)
 
         try:
             return self.matches[state]
         except IndexError:
             return None
 
-    def plugins_completer(self, text, line, start_index, end_index):
+    def plugins_completer(self, text):
         return [plugin for plugin in self.local_storage.get("plugins")['plugins'] if plugin.startswith(text)]
 
-    def payloads_completer(self, text, line, start_index, end_index):
+    def payloads_completer(self, text):
         return [payload for payload in self.local_storage.get("payloads")['payloads'] if payload.startswith(text)]
 
-    def modules_completer(self, text, line, start_index, end_index):
+    def modules_completer(self, text):
         return [module for module in self.local_storage.get("modules")['modules'] if module.startswith(text)]
 
-    def commands_completer(self, text, line, start_index, end_index):
+    def commands_completer(self, text):
         return [command for command in self.local_storage.get("commands") if command.startswith(text)]
 
-    def default_completer(self, *ignored):
+    def options_completer(self, text):
+        options = []
+
+        current_module = self.modules.get_current_module_object()
+        current_payload = self.payloads.get_current_payload()
+
+        if hasattr(current_module, "options"):
+            for option in current_module.options:
+                if option.lower().startswith(text.lower()):
+                    options.append(option)
+
+        if current_payload:
+            if hasattr(current_payload, "options"):
+                for option in current_payload.options:
+                    if option.lower().startswith(text.lower()):
+                        options.append(option)
+
+        return options
+
+    def default_completer(self):
         return []
