@@ -54,10 +54,11 @@ class Payloads:
         payloads = self.get_payloads()
         matches = []
 
-        for database in payloads:
-            for payload in payloads[database]:
-                if payload.endswith(text):
-                    matches.append(payload)
+        if payloads:
+            for database in payloads:
+                for payload in payloads[database]:
+                    if payload.endswith(text):
+                        matches.append(payload)
 
         return matches
 
