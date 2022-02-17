@@ -34,8 +34,14 @@ class Plugins:
     importer = Importer()
     local_storage = LocalStorage()
 
+    def get_plugins(self):
+        return self.local_storage.get("plugins")
+
+    def get_loaded_plugins(self):
+        return self.local_storage.get("loaded_plugins")
+
     def check_exist(self, name):
-        all_plugins = self.local_storage.get("plugins")
+        all_plugins = self.get_plugins()
         if all_plugins:
             for database in all_plugins:
                 plugins = all_plugins[database]
@@ -44,14 +50,14 @@ class Plugins:
         return False
 
     def check_loaded(self, name):
-        loaded_plugins = self.local_storage.get("loaded_plugins")
+        loaded_plugins = self.get_loaded_plugins()
         if loaded_plugins:
             if name in loaded_plugins:
                 return True
         return False
 
     def get_database(self, name):
-        all_plugins = self.local_storage.get("plugins")
+        all_plugins = self.get_plugins()
         if all_plugins:
             for database in all_plugins:
                 plugins = all_plugins[database]
@@ -61,7 +67,7 @@ class Plugins:
 
     def import_plugin(self, database, plugin):
         loaded_plugins = {}
-        plugins = self.local_storage.get("plugins")[database][plugin]
+        plugins = self.get_plugins()[database][plugin]
         try:
             loaded_plugins[plugin] = self.importer.import_plugin(plugins['Path'])
         except Exception:
@@ -69,15 +75,15 @@ class Plugins:
         return loaded_plugins
 
     def add_plugin(self, database, plugin):
-        plugins = self.local_storage.get("plugins")[database][plugin]
+        plugins = self.get_plugins()[database][plugin]
 
         plugin_object = self.import_plugin(database, plugin)
         if plugin_object:
-            if self.local_storage.get("loaded_plugins"):
+            if self.get_loaded_plugins():
                 self.local_storage.update("loaded_plugins", plugin_object)
             else:
                 self.local_storage.set("loaded_plugins", plugin_object)
-            self.local_storage.get("loaded_plugins")[plugin].run()
+            self.get_loaded_plugins()[plugin].run()
             self.badges.print_success(f"Successfully loaded {plugin} plugin!")
         else:
             self.badges.print_error("Failed to load plugin!")
