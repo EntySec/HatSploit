@@ -50,6 +50,17 @@ class Payloads:
     def get_imported_payloads(self):
         return self.local_storage.get("imported_payloads")
 
+    def payloads_completer(self, text):
+        payloads = self.get_payloads()
+        matches = []
+
+        for database in payloads:
+            for payload in payloads[database]:
+                if payload.endswith(text):
+                    matches.append(payload)
+
+        return matches
+
     def check_exist(self, name):
         all_payloads = self.get_payloads()
         if all_payloads:
