@@ -29,6 +29,11 @@ class HatSploitCommand(Command):
         'MinArgs': 1
     }
 
+    def complete(self, text):
+        options = ['-l', '-c', '--list',
+                   '--clear', 'on', 'off']
+        return [option for option in options if option.startswith(text)]
+
     def run(self, argc, argv):
         option = argv[1]
         if option == "on":
