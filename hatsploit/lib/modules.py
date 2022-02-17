@@ -49,6 +49,17 @@ class Modules:
     def get_imported_modules(self):
         return self.local_storage.get("imported_modules")
 
+    def modules_completer(self, text):
+        modules = self.get_modules()
+        matches = []
+
+        for database in modules:
+            for module in modules[database]:
+                if module.endswith(text):
+                    matches.append(module)
+
+        return matches
+
     def check_exist(self, name):
         all_modules = self.get_modules()
         if all_modules:
