@@ -26,13 +26,10 @@ class HatSploitCommand(Command):
         ],
         'Description': "Manage HatSploit history.",
         'Usage': usage,
-        'MinArgs': 1
+        'MinArgs': 1,
+        'Options': ['-l', '-c', '--list',
+                    '--clear', 'on', 'off']
     }
-
-    def complete(self, text):
-        options = ['-l', '-c', '--list',
-                   '--clear', 'on', 'off']
-        return [option for option in options if option.startswith(text)]
 
     def run(self, argc, argv):
         option = argv[1]
