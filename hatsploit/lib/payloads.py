@@ -44,8 +44,14 @@ class Payloads:
     local_storage = LocalStorage()
     badges = Badges()
 
+    def get_payloads(self):
+        return self.local_storage.get("payloads")
+
+    def get_imported_payloads(self):
+        return self.local_storage.get("imported_payloads")
+
     def check_exist(self, name):
-        all_payloads = self.local_storage.get("payloads")
+        all_payloads = self.get_payloads()
         if all_payloads:
             for database in all_payloads:
                 payloads = all_payloads[database]
@@ -57,7 +63,7 @@ class Payloads:
     def get_payload_object(self, name):
         if self.check_exist(name):
             database = self.get_database(name)
-            return self.local_storage.get("payloads")[database][name]
+            return self.get_payloads()[database][name]
         return None
 
     def check_module_compatible(self, value, categories, types, platforms, architectures):
@@ -84,7 +90,7 @@ class Payloads:
         return False
 
     def get_database(self, name):
-        all_payloads = self.local_storage.get("payloads")
+        all_payloads = self.get_payloads()
         if all_payloads:
             for database in all_payloads:
                 payloads = all_payloads[database]
@@ -124,7 +130,7 @@ class Payloads:
         if payload_object:
             current_module_name = module_name
 
-            imported_payloads = self.local_storage.get("imported_payloads")
+            imported_payloads = self.get_imported_payloads()
             if imported_payloads:
                 if current_module_name in imported_payloads:
                     imported_payloads[current_module_name].update({
@@ -147,7 +153,7 @@ class Payloads:
         return payload_object
 
     def check_imported(self, module_name, name):
-        imported_payloads = self.local_storage.get("imported_payloads")
+        imported_payloads = self.get_imported_payloads()
         current_module_name = module_name
 
         if imported_payloads:
@@ -226,7 +232,7 @@ class Payloads:
         return None
 
     def get_current_payload(self):
-        imported_payloads = self.local_storage.get("imported_payloads")
+        imported_payloads = self.get_imported_payloads()
         current_module_object = self.get_current_module_object()
         
         if current_module_object:
