@@ -8,16 +8,13 @@
 import os
 
 from hatsploit.core.base.execute import Execute
+
 from hatsploit.lib.command import Command
-from hatsploit.lib.config import Config
 from hatsploit.lib.modules import Modules
-from hatsploit.lib.storage import LocalStorage
 
 
 class HatSploitCommand(Command):
-    config = Config()
     modules = Modules()
-    local_storage = LocalStorage()
     execute = Execute()
 
     details = {
@@ -30,6 +27,8 @@ class HatSploitCommand(Command):
         'Usage': "edit <module>",
         'MinArgs': 1
     }
+
+    complete = modules.modules_completer
 
     def run(self, argc, argv):
         module = argv[1]
@@ -47,9 +46,7 @@ class HatSploitCommand(Command):
         if self.modules.check_exist(module):
             if not self.modules.check_imported(module):
                 database = self.modules.get_database(module)
-                module_path = self.local_storage.get(
-                    "modules"
-                )[database][module]['Path']
+                module_path = self.modules.get_modules()[database][module]['Path']
 
                 edit_mode = editor + ' ' + module_path + '.py'
                 self.execute.execute_system(self.format_commands(edit_mode))
