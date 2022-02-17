@@ -56,7 +56,7 @@ class Modules:
         if modules:
             for database in modules:
                 for module in modules[database]:
-                    if module.endswith(text):
+                    if module.startswith(text):
                         matches.append(module)
 
         return matches
