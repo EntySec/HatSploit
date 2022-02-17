@@ -43,8 +43,14 @@ class Modules:
     local_storage = LocalStorage()
     importer = Importer()
 
+    def get_modules(self):
+        return self.local_storage.get("modules")
+
+    def get_imported_modules(self):
+        return self.local_storage.get("imported_modules")
+
     def check_exist(self, name):
-        all_modules = self.local_storage.get("modules")
+        all_modules = self.get_modules()
         if all_modules:
             for database in all_modules:
                 modules = all_modules[database]
@@ -54,7 +60,7 @@ class Modules:
         return False
 
     def check_imported(self, name):
-        imported_modules = self.local_storage.get("imported_modules")
+        imported_modules = self.get_imported_modules()
         if imported_modules:
             if name in imported_modules:
                 return True
@@ -75,7 +81,7 @@ class Modules:
     def get_module_object(self, name):
         if self.check_exist(name):
             database = self.get_database(name)
-            return self.local_storage.get("modules")[database][name]
+            return self.get_modules()[database][name]
         return None
 
     def get_current_module_object(self):
@@ -96,7 +102,7 @@ class Modules:
         return None
 
     def get_database(self, name):
-        all_modules = self.local_storage.get("modules")
+        all_modules = self.get_modules()
         if all_modules:
             for database in all_modules:
                 modules = all_modules[database]
@@ -315,7 +321,7 @@ class Modules:
         modules = self.get_module_object(name)
         try:
             module_object = self.importer.import_module(modules['Path'])
-            if not self.local_storage.get("imported_modules"):
+            if not self.get_imported_modules():
                 self.local_storage.set("imported_modules", {})
             self.local_storage.update("imported_modules", {name: module_object})
         except Exception:
@@ -323,7 +329,7 @@ class Modules:
         return module_object
 
     def add_module(self, name):
-        imported_modules = self.local_storage.get("imported_modules")
+        imported_modules = self.get_imported_modules()
 
         if self.check_imported(name):
             module_object = imported_modules[name]
