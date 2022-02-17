@@ -34,6 +34,15 @@ class HatSploitCommand(Command):
         'MinArgs': 1
     }
 
+    def complete(self, text):
+        options = [
+            '-l', '-i', '-d', '-u', '-c',
+            '--list', '--interact', '--download',
+            '--upload', '--close', '--auto-interaction'
+        ]
+
+        return [option for option in options if option.startswith(text)]
+
     def run(self, argc, argv):
         if argv[1] in ['-l', '--list']:
             self.show.show_sessions()
