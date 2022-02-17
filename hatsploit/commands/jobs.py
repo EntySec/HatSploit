@@ -27,7 +27,8 @@ class HatSploitCommand(Command):
         ],
         'Description': "Manage active jobs.",
         'Usage': usage,
-        'MinArgs': 1
+        'MinArgs': 1,
+        'Options': ['-l', '-k', '--list', '--kill']
     }
 
     def run(self, argc, argv):
