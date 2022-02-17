@@ -40,6 +40,8 @@ class Completer:
 
     def completer(self, text, state):
         if state == 0:
+            options = {}
+
             original_line = readline.get_line_buffer()
             line = original_line.lstrip()
 
@@ -60,13 +62,19 @@ class Completer:
                         if hasattr(commands[command[0]], "complete"):
                             complete_function = commands[command[0]].complete
                         else:
-                            complete_function = self.default_completer
+                            if 'Options' in commands[command[0]].details:
+                                options = commands[command[0]].details['Options']
+                            else:
+                                complete_function = self.default_completer
                     else:
                         complete_function = self.default_completer
             else:
                 complete_function = self.commands_completer
 
-            self.matches = complete_function(text)
+            if options:
+                self.matches = self.options_completer(options, text)
+            else:
+                self.matches = complete_function(text)
 
         try:
             return self.matches[state]
@@ -75,6 +83,9 @@ class Completer:
 
     def commands_completer(self, text):
         return [command for command in self.local_storage.get("commands") if command.startswith(text)]
+
+    def options_completer(self, options, text):
+        return [option for option in options if option.startswith(text)]
 
     def default_completer(self, text):
         return []
