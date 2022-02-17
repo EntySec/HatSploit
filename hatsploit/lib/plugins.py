@@ -47,7 +47,7 @@ class Plugins:
         if plugins:
             for database in plugins:
                 for plugin in plugins[database]:
-                    if plugin.endswith(text):
+                    if plugin.startswith(text):
                         matches.append(plugin)
 
         return matches
