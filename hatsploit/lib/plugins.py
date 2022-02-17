@@ -44,12 +44,20 @@ class Plugins:
         plugins = self.get_plugins()
         matches = []
 
-        for database in plugins:
-            for plugin in plugins[database]:
-                if plugin.endswith(text):
-                    matches.append(plugin)
+        if plugins:
+            for database in plugins:
+                for plugin in plugins[database]:
+                    if plugin.endswith(text):
+                        matches.append(plugin)
 
         return matches
+
+    def loaded_plugins_completer(self, text):
+        plugins = self.get_loaded_plugins()
+
+        if plugins:
+            return [plugin for plugin in plugins if plugin.startswith(text)]
+        return []
 
     def check_exist(self, name):
         all_plugins = self.get_plugins()
