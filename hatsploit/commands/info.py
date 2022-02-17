@@ -25,6 +25,8 @@ class HatSploitCommand(Command):
         'MinArgs': 0
     }
 
+    complete = modules.modules_completer
+
     def get_module_information(self, module):
         if self.modules.check_exist(module):
             module = self.modules.get_module_object(module)
