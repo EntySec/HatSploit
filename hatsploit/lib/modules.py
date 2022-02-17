@@ -53,10 +53,11 @@ class Modules:
         modules = self.get_modules()
         matches = []
 
-        for database in modules:
-            for module in modules[database]:
-                if module.endswith(text):
-                    matches.append(module)
+        if modules:
+            for database in modules:
+                for module in modules[database]:
+                    if module.endswith(text):
+                        matches.append(module)
 
         return matches
 
