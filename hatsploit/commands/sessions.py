@@ -31,17 +31,11 @@ class HatSploitCommand(Command):
         ],
         'Description': "Manage opened sessions.",
         'Usage': usage,
-        'MinArgs': 1
+        'MinArgs': 1,
+        'Options': ['-l', '-i', '-d', '-u', '-c',
+                    '--list', '--interact', '--download',
+                    '--upload', '--close', '--auto-interaction']
     }
-
-    def complete(self, text):
-        options = [
-            '-l', '-i', '-d', '-u', '-c',
-            '--list', '--interact', '--download',
-            '--upload', '--close', '--auto-interaction'
-        ]
-
-        return [option for option in options if option.startswith(text)]
 
     def run(self, argc, argv):
         if argv[1] in ['-l', '--list']:
