@@ -40,6 +40,17 @@ class Plugins:
     def get_loaded_plugins(self):
         return self.local_storage.get("loaded_plugins")
 
+    def plugins_completer(self, text):
+        plugins = self.get_plugins()
+        matches = []
+
+        for database in plugins:
+            for plugin in plugins[database]:
+                if plugin.endswith(text):
+                    matches.append(plugin)
+
+        return matches
+
     def check_exist(self, name):
         all_plugins = self.get_plugins()
         if all_plugins:
