@@ -57,7 +57,7 @@ class Payloads:
         if payloads:
             for database in payloads:
                 for payload in payloads[database]:
-                    if payload.endswith(text):
+                    if payload.startswith(text):
                         matches.append(payload)
 
         return matches
