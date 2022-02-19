@@ -21,10 +21,10 @@ class HatSploitCommand(Command):
         'Description': "Manage HatSploit history.",
         'MinArgs': 1,
         'Options': {
-            '-l': 'List all history.',
-            '-c': 'Clear all history.',
-            'on': 'Turn history on.',
-            'off': 'Turn history off.'
+            '-l': [0, '', 'List all history.'],
+            '-c': [0, '', 'Clear all history.'],
+            'on': [0, '', 'Turn history on.'],
+            'off': [0, '', 'Turn history off.']
         }
     }
 
