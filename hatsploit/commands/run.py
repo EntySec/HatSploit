@@ -14,11 +14,6 @@ class HatSploitCommand(Command):
     modules = Modules()
     jobs = Jobs()
 
-    usage = ""
-    usage += "run [option]\n\n"
-    usage += "  -h, --help  Show this help message.\n"
-    usage += "  -j, --job   Run current module as a background job.\n"
-
     details = {
         'Category': "modules",
         'Name': "run",
@@ -26,19 +21,18 @@ class HatSploitCommand(Command):
             'Ivan Nikolsky (enty8080) - command developer'
         ],
         'Description': "Run current module.",
-        'Usage': usage,
-        'MinArgs': 0
+        'Usage': "run [option]",
+        'MinArgs': 0,
+        'Options': {
+            '-j': ['', "Run current module as a background job."]
+        }
     }
 
     def run(self, argc, argv):
         current_module = self.modules.get_current_module_object()
 
         if argc > 1:
-            if argv[1] in ['-h', '--help']:
-                self.print_usage(self.details['Usage'])
-                return
-
-            if argv[1] in ['-j', '--job']:
+            if argv[1] == '-j':
                 job_id = self.jobs.count_jobs()
 
                 self.print_process("Running module as a background job...")
