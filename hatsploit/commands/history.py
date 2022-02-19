@@ -30,6 +30,7 @@ class HatSploitCommand(Command):
 
     def run(self, argc, argv):
         option = argv[1]
+
         if option == "on":
             self.history.enable_history()
 
@@ -41,5 +42,3 @@ class HatSploitCommand(Command):
 
         elif option == '-l':
             self.history.list_history()
-        else:
-            self.print_usage(self.details['Usage'])
