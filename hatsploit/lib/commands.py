@@ -65,7 +65,7 @@ class Commands:
         return [command for command in self.get_all_commands() if command.startswith(text)]
 
     def get_all_commands(self):
-        core_cmds = self.local_storage.get("commands")
+        core_cmds = list(self.local_storage.get("commands"))
 
         modules = self.local_storage.get("modules")
         modules_cmds = []
