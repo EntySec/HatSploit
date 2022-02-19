@@ -12,12 +12,6 @@ from hatsploit.lib.history import History
 class HatSploitCommand(Command):
     history = History()
 
-    usage = ""
-    usage += "history <option>\n\n"
-    usage += "  -l, --list   List all history.\n"
-    usage += "  -c, --clear  Clear all history.\n"
-    usage += "  on/off       Turn history on/off.\n"
-
     details = {
         'Category': "developer",
         'Name': "history",
@@ -25,10 +19,13 @@ class HatSploitCommand(Command):
             'Ivan Nikolsky (enty8080) - command developer'
         ],
         'Description': "Manage HatSploit history.",
-        'Usage': usage,
         'MinArgs': 1,
-        'Options': ['-l', '-c', '--list',
-                    '--clear', 'on', 'off']
+        'Options': {
+            '-l': 'List all history.',
+            '-c': 'Clear all history.',
+            'on': 'Turn history on.',
+            'off': 'Turn history off.'
+        }
     }
 
     def run(self, argc, argv):
@@ -39,10 +36,10 @@ class HatSploitCommand(Command):
         elif option == "off":
             self.history.disable_history()
 
-        elif option in ['-c', '--clear']:
+        elif option == '-c':
             self.history.clear_history()
 
-        elif option in ['-l', '--list']:
+        elif option == '-l':
             self.history.list_history()
         else:
             self.print_usage(self.details['Usage'])
