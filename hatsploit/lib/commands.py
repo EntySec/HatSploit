@@ -29,6 +29,7 @@ from hatsploit.lib.show import Show
 from hatsploit.core.db.importer import Importer
 from hatsploit.core.cli.badges import Badges
 from hatsploit.core.base.execute import Execute
+from hatsploit.lib.storage import LocalStorage
 
 
 class Commands:
@@ -37,6 +38,7 @@ class Commands:
     importer = Importer()
     badges = Badges()
     execute = Execute()
+    local_storage = LocalStorage()
 
     def load_commands(self, path):
         return self.importer.import_commands(path)
@@ -58,3 +60,27 @@ class Commands:
 
     def show_commands(self, handler):
         self.show.show_custom_commands(handler)
+
+    def commands_completer(self, text):
+        return [command for command in self.get_all_commands() if command.startswith(text)]
+
+    def get_all_commands(self):
+        core_cmds = self.local_storage.get("commands")
+
+        modules = self.local_storage.get("modules")
+        modules_cmds = []
+
+        for database in modules:
+            for module in modules[database]:
+                if hasattr(modules[database][module], "commands"):
+                    modules_cmds += modules[database][module].commands
+
+        plugins = self.local_storage.get("loaded_plugins")
+        plugins_cmds = []
+
+        for plugin in plugins:
+            if hasattr(plugins[plugin], "commands"):
+                for label in plugins[plugin].commands:
+                    plugins_cmds += plugins[plugin].commands[label]
+
+        return core_cmds + modules_cmds + plugins_cmds
