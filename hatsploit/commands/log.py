@@ -31,8 +31,9 @@ class HatSploitCommand(Command):
 
     def run(self, argc, argv):
         option = argv[1]
+
         if option == 'on':
-            self.log.enable_log(argv[1])
+            self.log.enable_log(argv[2])
 
         elif option == 'off':
             self.log.disable_log()
