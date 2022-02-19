@@ -24,7 +24,7 @@ class HatSploitCommand(Command):
         'MinArgs': 1,
         'Options': {
             '-l': [0, '', 'List all active jobs.'],
-            '-k': [1, '', 'Kill specified job.']
+            '-k': [1, '<id>', 'Kill specified job.']
         }
     }
 
