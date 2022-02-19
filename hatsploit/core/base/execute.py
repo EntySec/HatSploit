@@ -111,7 +111,12 @@ class Execute:
             data = []
 
             for option in details['Options']:
-                data.append((option, details['Options'][option][0], details['Options'][option][1]))
+                info = details['Options'][option]
+
+                if isinstance(info, list) and len(info) == 2:
+                    data.append((option, info[0], info[1]))
+                else:
+                    data.append((option, '', info))
 
             self.tables.print_table('Options', headers, *data)
 
