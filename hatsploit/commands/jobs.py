@@ -21,10 +21,11 @@ class HatSploitCommand(Command):
             'Ivan Nikolsky (enty8080) - command developer'
         ],
         'Description': "Manage active jobs.",
+        'Usage': "jobs <option> [arguments]",
         'MinArgs': 1,
         'Options': {
-            '-l': [0, '', 'List all active jobs.'],
-            '-k': [1, '<id>', 'Kill specified job.']
+            '-l': ['', 'List all active jobs.'],
+            '-k': ['<id>', 'Kill specified job.']
         }
     }
 
