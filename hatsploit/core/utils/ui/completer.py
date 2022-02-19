@@ -56,7 +56,10 @@ class Completer:
                 if command[0] == "":
                     complete_function = self.default_completer
                 else:
-                    commands = self.commands.get_all_commands()
+                    commands = self.commands.get_commands()
+
+                    other_commands = self.commands.get_modules_commands()
+                    other_commands.update(self.commands.get_plugins_commands())
 
                     if command[0] in commands:
                         if hasattr(commands[command[0]], "complete"):
@@ -66,6 +69,13 @@ class Completer:
                                 options = commands[command[0]].details['Options']
                             else:
                                 complete_function = self.default_completer
+
+                    elif command[0] in other_commands:
+                        if 'Options' in other_commands[command[0]]:
+                            options = other_commands[command[0]]['Options']
+                        else:
+                            complete_function = self.default_completer
+
                     else:
                         complete_function = self.default_completer
             else:
