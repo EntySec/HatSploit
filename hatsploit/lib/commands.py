@@ -70,17 +70,19 @@ class Commands:
         modules = self.local_storage.get("modules")
         modules_cmds = []
 
-        for database in modules:
-            for module in modules[database]:
-                if hasattr(modules[database][module], "commands"):
-                    modules_cmds += modules[database][module].commands
+        if modules:
+            for database in modules:
+                for module in modules[database]:
+                    if hasattr(modules[database][module], "commands"):
+                        modules_cmds += modules[database][module].commands
 
         plugins = self.local_storage.get("loaded_plugins")
         plugins_cmds = []
 
-        for plugin in plugins:
-            if hasattr(plugins[plugin], "commands"):
-                for label in plugins[plugin].commands:
-                    plugins_cmds += plugins[plugin].commands[label]
+        if plugins:
+            for plugin in plugins:
+                if hasattr(plugins[plugin], "commands"):
+                    for label in plugins[plugin].commands:
+                        plugins_cmds += plugins[plugin].commands[label]
 
         return core_cmds + modules_cmds + plugins_cmds
