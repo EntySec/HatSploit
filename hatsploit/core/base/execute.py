@@ -111,8 +111,6 @@ class Execute:
                             return False
                     else:
                         return False
-                else:
-                    return False
 
             if len(commands) > 1:
                 if commands[1] == '?':
