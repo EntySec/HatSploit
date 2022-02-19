@@ -107,7 +107,7 @@ class Execute:
             if 'Options' in details:
                 if len(commands) > 1:
                     if commands[1] in details['Options']:
-                        if (len(commands) - 2) < details['Options'][commands[1]][0]:
+                        if (len(commands) - 2) < len(details['Options'][commands[1]][0].split()):
                             return False
                     else:
                         return False
@@ -124,7 +124,7 @@ class Execute:
 
             for option in details['Options']:
                 info = details['Options'][option]
-                data.append((option, info[1], info[2]))
+                data.append((option, info[0], info[1]))
 
             self.tables.print_table('Options', headers, *data)
 
