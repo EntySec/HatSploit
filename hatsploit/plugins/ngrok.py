@@ -36,7 +36,9 @@ class HatSploitPlugin(Plugin):
             'ngrok': {
                 'Description': "Manage ngrok service.",
                 'Usage': usage,
-                'MinArgs': 1
+                'MinArgs': 1,
+                'Options': ['-l', '-o', '-c', '-a', '--list',
+                            '--open', '--close', '--auth']
             }
         }
     }
