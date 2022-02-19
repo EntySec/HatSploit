@@ -32,7 +32,7 @@ class HatSploitCommand(Command):
         current_module = self.modules.get_current_module_object()
 
         if argc > 1:
-            if argv[1] == '-j':
+            if argv[1] == '-j' and current_module:
                 job_id = self.jobs.count_jobs()
 
                 self.print_process("Running module as a background job...")
