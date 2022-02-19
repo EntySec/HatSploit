@@ -14,11 +14,6 @@ class HatSploitCommand(Command):
     loot = Loot()
     show = Show()
 
-    usage = ""
-    usage += "loot <option> [arguments]\n\n"
-    usage += "  -l, --list           List all collected loot.\n"
-    usage += "  -r, --remove <name>  Remove collected loot.\n"
-
     details = {
         'Category': "loot",
         'Name': "loot",
@@ -26,19 +21,19 @@ class HatSploitCommand(Command):
             'Ivan Nikolsky (enty8080) - command developer'
         ],
         'Description': "Manage collected loot.",
-        'Usage': usage,
-        'MinArgs': 1
+        'Usage': "loot <option> [arguments]",
+        'MinArgs': 1,
+        'Options': {
+            '-l': ['', "List all collected loot."],
+            '-r': ['<name>', "Remove collected loot."]
+        }
     }
 
     def run(self, argc, argv):
         choice = argv[1]
-        if choice in ['-l', '--list']:
+
+        if choice == '-l':
             self.show.show_loot()
 
-        elif choice in ['-r', '--remove']:
-            if argc < 3:
-                self.print_usage(self.details['Usage'])
-            else:
-                self.loot.remove_loot(argv[2])
-        else:
-            self.print_usage(self.details['Usage'])
+        elif choice == '-r':
+            self.loot.remove_loot(argv[2])
