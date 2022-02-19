@@ -19,22 +19,23 @@ class HatSploitCommand(Command):
             'Ivan Nikolsky (enty8080) - command developer'
         ],
         'Description': "Manage HatSploit history.",
+        'Usage': "history <option>",
         'MinArgs': 1,
         'Options': {
-            '-l': [0, '', 'List all history.'],
-            '-c': [0, '', 'Clear all history.'],
-            'on': [0, '', 'Turn history on.'],
-            'off': [0, '', 'Turn history off.']
+            '-l': ['', "List all history."],
+            '-c': ['', "Clear all history."],
+            'on': ['', "Turn history on."],
+            'off': ['', "Turn history off."]
         }
     }
 
     def run(self, argc, argv):
         option = argv[1]
 
-        if option == "on":
+        if option == 'on':
             self.history.enable_history()
 
-        elif option == "off":
+        elif option == 'off':
             self.history.disable_history()
 
         elif option == '-c':
