@@ -69,24 +69,24 @@ class Commands:
         return [command for command in self.get_all_commands() if command.startswith(text)]
 
     def get_commands(self):
-        return list(self.local_storage.get("commands"))
+        return self.local_storage.get("commands")
 
     def get_modules_commands(self):
         module = self.modules.get_current_module_object()
 
         if module:
-            return list(module.commands) if hasattr(module, "commands") else []
-        return []
+            return module.commands if hasattr(module, "commands") else {}
+        return {}
 
     def get_plugins_commands(self):
         plugins = self.local_storage.get("loaded_plugins")
-        commands = []
+        commands = {}
 
         if plugins:
             for plugin in plugins:
                 if hasattr(plugins[plugin], "commands"):
                     for label in plugins[plugin].commands:
-                        commands += plugins[plugin].commands[label]
+                        commands.update(plugins[plugin].commands[label])
 
         return commands
 
