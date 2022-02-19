@@ -91,11 +91,29 @@ class Execute:
             if commands[0] in handler:
                 command = handler[commands[0]]
                 if (len(commands) - 1) < command.details['MinArgs']:
-                    self.badges.print_usage(command.details['Usage'])
+                    self.parse_usage(command.details)
                 else:
                     command.run(len(commands), commands)
                 return True
         return False
+
+    def parse_usage(self, details):
+        if 'Usage' in details:
+            self.badges.print_usage(details['Usage'])
+
+        elif 'Options' in details:
+            self.badges.print_usage(f"{details['Name']} <option> [arguments]\n")
+            max_option = max(details['Options'], key=len)
+
+            for option in details['Options']:
+                description = details['Options'][option]
+
+                if option == max_option:
+                    self.badges.print_empty(f"  {option}  {description}")
+                else:
+                    self.badges.print_empty(f"  {option}{' ' * len(max_option)}{description}")
+
+            self.badges.print_empty()
 
     def execute_core_command(self, commands):
         return self.execute_custom_command(commands, self.local_storage.get("commands"))
@@ -125,7 +143,7 @@ class Execute:
     def parse_and_execute_command(self, commands, command, command_object):
         if hasattr(command_object, commands[0]):
             if (len(commands) - 1) < command['MinArgs']:
-                self.badges.print_usage(command['Usage'])
+                self.parse_usage(command)
             else:
                 getattr(command_object, commands[0])(len(commands), commands)
         else:
