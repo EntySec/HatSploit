@@ -14,10 +14,6 @@ from hatsploit.lib.log import Log
 class HatSploitCommand(Command):
     log = Log()
 
-    usage = ""
-    usage += "log <option>\n\n"
-    usage += "  on <file>/off  Turn logging on/off.\n"
-
     details = {
         'Category': "developer",
         'Name': "log",
@@ -25,7 +21,7 @@ class HatSploitCommand(Command):
             'Ivan Nikolsky (enty8080) - command developer'
         ],
         'Description': "Log HatSploit output to log file.",
-        'Usage': "log <option>",
+        'Usage': "log <option> [arguments]",
         'MinArgs': 1,
         'Options': {
             'on': ['<file>', "Turn logging on."],
