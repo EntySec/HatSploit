@@ -103,18 +103,18 @@ class Execute:
     def check_arguments(self, commands, details):
         if (len(commands) - 1) < details['MinArgs']:
             return False
-        else:
-            if 'Options' in details:
-                if len(commands) > 1:
-                    if commands[1] in details['Options']:
-                        if (len(commands) - 2) < len(details['Options'][commands[1]][0].split()):
-                            return False
-                    else:
-                        return False
-
+        if 'Options' in details:
             if len(commands) > 1:
-                if commands[1] == '?':
+                if commands[1] in details['Options']:
+                    if (len(commands) - 2) < len(details['Options'][commands[1]][0].split()):
+                        return False
+                else:
                     return False
+
+        if len(commands) > 1:
+            if commands[1] == '?':
+                return False
+
         return True
 
     def parse_usage(self, details):
