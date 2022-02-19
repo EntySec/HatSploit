@@ -25,18 +25,18 @@ class HatSploitCommand(Command):
             'Ivan Nikolsky (enty8080) - command developer'
         ],
         'Description': "Log HatSploit output to log file.",
-        'Usage': usage,
-        'MinArgs': 1
+        'Usage': "log <option>",
+        'MinArgs': 1,
+        'Options': {
+            'on': ['<file>', "Turn logging on."],
+            'off': ['', "Turn logging off."]
+        }
     }
 
     def run(self, argc, argv):
         option = argv[1]
-        if option == "on":
-            if argc < 3:
-                self.print_usage(self.details['Usage'])
-            else:
-                self.log.enable_log(argv[1])
-        elif option == "off":
+        if option == 'on':
+            self.log.enable_log(argv[1])
+
+        elif option == 'off':
             self.log.disable_log()
-        else:
-            self.print_usage(self.details['Usage'])
