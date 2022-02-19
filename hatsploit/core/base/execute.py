@@ -93,12 +93,27 @@ class Execute:
         if handler:
             if commands[0] in handler:
                 command = handler[commands[0]]
-                if (len(commands) - 1) < command.details['MinArgs']:
+                if not self.check_arguments(commands, command.details):
                     self.parse_usage(command.details)
                 else:
                     command.run(len(commands), commands)
                 return True
         return False
+
+    def check_arguments(self, commands, details):
+        if (len(commands) - 1) < details['MinArgs']:
+            return False
+        else:
+            if 'Options' in details:
+                if len(commands) > 1:
+                    if commands[1] in details['Options']:
+                        if (len(commands) - 2) < details['Options'][commands[1]][0]:
+                            return False
+                    else:
+                        return False
+                else:
+                    return False
+        return True
 
     def parse_usage(self, details):
         if 'Usage' in details:
@@ -112,11 +127,7 @@ class Execute:
 
             for option in details['Options']:
                 info = details['Options'][option]
-
-                if isinstance(info, list) and len(info) == 2:
-                    data.append((option, info[0], info[1]))
-                else:
-                    data.append((option, '', info))
+                data.append((option, info[1], info[2]))
 
             self.tables.print_table('Options', headers, *data)
 
@@ -147,7 +158,7 @@ class Execute:
 
     def parse_and_execute_command(self, commands, command, command_object):
         if hasattr(command_object, commands[0]):
-            if (len(commands) - 1) < command['MinArgs']:
+            if not self.check_arguments(commands, command):
                 self.parse_usage(command)
             else:
                 getattr(command_object, commands[0])(len(commands), commands)
