@@ -14,7 +14,7 @@ class HatSploitCommand(Command):
 
     usage = ""
     usage += "search [option] [<keyword>]\n\n"
-    usage += "  -w, --where [payloads|modules|plugins]  Select where search.\n"
+    usage += "  -w, --where [payloads|modules|plugins]  Select where to search.\n"
 
     details = {
         'Category': "core",
@@ -23,8 +23,11 @@ class HatSploitCommand(Command):
             'Ivan Nikolsky (enty8080) - command developer'
         ],
         'Description': "Search payloads, modules and plugins.",
-        'Usage': usage,
-        'MinArgs': 1
+        'Usage': "search [option] [<keyword>]",
+        'MinArgs': 1,
+        'Options': {
+            '-w': ['[payloads|modules|plugins]', "Select where to search."]
+        }
     }
 
     def run(self, argc, argv):
@@ -33,14 +36,9 @@ class HatSploitCommand(Command):
             self.show.show_search_payloads(argv[1])
             self.show.show_search_plugins(argv[1])
         else:
-            if argc < 4:
-                self.print_usage(self.details['Usage'])
-            else:
-                if argv[2] == 'modules':
-                    self.show.show_search_modules(argv[3])
-                elif argv[2] == 'payloads':
-                    self.show.show_search_payloads(argv[3])
-                elif argv[2] == 'plugins':
-                    self.show.show_search_plugins(argv[3])
-                else:
-                    self.print_usage(self.details['Usage'])
+            if argv[2] == 'modules':
+                self.show.show_search_modules(argv[3])
+            elif argv[2] == 'payloads':
+                self.show.show_search_payloads(argv[3])
+            elif argv[2] == 'plugins':
+                self.show.show_search_plugins(argv[3])
