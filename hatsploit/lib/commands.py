@@ -91,7 +91,7 @@ class Commands:
         return commands
 
     def get_all_commands(self):
-        commands = self.local_storage.get("commands")
+        commands = {}
         module = self.modules.get_current_module_object()
 
         if module:
@@ -106,4 +106,5 @@ class Commands:
                     for label in plugins[plugin].commands:
                         commands.update(plugins[plugin].commands[label])
 
+        commands.update(self.local_storage.get("commands"))
         return commands
