@@ -103,15 +103,20 @@ class Execute:
 
         elif 'Options' in details:
             self.badges.print_usage(f"{details['Name']} <option> [arguments]\n")
+
             max_option = max(details['Options'], key=len)
+            max_argument = ""
+
+            for option in options:
+                if len(options[option][0]) > len(max_argument):
+                    max_argument = options[option][0]
 
             for option in details['Options']:
-                description = details['Options'][option]
+                description = details['Options'][option][1]
+                arguments = details['Options'][option][0]
 
-                if option == max_option:
-                    self.badges.print_empty(f"  {option}  {description}")
-                else:
-                    self.badges.print_empty(f"  {option}{' ' * len(max_option)}{description}")
+                space = ' ' * ((len(max_option) + len(max_argument)) - (len(option) + len(arguments)))
+                self.badges.print_empty(f"  {option} {arguments}{space}{description}")
 
             self.badges.print_empty()
 
