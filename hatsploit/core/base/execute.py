@@ -113,6 +113,10 @@ class Execute:
                         return False
                 else:
                     return False
+
+            if len(commands) > 1:
+                if commands[1] == '?':
+                    return False
         return True
 
     def parse_usage(self, details):
