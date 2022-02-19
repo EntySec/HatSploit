@@ -42,6 +42,7 @@ class Module(FMT, Badges, Colors, Parser, Tables, Tools):
         'Description': "",
         'Platform': "",
         'Targets': {},
+        'References': {},
         'Rank': ""
     }
 
