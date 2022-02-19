@@ -30,8 +30,8 @@ class HatSploitCommand(Command):
 
     def run(self, argc, argv):
         choice = argv[1]
-        if choice in ['-l', '--list']:
+        if choice == '-l':
             self.show.show_jobs()
 
-        elif choice in ['-k', '--kill']:
-            self.print_usage(self.details['Usage'])
+        elif choice == '-k':
+            self.jobs.delete_job(argv[2])
