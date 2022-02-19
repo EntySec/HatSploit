@@ -28,19 +28,19 @@ import readline
 
 from hatsploit.core.cli.fmt import FMT
 
-from hatsploit.lib.storage import LocalStorage
+from hatsploit.lib.commands import Commands
 
 
 class Completer:
     fmt = FMT()
 
-    local_storage = LocalStorage()
+    commands = Commands()
 
     matches = None
 
     def completer(self, text, state):
         if state == 0:
-            options = {}
+            options = []
 
             original_line = readline.get_line_buffer()
             line = original_line.lstrip()
@@ -56,7 +56,7 @@ class Completer:
                 if command[0] == "":
                     complete_function = self.default_completer
                 else:
-                    commands = self.local_storage.get("commands")
+                    commands = self.commands.get_all_commands()
 
                     if command[0] in commands:
                         if hasattr(commands[command[0]], "complete"):
@@ -69,7 +69,7 @@ class Completer:
                     else:
                         complete_function = self.default_completer
             else:
-                complete_function = self.commands_completer
+                complete_function = self.commands.commands_completer
 
             if options:
                 self.matches = self.options_completer(options, text)
@@ -80,9 +80,6 @@ class Completer:
             return self.matches[state]
         except IndexError:
             return None
-
-    def commands_completer(self, text):
-        return [command for command in self.local_storage.get("commands") if command.startswith(text)]
 
     def options_completer(self, options, text):
         return [option for option in options if option.startswith(text)]
