@@ -122,7 +122,7 @@ class Execute:
     def parse_usage(self, details):
         self.badges.print_usage(details['Usage'])
 
-        elif 'Options' in details:
+        if 'Options' in details:
             headers = ('Option', 'Arguments', 'Description')
             data = []
 
