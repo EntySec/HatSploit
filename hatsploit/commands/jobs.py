@@ -31,6 +31,7 @@ class HatSploitCommand(Command):
 
     def run(self, argc, argv):
         choice = argv[1]
+
         if choice == '-l':
             self.show.show_jobs()
 
