@@ -12,10 +12,6 @@ from hatsploit.lib.show import Show
 class HatSploitCommand(Command):
     show = Show()
 
-    usage = ""
-    usage += "search [option] [<keyword>]\n\n"
-    usage += "  -w, --where [payloads|modules|plugins]  Select where to search.\n"
-
     details = {
         'Category': "core",
         'Name': "search",
@@ -23,10 +19,11 @@ class HatSploitCommand(Command):
             'Ivan Nikolsky (enty8080) - command developer'
         ],
         'Description': "Search payloads, modules and plugins.",
-        'Usage': "search [option] [<keyword>]",
+        'Usage': "search <option> <keyword>",
         'MinArgs': 1,
         'Options': {
-            '-w': ['[payloads|modules|plugins]', "Select where to search."]
+            '-w': ['[payloads|modules|plugins]', "Select where to search."],
+            '-a': ['', "Search everywhere."]
         }
     }
 
