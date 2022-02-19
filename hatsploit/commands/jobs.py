@@ -14,11 +14,6 @@ class HatSploitCommand(Command):
     jobs = Jobs()
     show = Show()
 
-    usage = ""
-    usage += "jobs <option> [arguments]\n\n"
-    usage += "  -l, --list           List all active jobs.\n"
-    usage += "  -k, --kill <job_id>  Kill specified job.\n"
-
     details = {
         'Category': "jobs",
         'Name': "jobs",
@@ -26,9 +21,11 @@ class HatSploitCommand(Command):
             'Ivan Nikolsky (enty8080) - command developer'
         ],
         'Description': "Manage active jobs.",
-        'Usage': usage,
         'MinArgs': 1,
-        'Options': ['-l', '-k', '--list', '--kill']
+        'Options': {
+            '-l': [0, '', 'List all active jobs.'],
+            '-k': [1, '', 'Kill specified job.']
+        }
     }
 
     def run(self, argc, argv):
@@ -37,9 +34,4 @@ class HatSploitCommand(Command):
             self.show.show_jobs()
 
         elif choice in ['-k', '--kill']:
-            if argc < 3:
-                self.print_usage(self.details['Usage'])
-            else:
-                self.jobs.delete_job(argv[2])
-        else:
             self.print_usage(self.details['Usage'])
