@@ -116,12 +116,9 @@ class Execute:
         return True
 
     def parse_usage(self, details):
-        if 'Usage' in details:
-            self.badges.print_usage(details['Usage'])
+        self.badges.print_usage(details['Usage'])
 
         elif 'Options' in details:
-            self.badges.print_usage(f"{details['Name']} <option> [arguments]")
-
             headers = ('Option', 'Arguments', 'Description')
             data = []
 
