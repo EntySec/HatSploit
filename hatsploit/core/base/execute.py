@@ -28,8 +28,10 @@ import os
 import subprocess
 import sys
 
+from hatsploit.core.cli.tables import Tables
 from hatsploit.core.cli.badges import Badges
 from hatsploit.core.cli.fmt import FMT
+
 from hatsploit.lib.jobs import Jobs
 from hatsploit.lib.modules import Modules
 from hatsploit.lib.storage import LocalStorage
@@ -40,6 +42,7 @@ class Execute:
     jobs = Jobs()
     fmt = FMT()
     badges = Badges()
+    tables = Tables()
     local_storage = LocalStorage()
     modules = Modules()
     show = Show()
@@ -102,23 +105,15 @@ class Execute:
             self.badges.print_usage(details['Usage'])
 
         elif 'Options' in details:
-            self.badges.print_usage(f"{details['Name']} <option> [arguments]\n")
+            self.badges.print_usage(f"{details['Name']} <option> [arguments]")
 
-            max_option = max(details['Options'], key=len)
-            max_argument = ""
-
-            for option in options:
-                if len(options[option][0]) > len(max_argument):
-                    max_argument = options[option][0]
+            headers = ('Option', 'Arguments', 'Description')
+            data = []
 
             for option in details['Options']:
-                description = details['Options'][option][1]
-                arguments = details['Options'][option][0]
+                data.append((option, details['Options'][option][0], details['Options'][option][1]))
 
-                space = ' ' * ((len(max_option) + len(max_argument)) - (len(option) + len(arguments)))
-                self.badges.print_empty(f"  {option} {arguments}{space}{description}")
-
-            self.badges.print_empty()
+            self.tables.print_table('Options', headers, *data)
 
     def execute_core_command(self, commands):
         return self.execute_custom_command(commands, self.local_storage.get("commands"))
