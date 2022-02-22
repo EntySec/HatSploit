@@ -48,8 +48,12 @@ class TCPSocket:
         return False
 
     def disconnect(self):
-        self.sock.close()
-        return True
+        try:
+            self.sock.close()
+            return True
+        except Exception:
+            self.badges.print_error("Socket is not connected!")
+        return False
 
     def send(self, data):
         try:
