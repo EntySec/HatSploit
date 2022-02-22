@@ -90,7 +90,7 @@ class TCPClient:
         return host
 
     @staticmethod
-    def check_tcp_port(host, port, timeout=0.5):
+    def check_tcp_port(host, port, timeout=1):
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
             sock.settimeout(timeout)
             if sock.connect_ex((host, int(port))) == 0:
