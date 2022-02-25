@@ -28,6 +28,8 @@ import logging
 from flask import Flask
 from flask_restful import Resource, Api, reqparse
 
+from hatsploit.lib.jobs import Jobs
+from hatsploit.lib.modules import Modules
 from hatsploit.lib.sessions import Sessions
 from hatsploit.lib.config import Config
 
@@ -35,6 +37,58 @@ from hatsploit.lib.config import Config
 class APIManager(Resource):
     def get(self):
         return "", 200
+
+
+class ModulesManager(Resource):
+    jobs = Jobs()
+    modules = Modules()
+
+    def get(self):
+        parser = reqparse.RequestParser()
+
+        parser.add_argument('list')
+        parser.add_argument('module')
+        parser.add_argument('option')
+        parser.add_argument('value')
+        parser.add_argument('run')
+
+        args = parser.parse_args()
+
+        if args['list']:
+            all_modules = self.modules.get_all_modules()
+            number = 0
+            data = {}
+
+            for database in sorted(all_modules):
+                modules = all_modules[database]
+
+                for module in sorted(modules):
+                    data.update({
+                        number: {
+                            'module': modules[module]['Module'],
+                            'rank': modules[module]['Rank'],
+                            'name': modules[module]['Name']
+                        }
+                    })
+
+                    number += 1
+            return data, 200
+
+        else:
+            if args['module']:
+                self.modules.use_module(args['module'])
+
+            if args['option'] and args['value']:
+                self.modules.set_current_module_option(args['option'], args['value'])
+
+            if args['run']:
+                current_module = self.modules.get_current_module_object()
+
+                if current_module:
+                    self.jobs.create_job(current_module.details['Name'],
+                                         current_module.details['Module'],
+                                         self.modules.run_current_module)
+            return "", 200
 
 
 class SessionManager(Resource):
