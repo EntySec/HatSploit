@@ -32,6 +32,11 @@ from hatsploit.lib.sessions import Sessions
 from hatsploit.lib.config import Config
 
 
+class APIManager(Resource):
+    def get(self):
+        return "", 200
+
+
 class SessionManager(Resource):
     sessions = Sessions()
     config = Config()
@@ -135,7 +140,9 @@ class API:
     api = Api(app)
 
     def init(self, port=8008):
+        self.api.add_resource(APIManager, '/')
         self.api.add_resource(SessionManager, '/sessions')
+
         self.app.logger.disabled = True
 
         log = logging.getLogger('werkzeug')
