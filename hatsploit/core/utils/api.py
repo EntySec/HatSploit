@@ -50,7 +50,6 @@ class ModulesManager(Resource):
 
         parser.add_argument('list')
         parser.add_argument('options')
-        parser.add_argument('count')
         parser.add_argument('module')
         parser.add_argument('option')
         parser.add_argument('value')
@@ -79,23 +78,6 @@ class ModulesManager(Resource):
             return data, 200
 
         else:
-            if args['count']:
-                all_modules = self.modules.get_all_modules()
-                
-                if args['count'] == 'all':
-                    return len(all_modules), 200
-                else:
-                    amount = 0
-
-                    for database in all_modules:
-                        modules = all_modules[database]
-
-                        for module in modules:
-                            if module.split('/')[0] == args['count']:
-                                amount += 1
-
-                    return amount, 200
-
             if args['options']:
                 data = {}
                 current_module = self.modules.get_current_module_object()
