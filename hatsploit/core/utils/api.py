@@ -40,7 +40,7 @@ class APIManager(Resource):
         return "", 200
 
 
-class ModulesManager(Resource):
+class ModuleManager(Resource):
     jobs = Jobs()
     modules = Modules()
     payloads = Payloads()
@@ -246,6 +246,7 @@ class API:
 
     def init(self, port=8008):
         self.api.add_resource(APIManager, '/')
+        self.api.add_resource(ModuleManager, '/modules')
         self.api.add_resource(SessionManager, '/sessions')
 
         self.app.logger.disabled = True
