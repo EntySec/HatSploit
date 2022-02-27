@@ -127,7 +127,7 @@ class ModuleManager(Resource):
                 return data, 200
 
             if args['use']:
-                self.modules.use_module(args['module'])
+                self.modules.use_module(args['use'])
 
             if args['option'] and args['value']:
                 self.modules.set_current_module_option(args['option'], args['value'])
