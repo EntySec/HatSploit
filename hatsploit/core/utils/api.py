@@ -58,7 +58,7 @@ class ModuleManager(Resource):
         args = parser.parse_args()
 
         if args['list']:
-            all_modules = self.modules.get_all_modules()
+            all_modules = self.modules.get_modules()
             number = 0
             data = {}
 
