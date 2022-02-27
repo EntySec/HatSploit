@@ -30,6 +30,7 @@ from flask_restful import Resource, Api, reqparse
 
 from hatsploit.lib.jobs import Jobs
 from hatsploit.lib.modules import Modules
+from hatsploit.lib.payloads import Payloads
 from hatsploit.lib.sessions import Sessions
 from hatsploit.lib.config import Config
 
@@ -42,11 +43,14 @@ class APIManager(Resource):
 class ModulesManager(Resource):
     jobs = Jobs()
     modules = Modules()
+    payloads = Payloads()
 
     def get(self):
         parser = reqparse.RequestParser()
 
         parser.add_argument('list')
+        parser.add_argument('options')
+        parser.add_argument('count')
         parser.add_argument('module')
         parser.add_argument('option')
         parser.add_argument('value')
@@ -65,9 +69,9 @@ class ModulesManager(Resource):
                 for module in sorted(modules):
                     data.update({
                         number: {
-                            'module': modules[module]['Module'],
-                            'rank': modules[module]['Rank'],
-                            'name': modules[module]['Name']
+                            'Module': modules[module]['Module'],
+                            'Rank': modules[module]['Rank'],
+                            'Name': modules[module]['Name']
                         }
                     })
 
@@ -75,6 +79,70 @@ class ModulesManager(Resource):
             return data, 200
 
         else:
+            if args['count']:
+                all_modules = self.modules.get_all_modules()
+                
+                if args['count'] == 'all':
+                    return len(all_modules), 200
+                else:
+                    amount = 0
+
+                    for database in all_modules:
+                        modules = all_modules[database]
+
+                        for module in modules:
+                            if module.split('/')[0] == args['count']:
+                                amount += 1
+
+                    return amount, 200
+
+            if args['options']:
+                data = {}
+                current_module = self.modules.get_current_module_object()
+
+                if current_module:
+                    options = current_module.options
+
+                    for option in sorted(options):
+                        value, required = options[option]['Value'], options[option]['Required']
+                        if required:
+                            required = "yes"
+                        else:
+                            required = "no"
+                        if not value and value != 0:
+                            value = ""
+                        data.update({
+                            option: {
+                                'Value': value,
+                                'Required': required,
+                                'Description': options[option]['Description']
+                            }
+                        })
+
+                    if hasattr(current_module, "payload"):
+                        current_payload = self.payloads.get_current_payload()
+
+                        if hasattr(current_payload, "options"):
+                            options = current_payload.options
+
+                            for option in sorted(options):
+                                value, required = options[option]['Value'], options[option]['Required']
+                                if required:
+                                    value = "yes"
+                                else:
+                                    value = "no"
+                                if not value and value != 0:
+                                    value = ""
+                                data.update({
+                                    option: {
+                                        'Value': value,
+                                        'Required': required,
+                                        'Description': options[option]['Description']
+                                    }
+                                })
+
+                return data, 200
+
             if args['module']:
                 self.modules.use_module(args['module'])
 
