@@ -50,7 +50,7 @@ class ModuleManager(Resource):
 
         parser.add_argument('list')
         parser.add_argument('options')
-        parser.add_argument('module')
+        parser.add_argument('use')
         parser.add_argument('option')
         parser.add_argument('value')
         parser.add_argument('run')
@@ -126,7 +126,7 @@ class ModuleManager(Resource):
 
                 return data, 200
 
-            if args['module']:
+            if args['use']:
                 self.modules.use_module(args['module'])
 
             if args['option'] and args['value']:
