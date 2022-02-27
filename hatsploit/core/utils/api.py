@@ -70,7 +70,8 @@ class ModulesManager(Resource):
                         number: {
                             'Module': modules[module]['Module'],
                             'Rank': modules[module]['Rank'],
-                            'Name': modules[module]['Name']
+                            'Name': modules[module]['Name'],
+                            'Platform': modules[module]['Platform']
                         }
                     })
 
