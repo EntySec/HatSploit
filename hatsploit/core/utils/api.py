@@ -78,68 +78,67 @@ class ModuleManager(Resource):
                     number += 1
             return data, 200
 
-        else:
-            if args['options']:
-                data = {}
-                current_module = self.modules.get_current_module_object()
+        if args['options']:
+            data = {}
+            current_module = self.modules.get_current_module_object()
 
-                if current_module:
-                    options = current_module.options
+            if current_module:
+                options = current_module.options
 
-                    for option in sorted(options):
-                        value, required = options[option]['Value'], options[option]['Required']
-                        if required:
-                            required = "yes"
-                        else:
-                            required = "no"
-                        if not value and value != 0:
-                            value = ""
-                        data.update({
-                            option: {
-                                'Value': value,
-                                'Required': required,
-                                'Description': options[option]['Description']
-                            }
-                        })
+                for option in sorted(options):
+                    value, required = options[option]['Value'], options[option]['Required']
+                    if required:
+                        required = "yes"
+                    else:
+                        required = "no"
+                    if not value and value != 0:
+                        value = ""
+                    data.update({
+                        option: {
+                            'Value': value,
+                            'Required': required,
+                            'Description': options[option]['Description']
+                        }
+                    })
 
-                    if hasattr(current_module, "payload"):
-                        current_payload = self.payloads.get_current_payload()
+                if hasattr(current_module, "payload"):
+                    current_payload = self.payloads.get_current_payload()
 
-                        if hasattr(current_payload, "options"):
-                            options = current_payload.options
+                    if hasattr(current_payload, "options"):
+                        options = current_payload.options
 
-                            for option in sorted(options):
-                                value, required = options[option]['Value'], options[option]['Required']
-                                if required:
-                                    value = "yes"
-                                else:
-                                    value = "no"
-                                if not value and value != 0:
-                                    value = ""
-                                data.update({
-                                    option: {
-                                        'Value': value,
-                                        'Required': required,
-                                        'Description': options[option]['Description']
-                                    }
-                                })
+                        for option in sorted(options):
+                            value, required = options[option]['Value'], options[option]['Required']
+                            if required:
+                                value = "yes"
+                            else:
+                                value = "no"
+                            if not value and value != 0:
+                                value = ""
+                            data.update({
+                                option: {
+                                    'Value': value,
+                                    'Required': required,
+                                    'Description': options[option]['Description']
+                                }
+                            })
 
-                return data, 200
+            return data, 200
 
-            if args['use']:
-                self.modules.use_module(args['use'])
+        if args['use']:
+            self.modules.use_module(args['use'])
 
-            if args['option'] and args['value']:
-                self.modules.set_current_module_option(args['option'], args['value'])
+        if args['option'] and args['value']:
+            self.modules.set_current_module_option(args['option'], args['value'])
 
-            if args['run']:
-                current_module = self.modules.get_current_module_object()
+        if args['run']:
+            current_module = self.modules.get_current_module_object()
 
-                if current_module:
-                    self.jobs.create_job(current_module.details['Name'],
-                                         current_module.details['Module'],
-                                         self.modules.run_current_module)
-            return "", 200
+            if current_module:
+                self.jobs.create_job(current_module.details['Name'],
+                                     current_module.details['Module'],
+                                     self.modules.run_current_module)
+        return "", 200
 
 
 class SessionManager(Resource):
