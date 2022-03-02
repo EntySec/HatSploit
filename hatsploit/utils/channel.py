@@ -67,20 +67,20 @@ class ChannelSocket:
         self.badges.print_error("Socket is not connected!")
         return False
 
-    def recv(self, size):
+    def read(self, size):
         if self.sock.sock:
             return self.sock.sock.recv(size)
         self.badges.print_error("Socket is not connected!")
         return b""
 
-    def read(self):
+    def readall(self):
         if self.sock.sock:
             result = self.stash()
             self.sock.sock.setblocking(False)
 
             while True:
                 try:
-                    data = self.recv(self.read_size)
+                    data = self.read(self.read_size)
                 except Exception:
                     if result:
                         break
@@ -99,7 +99,7 @@ class ChannelSocket:
             self.badges.print_empty(self.stash().decode(errors='ignore'), start='', end='')
 
             while True:
-                data = self.recv(self.read_size)
+                data = self.read(self.read_size)
 
                 if token in data:
                     token_index = data.index(token)
@@ -120,7 +120,7 @@ class ChannelSocket:
             result = self.stash()
 
             while True:
-                data = self.recv(self.read_size)
+                data = self.read(self.read_size)
 
                 if token in data:
                     token_index = data.index(token)
@@ -143,7 +143,7 @@ class ChannelSocket:
                 self.send(buffer)
  
                 if output:
-                    data = self.read()
+                    data = self.readall()
 
                     if decode:
                         data = data.decode(errors='ignore')
