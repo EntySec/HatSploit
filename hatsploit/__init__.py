@@ -43,7 +43,6 @@ from hatsploit.core.base.console import Console
 from hatsploit.core.cli.badges import Badges
 from hatsploit.core.utils.check import Check
 from hatsploit.core.utils.update import Update
-from hatsploit.core.utils.api import API
 
 
 class HatSploit:
@@ -52,7 +51,6 @@ class HatSploit:
     badges = Badges()
     check = Check()
     update = Update()
-    api = API()
 
     path_config = config.path_config
 
@@ -102,8 +100,6 @@ def main():
                         help='Check only base payloads.')
     parser.add_argument('--check-plugins', dest='check_plugins', action='store_true', help='Check only base plugins.')
     parser.add_argument('-u', '--update', dest='update', action='store_true', help='Update HatSploit Framework.')
-    parser.add_argument('--rest-api', dest='rest_api', action='store_true', help='Run HatSploit with REST API.')
-    parser.add_argument('--port', dest='port', type=int, help='HatSploit REST API port. [default: 8008]')
     parser.add_argument('-s', '--script', dest='script', help='Execute HatSploit commands from script file.')
     parser.add_argument('--no-exit', dest='no_exit', action='store_true', help='Do not exit after script execution.')
     parser.add_argument('--no-startup', dest='no_startup', action='store_true', help='Do not execute startup.hsf file.')
@@ -126,24 +122,6 @@ def main():
     elif args.update:
         hsf.update.update()
         sys.exit(0)
-
-    elif args.rest_api:
-        if args.port:
-            hsf.jobs.create_job(
-                None,
-                None,
-                hsf.api.init,
-                [args.port],
-                True
-            )
-
-        else:
-            hsf.jobs.create_job(
-                None,
-                None,
-                hsf.api.init,
-                hidden=True
-            )
 
     elif args.script:
         if not os.path.exists(args.script):
