@@ -78,9 +78,99 @@ class API:
             else:
                 return make_response('', 401)
 
+        @rest_api.route('/modules', methods=['POST'])
+        def server_modules():
+            action = request.form['action']
+
+            if action == 'list':
+                data = {}
+                all_modules = self.modules.get_modules()
+                number = 0
+                
+                for database in sorted(all_modules):
+                    data.update({
+                        number: {
+                            'Module': modules[module]['Module'],
+                            'Rank': modules[module]['Rank'],
+                            'Name': modules[module]['Name'],
+                            'Platform': modules[module]['Platform']
+                        }
+                    })
+                    
+                    number += 1
+
+                return jsonify(data)
+
+            elif action == 'options':
+                data = {}
+                current_module = self.modules.get_current_module_object()
+
+                if current_module:
+                    options = current_module.options
+
+                    for option in sorted(options):
+                        value, required = options[option]['Value'], options[option]['Required']
+                        if required:
+                            required = 'yes'
+                        else:
+                            required = 'no'
+                        if not value and value != 0:
+                            value = ""
+                        data.update({
+                            option: {
+                                'Value': value,
+                                'Required': required,
+                                'Description': options[option]['Description']
+                            }
+                        })
+
+                    if hasattr(current_module, "payload"):
+                        current_payload = self.payloads.get_current_payload()
+
+                        if hasattr(current_payload, "options"):
+                            options = current_payload.options
+
+                            for option in sorted(options):
+                                value, required = options[option]['Value'], options[option]['Required']
+                                if required:
+                                    required = 'yes'
+                                else:
+                                    required = 'no'
+                                if not value and value != 0:
+                                    value = ""
+                                data.update({
+                                    option: {
+                                        'Value': value,
+                                        'Required': required,
+                                        'Description': options[option]['Description']
+                                    }
+                                })
+
+                return jsonify(data)
+
+            if action == 'use':
+                self.modules.use_module(request.form['module'])
+
+            if action == 'set':
+                self.modules.set_current_module_option(
+                    request.form['option'],
+                    request.form['value']
+                )
+
+            if action == 'run':
+                current_module = self.modules.get_current_module_object()
+
+                if current_module:
+                    self.jobs.create_job(current_module.details['Name'],
+                                         current_module.details['Module'],
+                                         self.modules.run_current_module)
+
+            return make_response('', 200)
+
         @rest_api.route('/sessions', methods=['POST'])
         def server_sessions():
             action = request.form['action']
+
             if action == 'close':
                 session = request.form['session']
                 self.sessions.close_session(session)
