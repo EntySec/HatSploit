@@ -25,232 +25,42 @@
 #
 
 import logging
+
 from flask import Flask
-from flask_restful import Resource, Api, reqparse
+from flask import request
+from flask import jsonify
+from flask import make_response
 
-from hatsploit.lib.jobs import Jobs
-from hatsploit.lib.modules import Modules
-from hatsploit.lib.payloads import Payloads
-from hatsploit.lib.sessions import Sessions
-from hatsploit.lib.config import Config
-
-
-class APIManager(Resource):
-    def get(self):
-        return "", 200
-
-
-class ModuleManager(Resource):
-    jobs = Jobs()
-    modules = Modules()
-    payloads = Payloads()
-
-    def get(self):
-        parser = reqparse.RequestParser()
-
-        parser.add_argument('list')
-        parser.add_argument('options')
-        parser.add_argument('use')
-        parser.add_argument('option')
-        parser.add_argument('value')
-        parser.add_argument('run')
-
-        args = parser.parse_args()
-
-        if args['list']:
-            all_modules = self.modules.get_modules()
-            number = 0
-            data = {}
-
-            for database in sorted(all_modules):
-                modules = all_modules[database]
-
-                for module in sorted(modules):
-                    data.update({
-                        number: {
-                            'Module': modules[module]['Module'],
-                            'Rank': modules[module]['Rank'],
-                            'Name': modules[module]['Name'],
-                            'Platform': modules[module]['Platform']
-                        }
-                    })
-
-                    number += 1
-            return data, 200
-
-        if args['options']:
-            data = {}
-            current_module = self.modules.get_current_module_object()
-
-            if current_module:
-                options = current_module.options
-
-                for option in sorted(options):
-                    value, required = options[option]['Value'], options[option]['Required']
-                    if required:
-                        required = "yes"
-                    else:
-                        required = "no"
-                    if not value and value != 0:
-                        value = ""
-                    data.update({
-                        option: {
-                            'Value': value,
-                            'Required': required,
-                            'Description': options[option]['Description']
-                        }
-                    })
-
-                if hasattr(current_module, "payload"):
-                    current_payload = self.payloads.get_current_payload()
-
-                    if hasattr(current_payload, "options"):
-                        options = current_payload.options
-
-                        for option in sorted(options):
-                            value, required = options[option]['Value'], options[option]['Required']
-                            if required:
-                                value = "yes"
-                            else:
-                                value = "no"
-                            if not value and value != 0:
-                                value = ""
-                            data.update({
-                                option: {
-                                    'Value': value,
-                                    'Required': required,
-                                    'Description': options[option]['Description']
-                                }
-                            })
-
-            return data, 200
-
-        if args['use']:
-            self.modules.use_module(args['use'])
-
-        if args['option'] and args['value']:
-            self.modules.set_current_module_option(args['option'], args['value'])
-
-        if args['run']:
-            current_module = self.modules.get_current_module_object()
-
-            if current_module:
-                self.jobs.create_job(current_module.details['Name'],
-                                     current_module.details['Module'],
-                                     self.modules.run_current_module)
-        return "", 200
-
-
-class SessionManager(Resource):
-    sessions = Sessions()
-    config = Config()
-
-    def get(self):
-        parser = reqparse.RequestParser()
-
-        parser.add_argument('id')
-        parser.add_argument('command')
-        parser.add_argument('output')
-
-        parser.add_argument('path')
-        parser.add_argument('download')
-        parser.add_argument('upload')
-
-        parser.add_argument('close')
-        parser.add_argument('count')
-        parser.add_argument('list')
-
-        args = parser.parse_args()
-
-        if args['id']:
-            if args['command']:
-                session = self.sessions.get_session(args['id'])
-
-                if session:
-                    if args['output']:
-                        if args['output'].lower() in ['yes', 'y']:
-                            output = session.send_command(args['command'], output=True)
-                            return output, 200
-
-                    session.send_command(args['command'])
-                return "", 200
-
-            if args['download']:
-                self.sessions.download_from_session(
-                    args['id'],
-                    args['download'],
-                    args['path'] if args['path'] else self.config.path_config['loot_path']
-                )
-
-            elif args['upload'] and args['path']:
-                self.session.upload_to_session(
-                    args['id'],
-                    args['upload'],
-                    args['path']
-                )
-
-        else:
-            if args['close']:
-                self.sessions.close_session(args['close'])
-                return "", 200
-
-        
-            if args['count']:
-                sessions = self.sessions.get_all_sessions()
-                if sessions:
-                    if args['count'] == 'all':
-                        return len(sessions), 200
-                    counter = 0
-                    for session in sessions:
-                        if sessions[session]['platform'] == args['count']:
-                            counter += 1
-                    return counter, 200
-                return 0, 200
-
-            if args['list']:
-                sessions = self.sessions.get_all_sessions()
-                data = {}
-
-                if sessions:
-                    for session in sessions:
-                        if args['list'] == 'all':
-                            data.update({
-                                session: {
-                                    'platform': sessions[session]['platform'],
-                                    'architecture': sessions[session]['architecture'],
-                                    'type': sessions[session]['type'],
-                                    'host': sessions[session]['host'],
-                                    'port': sessions[session]['port']
-                                }
-                            })
-                        else:
-                            if sessions[session]['platform'] == args['list']:
-                                data.update({
-                                    session: {
-                                        'platform': sessions[session]['platform'],
-                                        'architecture': sessions[session]['architecture'],
-                                        'type': sessions[session]['type'],
-                                        'host': sessions[session]['host'],
-                                        'port': sessions[session]['port']
-                                    }
-                                })
-                return data, 200
-
-        return "", 200
+from hatsploit.utils.string import StringTools
 
 
 class API:
-    app = Flask(__name__)
-    api = Api(app)
+    def __init__(self, username, password):
+        self.string_tools
+        self.username = username
+        self.password = password
 
-    def init(self, port=8008):
-        self.api.add_resource(APIManager, '/')
-        self.api.add_resource(ModuleManager, '/modules')
-        self.api.add_resource(SessionManager, '/sessions')
+        self.token = self.string_tools.random_string(32)
 
-        self.app.logger.disabled = True
+    def run(self):
+        rest_api = Flask("HatSploit")
 
-        log = logging.getLogger('werkzeug')
-        log.disabled = True
+        log = logging.getLogger("werkzeug")
+        log.setLevel(logging.ERROR)
 
-        self.app.run(host='127.0.0.1', port=int(port))
+        @rest_api.before_request
+        def validate_token():
+            if request.path != '/login':
+                token = request.args.get('token')
+                if token != self.token:
+                    return make_response('', 401)
+
+        @rest_api.route('/login', methods=['POST'])
+        def server_login():
+            username = request.form['username']
+            password = request.form['password']
+
+            if username == self.username and password == self.password:
+                return jsonify(token=self.token)
+            else:
+                return make_response('', 401)
