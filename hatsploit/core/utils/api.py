@@ -41,14 +41,17 @@ from hatsploit.lib.config import Config
 
 
 class API:
-    def __init__(self, username, password):
+    def __init__(self, username, password, host='127.0.0.1', port=8008):
         self.string_tools = StringTools()
-        
+
         self.jobs = Jobs()
         self.modules = Modules()
         self.payloads = Payloads()
         self.sessions = Sessions()
         self.config = Config()
+
+        self.host = host
+        self.port = int(port)
 
         self.username = username
         self.password = password
@@ -236,3 +239,5 @@ class API:
                 )
 
             return make_response('', 200)
+
+        rest_api.run(host=self.host, port=self.port)
