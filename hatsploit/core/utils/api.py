@@ -27,16 +27,29 @@
 import logging
 
 from flask import Flask
-from flask import request
 from flask import jsonify
+from flask import request
 from flask import make_response
 
 from hatsploit.utils.string import StringTools
 
+from hatsploit.lib.jobs import Jobs
+from hatsploit.lib.modules import Modules
+from hatsploit.lib.payloads import Payloads
+from hatsploit.lib.sessions import Sessions
+from hatsploit.lib.config import Config
+
 
 class API:
     def __init__(self, username, password):
-        self.string_tools
+        self.string_tools = StringTools()
+        
+        self.jobs = Jobs()
+        self.modules = Modules()
+        self.payloads = Payloads()
+        self.sessions = Sessions()
+        self.config = Config()
+
         self.username = username
         self.password = password
 
@@ -51,7 +64,7 @@ class API:
         @rest_api.before_request
         def validate_token():
             if request.path != '/login':
-                token = request.args.get('token')
+                token = request.form['token']
                 if token != self.token:
                     return make_response('', 401)
 
@@ -64,3 +77,72 @@ class API:
                 return jsonify(token=self.token)
             else:
                 return make_response('', 401)
+
+        @rest_api.route('/sessions', methods=['POST'])
+        def server_sessions():
+            action = request.form['action']
+            if action == 'close':
+                session = request.form['session']
+                self.sessions.close_session(session)
+
+            elif action == 'list':
+                data = {}
+                sessions = self.sessions.get_all_sessions()
+                fetch = request.form['fetch']
+
+                if sessions:
+                    for session in sessions:
+                        if fetch == 'all':
+                            data.update({
+                                session: {
+                                    'platform': sessions[session]['platform'],
+                                    'architecture': sessions[session]['architecture'],
+                                    'type': sessions[session]['type'],
+                                    'host': sessions[session]['host'],
+                                    'port': sessions[session]['port']
+                                }
+                            })
+                        elif fetch == sessions[session]['platform']:
+                            data.update({
+                                session: {
+                                    'platform': sessions[session]['platform'],
+                                    'architecture': sessions[session]['architecture'],
+                                    'type': sessions[session]['type'],
+                                    'host': sessions[session]['host'],
+                                    'port': sessions[session]['port']
+                                }
+                            })
+
+                return jsonify(data)
+
+            elif action == 'execute':
+                session = request.form['session']
+                session = self.sessions.get_session(session)
+                
+                if session:
+                    if request.form['output'].lower() in ['yes', 'y']:
+                        output = session.send_command(request.form['command'], output=True)
+                        return jsonify(output=output)
+
+                    session.send_command(request.form['command'])
+
+            elif action == 'download':
+                if 'local_path' in request.form:
+                    local_path = request.form['local_path']
+                else:
+                    local_path = self.config.path_config['loot_path']
+
+                self.sessions.download_from_session(
+                    request.form['session'],
+                    request.form['remote_file'],
+                    local_path
+                )
+
+            elif action == 'upload':
+                self.session.upload_to_session(
+                    request.form['session'],
+                    request.form['local_file'],
+                    request.form['remote_path']
+                )
+
+            return make_response('', 200)
