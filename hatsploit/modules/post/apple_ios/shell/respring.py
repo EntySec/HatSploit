@@ -11,6 +11,7 @@ from hatsploit.utils.session import SessionTools
 
 class HatSploitModule(Module, SessionTools):
     details = {
+        'Category': "post",
         'Name': "iOS Restart SpringBoard",
         'Module': "post/apple_ios/shell/respring",
         'Authors': [

@@ -11,6 +11,7 @@ from hatsploit.utils.session import SessionTools
 
 class HatSploitModule(Module, SessionTools):
     details = {
+        'Category': "post",
         'Name': "Windows Invoke Message Box",
         'Module': "post/windows/misc/message_box",
         'Authors': [

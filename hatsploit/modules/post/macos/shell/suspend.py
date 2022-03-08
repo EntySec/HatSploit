@@ -11,6 +11,7 @@ from hatsploit.utils.session import SessionTools
 
 class HatSploitModule(Module, SessionTools):
     details = {
+        'Category': "post",
         'Name': "macOS Shell Suspend",
         'Module': "post/macos/shell/suspend",
         'Authors': [

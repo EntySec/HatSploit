@@ -13,6 +13,7 @@ from hatsploit.utils.db import DBTools
 
 class HatSploitModule(Module, SessionTools, DBTools):
     details = {
+        'Category': "post",
         'Name': "Obtain Safari history",
         'Module': "post/apple_ios/shell/safari_history",
         'Authors': [

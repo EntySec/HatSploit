@@ -11,6 +11,7 @@ from hatsploit.utils.session import SessionTools
 
 class HatSploitModule(Module, SessionTools):
     details = {
+        'Category': "post",
         'Name': "Unix Obtain /etc/passwd",
         'Module': "post/unix/shell/getpasswd",
         'Authors': [
