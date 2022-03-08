@@ -72,7 +72,7 @@ class API:
                     return make_response('', 401)
 
         @rest_api.route('/login', methods=['POST'])
-        def server_login():
+        def login_api():
             username = request.form['username']
             password = request.form['password']
 
@@ -81,9 +81,42 @@ class API:
             else:
                 return make_response('', 401)
 
+        @rest_api.route('/payloads', methods=['POST'])
+        def payloads_api():
+            action = None
+
+            if 'action' in request.form:
+                action = request.form['action']
+
+            if action == 'list':
+                data = {}
+                all_payloads = self.payloads.get_payloads()
+                number = 0
+
+                for database in sorted(all_payloads):
+                    payloads = all_payloads[database]
+
+                    for payload in sorted(payloads):
+                        data.update({
+                            number: {
+                                'Category': payloads[payload]['Category'],
+                                'Payload': payloads[payload]['Payload'],
+                                'Rank': payloads[payload]['Rank'],
+                                'Name': payloads[payload]['Name']
+                            }
+                        })
+
+                        number += 1
+
+                return jsonify(data)
+            return make_response('', 200)
+
         @rest_api.route('/modules', methods=['POST'])
-        def server_modules():
-            action = request.form['action']
+        def modules_api():
+            action = None
+
+            if 'action' in request.form:
+                action = request.form['action']
 
             if action == 'list':
                 data = {}
@@ -91,16 +124,19 @@ class API:
                 number = 0
                 
                 for database in sorted(all_modules):
-                    data.update({
-                        number: {
-                            'Module': modules[module]['Module'],
-                            'Rank': modules[module]['Rank'],
-                            'Name': modules[module]['Name'],
-                            'Platform': modules[module]['Platform']
-                        }
-                    })
+                    modules = all_modules[database]
                     
-                    number += 1
+                    for module in sorted(modules):
+                        data.update({
+                            number: {
+                                'Module': modules[module]['Module'],
+                                'Rank': modules[module]['Rank'],
+                                'Name': modules[module]['Name'],
+                                'Platform': modules[module]['Platform']
+                            }
+                        })
+                    
+                        number += 1
 
                 return jsonify(data)
 
@@ -171,8 +207,11 @@ class API:
             return make_response('', 200)
 
         @rest_api.route('/sessions', methods=['POST'])
-        def server_sessions():
-            action = request.form['action']
+        def sessions_api():
+            action = None
+
+            if 'action' in request.form:
+                action = request.form['action']
 
             if action == 'close':
                 session = request.form['session']
@@ -181,7 +220,10 @@ class API:
             elif action == 'list':
                 data = {}
                 sessions = self.sessions.get_all_sessions()
-                fetch = request.form['fetch']
+                fetch = 'all'
+
+                if 'fetch' in request.form:
+                    fetch = request.form['fetch']
 
                 if sessions:
                     for session in sessions:
