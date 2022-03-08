@@ -11,6 +11,7 @@ from hatsploit.utils.tcp import TCPClient
 
 class HatSploitModule(Module, TCPClient):
     details = {
+        'Category': "auxiliary",
         'Name': "Jailbreak Installation Checker",
         'Module': "auxiliary/apple_ios/checker/jailbroken_or_not",
         'Authors': [

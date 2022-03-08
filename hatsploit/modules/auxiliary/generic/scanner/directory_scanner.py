@@ -14,6 +14,7 @@ class HatSploitModule(Module, HTTPClient):
     config = Config()
 
     details = {
+        'Category': "auxiliary",
         'Name': "WEB Directory Scanner",
         'Module': "auxiliary/generic/scanner/directory_scanner",
         'Authors': [
