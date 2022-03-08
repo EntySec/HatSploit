@@ -10,7 +10,7 @@ from hatsploit.lib.payload import Payload
 
 class HatSploitPayload(Payload):
     details = {
-        'Category': "single",
+        'Category': "singler",
         'Name': "Windows PowerShell Reverse TCP",
         'Payload': "windows/generic/powershell_reverse_tcp",
         'Authors': [

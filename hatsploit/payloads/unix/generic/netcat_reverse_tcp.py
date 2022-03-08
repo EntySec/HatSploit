@@ -12,7 +12,7 @@ from hatsploit.utils.string import StringTools
 
 class HatSploitPayload(Payload, StringTools):
     details = {
-        'Category': "single",
+        'Category': "singler",
         'Name': "Netcat Shell Reverse TCP",
         'Payload': "unix/generic/netcat_reverse_tcp",
         'Authors': [
