@@ -102,7 +102,8 @@ class API:
                                 'Category': payloads[payload]['Category'],
                                 'Payload': payloads[payload]['Payload'],
                                 'Rank': payloads[payload]['Rank'],
-                                'Name': payloads[payload]['Name']
+                                'Name': payloads[payload]['Name'],
+                                'Platform': payloads[payload]['Platform']
                             }
                         })
 
@@ -129,6 +130,7 @@ class API:
                     for module in sorted(modules):
                         data.update({
                             number: {
+                                'Category': modules[module]['Category'],
                                 'Module': modules[module]['Module'],
                                 'Rank': modules[module]['Rank'],
                                 'Name': modules[module]['Name'],
