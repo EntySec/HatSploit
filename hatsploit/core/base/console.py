@@ -120,10 +120,12 @@ class Console:
                 if not self.modules.check_current_module():
                     prompt = f'({self.prompt})> '
                 else:
-                    module = self.modules.get_current_module_name()
-                    name = self.modules.get_current_module_object().details['Name']
+                    current_module = self.modules.get_current_module_object()
 
-                    prompt = f'({self.prompt}: {module.split("/")[0]}: %red{name}%end)> '
+                    category = current_module.details['Category']
+                    name = current_module.details['Name']
+
+                    prompt = f'({self.prompt}: {category}: %red{name}%end)> '
                 commands = self.badges.input_empty(prompt)
 
                 self.update_events()
