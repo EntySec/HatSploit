@@ -44,9 +44,9 @@ class HatSploitCommand(Command):
 
         if argc > 1:
             if argv[1] in categories:
-                self.show_payloads(argv[1])
+                self.show.show_payloads(argv[1])
             else:
                 self.print_error("Invalid payload category!")
                 self.print_information(f"Available categories: {str(categories)}")
         else:
-            self.show_payloads()
+            self.show.show_payloads()
