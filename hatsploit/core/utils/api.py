@@ -89,6 +89,19 @@ class API:
 
                 self.options.add_handler_options(current_module, current_payload)
 
+        @rest_api.route('/', methods=['GET', 'POST'])
+        def api():
+            version = self.config.core_config['details']['version']
+            codename = self.config.core_config['details']['codename']
+
+            response = "HatSploit REST API server\n"
+            response += f"Version: {version}\n"
+
+            if codename:
+                response += f"Codename: {codename}\n"
+
+            return make_response(response, 200)
+
         @rest_api.route('/login', methods=['POST'])
         def login_api():
             username = request.form['username']
