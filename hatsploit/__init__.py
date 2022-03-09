@@ -108,7 +108,7 @@ def main():
     hsf = HatSploit()
 
     if args.check_all:
-        sys.exit(hsf.check.check_all())
+        sys.exit(not hsf.check.check_all())
 
     elif args.check_modules:
         sys.exit(hsf.check.check_modules())
