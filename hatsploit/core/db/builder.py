@@ -127,6 +127,7 @@ class Builder:
                         database.update({
                             module_name: {
                                 "Path": module,
+                                "Category": module_object.details['Category'],
                                 "Name": module_object.details['Name'],
                                 "Module": module_object.details['Module'],
                                 "Authors": module_object.details['Authors'],

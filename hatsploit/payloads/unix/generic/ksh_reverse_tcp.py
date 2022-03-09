@@ -10,7 +10,7 @@ from hatsploit.lib.payload import Payload
 
 class HatSploitPayload(Payload):
     details = {
-        'Category': "single",
+        'Category': "singler",
         'Name': "KSH shell Reverse TCP",
         'Payload': "unix/generic/ksh_reverse_tcp",
         'Authors': [

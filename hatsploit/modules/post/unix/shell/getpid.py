@@ -11,6 +11,7 @@ from hatsploit.utils.session import SessionTools
 
 class HatSploitModule(Module, SessionTools):
     details = {
+        'Category': "post",
         'Name': "Unix Shell Get PID",
         'Module': "post/unix/shell/getpid",
         'Authors': [

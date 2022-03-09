@@ -42,8 +42,7 @@ class Payload(FMT, Badges, Colors, Parser, Tables, Tools):
         ],
         'Description': "",
         'Platform': "",
-        'Session': None,
-        'Rank': "low",
+        'Rank': "",
         'Type': ""
     }
 

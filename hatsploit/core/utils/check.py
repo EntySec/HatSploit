@@ -49,7 +49,15 @@ class Check:
 
                     try:
                         module_object = self.importer.import_module(module)
-                        keys = ['Name', 'Module', 'Authors', 'Description', 'Platform', 'Rank']
+                        keys = [
+                            'Category',
+                            'Name',
+                            'Module',
+                            'Authors',
+                            'Description',
+                            'Platform',
+                            'Rank'
+                        ]
                         assert (all(key in module_object.details for key in keys))
                         self.badges.print_success(f"{module}: OK")
                     except Exception:
@@ -69,8 +77,17 @@ class Check:
 
                     try:
                         payload_object = self.importer.import_payload(payload)
-                        keys = ['Category', 'Name', 'Payload', 'Authors', 'Description',
-                                'Architecture', 'Platform', 'Rank', 'Type']
+                        keys = [
+                            'Category',
+                            'Name',
+                            'Payload',
+                            'Authors',
+                            'Description',
+                            'Architecture',
+                            'Platform',
+                            'Rank',
+                            'Type'
+                        ]
                         assert (all(key in payload_object.details for key in keys))
                         self.badges.print_success(f"{payload}: OK")
                     except Exception:
@@ -90,7 +107,11 @@ class Check:
 
                     try:
                         plugin_object = self.importer.import_plugin(plugin)
-                        keys = ['Name', 'Authors', 'Description']
+                        keys = [
+                            'Name',
+                            'Authors',
+                            'Description'
+                        ]
                         assert (all(key in plugin_object.details for key in keys))
                         self.badges.print_success(f"{plugin}: OK")
                     except Exception:
@@ -106,7 +127,7 @@ class Check:
         fails.append(self.check_plugins())
 
         for fail in fails:
-            if fail:
+            if not fail:
                 self.badges.print_error("Not all checks passed!")
                 return False
         self.badges.print_success("All checks passed!")

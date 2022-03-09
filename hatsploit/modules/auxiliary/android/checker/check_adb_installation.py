@@ -11,6 +11,7 @@ from hatsploit.utils.tcp import TCPClient
 
 class HatSploitModule(Module, TCPClient):
     details = {
+        'Category': "auxiliary",
         'Name': "ADB Installation Checker",
         'Module': "auxiliary/android/checker/check_adb_installation",
         'Authors': [

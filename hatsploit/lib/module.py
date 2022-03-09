@@ -34,6 +34,7 @@ from hatsploit.core.cli.tools import Tools
 
 class Module(FMT, Badges, Colors, Parser, Tables, Tools):
     details = {
+        'Category': "",
         'Name': "",
         'Module': "",
         'Authors': [
@@ -41,8 +42,6 @@ class Module(FMT, Badges, Colors, Parser, Tables, Tools):
         ],
         'Description': "",
         'Platform': "",
-        'Targets': {},
-        'References': {},
         'Rank': ""
     }
 

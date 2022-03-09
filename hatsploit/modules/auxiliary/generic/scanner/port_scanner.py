@@ -13,6 +13,7 @@ from hatsploit.utils.tcp import TCPClient
 
 class HatSploitModule(Module, TCPClient):
     details = {
+        'Category': "auxiliary",
         'Name': "Port Scanner",
         'Module': "auxiliary/generic/scanner/port_scanner",
         'Authors': [

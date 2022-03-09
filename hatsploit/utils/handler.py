@@ -331,7 +331,7 @@ class Handler(Handle, Post, Blinder):
 
                 return True
 
-        if payload_category == 'single' or method == 'raw':
+        if payload_category == 'singler' or method == 'raw':
             self.do_job(
                 payload_type,
                 self.send,

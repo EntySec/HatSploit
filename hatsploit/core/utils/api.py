@@ -25,8 +25,13 @@
 #
 
 import logging
+
 from flask import Flask
-from flask_restful import Resource, Api, reqparse
+from flask import jsonify
+from flask import request
+from flask import make_response
+
+from hatsploit.utils.string import StringTools
 
 from hatsploit.lib.jobs import Jobs
 from hatsploit.lib.modules import Modules
@@ -35,185 +40,195 @@ from hatsploit.lib.sessions import Sessions
 from hatsploit.lib.config import Config
 
 
-class APIManager(Resource):
-    def get(self):
-        return "", 200
+class API:
+    def __init__(self, username, password, host='127.0.0.1', port=8008):
+        self.string_tools = StringTools()
 
+        self.jobs = Jobs()
+        self.modules = Modules()
+        self.payloads = Payloads()
+        self.sessions = Sessions()
+        self.config = Config()
 
-class ModuleManager(Resource):
-    jobs = Jobs()
-    modules = Modules()
-    payloads = Payloads()
+        self.host = host
+        self.port = int(port)
 
-    def get(self):
-        parser = reqparse.RequestParser()
+        self.username = username
+        self.password = password
 
-        parser.add_argument('list')
-        parser.add_argument('options')
-        parser.add_argument('use')
-        parser.add_argument('option')
-        parser.add_argument('value')
-        parser.add_argument('run')
+        self.token = self.string_tools.random_string(32)
 
-        args = parser.parse_args()
+    def run(self):
+        rest_api = Flask("HatSploit")
 
-        if args['list']:
-            all_modules = self.modules.get_modules()
-            number = 0
-            data = {}
+        log = logging.getLogger("werkzeug")
+        log.setLevel(logging.ERROR)
 
-            for database in sorted(all_modules):
-                modules = all_modules[database]
+        @rest_api.before_request
+        def validate_token():
+            if request.path != '/login':
+                token = request.form['token']
+                if token != self.token:
+                    return make_response('', 401)
 
-                for module in sorted(modules):
-                    data.update({
-                        number: {
-                            'Module': modules[module]['Module'],
-                            'Rank': modules[module]['Rank'],
-                            'Name': modules[module]['Name'],
-                            'Platform': modules[module]['Platform']
-                        }
-                    })
+        @rest_api.route('/login', methods=['POST'])
+        def login_api():
+            username = request.form['username']
+            password = request.form['password']
 
-                    number += 1
-            return data, 200
+            if username == self.username and password == self.password:
+                return jsonify(token=self.token)
+            return make_response('', 401)
 
-        if args['options']:
-            data = {}
-            current_module = self.modules.get_current_module_object()
+        @rest_api.route('/payloads', methods=['POST'])
+        def payloads_api():
+            action = None
 
-            if current_module:
-                options = current_module.options
+            if 'action' in request.form:
+                action = request.form['action']
 
-                for option in sorted(options):
-                    value, required = options[option]['Value'], options[option]['Required']
-                    if required:
-                        required = "yes"
-                    else:
-                        required = "no"
-                    if not value and value != 0:
-                        value = ""
-                    data.update({
-                        option: {
-                            'Value': value,
-                            'Required': required,
-                            'Description': options[option]['Description']
-                        }
-                    })
-
-                if hasattr(current_module, "payload"):
-                    current_payload = self.payloads.get_current_payload()
-
-                    if hasattr(current_payload, "options"):
-                        options = current_payload.options
-
-                        for option in sorted(options):
-                            value, required = options[option]['Value'], options[option]['Required']
-                            if required:
-                                value = "yes"
-                            else:
-                                value = "no"
-                            if not value and value != 0:
-                                value = ""
-                            data.update({
-                                option: {
-                                    'Value': value,
-                                    'Required': required,
-                                    'Description': options[option]['Description']
-                                }
-                            })
-
-            return data, 200
-
-        if args['use']:
-            self.modules.use_module(args['use'])
-
-        if args['option'] and args['value']:
-            self.modules.set_current_module_option(args['option'], args['value'])
-
-        if args['run']:
-            current_module = self.modules.get_current_module_object()
-
-            if current_module:
-                self.jobs.create_job(current_module.details['Name'],
-                                     current_module.details['Module'],
-                                     self.modules.run_current_module)
-        return "", 200
-
-
-class SessionManager(Resource):
-    sessions = Sessions()
-    config = Config()
-
-    def get(self):
-        parser = reqparse.RequestParser()
-
-        parser.add_argument('id')
-        parser.add_argument('command')
-        parser.add_argument('output')
-
-        parser.add_argument('path')
-        parser.add_argument('download')
-        parser.add_argument('upload')
-
-        parser.add_argument('close')
-        parser.add_argument('count')
-        parser.add_argument('list')
-
-        args = parser.parse_args()
-
-        if args['id']:
-            if args['command']:
-                session = self.sessions.get_session(args['id'])
-
-                if session:
-                    if args['output']:
-                        if args['output'].lower() in ['yes', 'y']:
-                            output = session.send_command(args['command'], output=True)
-                            return output, 200
-
-                    session.send_command(args['command'])
-                return "", 200
-
-            if args['download']:
-                self.sessions.download_from_session(
-                    args['id'],
-                    args['download'],
-                    args['path'] if args['path'] else self.config.path_config['loot_path']
-                )
-
-            elif args['upload'] and args['path']:
-                self.session.upload_to_session(
-                    args['id'],
-                    args['upload'],
-                    args['path']
-                )
-
-        else:
-            if args['close']:
-                self.sessions.close_session(args['close'])
-                return "", 200
-
-        
-            if args['count']:
-                sessions = self.sessions.get_all_sessions()
-                if sessions:
-                    if args['count'] == 'all':
-                        return len(sessions), 200
-                    counter = 0
-                    for session in sessions:
-                        if sessions[session]['platform'] == args['count']:
-                            counter += 1
-                    return counter, 200
-                return 0, 200
-
-            if args['list']:
-                sessions = self.sessions.get_all_sessions()
+            if action == 'list':
                 data = {}
+                all_payloads = self.payloads.get_payloads()
+                number = 0
+
+                for database in sorted(all_payloads):
+                    payloads = all_payloads[database]
+
+                    for payload in sorted(payloads):
+                        data.update({
+                            number: {
+                                'Category': payloads[payload]['Category'],
+                                'Payload': payloads[payload]['Payload'],
+                                'Rank': payloads[payload]['Rank'],
+                                'Name': payloads[payload]['Name'],
+                                'Platform': payloads[payload]['Platform']
+                            }
+                        })
+
+                        number += 1
+
+                return jsonify(data)
+            return make_response('', 200)
+
+        @rest_api.route('/modules', methods=['POST'])
+        def modules_api():
+            action = None
+
+            if 'action' in request.form:
+                action = request.form['action']
+
+            if action == 'list':
+                data = {}
+                all_modules = self.modules.get_modules()
+                number = 0
+                
+                for database in sorted(all_modules):
+                    modules = all_modules[database]
+                    
+                    for module in sorted(modules):
+                        data.update({
+                            number: {
+                                'Category': modules[module]['Category'],
+                                'Module': modules[module]['Module'],
+                                'Rank': modules[module]['Rank'],
+                                'Name': modules[module]['Name'],
+                                'Platform': modules[module]['Platform']
+                            }
+                        })
+                    
+                        number += 1
+
+                return jsonify(data)
+
+            if action == 'options':
+                data = {}
+                current_module = self.modules.get_current_module_object()
+
+                if current_module:
+                    options = current_module.options
+
+                    for option in sorted(options):
+                        value, required = options[option]['Value'], options[option]['Required']
+                        if required:
+                            required = 'yes'
+                        else:
+                            required = 'no'
+                        if not value and value != 0:
+                            value = ""
+                        data.update({
+                            option: {
+                                'Value': value,
+                                'Required': required,
+                                'Description': options[option]['Description']
+                            }
+                        })
+
+                    if hasattr(current_module, "payload"):
+                        current_payload = self.payloads.get_current_payload()
+
+                        if hasattr(current_payload, "options"):
+                            options = current_payload.options
+
+                            for option in sorted(options):
+                                value, required = options[option]['Value'], options[option]['Required']
+                                if required:
+                                    required = 'yes'
+                                else:
+                                    required = 'no'
+                                if not value and value != 0:
+                                    value = ""
+                                data.update({
+                                    option: {
+                                        'Value': value,
+                                        'Required': required,
+                                        'Description': options[option]['Description']
+                                    }
+                                })
+
+                return jsonify(data)
+
+            if action == 'use':
+                self.modules.use_module(request.form['module'])
+
+            if action == 'set':
+                self.modules.set_current_module_option(
+                    request.form['option'],
+                    request.form['value']
+                )
+
+            if action == 'run':
+                current_module = self.modules.get_current_module_object()
+
+                if current_module:
+                    self.jobs.create_job(current_module.details['Name'],
+                                         current_module.details['Module'],
+                                         self.modules.run_current_module)
+
+            return make_response('', 200)
+
+        @rest_api.route('/sessions', methods=['POST'])
+        def sessions_api():
+            action = None
+
+            if 'action' in request.form:
+                action = request.form['action']
+
+            if action == 'close':
+                session = request.form['session']
+                self.sessions.close_session(session)
+
+            elif action == 'list':
+                data = {}
+                sessions = self.sessions.get_all_sessions()
+                fetch = 'all'
+
+                if 'fetch' in request.form:
+                    fetch = request.form['fetch']
 
                 if sessions:
                     for session in sessions:
-                        if args['list'] == 'all':
+                        if fetch == 'all':
                             data.update({
                                 session: {
                                     'platform': sessions[session]['platform'],
@@ -223,34 +238,49 @@ class SessionManager(Resource):
                                     'port': sessions[session]['port']
                                 }
                             })
-                        else:
-                            if sessions[session]['platform'] == args['list']:
-                                data.update({
-                                    session: {
-                                        'platform': sessions[session]['platform'],
-                                        'architecture': sessions[session]['architecture'],
-                                        'type': sessions[session]['type'],
-                                        'host': sessions[session]['host'],
-                                        'port': sessions[session]['port']
-                                    }
-                                })
-                return data, 200
+                        elif fetch == sessions[session]['platform']:
+                            data.update({
+                                session: {
+                                    'platform': sessions[session]['platform'],
+                                    'architecture': sessions[session]['architecture'],
+                                    'type': sessions[session]['type'],
+                                    'host': sessions[session]['host'],
+                                    'port': sessions[session]['port']
+                                }
+                            })
 
-        return "", 200
+                return jsonify(data)
 
+            elif action == 'execute':
+                session = request.form['session']
+                session = self.sessions.get_session(session)
+                
+                if session:
+                    if request.form['output'].lower() in ['yes', 'y']:
+                        output = session.send_command(request.form['command'], output=True)
+                        return jsonify(output=output)
 
-class API:
-    app = Flask(__name__)
-    api = Api(app)
+                    session.send_command(request.form['command'])
 
-    def init(self, port=8008):
-        self.api.add_resource(APIManager, '/')
-        self.api.add_resource(ModuleManager, '/modules')
-        self.api.add_resource(SessionManager, '/sessions')
+            elif action == 'download':
+                if 'local_path' in request.form:
+                    local_path = request.form['local_path']
+                else:
+                    local_path = self.config.path_config['loot_path']
 
-        self.app.logger.disabled = True
+                self.sessions.download_from_session(
+                    request.form['session'],
+                    request.form['remote_file'],
+                    local_path
+                )
 
-        log = logging.getLogger('werkzeug')
-        log.disabled = True
+            elif action == 'upload':
+                self.session.upload_to_session(
+                    request.form['session'],
+                    request.form['local_file'],
+                    request.form['remote_path']
+                )
 
-        self.app.run(host='127.0.0.1', port=int(port))
+            return make_response('', 200)
+
+        rest_api.run(host=self.host, port=self.port)
