@@ -180,7 +180,7 @@ class Show:
 
     def show_modules(self, information):
         all_modules = self.local_storage.get("modules")
-        headers = ("Number", "Module", "Rank", "Name")
+        headers = ("Number", "Category", "Module", "Rank", "Name")
         modules_shorts = {}
 
         for database in sorted(all_modules):
@@ -189,9 +189,9 @@ class Show:
             modules = all_modules[database]
 
             for module in sorted(modules):
-                if information == module.split('/')[0]:
-                    modules_data.append((number, modules[module]['Module'], modules[module]['Rank'],
-                                         modules[module]['Name']))
+                if information == modules[module]['Category']:
+                    modules_data.append((number, modules[module]['Category'], modules[module]['Module'],
+                                         modules[module]['Rank'], modules[module]['Name']))
                     modules_shorts.update({number: modules[module]['Module']})
                     number += 1
 
