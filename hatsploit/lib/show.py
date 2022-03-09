@@ -336,6 +336,10 @@ class Show:
     def show_options(self):
         current_module = self.modules.get_current_module_object()
 
+        if not current_module:
+            self.badges.print_warning("No module selected.")
+            return
+
         if not hasattr(current_module, "options") and not hasattr(current_module, "payload"):
             self.badges.print_warning("Module has no options.")
             return
