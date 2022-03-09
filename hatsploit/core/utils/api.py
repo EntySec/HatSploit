@@ -26,6 +26,7 @@
 
 import logging
 
+from flask import cli
 from flask import Flask
 from flask import jsonify
 from flask import request
@@ -33,7 +34,11 @@ from flask import make_response
 
 from hatsploit.utils.string import StringTools
 
+from hatsploit.core.cli.fmt import FMT
+from hatsploit.core.base.execute import Execute
+
 from hatsploit.lib.jobs import Jobs
+from hatsploit.lib.options import Options
 from hatsploit.lib.modules import Modules
 from hatsploit.lib.payloads import Payloads
 from hatsploit.lib.sessions import Sessions
@@ -44,7 +49,11 @@ class API:
     def __init__(self, username, password, host='127.0.0.1', port=8008):
         self.string_tools = StringTools()
 
+        self.fmt = FMT()
+        self.execute = Execute()
+
         self.jobs = Jobs()
+        self.options = Options()
         self.modules = Modules()
         self.payloads = Payloads()
         self.sessions = Sessions()
@@ -59,6 +68,7 @@ class API:
         self.token = self.string_tools.random_string(32)
 
     def run(self):
+        cli.show_server_banner = lambda *_: None
         rest_api = Flask("HatSploit")
 
         log = logging.getLogger("werkzeug")
@@ -70,6 +80,14 @@ class API:
                 token = request.form['token']
                 if token != self.token:
                     return make_response('', 401)
+                
+                current_module = self.modules.get_current_module_object()
+                current_payload = self.payloads.get_current_payload()
+
+                self.jobs.stop_dead()
+                self.sessions.close_dead()
+
+                self.options.add_handler_options(current_module, current_payload)
 
         @rest_api.route('/login', methods=['POST'])
         def login_api():
@@ -79,6 +97,13 @@ class API:
             if username == self.username and password == self.password:
                 return jsonify(token=self.token)
             return make_response('', 401)
+
+        @rest_api.route('/execute', methods=['POST'])
+        def commands_api():
+            command = request.form['command']
+            commands = self.fmt.format_commands(commands)
+
+            self.execute.execute_command(commands)
 
         @rest_api.route('/payloads', methods=['POST'])
         def payloads_api():
