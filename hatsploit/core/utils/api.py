@@ -78,8 +78,7 @@ class API:
 
             if username == self.username and password == self.password:
                 return jsonify(token=self.token)
-            else:
-                return make_response('', 401)
+            return make_response('', 401)
 
         @rest_api.route('/payloads', methods=['POST'])
         def payloads_api():
@@ -142,7 +141,7 @@ class API:
 
                 return jsonify(data)
 
-            elif action == 'options':
+            if action == 'options':
                 data = {}
                 current_module = self.modules.get_current_module_object()
 
