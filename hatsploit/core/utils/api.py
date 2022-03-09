@@ -96,10 +96,10 @@ class API:
             codename = self.config.core_config['details']['codename']
 
             response = "HatSploit REST API server\n"
-            response += f"  Version: {version}\n"
+            response += f"Version: {version}\n"
 
             if codename:
-                response += f"  Codename: {codename}\n"
+                response += f"Codename: {codename}\n"
 
             return make_response(f"<pre>{response}</pre>", 200)
 
