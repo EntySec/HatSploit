@@ -26,7 +26,7 @@ class HatSploitCommand(Command):
     }
 
     def collect_categories(self):
-        payloads = self.payload.get_payloads()
+        payloads = self.payloads.get_payloads()
         categories = []
 
         if payloads:
