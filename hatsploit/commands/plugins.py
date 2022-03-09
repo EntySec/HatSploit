@@ -24,4 +24,4 @@ class HatSploitCommand(Command):
     }
 
     def run(self, argc, argv):
-        self.show_plugins()
+        self.show.show_plugins()
