@@ -178,7 +178,7 @@ class Show:
             self.tables.print_table(f"Plugins ({database})", headers, *plugins_data)
             self.local_storage.set("plugin_shorts", plugins_shorts)
 
-    def show_modules(self, information):
+    def show_modules(self, category):
         all_modules = self.local_storage.get("modules")
         headers = ("Number", "Category", "Module", "Rank", "Name")
         modules_shorts = {}
@@ -189,7 +189,7 @@ class Show:
             modules = all_modules[database]
 
             for module in sorted(modules):
-                if information == modules[module]['Category']:
+                if category == modules[module]['Category']:
                     modules_data.append((number, modules[module]['Category'], modules[module]['Module'],
                                          modules[module]['Rank'], modules[module]['Name']))
                     modules_shorts.update({number: modules[module]['Module']})
