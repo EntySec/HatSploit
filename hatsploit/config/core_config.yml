@@ -23,7 +23,7 @@
 #
 
 details:
-    codename: ""
+    codename: "stable"
     version: "5.0.0"
     prompt: "hsf"
 
