@@ -95,13 +95,13 @@ class API:
             version = self.config.core_config['details']['version']
             codename = self.config.core_config['details']['codename']
 
-            response = "<p>HatSploit REST API server</p><br>"
-            response += f"<p>  Version: {version}</p><br>"
+            response = "HatSploit REST API server\n"
+            response += f"  Version: {version}\n"
 
             if codename:
-                response += f"<p>  Codename: {codename}</p><br>"
+                response += f"  Codename: {codename}\n"
 
-            return make_response(response, 200)
+            return make_response(f"<pre>{response}</pre>", 200)
 
         @rest_api.route('/login', methods=['POST'])
         def login_api():
