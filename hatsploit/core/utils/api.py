@@ -76,8 +76,9 @@ class API:
 
         @rest_api.before_request
         def validate_token():
-            if request.path != '/login':
+            if request.path not in ['/login', '/']:
                 token = request.form['token']
+
                 if token != self.token:
                     return make_response('', 401)
                 
