@@ -127,7 +127,7 @@ class Check:
         fails.append(self.check_plugins())
 
         for fail in fails:
-            if fail:
+            if not fail:
                 self.badges.print_error("Not all checks passed!")
                 return False
         self.badges.print_success("All checks passed!")
