@@ -178,7 +178,7 @@ class Show:
             self.tables.print_table(f"Plugins ({database})", headers, *plugins_data)
             self.local_storage.set("plugin_shorts", plugins_shorts)
 
-    def show_modules(self, category):
+    def show_modules(self, category=None):
         all_modules = self.local_storage.get("modules")
         headers = ("Number", "Category", "Module", "Rank", "Name")
         modules_shorts = {}
@@ -189,16 +189,26 @@ class Show:
             modules = all_modules[database]
 
             for module in sorted(modules):
-                if category == modules[module]['Category']:
+                if category:
+                    if category == modules[module]['Category']:
+                        modules_data.append((number, modules[module]['Category'], modules[module]['Module'],
+                                             modules[module]['Rank'], modules[module]['Name']))
+                        modules_shorts.update({number: modules[module]['Module']})
+                        number += 1
+                else:
                     modules_data.append((number, modules[module]['Category'], modules[module]['Module'],
                                          modules[module]['Rank'], modules[module]['Name']))
                     modules_shorts.update({number: modules[module]['Module']})
                     number += 1
 
-            self.tables.print_table(f"{information.title()} Modules ({database})", headers, *modules_data)
+            if category:
+                self.tables.print_table(f"{category.title()} Modules ({database})", headers, *modules_data)
+            else:
+                self.tables.print_table(f"Modules ({database})", headers, *modules_data)
+
             self.local_storage.set("module_shorts", modules_shorts)
 
-    def show_payloads(self):
+    def show_payloads(self, category=None):
         all_payloads = self.local_storage.get("payloads")
         headers = ("Number", "Category", "Payload", "Rank", "Name")
         payloads_shorts = {}
@@ -209,12 +219,23 @@ class Show:
             payloads = all_payloads[database]
 
             for payload in sorted(payloads):
-                payloads_data.append((number, payloads[payload]['Category'], payloads[payload]['Payload'],
-                                      payloads[payload]['Rank'], payloads[payload]['Name']))
-                payloads_shorts.update({number: payloads[payload]['Payload']})
-                number += 1
+                if category:
+                    if category == payloads[payload]['Category']:
+                        payloads_data.append((number, payloads[payload]['Category'], payloads[payload]['Payload'],
+                                              payloads[payload]['Rank'], payloads[payload]['Name']))
+                        payloads_shorts.update({number: payloads[payload]['Payload']})
+                        number += 1
+                else:
+                    payloads_data.append((number, payloads[payload]['Category'], payloads[payload]['Payload'],
+                                          payloads[payload]['Rank'], payloads[payload]['Name']))
+                    payloads_shorts.update({number: payloads[payload]['Payload']})
+                    number += 1
 
-            self.tables.print_table(f"Payloads ({database})", headers, *payloads_data)
+            if category:
+                self.tables.print_table(f"{category.title()} Payloads ({database})", headers, *payloads_data)
+            else:
+                self.tables.print_table(f"Payloads ({database})", headers, *payloads_data)
+
             self.local_storage.set("payload_shorts", payloads_shorts)
 
     def show_search_plugins(self, keyword):
