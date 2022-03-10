@@ -115,7 +115,7 @@ class API:
         @rest_api.route('/execute', methods=['POST'])
         def commands_api():
             command = request.form['command']
-            commands = self.fmt.format_commands(commands)
+            commands = self.fmt.format_commands(command)
 
             self.execute.execute_command(commands)
 
