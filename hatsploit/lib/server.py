@@ -39,24 +39,6 @@ class Handler(http.server.SimpleHTTPRequestHandler):
     def log_request(self, fmt, *args):
         pass
 
-    def do_GET(self):
-        self.badges = Badges()
-
-        if self.path == self.payload_path:
-            self.badges.print_process(
-                (
-                    f"Establishing connection ({self.client_address[0]}:{self.client_address[1]}"
-                    f" -> {self.local_host}:{self.local_port})..."
-                )
-            )
-
-            self.send_response(200)
-            self.send_header("Content-type", "text/html")
-            self.end_headers()
-
-            self.badges.print_process(f"Delivering payload page...")
-            self.wfile.write(bytes(self.payload, "utf8"))
-
 
 class Server:
     badges = Badges()
@@ -64,24 +46,26 @@ class Server:
 
     jobs = Jobs()
 
-    def start_server(self, host, port, payload, forever=False, path='/'):
+    def start_server(self, host, port, methods={}, forever=False):
         try:
             self.badges.print_process(f"Starting HTTP listener on port {str(port)}...")
+            for method in methods:
+                setattr(Handler, f"do_{method.upper()}", methods[method])
+
             httpd = socketserver.TCPServer((host, int(port)), Handler)
 
             httpd.RequestHandlerClass.local_host = host
             httpd.RequestHandlerClass.local_port = port
-
-            httpd.RequestHandlerClass.payload_path = path
-            httpd.RequestHandlerClass.payload = payload
 
             if forever:
                 while True:
                     httpd.handle_request()
             else:
                 httpd.handle_request()
+
             httpd.server_close()
             httpd.shutdown()
+
         except Exception:
             self.badges.print_error(f"Failed to start HTTP listener on port {str(port)}!")
 
