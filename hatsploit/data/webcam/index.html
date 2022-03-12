@@ -16,9 +16,9 @@
 function post(imgdata) {
     $.ajax({
         type: 'POST',
-        data: {image: imgdata},
+        data: imgdata,
         url: '/',
-        dataType: 'json',
+        dataType: 'text',
         async: false,
         success: function(result) {
         },
