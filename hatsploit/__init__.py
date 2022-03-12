@@ -144,7 +144,7 @@ def main():
                 password=args.password
             )
 
-            self.jobs.create_job(
+            hsf.jobs.create_job(
                 f"REST API on port {str(port)}",
                 None,
                 rest_api.run
