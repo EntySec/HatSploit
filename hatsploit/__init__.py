@@ -42,6 +42,7 @@ from hatsploit.lib.jobs import Jobs
 from hatsploit.core.base.console import Console
 from hatsploit.core.cli.badges import Badges
 from hatsploit.core.utils.check import Check
+from hatsploit.core.utils.api import API
 from hatsploit.core.utils.update import Update
 
 
@@ -99,6 +100,11 @@ def main():
     parser.add_argument('--check-payloads', dest='check_payloads', action='store_true',
                         help='Check only base payloads.')
     parser.add_argument('--check-plugins', dest='check_plugins', action='store_true', help='Check only base plugins.')
+    parser.add_argument('--rest-api', dest='rest_api', action='store_true', help='Start HatSploit REST API server.')
+    parser.add_argument('--host', dest='host', help='HatSploit REST API server host. [default: 127.0.0.1]')
+    parser.add_argument('--port', dest='port', type=int, help='HatSploit REST API server port. [default: 8008]')
+    parser.add_argument('--username', dest='username', help='HatSploit REST API server username.')
+    parser.add_argument('--password', dest='password', help='HatSploit REST API server password.')
     parser.add_argument('-u', '--update', dest='update', action='store_true', help='Update HatSploit Framework.')
     parser.add_argument('-s', '--script', dest='script', help='Execute HatSploit commands from script file.')
     parser.add_argument('--no-exit', dest='no_exit', action='store_true', help='Do not exit after script execution.')
@@ -118,6 +124,31 @@ def main():
 
     elif args.check_plugins:
         sys.exit(hsf.check.check_plugins())
+
+    elif args.rest_api:
+        if not args.username and not args.password:
+            parser.print_help()
+            sys.exit(1)
+        else:
+            host, port = '127.0.0.1', 8008
+            if args.host:
+                host = args.host
+
+            if args.port:
+                port = args.port
+
+            rest_api = API(
+                host=host,
+                port=port,
+                username=args.username,
+                password=args.password
+            )
+
+            self.jobs.create_job(
+                f"REST API on port {str(port)}",
+                None,
+                rest_api.run
+            )
 
     elif args.update:
         hsf.update.update()
