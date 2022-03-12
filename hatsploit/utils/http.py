@@ -38,8 +38,8 @@ class HTTPClient:
     server = Server()
     badges = Badges()
 
-    def http_server(self, host, port, data, forever=False, path='/'):
-        self.server.start_server(host, port, data, forever, path)
+    def http_server(self, host, port, methods={}, forever=False):
+        self.server.start_server(host, port, methods, forever)
 
     def http_request(self, method, host, port, path='/', ssl=False, timeout=10, output=True, session=requests,
                      **kwargs):
