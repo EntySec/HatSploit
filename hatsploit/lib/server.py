@@ -37,7 +37,7 @@ from hatsploit.lib.jobs import Jobs
 
 class Handler(http.server.SimpleHTTPRequestHandler):
     def log_request(self, fmt, *args):
-        pass
+        return
 
 
 class Server:
@@ -49,6 +49,7 @@ class Server:
     def start_server(self, host, port, methods={}, forever=False):
         try:
             self.badges.print_process(f"Starting HTTP listener on port {str(port)}...")
+
             for method in methods:
                 setattr(Handler, f"do_{method.upper()}", methods[method])
 
@@ -64,7 +65,6 @@ class Server:
                 httpd.handle_request()
 
             httpd.server_close()
-            httpd.shutdown()
 
         except Exception:
             self.badges.print_error(f"Failed to start HTTP listener on port {str(port)}!")
