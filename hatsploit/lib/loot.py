@@ -27,11 +27,13 @@
 import os
 import datetime
 
+from hatsploit.utils.string import StringTools
+
 from hatsploit.core.cli.badges import Badges
 from hatsploit.lib.config import Config
 
 
-class Loot:
+class Loot(StringTools):
     badges = Badges()
 
     loot = Config().path_config['loot_path']
@@ -41,6 +43,14 @@ class Loot:
 
         if not os.path.isdir(self.loot):
             os.mkdir(self.loot)
+
+    def random_loot(self, extension=None):
+        filename = self.random_string(16)
+
+        if extension:
+            filename += '.' + extension
+
+        return self.loot + filename
 
     def remove_loot(self, filename):
         if os.path.exists(self.loot + filename):
