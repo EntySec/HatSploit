@@ -67,7 +67,8 @@ class Server:
                 while True:
                     httpd.handle_request()
             else:
-                httpd.handle_request()
+                for _ in range(0, len(methods)):
+                    httpd.handle_request()
 
             httpd.server_close()
 
