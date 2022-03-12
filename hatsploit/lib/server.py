@@ -39,6 +39,11 @@ class Handler(http.server.SimpleHTTPRequestHandler):
     def log_request(self, fmt, *args):
         return
 
+    def send_status(self, code=200):
+        self.send_response(int(code))
+        self.send_header("Content-type", "text/html")
+        self.end_headers()
+
 
 class Server:
     badges = Badges()
