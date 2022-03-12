@@ -68,6 +68,7 @@ class Loot(StringTools):
             self.badges.print_process(f"Saving loot {self.loot + filename}...")
             with open(self.loot + filename, 'wb') as f:
                 f.write(data)
+            self.badges.print_success("Loot successfully saved!")
         else:
             self.badges.print_error("Loot does not exist!")
 
