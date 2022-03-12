@@ -37,6 +37,7 @@ class Loot(StringTools):
     badges = Badges()
 
     loot = Config().path_config['loot_path']
+    data = Config().path_config['data_path']
 
     def create_loot(self):
         self.badges.print_process(f"Creating loot at {self.loot}...")
@@ -52,13 +53,41 @@ class Loot(StringTools):
 
         return self.loot + filename
 
-    def remove_loot(self, filename):
-        if os.path.exists(self.loot + filename):
-            self.badges.print_process(f"Removing loot {self.loot}{filename}...")
-            os.remove(self.loot + filename)
-            self.badges.print_success("Loot successfully removed!")
+    def get_loot(self, filename):
+        if os.path.isdir(self.loot):
+            if os.path.exists(self.loot + filename):
+                with open(self.loot + filename, 'rb') as f:
+                    return f.read()
+            else:
+                self.badges.print_error("Invalid loot given!")
         else:
-            self.badges.print_error("Invalid loot given!")
+            self.badges.print_error("Loot does not exist!")
+
+    def save_loot(self, filename, data):
+        if os.path.exists(self.loot):
+            self.badges.print_process(f"Saving loot {self.loot + filename}...")
+            with open(self.loot + filename, 'wb') as f:
+                f.write(data)
+        else:
+            self.badges.print_error("Loot does not exist!")
+
+    def remove_loot(self, filename):
+        if os.path.isdir(self.loot):
+            if os.path.exists(self.loot + filename):
+                self.badges.print_process(f"Removing loot {self.loot + filename}...")
+                os.remove(self.loot + filename)
+                self.badges.print_success("Loot successfully removed!")
+            else:
+                self.badges.print_error("Invalid loot given!")
+        else:
+            self.badges.print_error("Loot does not exist!")
+
+    def get_data(self, filename):
+        if os.path.exists(self.data + filename):
+            with open(self.data + filename, 'rb') as f:
+                return f.read()
+        else:
+            self.badges.print_error("Invalid data given!")
 
     def list_loot(self):
         loots = []
