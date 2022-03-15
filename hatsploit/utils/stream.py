@@ -100,7 +100,7 @@ Status : <span id="status"></span>
 
     def stream(self):
         self.badges.print_process("Streaming...")
-        os.system(f'open {self.path}')
+        os.system(f'open {self.path} &')
 
 
 class SteamClient:
