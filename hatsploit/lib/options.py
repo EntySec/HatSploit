@@ -27,7 +27,7 @@
 import copy
 
 from hatsploit.lib.storage import LocalStorage
-from hatsploit.utils.tcp import TCPClient
+from pex.tools.tcp import TCPTools
 
 
 class Options:
@@ -75,7 +75,7 @@ class Options:
         'Payload': {
             'RHOST': {
                 'Description': "Remote host to connect.",
-                'Value': TCPClient.get_local_host(),
+                'Value': TCPTools.get_local_host(),
                 'Type': "ip",
                 'Required': True
             },
