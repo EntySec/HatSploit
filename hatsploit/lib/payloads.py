@@ -230,7 +230,7 @@ class Payloads:
             'Raw': None
         }
 
-    def generate_payload(self, name, options={}):
+    def generate_payload(self, name, options={}, raw=False):
         payload_object = self.get_payload(name)
         if payload_object:
             self.options.add_payload_handler(payload_object)
@@ -240,7 +240,7 @@ class Payloads:
                     payload_object.options[option]['Value'] = options[option]
 
             result = self.run_payload(payload_object)
-            return result['Payload'], result['Raw']
+            return result['Raw'] if raw else result['Payload']
         return None
 
     def get_current_payload(self):
