@@ -24,9 +24,7 @@
 # SOFTWARE.
 #
 
-import http.server
 import socket
-import socketserver
 import time
 
 from hatsploit.core.base.exceptions import Exceptions
@@ -35,45 +33,11 @@ from hatsploit.core.cli.badges import Badges
 from hatsploit.lib.jobs import Jobs
 
 
-class Handler(http.server.SimpleHTTPRequestHandler):
-    def log_request(self, fmt, *args):
-        return
-
-    def send_status(self, code=200):
-        self.send_response(int(code))
-        self.send_header("Content-type", "text/html")
-        self.end_headers()
-
-
 class Server:
     badges = Badges()
     exceptions = Exceptions()
 
     jobs = Jobs()
-
-    def start_server(self, host, port, methods={}, forever=False):
-        try:
-            self.badges.print_process(f"Starting HTTP listener on port {str(port)}...")
-
-            for method in methods:
-                setattr(Handler, f"do_{method.upper()}", methods[method])
-
-            httpd = socketserver.TCPServer((host, int(port)), Handler)
-
-            httpd.RequestHandlerClass.local_host = host
-            httpd.RequestHandlerClass.local_port = port
-
-            if forever:
-                while True:
-                    httpd.handle_request()
-            else:
-                for _ in range(0, len(methods)):
-                    httpd.handle_request()
-
-            httpd.server_close()
-
-        except Exception:
-            self.badges.print_error(f"Failed to start HTTP listener on port {str(port)}!")
 
     def connect(self, remote_host, remote_port, timeout=None):
         try:
