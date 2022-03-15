@@ -86,7 +86,7 @@ class HatSploitSession(Session, Pull, Push, ChannelClient):
     def interact(self):
         if not self.channel.interact():
             if not self.heartbeat():
-                self.print_warning("Connection terminated!")
+                self.print_warning("Connection terminated.")
             else:
                 self.print_error("Failed to interact with session!")
 
