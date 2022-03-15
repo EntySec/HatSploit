@@ -54,6 +54,8 @@ class Loot(StringTools):
         return self.loot + filename
 
     def get_loot(self, filename):
+        filename = os.path.split(filename)[1]
+
         if os.path.isdir(self.loot):
             if os.path.exists(self.loot + filename):
                 with open(self.loot + filename, 'rb') as f:
@@ -64,6 +66,8 @@ class Loot(StringTools):
             self.badges.print_error("Loot does not exist!")
 
     def save_loot(self, filename, data):
+        filename = os.path.split(filename)[1]
+
         if os.path.exists(self.loot):
             self.badges.print_process(f"Saving loot {self.loot + filename}...")
             with open(self.loot + filename, 'wb') as f:
@@ -73,6 +77,8 @@ class Loot(StringTools):
             self.badges.print_error("Loot does not exist!")
 
     def remove_loot(self, filename):
+        filename = os.path.split(filename)[1]
+
         if os.path.isdir(self.loot):
             if os.path.exists(self.loot + filename):
                 self.badges.print_process(f"Removing loot {self.loot + filename}...")
