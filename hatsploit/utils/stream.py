@@ -103,7 +103,7 @@ Status : <span id="status"></span>
         os.system(f'open {self.path} &')
 
 
-class SteamClient:
+class StreamClient:
     @staticmethod
     def open_stream(path, image):
         return Streamer(path, image)
