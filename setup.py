@@ -47,6 +47,8 @@ setup(name='hatsploit',
 
           'hatvenom @ git+https://github.com/EntySec/HatVenom',
           'hatloads @ git+https://github.com/EntySec/HatLoads',
+            
+          'pex @ git+https://github.com/EntySec/Pex',
 
           'pwny @ git+https://github.com/EntySec/Pwny',
           'monhorn @ git+https://github.com/EntySec/Monhorn'
