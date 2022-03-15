@@ -35,7 +35,7 @@ class Streamer:
         self.image = image
 
         self.badges = Badges()
-        self.streamer = """
+        self.streamer = '''
 <html>
 <head>
 <META HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE">
@@ -49,22 +49,22 @@ function updateStatus(msg) {
 }
 
 function noImage() {
-  document.getElementById("streamer").style = "display:none";
-  updateStatus("Waiting...");
+    document.getElementById("streamer").style = "display:none";
+    updateStatus("Waiting");
 }
 
 var i = 0;
 
 function updateFrame() {
-  var img = document.getElementById("streamer");
-  img.src = """ + self.image + """ + i;
-  img.style = "display:";
-  updateStatus("Playing...");
-  i++;
+    var img = document.getElementById("streamer");
+    img.src = "''' + image + '''#" + i;
+    img.style = "display:";
+    updateStatus("Playing");
+    i++;
 }
 
 setInterval(function() {
-  updateFrame();
+    updateFrame();
 }, 25);
 </script>
 </head>
@@ -74,16 +74,11 @@ setInterval(function() {
     <h2><font color="red">Error: You need Javascript enabled to watch the stream.</font></h2>
 </noscript>
 
-<pre>
-Time   : #{::Time.now}
-Status : <span id="status"></span>
-</pre>
-
 <br>
 <img onerror="noImage()" id="streamer">
 </body>
 </html>
-        """
+        '''
 
     def create(self):
         if os.path.isdir(self.path):
