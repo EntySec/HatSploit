@@ -28,8 +28,7 @@ import os
 
 from collections import OrderedDict
 
-from hatsploit.utils.fs import FSTools
-
+from hatsploit.core.utils.fs import FSTools
 from hatsploit.core.cli.badges import Badges
 from hatsploit.core.session.pull.cat import Cat
 

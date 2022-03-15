@@ -28,7 +28,7 @@ from hatsploit.core.cli.badges import Badges
 from hatsploit.core.session.push import Push
 from hatsploit.core.base.types import Types
 
-from hatsploit.utils.string import StringTools
+from pex.tools.string import StringTools
 
 
 class Post(Push, StringTools):

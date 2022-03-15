@@ -29,7 +29,7 @@ from hatsploit.lib.session import Session
 from hatsploit.core.session.pull import Pull
 from hatsploit.core.session.push import Push
 
-from hatsploit.utils.channel import ChannelClient
+from pex.client.channel import ChannelClient
 
 
 class HatSploitSession(Session, Pull, Push, ChannelClient):
@@ -84,4 +84,9 @@ class HatSploitSession(Session, Pull, Push, ChannelClient):
         )
 
     def interact(self):
-        self.channel.interact()
+        if not self.channel.interact():
+            if not self.heartbeat():
+                self.print_warning("Connection terminated!")
+            else:
+                self.print_error("Failed to interact with session!")
+

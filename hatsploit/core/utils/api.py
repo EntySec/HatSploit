@@ -32,7 +32,7 @@ from flask import jsonify
 from flask import request
 from flask import make_response
 
-from hatsploit.utils.string import StringTools
+from pex.tools.string import StringTools
 
 from hatsploit.core.cli.fmt import FMT
 from hatsploit.core.base.execute import Execute

