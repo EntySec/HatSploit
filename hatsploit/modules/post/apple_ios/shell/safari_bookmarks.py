@@ -33,7 +33,7 @@ class HatSploitModule(Module, Sessions, DBTools):
             'Required': True
         },
         'PATH': {
-            'Description': "Local path to save file.",
+            'Description': "Path to save file.",
             'Value': Loot().random_loot('db'),
             'Type': None,
             'Required': True
