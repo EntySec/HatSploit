@@ -7,11 +7,11 @@
 
 from hatsploit.lib.module import Module
 
-from hatsploit.utils.session import SessionTools
-from hatsploit.utils.db import DBTools
+from hatsploit.lib.sessions import Sessions
+from pex.tools.db import DBTools
 
 
-class HatSploitModule(Module, SessionTools, DBTools):
+class HatSploitModule(Module, Sessions, DBTools):
     details = {
         'Category': "post",
         'Name': "Obtain Safari history",
