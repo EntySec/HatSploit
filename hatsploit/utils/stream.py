@@ -74,6 +74,10 @@ setInterval(function() {
     <h2><font color="red">Error: You need Javascript enabled to watch the stream.</font></h2>
 </noscript>
 
+<pre>
+Status : <span id="status"></span>
+</pre>
+
 <br>
 <img onerror="noImage()" id="streamer">
 </body>
