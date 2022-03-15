@@ -86,14 +86,13 @@ Status : <span id="status"></span>
         """
 
     def create(self):
-        if os.path.exists(self.path):
-            if os.path.isdir(self.path):
-                self.path += '/streamer.html'
+        if os.path.isdir(self.path):
+            self.path += '/streamer.html'
 
-            if os.access(os.path.split(self.path)[0], os.W_OK):
-                with open(self.path, 'w') as f:
-                    f.write(self.streamer)
-                return True
+        if os.access(os.path.split(self.path)[0], os.W_OK):
+            with open(self.path, 'w') as f:
+                f.write(self.streamer)
+            return True
 
         self.badges.print_error("Failed to create streamer!")
         return False
