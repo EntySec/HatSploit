@@ -26,11 +26,12 @@
 
 import datetime
 
-from hatsploit.core.base.types import Types
+from pex.post import Post
+from pex.tools.type import TypeTools
+
 from hatsploit.core.cli.badges import Badges
 
 from hatsploit.core.session.handle import Handle
-from hatsploit.core.session.post import Post
 from hatsploit.core.session.blinder import Blinder
 
 from hatsploit.core.session import HatSploitSession
@@ -45,7 +46,7 @@ class Handler(Handle, Post, Blinder):
     sessions = Sessions()
     modules = Modules()
     jobs = Jobs()
-    types = Types()
+    types = TypeTools()
     badges = Badges()
     local_storage = LocalStorage()
 
@@ -71,7 +72,7 @@ class Handler(Handle, Post, Blinder):
 
         return linemax
 
-    def send(self, payload, sender, args=[]):
+    def send(self, sender, payload, args=[]):
         if isinstance(payload, bytes):
             self.badges.print_process(f"Sending payload stage ({str(len(payload))} bytes)...")
         else:
@@ -252,6 +253,8 @@ class Handler(Handle, Post, Blinder):
                 return None
 
         elif payload_type == 'bind_tcp':
+            host = options['RBHOST']
+
             new_session = self.connect_session(
                 options['RBHOST'],
                 options['RBPORT'],
@@ -317,8 +320,8 @@ class Handler(Handle, Post, Blinder):
                     self.post,
                     [
                         platform,
-                        payload,
                         sender,
+                        payload,
                         args,
                         arguments,
                         method,
@@ -336,8 +339,8 @@ class Handler(Handle, Post, Blinder):
                 payload_type,
                 self.send,
                 [
-                    payload,
                     sender,
+                    payload,
                     args
                 ]
             )

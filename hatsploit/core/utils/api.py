@@ -307,14 +307,14 @@ class API:
                 else:
                     local_path = self.config.path_config['loot_path']
 
-                self.sessions.download_from_session(
+                self.sessions.session_download(
                     request.form['session'],
                     request.form['remote_file'],
                     local_path
                 )
 
             elif action == 'upload':
-                self.session.upload_to_session(
+                self.session.session_upload(
                     request.form['session'],
                     request.form['local_file'],
                     request.form['remote_path']

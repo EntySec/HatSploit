@@ -41,9 +41,9 @@ class HatSploitCommand(Command):
         elif argv[1] == '-i':
             self.sessions.interact_with_session(argv[2])
         elif argv[1] == '-d':
-            self.sessions.download_from_session(argv[2], argv[3], argv[4])
+            self.sessions.session_download(argv[2], argv[3], argv[4])
         elif argv[1] == '-u':
-            self.sessions.upload_to_session(argv[2], argv[3], argv[4])
+            self.sessions.session_upload(argv[2], argv[3], argv[4])
         elif argv[1] == '--auto-interaction':
             if argv[2] == 'on':
                 self.sessions.enable_auto_interaction()

@@ -25,15 +25,15 @@
 #
 
 from hatsploit.core.cli.badges import Badges
-from hatsploit.core.session.push import Push
-from hatsploit.core.base.types import Types
 
+from pex.post.push import Push
+from pex.tools.type import TypeTools
 from pex.tools.string import StringTools
 
 
 class Post(Push, StringTools):
     badges = Badges()
-    types = Types()
+    types = TypeTools()
 
     post_methods = Push().push_methods
 
@@ -88,7 +88,14 @@ class Post(Push, StringTools):
                 self.badges.print_error("Unsupported platform, failed to send payload stage!")
                 return
 
-            self.post_methods[method][1].push(payload, sender, path, args, linemax)
+            self.post_methods[method][1].push(
+                sender=sender,
+                data=payload,
+                location=path,
+                args=args,
+                linemax=linemax
+            )
+
             self.badges.print_process("Executing payload stage...")
             sender(*args, command)
         else:

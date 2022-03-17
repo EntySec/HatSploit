@@ -25,14 +25,15 @@
 #
 
 from hatsploit.lib.session import Session
+from hatsploit.lib.loot import Loot
 
-from hatsploit.core.session.pull import Pull
-from hatsploit.core.session.push import Push
+from pex.post.pull import Pull
+from pex.post.push import Push
 
 from pex.client.channel import ChannelClient
 
 
-class HatSploitSession(Session, Pull, Push, ChannelClient):
+class HatSploitSession(Session, Loot, Pull, Push, ChannelClient):
     channel = None
 
     details = {
@@ -59,29 +60,37 @@ class HatSploitSession(Session, Pull, Push, ChannelClient):
         )
 
     def download(self, remote_file, local_path):
-        return self.pull(
+        data = self.pull(
             platform=self.details['Platform'],
-            file=remote_file,
-
             sender=self.send_command,
-            location=local_path,
-
+            location=remote_file,
             args={
                 'decode': False,
                 'output': True
             }
         )
 
+        if data:
+            return self.save_file(
+                location=local_path,
+                data=data,
+                filename=remote_file
+            )
+
+        return None
+
     def upload(self, local_file, remote_path):
-        return self.push(
-            platform=self.details['Platform'],
-            file=local_file,
+        data = self.get_file(local_file)
 
-            sender=self.send_command,
-
-            location=remote_path,
-            method=self.details['Post']
-        )
+        if data:
+            return self.push(
+                platform=self.details['Platform'],
+                sender=self.send_command,
+                data=data,
+                location=remote_path,
+                method=self.details['Post']
+            )
+        return None
 
     def interact(self):
         if not self.channel.interact():

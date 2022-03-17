@@ -47,7 +47,7 @@ class FSTools:
     def exists_dir(self, path):
         if os.path.exists(path):
             if not os.path.isdir(path):
-                self.badges.print_error(f"Error: {path}: not a directory!")
+                self.badges.print_error(f"Local path: {path}: is not a directory!")
                 return False
             return True
 
@@ -57,7 +57,7 @@ class FSTools:
     def exists_file(self, path):
         if os.path.exists(path):
             if os.path.isdir(path):
-                self.badges.print_error(f"Error: {path}: not a file!")
+                self.badges.print_error(f"Local path: {path}: is a directory!")
                 return False
             return True
 

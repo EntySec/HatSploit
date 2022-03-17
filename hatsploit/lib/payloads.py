@@ -28,7 +28,7 @@ import os
 
 from hatvenom import HatVenom
 
-from hatsploit.core.base.types import Types
+from pex.tools.type import TypeTools
 from hatsploit.core.cli.badges import Badges
 from hatsploit.core.db.importer import Importer
 
@@ -38,7 +38,7 @@ from hatsploit.lib.storage import LocalStorage
 
 class Payloads:
     hatvenom = HatVenom()
-    types = Types()
+    types = TypeTools()
     importer = Importer()
     options = Options()
     local_storage = LocalStorage()
