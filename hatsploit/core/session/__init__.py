@@ -86,7 +86,6 @@ class HatSploitSession(Session, Loot, Pull, Push, ChannelClient):
         data = self.get_file(local_file)
 
         if data:
-            self.print_process(f"Saving to {remote_path}...")
             remote_path = self.push(
                 platform=self.details['Platform'],
                 sender=self.send_command,
