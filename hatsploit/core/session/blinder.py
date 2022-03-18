@@ -24,13 +24,15 @@
 # SOFTWARE.
 #
 
+from pex.post import PostTools
+
 from hatsploit.core.cli.badges import Badges
 
 
-class Blinder:
+class Blinder(PostTools):
     badges = Badges()
 
-    def blinder(self, sender, args=[]):
+    def blinder(self, sender, args={}):
         self.badges.print_empty()
         self.badges.print_information("Welcome to Blinder, blind command injection handler.")
         self.badges.print_information("Blinder is not a reverse shell, just a blind command injection.")
@@ -44,10 +46,7 @@ class Blinder:
                 return
 
             self.badges.print_process("Sending command to target...")
-            if isinstance(args, dict):
-                output = sender(command, **args)
-            else:
-                output = sender(*args, command)
+            output = self.post_command(sender, command, args)
 
             if output:
                 self.badges.print_empty(f'\n{output}')
