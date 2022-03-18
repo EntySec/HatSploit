@@ -314,6 +314,8 @@ class Handler(Handle, Post, Blinder):
             linemax = self.ensure_linemax(payload['Payload'], linemax)
 
         if payload_category == 'stager':
+            self.badges.print_process(f"Sending payload stage ({str(len(payload))} bytes)...")
+
             if method != 'raw':
                 self.do_job(
                     payload_type,
