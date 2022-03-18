@@ -26,7 +26,7 @@
 
 import datetime
 
-from pex.post import Post
+from pex.post import Post, PostTools
 from pex.tools.type import TypeTools
 
 from hatsploit.core.cli.badges import Badges
@@ -42,7 +42,7 @@ from hatsploit.lib.sessions import Sessions
 from hatsploit.lib.storage import LocalStorage
 
 
-class Handler(Handle, Post, Blinder):
+class Handler(Handle, PostTools, Post, Blinder):
     sessions = Sessions()
     modules = Modules()
     jobs = Jobs()
@@ -72,16 +72,13 @@ class Handler(Handle, Post, Blinder):
 
         return linemax
 
-    def send(self, sender, payload, args=[]):
+    def send(self, sender, payload, args={}):
         if isinstance(payload, bytes):
             self.badges.print_process(f"Sending payload stage ({str(len(payload))} bytes)...")
         else:
             self.badges.print_process("Sending command payload stage...")
 
-        if isinstance(args, dict):
-            sender(payload, **args)
-        else:
-            sender(*args, payload)
+        self.post_command(sender, payload, args)
 
     def open_session(self, host, port, session_platform, session_architecture, session_type, session, action=None):
         session_id = self.sessions.add_session(session_platform, session_architecture, session_type,
@@ -96,7 +93,7 @@ class Handler(Handle, Post, Blinder):
         if self.local_storage.get("auto_interaction"):
             self.sessions.interact_with_session(session_id)
 
-    def module_handle(self, host=None, sender=None, args=[], concat=None, location=None,
+    def module_handle(self, host=None, sender=None, args={}, concat=None, location=None,
                       background=None, method=None, timeout=None, linemax=100, ensure=False,
                       on_session=None):
         module = self.modules.get_current_module_object()
@@ -181,7 +178,7 @@ class Handler(Handle, Post, Blinder):
         )
 
     def handle(self, payload=None, sender=None, host=None, port=None, rhost=None, payload_category='stager',
-               payload_type='one_side', args=[], concat=None, location=None, background=None,
+               payload_type='one_side', args={}, concat=None, location=None, background=None,
                method=None, timeout=None, linemax=100, platform='generic', architecture='generic',
                ensure=False, blinder=False, session=None, arguments=None, on_session=None):
 
@@ -300,7 +297,7 @@ class Handler(Handle, Post, Blinder):
         return new_session, host
 
     def send_payload(self, payload=None, sender=None, payload_category='stager', payload_type='one_side',
-                     args=[], concat=None, location=None, background=None, method=None, linemax=100,
+                     args={}, concat=None, location=None, background=None, method=None, linemax=100,
                      platform='generic', ensure=False, arguments=None):
         if payload is None:
             self.badges.print_error("Payload stage is not found!")
