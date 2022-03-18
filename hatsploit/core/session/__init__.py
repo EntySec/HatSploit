@@ -60,6 +60,8 @@ class HatSploitSession(Session, Loot, Pull, Push, ChannelClient):
         )
 
     def download(self, remote_file, local_path):
+        self.print_process(f"Downloading {remote_file}...")
+
         data = self.pull(
             platform=self.details['Platform'],
             sender=self.send_command,
@@ -80,16 +82,22 @@ class HatSploitSession(Session, Loot, Pull, Push, ChannelClient):
         return None
 
     def upload(self, local_file, remote_path):
+        self.print_process(f"Uploading {local_file}...")
         data = self.get_file(local_file)
 
         if data:
-            return self.push(
+            self.print_process(f"Saving to {remote_path}...")
+            remote_path = self.push(
                 platform=self.details['Platform'],
                 sender=self.send_command,
                 data=data,
                 location=remote_path,
                 method=self.details['Post']
             )
+
+            self.print_success(f"Saved to {remote_path}!")
+            return remote_path
+
         return None
 
     def interact(self):
