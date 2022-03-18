@@ -77,7 +77,6 @@ class Loot(StringTools, FSTools):
                 if not location.endswith('.' + extension):
                     location += '.' + extension
 
-            self.badges.print_process(f"Saving to {location}...")
             with open(location, 'wb') as f:
                 f.write(data)
 
@@ -88,7 +87,6 @@ class Loot(StringTools, FSTools):
 
     def remove_file(self, filename):
         if self.exists_file(filename):
-            self.badges.print_process(f"Removing {filename}...")
             os.remove(filename)
 
             self.badges.print_success(f"Removed {filename}!")
