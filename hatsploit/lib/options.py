@@ -159,9 +159,9 @@ class Options:
                     current_module.options[payload_option]['Required'] = True
 
                 if 'Handler' in current_module.payload:
-                        special = current_module.payload['Handler']
-                    else:
-                        special = ''
+                    special = current_module.payload['Handler']
+                else:
+                    special = ''
 
                 if current_payload:
                     payload = current_module.payload['Value']
