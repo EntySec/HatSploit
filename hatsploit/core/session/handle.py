@@ -24,29 +24,44 @@
 # SOFTWARE.
 #
 
+from pex.client.tcp import TCPClient
+from pex.listener.tcp import TCPListener
+
 from hatsploit.core.cli.badges import Badges
-from hatsploit.lib.server import Server
 
 
-class Handle:
-    server = Server()
-
+class Handle(TCPClient, TCPListener):
     def listen_session(self, local_host, local_port, session, timeout=None):
-        try:
-            client, address = self.server.listen(local_host, local_port, timeout)
-            session = session()
-            session.open(client)
-            return session, address
-        except Exception:
-            self.badges.print_error("Failed to handle session!")
-            return None, None
+        listener = self.listen_tcp(local_host, local_port, timeout)
+
+        if listener.listen():
+            self.badges.print_process(f"Starting TCP listener on port {str(local_port)}...")
+            client, address = listener.accept()
+
+            self.badges.print_process(f"Establishing connection ({address[0]}:{address[1]} -> {local_host}:{local_port})...")
+            listener.stop()
+
+            if client and address:
+                session = session()
+                session.open(client)
+
+                return session, address
+
+            self.badges.print_warning("Timeout waiting for connection.")
+        else:
+            self.badges.print_error(f"Failed to start TCP listener on port {str(local_port)}!")
+
+        self.badges.print_error("Failed to handle session!")
+        return None, None
 
     def connect_session(self, remote_host, remote_port, session, timeout=None):
-        try:
-            client = self.server.connect(remote_host, remote_port, timeout)
+        client = self.open_tcp(remote_host, remote_port, timeout)
+
+        if client.connect():
             session = session()
             session.open(client)
+
             return session
-        except Exception:
-            self.badges.print_error("Failed to handle session!")
-            return None
+
+        self.badges.print_error("Failed to handle session!")
+        return None
