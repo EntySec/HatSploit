@@ -29,8 +29,9 @@ from pex.post import PostTools
 from hatsploit.core.cli.badges import Badges
 
 
-class Blinder(PostTools):
+class Blinder:
     badges = Badges()
+    post_tools = PostTools()
 
     def blinder(self, sender, args={}):
         self.badges.print_empty()
@@ -46,7 +47,7 @@ class Blinder(PostTools):
                 return
 
             self.badges.print_process("Sending command to target...")
-            output = self.post_command(sender, command, args)
+            output = self.post_tools.post_command(sender, command, args)
 
             if output:
                 self.badges.print_empty(f'\n{output}')
