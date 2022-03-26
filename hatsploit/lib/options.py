@@ -201,9 +201,6 @@ class Options:
                         self.remove_options(current_module.options, ['RBHOST', 'RBPORT'])
                         self.remove_options(current_payload.options, ['BPORT'])
 
-                    else:
-                        self.remove_options(current_module.options, ['LHOST', 'LPORT', 'RBHOST', 'RBPORT'])
-
                 for option in current_module.options:
                     if option.upper() in handler_options['Module']:
                         saved_handler_options['Module'][module][option]['Value'] = current_module.options[option]['Value']
