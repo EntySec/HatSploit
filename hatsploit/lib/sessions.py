@@ -121,7 +121,7 @@ class Sessions:
     def interact_with_session(self, session_id):
         sessions = self.local_storage.get("sessions")
         if self.check_exist(session_id):
-            self.badges.print_process(f"Interacting with session {str(session_id)}...")
+            self.badges.print_process(f"Interacting with session {str(session_id)}...%newline")
             sessions[int(session_id)]['object'].interact()
         else:
             self.badges.print_error("Invalid session given!")
