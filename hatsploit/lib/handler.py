@@ -121,7 +121,12 @@ class HatSploitSession(Session, Loot, Pull, Push, ChannelClient):
                 self.print_error("Failed to interact with session!")
 
 
-class Handler(Handle, PostTools, Post, Blinder):
+class Handler:
+    blinder = Blinder()
+    post = Post()
+    post_tools = PostTools()
+    handle = Handle()
+
     sessions = Sessions()
     modules = Modules()
     jobs = Jobs()
@@ -157,7 +162,7 @@ class Handler(Handle, PostTools, Post, Blinder):
         else:
             self.badges.print_process("Sending command payload stage...")
 
-        self.post_command(sender, payload, args)
+        self.post_tools.post_command(sender, payload, args)
 
     def open_session(self, host, port, session_platform, session_architecture, session_type, session, action=None):
         session_id = self.sessions.add_session(session_platform, session_architecture, session_type,
@@ -262,7 +267,7 @@ class Handler(Handle, PostTools, Post, Blinder):
                ensure=False, blinder=False, session=None, arguments=None, on_session=None):
 
         if blinder:
-            self.blinder(sender, args)
+            self.blinder.shell(sender, args)
             return True
 
         if not self.send_payload(
@@ -319,7 +324,7 @@ class Handler(Handle, PostTools, Post, Blinder):
         session = session if session is not None else HatSploitSession
 
         if payload_type == 'reverse_tcp':
-            new_session, host = self.listen_session(
+            new_session, host = self.handle.listen_session(
                 options['LHOST'],
                 options['LPORT'],
                 session, timeout
@@ -331,7 +336,7 @@ class Handler(Handle, PostTools, Post, Blinder):
         elif payload_type == 'bind_tcp':
             host = options['RBHOST']
 
-            new_session = self.connect_session(
+            new_session = self.handle.connect_session(
                 options['RBHOST'],
                 options['RBPORT'],
                 session, timeout
@@ -352,7 +357,7 @@ class Handler(Handle, PostTools, Post, Blinder):
             if not host or not port:
                 return None
 
-            new_session, host = self.listen_session(host, port, session, timeout)
+            new_session, host = self.handle.listen_session(host, port, session, timeout)
 
             if not new_session and not host:
                 return None
@@ -361,7 +366,7 @@ class Handler(Handle, PostTools, Post, Blinder):
             if not host or not port:
                 return None
 
-            new_session = self.connect_session(host, port, session, timeout)
+            new_session = self.handle.connect_session(host, port, session, timeout)
 
             if not new_session:
                 return None
@@ -395,7 +400,7 @@ class Handler(Handle, PostTools, Post, Blinder):
             if method != 'raw':
                 self.do_job(
                     payload_type,
-                    self.post,
+                    self.post.post,
                     [
                         platform,
                         sender,
