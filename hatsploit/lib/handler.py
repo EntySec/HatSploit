@@ -125,7 +125,7 @@ class Handler:
     blinder = Blinder()
     post = Post()
     post_tools = PostTools()
-    handle = Handle()
+    server_handle = Handle()
 
     sessions = Sessions()
     modules = Modules()
@@ -324,7 +324,7 @@ class Handler:
         session = session if session is not None else HatSploitSession
 
         if payload_type == 'reverse_tcp':
-            new_session, host = self.handle.listen_session(
+            new_session, host = self.server_handle.listen_session(
                 options['LHOST'],
                 options['LPORT'],
                 session, timeout
@@ -336,7 +336,7 @@ class Handler:
         elif payload_type == 'bind_tcp':
             host = options['RBHOST']
 
-            new_session = self.handle.connect_session(
+            new_session = self.server_handle.connect_session(
                 options['RBHOST'],
                 options['RBPORT'],
                 session, timeout
@@ -357,7 +357,7 @@ class Handler:
             if not host or not port:
                 return None
 
-            new_session, host = self.handle.listen_session(host, port, session, timeout)
+            new_session, host = self.server_handle.listen_session(host, port, session, timeout)
 
             if not new_session and not host:
                 return None
@@ -366,7 +366,7 @@ class Handler:
             if not host or not port:
                 return None
 
-            new_session = self.handle.connect_session(host, port, session, timeout)
+            new_session = self.server_handle.connect_session(host, port, session, timeout)
 
             if not new_session:
                 return None
