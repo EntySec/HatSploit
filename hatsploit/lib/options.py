@@ -195,11 +195,9 @@ class Options:
                 else:
                     if special != 'reverse_tcp':
                         self.remove_options(current_module.options, ['LHOST', 'LPORT'])
-                        self.remove_options(current_payload.options, ['RHOST', 'RPORT'])
 
                     if special != 'bind_tcp':
                         self.remove_options(current_module.options, ['RBHOST', 'RBPORT'])
-                        self.remove_options(current_payload.options, ['BPORT'])
 
                 for option in current_module.options:
                     if option.upper() in handler_options['Module']:
