@@ -36,16 +36,16 @@ class Handle(TCPClient, TCPListener):
 
         if listener.listen():
             self.badges.print_process(f"Starting TCP listener on port {str(local_port)}...")
-            client, address = listener.accept()
+            if listener.accept():
+                address = listener.address
 
-            self.badges.print_process(f"Establishing connection ({address[0]}:{address[1]} -> {local_host}:{local_port})...")
-            listener.stop()
+                self.badges.print_process(f"Establishing connection ({address[0]}:{address[1]} -> {local_host}:{str(local_port)})...")
+                listener.stop()
 
-            if client and address:
                 session = session()
-                session.open(client)
+                session.open(listener.client)
 
-                return session, address
+                return session, address[0]
 
             self.badges.print_warning("Timeout waiting for connection.")
         else:
@@ -60,7 +60,7 @@ class Handle(TCPClient, TCPListener):
         if client.connect():
             self.badges.print_process(f"Establishing connection (0.0.0.0:{remote_port} -> {remote_host}:{remote_port})...")
             session = session()
-            session.open(client)
+            session.open(client.sock)
 
             return session
 
