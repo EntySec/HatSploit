@@ -26,20 +26,99 @@
 
 import datetime
 
-from pex.post import Post, PostTools
+from pex.post import Post
+from pex.post.pull import Pull
+from pex.post.push import Push
+
+from pex.tools.post import PostTools
 from pex.tools.type import TypeTools
+
+from pex.client.channel import ChannelClient
 
 from hatsploit.core.cli.badges import Badges
 
-from hatsploit.core.session.handle import Handle
-from hatsploit.core.session.blinder import Blinder
-
-from hatsploit.core.session import HatSploitSession
-
+from hatsploit.lib.handle import Handle
+from hatsploit.lib.blinder import Blinder
 from hatsploit.lib.jobs import Jobs
 from hatsploit.lib.modules import Modules
 from hatsploit.lib.sessions import Sessions
 from hatsploit.lib.storage import LocalStorage
+from hatsploit.lib.session import Session
+from hatsploit.lib.loot import Loot
+
+
+class HatSploitSession(Session, Loot, Pull, Push, ChannelClient):
+    channel = None
+
+    details = {
+        'Post': "",
+        'Platform': "",
+        'Architecture': "",
+        'Type': "shell"
+    }
+
+    def open(self, client):
+        self.channel = self.open_channel(client)
+
+    def close(self):
+        self.channel.disconnect()
+
+    def heartbeat(self):
+        return not self.channel.terminated
+
+    def send_command(self, command, output=False, decode=True):
+        return self.channel.send_command(
+            (command + '\n'),
+            output,
+            decode
+        )
+
+    def download(self, remote_file, local_path):
+        self.print_process(f"Downloading {remote_file}...")
+
+        data = self.pull(
+            platform=self.details['Platform'],
+            sender=self.send_command,
+            location=remote_file,
+            args={
+                'decode': False,
+                'output': True
+            }
+        )
+
+        if data:
+            return self.save_file(
+                location=local_path,
+                data=data,
+                filename=remote_file
+            )
+
+        return None
+
+    def upload(self, local_file, remote_path):
+        self.print_process(f"Uploading {local_file}...")
+        data = self.get_file(local_file)
+
+        if data:
+            remote_path = self.push(
+                platform=self.details['Platform'],
+                sender=self.send_command,
+                data=data,
+                location=remote_path,
+                method=self.details['Post']
+            )
+
+            self.print_success(f"Saved to {remote_path}!")
+            return remote_path
+
+        return None
+
+    def interact(self):
+        if not self.channel.interact():
+            if not self.heartbeat():
+                self.print_warning("Connection terminated.")
+            else:
+                self.print_error("Failed to interact with session!")
 
 
 class Handler(Handle, PostTools, Post, Blinder):
