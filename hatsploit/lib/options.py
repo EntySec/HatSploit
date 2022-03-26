@@ -158,6 +158,11 @@ class Options:
                 else:
                     current_module.options[payload_option]['Required'] = True
 
+                if 'Handler' in current_module.payload:
+                        special = current_module.payload['Handler']
+                    else:
+                        special = ''
+
                 if current_payload:
                     payload = current_module.payload['Value']
 
@@ -168,11 +173,6 @@ class Options:
                         current_payload.options = {}
 
                     current_payload.options.update(saved_handler_options['Payload'][payload])
-
-                    if 'Handler' in current_module.payload:
-                        special = current_module.payload['Handler']
-                    else:
-                        special = []
 
                     if current_payload.details['Type'] == 'reverse_tcp':
                         if special != 'bind_tcp':
@@ -193,7 +193,16 @@ class Options:
                             self.remove_options(current_module.options, ['RBHOST', 'RBPORT'])
                             self.remove_options(current_payload.options, ['BPORT'])
                 else:
-                    self.remove_options(current_module.options, ['LHOST', 'LPORT', 'RBHOST', 'RBPORT'])
+                    if special != 'reverse_tcp':
+                        self.remove_options(current_module.options, ['LHOST', 'LPORT'])
+                        self.remove_options(current_payload.options, ['RHOST', 'RPORT'])
+
+                    if special != 'bind_tcp':
+                        self.remove_options(current_module.options, ['RBHOST', 'RBPORT'])
+                        self.remove_options(current_payload.options, ['BPORT'])
+
+                    else:
+                        self.remove_options(current_module.options, ['LHOST', 'LPORT', 'RBHOST', 'RBPORT'])
 
                 for option in current_module.options:
                     if option.upper() in handler_options['Module']:
