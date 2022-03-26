@@ -58,10 +58,13 @@ class Handle(TCPClient, TCPListener):
         client = self.open_tcp(remote_host, remote_port, timeout)
 
         if client.connect():
+            self.badges.print_process(f"Establishing connection (0.0.0.0:{remote_port} -> {remote_host}:{remote_port})...")
             session = session()
             session.open(client)
 
             return session
 
+        self.badges.print_error(f"Failed to connect to {remote_host}!")
         self.badges.print_error("Failed to handle session!")
+
         return None
