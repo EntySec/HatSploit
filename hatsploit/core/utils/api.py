@@ -32,7 +32,7 @@ from flask import jsonify
 from flask import request
 from flask import make_response
 
-from hatsploit.utils.string import StringTools
+from pex.tools.string import StringTools
 
 from hatsploit.core.cli.fmt import FMT
 from hatsploit.core.base.execute import Execute
@@ -307,14 +307,14 @@ class API:
                 else:
                     local_path = self.config.path_config['loot_path']
 
-                self.sessions.download_from_session(
+                self.sessions.session_download(
                     request.form['session'],
                     request.form['remote_file'],
                     local_path
                 )
 
             elif action == 'upload':
-                self.session.upload_to_session(
+                self.session.session_upload(
                     request.form['session'],
                     request.form['local_file'],
                     request.form['remote_path']

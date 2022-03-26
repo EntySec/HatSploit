@@ -28,7 +28,7 @@ import os
 
 from hatvenom import HatVenom
 
-from hatsploit.core.base.types import Types
+from pex.tools.type import TypeTools
 from hatsploit.core.cli.badges import Badges
 from hatsploit.core.db.importer import Importer
 
@@ -38,7 +38,7 @@ from hatsploit.lib.storage import LocalStorage
 
 class Payloads:
     hatvenom = HatVenom()
-    types = Types()
+    types = TypeTools()
     importer = Importer()
     options = Options()
     local_storage = LocalStorage()
@@ -230,7 +230,7 @@ class Payloads:
             'Raw': None
         }
 
-    def generate_payload(self, name, options={}):
+    def generate_payload(self, name, options={}, raw=False):
         payload_object = self.get_payload(name)
         if payload_object:
             self.options.add_payload_handler(payload_object)
@@ -240,7 +240,7 @@ class Payloads:
                     payload_object.options[option]['Value'] = options[option]
 
             result = self.run_payload(payload_object)
-            return result['Payload'], result['Raw']
+            return result['Raw'] if raw else result['Payload']
         return None
 
     def get_current_payload(self):

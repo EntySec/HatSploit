@@ -26,26 +26,111 @@
 
 import datetime
 
-from hatsploit.core.base.types import Types
+from pex.post import Post
+from pex.post.pull import Pull
+from pex.post.push import Push
+
+from pex.tools.post import PostTools
+from pex.tools.type import TypeTools
+
+from pex.client.channel import ChannelClient
+
 from hatsploit.core.cli.badges import Badges
 
-from hatsploit.core.session.handle import Handle
-from hatsploit.core.session.post import Post
-from hatsploit.core.session.blinder import Blinder
-
-from hatsploit.core.session import HatSploitSession
-
+from hatsploit.lib.handle import Handle
+from hatsploit.lib.blinder import Blinder
 from hatsploit.lib.jobs import Jobs
 from hatsploit.lib.modules import Modules
 from hatsploit.lib.sessions import Sessions
 from hatsploit.lib.storage import LocalStorage
+from hatsploit.lib.session import Session
+from hatsploit.lib.loot import Loot
 
 
-class Handler(Handle, Post, Blinder):
+class HatSploitSession(Session, Loot, Pull, Push, ChannelClient):
+    channel = None
+
+    details = {
+        'Post': "",
+        'Platform': "",
+        'Architecture': "",
+        'Type': "shell"
+    }
+
+    def open(self, client):
+        self.channel = self.open_channel(client)
+
+    def close(self):
+        self.channel.disconnect()
+
+    def heartbeat(self):
+        return not self.channel.terminated
+
+    def send_command(self, command, output=False, decode=True):
+        return self.channel.send_command(
+            (command + '\n'),
+            output,
+            decode
+        )
+
+    def download(self, remote_file, local_path):
+        self.print_process(f"Downloading {remote_file}...")
+
+        data = self.pull(
+            platform=self.details['Platform'],
+            sender=self.send_command,
+            location=remote_file,
+            args={
+                'decode': False,
+                'output': True
+            }
+        )
+
+        if data:
+            return self.save_file(
+                location=local_path,
+                data=data,
+                filename=remote_file
+            )
+
+        return None
+
+    def upload(self, local_file, remote_path):
+        self.print_process(f"Uploading {local_file}...")
+        data = self.get_file(local_file)
+
+        if data:
+            remote_path = self.push(
+                platform=self.details['Platform'],
+                sender=self.send_command,
+                data=data,
+                location=remote_path,
+                method=self.details['Post']
+            )
+
+            self.print_success(f"Saved to {remote_path}!")
+            return remote_path
+
+        return None
+
+    def interact(self):
+        if not self.channel.interact():
+            if not self.heartbeat():
+                self.print_warning("Connection terminated.")
+            else:
+                self.print_error("Failed to interact with session!")
+
+
+class Handler:
+    blinder = Blinder()
+    post = Post()
+    post_tools = PostTools()
+    server_handle = Handle()
+
     sessions = Sessions()
     modules = Modules()
     jobs = Jobs()
-    types = Types()
+    types = TypeTools()
     badges = Badges()
     local_storage = LocalStorage()
 
@@ -71,16 +156,13 @@ class Handler(Handle, Post, Blinder):
 
         return linemax
 
-    def send(self, payload, sender, args=[]):
+    def send(self, sender, payload, args={}):
         if isinstance(payload, bytes):
             self.badges.print_process(f"Sending payload stage ({str(len(payload))} bytes)...")
         else:
             self.badges.print_process("Sending command payload stage...")
 
-        if isinstance(args, dict):
-            sender(payload, **args)
-        else:
-            sender(*args, payload)
+        self.post_tools.post_command(sender, payload, args)
 
     def open_session(self, host, port, session_platform, session_architecture, session_type, session, action=None):
         session_id = self.sessions.add_session(session_platform, session_architecture, session_type,
@@ -95,7 +177,7 @@ class Handler(Handle, Post, Blinder):
         if self.local_storage.get("auto_interaction"):
             self.sessions.interact_with_session(session_id)
 
-    def module_handle(self, host=None, sender=None, args=[], concat=None, location=None,
+    def module_handle(self, host=None, sender=None, args={}, concat=None, location=None,
                       background=None, method=None, timeout=None, linemax=100, ensure=False,
                       on_session=None):
         module = self.modules.get_current_module_object()
@@ -180,12 +262,12 @@ class Handler(Handle, Post, Blinder):
         )
 
     def handle(self, payload=None, sender=None, host=None, port=None, rhost=None, payload_category='stager',
-               payload_type='one_side', args=[], concat=None, location=None, background=None,
+               payload_type='one_side', args={}, concat=None, location=None, background=None,
                method=None, timeout=None, linemax=100, platform='generic', architecture='generic',
                ensure=False, blinder=False, session=None, arguments=None, on_session=None):
 
         if blinder:
-            self.blinder(sender, args)
+            self.blinder.shell(sender, args)
             return True
 
         if not self.send_payload(
@@ -242,7 +324,7 @@ class Handler(Handle, Post, Blinder):
         session = session if session is not None else HatSploitSession
 
         if payload_type == 'reverse_tcp':
-            new_session, host = self.listen_session(
+            new_session, host = self.server_handle.listen_session(
                 options['LHOST'],
                 options['LPORT'],
                 session, timeout
@@ -252,7 +334,9 @@ class Handler(Handle, Post, Blinder):
                 return None
 
         elif payload_type == 'bind_tcp':
-            new_session = self.connect_session(
+            host = options['RBHOST']
+
+            new_session = self.server_handle.connect_session(
                 options['RBHOST'],
                 options['RBPORT'],
                 session, timeout
@@ -273,7 +357,7 @@ class Handler(Handle, Post, Blinder):
             if not host or not port:
                 return None
 
-            new_session, host = self.listen_session(host, port, session, timeout)
+            new_session, host = self.server_handle.listen_session(host, port, session, timeout)
 
             if not new_session and not host:
                 return None
@@ -282,7 +366,7 @@ class Handler(Handle, Post, Blinder):
             if not host or not port:
                 return None
 
-            new_session = self.connect_session(host, port, session, timeout)
+            new_session = self.server_handle.connect_session(host, port, session, timeout)
 
             if not new_session:
                 return None
@@ -297,7 +381,7 @@ class Handler(Handle, Post, Blinder):
         return new_session, host
 
     def send_payload(self, payload=None, sender=None, payload_category='stager', payload_type='one_side',
-                     args=[], concat=None, location=None, background=None, method=None, linemax=100,
+                     args={}, concat=None, location=None, background=None, method=None, linemax=100,
                      platform='generic', ensure=False, arguments=None):
         if payload is None:
             self.badges.print_error("Payload stage is not found!")
@@ -311,14 +395,16 @@ class Handler(Handle, Post, Blinder):
             linemax = self.ensure_linemax(payload['Payload'], linemax)
 
         if payload_category == 'stager':
+            self.badges.print_process(f"Sending payload stage ({str(len(payload))} bytes)...")
+
             if method != 'raw':
                 self.do_job(
                     payload_type,
-                    self.post,
+                    self.post.post,
                     [
                         platform,
-                        payload,
                         sender,
+                        payload,
                         args,
                         arguments,
                         method,
@@ -336,8 +422,8 @@ class Handler(Handle, Post, Blinder):
                 payload_type,
                 self.send,
                 [
-                    payload,
                     sender,
+                    payload,
                     args
                 ]
             )

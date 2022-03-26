@@ -126,19 +126,19 @@ class Sessions:
         else:
             self.badges.print_error("Invalid session given!")
 
-    def download_from_session(self, session_id, remote_file, local_path):
+    def session_download(self, session_id, remote_file, local_path):
         sessions = self.local_storage.get("sessions")
         if self.check_exist(session_id):
-            sessions[int(session_id)]['object'].download(remote_file, local_path)
-        else:
-            self.badges.print_error("Invalid session given!")
+            return sessions[int(session_id)]['object'].download(remote_file, local_path)
+        self.badges.print_error("Invalid session given!")
+        return None
 
-    def upload_to_session(self, session_id, local_file, remote_path):
+    def session_upload(self, session_id, local_file, remote_path):
         sessions = self.local_storage.get("sessions")
         if self.check_exist(session_id):
-            sessions[int(session_id)]['object'].upload(local_file, remote_path)
-        else:
-            self.badges.print_error("Invalid session given!")
+            return sessions[int(session_id)]['object'].upload(local_file, remote_path)
+        self.badges.print_error("Invalid session given!")
+        return None
 
     def close_session(self, session_id):
         sessions = self.local_storage.get("sessions")

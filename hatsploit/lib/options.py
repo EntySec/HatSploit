@@ -27,7 +27,7 @@
 import copy
 
 from hatsploit.lib.storage import LocalStorage
-from hatsploit.utils.tcp import TCPClient
+from pex.tools.tcp import TCPTools
 
 
 class Options:
@@ -75,7 +75,7 @@ class Options:
         'Payload': {
             'RHOST': {
                 'Description': "Remote host to connect.",
-                'Value': TCPClient.get_local_host(),
+                'Value': TCPTools.get_local_host(),
                 'Type': "ip",
                 'Required': True
             },
@@ -158,6 +158,11 @@ class Options:
                 else:
                     current_module.options[payload_option]['Required'] = True
 
+                if 'Handler' in current_module.payload:
+                    special = current_module.payload['Handler']
+                else:
+                    special = ''
+
                 if current_payload:
                     payload = current_module.payload['Value']
 
@@ -168,11 +173,6 @@ class Options:
                         current_payload.options = {}
 
                     current_payload.options.update(saved_handler_options['Payload'][payload])
-
-                    if 'Handler' in current_module.payload:
-                        special = current_module.payload['Handler']
-                    else:
-                        special = []
 
                     if current_payload.details['Type'] == 'reverse_tcp':
                         if special != 'bind_tcp':
@@ -193,7 +193,11 @@ class Options:
                             self.remove_options(current_module.options, ['RBHOST', 'RBPORT'])
                             self.remove_options(current_payload.options, ['BPORT'])
                 else:
-                    self.remove_options(current_module.options, ['LHOST', 'LPORT', 'RBHOST', 'RBPORT'])
+                    if special != 'reverse_tcp':
+                        self.remove_options(current_module.options, ['LHOST', 'LPORT'])
+
+                    if special != 'bind_tcp':
+                        self.remove_options(current_module.options, ['RBHOST', 'RBPORT'])
 
                 for option in current_module.options:
                     if option.upper() in handler_options['Module']:

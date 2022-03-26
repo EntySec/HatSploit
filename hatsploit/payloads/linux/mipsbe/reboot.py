@@ -6,7 +6,7 @@
 #
 
 from hatsploit.lib.payload import Payload
-from hatsploit.utils.payload import PayloadTools
+from pex.tools.payload import PayloadTools
 
 
 class HatSploitPayload(Payload, PayloadTools):

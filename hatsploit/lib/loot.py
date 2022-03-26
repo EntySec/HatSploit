@@ -27,23 +27,26 @@
 import os
 import datetime
 
-from hatsploit.utils.string import StringTools
+from pex.tools.string import StringTools
 
+from hatsploit.core.utils.fs import FSTools
 from hatsploit.core.cli.badges import Badges
+
 from hatsploit.lib.config import Config
 
 
-class Loot(StringTools):
+class Loot(StringTools, FSTools):
     badges = Badges()
 
     loot = Config().path_config['loot_path']
     data = Config().path_config['data_path']
 
     def create_loot(self):
-        self.badges.print_process(f"Creating loot at {self.loot}...")
-
         if not os.path.isdir(self.loot):
             os.mkdir(self.loot)
+
+    def specific_loot(self, filename):
+        return self.loot + filename
 
     def random_loot(self, extension=None):
         filename = self.random_string(16)
@@ -53,35 +56,55 @@ class Loot(StringTools):
 
         return self.loot + filename
 
+    def get_file(self, filename):
+        if self.exists_file(filename):
+            with open(filename, 'rb') as f:
+                return f.read()
+
+        return None
+
+    def save_file(self, location, data, extension=None, filename=None):
+        exists, is_dir = self.exists(location)
+
+        if exists:
+            if is_dir:
+                if location.endswith('/'):
+                    location += os.path.split(filename)[1] if filename else self.random_string(16)
+                else:
+                    location += '/' + os.path.split(filename)[1] if filename else self.random_string(16)
+
+            if extension:
+                if not location.endswith('.' + extension):
+                    location += '.' + extension
+
+            with open(location, 'wb') as f:
+                f.write(data)
+
+            self.badges.print_success(f"Saved to {location}!")
+            return os.path.abspath(location)
+
+        return None
+
+    def remove_file(self, filename):
+        if self.exists_file(filename):
+            os.remove(filename)
+
+            self.badges.print_success(f"Removed {filename}!")
+            return True
+
+        return False
+
     def get_loot(self, filename):
-        if os.path.isdir(self.loot):
-            if os.path.exists(self.loot + filename):
-                with open(self.loot + filename, 'rb') as f:
-                    return f.read()
-            else:
-                self.badges.print_error("Invalid loot given!")
-        else:
-            self.badges.print_error("Loot does not exist!")
+        filename = os.path.split(filename)[1]
+        return self.get_file(self.loot + filename)
 
     def save_loot(self, filename, data):
-        if os.path.exists(self.loot):
-            self.badges.print_process(f"Saving loot {self.loot + filename}...")
-            with open(self.loot + filename, 'wb') as f:
-                f.write(data)
-            self.badges.print_success("Loot successfully saved!")
-        else:
-            self.badges.print_error("Loot does not exist!")
+        filename = os.path.split(filename)[1]
+        return self.save_file(self.loot + filename, data)
 
     def remove_loot(self, filename):
-        if os.path.isdir(self.loot):
-            if os.path.exists(self.loot + filename):
-                self.badges.print_process(f"Removing loot {self.loot + filename}...")
-                os.remove(self.loot + filename)
-                self.badges.print_success("Loot successfully removed!")
-            else:
-                self.badges.print_error("Invalid loot given!")
-        else:
-            self.badges.print_error("Loot does not exist!")
+        filename = os.path.split(filename)[1]
+        return self.remove_file(self.loot + filename)
 
     def get_data(self, filename):
         if os.path.exists(self.data + filename):

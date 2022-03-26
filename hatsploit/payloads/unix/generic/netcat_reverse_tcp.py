@@ -7,7 +7,7 @@
 
 from hatsploit.lib.payload import Payload
 
-from hatsploit.utils.string import StringTools
+from pex.tools.string import StringTools
 
 
 class HatSploitPayload(Payload, StringTools):

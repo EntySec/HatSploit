@@ -7,7 +7,7 @@
 
 from hatsploit.lib.config import Config
 from hatsploit.lib.module import Module
-from hatsploit.utils.http import HTTPClient
+from pex.client.http import HTTPClient
 
 
 class HatSploitModule(Module, HTTPClient):

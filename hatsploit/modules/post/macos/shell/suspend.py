@@ -6,10 +6,10 @@
 #
 
 from hatsploit.lib.module import Module
-from hatsploit.utils.session import SessionTools
+from hatsploit.lib.sessions import Sessions
 
 
-class HatSploitModule(Module, SessionTools):
+class HatSploitModule(Module, Sessions):
     details = {
         'Category': "post",
         'Name': "macOS Shell Suspend",

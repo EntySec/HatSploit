@@ -6,7 +6,7 @@
 #
 
 from hatsploit.lib.module import Module
-from hatsploit.utils.tcp import TCPClient
+from pex.client.tcp import TCPClient
 
 
 class HatSploitModule(Module, TCPClient):

@@ -24,35 +24,42 @@
 # SOFTWARE.
 #
 
+import os
+
 from hatsploit.core.cli.badges import Badges
 
 
-class Printf:
+class FSTools:
     badges = Badges()
 
-    def bytes_to_octal(self, bytes_obj):
-        byte_octals = []
-        for byte in bytes_obj:
-            byte_octal = '\\' + oct(byte)[2:]
-            byte_octals.append(byte_octal)
-        return ''.join(byte_octals)
+    def exists(self, path):
+        if os.path.isdir(path):
+            return True, True
+        directory = os.path.split(path)[0]
 
-    def push(self, data, sender, location, args=[], linemax=100):
-        printf_stream = "printf '{}' >> {}"
-        printf_max_length = linemax
+        if not directory:
+            return True, False
 
-        size = len(data)
-        num_parts = int(size / printf_max_length) + 1
+        if self.exists_dir(directory):
+            return True, False
+        return False, False
 
-        for i in range(0, num_parts):
-            current = i * printf_max_length
-            block = self.bytes_to_octal(data[current:current + printf_max_length])
+    def exists_dir(self, path):
+        if os.path.exists(path):
+            if not os.path.isdir(path):
+                self.badges.print_error(f"Local path: {path}: is not a directory!")
+                return False
+            return True
 
-            self.badges.print_process(f"Uploading... ({str(current)}/{str(size)})", end='')
-            if block:
-                command = printf_stream.format(block, location)
+        self.badges.print_error(f"Local directory: {directory}: does not exist!")
+        return False
 
-                if isinstance(args, dict):
-                    output = sender(command, **args)
-                else:
-                    output = sender(*args, command)
+    def exists_file(self, path):
+        if os.path.exists(path):
+            if os.path.isdir(path):
+                self.badges.print_error(f"Local path: {path}: is a directory!")
+                return False
+            return True
+
+        self.badges.print_error(f"Local file: {path}: does not exist!")
+        return False

@@ -8,10 +8,10 @@
 import time
 
 from hatsploit.lib.module import Module
-from hatsploit.utils.tcp import TCPClient
+from pex.tools.tcp import TCPTools
 
 
-class HatSploitModule(Module, TCPClient):
+class HatSploitModule(Module, TCPTools):
     details = {
         'Category': "auxiliary",
         'Name': "Port Scanner",
