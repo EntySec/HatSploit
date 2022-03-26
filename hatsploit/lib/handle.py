@@ -33,8 +33,13 @@ from hatsploit.core.cli.badges import Badges
 
 
 class Handle(TCPClient, TCPListener, HTTPListener):
+    tcp_client = TCPClient()
+
+    tcp_listener = TCPListener()
+    http_listener = HTTPListener()
+
     def listen_server(self, local_host, local_port, methods={}):
-        listener = self.listen_http(local_host, local_port, methods)
+        listener = self.http_listener.listen_http(local_host, local_port, methods)
 
         self.badges.print_process(f"Starting HTTP listener on port {str(local_port)}...")
         if listener.listen():
@@ -45,7 +50,7 @@ class Handle(TCPClient, TCPListener, HTTPListener):
             self.badges.print_error(f"Failed to start HTTP listener on port {str(local_port)}!")
 
     def listen_session(self, local_host, local_port, session, timeout=None):
-        listener = self.listen_tcp(local_host, local_port, timeout)
+        listener = self.tcp_listener.listen_tcp(local_host, local_port, timeout)
 
         self.badges.print_process(f"Starting TCP listener on port {str(local_port)}...")
         if listener.listen():
@@ -68,7 +73,7 @@ class Handle(TCPClient, TCPListener, HTTPListener):
         return None, None
 
     def connect_session(self, remote_host, remote_port, session, timeout=None):
-        client = self.open_tcp(remote_host, remote_port, timeout)
+        client = self.tcp_client.open_tcp(remote_host, remote_port, timeout)
 
         self.badges.print_process(f"Connecting to {local_host}:{str(local_port)}...")
         if client.connect():
