@@ -33,6 +33,7 @@ from hatsploit.core.cli.badges import Badges
 
 
 class Handle:
+    badges = Badges()
     tcp_client = TCPClient()
 
     tcp_listener = TCPListener()
