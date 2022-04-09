@@ -24,6 +24,7 @@
 # SOFTWARE.
 #
 
+import sys
 import logging
 
 from flask import cli
@@ -31,6 +32,8 @@ from flask import Flask
 from flask import jsonify
 from flask import request
 from flask import make_response
+
+from io import StringIO
 
 from pex.tools.string import StringTools
 
@@ -43,6 +46,23 @@ from hatsploit.lib.modules import Modules
 from hatsploit.lib.payloads import Payloads
 from hatsploit.lib.sessions import Sessions
 from hatsploit.lib.config import Config
+
+
+class APIPool:
+    def __init__(self):
+        self._stdout = None
+        self._string_io = None
+
+    def __enter__(self):
+        self._stdout = sys.stdout
+        sys.stdout = self._string_io = StringIO()
+        return self
+
+    def __exit__(self, type, value, traceback):
+        sys.stdout = self._stdout
+
+    def __str__(self):
+        return self._string_io_getvalue()
 
 
 class API:
@@ -240,9 +260,9 @@ class API:
                 current_module = self.modules.get_current_module_object()
 
                 if current_module:
-                    self.jobs.create_job(current_module.details['Name'],
-                                         current_module.details['Module'],
-                                         self.modules.run_current_module)
+                    with APIPool() as pool:
+                        self.modules.run_current_module()
+                        return make_response(str(pool), 200)
 
             return make_response('', 200)
 
