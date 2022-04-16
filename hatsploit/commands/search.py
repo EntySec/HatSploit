@@ -23,19 +23,22 @@ class HatSploitCommand(Command):
         'MinArgs': 1,
         'Options': {
             '-w': ['[payloads|modules|plugins]', "Select where to search."],
-            '-a': ['', "Search everywhere."]
+            '-e': ['', "Search everywhere."]
         }
     }
 
     def run(self, argc, argv):
         if argv[1] not in ['-w', '--where']:
-            self.show.show_search_modules(argv[1])
-            self.show.show_search_payloads(argv[1])
-            self.show.show_search_plugins(argv[1])
+            self.show.show_search_modules(argv[2])
+            self.show.show_search_payloads(argv[2])
+            self.show.show_search_encoders(argv[2])
+            self.show.show_search_plugins(argv[2])
         else:
             if argv[2] == 'modules':
                 self.show.show_search_modules(argv[3])
             elif argv[2] == 'payloads':
                 self.show.show_search_payloads(argv[3])
+            elif argv[2] == 'encoders':
+                self.show.show_search_encoders(argv[3])
             elif argv[2] == 'plugins':
                 self.show.show_search_plugins(argv[3])

@@ -41,6 +41,7 @@ from hatsploit.lib.handle import Handle
 from hatsploit.lib.blinder import Blinder
 from hatsploit.lib.jobs import Jobs
 from hatsploit.lib.modules import Modules
+from hatsploit.lib.encoders import Encoders
 from hatsploit.lib.sessions import Sessions
 from hatsploit.lib.storage import LocalStorage
 from hatsploit.lib.session import Session
@@ -129,6 +130,7 @@ class Handler:
 
     sessions = Sessions()
     modules = Modules()
+    encoders = Encoders()
     jobs = Jobs()
     types = TypeTools()
     badges = Badges()
@@ -180,7 +182,7 @@ class Handler:
     def module_handle(self, host=None, sender=None, args={}, concat=None, location=None,
                       background=None, method=None, timeout=None, linemax=100, ensure=False,
                       on_session=None):
-        module = self.modules.get_current_module_object()
+        module = self.modules.get_current_module()
         rhost = host
 
         options = module.handler
@@ -198,6 +200,7 @@ class Handler:
                     return True
 
         stage = payload['Payload'] if method != 'raw' else payload['Raw']
+        self.badges.print_information(stage)
 
         if payload['Details']['Type'] == 'bind_tcp':
             host = options['RBHOST']
@@ -318,7 +321,7 @@ class Handler:
         return True
 
     def module_handle_session(self, payload_type='one_side', session=None, timeout=None):
-        module = self.modules.get_current_module_object()
+        module = self.modules.get_current_module()
 
         options = module.handler
         session = session if session is not None else HatSploitSession
@@ -392,7 +395,7 @@ class Handler:
             return False
 
         if ensure:
-            linemax = self.ensure_linemax(payload['Payload'], linemax)
+            linemax = self.ensure_linemax(payload, linemax)
 
         if payload_category == 'stager':
             self.badges.print_process(f"Sending payload stage ({str(len(payload))} bytes)...")

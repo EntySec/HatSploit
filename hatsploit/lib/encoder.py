@@ -32,19 +32,15 @@ from hatsploit.core.cli.tables import Tables
 from hatsploit.core.cli.tools import Tools
 
 
-class Payload(FMT, Badges, Colors, Parser, Tables, Tools):
+class Encoder(FMT, Badges, Colors, Parser, Tables, Tools):
     details = {
-        'Category': "",
         'Name': "",
-        'Payload': "",
+        'Encoder': "",
         'Authors': [
             ''
         ],
         'Description': "",
-        'Architecture': "",
-        'Platform': "",
-        'Rank': "",
-        'Type': ""
+        'Architecture': ""
     }
 
     def run(self):

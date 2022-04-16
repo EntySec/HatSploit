@@ -26,8 +26,6 @@
 
 import sys
 
-sys.stdout.write("\033]0;HatSploit Framework\007")
-
 import os
 import yaml
 import argparse
@@ -82,6 +80,8 @@ By accepting our terms of service, you agree that you will only use this tool fo
         return True
 
     def launch(self, do_shell=True, script=[]):
+        sys.stdout.write("\033]0;HatSploit Framework\007")
+
         if self.console.check_install():
             if self.accept_terms_of_service():
                 if not script:
@@ -95,10 +95,12 @@ def main():
     description = "Modular penetration testing platform that enables you to write, test, and execute exploit code."
     parser = argparse.ArgumentParser(description=description)
     parser.add_argument('-c', '--check', dest='check_all', action='store_true',
-                        help='Check base modules, payloads and plugins.')
+                        help='Check base modules, payloads, encoders and plugins.')
     parser.add_argument('--check-modules', dest='check_modules', action='store_true', help='Check only base modules.')
     parser.add_argument('--check-payloads', dest='check_payloads', action='store_true',
                         help='Check only base payloads.')
+    parser.add_argument('--check-encoders', dest='check_encoders', action='store_true',
+                        help='Check only base encoders.')
     parser.add_argument('--check-plugins', dest='check_plugins', action='store_true', help='Check only base plugins.')
     parser.add_argument('--rest-api', dest='rest_api', action='store_true', help='Start HatSploit REST API server.')
     parser.add_argument('--host', dest='host', help='HatSploit REST API server host. [default: 127.0.0.1]')
@@ -124,6 +126,9 @@ def main():
 
     elif args.check_plugins:
         sys.exit(hsf.check.check_plugins())
+
+    elif args.check_encoders:
+        sys.exit(hsf.check.check_encoders())
 
     elif args.rest_api:
         if not args.username and not args.password:

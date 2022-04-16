@@ -159,3 +159,10 @@ class LocalStorage:
             globals()["imported_payloads"][module_name][payload_name].options[option]['Value'] = value
         except Exception:
             pass
+
+    @staticmethod
+    def set_encoder_option(module_name, payload_name, encoder_name, option, value):
+        try:
+            globals()["imported_encoders"][module_name][payload_name][encoder_name].options[option]['Value'] = value
+        except Exception:
+            pass

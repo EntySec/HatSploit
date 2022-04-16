@@ -72,7 +72,7 @@ class Commands:
         return self.local_storage.get("commands")
 
     def get_modules_commands(self):
-        module = self.modules.get_current_module_object()
+        module = self.modules.get_current_module()
 
         if module:
             return module.commands if hasattr(module, "commands") else {}
@@ -92,7 +92,7 @@ class Commands:
 
     def get_all_commands(self):
         commands = {}
-        module = self.modules.get_current_module_object()
+        module = self.modules.get_current_module()
 
         if module:
             if hasattr(module, "commands"):
