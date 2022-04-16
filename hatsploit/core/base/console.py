@@ -106,7 +106,7 @@ class Console:
             sys.exit(1)
 
     def update_events(self):
-        current_module = self.modules.get_current_module_object()
+        current_module = self.modules.get_current_module()
         current_payload = self.payloads.get_current_payload()
 
         self.jobs.stop_dead()
@@ -117,10 +117,10 @@ class Console:
     def launch_menu(self):
         while True:
             try:
-                if not self.modules.check_current_module():
+                if not self.modules.get_current_module():
                     prompt = f'({self.prompt})> '
                 else:
-                    current_module = self.modules.get_current_module_object()
+                    current_module = self.modules.get_current_module()
 
                     category = current_module.details['Category']
                     name = current_module.details['Name']
@@ -172,14 +172,19 @@ class Console:
             plugins = self.local_storage.get("plugins")
             modules = self.local_storage.get("modules")
             payloads = self.local_storage.get("payloads")
+            encoders = self.local_storage.get("encoders")
 
             plugins_total = 0
             modules_total = 0
             payloads_total = 0
+            encoders_total = 0
 
             if payloads:
                 for database in payloads:
                     payloads_total += len(payloads[database])
+            if encoders:
+                for database in encoders:
+                    encoders_total += len(encoders[database])
             if plugins:
                 for database in plugins:
                     plugins_total += len(plugins[database])
@@ -194,7 +199,8 @@ class Console:
             else:
                 header += f"    --=( %yellowHatSploit Framework {version}%end\n"
             header += "--==--=( Developed by EntySec (%linehttps://entysec.netlify.app/%end)\n"
-            header += f"    --=( {modules_total} modules | {payloads_total} payloads | {plugins_total} plugins"
+            header += f"    --=( {modules_total} modules | {payloads_total} payloads "
+            header += f"| {encoders_total} encoders | {plugins_total} plugins"
             header += "%end"
 
             self.badges.print_empty(header)

@@ -49,7 +49,9 @@ class Builder:
                 os.path.exists(self.config.path_config['db_path'] +
                                self.config.db_config['base_dbs']['payload_database']) and
                 os.path.exists(self.config.path_config['db_path'] +
-                               self.config.db_config['base_dbs']['plugin_database'])):
+                               self.config.db_config['base_dbs']['plugin_database']) and
+                os.path.exists(self.config.path_config['db_path'] +
+                               self.config.db_config['base_dbs']['encoder_database'])):
             return True
         return False
 
@@ -59,14 +61,51 @@ class Builder:
                 os.mkdir(self.config.path_config['db_path'])
 
             self.build_module_database(self.config.path_config['modules_path'],
-                                        (self.config.path_config['db_path'] +
-                                         self.config.db_config['base_dbs']['module_database']))
+                                       (self.config.path_config['db_path'] +
+                                        self.config.db_config['base_dbs']['module_database']))
             self.build_payload_database(self.config.path_config['payloads_path'],
-                                         (self.config.path_config['db_path'] +
-                                          self.config.db_config['base_dbs']['payload_database']))
-            self.build_plugin_database(self.config.path_config['plugins_path'],
                                         (self.config.path_config['db_path'] +
-                                         self.config.db_config['base_dbs']['plugin_database']))
+                                         self.config.db_config['base_dbs']['payload_database']))
+            self.build_encoder_database(self.config.path_config['encoders_path'],
+                                        (self.config.path_config['db_path'] +
+                                         self.config.db_config['base_dbs']['encoder_database']))
+            self.build_plugin_database(self.config.path_config['plugins_path'],
+                                       (self.config.path_config['db_path'] +
+                                        self.config.db_config['base_dbs']['plugin_database']))
+
+    def build_encoder_database(self, input_path, output_path):
+        database_path = output_path
+        database = {
+            "__database__": {
+                "type": "encoders"
+            }
+        }
+
+        encoders_path = os.path.normpath(input_path)
+        for dest, _, files in os.walk(encoders_path):
+            for file in files:
+                if file.endswith('.py') and file != '__init__.py':
+                    encoder = dest + '/' + file[:-3]
+
+                    try:
+                        encoder_object = self.importer.import_encoder(encoder)
+                        encoder_name = encoder_object.details['Encoder']
+
+                        database.update({
+                            encoder_name: {
+                                "Path": encoder,
+                                "Name": encoder_object.details['Name'],
+                                "Encoder": encoder_object.details['Encoder'],
+                                "Authors": encoder_object.details['Authors'],
+                                "Desctiption": encoder_object.details['Description'],
+                                "Architecture": encoder_object.details['Architecture']
+                            }
+                        })
+                    except Exception:
+                        self.badges.print_error(f"Failed to add {encoder} to encoder database!")
+
+        with open(database_path, 'w') as f:
+            json.dump(database, f)
 
     def build_payload_database(self, input_path, output_path):
         database_path = output_path

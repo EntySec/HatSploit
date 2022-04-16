@@ -82,6 +82,19 @@ class Importer:
             raise self.exceptions.GlobalException
         return payload
 
+    def import_encoder(self, encoder_path):
+        try:
+            if not encoder_path.endswith('.py'):
+                encoder_path = encoder_path + '.py'
+            spec = importlib.util.spec_from_file_location(encoder_path, encoder_path)
+            encoder = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(encoder)
+            encoder = encoder.HatSploitEncoder()
+        except Exception as e:
+            self.badges.print_information('Reason: ' + str(e))
+            raise self.exceptions.GlobalException
+        return encoder
+
     def import_module(self, module_path):
         try:
             if not module_path.endswith('.py'):
@@ -133,13 +146,16 @@ class Importer:
 
     def import_database(self):
         self.db.connect_module_database(self.config.db_config['base_dbs']['module_database_name'],
-                                         self.config.path_config['db_path'] + self.config.db_config['base_dbs'][
+                                        self.config.path_config['db_path'] + self.config.db_config['base_dbs'][
                                              'module_database'])
         self.db.connect_payload_database(self.config.db_config['base_dbs']['payload_database_name'],
-                                          self.config.path_config['db_path'] + self.config.db_config['base_dbs'][
-                                              'payload_database'])
-        self.db.connect_plugin_database(self.config.db_config['base_dbs']['plugin_database_name'],
                                          self.config.path_config['db_path'] + self.config.db_config['base_dbs'][
+                                              'payload_database'])
+        self.db.connect_encoder_database(self.config.db_config['base_dbs']['encoder_database_name'],
+                                         self.config.path_config['db_path'] + self.config.db_config['base_dbs'][
+                                             'encoder_database'])
+        self.db.connect_plugin_database(self.config.db_config['base_dbs']['plugin_database_name'],
+                                        self.config.path_config['db_path'] + self.config.db_config['base_dbs'][
                                              'plugin_database'])
 
     def import_all(self, import_database):

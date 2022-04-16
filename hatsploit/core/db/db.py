@@ -45,6 +45,14 @@ class DB:
                 return
         self.badges.print_error("No such payload database connected!")
 
+    def disconnect_encoder_database(self, name):
+        if self.local_storage.get("connected_encoder_databases"):
+            if name in self.local_storage.get("connected_encoder_databases"):
+                self.local_storage.delete_element("connected_encoder_databases", name)
+                self.local_storage.delete_element("encoders", name)
+                return
+        self.badges.print_error("No such encoder database connected!")
+
     def disconnect_module_database(self, name):
         if self.local_storage.get("connected_module_databases"):
             if name in self.local_storage.get("connected_module_databases"):
@@ -60,6 +68,47 @@ class DB:
                 self.local_storage.delete_element("plugins", name)
                 return
         self.badges.print_error("No such plugin database connected!")
+
+    def connect_encoder_database(self, name, path):
+        if self.local_storage.get("connected_encoder_databases"):
+            if name in self.local_storage.get("connected_encoder_databases"):
+                self.badges.print_error("Encoder database already connected!")
+                return
+        if not os.path.exists(path) or not str.endswith(path, "json"):
+            self.badges.print_error("Not an encoder database!")
+            return
+
+        try:
+            database = json.load(open(path))
+        except Exception:
+            self.badges.print_error("Failed to connect encoder database!")
+            return
+
+        if '__database__' not in database:
+            self.badges.print_error("No __database__ section found!")
+            return
+        if database['__database__']['type'] != "encoders":
+            self.badges.print_error("Not an encoder database!")
+            return
+        del database['__database__']
+
+        encoders = {
+            name: database
+        }
+
+        data = {
+            name: {
+                'path': path
+            }
+        }
+        if not self.local_storage.get("connected_encoder_databases"):
+            self.local_storage.set("connected_encoder_databases", {})
+        self.local_storage.update("connected_encoder_databases", data)
+
+        if self.local_storage.get("encoders"):
+            self.local_storage.update("encoders", encoders)
+        else:
+            self.local_storage.set("encoders", encoders)
 
     def connect_payload_database(self, name, path):
         if self.local_storage.get("connected_payload_databases"):
