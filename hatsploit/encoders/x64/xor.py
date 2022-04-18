@@ -33,7 +33,7 @@ class HatSploitEncoder(Encoder, EncoderTools):
 
     def run(self):
         key = self.parse_options(self.options)
-        count = - int((len(self.payload - 1) / len(key)) + 1)
+        count = - int((len(self.payload) - 1 / len(key)) + 1)
 
         decoder = (
             b"\x48\x31\xc9"
