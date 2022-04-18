@@ -32,7 +32,7 @@ class HatSploitEncoder(Encoder, EncoderTools):
     }
 
     def run(self):
-        key, iterations = self.parse_options(self.options)
+        key = self.parse_options(self.options)
         count = - int((len(self.payload - 1) / len(key)) + 1)
 
         decoder = (
