@@ -26,6 +26,8 @@
 
 import datetime
 
+from hatasm import HatAsm
+
 from pex.post import Post
 from pex.post.pull import Pull
 from pex.post.push import Push
@@ -200,7 +202,9 @@ class Handler:
                     return True
 
         stage = payload['Payload'] if method != 'raw' else payload['Raw']
-        self.badges.print_information(stage)
+        if isinstance(payload['Raw'], bytes):
+            for line in HatAsm().hexdump(stage):
+                self.badges.print_information(line)
 
         if payload['Details']['Type'] == 'bind_tcp':
             host = options['RBHOST']
