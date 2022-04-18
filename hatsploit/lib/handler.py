@@ -117,11 +117,7 @@ class HatSploitSession(Session, Loot, Pull, Push, ChannelClient):
         return None
 
     def interact(self):
-        if not self.channel.interact():
-            if not self.heartbeat():
-                self.print_warning("Connection terminated.")
-            else:
-                self.print_error("Failed to interact with session!")
+        self.channel.interact()
 
 
 class Handler:

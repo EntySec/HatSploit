@@ -43,48 +43,39 @@ class Handle:
         listener = self.http_listener.listen_http(local_host, local_port, methods)
 
         self.badges.print_process(f"Starting HTTP listener on port {str(local_port)}...")
-        if listener.listen():
-            while True:
-                listener.accept()
-            listener.stop()
-        else:
-            self.badges.print_error(f"Failed to start HTTP listener on port {str(local_port)}!")
+        listener.listen()
+
+        while True:
+            listener.accept()
 
     def listen_session(self, local_host, local_port, session, timeout=None):
         listener = self.tcp_listener.listen_tcp(local_host, local_port, timeout)
 
         self.badges.print_process(f"Starting TCP listener on port {str(local_port)}...")
-        if listener.listen():
-            if listener.accept():
-                address = listener.address
 
-                self.badges.print_process(f"Establishing connection ({address[0]}:{str(address[1])} -> {local_host}:{str(local_port)})...")
-                listener.stop()
+        listener.listen()
+        listener.accept()
 
-                session = session()
-                session.open(listener.client)
+        address = listener.address
 
-                return session, address[0]
+        self.badges.print_process(
+            f"Establishing connection ({address[0]}:{str(address[1])} -> {local_host}:{str(local_port)})...")
+        listener.stop()
 
-            self.badges.print_warning("Timeout waiting for connection.")
-        else:
-            self.badges.print_error(f"Failed to start TCP listener on port {str(local_port)}!")
+        session = session()
+        session.open(listener.client)
 
-        self.badges.print_error("Failed to handle session!")
-        return None, None
+        return session, address[0]
 
     def connect_session(self, remote_host, remote_port, session, timeout=None):
         client = self.tcp_client.open_tcp(remote_host, remote_port, timeout)
 
         self.badges.print_process(f"Connecting to {local_host}:{str(local_port)}...")
-        if client.connect():
-            self.badges.print_process(f"Establishing connection (0.0.0.0:{str(remote_port)} -> {remote_host}:{str(remote_port)})...")
-            session = session()
-            session.open(client.sock)
+        client.connect()
 
-            return session
+        self.badges.print_process(
+            f"Establishing connection (0.0.0.0:{str(remote_port)} -> {remote_host}:{str(remote_port)})...")
+        session = session()
+        session.open(client.sock)
 
-        self.badges.print_error(f"Failed to connect to {str(remote_host)}!")
-        self.badges.print_error("Failed to handle session!")
-
-        return None
+        return session

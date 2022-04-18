@@ -137,6 +137,8 @@ class Console:
 
             except (KeyboardInterrupt, EOFError, self.exceptions.GlobalException):
                 pass
+            except RuntimeError as e:
+                self.badges.print_error(str(e))
             except Exception as e:
                 self.badges.print_error(f"An error occurred: {str(e)}!")
 

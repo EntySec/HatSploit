@@ -535,6 +535,9 @@ class Modules:
                 except (KeyboardInterrupt, EOFError):
                     self.badges.print_warning(f"{current_module_name.split('/')[0].title()} module interrupted.")
 
+                except RuntimeError as e:
+                    self.badges.print_error(str(e))
+
                 except Exception as e:
                     self.badges.print_error(f"An error occurred in module: {str(e)}!")
                     self.badges.print_error(f"{current_module_name.split('/')[0].title()} module failed!")
