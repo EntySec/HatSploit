@@ -8,10 +8,12 @@
 import struct
 
 from hatsploit.lib.encoder import Encoder
-from pex.tools.encoder import EncoderTools
+
+from pex.string import StringTools
+from pex.assembler import AssemblerTools
 
 
-class HatSploitEncoder(Encoder, EncoderTools):
+class HatSploitEncoder(Encoder, StringTools, AssemblerTools):
     details = {
         'Name': "x64 XOR Encoder",
         'Encoder': "x64/xor",
@@ -45,8 +47,4 @@ class HatSploitEncoder(Encoder, EncoderTools):
             b"\xe2\xf4"
         )
 
-        return self.encode(
-            self.details['Architecture'],
-            self.payload,
-            decoder, key
-        )
+        return decoder + self.xor_key_bytes(self.payload, key)

@@ -35,7 +35,7 @@ from flask import make_response
 
 from io import StringIO
 
-from pex.tools.string import StringTools
+from pex.string import StringTools
 
 from hatsploit.core.cli.fmt import FMT
 from hatsploit.core.base.execute import Execute

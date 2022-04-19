@@ -6,7 +6,7 @@
 #
 
 from hatsploit.lib.encoder import Encoder
-from pex.tools.string import StringTools
+from pex.string import StringTools
 
 
 class HatSploitEncoder(Encoder, StringTools):
