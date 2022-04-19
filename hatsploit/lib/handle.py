@@ -24,10 +24,10 @@
 # SOFTWARE.
 #
 
-from pex.client.tcp import TCPClient
+from pex.proto.tcp import TCPClient
 
-from pex.listener.tcp import TCPListener
-from pex.listener.http import HTTPListener
+from pex.proto.tcp import TCPListener
+from pex.proto.http import HTTPListener
 
 from hatsploit.core.cli.badges import Badges
 

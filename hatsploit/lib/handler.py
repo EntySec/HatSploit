@@ -32,10 +32,10 @@ from pex.post import Post
 from pex.post.pull import Pull
 from pex.post.push import Push
 
-from pex.tools.post import PostTools
-from pex.tools.type import TypeTools
+from pex.post import PostTools
+from pex.type import TypeTools
 
-from pex.client.channel import ChannelClient
+from pex.proto.channel import ChannelClient
 
 from hatsploit.core.cli.badges import Badges
 

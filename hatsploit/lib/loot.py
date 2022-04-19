@@ -27,7 +27,7 @@
 import os
 import datetime
 
-from pex.tools.string import StringTools
+from pex.string import StringTools
 
 from hatsploit.core.utils.fs import FSTools
 from hatsploit.core.cli.badges import Badges

@@ -24,7 +24,7 @@
 # SOFTWARE.
 #
 
-from pex.tools.post import PostTools
+from pex.post import PostTools
 
 from hatsploit.core.cli.badges import Badges
 

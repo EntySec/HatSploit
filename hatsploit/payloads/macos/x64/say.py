@@ -8,10 +8,10 @@
 import struct
 
 from hatsploit.lib.payload import Payload
-from pex.tools.payload import PayloadTools
+from pex.assembler import AssemblerTools
 
 
-class HatSploitPayload(Payload, PayloadTools):
+class HatSploitPayload(Payload, AssemblerTools):
     details = {
         'Category': "stager",
         'Name': "macOS x64 Say",

@@ -28,7 +28,7 @@ import os
 
 from hatvenom import HatVenom
 
-from pex.tools.type import TypeTools
+from pex.type import TypeTools
 
 from hatsploit.core.cli.badges import Badges
 from hatsploit.core.db.importer import Importer

@@ -27,7 +27,7 @@
 import os
 import copy
 
-from pex.tools.type import TypeTools
+from pex.type import TypeTools
 
 from hatsploit.core.cli.badges import Badges
 from hatsploit.core.db.importer import Importer
@@ -196,6 +196,14 @@ class Modules:
             if not self.local_storage.get("current_module"):
                 self.local_storage.set("current_module_number", 0)
 
+    @staticmethod
+    def run_module(current_module):
+        if hasattr(current_module, "check"):
+            if current_module.check():
+                current_module.run()
+        else:
+            current_module.run()
+
     def entry_to_module(self, current_module):
         values = []
 
@@ -211,7 +219,7 @@ class Modules:
                     values.append(vals.split('\n'))
 
         if not values:
-            current_module.run()
+            self.run_module(current_module)
             return
 
         if not all(len(value) == len(values[0]) for value in values):
@@ -231,7 +239,7 @@ class Modules:
                     count += 1
 
             try:
-                current_module.run()
+                self.run_module(current_module)
             except (KeyboardInterrupt, EOFError):
                 pass
 

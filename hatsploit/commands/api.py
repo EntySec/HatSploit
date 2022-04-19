@@ -8,7 +8,7 @@
 from hatsploit.lib.command import Command
 from hatsploit.lib.jobs import Jobs
 
-from pex.client.tcp import TCPClient
+from pex.proto.tcp import TCPClient
 
 from hatsploit.core.utils.api import API
 
