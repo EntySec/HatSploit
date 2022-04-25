@@ -35,7 +35,7 @@ from flask import make_response
 
 from io import StringIO
 
-from pex.tools.string import StringTools
+from pex.string import StringTools
 
 from hatsploit.core.cli.fmt import FMT
 from hatsploit.core.base.execute import Execute
@@ -58,7 +58,7 @@ class APIPool:
         sys.stdout = self._string_io = StringIO()
         return self
 
-    def __exit__(self, type, value, traceback):
+    def __exit__(self, tp, value, traceback):
         sys.stdout = self._stdout
 
     def __str__(self):
@@ -102,7 +102,7 @@ class API:
                 if token != self.token:
                     return make_response('', 401)
                 
-                current_module = self.modules.get_current_module_object()
+                current_module = self.modules.get_current_module()
                 current_payload = self.payloads.get_current_payload()
 
                 self.jobs.stop_dead()
@@ -202,7 +202,7 @@ class API:
 
             if action == 'options':
                 data = {}
-                current_module = self.modules.get_current_module_object()
+                current_module = self.modules.get_current_module()
 
                 if current_module:
                     options = current_module.options
@@ -257,7 +257,7 @@ class API:
                 )
 
             if action == 'run':
-                current_module = self.modules.get_current_module_object()
+                current_module = self.modules.get_current_module()
 
                 if current_module:
                     with APIPool() as pool:

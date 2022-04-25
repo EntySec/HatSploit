@@ -27,27 +27,27 @@
 import os
 import copy
 
-from pex.tools.type import TypeTools
+from pex.type import TypeTools
+
 from hatsploit.core.cli.badges import Badges
 from hatsploit.core.db.importer import Importer
+
 from hatsploit.lib.payloads import Payloads
+from hatsploit.lib.encoders import Encoders
 from hatsploit.lib.sessions import Sessions
 from hatsploit.lib.storage import LocalStorage
 
 
 class Modules:
     types = TypeTools()
+
     badges = Badges()
-    sessions = Sessions()
-    payloads = Payloads()
-    local_storage = LocalStorage()
     importer = Importer()
 
-    def get_modules(self):
-        return self.local_storage.get("modules")
-
-    def get_imported_modules(self):
-        return self.local_storage.get("imported_modules")
+    payloads = Payloads()
+    encoders = Encoders()
+    sessions = Sessions()
+    local_storage = LocalStorage()
 
     def modules_completer(self, text):
         modules = self.get_modules()
@@ -61,57 +61,11 @@ class Modules:
 
         return matches
 
-    def check_exist(self, name):
-        all_modules = self.get_modules()
-        if all_modules:
-            for database in all_modules:
-                modules = all_modules[database]
+    def get_modules(self):
+        return self.local_storage.get("modules")
 
-                if name in modules:
-                    return True
-        return False
-
-    def check_imported(self, name):
-        imported_modules = self.get_imported_modules()
-        if imported_modules:
-            if name in imported_modules:
-                return True
-        return False
-
-    def check_current_module(self):
-        if self.local_storage.get("current_module"):
-            if len(self.local_storage.get("current_module")) > 0:
-                return True
-        return False
-
-    def check_if_already_used(self, module):
-        if self.check_current_module():
-            if module == self.get_current_module_name():
-                return True
-        return False
-
-    def get_module_object(self, name):
-        if self.check_exist(name):
-            database = self.get_database(name)
-            return self.get_modules()[database][name]
-        return None
-
-    def get_current_module_object(self):
-        if self.check_current_module():
-            return self.local_storage.get_array("current_module", self.local_storage.get("current_module_number"))
-        return None
-
-    def get_current_module_platform(self):
-        if self.check_current_module():
-            return self.local_storage.get_array("current_module",
-                                                self.local_storage.get("current_module_number")).details['Platform']
-        return None
-
-    def get_current_module_name(self):
-        if self.check_current_module():
-            return self.local_storage.get_array("current_module",
-                                                self.local_storage.get("current_module_number")).details['Module']
-        return None
+    def get_imported_modules(self):
+        return self.local_storage.get("imported_modules")
 
     def get_database(self, name):
         all_modules = self.get_modules()
@@ -122,6 +76,175 @@ class Modules:
                 if name in modules:
                     return database
         return None
+
+    def get_module(self, module):
+        module_object = self.get_module_object(module)
+        try:
+            imported_module = self.importer.import_module(module_object['Path'])
+        except Exception:
+            return None
+        return imported_module
+
+    def get_module_object(self, module):
+        if self.check_exist(module):
+            database = self.get_database(module)
+            return self.get_modules()[database][module]
+        return None
+
+    def get_current_module(self):
+        if self.local_storage.get("current_module"):
+            return self.local_storage.get_array(
+                "current_module",
+                self.local_storage.get("current_module_number")
+            )
+        return None
+
+    def import_module(self, module):
+        module_object = self.get_module(module)
+
+        if module_object:
+            if not self.get_imported_modules():
+                self.local_storage.set("imported_modules", {})
+            self.local_storage.update("imported_modules", {module: module_object})
+        return module_object
+
+    def check_exist(self, module):
+        all_modules = self.get_modules()
+        if all_modules:
+            for database in all_modules:
+                modules = all_modules[database]
+
+                if module in modules:
+                    return True
+        return False
+
+    def check_imported(self, module):
+        imported_modules = self.get_imported_modules()
+        if imported_modules:
+            if module in imported_modules:
+                return True
+        return False
+
+    def check_if_already_used(self, module):
+        current_module = self.get_current_module()
+
+        if current_module:
+            if module == current_module.details['Module']:
+                return True
+        return False
+
+    def use_module(self, module):
+        modules_shorts = self.local_storage.get("module_shorts")
+
+        if modules_shorts:
+            if module.isdigit():
+                module_number = int(module)
+
+                if module_number in modules_shorts:
+                    module = modules_shorts[module_number]
+
+        if not self.check_if_already_used(module):
+            if self.check_exist(module):
+                self.add_module(module)
+            else:
+                self.badges.print_error("Invalid module!")
+
+    def add_module(self, module):
+        imported_modules = self.get_imported_modules()
+
+        if self.check_imported(module):
+            module_object = imported_modules[module]
+            self.add_to_global(module_object)
+        else:
+            module_object = self.import_module(module)
+            if module_object:
+                if hasattr(module_object, "payload"):
+                    payload_name = module_object.payload['Value']
+
+                    if payload_name:
+                        self.badges.print_process(f"Using default payload {payload_name}...")
+
+                        if self.payloads.check_exist(payload_name):
+                            if self.payloads.add_payload(module, payload_name):
+                                self.add_to_global(module_object)
+                            return
+
+                        self.badges.print_error("Invalid default payload!")
+                        return
+
+                self.add_to_global(module_object)
+            else:
+                self.badges.print_error("Failed to select module from database!")
+
+    def add_to_global(self, module_object):
+        if self.get_current_module():
+            self.local_storage.add_array("current_module", '')
+            self.local_storage.set("current_module_number", self.local_storage.get("current_module_number") + 1)
+            self.local_storage.set_array("current_module", self.local_storage.get("current_module_number"),
+                                         module_object)
+        else:
+            self.local_storage.set("current_module", [])
+            self.local_storage.set("current_module_number", 0)
+            self.local_storage.add_array("current_module", '')
+            self.local_storage.set_array("current_module", self.local_storage.get("current_module_number"),
+                                         module_object)
+
+    def go_back(self):
+        if self.get_current_module():
+            self.local_storage.set("current_module_number", self.local_storage.get("current_module_number") - 1)
+            self.local_storage.set("current_module", self.local_storage.get("current_module")[0:-1])
+            if not self.local_storage.get("current_module"):
+                self.local_storage.set("current_module_number", 0)
+
+    @staticmethod
+    def run_module(current_module):
+        if hasattr(current_module, "check"):
+            if current_module.check():
+                current_module.run()
+        else:
+            current_module.run()
+
+    def entry_to_module(self, current_module):
+        values = []
+
+        for option in current_module.options:
+            opt = current_module.options[option]
+            val = str(opt['Value'])
+
+            if val.startswith('file:') and len(val) > 5:
+                file = val[5:]
+
+                with open(file, 'r') as f:
+                    vals = f.read().strip()
+                    values.append(vals.split('\n'))
+
+        if not values:
+            self.run_module(current_module)
+            return
+
+        if not all(len(value) == len(values[0]) for value in values):
+            self.badges.print_error("All files should contain equal number of values!")
+            return
+
+        save = copy.deepcopy(current_module.options)
+        for i in range(0, len(values[0])):
+            count = 0
+
+            for option in current_module.options:
+                opt = current_module.options[option]
+                val = str(opt['Value'])
+
+                if val.startswith('file:') and len(val) > 5:
+                    current_module.options[option]['Value'] = values[count][i]
+                    count += 1
+
+            try:
+                self.run_module(current_module)
+            except (KeyboardInterrupt, EOFError):
+                pass
+
+            current_module.options = save
+            save = copy.deepcopy(current_module.options)
 
     def compare_type(self, name, value, checker, module=True):
         value = str(value)
@@ -148,46 +271,52 @@ class Modules:
         return True
 
     def compare_session(self, value_type, value):
-        session = value_type.lower().replace(' ', '')
-        session = session.split('->')
+        current_module = self.get_current_module()
 
-        session_platforms = []
-        session_platform = self.get_current_module_platform()
-        session_type = "shell"
+        if current_module:
+            session = value_type.lower().replace(' ', '')
+            session = session.split('->')
 
-        if len(session) == 2:
-            if session[1].startswith('[') and session[1].endswith(']'):
-                session_platforms = session[1][1:-1].split(',')
+            session_platforms = []
+            session_platform = current_module.details['Platform']
+            session_type = "shell"
+
+            if len(session) == 2:
+                if session[1].startswith('[') and session[1].endswith(']'):
+                    session_platforms = session[1][1:-1].split(',')
+                else:
+                    session_type = session[1]
+
+            elif len(session) == 3:
+                if session[1].startswith('[') and session[1].endswith(']'):
+                    session_platforms = session[1][1:-1].split(',')
+                else:
+                    session_type = session[1]
+
+                if session[2].startswith('[') and session[2].endswith(']'):
+                    session_platforms = session[2][1:-1].split(',')
+                else:
+                    session_type = session[2]
+
+            if not session_platforms:
+                if not self.sessions.check_exist(value, session_platform, session_type):
+                    self.badges.print_error("Invalid value, expected valid session!")
+                    return False
             else:
-                session_type = session[1]
+                session = 0
+                for platform in session_platforms:
+                    if self.sessions.check_exist(value, platform.strip(), session_type):
+                        session = 1
+                        break
 
-        elif len(session) == 3:
-            if session[1].startswith('[') and session[1].endswith(']'):
-                session_platforms = session[1][1:-1].split(',')
-            else:
-                session_type = session[1]
+                if not session:
+                    self.badges.print_error("Invalid value, expected valid session!")
+                    return False
 
-            if session[2].startswith('[') and session[2].endswith(']'):
-                session_platforms = session[2][1:-1].split(',')
-            else:
-                session_type = session[2]
+            return True
 
-        if not session_platforms:
-            if not self.sessions.check_exist(value, session_platform, session_type):
-                self.badges.print_error("Invalid value, expected valid session!")
-                return False
-        else:
-            session = 0
-            for platform in session_platforms:
-                if self.sessions.check_exist(value, platform.strip(), session_type):
-                    session = 1
-                    break
-
-            if not session:
-                self.badges.print_error("Invalid value, expected valid session!")
-                return False
-
-        return True
+        self.badges.print_error("Invalid value, expected valid session!")
+        return False
 
     def compare_types(self, value_type, value, module=True):
         if value_type and not value_type.lower == 'all':
@@ -228,20 +357,38 @@ class Modules:
                 return self.compare_type("boolean", value, self.types.is_boolean, module)
 
             if value_type.lower() == 'payload':
-                current_module = self.get_current_module_object()
-                module_name = self.get_current_module_name()
-                module_payload = current_module.payload
+                current_module = self.get_current_module()
 
-                categories = module_payload['Categories']
-                types = module_payload['Types']
-                platforms = module_payload['Platforms']
-                architectures = module_payload['Architectures']
+                if current_module:
+                    module_name = current_module.details['Module']
+                    module_payload = current_module.payload
 
-                if self.payloads.check_module_compatible(value, categories, types, platforms, architectures):
-                    if self.payloads.add_payload(module_name, value):
-                        return True
+                    categories = module_payload['Categories']
+                    types = module_payload['Types']
+                    platforms = module_payload['Platforms']
+                    architectures = module_payload['Architectures']
 
-                self.badges.print_error("Invalid valud, expected valid payload!")
+                    if self.payloads.check_module_compatible(value, categories, types, platforms, architectures):
+                        if self.payloads.add_payload(module_name, value):
+                            return True
+
+                self.badges.print_error("Invalid value, expected valid payload!")
+                return False
+
+            if value_type.lower() == 'encoder':
+                current_module = self.get_current_module()
+                current_payload = self.payloads.get_current_payload()
+
+                if current_module and current_payload:
+                    architecture = current_payload.details['Architecture']
+
+                    if self.encoders.check_payload_compatible(value, architecture):
+                        if self.encoders.add_encoder(
+                                current_module.details['Module'],
+                                current_payload.details['Payload'], value):
+                            return True
+
+                self.badges.print_error("Invalid value, expected valid encoder!")
                 return False
 
             if 'session' in value_type.lower():
@@ -267,9 +414,9 @@ class Modules:
         return True
 
     def set_current_module_option(self, option, value):
-        if self.check_current_module():
-            current_module = self.get_current_module_object()
+        current_module = self.get_current_module()
 
+        if current_module:
             if not hasattr(current_module, "options") and not hasattr(current_module, "payload"):
                 self.badges.print_warning("Module has no options.")
                 return
@@ -287,6 +434,16 @@ class Modules:
 
                                 if payload_number in payloads_shorts:
                                     value = payloads_shorts[payload_number]
+
+                    if value_type == 'encoder':
+                        encoders_shorts = self.local_storage.get("encoder_shorts")
+
+                        if encoders_shorts:
+                            if value.isdigit():
+                                encoder_number = int(value)
+
+                                if encoder_number in encoders_shorts:
+                                    value = encoders_shorts[encoder_number]
 
                     if self.compare_types(value_type, value):
                         self.badges.print_information(option + " ==> " + value)
@@ -312,7 +469,9 @@ class Modules:
 
             if hasattr(current_module, "payload"):
                 current_payload = self.payloads.get_current_payload()
-                if current_payload and hasattr(current_payload, "options"):
+                current_encoder = self.encoders.get_current_encoder()
+
+                if current_payload:
                     if option in current_payload.options:
                         value_type = current_payload.options[option]['Type']
 
@@ -320,132 +479,28 @@ class Modules:
                             self.badges.print_information(option + " ==> " + value)
                             self.local_storage.set_payload_option(current_module.details['Module'],
                                                                   current_payload.details['Payload'], option, value)
+                    if current_encoder and hasattr(current_encoder, "options"):
+                        if option in current_encoder.options:
+                            value_type = current_encoder.options[option]['Type']
+
+                            if self.compare_types(value_type, value, False):
+                                self.badges.print_information(option + " ==> " + value)
+                                self.local_storage.set_encoder_option(current_module.details['Module'],
+                                                                      current_payload.details['Payload'],
+                                                                      current_encoder.details['Encoder'], option, value)
+                        else:
+                            self.badges.print_error("Unrecognized encoder option!")
                     else:
-                        self.badges.print_error("Unrecognized option!")
+                        self.badges.print_error("Unrecognized payload option!")
                 else:
-                    self.badges.print_error("Unrecognized option!")
+                    self.badges.print_error("Unrecognized module option!")
             else:
-                self.badges.print_error("Unrecognized option!")
+                self.badges.print_error("Unrecognized module option!")
         else:
             self.badges.print_warning("No module selected.")
 
-    def import_module(self, name):
-        modules = self.get_module_object(name)
-        try:
-            module_object = self.importer.import_module(modules['Path'])
-            if not self.get_imported_modules():
-                self.local_storage.set("imported_modules", {})
-            self.local_storage.update("imported_modules", {name: module_object})
-        except Exception:
-            return None
-        return module_object
-
-    def add_module(self, name):
-        imported_modules = self.get_imported_modules()
-
-        if self.check_imported(name):
-            module_object = imported_modules[name]
-            self.add_to_global(module_object)
-        else:
-            module_object = self.import_module(name)
-            if module_object:
-                if hasattr(module_object, "payload"):
-                    payload_name = module_object.payload['Value']
-
-                    if payload_name:
-                        self.badges.print_process(f"Using default payload {payload_name}...")
-
-                        if self.payloads.check_exist(payload_name):
-                            if self.payloads.add_payload(name, payload_name):
-                                self.add_to_global(module_object)
-                            return
-
-                        self.badges.print_error("Invalid default payload!")
-                        return
-
-                self.add_to_global(module_object)
-            else:
-                self.badges.print_error("Failed to select module from database!")
-
-    def add_to_global(self, module_object):
-        if self.check_current_module():
-            self.local_storage.add_array("current_module", '')
-            self.local_storage.set("current_module_number", self.local_storage.get("current_module_number") + 1)
-            self.local_storage.set_array("current_module", self.local_storage.get("current_module_number"),
-                                         module_object)
-        else:
-            self.local_storage.set("current_module", [])
-            self.local_storage.set("current_module_number", 0)
-            self.local_storage.add_array("current_module", '')
-            self.local_storage.set_array("current_module", self.local_storage.get("current_module_number"),
-                                         module_object)
-
-    def use_module(self, module):
-        modules_shorts = self.local_storage.get("module_shorts")
-
-        if modules_shorts:
-            if module.isdigit():
-                module_number = int(module)
-
-                if module_number in modules_shorts:
-                    module = modules_shorts[module_number]
-
-        if not self.check_if_already_used(module):
-            if self.check_exist(module):
-                self.add_module(module)
-            else:
-                self.badges.print_error("Invalid module!")
-
-    def go_back(self):
-        if self.check_current_module():
-            self.local_storage.set("current_module_number", self.local_storage.get("current_module_number") - 1)
-            self.local_storage.set("current_module", self.local_storage.get("current_module")[0:-1])
-            if not self.local_storage.get("current_module"):
-                self.local_storage.set("current_module_number", 0)
-
-    def entry_to_module(self, current_module):
-        values = []
-
-        for option in current_module.options:
-            opt = current_module.options[option]
-            val = str(opt['Value'])
-
-            if val.startswith('file:') and len(val) > 5:
-                file = val[5:]
-
-                with open(file, 'r') as f:
-                    vals = f.read().strip()
-                    values.append(vals.split('\n'))
-
-        if not values:
-            current_module.run()
-            return
-
-        if not all(len(value) == len(values[0]) for value in values):
-            self.badges.print_error("All files should contain equal number of values!")
-            return
-
-        save = copy.deepcopy(current_module.options)
-        for i in range(0, len(values[0])):
-            count = 0
-
-            for option in current_module.options:
-                opt = current_module.options[option]
-                val = str(opt['Value'])
-
-                if val.startswith('file:') and len(val) > 5:
-                    current_module.options[option]['Value'] = values[count][i]
-                    count += 1
-
-            try:
-                current_module.run()
-            except (KeyboardInterrupt, EOFError):
-                pass
-
-            current_module.options = save
-            save = copy.deepcopy(current_module.options)
-
-    def validate_options(self, module_object):
+    @staticmethod
+    def validate_options(module_object):
         current_module = module_object
         missed = ""
 
@@ -458,9 +513,10 @@ class Modules:
         return missed
 
     def run_current_module(self):
-        if self.check_current_module():
-            current_module = self.get_current_module_object()
-            current_module_name = self.get_current_module_name()
+        current_module = self.get_current_module()
+
+        if current_module:
+            current_module_name = current_module.details['Module']
 
             current_payload = self.payloads.get_current_payload()
             payload_data = {}
@@ -474,7 +530,9 @@ class Modules:
             else:
                 try:
                     if current_payload:
-                        payload_data = self.payloads.run_payload(current_payload)
+                        current_encoder = self.encoders.get_current_encoder()
+                        payload_data = self.payloads.run_payload(current_payload, current_encoder)
+
                         for entry in payload_data:
                             current_module.payload[entry] = payload_data[entry]
 
@@ -484,6 +542,9 @@ class Modules:
                     self.badges.print_success(f"{current_module_name.split('/')[0].title()} module completed!")
                 except (KeyboardInterrupt, EOFError):
                     self.badges.print_warning(f"{current_module_name.split('/')[0].title()} module interrupted.")
+
+                except RuntimeError as e:
+                    self.badges.print_error(str(e))
 
                 except Exception as e:
                     self.badges.print_error(f"An error occurred in module: {str(e)}!")

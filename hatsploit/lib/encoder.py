@@ -24,31 +24,24 @@
 # SOFTWARE.
 #
 
-from pex.post import PostTools
-
 from hatsploit.core.cli.badges import Badges
+from hatsploit.core.cli.colors import Colors
+from hatsploit.core.cli.fmt import FMT
+from hatsploit.core.cli.parser import Parser
+from hatsploit.core.cli.tables import Tables
+from hatsploit.core.cli.tools import Tools
 
 
-class Blinder:
-    badges = Badges()
-    post_tools = PostTools()
+class Encoder(FMT, Badges, Colors, Parser, Tables, Tools):
+    details = {
+        'Name': "",
+        'Encoder': "",
+        'Authors': [
+            ''
+        ],
+        'Description': "",
+        'Architecture': ""
+    }
 
-    def blinder(self, sender, args={}):
-        self.badges.print_empty()
-        self.badges.print_information("Welcome to Blinder, blind command injection handler.")
-        self.badges.print_information("Blinder is not a reverse shell, just a blind command injection.")
-        self.badges.print_empty()
-
-        while True:
-            commands = self.badges.input_empty("%lineblinder%end > ")
-            command = ' '.join(commands)
-
-            if not command.strip() or command == 'exit':
-                return
-
-            self.badges.print_process("Sending command to target...")
-            output = self.post_tools.post_command(sender, command, args)
-
-            if output:
-                self.badges.print_empty(f'\n{output}')
-            self.badges.print_empty('')
+    def run(self):
+        pass

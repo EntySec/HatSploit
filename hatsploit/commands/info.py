@@ -35,11 +35,11 @@ class HatSploitCommand(Command):
             self.print_error("Invalid module!")
 
     def run(self, argc, argv):
-        if self.modules.check_current_module():
+        if self.modules.get_current_module():
             if argc > 1:
                 self.get_module_information(argv[1])
             else:
-                self.show.show_module_information(self.modules.get_current_module_object().details)
+                self.show.show_module_information(self.modules.get_current_module().details)
         else:
             if argc > 1:
                 self.get_module_information(argv[1])

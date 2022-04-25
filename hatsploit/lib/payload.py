@@ -41,6 +41,7 @@ class Payload(FMT, Badges, Colors, Parser, Tables, Tools):
             ''
         ],
         'Description': "",
+        'Architecture': "",
         'Platform': "",
         'Rank': "",
         'Type': ""

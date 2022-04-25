@@ -9,7 +9,7 @@ from hatsploit.lib.module import Module
 from hatsploit.lib.sessions import Sessions
 from hatsploit.lib.loot import Loot
 
-from pex.tools.db import DBTools
+from pex.db import DBTools
 
 
 class HatSploitModule(Module, Sessions, DBTools):

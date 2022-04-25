@@ -29,7 +29,7 @@ class HatSploitCommand(Command):
     }
 
     def run(self, argc, argv):
-        current_module = self.modules.get_current_module_object()
+        current_module = self.modules.get_current_module()
 
         if argc > 1:
             if argv[1] == '-j' and current_module:

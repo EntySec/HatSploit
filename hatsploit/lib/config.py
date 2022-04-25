@@ -69,6 +69,7 @@ class Config:
             'plugins_path': f'{self.base_path}plugins/',
             'commands_path': f'{self.base_path}commands/',
             'payloads_path': f'{self.base_path}payloads/',
+            'encoders_path': f'{self.base_path}encoders/',
 
             'storage_path': f'{self.base_path}config/storage.json'
         }

@@ -7,7 +7,7 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: Install HatSploit
-        run: pip3 install .
+        run: sudo pip3 install .
       - name: Perform checks
         run: hsf -c
   macOS:
@@ -15,6 +15,6 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: Install HatSploit
-        run: pip3 install .
+        run: sudo pip3 install .
       - name: Perform checks
         run: hsf -c

@@ -134,11 +134,11 @@ class Execute:
         return self.execute_custom_command(commands, self.local_storage.get("commands"))
 
     def execute_module_command(self, commands):
-        if self.modules.check_current_module():
-            if hasattr(self.modules.get_current_module_object(), "commands"):
-                if commands[0] in self.modules.get_current_module_object().commands:
-                    command_object = self.modules.get_current_module_object()
-                    command = self.modules.get_current_module_object().commands[commands[0]]
+        if self.modules.get_current_module():
+            if hasattr(self.modules.get_current_module(), "commands"):
+                if commands[0] in self.modules.get_current_module().commands:
+                    command_object = self.modules.get_current_module()
+                    command = self.modules.get_current_module().commands[commands[0]]
                     self.parse_and_execute_command(commands, command, command_object)
                     return True
         return False

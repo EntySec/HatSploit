@@ -29,6 +29,7 @@ from hatsploit.lib.loot import Loot
 from hatsploit.lib.storage import LocalStorage
 from hatsploit.lib.modules import Modules
 from hatsploit.lib.payloads import Payloads
+from hatsploit.lib.encoders import Encoders
 from hatsploit.lib.sessions import Sessions
 
 from hatsploit.core.cli.colors import Colors
@@ -42,6 +43,7 @@ class Show:
     local_storage = LocalStorage()
     modules = Modules()
     payloads = Payloads()
+    encoders = Encoders()
     sessions = Sessions()
 
     colors = Colors()
@@ -83,7 +85,7 @@ class Show:
                     self.tables.print_table(label.title() + " Commands", headers, *commands_data[label])
 
     def show_module_commands(self):
-        current_module = self.modules.get_current_module_object()
+        current_module = self.modules.get_current_module()
         if hasattr(current_module, "commands"):
             commands_data = []
             headers = ("Command", "Description")
@@ -94,7 +96,7 @@ class Show:
 
     def show_all_commands(self):
         self.show_interface_commands()
-        if self.modules.check_current_module():
+        if self.modules.get_current_module():
             self.show_module_commands()
         if self.local_storage.get("loaded_plugins"):
             self.show_plugin_commands()
@@ -146,6 +148,20 @@ class Show:
         else:
             self.badges.print_warning("No payload database connected.")
 
+    def show_encoder_databases(self):
+        if self.local_storage.get("connected_encoder_databases"):
+            databases_data = []
+            number = 0
+            headers = ("Number", "Name", "Path")
+            databases = self.local_storage.get("connected_encoder_databases")
+
+            for name in databases:
+                databases_data.append((number, name, databases[name]['path']))
+                number += 1
+            self.tables.print_table("Connected Encoder Databases", headers, *databases_data)
+        else:
+            self.badges.print_warning("No encoder database connected.")
+
     def show_plugin_databases(self):
         if self.local_storage.get("connected_plugin_databases"):
             databases_data = []
@@ -177,6 +193,24 @@ class Show:
 
             self.tables.print_table(f"Plugins ({database})", headers, *plugins_data)
             self.local_storage.set("plugin_shorts", plugins_shorts)
+
+    def show_encoders(self):
+        all_encoders = self.local_storage.get("encoders")
+        headers = ("Number", "Encoder", "Name")
+        encoders_shorts = {}
+
+        for database in sorted(all_encoders):
+            number = 0
+            encoders_data = []
+            encoders = all_encoders[database]
+
+            for encoder in sorted(encoders):
+                encoders_data.append((number, encoders[encoder]['Encoder'], encoders[encoder]['Name']))
+                encoders_shorts.update({number: encoders[encoder]['Encoder']})
+                number += 1
+
+            self.tables.print_table(f"Encoders ({database})", headers, *encoders_data)
+            self.local_storage.set("encoder_shorts", encoders_shorts)
 
     def show_modules(self, category=None):
         all_modules = self.local_storage.get("modules")
@@ -252,7 +286,8 @@ class Show:
                 for plugin in sorted(plugins):
                     if keyword in plugins[plugin]['Plugin'] or keyword in plugins[plugin]['Name']:
                         name = plugins[plugin]['Plugin'].replace(keyword, self.colors.RED + keyword + self.colors.END)
-                        description = plugins[plugin]['Name'].replace(keyword, self.colors.RED + keyword + self.colors.END)
+                        description = plugins[plugin]['Name'].replace(
+                            keyword, self.colors.RED + keyword + self.colors.END)
 
                         plugins_data.append((number, name, description))
                         plugins_shorts.update({number: plugins[plugin]['Plugin']})
@@ -261,6 +296,32 @@ class Show:
                 if plugins_data:
                     self.tables.print_table(f"Plugins ({database})", headers, *plugins_data)
                     self.local_storage.set("plugin_shorts", plugins_shorts)
+
+    def show_search_encoders(self, keyword):
+        all_encoders = self.local_storage.get("encoders")
+        encoders_shorts = {}
+
+        if all_encoders:
+            headers = ("Number", "Encoder", "Name")
+            for database in all_encoders:
+                number = 0
+                encoders_data = []
+                encoders = all_encoders[database]
+
+                for encoder in sorted(encoders):
+                    if keyword in encoders[encoder]['Encoder'] or keyword in encoders[encoder]['Name']:
+                        name = encoders[encoder]['Encoder'].replace(
+                            keyword, self.colors.RED + keyword + self.colors.END)
+                        description = encoders[encoder]['Name'].replace(
+                            keyword, self.colors.RED + keyword + self.colors.END)
+
+                        encoders_data.append((number, name, description))
+                        encoders_shorts.update({number: encoders[encoder]['Encoder']})
+
+                        number += 1
+                if encoders_data:
+                    self.tables.print_table(f"Encoders ({database})", headers, *encoders_data)
+                    self.local_storage.set("encoder_shorts", encoders_shorts)
 
     def show_search_modules(self, keyword):
         all_modules = self.local_storage.get("modules")
@@ -276,7 +337,8 @@ class Show:
                 for module in sorted(modules):
                     if keyword in modules[module]['Module'] or keyword in modules[module]['Name']:
                         name = modules[module]['Module'].replace(keyword, self.colors.RED + keyword + self.colors.END)
-                        description = modules[module]['Name'].replace(keyword, self.colors.RED + keyword + self.colors.END)
+                        description = modules[module]['Name'].replace(
+                            keyword, self.colors.RED + keyword + self.colors.END)
 
                         modules_data.append((number, name, modules[module]['Rank'], description))
                         modules_shorts.update({number: modules[module]['Module']})
@@ -299,8 +361,10 @@ class Show:
 
                 for payload in sorted(payloads):
                     if keyword in payloads[payload]['Payload'] or keyword in payloads[payload]['Name']:
-                        name = payloads[payload]['Payload'].replace(keyword, self.colors.RED + keyword + self.colors.END)
-                        description = payloads[payload]['Name'].replace(keyword, self.colors.RED + keyword + self.colors.END)
+                        name = payloads[payload]['Payload'].replace(
+                            keyword, self.colors.RED + keyword + self.colors.END)
+                        description = payloads[payload]['Name'].replace(
+                            keyword, self.colors.RED + keyword + self.colors.END)
 
                         payloads_data.append((number, payloads[payload]['Category'], name,
                                               payloads[payload]['Rank'], description))
@@ -328,34 +392,15 @@ class Show:
         else:
             self.badges.print_warning("No opened sessions available.")
 
-    def show_module_information(self, current_module_details):
-        current_module = current_module_details
+    def show_information(self, details):
+        if 'Name' in details:
+            self.badges.print_information(f"Name: {details['Name']}")
+        if 'Module' in details:
+            self.badges.print_information(f"Module: {details['Name']}")
 
-        authors = ""
-        for author in current_module['Authors']:
-            authors += author + ", "
-        authors = authors[:-2]
-
-        self.badges.print_information("Module information:")
-        self.badges.print_empty("")
-
-        if current_module['Name']:
-            self.badges.print_empty("         Name: " + current_module['Name'])
-        if current_module['Module']:
-            self.badges.print_empty("       Module: " + current_module['Module'])
-        if authors:
-            self.badges.print_empty("      Authors: ")
-            for author in current_module['Authors']:
-                self.badges.print_empty("               " + author)
-        if current_module['Description']:
-            self.badges.print_empty("  Description: " + current_module['Description'])
-        if current_module['Rank']:
-            self.badges.print_empty("         Rank: " + current_module['Rank'])
-
-        self.badges.print_empty("")
 
     def show_options(self):
-        current_module = self.modules.get_current_module_object()
+        current_module = self.modules.get_current_module()
 
         if not current_module:
             self.badges.print_warning("No module selected.")
@@ -369,9 +414,10 @@ class Show:
             self.badges.print_warning("Module has no options.")
             return
 
+        headers = ("Option", "Value", "Required", "Description")
+
         if hasattr(current_module, "options"):
             options_data = []
-            headers = ("Option", "Value", "Required", "Description")
             options = current_module.options
 
             for option in sorted(options):
@@ -386,20 +432,37 @@ class Show:
             self.tables.print_table(f"Module Options ({current_module.details['Module']})", headers, *options_data)
 
         if hasattr(current_module, "payload"):
-            if hasattr(self.payloads.get_current_payload(), "options"):
+            current_payload = self.payloads.get_current_payload()
+            current_encoder = self.encoders.get_current_encoder()
+
+            if current_payload and hasattr(current_payload, "options"):
                 options_data = []
-                headers = ("Option", "Value", "Required", "Description")
-                current_payload = self.payloads.get_current_payload()
-                if current_payload:
-                    for option in sorted(current_payload.options):
-                        value, required = current_payload.options[option]['Value'], \
-                                          current_payload.options[option]['Required']
-                        if required:
-                            required = "yes"
-                        else:
-                            required = "no"
-                        if not value and value != 0:
-                            value = ""
-                        options_data.append((option, value, required, current_payload.options[option]['Description']))
-                    self.tables.print_table(f"Payload Options ({current_payload.details['Payload']})", headers,
-                                            *options_data)
+
+                for option in sorted(current_payload.options):
+                    value, required = current_payload.options[option]['Value'], \
+                                      current_payload.options[option]['Required']
+                    if required:
+                        required = "yes"
+                    else:
+                        required = "no"
+                    if not value and value != 0:
+                        value = ""
+                    options_data.append((option, value, required, current_payload.options[option]['Description']))
+                self.tables.print_table(f"Payload Options ({current_payload.details['Payload']})", headers,
+                                        *options_data)
+
+            if current_encoder and hasattr(current_encoder, "options"):
+                options_data = []
+
+                for option in sorted(current_encoder.options):
+                    value, required = current_encoder.options[option]['Value'], \
+                                      current_encoder.options[option]['Required']
+                    if required:
+                        required = "yes"
+                    else:
+                        required = "no"
+                    if not value and value != 0:
+                        value = ""
+                    options_data.append((option, value, required, current_encoder.options[option]['Description']))
+                self.tables.print_table(f"Encoder Options ({current_payload.details['Payload']})", headers,
+                                        *options_data)

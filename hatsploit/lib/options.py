@@ -27,7 +27,7 @@
 import copy
 
 from hatsploit.lib.storage import LocalStorage
-from pex.tools.tcp import TCPTools
+from pex.proto.tcp import TCPTools
 
 
 class Options:
@@ -45,6 +45,12 @@ class Options:
                 'Description': 'Payload to use.',
                 'Value': None,
                 'Type': "payload",
+                'Required': False
+            },
+            'ENCODER': {
+                'Description': 'Encoder to use.',
+                'Value': None,
+                'Type': "encoder",
                 'Required': False
             },
             'LHOST': {
@@ -193,6 +199,8 @@ class Options:
                             self.remove_options(current_module.options, ['RBHOST', 'RBPORT'])
                             self.remove_options(current_payload.options, ['BPORT'])
                 else:
+                    self.remove_options(current_module.options, ['ENCODER'])
+
                     if special != 'reverse_tcp':
                         self.remove_options(current_module.options, ['LHOST', 'LPORT'])
 
@@ -201,7 +209,8 @@ class Options:
 
                 for option in current_module.options:
                     if option.upper() in handler_options['Module']:
-                        saved_handler_options['Module'][module][option]['Value'] = current_module.options[option]['Value']
+                        saved_handler_options['Module'][module][option]['Value'] = \
+                            current_module.options[option]['Value']
 
                 current_module.handler = {}
                 for option in saved_handler_options['Module'][module]:
@@ -212,7 +221,8 @@ class Options:
 
                     for option in current_payload.options:
                         if option.upper() in handler_options['Payload']:
-                            saved_handler_options['Payload'][payload][option]['Value'] = current_payload.options[option]['Value']
+                            saved_handler_options['Payload'][payload][option]['Value'] = \
+                                current_payload.options[option]['Value']
 
                     current_payload.handler = {}
                     for option in saved_handler_options['Payload'][payload]:
@@ -222,7 +232,9 @@ class Options:
                         current_module.handler.update({option: value})
 
                     for option in saved_handler_options['Module'][module]:
-                        current_payload.handler.update({option: saved_handler_options['Module'][module][option]['Value']})
+                        current_payload.handler.update({
+                            option: saved_handler_options['Module'][module][option]['Value']
+                        })
 
                 self.local_storage.set("handler_options", saved_handler_options)
 

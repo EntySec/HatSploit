@@ -28,27 +28,27 @@ import os
 
 from hatvenom import HatVenom
 
-from pex.tools.type import TypeTools
+from pex.type import TypeTools
+
 from hatsploit.core.cli.badges import Badges
 from hatsploit.core.db.importer import Importer
 
 from hatsploit.lib.options import Options
 from hatsploit.lib.storage import LocalStorage
+from hatsploit.lib.encoders import Encoders
 
 
 class Payloads:
     hatvenom = HatVenom()
+
     types = TypeTools()
+
+    badges = Badges()
     importer = Importer()
+
     options = Options()
     local_storage = LocalStorage()
-    badges = Badges()
-
-    def get_payloads(self):
-        return self.local_storage.get("payloads")
-
-    def get_imported_payloads(self):
-        return self.local_storage.get("imported_payloads")
+    encoders = Encoders()
 
     def payloads_completer(self, text):
         payloads = self.get_payloads()
@@ -62,44 +62,11 @@ class Payloads:
 
         return matches
 
-    def check_exist(self, name):
-        all_payloads = self.get_payloads()
-        if all_payloads:
-            for database in all_payloads:
-                payloads = all_payloads[database]
+    def get_payloads(self):
+        return self.local_storage.get("payloads")
 
-                if name in payloads:
-                    return True
-        return False
-
-    def get_payload_object(self, name):
-        if self.check_exist(name):
-            database = self.get_database(name)
-            return self.get_payloads()[database][name]
-        return None
-
-    def check_module_compatible(self, value, categories, types, platforms, architectures):
-        if self.check_exist(value):
-            payload = self.get_payload_object(value)
-
-            if categories:
-                if payload['Category'] not in categories:
-                    return False
-
-            if types:
-                if payload['Type'] not in types:
-                    return False
-
-            if platforms:
-                if payload['Platform'] not in platforms:
-                    return False
-
-            if architectures:
-                if payload['Architecture'] not in architectures:
-                    return False
-
-            return True
-        return False
+    def get_imported_payloads(self):
+        return self.local_storage.get("imported_payloads")
 
     def get_database(self, name):
         all_payloads = self.get_payloads()
@@ -111,33 +78,43 @@ class Payloads:
                     return database
         return None
 
-    def check_current_module(self):
-        if self.local_storage.get("current_module"):
-            if len(self.local_storage.get("current_module")) > 0:
-                return True
-        return False
+    def get_payload(self, payload):
+        payload_object = self.get_payload_object(payload)
+        try:
+            imported_payload = self.importer.import_payload(payload_object['Path'])
+        except Exception:
+            return None
+        return imported_payload
 
-    def get_current_module_object(self):
-        if self.check_current_module():
+    def get_payload_object(self, payload):
+        if self.check_exist(payload):
+            database = self.get_database(payload)
+            return self.get_payloads()[database][payload]
+        return None
+
+    def get_current_payload(self):
+        imported_payloads = self.get_imported_payloads()
+        current_module_object = self.get_current_module()
+
+        if current_module_object:
+            current_module_name = current_module_object.details['Module']
+
+            if hasattr(current_module_object, "payload"):
+                name = current_module_object.payload['Value']
+
+                if imported_payloads:
+                    if current_module_name in imported_payloads:
+                        if name in imported_payloads[current_module_name]:
+                            return imported_payloads[current_module_name][name]
+        return None
+
+    def get_current_module(self):
+        if self.local_storage.get("current_module"):
             return self.local_storage.get_array("current_module", self.local_storage.get("current_module_number"))
         return None
 
-    def get_current_module_name(self):
-        if self.check_current_module():
-            return self.local_storage.get_array("current_module",
-                                                self.local_storage.get("current_module_number")).details['Module']
-        return None
-
-    def get_payload(self, name):
-        payloads = self.get_payload_object(name)
-        try:
-            payload_object = self.importer.import_payload(payloads['Path'])
-        except Exception:
-            return None
-        return payload_object
-
-    def import_payload(self, module_name, name):
-        payload_object = self.get_payload(name)
+    def import_payload(self, module_name, payload):
+        payload_object = self.get_payload(payload)
 
         if payload_object:
             current_module_name = module_name
@@ -164,30 +141,77 @@ class Payloads:
 
         return payload_object
 
-    def check_imported(self, module_name, name):
+    def check_exist(self, payload):
+        all_payloads = self.get_payloads()
+        if all_payloads:
+            for database in all_payloads:
+                payloads = all_payloads[database]
+
+                if payload in payloads:
+                    return True
+        return False
+
+    def check_imported(self, module_name, payload):
         imported_payloads = self.get_imported_payloads()
         current_module_name = module_name
 
         if imported_payloads:
             if current_module_name in imported_payloads:
-                if name in imported_payloads[current_module_name]:
+                if payload in imported_payloads[current_module_name]:
                     return True
         return False
 
-    def validate_options(self, payload_object):
+    def check_module_compatible(self, value, categories, types, platforms, architectures):
+        if self.check_exist(value):
+            payload = self.get_payload_object(value)
+
+            if categories:
+                if payload['Category'] not in categories:
+                    return False
+
+            if types:
+                if payload['Type'] not in types:
+                    return False
+
+            if platforms:
+                if payload['Platform'] not in platforms:
+                    return False
+
+            if architectures:
+                if payload['Architecture'] not in architectures:
+                    return False
+
+            return True
+        return False
+
+    def add_payload(self, module_name, payload):
+        if not self.check_imported(module_name, payload):
+            payload_object = self.import_payload(module_name, payload)
+            if not payload_object:
+                self.badges.print_error("Failed to select payload from database!")
+                return False
+        return True
+
+    def generate_payload(self, payload, options={}, raw=False, encoder=None):
+        payload_object = self.get_payload(payload)
+        if payload_object:
+            self.options.add_payload_handler(payload_object)
+
+            if hasattr(payload_object, "options"):
+                for option in options:
+                    payload_object.options[option]['Value'] = options[option]
+
+            encoder_object = None
+            if encoder:
+                encoder_object = self.encoders.get_encoder(encoder)
+
+            result = self.run_payload(payload_object, encoder_object)
+            return result['Raw'] if raw else result['Payload']
+        return None
+
+    def run_payload(self, payload_object, encoder_object):
         current_payload = payload_object
-        missed = ""
-
-        if hasattr(current_payload, "options"):
-            for option in current_payload.options:
-                current_option = current_payload.options[option]
-                if not current_option['Value'] and current_option['Value'] != 0 and current_option['Required']:
-                    missed += option + ', '
-
-        return missed
-
-    def run_payload(self, payload_object):
-        current_payload = payload_object
+        current_encoder = encoder_object
 
         if not self.validate_options(current_payload):
             payload_options = None
@@ -206,16 +230,16 @@ class Payloads:
 
             if isinstance(payload_data, tuple):
                 raw = self.hatvenom.generate('raw', 'generic', payload_data[0], payload_data[1])
-
-                payload = self.hatvenom.generate(
-                    executable if payload_details['Architecture'] != 'generic' else 'raw',
-                    payload_details['Architecture'], payload_data[0], payload_data[1])
             else:
                 raw = self.hatvenom.generate('raw', 'generic', payload_data)
 
-                payload = self.hatvenom.generate(
-                    executable if payload_details['Architecture'] != 'generic' else 'raw',
-                    payload_details['Architecture'], payload_data)
+            if current_encoder:
+                current_encoder.payload = raw
+                raw = current_encoder.run()
+
+            payload = self.hatvenom.generate(
+                executable if payload_details['Architecture'] != 'generic' else 'raw',
+                payload_details['Architecture'], raw)
 
             return {
                 'Options': payload_options,
@@ -230,39 +254,15 @@ class Payloads:
             'Raw': None
         }
 
-    def generate_payload(self, name, options={}, raw=False):
-        payload_object = self.get_payload(name)
-        if payload_object:
-            self.options.add_payload_handler(payload_object)
+    @staticmethod
+    def validate_options(payload_object):
+        current_payload = payload_object
+        missed = ""
 
-            if hasattr(payload_object, "options"):
-                for option in options:
-                    payload_object.options[option]['Value'] = options[option]
+        if hasattr(current_payload, "options"):
+            for option in current_payload.options:
+                current_option = current_payload.options[option]
+                if not current_option['Value'] and current_option['Value'] != 0 and current_option['Required']:
+                    missed += option + ', '
 
-            result = self.run_payload(payload_object)
-            return result['Raw'] if raw else result['Payload']
-        return None
-
-    def get_current_payload(self):
-        imported_payloads = self.get_imported_payloads()
-        current_module_object = self.get_current_module_object()
-        
-        if current_module_object:
-            current_module_name = current_module_object.details['Module']
-
-            if hasattr(current_module_object, "payload"):
-                name = current_module_object.payload['Value']
-
-                if imported_payloads:
-                    if current_module_name in imported_payloads:
-                        if name in imported_payloads[current_module_name]:
-                            return imported_payloads[current_module_name][name]
-        return None
-
-    def add_payload(self, module_name, name):
-        if not self.check_imported(module_name, name):
-            payload_object = self.import_payload(module_name, name)
-            if not payload_object:
-                self.badges.print_error("Failed to select payload from database!")
-                return False
-        return True
+        return missed

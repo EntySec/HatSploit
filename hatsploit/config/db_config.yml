@@ -25,7 +25,9 @@
 base_dbs:
     module_database_name: "modules"
     payload_database_name: "payloads"
+    encoder_database_name: "encoders"
     plugin_database_name: "plugins"
     module_database: "modules.json"
     payload_database: "payloads.json"
+    encoder_database: "encoders.json"
     plugin_database: "plugins.json"

@@ -65,6 +65,32 @@ class Check:
                         one_fail = True
         return not one_fail
 
+    def check_encoders(self):
+        one_fail = False
+        self.badges.print_process("Checking all base encoders...")
+
+        encoders_path = os.path.normpath(self.config.path_config['encoders_path'])
+        for dest, _, files in os.walk(encoders_path):
+            for file in files:
+                if file.endswith('.py') and file != '__init__.py':
+                    encoder = dest + '/' + file[:-3]
+
+                    try:
+                        encoder_object = self.importer.import_encoder(encoder)
+                        keys = [
+                            'Name',
+                            'Encoder',
+                            'Authors',
+                            'Description',
+                            'Architecture'
+                        ]
+                        assert (all(key in encoder_object.details for key in keys))
+                        self.badges.print_success(f"{encoder}: OK")
+                    except Exception:
+                        self.badges.print_error(f"{encoder}: FAIL")
+                        one_fail = True
+        return not one_fail
+
     def check_payloads(self):
         one_fail = False
         self.badges.print_process("Checking all base payloads...")
@@ -120,10 +146,11 @@ class Check:
         return not one_fail
 
     def check_all(self):
-        fails = []
+        fails = list()
 
         fails.append(self.check_modules())
         fails.append(self.check_payloads())
+        fails.append(self.check_encoders())
         fails.append(self.check_plugins())
 
         for fail in fails:
