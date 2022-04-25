@@ -27,7 +27,7 @@
 import copy
 
 from hatsploit.lib.storage import LocalStorage
-from pex.tcp import TCPTools
+from pex.proto.tcp import TCPTools
 
 
 class Options:
