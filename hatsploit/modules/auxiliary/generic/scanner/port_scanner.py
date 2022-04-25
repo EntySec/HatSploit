@@ -8,7 +8,7 @@
 import time
 
 from hatsploit.lib.module import Module
-from pex.tcp import TCPTools
+from pex.proto.tcp import TCPTools
 
 
 class HatSploitModule(Module, TCPTools):
