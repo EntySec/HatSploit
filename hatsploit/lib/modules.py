@@ -99,6 +99,14 @@ class Modules:
             )
         return None
 
+    def get_number_module(self, number):
+        modules_shorts = self.local_storage.get("module_shorts")
+
+        if modules_shorts:
+            if number in modules_shorts:
+                return modules_shorts[number]
+        return None
+
     def import_module(self, module):
         module_object = self.get_module(module)
 
@@ -134,14 +142,11 @@ class Modules:
         return False
 
     def use_module(self, module):
-        modules_shorts = self.local_storage.get("module_shorts")
-
-        if modules_shorts:
-            if module.isdigit():
-                module_number = int(module)
-
-                if module_number in modules_shorts:
-                    module = modules_shorts[module_number]
+        if module.isdigit():
+            module = self.get_number_module(int(module))
+            if not module:
+                self.badges.print_error("Invalid module number!")
+                return
 
         if not self.check_if_already_used(module):
             if self.check_exist(module):
