@@ -8,10 +8,10 @@
 from hatsploit.lib.encoder import Encoder
 
 from pex.string import StringTools
-from pex.assembler import AssemblerTools
+from pex.arch import X86
 
 
-class HatSploitEncoder(Encoder, StringTools, AssemblerTools):
+class HatSploitEncoder(Encoder, StringTools, X86):
     details = {
         'Name': "x64 XOR Encoder",
         'Encoder': "x64/xor",
@@ -33,11 +33,11 @@ class HatSploitEncoder(Encoder, StringTools, AssemblerTools):
 
     def run(self):
         key = self.parse_options(self.options)
-        count = - int((len(self.payload) - 1 / len(key)) + 1)
+        count = -1 * int((len(self.payload) - 1 / len(key)) + 1)
 
         decoder = (
             b"\x48\x31\xc9"
-            b"\x48\x81\xe9" + self.pack_integer(count) +
+            b"\x48\x81\xe9" + self.pack_dword(count) +
             b"\x48\x8d\x05\xef\xff\xff\xff"
             b"\x48\xbb" + key.encode() +
             b"\x48\x31\x58\x27"
