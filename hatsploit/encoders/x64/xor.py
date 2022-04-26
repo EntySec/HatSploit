@@ -39,7 +39,7 @@ class HatSploitEncoder(Encoder, StringTools, AssemblerTools):
 
         decoder = (
             b"\x48\x31\xc9"
-            b"\x48\x81\xe9" + struct.pack('i', count) +
+            b"\x48\x81\xe9" + self.pack_integer(count) +
             b"\x48\x8d\x05\xef\xff\xff\xff"
             b"\x48\xbb" + key.encode() +
             b"\x48\x31\x58\x27"
