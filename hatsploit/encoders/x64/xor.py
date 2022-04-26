@@ -45,4 +45,4 @@ class HatSploitEncoder(Encoder, StringTools, X86):
             b"\xe2\xf4"
         )
 
-        return decoder + self.xor_key_bytes(self.payload, key)
+        return decoder + self.xor_key_bytes(self.payload, key.encode())
