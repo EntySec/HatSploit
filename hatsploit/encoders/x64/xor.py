@@ -5,8 +5,6 @@
 # Current source: https://github.com/EntySec/HatSploit
 #
 
-import struct
-
 from hatsploit.lib.encoder import Encoder
 
 from pex.string import StringTools
