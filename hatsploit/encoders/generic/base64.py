@@ -6,10 +6,10 @@
 #
 
 from hatsploit.lib.encoder import Encoder
-from pex.string import StringTools
+from pex.string import String
 
 
-class HatSploitEncoder(Encoder, StringTools):
+class HatSploitEncoder(Encoder, String):
     details = {
         'Name': "Base64 Encoder for Command",
         'Encoder': "generic/base64",

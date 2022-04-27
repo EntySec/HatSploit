@@ -7,11 +7,11 @@
 
 from hatsploit.lib.encoder import Encoder
 
-from pex.string import StringTools
+from pex.string import String
 from pex.arch import X86
 
 
-class HatSploitEncoder(Encoder, StringTools, X86):
+class HatSploitEncoder(Encoder, String, X86):
     details = {
         'Name': "x64 XOR Encoder",
         'Encoder': "x64/xor",

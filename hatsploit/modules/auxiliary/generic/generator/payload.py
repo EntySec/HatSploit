@@ -8,10 +8,10 @@
 from hatsploit.lib.module import Module
 from hatsploit.lib.loot import Loot
 
-from pex.assembler import AssemblerTools
+from pex.assembler import Assembler
 
 
-class HatSploitModule(Module, AssemblerTools):
+class HatSploitModule(Module, Assembler):
     loot = Loot()
 
     details = {

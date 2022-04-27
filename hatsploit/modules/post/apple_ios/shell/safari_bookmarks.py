@@ -9,10 +9,10 @@ from hatsploit.lib.module import Module
 from hatsploit.lib.sessions import Sessions
 from hatsploit.lib.loot import Loot
 
-from pex.db import DBTools
+from pex.db import DB
 
 
-class HatSploitModule(Module, Sessions, DBTools):
+class HatSploitModule(Module, Sessions, DB):
     details = {
         'Category': "post",
         'Name': "Obtain Safari bookmarks",
