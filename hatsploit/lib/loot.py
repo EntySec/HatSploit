@@ -27,9 +27,9 @@
 import os
 import datetime
 
+from pex.fs import FS
 from pex.string import String
 
-from hatsploit.core.utils.fs import FS
 from hatsploit.core.cli.badges import Badges
 
 from hatsploit.lib.config import Config
@@ -57,11 +57,10 @@ class Loot(String, FS):
         return self.loot + filename
 
     def get_file(self, filename):
-        if self.exists_file(filename):
-            with open(filename, 'rb') as f:
-                return f.read()
+        self.check_file(filename)
 
-        return None
+        with open(filename, 'rb') as f:
+            return f.read()
 
     def save_file(self, location, data, extension=None, filename=None):
         exists, is_dir = self.exists(location)
@@ -86,13 +85,10 @@ class Loot(String, FS):
         return None
 
     def remove_file(self, filename):
-        if self.exists_file(filename):
-            os.remove(filename)
+        self.check_file(filename)
+        os.remove(filename)
 
-            self.badges.print_success(f"Removed {filename}!")
-            return True
-
-        return False
+        self.badges.print_success(f"Removed {filename}!")
 
     def get_loot(self, filename):
         filename = os.path.split(filename)[1]
