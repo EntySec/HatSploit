@@ -27,7 +27,7 @@
 import os
 import datetime
 
-from pex.string import StringTools
+from pex.string import String
 
 from hatsploit.core.utils.fs import FSTools
 from hatsploit.core.cli.badges import Badges
@@ -35,7 +35,7 @@ from hatsploit.core.cli.badges import Badges
 from hatsploit.lib.config import Config
 
 
-class Loot(StringTools, FSTools):
+class Loot(String, FSTools):
     badges = Badges()
 
     loot = Config().path_config['loot_path']

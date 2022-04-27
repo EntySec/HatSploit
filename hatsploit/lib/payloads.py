@@ -28,7 +28,7 @@ import os
 
 from hatvenom import HatVenom
 
-from pex.type import TypeTools
+from pex.type import Type
 
 from hatsploit.core.cli.badges import Badges
 from hatsploit.core.db.importer import Importer
@@ -41,7 +41,7 @@ from hatsploit.lib.encoders import Encoders
 class Payloads:
     hatvenom = HatVenom()
 
-    types = TypeTools()
+    types = Type()
 
     badges = Badges()
     importer = Importer()

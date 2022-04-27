@@ -33,7 +33,7 @@ from pex.post.pull import Pull
 from pex.post.push import Push
 
 from pex.post import PostTools
-from pex.type import TypeTools
+from pex.type import Type
 
 from pex.proto.channel import ChannelClient
 
@@ -130,7 +130,7 @@ class Handler:
     modules = Modules()
     encoders = Encoders()
     jobs = Jobs()
-    types = TypeTools()
+    types = Type()
     badges = Badges()
     local_storage = LocalStorage()
 

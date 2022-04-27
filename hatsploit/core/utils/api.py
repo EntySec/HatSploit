@@ -35,7 +35,7 @@ from flask import make_response
 
 from io import StringIO
 
-from pex.string import StringTools
+from pex.string import String
 
 from hatsploit.core.cli.fmt import FMT
 from hatsploit.core.base.execute import Execute
@@ -67,7 +67,7 @@ class APIPool:
 
 class API:
     def __init__(self, username, password, host='127.0.0.1', port=8008):
-        self.string_tools = StringTools()
+        self.string_tools = String()
 
         self.fmt = FMT()
         self.execute = Execute()

@@ -27,7 +27,7 @@
 import os
 import copy
 
-from pex.type import TypeTools
+from pex.type import Type
 
 from hatsploit.core.cli.badges import Badges
 from hatsploit.core.db.importer import Importer
@@ -39,7 +39,7 @@ from hatsploit.lib.storage import LocalStorage
 
 
 class Modules:
-    types = TypeTools()
+    types = Type()
 
     badges = Badges()
     importer = Importer()
