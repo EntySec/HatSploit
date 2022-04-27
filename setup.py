@@ -45,6 +45,7 @@ setup(name='hatsploit',
           'impacket', 'packaging', 'pyyaml', 'requests', 'paramiko',
           'adb-shell', 'flask', 'flask_cors', 'flask_restful', 'pyngrok',
 
+          'hatasm @ git+https://github.com/EntySec/HatAsm',
           'hatvenom @ git+https://github.com/EntySec/HatVenom',
           'hatloads @ git+https://github.com/EntySec/HatLoads',
             
