@@ -29,7 +29,7 @@ import os
 from hatsploit.core.cli.badges import Badges
 
 
-class FSTools:
+class FS:
     badges = Badges()
 
     def exists(self, path):
