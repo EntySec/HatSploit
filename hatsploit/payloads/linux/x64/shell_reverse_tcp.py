@@ -6,10 +6,10 @@
 #
 
 from hatsploit.lib.payload import Payload
-from pex.payload import PayloadTools
+from pex.payloads import Payloads
 
 
-class HatSploitPayload(Payload, PayloadTools):
+class HatSploitPayload(Payload, Payloads):
     details = {
         'Category': "stager",
         'Name': "Linux x64 Shell Reverse TCP",

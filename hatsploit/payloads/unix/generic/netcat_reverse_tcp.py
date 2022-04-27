@@ -7,10 +7,10 @@
 
 from hatsploit.lib.payload import Payload
 
-from pex.string import StringTools
+from pex.string import String
 
 
-class HatSploitPayload(Payload, StringTools):
+class HatSploitPayload(Payload, String):
     details = {
         'Category': "singler",
         'Name': "Netcat Shell Reverse TCP",

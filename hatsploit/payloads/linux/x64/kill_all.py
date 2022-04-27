@@ -6,10 +6,10 @@
 #
 
 from hatsploit.lib.payload import Payload
-from pex.assembler import AssemblerTools
+from pex.assembler import Assembler
 
 
-class HatSploitPayload(Payload, AssemblerTools):
+class HatSploitPayload(Payload, Assembler):
     details = {
         'Category': "stager",
         'Name': "Linux x64 Kill All Processes",
