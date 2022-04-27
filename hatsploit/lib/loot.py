@@ -29,13 +29,13 @@ import datetime
 
 from pex.string import String
 
-from hatsploit.core.utils.fs import FSTools
+from hatsploit.core.utils.fs import FS
 from hatsploit.core.cli.badges import Badges
 
 from hatsploit.lib.config import Config
 
 
-class Loot(String, FSTools):
+class Loot(String, FS):
     badges = Badges()
 
     loot = Config().path_config['loot_path']
