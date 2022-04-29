@@ -6,10 +6,10 @@
 #
 
 from hatsploit.lib.payload import Payload
-from pex.payloads import Payloads
+from hatloads import HatLoads
 
 
-class HatSploitPayload(Payload, Payloads):
+class HatSploitPayload(Payload, HatLoads):
     details = {
         'Category': "stager",
         'Name': "macOS x64 Shell Bind TCP",
