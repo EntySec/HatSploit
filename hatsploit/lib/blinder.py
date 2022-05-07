@@ -33,7 +33,7 @@ class Blinder:
     badges = Badges()
     post_tools = PostTools()
 
-    def blinder(self, sender, args={}):
+    def shell(self, sender, args={}):
         self.badges.print_empty()
         self.badges.print_information("Welcome to Blinder, blind command injection handler.")
         self.badges.print_information("Blinder is not a reverse shell, just a blind command injection.")
