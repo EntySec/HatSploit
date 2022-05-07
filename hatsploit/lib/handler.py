@@ -198,7 +198,7 @@ class Handler:
 
                     return True
 
-        stage = module.payload['Payload']
+        stage = self.payloads.pack_payload(module.payload['Payload'])
 
         if payload.details['Type'] == 'bind_tcp':
             host = options['RBHOST']
