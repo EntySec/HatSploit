@@ -43,6 +43,7 @@ from hatsploit.lib.handle import Handle
 from hatsploit.lib.blinder import Blinder
 from hatsploit.lib.jobs import Jobs
 from hatsploit.lib.modules import Modules
+from hatsploit.lib.payloads import Payloads
 from hatsploit.lib.encoders import Encoders
 from hatsploit.lib.sessions import Sessions
 from hatsploit.lib.storage import LocalStorage
@@ -128,6 +129,7 @@ class Handler:
 
     sessions = Sessions()
     modules = Modules()
+    payloads = Payloads()
     encoders = Encoders()
     jobs = Jobs()
     types = Type()
@@ -180,10 +182,10 @@ class Handler:
                       background=None, method=None, timeout=None, linemax=100, ensure=False,
                       on_session=None):
         module = self.modules.get_current_module()
-        rhost = host
+        payload = self.payloads.get_current_payload()
 
+        rhost = host
         options = module.handler
-        payload = module.payload
 
         if 'BLINDER' in options:
             if options['BLINDER'].lower() in ['yes', 'y']:
@@ -196,31 +198,31 @@ class Handler:
 
                     return True
 
-        stage = payload['Executable']
+        stage = module.payload['Payload']
 
-        if payload['Details']['Type'] == 'bind_tcp':
+        if payload.details['Type'] == 'bind_tcp':
             host = options['RBHOST']
             port = options['RBPORT']
 
-        elif payload['Details']['Type'] == 'reverse_tcp':
+        elif payload.details['Type'] == 'reverse_tcp':
             host = options['LHOST']
             port = options['LPORT']
 
         else:
             host, port = None, None
 
-        if 'Session' in payload['Details']:
-            session = payload['Details']['Session']
+        if 'Session' in payload.details:
+            session = payload.details['Session']
         else:
             session = None
 
-        if 'Arguments' in payload['Details']:
-            arguments = payload['Details']['Arguments']
+        if 'Arguments' in payload.details:
+            arguments = payload.details['Arguments']
         else:
             arguments = None
 
-        p_platform = payload['Details']['Platform']
-        p_architecture = payload['Details']['Architecture']
+        p_platform = payload.details['Platform']
+        p_architecture = payload.details['Architecture']
 
         if p_platform in self.types.platforms:
             module_platform = module.details['Platform']
@@ -239,7 +241,7 @@ class Handler:
 
             p_platform=p_platform,
             p_architecture=p_architecture,
-            p_type=payload['Details']['Type'],
+            p_type=payload.details['Type'],
 
             args=args,
             concat=concat,
