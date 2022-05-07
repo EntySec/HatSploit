@@ -11,7 +11,6 @@ from hatloads import HatLoads
 
 class HatSploitPayload(Payload, HatLoads):
     details = {
-        'Category': "stager",
         'Name': "Linux mipsle Shell Bind TCP",
         'Payload': "linux/mipsle/shell_bind_tcp",
         'Authors': [

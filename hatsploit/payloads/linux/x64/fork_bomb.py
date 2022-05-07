@@ -11,7 +11,6 @@ from pex.assembler import Assembler
 
 class HatSploitPayload(Payload, Assembler):
     details = {
-        'Category': "stager",
         'Name': "Linux x64 Fork Bomb",
         'Payload': "linux/x64/fork_bomb",
         'Authors': [

@@ -13,7 +13,6 @@ from hatsploit.lib.payload import Payload
 
 class HatSploitPayload(Payload, Pwny):
     details = {
-        'Category': "stager",
         'Name': "macOS x64 Pwny Reverse TCP",
         'Payload': "macos/x64/pwny_reverse_tcp",
         'Authors': [

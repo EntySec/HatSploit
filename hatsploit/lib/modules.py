@@ -368,12 +368,11 @@ class Modules:
                     module_name = current_module.details['Module']
                     module_payload = current_module.payload
 
-                    categories = module_payload['Categories']
                     types = module_payload['Types']
                     platforms = module_payload['Platforms']
                     architectures = module_payload['Architectures']
 
-                    if self.payloads.check_module_compatible(value, categories, types, platforms, architectures):
+                    if self.payloads.check_module_compatible(value, types, platforms, architectures):
                         if self.payloads.add_payload(module_name, value):
                             return True
 

@@ -11,7 +11,6 @@ from hatloads import HatLoads
 
 class HatSploitPayload(Payload, HatLoads):
     details = {
-        'Category': "stager",
         'Name': "Linux aarch64 Shell Bind TCP",
         'Payload': "linux/aarch64/shell_bind_tcp",
         'Authors': [

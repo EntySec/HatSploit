@@ -11,7 +11,6 @@ from hatloads import HatLoads
 
 class HatSploitPayload(Payload, HatLoads):
     details = {
-        'Category': "stager",
         'Name': "macOS x64 Shell Reverse TCP",
         'Payload': "macos/x64/shell_reverse_tcp",
         'Authors': [

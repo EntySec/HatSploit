@@ -50,7 +50,7 @@ class Sessions:
         sessions = self.local_storage.get("sessions")
         if sessions:
             for session in list(sessions):
-                if not sessions[session]['object'].heartbeat():
+                if not sessions[session]['Object'].heartbeat():
                     self.badges.print_warning(f"Session {str(session)} is dead (no heartbeat).")
                     self.close_session(session)
         
@@ -64,7 +64,8 @@ class Sessions:
             return True
         return False
 
-    def add_session(self, session_platform, session_architecture, session_type, session_host, session_port, session_object):
+    def add_session(self, session_platform, session_architecture,
+                    session_type, session_host, session_port, session_object):
         if not self.local_storage.get("sessions"):
             self.local_storage.set("sessions", {})
 
@@ -75,12 +76,12 @@ class Sessions:
 
         sessions = {
             session_id: {
-                'platform': session_platform,
-                'architecture': session_architecture,
-                'type': session_type,
-                'host': session_host,
-                'port': session_port,
-                'object': session_object
+                'Platform': session_platform,
+                'Architecture': session_architecture,
+                'Type': session_type,
+                'Host': session_host,
+                'Port': session_port,
+                'Object': session_object
             }
         }
 
@@ -94,15 +95,15 @@ class Sessions:
                 valid = True
 
                 if session_platform:
-                    if sessions[int(session_id)]['platform'] != session_platform:
+                    if sessions[int(session_id)]['Platform'] != session_platform:
                         valid = False
 
                 if session_type:
-                    if sessions[int(session_id)]['type'] != session_type:
+                    if sessions[int(session_id)]['Type'] != session_type:
                         valid = False
 
                 if session_architecture:
-                    if sessions[int(session_id)]['architecture'] != session_architecture:
+                    if sessions[int(session_id)]['Architecture'] != session_architecture:
                         valid = False
 
                 return valid
@@ -122,21 +123,21 @@ class Sessions:
         sessions = self.local_storage.get("sessions")
         if self.check_exist(session_id):
             self.badges.print_process(f"Interacting with session {str(session_id)}...%newline")
-            sessions[int(session_id)]['object'].interact()
+            sessions[int(session_id)]['Object'].interact()
         else:
             self.badges.print_error("Invalid session given!")
 
     def session_download(self, session_id, remote_file, local_path):
         sessions = self.local_storage.get("sessions")
         if self.check_exist(session_id):
-            return sessions[int(session_id)]['object'].download(remote_file, local_path)
+            return sessions[int(session_id)]['Object'].download(remote_file, local_path)
         self.badges.print_error("Invalid session given!")
         return None
 
     def session_upload(self, session_id, local_file, remote_path):
         sessions = self.local_storage.get("sessions")
         if self.check_exist(session_id):
-            return sessions[int(session_id)]['object'].upload(local_file, remote_path)
+            return sessions[int(session_id)]['Object'].upload(local_file, remote_path)
         self.badges.print_error("Invalid session given!")
         return None
 
@@ -144,7 +145,7 @@ class Sessions:
         sessions = self.local_storage.get("sessions")
         if self.check_exist(session_id):
             try:
-                sessions[int(session_id)]['object'].close()
+                sessions[int(session_id)]['Object'].close()
                 del sessions[int(session_id)]
 
                 self.local_storage.update("sessions", sessions)
@@ -158,7 +159,7 @@ class Sessions:
         if sessions:
             for session in list(sessions):
                 try:
-                    sessions[session]['object'].close()
+                    sessions[session]['Object'].close()
                     del sessions[session]
 
                     self.local_storage.update("sessions", sessions)
@@ -168,6 +169,6 @@ class Sessions:
     def get_session(self, session_id, session_platform=None, session_architecture=None, session_type=None):
         sessions = self.local_storage.get("sessions")
         if self.check_exist(session_id, session_platform, session_architecture, session_type):
-            return sessions[int(session_id)]['object']
+            return sessions[int(session_id)]['Object']
         self.badges.print_error("Invalid session given!")
         return None

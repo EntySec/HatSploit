@@ -13,7 +13,6 @@ from pex.assembler import Assembler
 
 class HatSploitPayload(Payload, Assembler):
     details = {
-        'Category': "stager",
         'Name': "macOS x64 Say",
         'Payload': "macos/x64/say",
         'Authors': [

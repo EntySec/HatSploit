@@ -12,12 +12,12 @@ from pex.string import String
 class HatSploitEncoder(Encoder, String):
     details = {
         'Name': "Base64 Encoder for Command",
-        'Encoder': "generic/base64",
+        'Encoder': "cmd/base64",
         'Authors': [
             'Ivan Nikolsky (enty8080) - payload developer'
         ],
         'Description': "Encode command with base64.",
-        'Architecture': "generic"
+        'Architecture': "cmd"
     }
 
     options = {

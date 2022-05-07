@@ -11,7 +11,6 @@ from pex.assembler import Assembler
 
 class HatSploitPayload(Payload, Assembler):
     details = {
-        'Category': "stager",
         'Name': "Linux mipsbe Reboot",
         'Payload': "linux/mipsbe/reboot",
         'Authors': [

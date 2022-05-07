@@ -13,7 +13,6 @@ from hatsploit.lib.payload import Payload
 
 class HatSploitPayload(Payload, Monhorn):
     details = {
-        'Category': "stager",
         'Name': "Linux x86 Monhorn Bind TCP",
         'Payload': "linux/x86/monhorn_bind_tcp",
         'Authors': [

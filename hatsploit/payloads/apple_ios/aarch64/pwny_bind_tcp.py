@@ -13,7 +13,6 @@ from hatsploit.lib.payload import Payload
 
 class HatSploitPayload(Payload, Pwny):
     details = {
-        'Category': "stager",
         'Name': "iOS aarch64 Pwny Bind TCP",
         'Payload': "apple_ios/aarch64/pwny_bind_tcp",
         'Authors': [

@@ -134,8 +134,8 @@ class Handler:
     badges = Badges()
     local_storage = LocalStorage()
 
-    def do_job(self, payload_type, target, args):
-        if payload_type == 'one_side':
+    def do_job(self, p_type, target, args):
+        if p_type == 'one_side':
             target(*args)
         else:
             self.jobs.create_job(
@@ -146,36 +146,35 @@ class Handler:
                 True
             )
 
-    def ensure_linemax(self, payload, linemax):
+    def ensure_linemax(self, stage, linemax):
         min_size = 10000
         max_size = 100000
 
-        if len(payload) >= max_size and linemax not in range(min_size, max_size):
-            self.badges.print_process(f"Ensuring payload size ({str(len(payload))} bytes)...")
+        if len(stage) >= max_size and linemax not in range(min_size, max_size):
+            self.badges.print_process(f"Ensuring stage size ({str(len(stage))} bytes)...")
             linemax = max_size
 
         return linemax
 
-    def send(self, sender, payload, args={}):
-        if isinstance(payload, bytes):
-            self.badges.print_process(f"Sending payload stage ({str(len(payload))} bytes)...")
+    def send(self, sender, stage, args={}):
+        if isinstance(stage, bytes):
+            self.badges.print_process(f"Sending payload stage ({str(len(stage))} bytes)...")
         else:
             self.badges.print_process("Sending command payload stage...")
 
-        self.post_tools.post_command(sender, payload, args)
+        self.post_tools.post_command(sender, stage, args)
 
-    def open_session(self, host, port, session_platform, session_architecture, session_type, session, action=None):
-        session_id = self.sessions.add_session(session_platform, session_architecture, session_type,
-                                               host, port, session)
+    def open_session(self, host, port, s_platform, s_architecture, s_type, session, action=None):
+        s_id = self.sessions.add_session(s_platform, s_architecture, s_type, host, port, session)
         time = datetime.datetime.now().astimezone().strftime("%Y-%m-%d %H:%M:%S %Z")
 
-        self.badges.print_success(f"{session_type.title()} session {str(session_id)} opened at {time}!")
+        self.badges.print_success(f"{s_type.title()} session {str(s_id)} opened at {time}!")
 
         if action:
             action()
 
         if self.local_storage.get("auto_interaction"):
-            self.sessions.interact_with_session(session_id)
+            self.sessions.interact_with_session(s_id)
 
     def module_handle(self, host=None, sender=None, args={}, concat=None, location=None,
                       background=None, method=None, timeout=None, linemax=100, ensure=False,
@@ -197,10 +196,7 @@ class Handler:
 
                     return True
 
-        stage = payload['Payload'] if method != 'raw' else payload['Raw']
-        if isinstance(payload['Raw'], bytes):
-            for line in HatAsm().hexdump(stage):
-                self.badges.print_information(line)
+        stage = payload['Executable']
 
         if payload['Details']['Type'] == 'bind_tcp':
             host = options['RBHOST']
@@ -223,17 +219,17 @@ class Handler:
         else:
             arguments = None
 
-        platform = payload['Details']['Platform']
-        architecture = payload['Details']['Architecture']
+        p_platform = payload['Details']['Platform']
+        p_architecture = payload['Details']['Architecture']
 
-        if platform in self.types.platforms:
+        if p_platform in self.types.platforms:
             module_platform = module.details['Platform']
 
             if module_platform not in self.types.platforms:
-                platform = module_platform
+                p_platform = module_platform
 
         return self.handle(
-            payload=stage,
+            stage=stage,
             sender=sender,
 
             host=host,
@@ -241,8 +237,9 @@ class Handler:
 
             rhost=rhost,
 
-            payload_category=payload['Details']['Category'],
-            payload_type=payload['Details']['Type'],
+            p_platform=p_platform,
+            p_architecture=p_architecture,
+            p_type=payload['Details']['Type'],
 
             args=args,
             concat=concat,
@@ -253,9 +250,6 @@ class Handler:
             timeout=timeout,
             linemax=linemax,
 
-            platform=platform,
-            architecture=architecture,
-
             ensure=ensure,
             blinder=False,
 
@@ -264,9 +258,9 @@ class Handler:
             on_session=on_session
         )
 
-    def handle(self, payload=None, sender=None, host=None, port=None, rhost=None, payload_category='stager',
-               payload_type='one_side', args={}, concat=None, location=None, background=None,
-               method=None, timeout=None, linemax=100, platform='generic', architecture='generic',
+    def handle(self, stage=None, sender=None, host=None, port=None, rhost=None,
+               p_platform=None, p_architecture=None, p_type=None, args={},
+               concat=None, location=None, background=None, method=None, timeout=None, linemax=100,
                ensure=False, blinder=False, session=None, arguments=None, on_session=None):
 
         if blinder:
@@ -274,11 +268,12 @@ class Handler:
             return True
 
         if not self.send_payload(
-            payload=payload,
+            stage=stage,
             sender=sender,
 
-            payload_category=payload_category,
-            payload_type=payload_type,
+            p_platform=p_platform,
+            p_architecture=p_architecture,
+            p_type=p_type,
 
             args=args,
             concat=concat,
@@ -288,7 +283,6 @@ class Handler:
             method=method,
             linemax=linemax,
 
-            platform=platform,
             ensure=ensure,
             arguments=arguments
         ):
@@ -299,7 +293,7 @@ class Handler:
             host=host,
             port=port,
 
-            payload_type=payload_type,
+            p_type=p_type,
             session=session,
             timeout=timeout
         )
@@ -308,25 +302,25 @@ class Handler:
             self.badges.print_warning("Payload sent but no session was opened.")
             return True
 
-        session_type = remote[0].details['Type']
+        s_type = remote[0].details['Type']
 
         remote[0].details['Post'] = method
-        remote[0].details['Platform'] = platform
-        remote[0].details['Architecture'] = architecture
+        remote[0].details['Platform'] = p_platform
+        remote[0].details['Architecture'] = p_architecture
 
         if remote[1] not in ('127.0.0.1', '0.0.0.0'):
             rhost = remote[1]
 
-        self.open_session(rhost, port, platform, architecture, session_type, remote[0], on_session)
+        self.open_session(rhost, port, p_platform, p_architecture, s_type, remote[0], on_session)
         return True
 
-    def module_handle_session(self, payload_type='one_side', session=None, timeout=None):
+    def module_handle_session(self, p_type='one_side', session=None, timeout=None):
         module = self.modules.get_current_module()
 
         options = module.handler
         session = session if session is not None else HatSploitSession
 
-        if payload_type == 'reverse_tcp':
+        if p_type == 'reverse_tcp':
             new_session, host = self.server_handle.listen_session(
                 options['LHOST'],
                 options['LPORT'],
@@ -336,7 +330,7 @@ class Handler:
             if not new_session and not host:
                 return None
 
-        elif payload_type == 'bind_tcp':
+        elif p_type == 'bind_tcp':
             host = options['RBHOST']
 
             new_session = self.server_handle.connect_session(
@@ -353,10 +347,10 @@ class Handler:
 
         return new_session, host
 
-    def handle_session(self, host=None, port=None, payload_type='one_side', session=None, timeout=None):
+    def handle_session(self, host=None, port=None, p_type='one_side', session=None, timeout=None):
         session = session if session is not None else HatSploitSession
 
-        if payload_type == 'reverse_tcp':
+        if p_type == 'reverse_tcp':
             if not host or not port:
                 return None
 
@@ -365,7 +359,7 @@ class Handler:
             if not new_session and not host:
                 return None
 
-        elif payload_type == 'bind_tcp':
+        elif p_type == 'bind_tcp':
             if not host or not port:
                 return None
 
@@ -374,7 +368,7 @@ class Handler:
             if not new_session:
                 return None
 
-        elif payload_type == 'one_side':
+        elif p_type == 'one_side':
             return None
 
         else:
@@ -383,10 +377,11 @@ class Handler:
 
         return new_session, host
 
-    def send_payload(self, payload=None, sender=None, payload_category='stager', payload_type='one_side',
-                     args={}, concat=None, location=None, background=None, method=None, linemax=100,
-                     platform='generic', ensure=False, arguments=None):
-        if payload is None:
+    def send_payload(self, stage=None, sender=None, p_platform='cmd',
+                     p_architecture='cmd', p_type='one_side', args={}, concat=None,
+                     location=None, background=None, method=None, linemax=100,
+                     ensure=False, arguments=None):
+        if stage is None:
             self.badges.print_error("Payload stage is not found!")
             return False
 
@@ -395,44 +390,37 @@ class Handler:
             return False
 
         if ensure:
-            linemax = self.ensure_linemax(payload, linemax)
+            linemax = self.ensure_linemax(stage, linemax)
 
-        if payload_category == 'stager':
-            self.badges.print_process(f"Sending payload stage ({str(len(payload))} bytes)...")
-
-            if method != 'raw':
-                self.do_job(
-                    payload_type,
-                    self.post.post,
-                    [
-                        platform,
-                        sender,
-                        payload,
-                        args,
-                        arguments,
-                        method,
-                        location,
-                        concat,
-                        background,
-                        linemax
-                    ]
-                )
-
-                return True
-
-        if payload_category == 'singler' or method == 'raw':
+        if p_architecture == 'cmd':
             self.do_job(
-                payload_type,
+                p_type,
                 self.send,
                 [
                     sender,
-                    payload,
+                    stage,
                     args
                 ]
             )
-
         else:
-            self.badges.print_error("Invalid payload category!")
-            return False
+            self.badges.print_process(f"Sending payload stage ({str(len(stage))} bytes)...")
+
+            self.do_job(
+                p_type,
+                self.post.post,
+                [
+                    stage,
+                    sender,
+                    p_platform,
+                    p_architecture,
+                    args,
+                    arguments,
+                    method,
+                    location,
+                    concat,
+                    background,
+                    linemax
+                ]
+            )
 
         return True

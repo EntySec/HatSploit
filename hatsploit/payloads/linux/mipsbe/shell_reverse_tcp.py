@@ -11,7 +11,6 @@ from hatloads import HatLoads
 
 class HatSploitPayload(Payload, HatLoads):
     details = {
-        'Category': "stager",
         'Name': "Linux mipsbe Shell Reverse TCP",
         'Payload': "linux/mipsbe/shell_reverse_tcp",
         'Authors': [

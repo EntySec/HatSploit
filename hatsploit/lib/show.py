@@ -242,9 +242,9 @@ class Show:
 
             self.local_storage.set("module_shorts", modules_shorts)
 
-    def show_payloads(self, category=None):
+    def show_payloads(self):
         all_payloads = self.local_storage.get("payloads")
-        headers = ("Number", "Category", "Payload", "Rank", "Name")
+        headers = ("Number", "Payload", "Rank", "Name")
         payloads_shorts = {}
 
         for database in sorted(all_payloads):
@@ -253,23 +253,12 @@ class Show:
             payloads = all_payloads[database]
 
             for payload in sorted(payloads):
-                if category:
-                    if category == payloads[payload]['Category']:
-                        payloads_data.append((number, payloads[payload]['Category'], payloads[payload]['Payload'],
-                                              payloads[payload]['Rank'], payloads[payload]['Name']))
-                        payloads_shorts.update({number: payloads[payload]['Payload']})
-                        number += 1
-                else:
-                    payloads_data.append((number, payloads[payload]['Category'], payloads[payload]['Payload'],
-                                          payloads[payload]['Rank'], payloads[payload]['Name']))
-                    payloads_shorts.update({number: payloads[payload]['Payload']})
-                    number += 1
+                payloads_data.append((number, payloads[payload]['Payload'], payloads[payload]['Rank'],
+                                      payloads[payload]['Name']))
+                payloads_shorts.update({number: payloads[payload]['Payload']})
+                number += 1
 
-            if category:
-                self.tables.print_table(f"{category.title()} Payloads ({database})", headers, *payloads_data)
-            else:
-                self.tables.print_table(f"Payloads ({database})", headers, *payloads_data)
-
+            self.tables.print_table(f"Payloads ({database})", headers, *payloads_data)
             self.local_storage.set("payload_shorts", payloads_shorts)
 
     def show_search_plugins(self, keyword):
@@ -328,7 +317,7 @@ class Show:
         modules_shorts = {}
 
         if all_modules:
-            headers = ("Number", "Module", "Rank", "Name")
+            headers = ("Number", "Category", "Module", "Rank", "Name")
             for database in all_modules:
                 number = 0
                 modules_data = []
@@ -340,7 +329,8 @@ class Show:
                         description = modules[module]['Name'].replace(
                             keyword, self.colors.RED + keyword + self.colors.END)
 
-                        modules_data.append((number, name, modules[module]['Rank'], description))
+                        modules_data.append((number, modules[module]['Category'], name,
+                                             modules[module]['Rank'], description))
                         modules_shorts.update({number: modules[module]['Module']})
 
                         number += 1
@@ -353,7 +343,7 @@ class Show:
         payloads_shorts = {}
 
         if all_payloads:
-            headers = ("Number", "Category", "Payload", "Rank", "Name")
+            headers = ("Number", "Payload", "Rank", "Name")
             for database in all_payloads:
                 number = 0
                 payloads_data = []
@@ -366,8 +356,7 @@ class Show:
                         description = payloads[payload]['Name'].replace(
                             keyword, self.colors.RED + keyword + self.colors.END)
 
-                        payloads_data.append((number, payloads[payload]['Category'], name,
-                                              payloads[payload]['Rank'], description))
+                        payloads_data.append((number, name, payloads[payload]['Rank'], description))
                         payloads_shorts.update({number: payloads[payload]['Payload']})
 
                         number += 1
@@ -381,11 +370,11 @@ class Show:
             sessions_data = []
             headers = ("ID", "Platform", "Architecture", "Type", "Host", "Port")
             for session_id in sessions:
-                session_platform = sessions[session_id]['platform']
-                session_architecture = sessions[session_id]['architecture']
-                session_type = sessions[session_id]['type']
-                host = sessions[session_id]['host']
-                port = sessions[session_id]['port']
+                session_platform = sessions[session_id]['Platform']
+                session_architecture = sessions[session_id]['Architecture']
+                session_type = sessions[session_id]['Type']
+                host = sessions[session_id]['Host']
+                port = sessions[session_id]['Port']
 
                 sessions_data.append((session_id, session_platform, session_architecture, session_type, host, port))
             self.tables.print_table("Opened Sessions", headers, *sessions_data)
@@ -397,7 +386,6 @@ class Show:
             self.badges.print_information(f"Name: {details['Name']}")
         if 'Module' in details:
             self.badges.print_information(f"Module: {details['Name']}")
-
 
     def show_options(self):
         current_module = self.modules.get_current_module()

