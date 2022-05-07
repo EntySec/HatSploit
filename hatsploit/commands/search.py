@@ -22,7 +22,7 @@ class HatSploitCommand(Command):
         'Usage': "search <option> <keyword>",
         'MinArgs': 1,
         'Options': {
-            '-w': ['[payloads|modules|plugins]', "Select where to search."],
+            '-w': ['[payloads|encoders|modules|plugins]', "Select where to search."],
             '-e': ['', "Search everywhere."]
         }
     }

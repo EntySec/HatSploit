@@ -77,7 +77,7 @@ class Builder:
         database_path = output_path
         database = {
             "__database__": {
-                "type": "encoders"
+                "Type": "encoders"
             }
         }
 
@@ -111,7 +111,7 @@ class Builder:
         database_path = output_path
         database = {
             "__database__": {
-                "type": "payloads"
+                "Type": "payloads"
             }
         }
 
@@ -128,7 +128,6 @@ class Builder:
                         database.update({
                             payload_name: {
                                 "Path": payload,
-                                "Category": payload_object.details['Category'],
                                 "Name": payload_object.details['Name'],
                                 "Payload": payload_object.details['Payload'],
                                 "Authors": payload_object.details['Authors'],
@@ -149,7 +148,7 @@ class Builder:
         database_path = output_path
         database = {
             "__database__": {
-                "type": "modules"
+                "Type": "modules"
             }
         }
 
@@ -185,7 +184,7 @@ class Builder:
         database_path = output_path
         database = {
             "__database__": {
-                "type": "plugins"
+                "Type": "plugins"
             }
         }
 

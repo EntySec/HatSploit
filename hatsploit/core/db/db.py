@@ -87,7 +87,7 @@ class DB:
         if '__database__' not in database:
             self.badges.print_error("No __database__ section found!")
             return
-        if database['__database__']['type'] != "encoders":
+        if database['__database__']['Type'] != "encoders":
             self.badges.print_error("Not an encoder database!")
             return
         del database['__database__']
@@ -128,7 +128,7 @@ class DB:
         if '__database__' not in database:
             self.badges.print_error("No __database__ section found!")
             return
-        if database['__database__']['type'] != "payloads":
+        if database['__database__']['Type'] != "payloads":
             self.badges.print_error("Not a payload database!")
             return
         del database['__database__']
@@ -169,7 +169,7 @@ class DB:
         if '__database__' not in database:
             self.badges.print_error("No __database__ section found!")
             return
-        if database['__database__']['type'] != "modules":
+        if database['__database__']['Type'] != "modules":
             self.badges.print_error("Not a module database!")
             return
         del database['__database__']
@@ -210,7 +210,7 @@ class DB:
         if '__database__' not in database:
             self.badges.print_error("No __database__ section found!")
             return
-        if database['__database__']['type'] != "plugins":
+        if database['__database__']['Type'] != "plugins":
             self.badges.print_error("Not a plugin database!")
             return
         del database['__database__']

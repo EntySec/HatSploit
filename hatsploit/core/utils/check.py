@@ -104,7 +104,6 @@ class Check:
                     try:
                         payload_object = self.importer.import_payload(payload)
                         keys = [
-                            'Category',
                             'Name',
                             'Payload',
                             'Authors',

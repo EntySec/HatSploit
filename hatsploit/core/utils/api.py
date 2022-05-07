@@ -290,21 +290,21 @@ class API:
                         if fetch == 'all':
                             data.update({
                                 session: {
-                                    'platform': sessions[session]['platform'],
-                                    'architecture': sessions[session]['architecture'],
-                                    'type': sessions[session]['type'],
-                                    'host': sessions[session]['host'],
-                                    'port': sessions[session]['port']
+                                    'Platform': sessions[session]['Platform'],
+                                    'Architecture': sessions[session]['Architecture'],
+                                    'Type': sessions[session]['Type'],
+                                    'Host': sessions[session]['Host'],
+                                    'Port': sessions[session]['Port']
                                 }
                             })
-                        elif fetch == sessions[session]['platform']:
+                        elif fetch == sessions[session]['Platform']:
                             data.update({
                                 session: {
-                                    'platform': sessions[session]['platform'],
-                                    'architecture': sessions[session]['architecture'],
-                                    'type': sessions[session]['type'],
-                                    'host': sessions[session]['host'],
-                                    'port': sessions[session]['port']
+                                    'Platform': sessions[session]['Platform'],
+                                    'Architecture': sessions[session]['Architecture'],
+                                    'Type': sessions[session]['Type'],
+                                    'Host': sessions[session]['Host'],
+                                    'Port': sessions[session]['Port']
                                 }
                             })
 
