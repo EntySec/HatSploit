@@ -28,7 +28,6 @@ class HatSploitModule(Module, Assembler):
 
     payload = {
         'Value': 'macos/x64/say',
-        'Categories': None,
         'Architectures': None,
         'Platforms': None,
         'Types': None
@@ -45,13 +44,13 @@ class HatSploitModule(Module, Assembler):
 
     def run(self):
         path = self.parse_options(self.options)
-        payload, raw = self.payload['Payload'], self.payload['Raw']
+        executable, payload = self.payload['Executable'], self.payload['Payload']
 
-        self.print_information(f"Payload size: {str(len(raw))}")
-        self.print_information(f"Total payload size: {str(len(payload))}")
+        self.print_information(f"Payload size: {str(len(payload))}")
+        self.print_information(f"Executable size: {str(len(executable))}")
 
         self.print_information(f"Payload hex view:")
-        for line in self.hexdump(raw):
+        for line in self.hexdump(payload):
             self.print_empty(line)
 
-        self.loot.save_file(path, payload)
+        self.loot.save_file(path, executable)
