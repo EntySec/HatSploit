@@ -533,16 +533,15 @@ class Modules:
                 self.badges.print_error(f"These options are failed to validate: {missed[:-2]}!")
             else:
                 try:
+                    self.badges.print_empty()
+
                     if current_payload:
                         current_encoder = self.encoders.get_current_encoder()
-                        payload_data = self.payloads.run_payload(current_payload, current_encoder)
+                        payload = self.payloads.run_payload(current_payload, current_encoder)
 
-                        for entry in payload_data:
-                            current_module.payload[entry] = payload_data[entry]
+                        current_module.payload['Payload'] = payload
 
-                    self.badges.print_empty()
                     self.entry_to_module(current_module)
-
                     self.badges.print_success(f"{current_module_name.split('/')[0].title()} module completed!")
                 except (KeyboardInterrupt, EOFError):
                     self.badges.print_warning(f"{current_module_name.split('/')[0].title()} module interrupted.")
@@ -555,7 +554,6 @@ class Modules:
                     self.badges.print_error(f"{current_module_name.split('/')[0].title()} module failed!")
 
                 if current_payload:
-                    for entry in payload_data:
-                        del current_module.payload[entry]
+                    del current_module.payload['Payload']
         else:
             self.badges.print_warning("No module selected.")
