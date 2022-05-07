@@ -205,6 +205,20 @@ class Payloads:
             return result
         return None
 
+    def pack_payload(self, payload, platform, architecture):
+        formats = self.types.formats
+        architectures = self.types.architectures
+
+        exec_f = None
+
+        if architecture in architectures['cpu']:
+            for fmt in formats:
+                if platform in formats[fmt]:
+                    exec_f = fmt
+
+            executable = self.hatvenom.generate(exec_f, architecture, payload)
+        return payload
+
     def run_payload(self, payload_object, encoder_object):
         current_payload = payload_object
         current_encoder = encoder_object
@@ -222,28 +236,14 @@ class Payloads:
                 current_encoder.payload = payload
                 payload = current_encoder.run()
 
-            p_formats = self.types.formats
-            p_architectures = self.types.architectures
-
-            exec_f = None
-
-            if p_details['Architecture'] in p_architectures['cpu']:
-                for fmt in p_formats:
-                    if p_details['Platform'] in p_formats[fmt]:
-                        exec_f = fmt
-
-            executable = self.hatvenom.generate(exec_f, p_details['Architecture'], payload)
-
             return {
                 'Options': p_options,
                 'Details': p_details,
-                'Executable': executable,
                 'Payload': payload
             }
         return {
             'Options': None,
             'Details': None,
-            'Executable': None,
             'Payload': None
         }
 
