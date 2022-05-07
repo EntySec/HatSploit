@@ -220,32 +220,16 @@ class Payloads:
         return payload
 
     def run_payload(self, payload_object, encoder_object):
-        current_payload = payload_object
-        current_encoder = encoder_object
+        if not self.validate_options(payload_object):
+            payload = payload_object.run()
 
-        if not self.validate_options(current_payload):
-            p_options = None
+            if encoder_object:
+                encoder_object.payload = payload
+                payload = encoder_object.run()
 
-            if hasattr(current_payload, "options"):
-                p_options = current_payload.options
+            return payload
 
-            payload = current_payload.run()
-            p_details = current_payload.details
-
-            if current_encoder:
-                current_encoder.payload = payload
-                payload = current_encoder.run()
-
-            return {
-                'Options': p_options,
-                'Details': p_details,
-                'Payload': payload
-            }
-        return {
-            'Options': None,
-            'Details': None,
-            'Payload': None
-        }
+        return None
 
     @staticmethod
     def validate_options(payload_object):
