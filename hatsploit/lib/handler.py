@@ -394,7 +394,9 @@ class Handler:
         if ensure:
             linemax = self.ensure_linemax(stage, linemax)
 
-        if p_architecture == 'cmd':
+        architectures = self.types.architectures["cpu"] + list(self.types.architectures["generic"])
+
+        if p_architecture not in architectures:
             self.do_job(
                 p_type,
                 self.send,
