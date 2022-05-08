@@ -11,12 +11,12 @@ from hatsploit.lib.payload import Payload
 class HatSploitPayload(Payload):
     details = {
         'Name': "Windows Message Box",
-        'Payload': "windows/cmd/message_box",
+        'Payload': "windows/generic/message_box",
         'Authors': [
             'Ivan Nikolsky (enty8080) - payload developer'
         ],
         'Description': "Message Box payload for Windows.",
-        'Architecture': "cmd",
+        'Architecture': "generic",
         'Platform': "windows",
         'Rank': "low",
         'Type': "one_side"
