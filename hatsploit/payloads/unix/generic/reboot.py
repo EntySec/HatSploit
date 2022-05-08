@@ -10,7 +10,6 @@ from hatsploit.lib.payload import Payload
 
 class HatSploitPayload(Payload):
     details = {
-        'Category': "singler",
         'Name': "Unix Reboot",
         'Payload': "unix/generic/reboot",
         'Authors': [
