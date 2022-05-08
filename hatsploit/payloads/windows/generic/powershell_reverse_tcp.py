@@ -11,12 +11,12 @@ from hatsploit.lib.payload import Payload
 class HatSploitPayload(Payload):
     details = {
         'Name': "Windows PowerShell Reverse TCP",
-        'Payload': "windows/cmd/powershell_reverse_tcp",
+        'Payload': "windows/generic/powershell_reverse_tcp",
         'Authors': [
             'Ivan Nikolsky (enty8080) - payload developer'
         ],
         'Description': "Windows cmd.exe reverse TCP payload through PowerShell script.",
-        'Architecture': "cmd",
+        'Architecture': "generic",
         'Platform': "windows",
         'Rank': "high",
         'Type': "reverse_tcp"
