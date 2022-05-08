@@ -26,15 +26,10 @@
 
 import datetime
 
-from hatasm import HatAsm
-
 from pex.post import Post
 from pex.post.pull import Pull
 from pex.post.push import Push
-
-from pex.post import PostTools
 from pex.type import Type
-
 from pex.proto.channel import ChannelClient
 
 from hatsploit.core.cli.badges import Badges
@@ -124,7 +119,6 @@ class HatSploitSession(Session, Loot, Pull, Push, ChannelClient):
 class Handler:
     blinder = Blinder()
     post = Post()
-    post_tools = PostTools()
     server_handle = Handle()
 
     sessions = Sessions()
