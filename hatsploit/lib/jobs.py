@@ -29,17 +29,13 @@ import os
 import sys
 import threading
 
-from hatsploit.core.base.exceptions import Exceptions
-from hatsploit.core.cli.badges import Badges
 from hatsploit.core.cli.tables import Tables
 from hatsploit.lib.modules import Modules
 from hatsploit.lib.storage import LocalStorage
 
 
 class Jobs:
-    exceptions = Exceptions()
     tables = Tables()
-    badges = Badges()
     local_storage = LocalStorage()
     modules = Modules()
 
@@ -68,14 +64,8 @@ class Jobs:
         if not self.local_storage.get("jobs"):
             if self.local_storage.get("hidden_jobs"):
                 self.stop_all_jobs()
-            return True
 
-        self.badges.print_warning("You have some running jobs.")
-        if self.badges.input_question("Exit anyway? [y/N] ")[0].lower() in ['yes', 'y']:
-            self.badges.print_process("Stopping all jobs...")
-            self.stop_all_jobs()
-            return True
-        return False
+        self.stop_all_jobs()
 
     def stop_all_jobs(self):
         jobs = self.local_storage.get("jobs")
@@ -93,10 +83,11 @@ class Jobs:
             exc = ctypes.py_object(SystemExit)
             res = ctypes.pythonapi.PyThreadState_SetAsyncExc(ctypes.c_long(job.ident), exc)
             if res == 0:
-                raise self.exceptions.GlobalException
+                return True
             if res > 1:
                 ctypes.pythonapi.PyThreadState_SetAsyncExc(job.ident, None)
-                raise self.exceptions.GlobalException
+                return True
+        return False
 
     def start_job(self, job_function, job_arguments):
         self.job_process = threading.Thread(target=job_function, args=job_arguments)
@@ -115,11 +106,11 @@ class Jobs:
                     self.stop_job(self.local_storage.get(jobs_var)[job_id]['job_process'])
                     self.local_storage.delete_element(jobs_var, job_id)
                 except Exception:
-                    self.badges.print_error("Failed to stop job!")
+                    raise RuntimeError("Failed to stop job!")
             else:
-                self.badges.print_error("Invalid job given!")
+                raise RuntimeError("Invalid job given!")
         else:
-            self.badges.print_error("Invalid job given!")
+            raise RuntimeError("Invalid job given!")
 
     def create_job(self, job_name, module_name, job_function, job_arguments=[], hidden=False):
         jobs_var = "jobs"
