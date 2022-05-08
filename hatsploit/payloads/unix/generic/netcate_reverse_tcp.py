@@ -10,7 +10,6 @@ from hatsploit.lib.payload import Payload
 
 class HatSploitPayload(Payload):
     details = {
-        'Category': "singler",
         'Name': "Netcat (-e) Shell Reverse TCP",
         'Payload': "unix/generic/netcate_reverse_tcp",
         'Authors': [
