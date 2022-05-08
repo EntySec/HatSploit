@@ -41,7 +41,10 @@ class Check:
         one_fail = False
         self.badges.print_process("Checking all base modules...")
 
-        modules_path = os.path.normpath(self.config.path_config['modules_path'])
+        modules_path = os.path.normpath(
+            self.config.path_config['modules_path']
+        )
+
         for dest, _, files in os.walk(modules_path):
             for file in files:
                 if file.endswith('.py') and file != '__init__.py':
@@ -60,8 +63,11 @@ class Check:
                         ]
                         assert (all(key in module_object.details for key in keys))
                         self.badges.print_success(f"{module}: OK")
-                    except Exception:
+
+                    except Exception as e:
+                        self.badges.print_error(str(e))
                         self.badges.print_error(f"{module}: FAIL")
+
                         one_fail = True
         return not one_fail
 
@@ -69,7 +75,10 @@ class Check:
         one_fail = False
         self.badges.print_process("Checking all base encoders...")
 
-        encoders_path = os.path.normpath(self.config.path_config['encoders_path'])
+        encoders_path = os.path.normpath(
+            self.config.path_config['encoders_path']
+        )
+
         for dest, _, files in os.walk(encoders_path):
             for file in files:
                 if file.endswith('.py') and file != '__init__.py':
@@ -86,8 +95,11 @@ class Check:
                         ]
                         assert (all(key in encoder_object.details for key in keys))
                         self.badges.print_success(f"{encoder}: OK")
-                    except Exception:
+
+                    except Exception as e:
+                        self.badges.print_error(str(e))
                         self.badges.print_error(f"{encoder}: FAIL")
+
                         one_fail = True
         return not one_fail
 
@@ -95,7 +107,10 @@ class Check:
         one_fail = False
         self.badges.print_process("Checking all base payloads...")
 
-        payloads_path = os.path.normpath(self.config.path_config['payloads_path'])
+        payloads_path = os.path.normpath(
+            self.config.path_config['payloads_path']
+        )
+
         for dest, _, files in os.walk(payloads_path):
             for file in files:
                 if file.endswith('.py') and file != '__init__.py':
@@ -115,8 +130,11 @@ class Check:
                         ]
                         assert (all(key in payload_object.details for key in keys))
                         self.badges.print_success(f"{payload}: OK")
-                    except Exception:
+
+                    except Exception as e:
+                        self.badges.print_error(str(e))
                         self.badges.print_error(f"{payload}: FAIL")
+
                         one_fail = True
         return not one_fail
 
@@ -124,7 +142,10 @@ class Check:
         one_fail = False
         self.badges.print_process("Checking all base plugins...")
 
-        plugins_path = os.path.normpath(self.config.path_config['plugins_path'])
+        plugins_path = os.path.normpath(
+            self.config.path_config['plugins_path']
+        )
+
         for dest, _, files in os.walk(plugins_path):
             for file in files:
                 if file.endswith('.py') and file != '__init__.py':
@@ -139,8 +160,11 @@ class Check:
                         ]
                         assert (all(key in plugin_object.details for key in keys))
                         self.badges.print_success(f"{plugin}: OK")
-                    except Exception:
+
+                    except Exception as e:
+                        self.badges.print_error(str(e))
                         self.badges.print_error(f"{plugin}: FAIL")
+
                         one_fail = True
         return not one_fail
 
