@@ -10,7 +10,6 @@ from hatsploit.lib.payload import Payload
 
 class HatSploitPayload(Payload):
     details = {
-        'Category': "singler",
         'Name': "PHP Shell Reverse TCP",
         'Payload': "unix/generic/php_reverse_tcp",
         'Authors': [
