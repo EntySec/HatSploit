@@ -10,7 +10,6 @@ from hatsploit.lib.payload import Payload
 
 class HatSploitPayload(Payload):
     details = {
-        'Category': "singler",
         'Name': "Linux generic Fork Bomb",
         'Payload': "linux/generic/fork_bomb",
         'Authors': [
