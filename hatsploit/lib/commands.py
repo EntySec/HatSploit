@@ -27,7 +27,6 @@
 from hatsploit.lib.show import Show
 
 from hatsploit.core.db.importer import Importer
-from hatsploit.core.cli.badges import Badges
 from hatsploit.core.base.execute import Execute
 
 from hatsploit.lib.modules import Modules
@@ -38,7 +37,6 @@ class Commands:
     show = Show()
 
     importer = Importer()
-    badges = Badges()
     execute = Execute()
 
     modules = Modules()
@@ -58,7 +56,7 @@ class Commands:
             if not self.execute.execute_builtin_method(commands):
                 if not self.execute.execute_custom_command(commands, handler):
                     if error:
-                        self.badges.print_error(f"Unrecognized command: {commands[0]}!")
+                        raise RuntimeError(f"Unrecognized command: {commands[0]}!")
                     return False
         return True
 
