@@ -12,7 +12,6 @@ from pex.string import String
 
 class HatSploitPayload(Payload, String):
     details = {
-        'Category': "singler",
         'Name': "Netcat Shell Reverse TCP",
         'Payload': "unix/generic/netcat_reverse_tcp",
         'Authors': [
