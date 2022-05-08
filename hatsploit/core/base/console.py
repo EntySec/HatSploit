@@ -139,6 +139,8 @@ class Console:
                 pass
             except RuntimeError as e:
                 self.badges.print_error(str(e))
+            except RuntimeWarning as w:
+                self.badges.print_warning(str(e))
             except Exception as e:
                 self.badges.print_error(f"An error occurred: {str(e)}!")
 
