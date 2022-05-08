@@ -29,12 +29,9 @@ import os
 from hatsploit.lib.config import Config
 from hatsploit.lib.storage import GlobalStorage
 
-from hatsploit.core.cli.badges import Badges
-
 
 class Log:
     config = Config()
-    badges = Badges()
 
     storage_path = config.path_config['storage_path']
     global_storage = GlobalStorage(storage_path)
@@ -43,9 +40,7 @@ class Log:
         if os.access(filename, os.R_OK):
             self.global_storage.set("log", filename)
             self.global_storage.set_all()
-            self.badges.print_information("HatSploit log: on")
     
     def disable_log(self):
       self.global_storage.set("log", None)
       self.global_storage.set_all()
-      self.badges.print_information("HatSploit log: off")
