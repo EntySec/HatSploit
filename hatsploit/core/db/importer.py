@@ -32,12 +32,14 @@ import sys
 import threading
 import time
 
+from hatsploit.lib.badges import Badges
 from hatsploit.core.db.db import DB
 from hatsploit.lib.config import Config
 from hatsploit.lib.storage import LocalStorage
 
 
 class Importer:
+    badges = Badges()
     db = DB()
     local_storage = LocalStorage()
     config = Config()
@@ -145,7 +147,7 @@ class Importer:
                     command_name = command_object.details['Name']
                     commands[command_name] = command_object
                 except Exception:
-                    raise RuntimeError(f"Failed to load {file[:-3]} command!")
+                    self.badges.print_error(f"Failed to load {file[:-3]} command!")
 
         return commands
 
