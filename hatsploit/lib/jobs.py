@@ -84,7 +84,7 @@ class Jobs:
             res = ctypes.pythonapi.PyThreadState_SetAsyncExc(ctypes.c_long(job.ident), exc)
 
             if res > 1:
-                ctypes.pythonapi.PyThreadState_SetAsyncExc(thread.ident, None)
+                ctypes.pythonapi.PyThreadState_SetAsyncExc(job.ident, None)
                 raise RuntimeError("Failed to stop job!")
         raise RuntimeError("Invalid job given!")
                 
