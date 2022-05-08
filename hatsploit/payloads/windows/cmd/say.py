@@ -11,12 +11,12 @@ from hatsploit.lib.payload import Payload
 class HatSploitPayload(Payload):
     details = {
         'Name': "Windows Say",
-        'Payload': "windows/cmd/say",
+        'Payload': "windows/generic/say",
         'Authors': [
             'Ivan Nikolsky (enty8080) - payload developer'
         ],
         'Description': "Say payload for Windows.",
-        'Architecture': "cmd",
+        'Architecture': "generic",
         'Platform': "windows",
         'Rank': "low",
         'Type': "one_side"
