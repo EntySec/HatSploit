@@ -201,8 +201,7 @@ class Payloads:
             if encoder:
                 encoder_object = self.encoders.get_encoder(encoder)
 
-            result = self.run_payload(payload_object, encoder_object)
-            return result
+            return self.run_payload(payload_object, encoder_object)
         return None
 
     def pack_payload(self, payload, platform, architecture):
@@ -216,7 +215,7 @@ class Payloads:
                 if platform in formats[fmt]:
                     exec_f = fmt
 
-            executable = self.hatvenom.generate(exec_f, architecture, payload)
+            return self.hatvenom.generate(exec_f, architecture, payload)
         return payload
 
     def run_payload(self, payload_object, encoder_object):
