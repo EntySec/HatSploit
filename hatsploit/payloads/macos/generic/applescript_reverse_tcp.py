@@ -11,12 +11,12 @@ from hatsploit.lib.payload import Payload
 class HatSploitPayload(Payload):
     details = {
         'Name': "AppleScript Reverse TCP",
-        'Payload': "macos/cmd/applescript_reverse_tcp",
+        'Payload': "macos/generic/applescript_reverse_tcp",
         'Authors': [
             'Ivan Nikolsky (enty8080) - payload developer'
         ],
         'Description': "AppleScript reverse TCP payload.",
-        'Architecture': "cmd",
+        'Architecture': "generic",
         'Platform': "macos",
         'Rank': "high",
         'Type': "reverse_tcp"
