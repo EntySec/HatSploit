@@ -549,6 +549,9 @@ class Modules:
                 except RuntimeError as e:
                     self.badges.print_error(str(e))
 
+                except RuntimeWarning as w:
+                    self.badges.print_warning(str(w))
+
                 except Exception as e:
                     self.badges.print_error(f"An error occurred in module: {str(e)}!")
                     self.badges.print_error(f"{current_module_name.split('/')[0].title()} module failed!")
