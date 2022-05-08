@@ -379,8 +379,8 @@ class Handler:
 
         return new_session, host
 
-    def send_payload(self, stage=None, sender=None, p_platform='cmd',
-                     p_architecture='cmd', p_type='one_side', args={}, concat=None,
+    def send_payload(self, stage=None, sender=None, p_platform='generic',
+                     p_architecture='generic', p_type='one_side', args={}, concat=None,
                      location=None, background=None, method=None, linemax=100,
                      ensure=False, arguments=None):
         if stage is None:
