@@ -10,7 +10,6 @@ from hatsploit.lib.payload import Payload
 
 class HatSploitPayload(Payload):
     details = {
-        'Category': "singler",
         'Name': "ZSH shell Bind TCP",
         'Payload': "unix/generic/zsh_bind_tcp",
         'Authors': [
