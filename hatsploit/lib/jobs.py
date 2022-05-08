@@ -82,12 +82,12 @@ class Jobs:
         if job.is_alive():
             exc = ctypes.py_object(SystemExit)
             res = ctypes.pythonapi.PyThreadState_SetAsyncExc(ctypes.c_long(job.ident), exc)
-            if res == 0:
-                return True
+
             if res > 1:
-                ctypes.pythonapi.PyThreadState_SetAsyncExc(job.ident, None)
-                return True
-        return False
+                ctypes.pythonapi.PyThreadState_SetAsyncExc(thread.ident, None)
+                raise RuntimeError("Failed to stop job!")
+        raise RuntimeError("Invalid job given!")
+                
 
     def start_job(self, job_function, job_arguments):
         self.job_process = threading.Thread(target=job_function, args=job_arguments)
@@ -102,11 +102,8 @@ class Jobs:
         if self.local_storage.get(jobs_var):
             job_id = int(job_id)
             if job_id in list(self.local_storage.get(jobs_var)):
-                try:
-                    self.stop_job(self.local_storage.get(jobs_var)[job_id]['job_process'])
-                    self.local_storage.delete_element(jobs_var, job_id)
-                except Exception:
-                    raise RuntimeError("Failed to stop job!")
+                self.stop_job(self.local_storage.get(jobs_var)[job_id]['job_process'])
+                self.local_storage.delete_element(jobs_var, job_id)
             else:
                 raise RuntimeError("Invalid job given!")
         else:
