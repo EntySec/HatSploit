@@ -190,8 +190,6 @@ class Handler:
 
                     return True
 
-        stage = self.payloads.pack_payload(module.payload['Payload'])
-
         if payload.details['Type'] == 'bind_tcp':
             host = options['RBHOST']
             port = options['RBPORT']
@@ -215,6 +213,12 @@ class Handler:
 
         p_platform = payload.details['Platform']
         p_architecture = payload.details['Architecture']
+
+        stage = self.payloads.pack_payload(
+            module.payload['Payload'],
+            p_platform,
+            p_architecture
+        )
 
         if p_platform in self.types.platforms:
             module_platform = module.details['Platform']
