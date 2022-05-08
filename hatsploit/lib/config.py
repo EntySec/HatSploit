@@ -28,14 +28,12 @@ import os
 import yaml
 import pathlib
 
-from hatsploit.core.cli.badges import Badges
 from hatsploit.lib.storage import GlobalStorage
 from hatsploit.lib.storage import LocalStorage
 
 
 class Config:
     def __init__(self):
-        self.badges = Badges()
         self.local_storage = LocalStorage()
 
         self.user_path = f'{pathlib.Path.home()}/.hsf/'
