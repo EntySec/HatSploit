@@ -10,7 +10,6 @@ from hatsploit.lib.payload import Payload
 
 class HatSploitPayload(Payload):
     details = {
-        'Category': "singler",
         'Name': "Windows Calculator",
         'Payload': "windows/generic/calc",
         'Authors': [

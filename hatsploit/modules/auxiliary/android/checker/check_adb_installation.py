@@ -6,10 +6,10 @@
 #
 
 from hatsploit.lib.module import Module
-from pex.proto.tcp import TCPClient
+from pex.proto.tcp import TCPTools
 
 
-class HatSploitModule(Module, TCPClient):
+class HatSploitModule(Module, TCPTools):
     details = {
         'Category': "auxiliary",
         'Name': "ADB Installation Checker",

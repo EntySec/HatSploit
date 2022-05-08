@@ -10,7 +10,6 @@ from hatsploit.lib.payload import Payload
 
 class HatSploitPayload(Payload):
     details = {
-        'Category': "singler",
         'Name': "Windows Say",
         'Payload': "windows/generic/say",
         'Authors': [

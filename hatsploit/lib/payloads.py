@@ -201,51 +201,34 @@ class Payloads:
             if encoder:
                 encoder_object = self.encoders.get_encoder(encoder)
 
-            result = self.run_payload(payload_object, encoder_object)
-            return result
+            return self.run_payload(payload_object, encoder_object)
         return None
 
+    def pack_payload(self, payload, platform, architecture):
+        formats = self.types.formats
+        architectures = self.types.architectures
+
+        exec_f = None
+
+        if architecture in architectures['cpu']:
+            for fmt in formats:
+                if platform in formats[fmt]:
+                    exec_f = fmt
+
+            return self.hatvenom.generate(exec_f, architecture, payload)
+        return payload
+
     def run_payload(self, payload_object, encoder_object):
-        current_payload = payload_object
-        current_encoder = encoder_object
+        if not self.validate_options(payload_object):
+            payload = payload_object.run()
 
-        if not self.validate_options(current_payload):
-            p_options = None
+            if encoder_object:
+                encoder_object.payload = payload
+                payload = encoder_object.run()
 
-            if hasattr(current_payload, "options"):
-                p_options = current_payload.options
+            return payload
 
-            payload = current_payload.run()
-            p_details = current_payload.details
-
-            if current_encoder:
-                current_encoder.payload = payload
-                payload = current_encoder.run()
-
-            p_formats = self.types.formats
-            p_architectures = self.types.architectures
-
-            exec_f = None
-
-            if p_details['Architecture'] in p_architectures['cpu']:
-                for fmt in p_formats:
-                    if p_details['Platform'] in p_formats[fmt]:
-                        exec_f = fmt
-
-            executable = self.hatvenom.generate(exec_f, p_details['Architecture'], payload)
-
-            return {
-                'Options': p_options,
-                'Details': p_details,
-                'Executable': executable,
-                'Payload': payload
-            }
-        return {
-            'Options': None,
-            'Details': None,
-            'Executable': None,
-            'Payload': None
-        }
+        return None
 
     @staticmethod
     def validate_options(payload_object):
