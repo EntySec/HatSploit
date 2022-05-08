@@ -28,7 +28,6 @@ import os
 import readline
 import sys
 
-from hatsploit.core.base.exceptions import Exceptions
 from hatsploit.core.base.execute import Execute
 from hatsploit.core.base.loader import Loader
 
@@ -51,7 +50,6 @@ from hatsploit.lib.storage import LocalStorage
 
 
 class Console:
-    exceptions = Exceptions()
     execute = Execute()
     loader = Loader()
 
@@ -135,12 +133,15 @@ class Console:
                 if self.local_storage.get("history"):
                     readline.write_history_file(self.history)
 
-            except (KeyboardInterrupt, EOFError, self.exceptions.GlobalException):
+            except (KeyboardInterrupt, EOFError):
                 pass
+
             except RuntimeError as e:
                 self.badges.print_error(str(e))
+
             except RuntimeWarning as w:
                 self.badges.print_warning(str(e))
+
             except Exception as e:
                 self.badges.print_error(f"An error occurred: {str(e)}!")
 
