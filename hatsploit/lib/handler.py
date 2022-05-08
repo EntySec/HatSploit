@@ -158,14 +158,6 @@ class Handler:
 
         return linemax
 
-    def send(self, sender, stage, args={}):
-        if isinstance(stage, bytes):
-            self.badges.print_process(f"Sending payload stage ({str(len(stage))} bytes)...")
-        else:
-            self.badges.print_process("Sending command payload stage...")
-
-        self.post_tools.post_command(sender, stage, args)
-
     def open_session(self, host, port, s_platform, s_architecture, s_type, session, action=None):
         s_id = self.sessions.add_session(s_platform, s_architecture, s_type, host, port, session)
         time = datetime.datetime.now().astimezone().strftime("%Y-%m-%d %H:%M:%S %Z")
@@ -394,37 +386,24 @@ class Handler:
         if ensure:
             linemax = self.ensure_linemax(stage, linemax)
 
-        architectures = self.types.architectures["cpu"] + list(self.types.architectures["generic"])
+        self.badges.print_process(f"Sending payload stage ({str(len(stage))} bytes)...")
 
-        if p_architecture not in architectures:
-            self.do_job(
-                p_type,
-                self.send,
-                [
-                    sender,
-                    stage,
-                    args
-                ]
-            )
-        else:
-            self.badges.print_process(f"Sending payload stage ({str(len(stage))} bytes)...")
-
-            self.do_job(
-                p_type,
-                self.post.post,
-                [
-                    stage,
-                    sender,
-                    p_platform,
-                    p_architecture,
-                    args,
-                    arguments,
-                    method,
-                    location,
-                    concat,
-                    background,
-                    linemax
-                ]
-            )
+        self.do_job(
+            p_type,
+            self.post.post,
+            [
+                stage,
+                sender,
+                p_platform,
+                p_architecture,
+                args,
+                arguments,
+                method,
+                location,
+                concat,
+                background,
+                linemax
+            ]
+        )
 
         return True
