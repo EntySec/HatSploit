@@ -32,7 +32,7 @@ import sys
 import threading
 import time
 
-from hatsploit.lib.badges import Badges
+from hatsploit.core.cli.badges import Badges
 from hatsploit.core.db.db import DB
 from hatsploit.lib.config import Config
 from hatsploit.lib.storage import LocalStorage
