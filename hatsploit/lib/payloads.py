@@ -179,7 +179,7 @@ class Payloads:
         if not self.check_imported(module_name, payload):
             payload_object = self.import_payload(module_name, payload)
             if not payload_object:
-                raise RuntimeError("Failed to select payload from database!")
+                raise RuntimeError(f"Failed to select payload from database: {payload}!")
 
     def generate_payload(self, payload, options={}, encoder=None):
         payload_object = self.get_payload(payload)
