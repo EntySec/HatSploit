@@ -169,7 +169,7 @@ class Modules:
                         self.badges.print_process(f"Using default payload {payload_name}...")
 
                         if self.payloads.check_exist(payload_name):
-                            self.payloads.add_payload(module, payload_name):
+                            self.payloads.add_payload(module, payload_name)
                             self.add_to_global(module_object)
                             return
 
@@ -375,7 +375,7 @@ class Modules:
                     if self.encoders.check_payload_compatible(value, architecture):
                         self.encoders.add_encoder(
                             current_module.details['Module'],
-                            current_payload.details['Payload'], value):
+                            current_payload.details['Payload'], value)
                         return
 
                 raise RuntimeError("Invalid value, expected valid encoder!")
