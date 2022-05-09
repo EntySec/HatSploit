@@ -27,6 +27,8 @@
 import os
 import sys
 
+import traceback
+
 from hatsploit.lib.config import Config
 from hatsploit.lib.jobs import Jobs
 from hatsploit.lib.loot import Loot
