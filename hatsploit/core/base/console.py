@@ -38,8 +38,8 @@ from hatsploit.core.utils.ui.completer import Completer
 from hatsploit.core.utils.ui.banner import Banner
 from hatsploit.core.utils.ui.tip import Tip
 
+from hatsploit.lib.runtime import Runtime
 from hatsploit.lib.loot import Loot
-
 from hatsploit.lib.config import Config
 from hatsploit.lib.jobs import Jobs
 from hatsploit.lib.options import Options
@@ -60,8 +60,8 @@ class Console:
     banner = Banner()
     tip = Tip()
 
+    runtime = Runtime()
     loot = Loot()
-
     config = Config()
     jobs = Jobs()
     options = Options()
@@ -80,6 +80,12 @@ class Console:
 
     completion = None
 
+    def shell(self):
+        self.runtime.start()
+        self.launch_history()
+        self.show_header()
+        self.launch_shell()
+
     def check_install(self):
         if os.path.exists(self.config.path_config['root_path']):
             workspace = self.config.path_config['user_path']
@@ -97,22 +103,7 @@ class Console:
         self.badges.print_information("Consider running installation.")
         return False
 
-    def start_hsf(self):
-        try:
-            self.loader.load_all()
-        except Exception:
-            sys.exit(1)
-
-    def update_events(self):
-        current_module = self.modules.get_current_module()
-        current_payload = self.payloads.get_current_payload()
-
-        self.jobs.stop_dead()
-        self.sessions.close_dead()
-
-        self.options.add_handler_options(current_module, current_payload)
-
-    def launch_menu(self):
+    def launch_shell(self):
         while True:
             try:
                 if not self.modules.get_current_module():
@@ -145,25 +136,23 @@ class Console:
             except Exception as e:
                 self.badges.print_error(f"An error occurred: {str(e)}!")
 
-    def enable_history_file(self):
-        if not os.path.exists(self.history):
-            open(self.history, 'w').close()
-        readline.read_history_file(self.history)
-
     def launch_history(self):
         readline.set_auto_history(False)
 
         using_history = self.local_storage.get("history")
         if using_history:
             readline.set_auto_history(True)
-            self.enable_history_file()
+
+            if not os.path.exists(self.history):
+                open(self.history, 'w').close()
+            readline.read_history_file(self.history)
 
         readline.set_completer(self.completer.completer)
         readline.set_completer_delims(" \t\n;")
 
         readline.parse_and_bind("tab: complete")
 
-    def launch_shell(self):
+    def show_header(self):
         version = self.config.core_config['details']['version']
         codename = self.config.core_config['details']['codename']
 
@@ -212,12 +201,6 @@ class Console:
 
         if self.config.core_config['console']['tip']:
             self.tip.print_random_tip()
-
-    def shell(self):
-        self.start_hsf()
-        self.launch_history()
-        self.launch_shell()
-        self.launch_menu()
 
     def script(self, input_files, do_shell=False):
         self.start_hsf()
