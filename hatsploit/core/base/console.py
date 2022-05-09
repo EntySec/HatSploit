@@ -29,7 +29,6 @@ import readline
 import sys
 
 from hatsploit.core.base.execute import Execute
-from hatsploit.core.base.loader import Loader
 
 from hatsploit.core.cli.fmt import FMT
 from hatsploit.core.cli.badges import Badges
@@ -39,19 +38,13 @@ from hatsploit.core.utils.ui.banner import Banner
 from hatsploit.core.utils.ui.tip import Tip
 
 from hatsploit.lib.runtime import Runtime
-from hatsploit.lib.loot import Loot
 from hatsploit.lib.config import Config
-from hatsploit.lib.jobs import Jobs
-from hatsploit.lib.options import Options
-from hatsploit.lib.sessions import Sessions
 from hatsploit.lib.modules import Modules
-from hatsploit.lib.payloads import Payloads
 from hatsploit.lib.storage import LocalStorage
 
 
 class Console:
     execute = Execute()
-    loader = Loader()
 
     fmt = FMT()
     badges = Badges()
@@ -61,13 +54,8 @@ class Console:
     tip = Tip()
 
     runtime = Runtime()
-    loot = Loot()
     config = Config()
-    jobs = Jobs()
-    options = Options()
-    sessions = Sessions()
     modules = Modules()
-    payloads = Payloads()
     local_storage = LocalStorage()
 
     history = config.path_config['history_path']
@@ -92,16 +80,16 @@ class Console:
              prompt = f'({self.prompt}: {category}: %red{name}%end)> '
          commands = self.badges.input_empty(prompt)
 
-         self.update_events()
+         self.runtime.update()
          self.execute.execute_command(commands)
-         self.update_events()
+         self.runtime.update()
 
          if self.local_storage.get("history"):
              readline.write_history_file(self.history)
 
     def shell(self, start=True, history=True, header=True):
         if start:
-            if self.runtime.catch(self.runtime.start()):
+            if self.runtime.catch(self.runtime.start):
                 if history:
                     self.launch_history()
                 if header:
@@ -189,10 +177,9 @@ class Console:
                     for line in file_text:
                         commands = self.fmt.format_commands(line)
 
-                        self.options.add_handler_options()
-                        self.jobs.stop_dead()
-
+                        self.runtime.update()
                         self.execute.execute_command(commands)
+                        self.runtime.update()
 
             if shell:
                 self.shell(
