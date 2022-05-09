@@ -30,8 +30,11 @@ config = Config()
 config.configure()
 
 from .__main__ import HatSploit
+from hatsploit.lib.runtime import Runtime
+
+runtime = Runtime()
 
 
 def cli():
     hsf = HatSploit()
-    hsf.cli()
+    runtime.catch(hsf.cli)
