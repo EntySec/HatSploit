@@ -71,21 +71,21 @@ class Console:
     def shell_execute(self):
         if not self.modules.get_current_module():
             prompt = f'({self.prompt})> '
-         else:
-             current_module = self.modules.get_current_module()
+        else:
+            current_module = self.modules.get_current_module()
 
-             category = current_module.details['Category']
-             name = current_module.details['Name']
+            category = current_module.details['Category']
+            name = current_module.details['Name']
 
-             prompt = f'({self.prompt}: {category}: %red{name}%end)> '
-         commands = self.badges.input_empty(prompt)
+            prompt = f'({self.prompt}: {category}: %red{name}%end)> '
+        commands = self.badges.input_empty(prompt)
 
-         self.runtime.update()
-         self.execute.execute_command(commands)
-         self.runtime.update()
+        self.runtime.update()
+        self.execute.execute_command(commands)
+        self.runtime.update()
 
-         if self.local_storage.get("history"):
-             readline.write_history_file(self.history)
+        if self.local_storage.get("history"):
+            readline.write_history_file(self.history)
 
     def shell(self, start=True, history=True, header=True):
         if start:
@@ -97,6 +97,14 @@ class Console:
 
                 while True:
                     self.runtime.catch(self.shell_execute)
+        else:
+            if history:
+                self.launch_history()
+            if header:
+                self.show_header()
+
+            while True:
+                self.runtime.catch(self.shell_execute)
 
     def launch_history(self):
         readline.set_auto_history(False)
