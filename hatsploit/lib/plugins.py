@@ -121,7 +121,7 @@ class Plugins:
             else:
                 raise RuntimeError(f"Invalid plugin: {plugin}!")
         else:
-            raise RuntimeWarning(f"Plugin {plugin} is already loaded!")
+            raise RuntimeWarning(f"Plugin {plugin} is already loaded.")
 
     def unload_plugin(self, plugin):
         plugins_shorts = self.local_storage.get("plugin_shorts")
