@@ -30,12 +30,8 @@ import os
 import yaml
 import argparse
 
-from hatsploit.lib.config import Config
-
-config = Config()
-config.configure()
-
 from hatsploit.lib.jobs import Jobs
+from hatsploit.lib.runtime import Runtime
 
 from hatsploit.core.base.console import Console
 from hatsploit.core.cli.badges import Badges
@@ -46,6 +42,8 @@ from hatsploit.core.utils.update import Update
 
 class HatSploit:
     jobs = Jobs()
+    runtime = Runtime()
+
     console = Console()
     badges = Badges()
     check = Check()
@@ -53,7 +51,7 @@ class HatSploit:
 
     path_config = config.path_config
 
-    def accept_terms_of_service(self):
+    def policy(self):
         if not os.path.exists(self.path_config['accept_path']):
             self.badges.print_information("--( The HatSploit Terms of Service )--")
             terms = """
@@ -79,112 +77,109 @@ By accepting our terms of service, you agree that you will only use this tool fo
             return True
         return True
 
-    def launch(self, do_shell=True, script=[]):
+    def launch(self, shell=True, script=[]):
         sys.stdout.write("\033]0;HatSploit Framework\007")
 
-        if self.console.check_install():
-            if self.accept_terms_of_service():
+        if self.runtime.catch(self.runtime.check()):
+            if self.policy():
                 if not script:
-                    if do_shell:
+                    if shell:
                         self.console.shell()
                 else:
-                    self.console.script(script, do_shell)
+                    self.console.script(script, shell)
 
+    def cli(self):
+        description = "Modular penetration testing platform that enables you to write, test, and execute exploit code."
+        parser = argparse.ArgumentParser(description=description)
+        parser.add_argument('-c', '--check', dest='check_all', action='store_true',
+                            help='Check base modules, payloads, encoders and plugins.')
+        parser.add_argument('--check-modules', dest='check_modules', action='store_true', help='Check only base modules.')
+        parser.add_argument('--check-payloads', dest='check_payloads', action='store_true',
+                            help='Check only base payloads.')
+        parser.add_argument('--check-encoders', dest='check_encoders', action='store_true',
+                            help='Check only base encoders.')
+        parser.add_argument('--check-plugins', dest='check_plugins', action='store_true', help='Check only base plugins.')
+        parser.add_argument('--rest-api', dest='rest_api', action='store_true', help='Start HatSploit REST API server.')
+        parser.add_argument('--host', dest='host', help='HatSploit REST API server host. [default: 127.0.0.1]')
+        parser.add_argument('--port', dest='port', type=int, help='HatSploit REST API server port. [default: 8008]')
+        parser.add_argument('--username', dest='username', help='HatSploit REST API server username.')
+        parser.add_argument('--password', dest='password', help='HatSploit REST API server password.')
+        parser.add_argument('-u', '--update', dest='update', action='store_true', help='Update HatSploit Framework.')
+        parser.add_argument('-s', '--script', dest='script', help='Execute HatSploit commands from script file.')
+        parser.add_argument('--no-exit', dest='no_exit', action='store_true', help='Do not exit after script execution.')
+        parser.add_argument('--no-startup', dest='no_startup', action='store_true', help='Do not execute startup.hsf file.')
+        args = parser.parse_args()
 
-def main():
-    description = "Modular penetration testing platform that enables you to write, test, and execute exploit code."
-    parser = argparse.ArgumentParser(description=description)
-    parser.add_argument('-c', '--check', dest='check_all', action='store_true',
-                        help='Check base modules, payloads, encoders and plugins.')
-    parser.add_argument('--check-modules', dest='check_modules', action='store_true', help='Check only base modules.')
-    parser.add_argument('--check-payloads', dest='check_payloads', action='store_true',
-                        help='Check only base payloads.')
-    parser.add_argument('--check-encoders', dest='check_encoders', action='store_true',
-                        help='Check only base encoders.')
-    parser.add_argument('--check-plugins', dest='check_plugins', action='store_true', help='Check only base plugins.')
-    parser.add_argument('--rest-api', dest='rest_api', action='store_true', help='Start HatSploit REST API server.')
-    parser.add_argument('--host', dest='host', help='HatSploit REST API server host. [default: 127.0.0.1]')
-    parser.add_argument('--port', dest='port', type=int, help='HatSploit REST API server port. [default: 8008]')
-    parser.add_argument('--username', dest='username', help='HatSploit REST API server username.')
-    parser.add_argument('--password', dest='password', help='HatSploit REST API server password.')
-    parser.add_argument('-u', '--update', dest='update', action='store_true', help='Update HatSploit Framework.')
-    parser.add_argument('-s', '--script', dest='script', help='Execute HatSploit commands from script file.')
-    parser.add_argument('--no-exit', dest='no_exit', action='store_true', help='Do not exit after script execution.')
-    parser.add_argument('--no-startup', dest='no_startup', action='store_true', help='Do not execute startup.hsf file.')
-    args = parser.parse_args()
+        if args.check_all:
+            sys.exit(not self.check.check_all())
 
-    hsf = HatSploit()
+        elif args.check_modules:
+            sys.exit(self.check.check_modules())
 
-    if args.check_all:
-        sys.exit(not hsf.check.check_all())
+        elif args.check_payloads:
+            sys.exit(self.check.check_payloads())
 
-    elif args.check_modules:
-        sys.exit(hsf.check.check_modules())
+        elif args.check_plugins:
+            sys.exit(self.check.check_plugins())
 
-    elif args.check_payloads:
-        sys.exit(hsf.check.check_payloads())
+        elif args.check_encoders:
+            sys.exit(self.check.check_encoders())
 
-    elif args.check_plugins:
-        sys.exit(hsf.check.check_plugins())
+        elif args.rest_api:
+            if not args.username and not args.password:
+                parser.print_help()
+                sys.exit(1)
+            else:
+                host, port = '127.0.0.1', 8008
+                if args.host:
+                    host = args.host
 
-    elif args.check_encoders:
-        sys.exit(hsf.check.check_encoders())
+                if args.port:
+                    port = args.port
 
-    elif args.rest_api:
-        if not args.username and not args.password:
-            parser.print_help()
-            sys.exit(1)
-        else:
-            host, port = '127.0.0.1', 8008
-            if args.host:
-                host = args.host
-
-            if args.port:
-                port = args.port
-
-            rest_api = API(
-                host=host,
-                port=port,
-                username=args.username,
-                password=args.password
-            )
-
-            hsf.jobs.create_job(
-                f"REST API on port {str(port)}",
-                None,
-                rest_api.run
-            )
-
-    elif args.update:
-        hsf.update.update()
-        sys.exit(0)
-
-    elif args.script:
-        if not os.path.exists(args.script):
-            hsf.badges.print_error(f"Local file: {args.script}: does not exist!")
-            sys.exit(1)
-
-        if args.no_startup:
-            hsf.launch(
-                do_shell=args.no_exit,
-                script=[args.script]
-            )
-
-        else:
-            if os.path.exists(hsf.path_config['startup_path']):
-                hsf.launch(
-                    do_shell=args.no_exit,
-                    script=[hsf.path_config['startup_path'], args.script]
+                rest_api = API(
+                    host=host,
+                    port=port,
+                    username=args.username,
+                    password=args.password
                 )
 
-        sys.exit(0)
+                self.jobs.create_job(
+                    f"REST API on port {str(port)}",
+                    None,
+                    rest_api.run
+                )
 
-    if args.no_startup:
-        hsf.launch()
-    else:
-        if os.path.exists(hsf.path_config['startup_path']):
-            hsf.launch(
-                script=[hsf.path_config['startup_path']]
-            )
+        elif args.update:
+            self.update.update()
+            sys.exit(0)
+
+        elif args.script:
+            if not os.path.exists(args.script):
+                hsf.badges.print_error(f"Local file: {args.script}: does not exist!")
+                sys.exit(1)
+
+            if args.no_startup:
+                self.launch(
+                    shell=args.no_exit,
+                    script=[args.script]
+                )
+
+            else:
+                if os.path.exists(self.path_config['startup_path']):
+                    self.launch(
+                        shell=args.no_exit,
+                        script=[self.path_config['startup_path'], args.script]
+                    )
+
+            sys.exit(0)
+
+        if args.no_startup:
+            self.launch()
         else:
-            hsf.launch()
+            if os.path.exists(self.path_config['startup_path']):
+                self.launch(
+                    script=[self.path_config['startup_path']]
+                )
+            else:
+                self.launch()
