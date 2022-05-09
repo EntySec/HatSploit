@@ -305,8 +305,6 @@ class Show:
 
         if plugins_shorts:
             self.local_storage.set("plugin_shorts", plugins_shorts)
-        else:
-            raise RuntimeWarning("No matched plugins found.")
 
     def show_search_encoders(self, keyword):
         all_encoders = self.local_storage.get("encoders")
@@ -336,8 +334,6 @@ class Show:
 
         if encoders_shorts:
             self.local_storage.set("encoder_shorts", encoders_shorts)
-        else:
-            raise RuntimeWarning("No matched encoders found.")
 
     def show_search_modules(self, keyword):
         all_modules = self.local_storage.get("modules")
@@ -367,8 +363,6 @@ class Show:
 
         if modules_shorts:
             self.local_storage.set("module_shorts", modules_shorts)
-        else:
-            raise RuntimeWarning("No matched modules found.")
 
     def show_search_payloads(self, keyword):
         all_payloads = self.local_storage.get("payloads")
@@ -398,8 +392,6 @@ class Show:
 
         if payloads_shorts:
             self.local_storage.set("payload_shorts", payloads_shorts)
-        else:
-            raise RuntimeWarning("No matched payloads found.")
 
     def show_sessions(self):
         sessions = self.local_storage.get("sessions")
