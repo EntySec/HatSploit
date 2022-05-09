@@ -42,5 +42,5 @@ class HatSploitCommand(Command):
             self.history.clear_history()
 
         elif option == '-l':
-            for entry in self.history.list_history()
+            for entry in self.history.list_history():
                 self.print_empty(entry)
