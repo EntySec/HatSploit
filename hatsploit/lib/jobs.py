@@ -41,39 +41,38 @@ class Jobs:
 
     job_process = None
 
+    def get_jobs(self):
+        return self.local_storage.get("jobs")
+
+    def get_hidden_jobs(self):
+        return self.local_storage.get("hidden_jobs")
+
     def stop_dead(self):
-        jobs = self.local_storage.get("jobs")
+        jobs = self.get_jobs()
         if jobs:
             for job_id in list(jobs):
                 if not jobs[job_id]['job_process'].is_alive():
                     self.delete_job(job_id)
 
-        hidden_jobs = self.local_storage.get("hidden_jobs")
+        hidden_jobs = self.get_hidden_jobs()
         if hidden_jobs:
             for job_id in list(hidden_jobs):
                 if not hidden_jobs[job_id]['job_process'].is_alive():
                     self.delete_job(job_id, True)
 
     def count_jobs(self):
-        jobs = self.local_storage.get("jobs")
+        jobs = self.get_jobs()
         if jobs:
             return len(jobs)
         return 0
 
-    def exit_jobs(self):
-        if not self.local_storage.get("jobs"):
-            if self.local_storage.get("hidden_jobs"):
-                self.stop_all_jobs()
-
-        self.stop_all_jobs()
-
-    def stop_all_jobs(self):
-        jobs = self.local_storage.get("jobs")
+    def stop_jobs(self):
+        jobs = self.get_jobs()
         if jobs:
             for job_id in list(jobs):
                 self.delete_job(job_id)
 
-        hidden_jobs = self.local_storage.get("hidden_jobs")
+        hidden_jobs = self.get_hidden_jobs()
         if hidden_jobs:
             for job_id in list(hidden_jobs):
                 self.delete_job(job_id, True)
