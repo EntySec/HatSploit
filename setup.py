@@ -38,7 +38,7 @@ setup(name='hatsploit',
       include_package_data=True,
       entry_points={
           "console_scripts": [
-                "hsf = hatsploit:main"
+                "hsf = hatsploit:cli"
           ]
       },
       install_requires=[
