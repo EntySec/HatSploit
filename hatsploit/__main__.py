@@ -80,7 +80,7 @@ By accepting our terms of service, you agree that you will only use this tool fo
     def launch(self, shell=True, script=[]):
         sys.stdout.write("\033]0;HatSploit Framework\007")
 
-        if self.runtime.catch(self.runtime.check()):
+        if self.runtime.catch(self.runtime.check):
             if self.policy():
                 if not script:
                     if shell:
