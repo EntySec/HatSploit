@@ -32,6 +32,7 @@ from pex.type import Type
 from hatsploit.core.cli.badges import Badges
 from hatsploit.core.db.importer import Importer
 
+from hatsploit.lib.options import Options
 from hatsploit.lib.payloads import Payloads
 from hatsploit.lib.encoders import Encoders
 from hatsploit.lib.sessions import Sessions
@@ -44,6 +45,7 @@ class Modules:
     badges = Badges()
     importer = Importer()
 
+    options = Options()
     payloads = Payloads()
     encoders = Encoders()
     sessions = Sessions()
@@ -172,6 +174,9 @@ class Modules:
 
                         if self.payloads.check_exist(payload_name):
                             self.payloads.add_payload(module, payload_name)
+                            current_payload = self.payloads.get_current_payload()
+
+                            self.options.add_handler_options(module_object, current_payload)
                             self.add_to_global(module_object)
                             return
 
