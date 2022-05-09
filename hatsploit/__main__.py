@@ -31,6 +31,7 @@ import yaml
 import argparse
 
 from hatsploit.lib.jobs import Jobs
+from hatsploit.lib.config import Config
 from hatsploit.lib.runtime import Runtime
 
 from hatsploit.core.base.console import Console
@@ -42,6 +43,7 @@ from hatsploit.core.utils.update import Update
 
 class HatSploit:
     jobs = Jobs()
+    config = Config()
     runtime = Runtime()
 
     console = Console()
