@@ -24,17 +24,13 @@
 # SOFTWARE.
 #
 
-import json
 import os
+import json
 
-from hatsploit.core.cli.badges import Badges
-from hatsploit.lib.config import Config
 from hatsploit.lib.storage import LocalStorage
 
 
 class DB:
-    badges = Badges()
-    config = Config()
     local_storage = LocalStorage()
 
     def disconnect_payload_database(self, name):
@@ -43,7 +39,8 @@ class DB:
                 self.local_storage.delete_element("connected_payload_databases", name)
                 self.local_storage.delete_element("payloads", name)
                 return
-        self.badges.print_error("No such payload database connected!")
+
+        raise RuntimeError("No such payload database connected!")
 
     def disconnect_encoder_database(self, name):
         if self.local_storage.get("connected_encoder_databases"):
@@ -51,7 +48,8 @@ class DB:
                 self.local_storage.delete_element("connected_encoder_databases", name)
                 self.local_storage.delete_element("encoders", name)
                 return
-        self.badges.print_error("No such encoder database connected!")
+
+        raise RuntimeError("No such encoder database connected!")
 
     def disconnect_module_database(self, name):
         if self.local_storage.get("connected_module_databases"):
@@ -59,7 +57,8 @@ class DB:
                 self.local_storage.delete_element("connected_module_databases", name)
                 self.local_storage.delete_element("modules", name)
                 return
-        self.badges.print_error("No such module database connected!")
+
+        raise RuntimeError("No such module database connected!")
 
     def disconnect_plugin_database(self, name):
         if self.local_storage.get("connected_plugin_databases"):
@@ -67,29 +66,28 @@ class DB:
                 self.local_storage.delete_element("connected_plugin_databases", name)
                 self.local_storage.delete_element("plugins", name)
                 return
-        self.badges.print_error("No such plugin database connected!")
+
+        raise RuntimeError("No such plugin database connected!")
 
     def connect_encoder_database(self, name, path):
         if self.local_storage.get("connected_encoder_databases"):
             if name in self.local_storage.get("connected_encoder_databases"):
-                self.badges.print_error("Encoder database already connected!")
-                return
+                raise RuntimeWarning(f"Encoder database is already connected: {path}.")
+
         if not os.path.exists(path) or not str.endswith(path, "json"):
-            self.badges.print_error("Not an encoder database!")
-            return
+            raise RuntimeError(f"Not an encoder database: {path}!")
 
         try:
             database = json.load(open(path))
         except Exception:
-            self.badges.print_error("Failed to connect encoder database!")
-            return
+            raise RuntimeError(f"Failed to connect encoder database: {path}!")
 
         if '__database__' not in database:
-            self.badges.print_error("No __database__ section found!")
-            return
+            raise RuntimeError(f"No __database__ section found in database: {path}!")
+
         if database['__database__']['Type'] != "encoders":
-            self.badges.print_error("Not an encoder database!")
-            return
+            raise RuntimeError(f"Not an encoder database: {path}!")
+
         del database['__database__']
 
         encoders = {
@@ -98,7 +96,7 @@ class DB:
 
         data = {
             name: {
-                'path': path
+                'Path': path
             }
         }
         if not self.local_storage.get("connected_encoder_databases"):
@@ -113,24 +111,22 @@ class DB:
     def connect_payload_database(self, name, path):
         if self.local_storage.get("connected_payload_databases"):
             if name in self.local_storage.get("connected_payload_databases"):
-                self.badges.print_error("Payload database already connected!")
-                return
+                raise RuntimeWarning(f"Payload database is already connected: {path}.")
+
         if not os.path.exists(path) or not str.endswith(path, "json"):
-            self.badges.print_error("Not a payload database!")
-            return
+            raise RuntimeError(f"Not a payload database: {path}!")
 
         try:
             database = json.load(open(path))
         except Exception:
-            self.badges.print_error("Failed to connect payload database!")
-            return
+            raise RuntimeError(f"Failed to connect payload database: {path}!")
 
         if '__database__' not in database:
-            self.badges.print_error("No __database__ section found!")
-            return
+            raise RuntimeError(f"No __database__ section found in database: {path}!")
+
         if database['__database__']['Type'] != "payloads":
-            self.badges.print_error("Not a payload database!")
-            return
+            raise RuntimeError(f"Not a payload database: {path}!")
+
         del database['__database__']
 
         payloads = {
@@ -139,7 +135,7 @@ class DB:
 
         data = {
             name: {
-                'path': path
+                'Path': path
             }
         }
         if not self.local_storage.get("connected_payload_databases"):
@@ -154,24 +150,22 @@ class DB:
     def connect_module_database(self, name, path):
         if self.local_storage.get("connected_module_databases"):
             if name in self.local_storage.get("connected_module_databases"):
-                self.badges.print_error("Module database already connected!")
-                return
+                raise RuntimeWarning(f"Module database is already connected: {path}.")
+
         if not os.path.exists(path) or not str.endswith(path, "json"):
-            self.badges.print_error("Not a module database!")
-            return
+            raise RuntimeError(f"Not a module database: {path}!")
 
         try:
             database = json.load(open(path))
         except Exception:
-            self.badges.print_error("Failed to connect module database!")
-            return
+            raise RuntimeError(f"Failed to connect module database: {path}!")
 
         if '__database__' not in database:
-            self.badges.print_error("No __database__ section found!")
-            return
+            raise RuntimeError(f"No __database__ section found in database: {path}!")
+
         if database['__database__']['Type'] != "modules":
-            self.badges.print_error("Not a module database!")
-            return
+            raise RuntimeError(f"Not a module database: {path}!")
+
         del database['__database__']
 
         modules = {
@@ -180,7 +174,7 @@ class DB:
 
         data = {
             name: {
-                'path': path
+                'Path': path
             }
         }
         if not self.local_storage.get("connected_module_databases"):
@@ -195,24 +189,22 @@ class DB:
     def connect_plugin_database(self, name, path):
         if self.local_storage.get("connected_plugin_databases"):
             if name in self.local_storage.get("connected_plugin_databases"):
-                self.badges.print_error("Plugin database already connected!")
-                return
+                raise RuntimeWarning(f"Plugin database is already connected: {path}.")
+
         if not os.path.exists(path) or not str.endswith(path, "json"):
-            self.badges.print_error("Not a database!")
-            return
+            raise RuntimeError(f"Not a plugin database: {path}!")
 
         try:
             database = json.load(open(path))
         except Exception:
-            self.badges.print_error("Failed to connect plugin database!")
-            return
+            raise RuntimeError(f"Failed to connect plugin database: {path}!")
 
         if '__database__' not in database:
-            self.badges.print_error("No __database__ section found!")
-            return
+            raise RuntimeError(f"No __database__ section found in database: {path}!")
+
         if database['__database__']['Type'] != "plugins":
-            self.badges.print_error("Not a plugin database!")
-            return
+            raise RuntimeError(f"Not a plugin database: {path}!")
+
         del database['__database__']
 
         plugins = {
@@ -221,7 +213,7 @@ class DB:
 
         data = {
             name: {
-                'path': path
+                'Path': path
             }
         }
         if not self.local_storage.get("connected_plugin_databases"):
