@@ -107,7 +107,7 @@ class Show:
             headers = ("ID", "Name", "Module")
             jobs = self.local_storage.get("jobs")
             for job_id in jobs:
-                jobs_data.append((job_id, jobs[job_id]['job_name'], jobs[job_id]['module_name']))
+                jobs_data.append((job_id, jobs[job_id]['Name'], jobs[job_id]['Module']))
             self.tables.print_table("Active Jobs", headers, *jobs_data)
         else:
             self.badges.print_warning("No running jobs available.")
