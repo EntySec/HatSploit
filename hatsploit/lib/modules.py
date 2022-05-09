@@ -166,14 +166,12 @@ class Modules:
                     payload_name = module_object.payload['Value']
 
                     if payload_name:
-                        self.badges.print_process(f"Using default payload {payload_name}...")
-
                         if self.payloads.check_exist(payload_name):
-                            if self.payloads.add_payload(module, payload_name):
-                                self.add_to_global(module_object)
+                            self.payloads.add_payload(module, payload_name):
+                            self.add_to_global(module_object)
                             return
 
-                        raise RuntimeError(f"Invalid default payload: {payload_name}!")
+                        raise RuntimeError(f"Invalid payload: {payload_name}!")
 
                 self.add_to_global(module_object)
             else:
@@ -360,8 +358,8 @@ class Modules:
                     architectures = module_payload['Architectures']
 
                     if self.payloads.check_module_compatible(value, types, platforms, architectures):
-                        if self.payloads.add_payload(module_name, value):
-                            return
+                        self.payloads.add_payload(module_name, value)
+                        return
 
                 raise RuntimeError("Invalid value, expected valid payload!")
 
@@ -373,10 +371,10 @@ class Modules:
                     architecture = current_payload.details['Architecture']
 
                     if self.encoders.check_payload_compatible(value, architecture):
-                        if self.encoders.add_encoder(
-                                current_module.details['Module'],
-                                current_payload.details['Payload'], value):
-                            return
+                        self.encoders.add_encoder(
+                            current_module.details['Module'],
+                            current_payload.details['Payload'], value):
+                        return
 
                 raise RuntimeError("Invalid value, expected valid encoder!")
 
