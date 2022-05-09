@@ -33,9 +33,15 @@ class HatSploitCommand(Command):
 
             if self.input_question("Exit anyway? [y/N] ")[0].lower() in ['yes', 'y']:
                 self.jobs.stop_jobs()
+            else:
+                return
 
         if self.sessions.get_sessions():
             self.print_warning("You have some opened sessions.")
 
             if self.input_question("Exit anyway? [y/N] ")[0].lower() in ['yes', 'y']:
                 self.sessions.close_sessions()
+            else:
+                return
+
+        sys.exit(0)
