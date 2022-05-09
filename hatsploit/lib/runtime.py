@@ -25,25 +25,30 @@
 #
 
 import os
+import sys
 
 from hatsploit.lib.config import Config
 from hatsploit.lib.jobs import Jobs
+from hatsploit.lib.loot import Loot
 from hatsploit.lib.sessions import Sessions
 from hatsploit.lib.modules import Modules
 from hatsploit.lib.payloads import Payloads
 from hatsploit.lib.options import Options
 
+from hatsploit.core.cli.badges import Badges
 from hatsploit.core.base.loader import Loader
 
 
 class Runtime:
     config = Config()
     jobs = Jobs()
+    loot = Loot()
     sessions = Sessions()
     modules = Modules()
     payloads = Payloads()
     options = Options()
 
+    badges = Badges()
     loader = Loader()
 
     def check(self):
@@ -77,3 +82,20 @@ class Runtime:
         self.sessions.close_dead()
 
         self.options.add_handler_options(current_module, current_payload)
+
+    def catch(self, function, args=[]):
+        try:
+            function(*args)
+
+        except (KeyboardInterrupt, EOFError):
+            pass
+
+        except RuntimeError as e:
+            self.badges.print_error(str(e))
+
+        except RuntimeWarning as w:
+            self.badges.print_warning(str(w))
+
+        except Exception as e:
+            self.badges.print_error(f"An error occured: {str(e)}!")
+            traceback.print_stack(file=sys.stdout)
