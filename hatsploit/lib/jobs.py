@@ -25,19 +25,13 @@
 #
 
 import ctypes
-import os
-import sys
 import threading
 
-from hatsploit.core.cli.tables import Tables
-from hatsploit.lib.modules import Modules
 from hatsploit.lib.storage import LocalStorage
 
 
 class Jobs:
-    tables = Tables()
     local_storage = LocalStorage()
-    modules = Modules()
 
     job_process = None
 
