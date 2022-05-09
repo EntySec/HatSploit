@@ -193,4 +193,4 @@ class Encoders:
         if not self.check_imported(module_name, payload_name, encoder):
             encoder_object = self.import_encoder(module_name, payload_name, encoder)
             if not encoder_object:
-                raise RuntimeError("Failed to select encoder from database!")
+                raise RuntimeError(f"Failed to select encoder from database: {encoder}!")
