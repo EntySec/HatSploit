@@ -33,7 +33,6 @@ from hatsploit.lib.storage import GlobalStorage
 
 class History:
     config = Config()
-    badges = Badges()
     local_storage = LocalStorage()
 
     history = config.path_config['history_path']
@@ -48,17 +47,20 @@ class History:
     def disable_history(self):
         self.global_storage.set("history", False)
         self.global_storage.set_all()
+
         readline.clear_history()
         with open(self.history, 'w') as history:
             history.write("")
 
     def clear_history(self):
         readline.clear_history()
+
         with open(self.history, 'w') as history:
             history.write("")
 
     def list_history(self):
         using_history = self.local_storage.get("history")
+
         if using_history:
             if readline.get_current_history_length() > -1:
                 history = []
