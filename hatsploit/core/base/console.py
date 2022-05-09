@@ -80,61 +80,35 @@ class Console:
 
     completion = None
 
-    def shell(self):
-        self.runtime.start()
-        self.launch_history()
-        self.show_header()
-        self.launch_shell()
+    def shell_execute(self):
+        if not self.modules.get_current_module():
+            prompt = f'({self.prompt})> '
+         else:
+             current_module = self.modules.get_current_module()
 
-    def check_install(self):
-        if os.path.exists(self.config.path_config['root_path']):
-            workspace = self.config.path_config['user_path']
-            loot = self.config.path_config['loot_path']
+             category = current_module.details['Category']
+             name = current_module.details['Name']
 
-            if not os.path.isdir(workspace):
-                self.badges.print_process(f"Creating workspace at {workspace}...")
-                os.mkdir(workspace)
+             prompt = f'({self.prompt}: {category}: %red{name}%end)> '
+         commands = self.badges.input_empty(prompt)
 
-            if not os.path.isdir(loot):
-                self.loot.create_loot()
+         self.update_events()
+         self.execute.execute_command(commands)
+         self.update_events()
 
-            return True
-        self.badges.print_error("HatSploit is not installed!")
-        self.badges.print_information("Consider running installation.")
-        return False
+         if self.local_storage.get("history"):
+             readline.write_history_file(self.history)
 
-    def launch_shell(self):
-        while True:
-            try:
-                if not self.modules.get_current_module():
-                    prompt = f'({self.prompt})> '
-                else:
-                    current_module = self.modules.get_current_module()
+    def shell(self, start=True, history=True, header=True):
+        if start:
+            if self.runtime.catch(self.runtime.start()):
+                if history:
+                    self.launch_history()
+                if header:
+                    self.show_header()
 
-                    category = current_module.details['Category']
-                    name = current_module.details['Name']
-
-                    prompt = f'({self.prompt}: {category}: %red{name}%end)> '
-                commands = self.badges.input_empty(prompt)
-
-                self.update_events()
-                self.execute.execute_command(commands)
-                self.update_events()
-
-                if self.local_storage.get("history"):
-                    readline.write_history_file(self.history)
-
-            except (KeyboardInterrupt, EOFError):
-                pass
-
-            except RuntimeError as e:
-                self.badges.print_error(str(e))
-
-            except RuntimeWarning as w:
-                self.badges.print_warning(str(w))
-
-            except Exception as e:
-                self.badges.print_error(f"An error occurred: {str(e)}!")
+                while True:
+                    self.runtime.catch(self.shell_execute)
 
     def launch_history(self):
         readline.set_auto_history(False)
@@ -202,24 +176,26 @@ class Console:
         if self.config.core_config['console']['tip']:
             self.tip.print_random_tip()
 
-    def script(self, input_files, do_shell=False):
-        self.start_hsf()
-        self.launch_shell()
+    def script(self, input_files, shell=False):
+        if self.runtime.catch(self.runtime.start()):
+            self.show_header()
 
-        for input_file in input_files:
-            if os.path.exists(input_file):
-                file = open(input_file, 'r')
-                file_text = file.read().split('\n')
-                file.close()
+            for input_file in input_files:
+                if os.path.exists(input_file):
+                    file = open(input_file, 'r')
+                    file_text = file.read().split('\n')
+                    file.close()
 
-                for line in file_text:
-                    commands = self.fmt.format_commands(line)
+                    for line in file_text:
+                        commands = self.fmt.format_commands(line)
 
-                    self.add_handler_options()
-                    self.jobs.stop_dead()
+                        self.options.add_handler_options()
+                        self.jobs.stop_dead()
 
-                    self.execute.execute_command(commands)
+                        self.execute.execute_command(commands)
 
-        if do_shell:
-            self.launch_history()
-            self.launch_menu()
+            if shell:
+                self.shell(
+                    start=False,
+                    header=False
+                )
