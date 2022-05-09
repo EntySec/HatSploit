@@ -429,26 +429,26 @@ class Modules:
                                 if encoder_number in encoders_shorts:
                                     value = encoders_shorts[encoder_number]
 
-                    if self.compare_types(value_type, value):
-                        self.badges.print_information(option + " ==> " + value)
+                    self.compare_types(value_type, value)
+                    self.badges.print_information(option + " ==> " + value)
 
-                        if option.lower() == 'blinder':
-                            if value.lower() in ['y', 'yes']:
-                                current_module.payload['Value'] = None
+                    if option.lower() == 'blinder':
+                        if value.lower() in ['y', 'yes']:
+                            current_module.payload['Value'] = None
 
-                        if value_type == 'payload':
-                            self.local_storage.set_module_payload(
-                                "current_module",
-                                self.local_storage.get("current_module_number"),
-                                value
-                            )
-                        else:
-                            self.local_storage.set_module_option(
-                                "current_module",
-                                self.local_storage.get("current_module_number"),
-                                option,
-                                value
-                            )
+                    if value_type == 'payload':
+                        self.local_storage.set_module_payload(
+                            "current_module",
+                            self.local_storage.get("current_module_number"),
+                            value
+                        )
+                    else:
+                        self.local_storage.set_module_option(
+                            "current_module",
+                            self.local_storage.get("current_module_number"),
+                            option,
+                            value
+                        )
                     return
 
             if hasattr(current_module, "payload"):
