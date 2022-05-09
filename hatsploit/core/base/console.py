@@ -140,7 +140,7 @@ class Console:
                 self.badges.print_error(str(e))
 
             except RuntimeWarning as w:
-                self.badges.print_warning(str(e))
+                self.badges.print_warning(str(w))
 
             except Exception as e:
                 self.badges.print_error(f"An error occurred: {str(e)}!")
