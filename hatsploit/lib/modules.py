@@ -166,12 +166,14 @@ class Modules:
                     payload_name = module_object.payload['Value']
 
                     if payload_name:
+                        self.badges.print_process(f"Using default payload {payload_name}...")
+
                         if self.payloads.check_exist(payload_name):
                             self.payloads.add_payload(module, payload_name):
                             self.add_to_global(module_object)
                             return
 
-                        raise RuntimeError(f"Invalid payload: {payload_name}!")
+                        raise RuntimeError(f"Invalid default payload: {payload_name}!")
 
                 self.add_to_global(module_object)
             else:
