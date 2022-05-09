@@ -45,13 +45,13 @@ class Jobs:
         jobs = self.get_jobs()
         if jobs:
             for job_id in list(jobs):
-                if not jobs[job_id]['job_process'].is_alive():
+                if not jobs[job_id]['Process'].is_alive():
                     self.delete_job(job_id)
 
         hidden_jobs = self.get_hidden_jobs()
         if hidden_jobs:
             for job_id in list(hidden_jobs):
-                if not hidden_jobs[job_id]['job_process'].is_alive():
+                if not hidden_jobs[job_id]['Process'].is_alive():
                     self.delete_job(job_id, True)
 
     def count_jobs(self):
@@ -95,7 +95,7 @@ class Jobs:
         if self.local_storage.get(jobs_var):
             job_id = int(job_id)
             if job_id in list(self.local_storage.get(jobs_var)):
-                self.stop_job(self.local_storage.get(jobs_var)[job_id]['job_process'])
+                self.stop_job(self.local_storage.get(jobs_var)[job_id]['Process'])
                 self.local_storage.delete_element(jobs_var, job_id)
             else:
                 raise RuntimeError("Invalid job given!")
@@ -114,9 +114,9 @@ class Jobs:
 
         job_data = {
             job_id: {
-                'job_name': job_name,
-                'module_name': module_name,
-                'job_process': self.job_process
+                'Name': job_name,
+                'Module': module_name,
+                'Process': self.job_process
             }
         }
         self.local_storage.update(jobs_var, job_data)
