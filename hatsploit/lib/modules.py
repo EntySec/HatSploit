@@ -143,9 +143,11 @@ class Modules:
 
     def use_module(self, module):
         if module.isdigit():
-            module = self.get_number_module(int(module))
+            number = int(module)
+            module = self.get_number_module(number)
+
             if not module:
-                raise RuntimeError(f"Invalid module number: {str(module)}!")
+                raise RuntimeError(f"Invalid module number: {str(number)}!")
 
         if not self.check_if_already_used(module):
             if self.check_exist(module):
