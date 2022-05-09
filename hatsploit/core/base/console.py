@@ -89,22 +89,16 @@ class Console:
 
     def shell(self, start=True, history=True, header=True):
         if start:
-            if self.runtime.catch(self.runtime.start):
-                if history:
-                    self.launch_history()
-                if header:
-                    self.show_header()
+            if not self.runtime.catch(self.runtime.start):
+                return
 
-                while True:
-                    self.runtime.catch(self.shell_execute)
-        else:
-            if history:
-                self.launch_history()
-            if header:
-                self.show_header()
+        if history:
+            self.launch_history()
+        if header:
+            self.show_header()
 
-            while True:
-                self.runtime.catch(self.shell_execute)
+        while True:
+            self.runtime.catch(self.shell_execute)
 
     def launch_history(self):
         readline.set_auto_history(False)
