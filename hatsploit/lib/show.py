@@ -128,7 +128,7 @@ class Show:
             databases = self.local_storage.get("connected_module_databases")
 
             for name in databases:
-                databases_data.append((number, name, databases[name]['path']))
+                databases_data.append((number, name, databases[name]['Path']))
                 number += 1
             self.tables.print_table("Connected Module Databases", headers, *databases_data)
         else:
@@ -142,7 +142,7 @@ class Show:
             databases = self.local_storage.get("connected_payload_databases")
 
             for name in databases:
-                databases_data.append((number, name, databases[name]['path']))
+                databases_data.append((number, name, databases[name]['Path']))
                 number += 1
             self.tables.print_table("Connected Payload Databases", headers, *databases_data)
         else:
@@ -156,7 +156,7 @@ class Show:
             databases = self.local_storage.get("connected_encoder_databases")
 
             for name in databases:
-                databases_data.append((number, name, databases[name]['path']))
+                databases_data.append((number, name, databases[name]['Path']))
                 number += 1
             self.tables.print_table("Connected Encoder Databases", headers, *databases_data)
         else:
@@ -170,7 +170,7 @@ class Show:
             databases = self.local_storage.get("connected_plugin_databases")
 
             for name in databases:
-                databases_data.append((number, name, databases[name]['path']))
+                databases_data.append((number, name, databases[name]['Path']))
                 number += 1
             self.tables.print_table("Connected Plugin Databases", headers, *databases_data)
         else:
