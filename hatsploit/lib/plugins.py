@@ -102,7 +102,7 @@ class Plugins:
                 self.local_storage.set("loaded_plugins", plugin_object)
             self.get_loaded_plugins()[plugin].run()
         else:
-            raise RuntimeError(f"Failed to load {plugin} plugin!")
+            raise RuntimeError(f"Failed to load plugin: {cowsay}!")
 
     def load_plugin(self, plugin):
         plugins_shorts = self.local_storage.get("plugin_shorts")
@@ -121,7 +121,7 @@ class Plugins:
             else:
                 raise RuntimeError(f"Invalid plugin: {plugin}!")
         else:
-            raise RuntimeWarning(f"Plugin {plugin} is already loaded.")
+            raise RuntimeWarning(f"Plugin is already loaded: {plugin}.")
 
     def unload_plugin(self, plugin):
         plugins_shorts = self.local_storage.get("plugin_shorts")
@@ -136,4 +136,4 @@ class Plugins:
         if self.check_loaded(plugin):
             self.local_storage.delete_element("loaded_plugins", plugin)
         else:
-            raise RuntimeError(f"Plugin {plugin} is not loaded!")
+            raise RuntimeError(f"Plugin is not loaded: {plugin}!")
