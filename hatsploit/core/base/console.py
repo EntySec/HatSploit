@@ -165,7 +165,7 @@ class Console:
             self.tip.print_random_tip()
 
     def script(self, input_files, shell=False):
-        if self.runtime.catch(self.runtime.start()):
+        if self.runtime.catch(self.runtime.start):
             self.show_header()
 
             for input_file in input_files:
