@@ -279,7 +279,7 @@ class API:
 
             elif action == 'list':
                 data = {}
-                sessions = self.sessions.get_all_sessions()
+                sessions = self.sessions.get_sessions()
                 fetch = 'all'
 
                 if 'fetch' in request.form:
