@@ -79,8 +79,11 @@ class Jobs:
             if res > 1:
                 ctypes.pythonapi.PyThreadState_SetAsyncExc(job.ident, None)
                 raise RuntimeError("Failed to stop job!")
+
+            if res < 1:
+                return
+
         raise RuntimeError("Invalid job given!")
-                
 
     def start_job(self, job_function, job_arguments):
         self.job_process = threading.Thread(target=job_function, args=job_arguments)
