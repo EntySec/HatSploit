@@ -55,23 +55,28 @@ class Builder:
             return True
         return False
 
-    def build_base(self):
-        if not self.check_base_built():
-            if not os.path.exists(self.config.path_config['db_path']):
-                os.mkdir(self.config.path_config['db_path'])
+    def rebuild_base(self):
+        if self.check_base_build():
+            self.build_base()
+            return True
+        return False
 
-            self.build_module_database(self.config.path_config['modules_path'],
-                                       (self.config.path_config['db_path'] +
-                                        self.config.db_config['base_dbs']['module_database']))
-            self.build_payload_database(self.config.path_config['payloads_path'],
-                                        (self.config.path_config['db_path'] +
-                                         self.config.db_config['base_dbs']['payload_database']))
-            self.build_encoder_database(self.config.path_config['encoders_path'],
-                                        (self.config.path_config['db_path'] +
-                                         self.config.db_config['base_dbs']['encoder_database']))
-            self.build_plugin_database(self.config.path_config['plugins_path'],
-                                       (self.config.path_config['db_path'] +
-                                        self.config.db_config['base_dbs']['plugin_database']))
+    def build_base(self):
+        if not os.path.exists(self.config.path_config['db_path']):
+            os.mkdir(self.config.path_config['db_path'])
+
+        self.build_module_database(self.config.path_config['modules_path'],
+                                   (self.config.path_config['db_path'] +
+                                    self.config.db_config['base_dbs']['module_database']))
+        self.build_payload_database(self.config.path_config['payloads_path'],
+                                    (self.config.path_config['db_path'] +
+                                     self.config.db_config['base_dbs']['payload_database']))
+        self.build_encoder_database(self.config.path_config['encoders_path'],
+                                    (self.config.path_config['db_path'] +
+                                     self.config.db_config['base_dbs']['encoder_database']))
+        self.build_plugin_database(self.config.path_config['plugins_path'],
+                                   (self.config.path_config['db_path'] +
+                                    self.config.db_config['base_dbs']['plugin_database']))
 
     def build_encoder_database(self, input_path, output_path):
         database_path = output_path
