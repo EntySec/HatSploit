@@ -153,7 +153,7 @@ class Console:
             header = ""
             header += "%end"
             if codename:
-                header += f"    --=( %yellowHatSploit Framework {version} {codename}%end\n"
+                header += f"    --=( %yellowHatSploit Framework {version} {codename} (https://hatsploit.com/)%end\n"
             else:
                 header += f"    --=( %yellowHatSploit Framework {version}%end\n"
             header += "--==--=( Developed by EntySec (%linehttps://entysec.netlify.app/%end)\n"
