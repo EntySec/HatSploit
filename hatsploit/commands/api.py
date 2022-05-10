@@ -8,12 +8,12 @@
 from hatsploit.lib.command import Command
 from hatsploit.lib.jobs import Jobs
 
-from pex.proto.tcp import TCPClient
+from pex.proto.tcp import TCPTools
 
 from hatsploit.core.utils.api import API
 
 
-class HatSploitCommand(Command, TCPClient):
+class HatSploitCommand(Command, TCPTools):
     jobs = Jobs()
 
     details = {
