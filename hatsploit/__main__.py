@@ -35,6 +35,7 @@ from hatsploit.lib.config import Config
 from hatsploit.lib.runtime import Runtime
 
 from hatsploit.core.base.console import Console
+from hatsploit.core.db.builder import Builder
 from hatsploit.core.cli.badges import Badges
 from hatsploit.core.utils.check import Check
 from hatsploit.core.utils.api import API
@@ -47,6 +48,7 @@ class HatSploit:
     runtime = Runtime()
 
     console = Console()
+    builder = Builder()
     badges = Badges()
     check = Check()
     update = Update()
