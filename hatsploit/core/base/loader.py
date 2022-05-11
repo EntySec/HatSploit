@@ -53,7 +53,7 @@ class Loader:
     def load_everything(self, build_base=False):
         if build_base:
             self.builder.build_base()
-        self.importer.import_all(build_base)
+        self.importer.import_all()
 
     def load_all(self, build_base=False):
         self.load_update_process()
