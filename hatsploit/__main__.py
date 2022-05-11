@@ -82,12 +82,15 @@ By accepting our terms of service, you agree that you will only use this tool fo
     def launch(self, shell=True, script=[]):
         if self.runtime.catch(self.runtime.check):
             if self.policy():
-                if self.runtime.catch(self.runtime.start):
-                    if not script:
-                        if shell:
-                            self.console.shell()
-                    else:
-                        self.console.script(script, shell)
+                if self.builder.check_base_built():
+                    build = self.badges.input_question("Do you want to build and connect base databases? [y/n] ")
+
+                    if self.runtime.catch(self.runtime.start, [build[0].lower() in ['y', 'yes']]):
+                        if not script:
+                            if shell:
+                                self.console.shell()
+                        else:
+                            self.console.script(script, shell)
 
     def cli(self):
         description = "Modular penetration testing platform that enables you to write, test, and execute exploit code."
