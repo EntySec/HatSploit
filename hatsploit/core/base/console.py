@@ -87,11 +87,7 @@ class Console:
         if self.local_storage.get("history"):
             readline.write_history_file(self.history)
 
-    def shell(self, start=True, history=True, header=True):
-        if start:
-            if not self.runtime.catch(self.runtime.start):
-                return
-
+    def shell(self, history=True, header=True):
         if history:
             self.launch_history()
         if header:
@@ -167,24 +163,22 @@ class Console:
             self.tip.print_random_tip()
 
     def script(self, input_files, shell=False):
-        if self.runtime.catch(self.runtime.start):
-            self.show_header()
+        self.show_header()
 
-            for input_file in input_files:
-                if os.path.exists(input_file):
-                    file = open(input_file, 'r')
-                    file_text = file.read().split('\n')
-                    file.close()
+        for input_file in input_files:
+            if os.path.exists(input_file):
+                file = open(input_file, 'r')
+                file_text = file.read().split('\n')
+                file.close()
 
-                    for line in file_text:
-                        commands = self.fmt.format_commands(line)
+                for line in file_text:
+                    commands = self.fmt.format_commands(line)
 
-                        self.runtime.update()
-                        self.execute.execute_command(commands)
-                        self.runtime.update()
+                    self.runtime.update()
+                    self.execute.execute_command(commands)
+                    self.runtime.update()
 
-            if shell:
-                self.shell(
-                    start=False,
-                    header=False
-                )
+        if shell:
+            self.shell(
+                header=False
+            )
