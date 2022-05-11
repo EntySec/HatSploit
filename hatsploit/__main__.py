@@ -82,11 +82,12 @@ By accepting our terms of service, you agree that you will only use this tool fo
     def launch(self, shell=True, script=[]):
         if self.runtime.catch(self.runtime.check):
             if self.policy():
-                if not script:
-                    if shell:
-                        self.console.shell()
-                else:
-                    self.console.script(script, shell)
+                if self.runtime.catch(self.runtime.start):
+                    if not script:
+                        if shell:
+                            self.console.shell()
+                    else:
+                        self.console.script(script, shell)
 
     def cli(self):
         description = "Modular penetration testing platform that enables you to write, test, and execute exploit code."
