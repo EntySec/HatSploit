@@ -57,9 +57,9 @@ class Runtime:
         if not os.path.exists(self.config.path_config['root_path']):
             raise RuntimeError("HatSploit Framework is not installed!")
 
-    def start(self):
+    def start(self, build_db=False):
         try:
-            self.loader.load_all()
+            self.loader.load_all(build_db)
         except Exception as e:
             raise RuntimeError(f"An error occured: {str(e)}")
 
