@@ -54,12 +54,21 @@ class Runtime:
     loader = Loader()
 
     def check(self):
-        if not os.path.exists(self.config.path_config['root_path']):
+        if os.path.exists(self.config.path_config['root_path']):
+            workspace = self.config.path_config['user_path']
+            loot = self.config.path_config['loot_path']
+
+            if not os.path.isdir(workspace):
+                os.mkdir(workspace)
+
+            if not os.path.isdir(loot):
+                self.loot.create_loot()
+        else:
             raise RuntimeError("HatSploit Framework is not installed!")
 
-    def start(self, build_db=False):
+    def start(self, build_base=False):
         try:
-            self.loader.load_all(build_db)
+            self.loader.load_all(build_base)
         except Exception as e:
             raise RuntimeError(f"An error occured: {str(e)}")
 
