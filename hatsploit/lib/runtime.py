@@ -53,7 +53,7 @@ class Runtime:
     badges = Badges()
     loader = Loader()
 
-    def check(self):
+    def start(self):
         if os.path.exists(self.config.path_config['root_path']):
             workspace = self.config.path_config['user_path']
             loot = self.config.path_config['loot_path']
@@ -63,18 +63,13 @@ class Runtime:
 
             if not os.path.isdir(loot):
                 self.loot.create_loot()
+
+            try:
+                self.loader.load_all()
+            except Exception as e:
+                raise RuntimeError(f"An error occured: {str(e)}")
         else:
             raise RuntimeError("HatSploit Framework is not installed!")
-
-    def start(self):
-        self.check()
-
-        try:
-            self.loader.load_all()
-        except Exception:
-            return False
-
-        return True
 
     def update(self):
         current_module = self.modules.get_current_module()
