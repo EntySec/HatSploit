@@ -58,20 +58,8 @@ class HatSploit:
     def policy(self):
         if not os.path.exists(self.path_config['accept_path']):
             self.badges.print_information("--( The HatSploit Terms of Service )--")
-            terms = """
-This tool is designed for educational purposes only.
-
-Adequate defenses can only be built by researching attack techniques available to malicious actors.
-Using this tool against target systems without prior permission is illegal in most jurisdictions.
-The authors are not liable for any damages from misuse of this information or code.
-
-If you are planning on using this tool for malicious purposes that are not authorized by the company
-you are performing assessments for, you are violating the terms of service and license. 
-
-By accepting our terms of service, you agree that you will only use this tool for lawful purposes only.
-"""
-
-            self.badges.print_empty(terms)
+            with open(self.path_config['root_path'] + 'TERMS_OF_SERVICE', 'r') as f:
+                self.badges.print_empty(f.read())
 
             agree = self.badges.input_question("Accept HatSploit Framework Terms of Service? [y/n] ")
             if agree[0].lower() not in ['y', 'yes']:
