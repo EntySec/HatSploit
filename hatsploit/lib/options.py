@@ -47,12 +47,6 @@ class Options:
                 'Type': "payload",
                 'Required': False
             },
-            'ENCODER': {
-                'Description': 'Encoder to use.',
-                'Value': None,
-                'Type': "encoder",
-                'Required': False
-            },
             'LHOST': {
                 'Description': "Local host to listen on.",
                 'Value': "0.0.0.0",
@@ -79,6 +73,12 @@ class Options:
             }
         },
         'Payload': {
+            'ENCODER': {
+                'Description': 'Encoder to use.',
+                'Value': None,
+                'Type': "encoder",
+                'Required': False
+            },
             'RHOST': {
                 'Description': "Remote host to connect.",
                 'Value': TCPTools.get_local_host(),
@@ -114,7 +114,7 @@ class Options:
             return False
         return True
 
-    def add_handler_options(self, current_module, current_payload):
+    def add_handler_options(self, current_module, current_payload, current_encoder):
         if current_module:
             if hasattr(current_module, "payload"):
                 blinder_option = 'blinder'.upper()
@@ -199,8 +199,6 @@ class Options:
                             self.remove_options(current_module.options, ['RBHOST', 'RBPORT'])
                             self.remove_options(current_payload.options, ['BPORT'])
                 else:
-                    self.remove_options(current_module.options, ['ENCODER'])
-
                     if special != 'reverse_tcp':
                         self.remove_options(current_module.options, ['LHOST', 'LPORT'])
 
