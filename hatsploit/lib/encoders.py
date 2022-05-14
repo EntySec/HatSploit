@@ -88,8 +88,8 @@ class Encoders:
 
             if current_module_name in imported_encoders:
                 if current_payload_name in imported_encoders[current_module_name]:
-                    if hasattr(current_module, "options") and 'ENCODER' in current_module.options:
-                        name = current_module.options['ENCODER']['Value']
+                    if hasattr(current_payload, "options") and 'ENCODER' in current_payload.options:
+                        name = current_payload.options['ENCODER']['Value']
                         return imported_encoders[current_module_name][current_payload_name][name]
         return None
 
