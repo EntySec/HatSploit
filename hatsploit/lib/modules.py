@@ -427,16 +427,6 @@ class Modules:
                                 if payload_number in payloads_shorts:
                                     value = payloads_shorts[payload_number]
 
-                    if value_type == 'encoder':
-                        encoders_shorts = self.local_storage.get("encoder_shorts")
-
-                        if encoders_shorts:
-                            if value.isdigit():
-                                encoder_number = int(value)
-
-                                if encoder_number in encoders_shorts:
-                                    value = encoders_shorts[encoder_number]
-
                     self.compare_types(value_type, value)
                     self.badges.print_information(option + " ==> " + value)
 
@@ -466,6 +456,16 @@ class Modules:
                 if current_payload:
                     if option in current_payload.options:
                         value_type = current_payload.options[option]['Type']
+
+                        if value_type == 'encoder':
+                            encoders_shorts = self.local_storage.get("encoder_shorts")
+
+                            if encoders_shorts:
+                                if value.isdigit():
+                                    encoder_number = int(value)
+
+                                    if encoder_number in encoders_shorts:
+                                        value = encoders_shorts[encoder_number]
 
                         self.compare_types(value_type, value, False)
                         self.badges.print_information(option + " ==> " + value)
