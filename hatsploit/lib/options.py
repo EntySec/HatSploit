@@ -114,7 +114,7 @@ class Options:
             return False
         return True
 
-    def add_handler_options(self, current_module, current_payload, current_encoder):
+    def add_handler_options(self, current_module, current_payload):
         if current_module:
             if hasattr(current_module, "payload"):
                 blinder_option = 'blinder'.upper()
