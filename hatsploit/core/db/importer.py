@@ -32,7 +32,6 @@ import sys
 import threading
 import time
 
-from hatsploit.core.base.exceptions import Exceptions
 from hatsploit.core.cli.badges import Badges
 from hatsploit.core.db.db import DB
 from hatsploit.lib.config import Config
@@ -40,11 +39,10 @@ from hatsploit.lib.storage import LocalStorage
 
 
 class Importer:
-    db = DB()
     badges = Badges()
+    db = DB()
     local_storage = LocalStorage()
     config = Config()
-    exceptions = Exceptions()
 
     @staticmethod
     def import_check(module_name):
@@ -60,70 +58,76 @@ class Importer:
         try:
             if not command_path.endswith('.py'):
                 command_path = command_path + '.py'
+
             spec = importlib.util.spec_from_file_location(command_path, command_path)
             command = importlib.util.module_from_spec(spec)
+
             spec.loader.exec_module(command)
             command = command.HatSploitCommand()
         except Exception as e:
-            self.badges.print_information('Reason: ' + str(e))
-            raise self.exceptions.GlobalException
+            raise RuntimeError(f"Failed to import command: {str(e)}!")
+
         return command
 
     def import_payload(self, payload_path):
         try:
             if not payload_path.endswith('.py'):
                 payload_path = payload_path + '.py'
+
             spec = importlib.util.spec_from_file_location(payload_path, payload_path)
             payload = importlib.util.module_from_spec(spec)
+
             spec.loader.exec_module(payload)
             payload = payload.HatSploitPayload()
         except Exception as e:
-            self.badges.print_information('Reason: ' + str(e))
-            raise self.exceptions.GlobalException
+            raise RuntimeError(f"Failed to import payload: {str(e)}!")
+
         return payload
 
     def import_encoder(self, encoder_path):
         try:
             if not encoder_path.endswith('.py'):
                 encoder_path = encoder_path + '.py'
+
             spec = importlib.util.spec_from_file_location(encoder_path, encoder_path)
             encoder = importlib.util.module_from_spec(spec)
+
             spec.loader.exec_module(encoder)
             encoder = encoder.HatSploitEncoder()
         except Exception as e:
-            self.badges.print_information('Reason: ' + str(e))
-            raise self.exceptions.GlobalException
+            raise RuntimeError(f"Failed to import encoder: {str(e)}!")
+
         return encoder
 
     def import_module(self, module_path):
         try:
             if not module_path.endswith('.py'):
                 module_path = module_path + '.py'
+
             spec = importlib.util.spec_from_file_location(module_path, module_path)
             module = importlib.util.module_from_spec(spec)
+
             spec.loader.exec_module(module)
             module = module.HatSploitModule()
         except Exception as e:
-            self.badges.print_information('Reason: ' + str(e))
-            raise self.exceptions.GlobalException
+            raise RuntimeError(f"Failed to import module: {str(e)}!")
+
         return module
 
     def import_plugin(self, plugin_path):
         try:
             if not plugin_path.endswith('.py'):
                 plugin_path = plugin_path + '.py'
+
             spec = importlib.util.spec_from_file_location(plugin_path, plugin_path)
             plugin = importlib.util.module_from_spec(spec)
+
             spec.loader.exec_module(plugin)
             plugin = plugin.HatSploitPlugin()
         except Exception as e:
-            self.badges.print_information('Reason: ' + str(e))
-            raise self.exceptions.GlobalException
-        return plugin
+            raise RuntimeError(f"Failed to import plugin: {str(e)}!")
 
-    def import_main_commands(self):
-        commands = self.import_commands(self.config.path_config['commands_path'])
-        self.local_storage.set("commands", commands)
+        return plugin
 
     def import_commands(self, path):
         if not path.endswith('/'):
@@ -131,34 +135,43 @@ class Importer:
 
         commands = {}
         command_path = os.path.split(path)[0]
-        try:
-            for file in os.listdir(command_path):
-                if file.endswith('py'):
-                    try:
-                        command_object = self.import_command(command_path + '/' + file[:-3])
-                        command_name = command_object.details['Name']
-                        commands[command_name] = command_object
-                    except Exception:
-                        self.badges.print_error(f"Failed to load {file[:-3]} command!")
-        except Exception:
-            pass
+
+        for file in os.listdir(command_path):
+            if file.endswith('py'):
+                try:
+                    command_object = self.import_command(command_path + '/' + file[:-3])
+                    command_name = command_object.details['Name']
+                    commands[command_name] = command_object
+                except Exception:
+                    self.badges.print_error(f"Failed to load {file[:-3]} command!")
+
         return commands
 
-    def import_database(self):
-        self.db.connect_module_database(self.config.db_config['base_dbs']['module_database_name'],
-                                        self.config.path_config['db_path'] + self.config.db_config['base_dbs'][
-                                             'module_database'])
-        self.db.connect_payload_database(self.config.db_config['base_dbs']['payload_database_name'],
-                                         self.config.path_config['db_path'] + self.config.db_config['base_dbs'][
-                                              'payload_database'])
-        self.db.connect_encoder_database(self.config.db_config['base_dbs']['encoder_database_name'],
-                                         self.config.path_config['db_path'] + self.config.db_config['base_dbs'][
-                                             'encoder_database'])
-        self.db.connect_plugin_database(self.config.db_config['base_dbs']['plugin_database_name'],
-                                        self.config.path_config['db_path'] + self.config.db_config['base_dbs'][
-                                             'plugin_database'])
+    def import_base_commands(self):
+        commands = self.import_commands(self.config.path_config['commands_path'])
+        self.local_storage.set("commands", commands)
 
-    def import_all(self, import_database):
-        self.import_main_commands()
-        if import_database:
-            self.import_database()
+    def import_base_databases(self):
+        if os.path.exists(self.config.path_config['db_path'] + self.config.db_config['base_dbs']['module_database']):
+            self.db.connect_module_database(self.config.db_config['base_dbs']['module_database_name'],
+                                            self.config.path_config['db_path'] + self.config.db_config['base_dbs'][
+                                                'module_database'])
+
+        if os.path.exists(self.config.path_config['db_path'] + self.config.db_config['base_dbs']['payload_database']):
+            self.db.connect_payload_database(self.config.db_config['base_dbs']['payload_database_name'],
+                                            self.config.path_config['db_path'] + self.config.db_config['base_dbs'][
+                                                'payload_database'])
+
+        if os.path.exists(self.config.path_config['db_path'] + self.config.db_config['base_dbs']['encoder_database']):
+            self.db.connect_encoder_database(self.config.db_config['base_dbs']['encoder_database_name'],
+                                            self.config.path_config['db_path'] + self.config.db_config['base_dbs'][
+                                                'encoder_database'])
+
+        if os.path.exists(self.config.path_config['db_path'] + self.config.db_config['base_dbs']['plugin_database']):
+            self.db.connect_plugin_database(self.config.db_config['base_dbs']['plugin_database_name'],
+                                            self.config.path_config['db_path'] + self.config.db_config['base_dbs'][
+                                                'plugin_database'])
+
+    def import_all(self):
+        self.import_base_commands()
+        self.import_base_databases()

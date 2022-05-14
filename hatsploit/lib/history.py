@@ -30,12 +30,9 @@ from hatsploit.lib.config import Config
 from hatsploit.lib.storage import LocalStorage
 from hatsploit.lib.storage import GlobalStorage
 
-from hatsploit.core.cli.badges import Badges
-
 
 class History:
     config = Config()
-    badges = Badges()
     local_storage = LocalStorage()
 
     history = config.path_config['history_path']
@@ -46,30 +43,31 @@ class History:
     def enable_history(self):
         self.global_storage.set("history", True)
         self.global_storage.set_all()
-        self.badges.print_information("HatSploit history: on")
 
     def disable_history(self):
         self.global_storage.set("history", False)
         self.global_storage.set_all()
+
         readline.clear_history()
         with open(self.history, 'w') as history:
             history.write("")
-        self.badges.print_information("HatSploit history: off")
 
     def clear_history(self):
         readline.clear_history()
+
         with open(self.history, 'w') as history:
             history.write("")
 
     def list_history(self):
         using_history = self.local_storage.get("history")
+
         if using_history:
             if readline.get_current_history_length() > -1:
-                self.badges.print_information("HatSploit history:")
+                history = []
 
                 for index in range(1, readline.get_current_history_length() + 1):
-                    self.badges.print_empty("    * " + readline.get_history_item(index))
-            else:
-                self.badges.print_warning("HatSploit history empty.")
-        else:
-            self.badges.print_warning("No HatSploit history detected.")
+                    history.append(readline.get_history_item(index))
+                return history
+
+            raise RuntimeWarning("HatSploit history empty.")
+        raise RuntimeWarning("No HatSploit history detected.")

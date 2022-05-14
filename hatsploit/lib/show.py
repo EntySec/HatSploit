@@ -33,7 +33,6 @@ from hatsploit.lib.encoders import Encoders
 from hatsploit.lib.sessions import Sessions
 
 from hatsploit.core.cli.colors import Colors
-from hatsploit.core.cli.badges import Badges
 from hatsploit.core.cli.tables import Tables
 
 
@@ -47,7 +46,6 @@ class Show:
     sessions = Sessions()
 
     colors = Colors()
-    badges = Badges()
     tables = Tables()
 
     def show_custom_commands(self, handler):
@@ -68,7 +66,7 @@ class Show:
         if self.local_storage.get("commands"):
             self.show_custom_commands(self.local_storage.get("commands"))
         else:
-            self.badges.print_warning("No commands available.")
+            raise RuntimeWarning("No commands available.")
 
     def show_plugin_commands(self):
         for plugin in self.local_storage.get("loaded_plugins"):
@@ -107,10 +105,10 @@ class Show:
             headers = ("ID", "Name", "Module")
             jobs = self.local_storage.get("jobs")
             for job_id in jobs:
-                jobs_data.append((job_id, jobs[job_id]['job_name'], jobs[job_id]['module_name']))
+                jobs_data.append((job_id, jobs[job_id]['Name'], jobs[job_id]['Module']))
             self.tables.print_table("Active Jobs", headers, *jobs_data)
         else:
-            self.badges.print_warning("No running jobs available.")
+            raise RuntimeWarning("No running jobs available.")
 
     def show_loot(self):
         loots = self.loot.list_loot()
@@ -118,7 +116,7 @@ class Show:
             headers = ("Loot", "Path", "Time")
             self.tables.print_table("Collected Loot", headers, *loots)
         else:
-            self.badges.print_warning("No loot collected yet.")
+            raise RuntimeWarning("No loot collected yet.")
 
     def show_module_databases(self):
         if self.local_storage.get("connected_module_databases"):
@@ -128,11 +126,11 @@ class Show:
             databases = self.local_storage.get("connected_module_databases")
 
             for name in databases:
-                databases_data.append((number, name, databases[name]['path']))
+                databases_data.append((number, name, databases[name]['Path']))
                 number += 1
             self.tables.print_table("Connected Module Databases", headers, *databases_data)
         else:
-            self.badges.print_warning("No module database connected.")
+            raise RuntimeWarning("No module databases connected.")
 
     def show_payload_databases(self):
         if self.local_storage.get("connected_payload_databases"):
@@ -142,11 +140,11 @@ class Show:
             databases = self.local_storage.get("connected_payload_databases")
 
             for name in databases:
-                databases_data.append((number, name, databases[name]['path']))
+                databases_data.append((number, name, databases[name]['Path']))
                 number += 1
             self.tables.print_table("Connected Payload Databases", headers, *databases_data)
         else:
-            self.badges.print_warning("No payload database connected.")
+            raise RuntimeWarning("No payload databases connected.")
 
     def show_encoder_databases(self):
         if self.local_storage.get("connected_encoder_databases"):
@@ -156,11 +154,11 @@ class Show:
             databases = self.local_storage.get("connected_encoder_databases")
 
             for name in databases:
-                databases_data.append((number, name, databases[name]['path']))
+                databases_data.append((number, name, databases[name]['Path']))
                 number += 1
             self.tables.print_table("Connected Encoder Databases", headers, *databases_data)
         else:
-            self.badges.print_warning("No encoder database connected.")
+            raise RuntimeWarning("No encoder databases connected.")
 
     def show_plugin_databases(self):
         if self.local_storage.get("connected_plugin_databases"):
@@ -170,19 +168,20 @@ class Show:
             databases = self.local_storage.get("connected_plugin_databases")
 
             for name in databases:
-                databases_data.append((number, name, databases[name]['path']))
+                databases_data.append((number, name, databases[name]['Path']))
                 number += 1
             self.tables.print_table("Connected Plugin Databases", headers, *databases_data)
         else:
-            self.badges.print_warning("No plugin database connected.")
+            raise RuntimeWarning("No plugin databases connected.")
 
     def show_plugins(self):
         all_plugins = self.local_storage.get("plugins")
         headers = ("Number", "Plugin", "Name")
+
         plugins_shorts = {}
+        number = 0
 
         for database in sorted(all_plugins):
-            number = 0
             plugins_data = []
             plugins = all_plugins[database]
 
@@ -192,15 +191,20 @@ class Show:
                 number += 1
 
             self.tables.print_table(f"Plugins ({database})", headers, *plugins_data)
+
+        if plugins_shorts:
             self.local_storage.set("plugin_shorts", plugins_shorts)
+        else:
+            raise RuntimeWarning("No plugins available.")
 
     def show_encoders(self):
         all_encoders = self.local_storage.get("encoders")
         headers = ("Number", "Encoder", "Name")
+
         encoders_shorts = {}
+        number = 0
 
         for database in sorted(all_encoders):
-            number = 0
             encoders_data = []
             encoders = all_encoders[database]
 
@@ -210,15 +214,20 @@ class Show:
                 number += 1
 
             self.tables.print_table(f"Encoders ({database})", headers, *encoders_data)
+
+        if encoders_shorts:
             self.local_storage.set("encoder_shorts", encoders_shorts)
+        else:
+            raise RuntimeWarning("No encoders available.")
 
     def show_modules(self, category=None):
         all_modules = self.local_storage.get("modules")
         headers = ("Number", "Category", "Module", "Rank", "Name")
+
         modules_shorts = {}
+        number = 0
 
         for database in sorted(all_modules):
-            number = 0
             modules_data = []
             modules = all_modules[database]
 
@@ -240,15 +249,19 @@ class Show:
             else:
                 self.tables.print_table(f"Modules ({database})", headers, *modules_data)
 
+        if modules_shorts:
             self.local_storage.set("module_shorts", modules_shorts)
+        else:
+            raise RuntimeWarning("No modules available.")
 
     def show_payloads(self):
         all_payloads = self.local_storage.get("payloads")
         headers = ("Number", "Payload", "Rank", "Name")
+
         payloads_shorts = {}
+        number = 0
 
         for database in sorted(all_payloads):
-            number = 0
             payloads_data = []
             payloads = all_payloads[database]
 
@@ -259,110 +272,126 @@ class Show:
                 number += 1
 
             self.tables.print_table(f"Payloads ({database})", headers, *payloads_data)
+
+        if payloads_shorts:
             self.local_storage.set("payload_shorts", payloads_shorts)
+        else:
+            raise RuntimeWarning("No payloads available.")
 
     def show_search_plugins(self, keyword):
         all_plugins = self.local_storage.get("plugins")
+        headers = ("Number", "Plugin", "Name")
+
         plugins_shorts = {}
+        number = 0
 
-        if all_plugins:
-            headers = ("Number", "Plugin", "Name")
-            for database in all_plugins:
-                number = 0
-                plugins_data = []
-                plugins = all_plugins[database]
+        for database in all_plugins:
+            plugins_data = []
+            plugins = all_plugins[database]
 
-                for plugin in sorted(plugins):
-                    if keyword in plugins[plugin]['Plugin'] or keyword in plugins[plugin]['Name']:
-                        name = plugins[plugin]['Plugin'].replace(keyword, self.colors.RED + keyword + self.colors.END)
-                        description = plugins[plugin]['Name'].replace(
-                            keyword, self.colors.RED + keyword + self.colors.END)
+            for plugin in sorted(plugins):
+                if keyword in plugins[plugin]['Plugin'] or keyword in plugins[plugin]['Name']:
+                    name = plugins[plugin]['Plugin'].replace(keyword, self.colors.RED + keyword + self.colors.END)
+                    description = plugins[plugin]['Name'].replace(
+                        keyword, self.colors.RED + keyword + self.colors.END)
 
-                        plugins_data.append((number, name, description))
-                        plugins_shorts.update({number: plugins[plugin]['Plugin']})
+                    plugins_data.append((number, name, description))
+                    plugins_shorts.update({number: plugins[plugin]['Plugin']})
 
-                        number += 1
-                if plugins_data:
-                    self.tables.print_table(f"Plugins ({database})", headers, *plugins_data)
-                    self.local_storage.set("plugin_shorts", plugins_shorts)
+                    number += 1
+
+            if plugins_data:
+                self.tables.print_table(f"Plugins ({database})", headers, *plugins_data)
+
+        if plugins_shorts:
+            self.local_storage.set("plugin_shorts", plugins_shorts)
 
     def show_search_encoders(self, keyword):
         all_encoders = self.local_storage.get("encoders")
+        headers = ("Number", "Encoder", "Name")
+
         encoders_shorts = {}
+        number = 0
 
-        if all_encoders:
-            headers = ("Number", "Encoder", "Name")
-            for database in all_encoders:
-                number = 0
-                encoders_data = []
-                encoders = all_encoders[database]
+        for database in all_encoders:
+            encoders_data = []
+            encoders = all_encoders[database]
 
-                for encoder in sorted(encoders):
-                    if keyword in encoders[encoder]['Encoder'] or keyword in encoders[encoder]['Name']:
-                        name = encoders[encoder]['Encoder'].replace(
-                            keyword, self.colors.RED + keyword + self.colors.END)
-                        description = encoders[encoder]['Name'].replace(
-                            keyword, self.colors.RED + keyword + self.colors.END)
+            for encoder in sorted(encoders):
+                if keyword in encoders[encoder]['Encoder'] or keyword in encoders[encoder]['Name']:
+                    name = encoders[encoder]['Encoder'].replace(
+                        keyword, self.colors.RED + keyword + self.colors.END)
+                    description = encoders[encoder]['Name'].replace(
+                        keyword, self.colors.RED + keyword + self.colors.END)
 
-                        encoders_data.append((number, name, description))
-                        encoders_shorts.update({number: encoders[encoder]['Encoder']})
+                    encoders_data.append((number, name, description))
+                    encoders_shorts.update({number: encoders[encoder]['Encoder']})
 
-                        number += 1
-                if encoders_data:
-                    self.tables.print_table(f"Encoders ({database})", headers, *encoders_data)
-                    self.local_storage.set("encoder_shorts", encoders_shorts)
+                    number += 1
+
+            if encoders_data:
+                self.tables.print_table(f"Encoders ({database})", headers, *encoders_data)
+
+        if encoders_shorts:
+            self.local_storage.set("encoder_shorts", encoders_shorts)
 
     def show_search_modules(self, keyword):
         all_modules = self.local_storage.get("modules")
+        headers = ("Number", "Category", "Module", "Rank", "Name")
+
         modules_shorts = {}
+        number = 0
 
-        if all_modules:
-            headers = ("Number", "Category", "Module", "Rank", "Name")
-            for database in all_modules:
-                number = 0
-                modules_data = []
-                modules = all_modules[database]
+        for database in all_modules:
+            modules_data = []
+            modules = all_modules[database]
 
-                for module in sorted(modules):
-                    if keyword in modules[module]['Module'] or keyword in modules[module]['Name']:
-                        name = modules[module]['Module'].replace(keyword, self.colors.RED + keyword + self.colors.END)
-                        description = modules[module]['Name'].replace(
-                            keyword, self.colors.RED + keyword + self.colors.END)
+            for module in sorted(modules):
+                if keyword in modules[module]['Module'] or keyword in modules[module]['Name']:
+                    name = modules[module]['Module'].replace(keyword, self.colors.RED + keyword + self.colors.END)
+                    description = modules[module]['Name'].replace(
+                        keyword, self.colors.RED + keyword + self.colors.END)
 
-                        modules_data.append((number, modules[module]['Category'], name,
-                                             modules[module]['Rank'], description))
-                        modules_shorts.update({number: modules[module]['Module']})
+                    modules_data.append((number, modules[module]['Category'], name,
+                                         modules[module]['Rank'], description))
+                    modules_shorts.update({number: modules[module]['Module']})
 
-                        number += 1
-                if modules_data:
-                    self.tables.print_table(f"Modules ({database})", headers, *modules_data)
-                    self.local_storage.set("module_shorts", modules_shorts)
+                    number += 1
+
+            if modules_data:
+                self.tables.print_table(f"Modules ({database})", headers, *modules_data)
+
+        if modules_shorts:
+            self.local_storage.set("module_shorts", modules_shorts)
 
     def show_search_payloads(self, keyword):
         all_payloads = self.local_storage.get("payloads")
+        headers = ("Number", "Payload", "Rank", "Name")
+
         payloads_shorts = {}
+        number = 0
 
-        if all_payloads:
-            headers = ("Number", "Payload", "Rank", "Name")
-            for database in all_payloads:
-                number = 0
-                payloads_data = []
-                payloads = all_payloads[database]
+        for database in all_payloads:
+            payloads_data = []
+            payloads = all_payloads[database]
 
-                for payload in sorted(payloads):
-                    if keyword in payloads[payload]['Payload'] or keyword in payloads[payload]['Name']:
-                        name = payloads[payload]['Payload'].replace(
-                            keyword, self.colors.RED + keyword + self.colors.END)
-                        description = payloads[payload]['Name'].replace(
-                            keyword, self.colors.RED + keyword + self.colors.END)
+            for payload in sorted(payloads):
+                if keyword in payloads[payload]['Payload'] or keyword in payloads[payload]['Name']:
+                    name = payloads[payload]['Payload'].replace(
+                        keyword, self.colors.RED + keyword + self.colors.END)
+                    description = payloads[payload]['Name'].replace(
+                        keyword, self.colors.RED + keyword + self.colors.END)
 
-                        payloads_data.append((number, name, payloads[payload]['Rank'], description))
-                        payloads_shorts.update({number: payloads[payload]['Payload']})
+                    payloads_data.append((number, name, payloads[payload]['Rank'], description))
+                    payloads_shorts.update({number: payloads[payload]['Payload']})
 
-                        number += 1
-                if payloads_data:
-                    self.tables.print_table(f"Payloads ({database})", headers, *payloads_data)
-                    self.local_storage.set("payload_shorts", payloads_shorts)
+                    number += 1
+
+            if payloads_data:
+                self.tables.print_table(f"Payloads ({database})", headers, *payloads_data)
+
+        if payloads_shorts:
+            self.local_storage.set("payload_shorts", payloads_shorts)
 
     def show_sessions(self):
         sessions = self.local_storage.get("sessions")
@@ -379,7 +408,7 @@ class Show:
                 sessions_data.append((session_id, session_platform, session_architecture, session_type, host, port))
             self.tables.print_table("Opened Sessions", headers, *sessions_data)
         else:
-            self.badges.print_warning("No opened sessions available.")
+            raise RuntimeWarning("No opened sessions available.")
 
     def show_information(self, details):
         if 'Name' in details:
@@ -391,16 +420,13 @@ class Show:
         current_module = self.modules.get_current_module()
 
         if not current_module:
-            self.badges.print_warning("No module selected.")
-            return
+            raise RuntimeWarning("No module selected.")
 
         if not hasattr(current_module, "options") and not hasattr(current_module, "payload"):
-            self.badges.print_warning("Module has no options.")
-            return
+            raise RuntimeWarning("Module has no options.")
 
         if not hasattr(current_module, "options") and not hasattr(self.payloads.get_current_payload(), "options"):
-            self.badges.print_warning("Module has no options.")
-            return
+            raise RuntimeWarning("Module has no options.")
 
         headers = ("Option", "Value", "Required", "Description")
 

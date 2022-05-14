@@ -28,9 +28,7 @@ import os
 import readline
 import sys
 
-from hatsploit.core.base.exceptions import Exceptions
 from hatsploit.core.base.execute import Execute
-from hatsploit.core.base.loader import Loader
 
 from hatsploit.core.cli.fmt import FMT
 from hatsploit.core.cli.badges import Badges
@@ -39,21 +37,14 @@ from hatsploit.core.utils.ui.completer import Completer
 from hatsploit.core.utils.ui.banner import Banner
 from hatsploit.core.utils.ui.tip import Tip
 
-from hatsploit.lib.loot import Loot
-
+from hatsploit.lib.runtime import Runtime
 from hatsploit.lib.config import Config
-from hatsploit.lib.jobs import Jobs
-from hatsploit.lib.options import Options
-from hatsploit.lib.sessions import Sessions
 from hatsploit.lib.modules import Modules
-from hatsploit.lib.payloads import Payloads
 from hatsploit.lib.storage import LocalStorage
 
 
 class Console:
-    exceptions = Exceptions()
     execute = Execute()
-    loader = Loader()
 
     fmt = FMT()
     badges = Badges()
@@ -62,14 +53,9 @@ class Console:
     banner = Banner()
     tip = Tip()
 
-    loot = Loot()
-
+    runtime = Runtime()
     config = Config()
-    jobs = Jobs()
-    options = Options()
-    sessions = Sessions()
     modules = Modules()
-    payloads = Payloads()
     local_storage = LocalStorage()
 
     history = config.path_config['history_path']
@@ -82,70 +68,33 @@ class Console:
 
     completion = None
 
-    def check_install(self):
-        if os.path.exists(self.config.path_config['root_path']):
-            workspace = self.config.path_config['user_path']
-            loot = self.config.path_config['loot_path']
+    def shell_execute(self):
+        if not self.modules.get_current_module():
+            prompt = f'({self.prompt})> '
+        else:
+            current_module = self.modules.get_current_module()
 
-            if not os.path.isdir(workspace):
-                self.badges.print_process(f"Creating workspace at {workspace}...")
-                os.mkdir(workspace)
+            category = current_module.details['Category']
+            name = current_module.details['Name']
 
-            if not os.path.isdir(loot):
-                self.loot.create_loot()
+            prompt = f'({self.prompt}: {category}: %red{name}%end)> '
+        commands = self.badges.input_empty(prompt)
 
-            return True
-        self.badges.print_error("HatSploit is not installed!")
-        self.badges.print_information("Consider running installation.")
-        return False
+        self.runtime.update()
+        self.execute.execute_command(commands)
+        self.runtime.update()
 
-    def start_hsf(self):
-        try:
-            self.loader.load_all()
-        except Exception:
-            sys.exit(1)
+        if self.local_storage.get("history"):
+            readline.write_history_file(self.history)
 
-    def update_events(self):
-        current_module = self.modules.get_current_module()
-        current_payload = self.payloads.get_current_payload()
+    def shell(self, history=True, header=True):
+        if history:
+            self.launch_history()
+        if header:
+            self.show_header()
 
-        self.jobs.stop_dead()
-        self.sessions.close_dead()
-
-        self.options.add_handler_options(current_module, current_payload)
-
-    def launch_menu(self):
         while True:
-            try:
-                if not self.modules.get_current_module():
-                    prompt = f'({self.prompt})> '
-                else:
-                    current_module = self.modules.get_current_module()
-
-                    category = current_module.details['Category']
-                    name = current_module.details['Name']
-
-                    prompt = f'({self.prompt}: {category}: %red{name}%end)> '
-                commands = self.badges.input_empty(prompt)
-
-                self.update_events()
-                self.execute.execute_command(commands)
-                self.update_events()
-
-                if self.local_storage.get("history"):
-                    readline.write_history_file(self.history)
-
-            except (KeyboardInterrupt, EOFError, self.exceptions.GlobalException):
-                pass
-            except RuntimeError as e:
-                self.badges.print_error(str(e))
-            except Exception as e:
-                self.badges.print_error(f"An error occurred: {str(e)}!")
-
-    def enable_history_file(self):
-        if not os.path.exists(self.history):
-            open(self.history, 'w').close()
-        readline.read_history_file(self.history)
+            self.runtime.catch(self.shell_execute)
 
     def launch_history(self):
         readline.set_auto_history(False)
@@ -153,14 +102,17 @@ class Console:
         using_history = self.local_storage.get("history")
         if using_history:
             readline.set_auto_history(True)
-            self.enable_history_file()
+
+            if not os.path.exists(self.history):
+                open(self.history, 'w').close()
+            readline.read_history_file(self.history)
 
         readline.set_completer(self.completer.completer)
         readline.set_completer_delims(" \t\n;")
 
         readline.parse_and_bind("tab: complete")
 
-    def launch_shell(self):
+    def show_header(self):
         version = self.config.core_config['details']['version']
         codename = self.config.core_config['details']['codename']
 
@@ -197,10 +149,10 @@ class Console:
             header = ""
             header += "%end"
             if codename:
-                header += f"    --=( %yellowHatSploit Framework {version} {codename}%end\n"
+                header += f"    --=( %yellowHatSploit Framework {version} {codename} (https://hatsploit.com)%end\n"
             else:
                 header += f"    --=( %yellowHatSploit Framework {version}%end\n"
-            header += "--==--=( Developed by EntySec (%linehttps://entysec.netlify.app/%end)\n"
+            header += "--==--=( Developed by EntySec (%linehttps://entysec.netlify.app%end)\n"
             header += f"    --=( {modules_total} modules | {payloads_total} payloads "
             header += f"| {encoders_total} encoders | {plugins_total} plugins"
             header += "%end"
@@ -210,15 +162,8 @@ class Console:
         if self.config.core_config['console']['tip']:
             self.tip.print_random_tip()
 
-    def shell(self):
-        self.start_hsf()
-        self.launch_history()
-        self.launch_shell()
-        self.launch_menu()
-
-    def script(self, input_files, do_shell=False):
-        self.start_hsf()
-        self.launch_shell()
+    def script(self, input_files, shell=False):
+        self.show_header()
 
         for input_file in input_files:
             if os.path.exists(input_file):
@@ -229,11 +174,11 @@ class Console:
                 for line in file_text:
                     commands = self.fmt.format_commands(line)
 
-                    self.add_handler_options()
-                    self.jobs.stop_dead()
-
+                    self.runtime.update()
                     self.execute.execute_command(commands)
+                    self.runtime.update()
 
-        if do_shell:
-            self.launch_history()
-            self.launch_menu()
+        if shell:
+            self.shell(
+                header=False
+            )

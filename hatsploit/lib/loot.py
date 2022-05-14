@@ -107,7 +107,7 @@ class Loot(String, FS):
             with open(self.data + filename, 'rb') as f:
                 return f.read()
         else:
-            self.badges.print_error("Invalid data given!")
+            raise RuntimeError("Invalid data given!")
 
     def list_loot(self):
         loots = []

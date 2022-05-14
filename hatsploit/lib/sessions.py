@@ -24,8 +24,6 @@
 # SOFTWARE.
 #
 
-import requests
-
 from hatsploit.core.cli.badges import Badges
 from hatsploit.lib.config import Config
 
@@ -42,36 +40,27 @@ class Sessions:
     global_storage = GlobalStorage(storage_path)
     local_storage = LocalStorage()
 
-    def get_all_sessions(self):
+    def get_sessions(self):
         sessions = self.local_storage.get("sessions")
         return sessions
 
     def close_dead(self):
-        sessions = self.local_storage.get("sessions")
+        sessions = self.get_sessions()
+
         if sessions:
             for session in list(sessions):
                 if not sessions[session]['Object'].heartbeat():
                     self.badges.print_warning(f"Session {str(session)} is dead (no heartbeat).")
                     self.close_session(session)
-        
-    def close_sessions(self):
-        if not self.local_storage.get("sessions"):
-            return True
-        self.badges.print_warning("You have some opened sessions.")
-        if self.badges.input_question("Exit anyway? [y/N] ")[0].lower() in ['yes', 'y']:
-            self.badges.print_process("Closing all sessions...")
-            self.close_all_sessions()
-            return True
-        return False
 
     def add_session(self, session_platform, session_architecture,
                     session_type, session_host, session_port, session_object):
-        if not self.local_storage.get("sessions"):
+        if not self.get_sessions():
             self.local_storage.set("sessions", {})
 
         session_id = 0
-        while (session_id in self.local_storage.get("sessions") or
-               session_id < len(self.local_storage.get("sessions"))):
+        while (session_id in self.get_sessions() or
+               session_id < len(self.get_sessions())):
             session_id += 1
 
         sessions = {
@@ -89,7 +78,8 @@ class Sessions:
         return session_id
 
     def check_exist(self, session_id, session_platform=None, session_architecture=None, session_type=None):
-        sessions = self.local_storage.get("sessions")
+        sessions = self.get_sessions()
+
         if sessions:
             if int(session_id) in sessions:
                 valid = True
@@ -112,37 +102,39 @@ class Sessions:
     def enable_auto_interaction(self):
         self.global_storage.set("auto_interaction", True)
         self.global_storage.set_all()
-        self.badges.print_information("Auto interaction: on")
 
     def disable_auto_interaction(self):
         self.global_storage.set("auto_interaction", False)
         self.global_storage.set_all()
-        self.badges.print_information("Auto interaction: off")
 
     def interact_with_session(self, session_id):
-        sessions = self.local_storage.get("sessions")
+        sessions = self.get_sessions()
+
         if self.check_exist(session_id):
             self.badges.print_process(f"Interacting with session {str(session_id)}...%newline")
             sessions[int(session_id)]['Object'].interact()
         else:
-            self.badges.print_error("Invalid session given!")
+            raise RuntimeError("Invalid session given!")
 
     def session_download(self, session_id, remote_file, local_path):
-        sessions = self.local_storage.get("sessions")
+        sessions = self.get_sessions()
+
         if self.check_exist(session_id):
             return sessions[int(session_id)]['Object'].download(remote_file, local_path)
-        self.badges.print_error("Invalid session given!")
-        return None
+
+        raise RuntimeError("Invalid session given!")
 
     def session_upload(self, session_id, local_file, remote_path):
-        sessions = self.local_storage.get("sessions")
+        sessions = self.get_sessions()
+
         if self.check_exist(session_id):
             return sessions[int(session_id)]['Object'].upload(local_file, remote_path)
-        self.badges.print_error("Invalid session given!")
-        return None
+
+        raise RuntimeError("Invalid session given!")
 
     def close_session(self, session_id):
-        sessions = self.local_storage.get("sessions")
+        sessions = self.get_sessions()
+
         if self.check_exist(session_id):
             try:
                 sessions[int(session_id)]['Object'].close()
@@ -150,12 +142,13 @@ class Sessions:
 
                 self.local_storage.update("sessions", sessions)
             except Exception:
-                self.badges.print_error("Failed to close session!")
+                raise RuntimeError("Failed to close session!")
         else:
-            self.badges.print_error("Invalid session given!")
+            raise RuntimeError("Invalid session given!")
 
-    def close_all_sessions(self):
-        sessions = self.local_storage.get("sessions")
+    def close_sessions(self):
+        sessions = self.get_sessions()
+
         if sessions:
             for session in list(sessions):
                 try:
@@ -164,11 +157,12 @@ class Sessions:
 
                     self.local_storage.update("sessions", sessions)
                 except Exception:
-                    self.badges.print_error("Failed to close session!")
+                    raise RuntimeError("Failed to close session!")
 
     def get_session(self, session_id, session_platform=None, session_architecture=None, session_type=None):
-        sessions = self.local_storage.get("sessions")
+        sessions = self.get_sessions()
+
         if self.check_exist(session_id, session_platform, session_architecture, session_type):
             return sessions[int(session_id)]['Object']
-        self.badges.print_error("Invalid session given!")
-        return None
+
+        raise RuntimeError("Invalid session given!")

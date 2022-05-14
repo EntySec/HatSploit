@@ -25,65 +25,48 @@
 #
 
 import ctypes
-import os
-import sys
 import threading
 
-from hatsploit.core.base.exceptions import Exceptions
-from hatsploit.core.cli.badges import Badges
-from hatsploit.core.cli.tables import Tables
-from hatsploit.lib.modules import Modules
 from hatsploit.lib.storage import LocalStorage
 
 
 class Jobs:
-    exceptions = Exceptions()
-    tables = Tables()
-    badges = Badges()
     local_storage = LocalStorage()
-    modules = Modules()
 
     job_process = None
 
+    def get_jobs(self):
+        return self.local_storage.get("jobs")
+
+    def get_hidden_jobs(self):
+        return self.local_storage.get("hidden_jobs")
+
     def stop_dead(self):
-        jobs = self.local_storage.get("jobs")
+        jobs = self.get_jobs()
         if jobs:
             for job_id in list(jobs):
-                if not jobs[job_id]['job_process'].is_alive():
+                if not jobs[job_id]['Process'].is_alive():
                     self.delete_job(job_id)
 
-        hidden_jobs = self.local_storage.get("hidden_jobs")
+        hidden_jobs = self.get_hidden_jobs()
         if hidden_jobs:
             for job_id in list(hidden_jobs):
-                if not hidden_jobs[job_id]['job_process'].is_alive():
+                if not hidden_jobs[job_id]['Process'].is_alive():
                     self.delete_job(job_id, True)
 
     def count_jobs(self):
-        jobs = self.local_storage.get("jobs")
+        jobs = self.get_jobs()
         if jobs:
             return len(jobs)
         return 0
 
-    def exit_jobs(self):
-        if not self.local_storage.get("jobs"):
-            if self.local_storage.get("hidden_jobs"):
-                self.stop_all_jobs()
-            return True
-
-        self.badges.print_warning("You have some running jobs.")
-        if self.badges.input_question("Exit anyway? [y/N] ")[0].lower() in ['yes', 'y']:
-            self.badges.print_process("Stopping all jobs...")
-            self.stop_all_jobs()
-            return True
-        return False
-
-    def stop_all_jobs(self):
-        jobs = self.local_storage.get("jobs")
+    def stop_jobs(self):
+        jobs = self.get_jobs()
         if jobs:
             for job_id in list(jobs):
                 self.delete_job(job_id)
 
-        hidden_jobs = self.local_storage.get("hidden_jobs")
+        hidden_jobs = self.get_hidden_jobs()
         if hidden_jobs:
             for job_id in list(hidden_jobs):
                 self.delete_job(job_id, True)
@@ -92,11 +75,10 @@ class Jobs:
         if job.is_alive():
             exc = ctypes.py_object(SystemExit)
             res = ctypes.pythonapi.PyThreadState_SetAsyncExc(ctypes.c_long(job.ident), exc)
-            if res == 0:
-                raise self.exceptions.GlobalException
+
             if res > 1:
                 ctypes.pythonapi.PyThreadState_SetAsyncExc(job.ident, None)
-                raise self.exceptions.GlobalException
+                raise RuntimeError("Failed to stop job!")
 
     def start_job(self, job_function, job_arguments):
         self.job_process = threading.Thread(target=job_function, args=job_arguments)
@@ -111,15 +93,12 @@ class Jobs:
         if self.local_storage.get(jobs_var):
             job_id = int(job_id)
             if job_id in list(self.local_storage.get(jobs_var)):
-                try:
-                    self.stop_job(self.local_storage.get(jobs_var)[job_id]['job_process'])
-                    self.local_storage.delete_element(jobs_var, job_id)
-                except Exception:
-                    self.badges.print_error("Failed to stop job!")
+                self.stop_job(self.local_storage.get(jobs_var)[job_id]['Process'])
+                self.local_storage.delete_element(jobs_var, job_id)
             else:
-                self.badges.print_error("Invalid job given!")
+                raise RuntimeError("Invalid job given!")
         else:
-            self.badges.print_error("Invalid job given!")
+            raise RuntimeError("Invalid job given!")
 
     def create_job(self, job_name, module_name, job_function, job_arguments=[], hidden=False):
         jobs_var = "jobs"
@@ -133,9 +112,9 @@ class Jobs:
 
         job_data = {
             job_id: {
-                'job_name': job_name,
-                'module_name': module_name,
-                'job_process': self.job_process
+                'Name': job_name,
+                'Module': module_name,
+                'Process': self.job_process
             }
         }
         self.local_storage.update(jobs_var, job_data)

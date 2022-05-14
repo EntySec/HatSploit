@@ -43,7 +43,6 @@ class Loader:
     update = Update()
 
     config = Config()
-    build = True
 
     def load_update_process(self):
         if self.update.check_update():
@@ -51,38 +50,34 @@ class Loader:
             self.badges.print_information("Consider running %greenhsf --update%end.")
             time.sleep(1)
 
-    def load_components(self):
-        if not self.builder.check_base_built() and self.build:
+    def load_everything(self, build_base=False):
+        if build_base:
             self.builder.build_base()
-        self.importer.import_all(self.build)
+        self.importer.import_all()
 
-    def load_everything(self):
-        self.load_components()
-
-    def load_all(self):
+    def load_all(self, build_base=False):
         self.load_update_process()
 
-        if not self.builder.check_base_built():
-            build = self.badges.input_question("Do you want to build and connect base databases? [y/n] ")
-            if build[0].lower() in ['y', 'yes']:
-                self.build = True
-            else:
-                self.build = False
-
-        loading_process = threading.Thread(target=self.load_everything)
+        loading_process = threading.Thread(target=self.load_everything, args=[build_base])
         loading_process.start()
+
         base_line = "Loading the HatSploit Framework..."
         cycle = 0
+
         while loading_process.is_alive():
             for char in "/-\|":
                 status = base_line + char
                 cycle += 1
+
                 if status[cycle % len(status)] in list(string.ascii_lowercase):
                     status = status[:cycle % len(status)] + status[cycle % len(status)].upper() + status[cycle % len(
                         status) + 1:]
+
                 elif status[cycle % len(status)] in list(string.ascii_uppercase):
                     status = status[:cycle % len(status)] + status[cycle % len(status)].lower() + status[cycle % len(
                         status) + 1:]
+
                 self.badges.print_process(status, '', '\r')
                 time.sleep(.1)
+
         loading_process.join()

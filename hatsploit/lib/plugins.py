@@ -24,13 +24,11 @@
 # SOFTWARE.
 #
 
-from hatsploit.core.cli.badges import Badges
 from hatsploit.core.db.importer import Importer
 from hatsploit.lib.storage import LocalStorage
 
 
 class Plugins:
-    badges = Badges()
     importer = Importer()
     local_storage = LocalStorage()
 
@@ -103,9 +101,8 @@ class Plugins:
             else:
                 self.local_storage.set("loaded_plugins", plugin_object)
             self.get_loaded_plugins()[plugin].run()
-            self.badges.print_success(f"Successfully loaded {plugin} plugin!")
         else:
-            self.badges.print_error("Failed to load plugin!")
+            raise RuntimeError(f"Failed to load plugin: {cowsay}!")
 
     def load_plugin(self, plugin):
         plugins_shorts = self.local_storage.get("plugin_shorts")
@@ -117,16 +114,14 @@ class Plugins:
                 if plugin_number in plugins_shorts:
                     plugin = plugins_shorts[plugin_number]
 
-        self.badges.print_process(f"Loading {plugin} plugin...")
-
         if not self.check_loaded(plugin):
             if self.check_exist(plugin):
                 database = self.get_database(plugin)
                 self.add_plugin(database, plugin)
             else:
-                self.badges.print_error("Invalid plugin!")
+                raise RuntimeError(f"Invalid plugin: {plugin}!")
         else:
-            self.badges.print_error("Already loaded!")
+            raise RuntimeWarning(f"Plugin is already loaded: {plugin}.")
 
     def unload_plugin(self, plugin):
         plugins_shorts = self.local_storage.get("plugin_shorts")
@@ -138,10 +133,7 @@ class Plugins:
                 if plugin_number in plugins_shorts:
                     plugin = plugins_shorts[plugin_number]
 
-        self.badges.print_process(f"Unloading {plugin} plugin...")
-
         if self.check_loaded(plugin):
             self.local_storage.delete_element("loaded_plugins", plugin)
-            self.badges.print_success(f"Successfully unloaded {plugin} plugin!")
         else:
-            self.badges.print_error("Plugin not loaded!")
+            raise RuntimeError(f"Plugin is not loaded: {plugin}!")

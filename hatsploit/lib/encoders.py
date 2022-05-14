@@ -25,14 +25,12 @@
 #
 
 from hatsploit.core.db.importer import Importer
-from hatsploit.core.cli.badges import Badges
 
 from hatsploit.lib.storage import LocalStorage
 
 
 class Encoders:
     importer = Importer()
-    badges = Badges()
 
     local_storage = LocalStorage()
 
@@ -90,8 +88,8 @@ class Encoders:
 
             if current_module_name in imported_encoders:
                 if current_payload_name in imported_encoders[current_module_name]:
-                    if hasattr(current_module, "options") and 'ENCODER' in current_module.options:
-                        name = current_module.options['ENCODER']['Value']
+                    if hasattr(current_payload, "options") and 'ENCODER' in current_payload.options:
+                        name = current_payload.options['ENCODER']['Value']
                         return imported_encoders[current_module_name][current_payload_name][name]
         return None
 
@@ -195,6 +193,4 @@ class Encoders:
         if not self.check_imported(module_name, payload_name, encoder):
             encoder_object = self.import_encoder(module_name, payload_name, encoder)
             if not encoder_object:
-                self.badges.print_error("Failed to select encoder from database!")
-                return False
-        return True
+                raise RuntimeError(f"Failed to select encoder from database: {encoder}!")

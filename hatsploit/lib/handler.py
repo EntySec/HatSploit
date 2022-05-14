@@ -220,7 +220,7 @@ class Handler:
             if module_platform not in self.types.platforms:
                 p_platform = module_platform
 
-        return self.handle(
+        self.handle(
             stage=stage,
             sender=sender,
 
@@ -257,9 +257,9 @@ class Handler:
 
         if blinder:
             self.blinder.shell(sender, args)
-            return True
+            return
 
-        if not self.send_payload(
+        self.send_payload(
             stage=stage,
             sender=sender,
 
@@ -277,9 +277,7 @@ class Handler:
 
             ensure=ensure,
             arguments=arguments
-        ):
-            self.badges.print_error("Failed to send payload stage!")
-            return False
+        )
 
         remote = self.handle_session(
             host=host,
@@ -291,8 +289,7 @@ class Handler:
         )
 
         if not remote:
-            self.badges.print_warning("Payload sent but no session was opened.")
-            return True
+            raise RuntimeWarning("Payload sent but no session was opened.")
 
         s_type = remote[0].details['Type']
 
@@ -304,7 +301,6 @@ class Handler:
             rhost = remote[1]
 
         self.open_session(rhost, port, p_platform, p_architecture, s_type, remote[0], on_session)
-        return True
 
     def module_handle_session(self, p_type='one_side', session=None, timeout=None):
         module = self.modules.get_current_module()
@@ -364,8 +360,7 @@ class Handler:
             return None
 
         else:
-            self.badges.print_error("Invalid payload type!")
-            return None
+            raise RuntimeError(f"Invalid payload type: {p_type}!")
 
         return new_session, host
 
@@ -374,12 +369,10 @@ class Handler:
                      location=None, background=None, method=None, linemax=100,
                      ensure=False, arguments=None):
         if stage is None:
-            self.badges.print_error("Payload stage is not found!")
-            return False
+            raise RuntimeError("Payload stage is not found!")
 
         if sender is None:
-            self.badges.print_error("No sender found!")
-            return False
+            raise RuntimeError("No sender specified!")
 
         if ensure:
             linemax = self.ensure_linemax(stage, linemax)
@@ -403,5 +396,3 @@ class Handler:
                 linemax
             ]
         )
-
-        return True

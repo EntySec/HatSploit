@@ -8,5 +8,5 @@
     Modular penetration testing platform that 
     <br>enables you to write, test, and execute exploit code.
     <br>
-    <p align="center"><a href="https://hatsploit.netlify.app">About HatSploit</a> | <a href="https://github.com/EntySec/HatSploit/wiki/Installation">Installation</a> | <a href="https://github.com/EntySec/HatSploit/wiki/Using-HatSploit">Using HatSploit</a><p>
+    <p align="center"><a href="https://hatsploit.com">About HatSploit</a> | <a href="https://github.com/EntySec/HatSploit/wiki/Installation">Installation</a> | <a href="https://github.com/EntySec/HatSploit/wiki/Using-HatSploit">Using HatSploit</a><p>
 </p>

@@ -24,13 +24,10 @@
 # SOFTWARE.
 #
 
-import os
-
 from hatvenom import HatVenom
 
 from pex.type import Type
 
-from hatsploit.core.cli.badges import Badges
 from hatsploit.core.db.importer import Importer
 
 from hatsploit.lib.options import Options
@@ -43,9 +40,7 @@ class Payloads:
 
     types = Type()
 
-    badges = Badges()
     importer = Importer()
-
     options = Options()
     local_storage = LocalStorage()
     encoders = Encoders()
@@ -184,9 +179,7 @@ class Payloads:
         if not self.check_imported(module_name, payload):
             payload_object = self.import_payload(module_name, payload)
             if not payload_object:
-                self.badges.print_error("Failed to select payload from database!")
-                return False
-        return True
+                raise RuntimeError(f"Failed to select payload from database: {payload}!")
 
     def generate_payload(self, payload, options={}, encoder=None):
         payload_object = self.get_payload(payload)

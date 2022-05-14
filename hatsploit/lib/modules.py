@@ -32,6 +32,7 @@ from pex.type import Type
 from hatsploit.core.cli.badges import Badges
 from hatsploit.core.db.importer import Importer
 
+from hatsploit.lib.options import Options
 from hatsploit.lib.payloads import Payloads
 from hatsploit.lib.encoders import Encoders
 from hatsploit.lib.sessions import Sessions
@@ -44,6 +45,7 @@ class Modules:
     badges = Badges()
     importer = Importer()
 
+    options = Options()
     payloads = Payloads()
     encoders = Encoders()
     sessions = Sessions()
@@ -143,16 +145,17 @@ class Modules:
 
     def use_module(self, module):
         if module.isdigit():
-            module = self.get_number_module(int(module))
+            number = int(module)
+            module = self.get_number_module(number)
+
             if not module:
-                self.badges.print_error("Invalid module number!")
-                return
+                raise RuntimeError(f"Invalid module number: {str(number)}!")
 
         if not self.check_if_already_used(module):
             if self.check_exist(module):
                 self.add_module(module)
             else:
-                self.badges.print_error("Invalid module!")
+                raise RuntimeError(f"Invalid module: {module}!")
 
     def add_module(self, module):
         imported_modules = self.get_imported_modules()
@@ -170,16 +173,19 @@ class Modules:
                         self.badges.print_process(f"Using default payload {payload_name}...")
 
                         if self.payloads.check_exist(payload_name):
-                            if self.payloads.add_payload(module, payload_name):
-                                self.add_to_global(module_object)
+                            self.payloads.add_payload(module, payload_name)
+                            self.add_to_global(module_object)
+
+                            current_payload = self.payloads.get_current_payload()
+                            self.options.add_handler_options(module_object, current_payload)
+
                             return
 
-                        self.badges.print_error("Invalid default payload!")
-                        return
+                        raise RuntimeError(f"Invalid default payload: {payload_name}!")
 
                 self.add_to_global(module_object)
             else:
-                self.badges.print_error("Failed to select module from database!")
+                raise RuntimeError(f"Failed to select module from database: {module}!")
 
     def add_to_global(self, module_object):
         if self.get_current_module():
@@ -228,8 +234,7 @@ class Modules:
             return
 
         if not all(len(value) == len(values[0]) for value in values):
-            self.badges.print_error("All files should contain equal number of values!")
-            return
+            raise RuntimeError("All files should contain equal number of values!")
 
         save = copy.deepcopy(current_module.options)
         for i in range(0, len(values[0])):
@@ -258,22 +263,17 @@ class Modules:
             file = value.split(':')[1]
 
             if not os.path.isfile(file):
-                self.badges.print_error(f"Local file: {file}: does not exist!")
-                return False
+                raise RuntimeError(f"Local file: {file}: does not exist!")
 
             with open(file, 'r') as f:
                 for line in f.read().split('\n'):
                     if line.strip():
                         if not checker(line.strip()):
-                            self.badges.print_error(f"File contains invalid value, expected valid {name}!")
-                            return False
-            return True
+                            raise RuntimeError(f"File contains invalid value, expected valid {name}!")
+            return
 
         if not checker(value):
-            self.badges.print_error(f"Invalid value, expected valid {name}!")
-            return False
-
-        return True
+            raise RuntimeError(f"Invalid value, expected valid {name}!")
 
     def compare_session(self, value_type, value):
         current_module = self.get_current_module()
@@ -305,8 +305,7 @@ class Modules:
 
             if not session_platforms:
                 if not self.sessions.check_exist(value, session_platform, session_type):
-                    self.badges.print_error("Invalid value, expected valid session!")
-                    return False
+                    raise RuntimeError("Invalid value, expected valid session!")
             else:
                 session = 0
                 for platform in session_platforms:
@@ -315,13 +314,9 @@ class Modules:
                         break
 
                 if not session:
-                    self.badges.print_error("Invalid value, expected valid session!")
-                    return False
-
-            return True
-
-        self.badges.print_error("Invalid value, expected valid session!")
-        return False
+                    raise RuntimeError("Invalid value, expected valid session!")
+        else:
+            raise RuntimeError("Invalid value, expected valid session!")
 
     def compare_types(self, value_type, value, module=True):
         if value_type and not value_type.lower == 'all':
@@ -373,11 +368,10 @@ class Modules:
                     architectures = module_payload['Architectures']
 
                     if self.payloads.check_module_compatible(value, types, platforms, architectures):
-                        if self.payloads.add_payload(module_name, value):
-                            return True
+                        self.payloads.add_payload(module_name, value)
+                        return
 
-                self.badges.print_error("Invalid value, expected valid payload!")
-                return False
+                raise RuntimeError("Invalid value, expected valid payload!")
 
             if value_type.lower() == 'encoder':
                 current_module = self.get_current_module()
@@ -387,13 +381,12 @@ class Modules:
                     architecture = current_payload.details['Architecture']
 
                     if self.encoders.check_payload_compatible(value, architecture):
-                        if self.encoders.add_encoder(
-                                current_module.details['Module'],
-                                current_payload.details['Payload'], value):
-                            return True
+                        self.encoders.add_encoder(
+                            current_module.details['Module'],
+                            current_payload.details['Payload'], value)
+                        return
 
-                self.badges.print_error("Invalid value, expected valid encoder!")
-                return False
+                raise RuntimeError("Invalid value, expected valid encoder!")
 
             if 'session' in value_type.lower():
                 value = str(value)
@@ -402,28 +395,23 @@ class Modules:
                     file = value.split(':')[1]
 
                     if not os.path.isfile(file):
-                        self.badges.print_error(f"Local file: {file}: does not exist!")
-                        return False
+                        raise RuntimeError(f"Local file: {file}: does not exist!")
 
                     with open(file, 'r') as f:
                         for line in f.read().split('\n'):
                             if line.strip():
                                 if not self.compare_session(value_type, line.strip()):
-                                    self.badges.print_error(f"File contains invalid value, expected valid session!")
-                                    return False
-                    return True
+                                    raise RuntimeError(f"File contains invalid value, expected valid session!")
+                    return
 
                 return self.compare_session(value_type, value)
-
-        return True
 
     def set_current_module_option(self, option, value):
         current_module = self.get_current_module()
 
         if current_module:
             if not hasattr(current_module, "options") and not hasattr(current_module, "payload"):
-                self.badges.print_warning("Module has no options.")
-                return
+                raise RuntimeWarning("Module has no options.")
 
             if hasattr(current_module, "options"):
                 if option in current_module.options:
@@ -439,36 +427,26 @@ class Modules:
                                 if payload_number in payloads_shorts:
                                     value = payloads_shorts[payload_number]
 
-                    if value_type == 'encoder':
-                        encoders_shorts = self.local_storage.get("encoder_shorts")
+                    self.compare_types(value_type, value)
+                    self.badges.print_information(option + " ==> " + value)
 
-                        if encoders_shorts:
-                            if value.isdigit():
-                                encoder_number = int(value)
+                    if option.lower() == 'blinder':
+                        if value.lower() in ['y', 'yes']:
+                            current_module.payload['Value'] = None
 
-                                if encoder_number in encoders_shorts:
-                                    value = encoders_shorts[encoder_number]
-
-                    if self.compare_types(value_type, value):
-                        self.badges.print_information(option + " ==> " + value)
-
-                        if option.lower() == 'blinder':
-                            if value.lower() in ['y', 'yes']:
-                                current_module.payload['Value'] = None
-
-                        if value_type == 'payload':
-                            self.local_storage.set_module_payload(
-                                "current_module",
-                                self.local_storage.get("current_module_number"),
-                                value
-                            )
-                        else:
-                            self.local_storage.set_module_option(
-                                "current_module",
-                                self.local_storage.get("current_module_number"),
-                                option,
-                                value
-                            )
+                    if value_type == 'payload':
+                        self.local_storage.set_module_payload(
+                            "current_module",
+                            self.local_storage.get("current_module_number"),
+                            value
+                        )
+                    else:
+                        self.local_storage.set_module_option(
+                            "current_module",
+                            self.local_storage.get("current_module_number"),
+                            option,
+                            value
+                        )
                     return
 
             if hasattr(current_module, "payload"):
@@ -479,29 +457,35 @@ class Modules:
                     if option in current_payload.options:
                         value_type = current_payload.options[option]['Type']
 
-                        if self.compare_types(value_type, value, False):
-                            self.badges.print_information(option + " ==> " + value)
-                            self.local_storage.set_payload_option(current_module.details['Module'],
-                                                                  current_payload.details['Payload'], option, value)
+                        if value_type == 'encoder':
+                            encoders_shorts = self.local_storage.get("encoder_shorts")
+
+                            if encoders_shorts:
+                                if value.isdigit():
+                                    encoder_number = int(value)
+
+                                    if encoder_number in encoders_shorts:
+                                        value = encoders_shorts[encoder_number]
+
+                        self.compare_types(value_type, value, False)
+                        self.badges.print_information(option + " ==> " + value)
+                        self.local_storage.set_payload_option(current_module.details['Module'],
+                                                              current_payload.details['Payload'], option, value)
+                        return
+
                     if current_encoder and hasattr(current_encoder, "options"):
                         if option in current_encoder.options:
                             value_type = current_encoder.options[option]['Type']
 
-                            if self.compare_types(value_type, value, False):
-                                self.badges.print_information(option + " ==> " + value)
-                                self.local_storage.set_encoder_option(current_module.details['Module'],
-                                                                      current_payload.details['Payload'],
-                                                                      current_encoder.details['Encoder'], option, value)
-                        else:
-                            self.badges.print_error("Unrecognized encoder option!")
-                    else:
-                        self.badges.print_error("Unrecognized payload option!")
-                else:
-                    self.badges.print_error("Unrecognized module option!")
-            else:
-                self.badges.print_error("Unrecognized module option!")
-        else:
-            self.badges.print_warning("No module selected.")
+                            self.compare_types(value_type, value, False)
+                            self.badges.print_information(option + " ==> " + value)
+                            self.local_storage.set_encoder_option(current_module.details['Module'],
+                                                                  current_payload.details['Payload'],
+                                                                  current_encoder.details['Encoder'], option, value)
+                            return
+
+            raise RuntimeError("Unrecognized module option!")
+        raise RuntimeWarning("No module selected.")
 
     @staticmethod
     def validate_options(module_object):
@@ -530,30 +514,33 @@ class Modules:
                 missed += self.payloads.validate_options(current_payload)
 
             if missed:
-                self.badges.print_error(f"These options are failed to validate: {missed[:-2]}!")
-            else:
-                try:
-                    self.badges.print_empty()
+                raise RuntimeError(f"These options are failed to validate: {missed[:-2]}!")
 
-                    if current_payload:
-                        current_encoder = self.encoders.get_current_encoder()
-                        payload = self.payloads.run_payload(current_payload, current_encoder)
-
-                        current_module.payload['Payload'] = payload
-
-                    self.entry_to_module(current_module)
-                    self.badges.print_success(f"{current_module_name.split('/')[0].title()} module completed!")
-                except (KeyboardInterrupt, EOFError):
-                    self.badges.print_warning(f"{current_module_name.split('/')[0].title()} module interrupted.")
-
-                except RuntimeError as e:
-                    self.badges.print_error(str(e))
-
-                except Exception as e:
-                    self.badges.print_error(f"An error occurred in module: {str(e)}!")
-                    self.badges.print_error(f"{current_module_name.split('/')[0].title()} module failed!")
+            try:
+                self.badges.print_empty()
 
                 if current_payload:
-                    del current_module.payload['Payload']
+                    current_encoder = self.encoders.get_current_encoder()
+                    payload = self.payloads.run_payload(current_payload, current_encoder)
+
+                    current_module.payload['Payload'] = payload
+
+                self.entry_to_module(current_module)
+                self.badges.print_success(f"{current_module_name.split('/')[0].title()} module completed!")
+            except (KeyboardInterrupt, EOFError):
+                raise RuntimeWarning(f"{current_module_name.split('/')[0].title()} module interrupted.")
+
+            except RuntimeError as e:
+                raise RuntimeError(str(e))
+
+            except RuntimeWarning as w:
+                raise RuntimeWarning(str(w))
+
+            except Exception as e:
+                self.badges.print_error(f"An error occurred in module: {str(e)}!")
+                self.badges.print_error(f"{current_module_name.split('/')[0].title()} module failed!")
+
+            if current_payload:
+                del current_module.payload['Payload']
         else:
-            self.badges.print_warning("No module selected.")
+            raise RuntimeWarning("No module selected.")
