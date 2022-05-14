@@ -1,4 +1,5 @@
-recursive-include TERMS_OF_SERVICE
+include TERMS_OF_SERVICE
+
 recursive-include hatsploit/commands *
 recursive-include hatsploit/config *
 recursive-include hatsploit/data *
