@@ -485,8 +485,7 @@ class Modules:
                             return
 
             raise RuntimeError("Unrecognized module option!")
-        else:
-            raise RuntimeWarning("No module selected.")
+        raise RuntimeWarning("No module selected.")
 
     @staticmethod
     def validate_options(module_object):
@@ -516,32 +515,32 @@ class Modules:
 
             if missed:
                 raise RuntimeError(f"These options are failed to validate: {missed[:-2]}!")
-            else:
-                try:
-                    self.badges.print_empty()
 
-                    if current_payload:
-                        current_encoder = self.encoders.get_current_encoder()
-                        payload = self.payloads.run_payload(current_payload, current_encoder)
-
-                        current_module.payload['Payload'] = payload
-
-                    self.entry_to_module(current_module)
-                    self.badges.print_success(f"{current_module_name.split('/')[0].title()} module completed!")
-                except (KeyboardInterrupt, EOFError):
-                    raise RuntimeWarning(f"{current_module_name.split('/')[0].title()} module interrupted.")
-
-                except RuntimeError as e:
-                    raise RuntimeError(str(e))
-
-                except RuntimeWarning as w:
-                    raise RuntimeWarning(str(w))
-
-                except Exception as e:
-                    self.badges.print_error(f"An error occurred in module: {str(e)}!")
-                    self.badges.print_error(f"{current_module_name.split('/')[0].title()} module failed!")
+            try:
+                self.badges.print_empty()
 
                 if current_payload:
-                    del current_module.payload['Payload']
+                    current_encoder = self.encoders.get_current_encoder()
+                    payload = self.payloads.run_payload(current_payload, current_encoder)
+
+                    current_module.payload['Payload'] = payload
+
+                self.entry_to_module(current_module)
+                self.badges.print_success(f"{current_module_name.split('/')[0].title()} module completed!")
+            except (KeyboardInterrupt, EOFError):
+                raise RuntimeWarning(f"{current_module_name.split('/')[0].title()} module interrupted.")
+
+            except RuntimeError as e:
+                raise RuntimeError(str(e))
+
+            except RuntimeWarning as w:
+                raise RuntimeWarning(str(w))
+
+            except Exception as e:
+                self.badges.print_error(f"An error occurred in module: {str(e)}!")
+                self.badges.print_error(f"{current_module_name.split('/')[0].title()} module failed!")
+
+            if current_payload:
+                del current_module.payload['Payload']
         else:
             raise RuntimeWarning("No module selected.")
