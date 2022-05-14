@@ -58,6 +58,7 @@ class Config:
             'root_path': self.base_path,
 
             'data_path': f'{self.base_path}data/',
+            'policy_path': f'{self.base_path}data/policy/',
             'tips_path': f'{self.base_path}data/tips/',
             'banners_path': f'{self.base_path}data/banners/',
             'wordlists_path': f'{self.base_path}data/wordlists/',
