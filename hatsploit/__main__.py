@@ -58,7 +58,8 @@ class HatSploit:
     def policy(self):
         if not os.path.exists(self.path_config['accept_path']):
             self.badges.print_information("--( The HatSploit Terms of Service )--")
-            with open(self.path_config['root_path'] + 'TERMS_OF_SERVICE', 'r') as f:
+
+            with open(self.path_config['policy_path'] + 'terms_of_service.txt', 'r') as f:
                 self.badges.print_empty(f.read())
 
             agree = self.badges.input_question("Accept HatSploit Framework Terms of Service? [y/n] ")
