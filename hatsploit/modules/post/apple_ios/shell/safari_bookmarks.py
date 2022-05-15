@@ -29,7 +29,12 @@ class HatSploitModule(Module, Sessions, DB):
         'SESSION': {
             'Description': "Session to run on.",
             'Value': None,
-            'Type': "session",
+            'Type': {
+                'session': {
+                    'Platforms': ['apple_ios'],
+                    'Type': 'shell'
+                }
+            },
             'Required': True
         },
         'PATH': {
