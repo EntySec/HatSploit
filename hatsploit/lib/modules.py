@@ -184,6 +184,9 @@ class Modules:
                         raise RuntimeError(f"Invalid default payload: {payload_name}!")
 
                 self.add_to_global(module_object)
+
+                current_payload = self.payloads.get_current_payload()
+                self.options.add_handler_options(module_object, current_payload)
             else:
                 raise RuntimeError(f"Failed to select module from database: {module}!")
 
