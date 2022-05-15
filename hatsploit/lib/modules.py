@@ -282,29 +282,9 @@ class Modules:
         current_module = self.get_current_module()
 
         if current_module:
-            session = value_type.lower().replace(' ', '')
-            session = session.split('->')
-
-            session_platforms = []
+            session_platforms = value_type['session']['Platforms']
             session_platform = current_module.details['Platform']
-            session_type = "shell"
-
-            if len(session) == 2:
-                if session[1].startswith('[') and session[1].endswith(']'):
-                    session_platforms = session[1][1:-1].split(',')
-                else:
-                    session_type = session[1]
-
-            elif len(session) == 3:
-                if session[1].startswith('[') and session[1].endswith(']'):
-                    session_platforms = session[1][1:-1].split(',')
-                else:
-                    session_type = session[1]
-
-                if session[2].startswith('[') and session[2].endswith(']'):
-                    session_platforms = session[2][1:-1].split(',')
-                else:
-                    session_type = session[2]
+            session_type = value_type['session']['Type']
 
             if not session_platforms:
                 if not self.sessions.check_exist(value, session_platform, session_type):
@@ -322,7 +302,7 @@ class Modules:
             raise RuntimeError("Invalid value, expected valid session!")
 
     def compare_types(self, value_type, value):
-        if value_type and not value_type.lower() == 'all':
+        if value_type and not isinstance(value_type, dict):
             if value_type.lower() in self.types.types:
                 return self.compare_type(value_type.lower(), value, self.types.types[value_type.lower()])
 
@@ -358,7 +338,8 @@ class Modules:
 
                 raise RuntimeError("Invalid value, expected valid encoder!")
 
-            if 'session' in value_type.lower():
+        if isinstance(value_type, dict):
+            if 'session' in value_type:
                 value = str(value)
 
                 if value.startswith('file:') and len(value) > 5 and module:
