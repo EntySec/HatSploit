@@ -256,10 +256,10 @@ class Modules:
             current_module.options = save
             save = copy.deepcopy(current_module.options)
 
-    def compare_type(self, name, value, checker, module=True):
+    def compare_type(self, name, value, checker):
         value = str(value)
 
-        if value.startswith('file:') and len(value) > 5 and module:
+        if value.startswith('file:') and len(value) > 5:
             file = value.split(':')[1]
 
             if not os.path.isfile(file):
@@ -318,43 +318,10 @@ class Modules:
         else:
             raise RuntimeError("Invalid value, expected valid session!")
 
-    def compare_types(self, value_type, value, module=True):
+    def compare_types(self, value_type, value):
         if value_type and not value_type.lower == 'all':
-            if value_type.lower() == 'mac':
-                return self.compare_type("MAC", value, self.types.is_mac, module)
-
-            if value_type.lower() == 'ip':
-                return self.compare_type("IP", value, self.types.is_ip, module)
-
-            if value_type.lower() == 'ipv4':
-                return self.compare_type("IPv4", value, self.types.is_ipv4, module)
-
-            if value_type.lower() == 'ipv6':
-                return self.compare_type("IPv6", value, self.types.is_ipv6, module)
-
-            if value_type.lower() == 'ipv4_range':
-                return self.compare_type("IPv4 range", value, self.types.is_ipv4_range, module)
-
-            if value_type.lower() == 'ipv6_range':
-                return self.compare_type("IPv6 range", value, self.types.is_ipv6_range, module)
-
-            if value_type.lower() == 'port':
-                return self.compare_type("port", value, self.types.is_port, module)
-
-            if value_type.lower() == 'port_range':
-                return self.compare_type("port range", value, self.types.is_port_range, module)
-
-            if value_type.lower() == 'number':
-                return self.compare_type("number", value, self.types.is_number, module)
-
-            if value_type.lower() == 'integer':
-                return self.compare_type("integer", value, self.types.is_integer, module)
-
-            if value_type.lower() == 'float':
-                return self.compare_type("float", value, self.types.is_float, module)
-
-            if value_type.lower() == 'boolean':
-                return self.compare_type("boolean", value, self.types.is_boolean, module)
+            if value_type.lower() in self.types.types:
+                return self.compare_type(value_type.lower(), value, self.types.types[value_type.lower()])
 
             if value_type.lower() == 'payload':
                 current_module = self.get_current_module()
@@ -406,35 +373,49 @@ class Modules:
 
                 return self.compare_session(value_type, value)
 
+    def find_shorts(self, value_type, value):
+        if value_type == 'payload':
+            payloads_shorts = self.local_storage.get("payload_shorts")
+
+            if payloads_shorts:
+                if value.isdigit():
+                    payload_number = int(value)
+
+                    if payload_number in payloads_shorts:
+                        value = payloads_shorts[payload_number]
+
+        elif value_type == 'encoder':
+            encoders_shorts = self.local_storage.get("encoder_shorts")
+
+            if encoders_shorts:
+                if value.isdigit():
+                    encoder_number = int(value)
+
+                    if encoder_number in encoders_shorts:
+                        value = encoders_shorts[encoder_number]
+
+        return value
+
     def set_current_module_option(self, option, value):
         current_module = self.get_current_module()
 
         if current_module:
-            if not hasattr(current_module, "options") and not hasattr(current_module, "payload"):
-                raise RuntimeWarning("Module has no options.")
+            if not hasattr(current_module, "options") and not hasattr(current_module, "advanced"):
+                if not hasattr(current_module, "payload"):
+                    raise RuntimeWarning("Module has no options.")
 
             if hasattr(current_module, "options"):
                 if option in current_module.options:
                     value_type = current_module.options[option]['Type']
-
-                    if value_type == 'payload':
-                        payloads_shorts = self.local_storage.get("payload_shorts")
-
-                        if payloads_shorts:
-                            if value.isdigit():
-                                payload_number = int(value)
-
-                                if payload_number in payloads_shorts:
-                                    value = payloads_shorts[payload_number]
+                    value = self.find_shorts(value_type, value)
 
                     self.compare_types(value_type, value)
-                    self.badges.print_information(option + " ==> " + value)
 
                     if option.lower() == 'blinder':
                         if value.lower() in ['y', 'yes']:
                             current_module.payload['Value'] = None
 
-                    if value_type == 'payload':
+                    if option.lower() == 'payload':
                         self.local_storage.set_module_payload(
                             "current_module",
                             self.local_storage.get("current_module_number"),
@@ -447,44 +428,20 @@ class Modules:
                             option,
                             value
                         )
+
+                    self.badges.print_information(option + " ==> " + value)
                     return
 
-            if hasattr(current_module, "payload"):
-                current_payload = self.payloads.get_current_payload()
-                current_encoder = self.encoders.get_current_encoder()
+            if hasattr(current_module, "advanced"):
+                if option in current_module.advanced:
+                    value_type = current_module.advanced[option]['Type']
+                    value = self.find_shorts(value_type, value)
 
-                if current_payload:
-                    if option in current_payload.options:
-                        value_type = current_payload.options[option]['Type']
+                    self.compare_types(value_type, value)
 
-                        if value_type == 'encoder':
-                            encoders_shorts = self.local_storage.get("encoder_shorts")
+                    pass
 
-                            if encoders_shorts:
-                                if value.isdigit():
-                                    encoder_number = int(value)
 
-                                    if encoder_number in encoders_shorts:
-                                        value = encoders_shorts[encoder_number]
-
-                        self.compare_types(value_type, value, False)
-                        self.badges.print_information(option + " ==> " + value)
-                        self.local_storage.set_payload_option(current_module.details['Module'],
-                                                              current_payload.details['Payload'], option, value)
-                        return
-
-                    if current_encoder and hasattr(current_encoder, "options"):
-                        if option in current_encoder.options:
-                            value_type = current_encoder.options[option]['Type']
-
-                            self.compare_types(value_type, value, False)
-                            self.badges.print_information(option + " ==> " + value)
-                            self.local_storage.set_encoder_option(current_module.details['Module'],
-                                                                  current_payload.details['Payload'],
-                                                                  current_encoder.details['Encoder'], option, value)
-                            return
-
-            raise RuntimeError("Unrecognized module option!")
         raise RuntimeWarning("No module selected.")
 
     @staticmethod
