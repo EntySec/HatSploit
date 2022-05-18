@@ -411,6 +411,7 @@ class Modules:
                         if option.lower() == 'payload':
                             current_module.payload['Value'] = value
 
+                    current_payload = self.payloads.get_current_payload()
                     return self.options.add_handler_options(current_module, current_payload)
 
             if hasattr(current_module, "advanced"):
