@@ -380,14 +380,23 @@ class Modules:
 
         return value
 
-    def set_option_value(self, options, option, value):
+    def set_option_value(self, current, options, option, value):
         if option in options:
             value_type = options[option]['Type']
             value = self.find_shorts(value_type, value)
 
-            self.compare_types(value_type, value)
+            if value:
+                self.compare_types(value_type, value)
 
             options[option]['Value'] = value
+
+            if hasattr(current, "payload"):
+                if option.lower() == 'blinder' and value.lower() in ['y', 'yes']:
+                    current.payload['Value'] = None
+
+                if option.lower() == 'payload':
+                    current.payload['Value'] = value
+
             self.badges.print_information(option + " ==> " + value)
 
             return True
@@ -403,14 +412,7 @@ class Modules:
                     raise RuntimeWarning("Module has no options.")
 
             if hasattr(current_module, "options"):
-                if self.set_option_value(current_module.options, option, value):
-                    if hasattr(current_module, "payload"):
-                        if option.lower() == 'blinder' and value.lower() in ['y', 'yes']:
-                            current_module.payload['Value'] = None
-
-                        if option.lower() == 'payload':
-                            current_module.payload['Value'] = value
-
+                if self.set_option_value(current_module, current_module.options, option, value):
                     current_payload = self.payloads.get_current_payload()
                     return self.options.add_handler_options(current_module, current_payload)
 
@@ -423,20 +425,20 @@ class Modules:
                     current_encoder = self.encoders.get_current_encoder()
 
                     if hasattr(current_payload, "options"):
-                        if self.set_option_value(current_payload.options, option, value):
+                        if self.set_option_value(current_payload, current_payload.options, option, value):
                             return self.options.add_handler_options(current_module, current_payload)
 
                     if hasattr(current_payload, "advanced"):
-                        if self.set_option_value(current_payload.advanced, option, value):
+                        if self.set_option_value(current_payload, current_payload.advanced, option, value):
                             return self.options.add_handler_options(current_module, current_payload)
 
                     if current_encoder:
                         if hasattr(current_encoder, "options"):
-                            if self.set_option_value(current_encoder.options, option, value):
+                            if self.set_option_value(current_encoder, current_encoder.options, option, value):
                                 return self.options.add_handler_options(current_module, current_payload)
 
                         if hasattr(current_encoder, "advanced"):
-                            if self.set_option_value(current_encoder.advanced, option, value):
+                            if self.set_option_value(current_encoder, current_encoder.advanced, option, value):
                                 return self.options.add_handler_options(current_module, current_payload)
 
             raise RuntimeError("Unrecognized module option!")
