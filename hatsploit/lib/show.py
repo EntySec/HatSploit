@@ -480,3 +480,68 @@ class Show:
                     options_data.append((option, value, required, current_encoder.options[option]['Description']))
                 self.tables.print_table(f"Encoder Options ({current_payload.details['Payload']})", headers,
                                         *options_data)
+
+    def show_advanced(self):
+        current_module = self.modules.get_current_module()
+
+        if not current_module:
+            raise RuntimeWarning("No module selected.")
+
+        if not hasattr(current_module, "advanced") and not hasattr(current_module, "payload"):
+            raise RuntimeWarning("Module has no advanced options.")
+
+        if not hasattr(current_module, "advanced") and not hasattr(self.payloads.get_current_payload(), "advanced"):
+            raise RuntimeWarning("Module has no advanced options.")
+
+        headers = ("Option", "Value", "Required", "Description")
+
+        if hasattr(current_module, "advanced"):
+            options_data = []
+            options = current_module.advanced
+
+            for option in sorted(options):
+                value, required = options[option]['Value'], options[option]['Required']
+                if required:
+                    required = "yes"
+                else:
+                    required = "no"
+                if not value and value != 0:
+                    value = ""
+                options_data.append((option, value, required, options[option]['Description']))
+            self.tables.print_table(f"Module Advanced Options ({current_module.details['Module']})", headers, *options_data)
+
+        if hasattr(current_module, "payload"):
+            current_payload = self.payloads.get_current_payload()
+            current_encoder = self.encoders.get_current_encoder()
+
+            if current_payload and hasattr(current_payload, "advanced"):
+                options_data = []
+
+                for option in sorted(current_payload.advanced):
+                    value, required = current_payload.advanced[option]['Value'], \
+                                      current_payload.advanced[option]['Required']
+                    if required:
+                        required = "yes"
+                    else:
+                        required = "no"
+                    if not value and value != 0:
+                        value = ""
+                    options_data.append((option, value, required, current_payload.advanced[option]['Description']))
+                self.tables.print_table(f"Payload Advanced Options ({current_payload.details['Payload']})", headers,
+                                        *options_data)
+
+            if current_encoder and hasattr(current_encoder, "advanced"):
+                options_data = []
+
+                for option in sorted(current_encoder.advanced):
+                    value, required = current_encoder.advanced[option]['Value'], \
+                                      current_encoder.advanced[option]['Required']
+                    if required:
+                        required = "yes"
+                    else:
+                        required = "no"
+                    if not value and value != 0:
+                        value = ""
+                    options_data.append((option, value, required, current_encoder.advanced[option]['Description']))
+                self.tables.print_table(f"Encoder Advanced Options ({current_payload.details['Payload']})", headers,
+                                        *options_data)

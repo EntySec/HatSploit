@@ -27,7 +27,12 @@ class HatSploitModule(Module, Sessions):
         'SESSION': {
             'Description': "Session to run on.",
             'Value': None,
-            'Type': "session->{'platforms':['unix', 'linux', 'macos', 'apple_ios']}",
+            'Type': {
+                'session': {
+                    'Platforms': ['linux', 'unix', 'macos', 'apple_ios'],
+                    'Type': 'shell'
+                }
+            },
             'Required': True
         },
         'PATH': {

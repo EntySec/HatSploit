@@ -13,7 +13,7 @@ class HatSploitModule(Module, Sessions):
     details = {
         'Category': "post",
         'Name': "Windows Invoke Message Box",
-        'Module': "post/windows/misc/message_box",
+        'Module': "post/windows/shell/message_box",
         'Authors': [
             'Ivan Nikolsky (enty8080) - module developer'
         ],
@@ -26,7 +26,12 @@ class HatSploitModule(Module, Sessions):
         'SESSION': {
             'Description': "Session to run on.",
             'Value': None,
-            'Type': "session",
+            'Type': {
+                'session': {
+                    'Platforms': ['windows'],
+                    'Type': 'shell'
+                }
+            },
             'Required': True
         },
         'MESSAGE': {

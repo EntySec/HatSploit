@@ -138,31 +138,3 @@ class LocalStorage:
             return globals()[name]
         except Exception:
             return None
-
-    @staticmethod
-    def set_module_option(name, number, option, value):
-        try:
-            globals()[name][number].options[option]['Value'] = value
-        except Exception:
-            pass
-
-    @staticmethod
-    def set_module_payload(name, number, value):
-        try:
-            globals()[name][number].payload['Value'] = value
-        except Exception:
-            pass
-
-    @staticmethod
-    def set_payload_option(module_name, payload_name, option, value):
-        try:
-            globals()["imported_payloads"][module_name][payload_name].options[option]['Value'] = value
-        except Exception:
-            pass
-
-    @staticmethod
-    def set_encoder_option(module_name, payload_name, encoder_name, option, value):
-        try:
-            globals()["imported_encoders"][module_name][payload_name][encoder_name].options[option]['Value'] = value
-        except Exception:
-            pass

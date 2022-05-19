@@ -184,6 +184,9 @@ class Modules:
                         raise RuntimeError(f"Invalid default payload: {payload_name}!")
 
                 self.add_to_global(module_object)
+
+                current_payload = self.payloads.get_current_payload()
+                self.options.add_handler_options(module_object, current_payload)
             else:
                 raise RuntimeError(f"Failed to select module from database: {module}!")
 
@@ -256,10 +259,10 @@ class Modules:
             current_module.options = save
             save = copy.deepcopy(current_module.options)
 
-    def compare_type(self, name, value, checker, module=True):
+    def compare_type(self, name, value, checker):
         value = str(value)
 
-        if value.startswith('file:') and len(value) > 5 and module:
+        if value.startswith('file:') and len(value) > 5:
             file = value.split(':')[1]
 
             if not os.path.isfile(file):
@@ -279,29 +282,9 @@ class Modules:
         current_module = self.get_current_module()
 
         if current_module:
-            session = value_type.lower().replace(' ', '')
-            session = session.split('->')
-
-            session_platforms = []
+            session_platforms = value_type['session']['Platforms']
             session_platform = current_module.details['Platform']
-            session_type = "shell"
-
-            if len(session) == 2:
-                if session[1].startswith('[') and session[1].endswith(']'):
-                    session_platforms = session[1][1:-1].split(',')
-                else:
-                    session_type = session[1]
-
-            elif len(session) == 3:
-                if session[1].startswith('[') and session[1].endswith(']'):
-                    session_platforms = session[1][1:-1].split(',')
-                else:
-                    session_type = session[1]
-
-                if session[2].startswith('[') and session[2].endswith(']'):
-                    session_platforms = session[2][1:-1].split(',')
-                else:
-                    session_type = session[2]
+            session_type = value_type['session']['Type']
 
             if not session_platforms:
                 if not self.sessions.check_exist(value, session_platform, session_type):
@@ -318,43 +301,10 @@ class Modules:
         else:
             raise RuntimeError("Invalid value, expected valid session!")
 
-    def compare_types(self, value_type, value, module=True):
-        if value_type and not value_type.lower == 'all':
-            if value_type.lower() == 'mac':
-                return self.compare_type("MAC", value, self.types.is_mac, module)
-
-            if value_type.lower() == 'ip':
-                return self.compare_type("IP", value, self.types.is_ip, module)
-
-            if value_type.lower() == 'ipv4':
-                return self.compare_type("IPv4", value, self.types.is_ipv4, module)
-
-            if value_type.lower() == 'ipv6':
-                return self.compare_type("IPv6", value, self.types.is_ipv6, module)
-
-            if value_type.lower() == 'ipv4_range':
-                return self.compare_type("IPv4 range", value, self.types.is_ipv4_range, module)
-
-            if value_type.lower() == 'ipv6_range':
-                return self.compare_type("IPv6 range", value, self.types.is_ipv6_range, module)
-
-            if value_type.lower() == 'port':
-                return self.compare_type("port", value, self.types.is_port, module)
-
-            if value_type.lower() == 'port_range':
-                return self.compare_type("port range", value, self.types.is_port_range, module)
-
-            if value_type.lower() == 'number':
-                return self.compare_type("number", value, self.types.is_number, module)
-
-            if value_type.lower() == 'integer':
-                return self.compare_type("integer", value, self.types.is_integer, module)
-
-            if value_type.lower() == 'float':
-                return self.compare_type("float", value, self.types.is_float, module)
-
-            if value_type.lower() == 'boolean':
-                return self.compare_type("boolean", value, self.types.is_boolean, module)
+    def compare_types(self, value_type, value):
+        if value_type and not isinstance(value_type, dict):
+            if value_type.lower() in self.types.types:
+                return self.compare_type(value_type.lower(), value, self.types.types[value_type.lower()])
 
             if value_type.lower() == 'payload':
                 current_module = self.get_current_module()
@@ -388,7 +338,8 @@ class Modules:
 
                 raise RuntimeError("Invalid value, expected valid encoder!")
 
-            if 'session' in value_type.lower():
+        if isinstance(value_type, dict):
+            if 'session' in value_type:
                 value = str(value)
 
                 if value.startswith('file:') and len(value) > 5 and module:
@@ -406,83 +357,89 @@ class Modules:
 
                 return self.compare_session(value_type, value)
 
+    def find_shorts(self, value_type, value):
+        if value_type == 'payload':
+            payloads_shorts = self.local_storage.get("payload_shorts")
+
+            if payloads_shorts:
+                if value.isdigit():
+                    payload_number = int(value)
+
+                    if payload_number in payloads_shorts:
+                        value = payloads_shorts[payload_number]
+
+        elif value_type == 'encoder':
+            encoders_shorts = self.local_storage.get("encoder_shorts")
+
+            if encoders_shorts:
+                if value.isdigit():
+                    encoder_number = int(value)
+
+                    if encoder_number in encoders_shorts:
+                        value = encoders_shorts[encoder_number]
+
+        return value
+
+    def set_option_value(self, current, options, option, value):
+        if option in options:
+            value_type = options[option]['Type']
+            value = self.find_shorts(value_type, value)
+
+            if value:
+                self.compare_types(value_type, value)
+
+            options[option]['Value'] = value
+
+            if hasattr(current, "payload"):
+                if option.lower() == 'blinder' and value.lower() in ['y', 'yes']:
+                    current.payload['Value'] = None
+
+                if option.lower() == 'payload':
+                    current.payload['Value'] = value
+
+            self.badges.print_information(option + " ==> " + value)
+
+            return True
+        return False
+
     def set_current_module_option(self, option, value):
         current_module = self.get_current_module()
+        current_payload = self.payloads.get_current_payload()
 
         if current_module:
-            if not hasattr(current_module, "options") and not hasattr(current_module, "payload"):
-                raise RuntimeWarning("Module has no options.")
+            if not hasattr(current_module, "options") and not hasattr(current_module, "advanced"):
+                if not hasattr(current_module, "payload"):
+                    raise RuntimeWarning("Module has no options.")
 
             if hasattr(current_module, "options"):
-                if option in current_module.options:
-                    value_type = current_module.options[option]['Type']
+                if self.set_option_value(current_module, current_module.options, option, value):
+                    current_payload = self.payloads.get_current_payload()
+                    return self.options.add_handler_options(current_module, current_payload)
 
-                    if value_type == 'payload':
-                        payloads_shorts = self.local_storage.get("payload_shorts")
-
-                        if payloads_shorts:
-                            if value.isdigit():
-                                payload_number = int(value)
-
-                                if payload_number in payloads_shorts:
-                                    value = payloads_shorts[payload_number]
-
-                    self.compare_types(value_type, value)
-                    self.badges.print_information(option + " ==> " + value)
-
-                    if option.lower() == 'blinder':
-                        if value.lower() in ['y', 'yes']:
-                            current_module.payload['Value'] = None
-
-                    if value_type == 'payload':
-                        self.local_storage.set_module_payload(
-                            "current_module",
-                            self.local_storage.get("current_module_number"),
-                            value
-                        )
-                    else:
-                        self.local_storage.set_module_option(
-                            "current_module",
-                            self.local_storage.get("current_module_number"),
-                            option,
-                            value
-                        )
-                    return
+            if hasattr(current_module, "advanced"):
+                if self.set_option_value(current_module.advanced, option, value):
+                    return self.options.add_handler_options(current_module, current_payload)
 
             if hasattr(current_module, "payload"):
-                current_payload = self.payloads.get_current_payload()
-                current_encoder = self.encoders.get_current_encoder()
-
                 if current_payload:
-                    if option in current_payload.options:
-                        value_type = current_payload.options[option]['Type']
+                    current_encoder = self.encoders.get_current_encoder()
 
-                        if value_type == 'encoder':
-                            encoders_shorts = self.local_storage.get("encoder_shorts")
+                    if hasattr(current_payload, "options"):
+                        if self.set_option_value(current_payload, current_payload.options, option, value):
+                            return self.options.add_handler_options(current_module, current_payload)
 
-                            if encoders_shorts:
-                                if value.isdigit():
-                                    encoder_number = int(value)
+                    if hasattr(current_payload, "advanced"):
+                        if self.set_option_value(current_payload, current_payload.advanced, option, value):
+                            return self.options.add_handler_options(current_module, current_payload)
 
-                                    if encoder_number in encoders_shorts:
-                                        value = encoders_shorts[encoder_number]
+                    if current_encoder:
+                        if hasattr(current_encoder, "options"):
+                            if self.set_option_value(current_encoder, current_encoder.options, option, value):
+                                return self.options.add_handler_options(current_module, current_payload)
 
-                        self.compare_types(value_type, value, False)
-                        self.badges.print_information(option + " ==> " + value)
-                        self.local_storage.set_payload_option(current_module.details['Module'],
-                                                              current_payload.details['Payload'], option, value)
-                        return
-
-                    if current_encoder and hasattr(current_encoder, "options"):
-                        if option in current_encoder.options:
-                            value_type = current_encoder.options[option]['Type']
-
-                            self.compare_types(value_type, value, False)
-                            self.badges.print_information(option + " ==> " + value)
-                            self.local_storage.set_encoder_option(current_module.details['Module'],
-                                                                  current_payload.details['Payload'],
-                                                                  current_encoder.details['Encoder'], option, value)
-                            return
+                        if hasattr(current_encoder, "advanced"):
+                            if self.set_option_value(current_encoder, current_encoder.advanced, option, value):
+                                return self.options.add_handler_options(current_module, current_payload)
 
             raise RuntimeError("Unrecognized module option!")
         raise RuntimeWarning("No module selected.")

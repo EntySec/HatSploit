@@ -73,13 +73,8 @@ class Runtime:
             raise RuntimeError(f"An error occured: {str(e)}")
 
     def update(self):
-        current_module = self.modules.get_current_module()
-        current_payload = self.payloads.get_current_payload()
-
         self.jobs.stop_dead()
         self.sessions.close_dead()
-
-        self.options.add_handler_options(current_module, current_payload)
 
     def catch(self, function, args=[]):
         try:
