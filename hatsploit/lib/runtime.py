@@ -33,9 +33,6 @@ from hatsploit.lib.config import Config
 from hatsploit.lib.jobs import Jobs
 from hatsploit.lib.loot import Loot
 from hatsploit.lib.sessions import Sessions
-from hatsploit.lib.modules import Modules
-from hatsploit.lib.payloads import Payloads
-from hatsploit.lib.options import Options
 
 from hatsploit.core.cli.badges import Badges
 from hatsploit.core.base.loader import Loader
@@ -46,9 +43,6 @@ class Runtime:
     jobs = Jobs()
     loot = Loot()
     sessions = Sessions()
-    modules = Modules()
-    payloads = Payloads()
-    options = Options()
 
     badges = Badges()
     loader = Loader()
