@@ -75,7 +75,7 @@ class HatSploitPlugin(Plugin):
         cow = self.ask_cow(message, len(message))
         self.print_empty(cow)
 
-    def run(self):
+    def load(self):
         message = "Cow here, moo!"
         cow = self.ask_cow(message, len(message))
         self.print_empty(cow)
