@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 #
-# This module requires HatSploit: https://hatsploit.netlify.app
+# This module requires HatSploit: https://hatsploit.com
 # Current source: https://github.com/EntySec/HatSploit
 #
 
