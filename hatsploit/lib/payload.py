@@ -34,7 +34,6 @@ from hatsploit.core.cli.tools import Tools
 
 class Payload(FMT, Badges, Colors, Parser, Tables, Tools):
     details = {
-        'Category': "",
         'Name': "",
         'Payload': "",
         'Authors': [
