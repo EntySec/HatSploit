@@ -13,14 +13,12 @@ class HatSploitPayload(Payload, HatLoads):
     details = {
         'Name': "Linux mipsbe Shell Bind TCP",
         'Payload': "linux/mipsbe/shell_bind_tcp",
-        'Authors': [
-            'Ivan Nikolsky (enty8080) - payload developer'
-        ],
+        'Authors': ['Ivan Nikolsky (enty8080) - payload developer'],
         'Description': "Shell bind TCP payload for Linux mipsbe.",
         'Architecture': "mipsbe",
         'Platform': "linux",
         'Rank': "high",
-        'Type': "bind_tcp"
+        'Type': "bind_tcp",
     }
 
     def run(self):
@@ -28,5 +26,5 @@ class HatSploitPayload(Payload, HatLoads):
             self.details['Platform'],
             self.details['Architecture'],
             f"shell_{self.details['Type']}",
-            self.handler
+            self.handler,
         )

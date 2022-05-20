@@ -19,12 +19,10 @@ class HatSploitCommand(Command):
     details = {
         'Category': "core",
         'Name': "exit",
-        'Authors': [
-            'Ivan Nikolsky (enty8080) - command developer'
-        ],
+        'Authors': ['Ivan Nikolsky (enty8080) - command developer'],
         'Description': "Exit HatSploit Framework.",
         'Usage': "exit",
-        'MinArgs': 0
+        'MinArgs': 0,
     }
 
     def run(self, argc, argv):

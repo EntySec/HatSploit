@@ -19,9 +19,7 @@ class HatSploitCommand(Command):
     details = {
         'Category': "databases",
         'Name': "encoder_db",
-        'Authors': [
-            'Ivan Nikolsky (enty8080) - command developer'
-        ],
+        'Authors': ['Ivan Nikolsky (enty8080) - command developer'],
         'Description': "Manage encoder databases.",
         'Usage': "encoder_db <option> [arguments]",
         'MinArgs': 1,
@@ -29,8 +27,11 @@ class HatSploitCommand(Command):
             '-l': ['', "List all connected encoder databases."],
             '-d': ['<name>', "Disconnect specified encoder database."],
             '-c': ['<name> <path>', "Connect new encoder database."],
-            '-b': ['<path> <output_path>', "Build encoder database from encoders path."]
-        }
+            '-b': [
+                '<path> <output_path>',
+                "Build encoder database from encoders path.",
+            ],
+        },
     }
 
     def run(self, argc, argv):

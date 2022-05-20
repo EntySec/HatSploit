@@ -14,10 +14,8 @@ class HatSploitPlugin(Plugin):
     details = {
         'Name': "HatSploit Cowsay Implementation",
         'Plugin': "cowsay",
-        'Authors': [
-            'Ivan Nikolsky (enty8080) - plugin developer'
-        ],
-        'Description': "Cowsay plugin for HatSploit."
+        'Authors': ['Ivan Nikolsky (enty8080) - plugin developer'],
+        'Description': "Cowsay plugin for HatSploit.",
     }
 
     commands = {
@@ -25,7 +23,7 @@ class HatSploitPlugin(Plugin):
             'cowsay': {
                 'Description': "Ask cow to say message.",
                 'Usage': "cowsay <message>",
-                'MinArgs': 1
+                'MinArgs': 1,
             }
         }
     }

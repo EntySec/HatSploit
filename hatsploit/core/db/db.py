@@ -90,15 +90,9 @@ class DB:
 
         del database['__database__']
 
-        encoders = {
-            name: database
-        }
+        encoders = {name: database}
 
-        data = {
-            name: {
-                'Path': path
-            }
-        }
+        data = {name: {'Path': path}}
         if not self.local_storage.get("connected_encoder_databases"):
             self.local_storage.set("connected_encoder_databases", {})
         self.local_storage.update("connected_encoder_databases", data)
@@ -129,15 +123,9 @@ class DB:
 
         del database['__database__']
 
-        payloads = {
-            name: database
-        }
+        payloads = {name: database}
 
-        data = {
-            name: {
-                'Path': path
-            }
-        }
+        data = {name: {'Path': path}}
         if not self.local_storage.get("connected_payload_databases"):
             self.local_storage.set("connected_payload_databases", {})
         self.local_storage.update("connected_payload_databases", data)
@@ -168,15 +156,9 @@ class DB:
 
         del database['__database__']
 
-        modules = {
-            name: database
-        }
+        modules = {name: database}
 
-        data = {
-            name: {
-                'Path': path
-            }
-        }
+        data = {name: {'Path': path}}
         if not self.local_storage.get("connected_module_databases"):
             self.local_storage.set("connected_module_databases", {})
         self.local_storage.update("connected_module_databases", data)
@@ -207,15 +189,9 @@ class DB:
 
         del database['__database__']
 
-        plugins = {
-            name: database
-        }
+        plugins = {name: database}
 
-        data = {
-            name: {
-                'Path': path
-            }
-        }
+        data = {name: {'Path': path}}
         if not self.local_storage.get("connected_plugin_databases"):
             self.local_storage.set("connected_plugin_databases", {})
         self.local_storage.update("connected_plugin_databases", data)

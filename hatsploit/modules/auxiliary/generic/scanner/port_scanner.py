@@ -16,12 +16,10 @@ class HatSploitModule(Module, TCPTools):
         'Category': "auxiliary",
         'Name': "Port Scanner",
         'Module': "auxiliary/generic/scanner/port_scanner",
-        'Authors': [
-            'Ivan Nikolsky (enty8080) - module developer'
-        ],
+        'Authors': ['Ivan Nikolsky (enty8080) - module developer'],
         'Description': "Scan host for opened ports.",
         'Platform': "generic",
-        'Rank': "low"
+        'Rank': "low",
     }
 
     options = {
@@ -29,14 +27,14 @@ class HatSploitModule(Module, TCPTools):
             'Description': "Remote host.",
             'Value': None,
             'Type': "ip",
-            'Required': True
+            'Required': True,
         },
         'RANGE': {
             'Description': "Ports to scan.",
             'Value': "0-65535",
             'Type': "port_range",
-            'Required': True
-        }
+            'Required': True,
+        },
     }
 
     def check_port(self, remote_host, port):

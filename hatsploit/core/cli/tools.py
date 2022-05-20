@@ -31,10 +31,4 @@ class Tools:
     jobs = Jobs()
 
     def background(self, function, arguments=[]):
-        self.jobs.create_job(
-            None,
-            None,
-            function,
-            arguments,
-            True
-        )
+        self.jobs.create_job(None, None, function, arguments, True)

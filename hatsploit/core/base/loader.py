@@ -58,7 +58,9 @@ class Loader:
     def load_all(self, build_base=False):
         self.load_update_process()
 
-        loading_process = threading.Thread(target=self.load_everything, args=[build_base])
+        loading_process = threading.Thread(
+            target=self.load_everything, args=[build_base]
+        )
         loading_process.start()
 
         base_line = "Loading the HatSploit Framework..."
@@ -70,14 +72,20 @@ class Loader:
                 cycle += 1
 
                 if status[cycle % len(status)] in list(string.ascii_lowercase):
-                    status = status[:cycle % len(status)] + status[cycle % len(status)].upper() + status[cycle % len(
-                        status) + 1:]
+                    status = (
+                        status[: cycle % len(status)]
+                        + status[cycle % len(status)].upper()
+                        + status[cycle % len(status) + 1 :]
+                    )
 
                 elif status[cycle % len(status)] in list(string.ascii_uppercase):
-                    status = status[:cycle % len(status)] + status[cycle % len(status)].lower() + status[cycle % len(
-                        status) + 1:]
+                    status = (
+                        status[: cycle % len(status)]
+                        + status[cycle % len(status)].lower()
+                        + status[cycle % len(status) + 1 :]
+                    )
 
                 self.badges.print_process(status, '', '\r')
-                time.sleep(.1)
+                time.sleep(0.1)
 
         loading_process.join()

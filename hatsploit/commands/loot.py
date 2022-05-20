@@ -17,16 +17,14 @@ class HatSploitCommand(Command):
     details = {
         'Category': "loot",
         'Name': "loot",
-        'Authors': [
-            'Ivan Nikolsky (enty8080) - command developer'
-        ],
+        'Authors': ['Ivan Nikolsky (enty8080) - command developer'],
         'Description': "Manage collected loot.",
         'Usage': "loot <option> [arguments]",
         'MinArgs': 1,
         'Options': {
             '-l': ['', "List all collected loot."],
-            '-r': ['<name>', "Remove collected loot."]
-        }
+            '-r': ['<name>', "Remove collected loot."],
+        },
     }
 
     def run(self, argc, argv):

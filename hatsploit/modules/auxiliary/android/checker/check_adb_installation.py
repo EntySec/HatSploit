@@ -14,12 +14,10 @@ class HatSploitModule(Module, TCPTools):
         'Category': "auxiliary",
         'Name': "ADB Installation Checker",
         'Module': "auxiliary/android/checker/check_adb_installation",
-        'Authors': [
-            'Ivan Nikolsky (enty8080) - module developer'
-        ],
+        'Authors': ['Ivan Nikolsky (enty8080) - module developer'],
         'Description': "Check if remote Android device has ADB installation.",
         'Platform': "android",
-        'Rank': "low"
+        'Rank': "low",
     }
 
     options = {
@@ -27,7 +25,7 @@ class HatSploitModule(Module, TCPTools):
             'Description': "Remote host.",
             'Value': None,
             'Type': "ip",
-            'Required': True
+            'Required': True,
         }
     }
 

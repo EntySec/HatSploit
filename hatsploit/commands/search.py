@@ -15,16 +15,14 @@ class HatSploitCommand(Command):
     details = {
         'Category': "core",
         'Name': "search",
-        'Authors': [
-            'Ivan Nikolsky (enty8080) - command developer'
-        ],
+        'Authors': ['Ivan Nikolsky (enty8080) - command developer'],
         'Description': "Search payloads, modules and plugins.",
         'Usage': "search <option> <keyword>",
         'MinArgs': 1,
         'Options': {
             '-w': ['[payloads|encoders|modules|plugins]', "Select where to search."],
-            '-e': ['', "Search everywhere."]
-        }
+            '-e': ['', "Search everywhere."],
+        },
     }
 
     def run(self, argc, argv):

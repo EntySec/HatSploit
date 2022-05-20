@@ -42,7 +42,6 @@ class ColorsScript:
         '%purple': colors.PURPLE,
         '%cyan': colors.CYAN,
         '%white': colors.WHITE,
-
         '%end': colors.END,
         '%bold': colors.BOLD,
         '%dark': colors.DARK,
@@ -50,10 +49,9 @@ class ColorsScript:
         '%line': colors.LINE,
         '%twink': colors.TWINK,
         '%back': colors.BACK,
-
         '%remove': colors.REMOVE,
         '%clear': colors.CLEAR,
-        '%newline': colors.NEWLINE
+        '%newline': colors.NEWLINE,
     }
 
     def parse(self, line):

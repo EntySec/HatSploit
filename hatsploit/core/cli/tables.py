@@ -55,13 +55,22 @@ class Tables:
 
             current_line_fill = max(column) + extra_fill
             fill.append(current_line_fill)
-            headers_line = "".join((headers_line, "{header:<{fill}}".format(header=header, fill=current_line_fill)))
-            headers_separator_line = "".join((
-                headers_separator_line,
-                "{:<{}}".format(header_separator * len(header), current_line_fill)
-            ))
+            headers_line = "".join(
+                (
+                    headers_line,
+                    "{header:<{fill}}".format(header=header, fill=current_line_fill),
+                )
+            )
+            headers_separator_line = "".join(
+                (
+                    headers_separator_line,
+                    "{:<{}}".format(header_separator * len(header), current_line_fill),
+                )
+            )
 
-        self.badges.print_empty('\n' + name.split()[0].title() + name[len(name.split()[0]):] + ':')
+        self.badges.print_empty(
+            '\n' + name.split()[0].title() + name[len(name.split()[0]) :] + ':'
+        )
         self.badges.print_empty()
         self.badges.print_empty(headers_line.rstrip())
         self.badges.print_empty(headers_separator_line.rstrip())
@@ -74,9 +83,8 @@ class Tables:
                 if '\033' in element:
                     fill_line = fill[idx] + 9 * element.count('\033') // 2
 
-                content_line = "".join((
-                    content_line,
-                    "{:<{}}".format(element, fill_line)
-                ))
+                content_line = "".join(
+                    (content_line, "{:<{}}".format(element, fill_line))
+                )
             self.badges.print_empty(content_line.rstrip())
         self.badges.print_empty()

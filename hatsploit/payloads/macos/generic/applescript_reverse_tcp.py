@@ -12,14 +12,12 @@ class HatSploitPayload(Payload):
     details = {
         'Name': "AppleScript Reverse TCP",
         'Payload': "macos/generic/applescript_reverse_tcp",
-        'Authors': [
-            'Ivan Nikolsky (enty8080) - payload developer'
-        ],
+        'Authors': ['Ivan Nikolsky (enty8080) - payload developer'],
         'Description': "AppleScript reverse TCP payload.",
         'Architecture': "generic",
         'Platform': "macos",
         'Rank': "high",
-        'Type': "reverse_tcp"
+        'Type': "reverse_tcp",
     }
 
     def run(self):

@@ -19,9 +19,7 @@ class HatSploitCommand(Command):
     details = {
         'Category': "databases",
         'Name': "module_db",
-        'Authors': [
-            'Ivan Nikolsky (enty8080) - command developer'
-        ],
+        'Authors': ['Ivan Nikolsky (enty8080) - command developer'],
         'Description': "Manage module databases.",
         'Usage': "module_db <option> [arguments]",
         'MinArgs': 1,
@@ -29,8 +27,8 @@ class HatSploitCommand(Command):
             '-l': ['', "List all connected module databases."],
             '-d': ['<name>', "Disconnect specified module database."],
             '-c': ['<name> <path>', "Connect new module database."],
-            '-b': ['<path> <output_path>', "Build module database from modules path."]
-        }
+            '-b': ['<path> <output_path>', "Build module database from modules path."],
+        },
     }
 
     def run(self, argc, argv):

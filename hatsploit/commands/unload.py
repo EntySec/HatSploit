@@ -15,12 +15,10 @@ class HatSploitCommand(Command):
     details = {
         'Category': "plugins",
         'Name': "unload",
-        'Authors': [
-            'Ivan Nikolsky (enty8080) - command developer'
-        ],
+        'Authors': ['Ivan Nikolsky (enty8080) - command developer'],
         'Description': "Unload specified loaded plugin.",
         'Usage': "unload <plugin|number>",
-        'MinArgs': 1
+        'MinArgs': 1,
     }
 
     complete = plugins.loaded_plugins_completer

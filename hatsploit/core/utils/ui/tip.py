@@ -53,7 +53,8 @@ class Tip:
                 while not tip:
                     random_tip = random.randint(0, len(tips) - 1)
                     tip = self.colors_script.parse_colors_script(
-                        self.config.path_config['tips_path'] + tips[random_tip])
+                        self.config.path_config['tips_path'] + tips[random_tip]
+                    )
 
                 self.badges.print_empty(f"%newline%endHatSploit Tip: {tip}%end%newline")
             else:

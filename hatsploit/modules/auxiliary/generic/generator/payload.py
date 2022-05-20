@@ -18,19 +18,17 @@ class HatSploitModule(Module, Assembler):
         'Category': "auxiliary",
         'Name': "Generic Payload Generator",
         'Module': "auxiliary/generic/generator/payload",
-        'Authors': [
-            'Ivan Nikolsky (enty8080) - module developer'
-        ],
+        'Authors': ['Ivan Nikolsky (enty8080) - module developer'],
         'Description': "Generate specified payload.",
         'Platform': "generic",
-        'Rank': "low"
+        'Rank': "low",
     }
 
     payload = {
         'Value': 'macos/x64/say',
         'Architectures': None,
         'Platforms': None,
-        'Types': None
+        'Types': None,
     }
 
     options = {
@@ -38,7 +36,7 @@ class HatSploitModule(Module, Assembler):
             'Description': "Path to save file.",
             'Value': loot.random_loot(),
             'Type': None,
-            'Required': True
+            'Required': True,
         }
     }
 

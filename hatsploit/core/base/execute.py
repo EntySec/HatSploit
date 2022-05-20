@@ -53,7 +53,9 @@ class Execute:
                 if not self.execute_core_command(commands):
                     if not self.execute_module_command(commands):
                         if not self.execute_plugin_command(commands):
-                            self.badges.print_error(f"Unrecognized command: {commands[0]}!")
+                            self.badges.print_error(
+                                f"Unrecognized command: {commands[0]}!"
+                            )
 
     def execute_builtin_method(self, commands):
         if commands[0][0] == '#':
@@ -65,11 +67,7 @@ class Execute:
             commands[0] = commands[0][1:]
 
             self.jobs.create_job(
-                commands[0],
-                None,
-                self.execute_command,
-                [commands],
-                True
+                commands[0], None, self.execute_command, [commands], True
             )
 
             return True
@@ -106,7 +104,9 @@ class Execute:
         if 'Options' in details:
             if len(commands) > 1:
                 if commands[1] in details['Options']:
-                    if (len(commands) - 2) < len(details['Options'][commands[1]][0].split()):
+                    if (len(commands) - 2) < len(
+                        details['Options'][commands[1]][0].split()
+                    ):
                         return False
                 else:
                     return False
@@ -146,12 +146,25 @@ class Execute:
     def execute_plugin_command(self, commands):
         if self.local_storage.get("loaded_plugins"):
             for plugin in self.local_storage.get("loaded_plugins"):
-                if hasattr(self.local_storage.get("loaded_plugins")[plugin], "commands"):
-                    for label in self.local_storage.get("loaded_plugins")[plugin].commands:
-                        if commands[0] in self.local_storage.get("loaded_plugins")[plugin].commands[label]:
-                            command_object = self.local_storage.get("loaded_plugins")[plugin]
+                if hasattr(
+                    self.local_storage.get("loaded_plugins")[plugin], "commands"
+                ):
+                    for label in self.local_storage.get("loaded_plugins")[
+                        plugin
+                    ].commands:
+                        if (
+                            commands[0]
+                            in self.local_storage.get("loaded_plugins")[
+                                plugin
+                            ].commands[label]
+                        ):
+                            command_object = self.local_storage.get("loaded_plugins")[
+                                plugin
+                            ]
                             command = command_object.commands[label][commands[0]]
-                            self.parse_and_execute_command(commands, command, command_object)
+                            self.parse_and_execute_command(
+                                commands, command, command_object
+                            )
                             return True
         return False
 

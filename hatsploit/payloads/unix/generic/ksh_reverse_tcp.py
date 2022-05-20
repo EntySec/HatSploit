@@ -12,14 +12,12 @@ class HatSploitPayload(Payload):
     details = {
         'Name': "KSH shell Reverse TCP",
         'Payload': "unix/generic/ksh_reverse_tcp",
-        'Authors': [
-            'Ivan Nikolsky (enty8080) - payload developer'
-        ],
+        'Authors': ['Ivan Nikolsky (enty8080) - payload developer'],
         'Description': "KSH shell reverse TCP payload.",
         'Architecture': "generic",
         'Platform': "unix",
         'Rank': "high",
-        'Type': "reverse_tcp"
+        'Type': "reverse_tcp",
     }
 
     def run(self):

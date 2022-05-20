@@ -13,11 +13,9 @@ class HatSploitEncoder(Encoder, String):
     details = {
         'Name': "Base64 Encoder for Command",
         'Encoder': "generic/base64",
-        'Authors': [
-            'Ivan Nikolsky (enty8080) - payload developer'
-        ],
+        'Authors': ['Ivan Nikolsky (enty8080) - payload developer'],
         'Description': "Encode command with base64.",
-        'Architecture': "generic"
+        'Architecture': "generic",
     }
 
     options = {
@@ -25,7 +23,7 @@ class HatSploitEncoder(Encoder, String):
             'Description': "Shell to execute.",
             'Value': "$SHELL",
             'Type': None,
-            'Required': True
+            'Required': True,
         }
     }
 
