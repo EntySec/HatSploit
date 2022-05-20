@@ -91,5 +91,5 @@ class HatSploitPlugin(Plugin):
             else:
                 self.print_warning("No active tunnels available.")
 
-    def run(self):
+    def load(self):
         pass
