@@ -41,5 +41,5 @@ class Plugin(FMT, Badges, Colors, Parser, Tables, Tools):
         'Description': ""
     }
 
-    def run(self):
+    def load(self):
         pass
