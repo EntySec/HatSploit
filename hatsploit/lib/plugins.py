@@ -100,7 +100,7 @@ class Plugins:
                 self.local_storage.update("loaded_plugins", plugin_object)
             else:
                 self.local_storage.set("loaded_plugins", plugin_object)
-            self.get_loaded_plugins()[plugin].run()
+            self.get_loaded_plugins()[plugin].load()
         else:
             raise RuntimeError(f"Failed to load plugin: {cowsay}!")
 
