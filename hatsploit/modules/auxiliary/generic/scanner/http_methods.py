@@ -6,7 +6,7 @@
 #
 
 import urllib.request
-from urllib.error import HTTPError
+from urllib.error import HTTPError, URLError
 
 from hatsploit.lib.module import Module
 
@@ -58,8 +58,10 @@ class HatSploitModule(Module):
                     resp = urllib.request.urlopen(req)
                     if resp.status == 200:
                         self.supported_methods[str(port)].append(method)
-                except HTTPError:
+                except (HTTPError, URLError):
                     continue
 
-        print(f'Port 80 Supported Methods: {" ".join(supported_methods["80"])}')
-        print(f'Port 443 Supported Methods: {" ".join(supported_methods["443"])}')
+        if len(self.supported_methods['80']):
+            print(f'Port 80 Supported Methods: {" ".join(self.supported_methods["80"])}')
+        if len(self.supported_methods['443']):
+            print(f'Port 443 Supported Methods: {" ".join(self.supported_methods["443"])}')
