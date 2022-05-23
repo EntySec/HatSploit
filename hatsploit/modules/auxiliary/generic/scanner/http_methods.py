@@ -62,6 +62,10 @@ class HatSploitModule(Module):
                     continue
 
         if len(self.supported_methods['80']):
-            print(f'Port 80 Supported Methods: {" ".join(self.supported_methods["80"])}')
+            print(
+                f'Port 80 Supported Methods: {" ".join(self.supported_methods["80"])}'
+            )
         if len(self.supported_methods['443']):
-            print(f'Port 443 Supported Methods: {" ".join(self.supported_methods["443"])}')
+            print(
+                f'Port 443 Supported Methods: {" ".join(self.supported_methods["443"])}'
+            )
