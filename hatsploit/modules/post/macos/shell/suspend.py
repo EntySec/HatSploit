@@ -14,25 +14,18 @@ class HatSploitModule(Module, Sessions):
         'Category': "post",
         'Name': "macOS Shell Suspend",
         'Module': "post/macos/shell/suspend",
-        'Authors': [
-            'Ivan Nikolsky (enty8080) - module developer'
-        ],
+        'Authors': ['Ivan Nikolsky (enty8080) - module developer'],
         'Description': "Suspend macOS through shell.",
         'Platform': "macos",
-        'Rank': "medium"
+        'Rank': "medium",
     }
 
     options = {
         'SESSION': {
             'Description': "Session to run on.",
             'Value': None,
-            'Type': {
-                'session': {
-                    'Platforms': ['macos'],
-                    'Type': 'shell'
-                }
-            },
-            'Required': True
+            'Type': {'session': {'Platforms': ['macos'], 'Type': 'shell'}},
+            'Required': True,
         }
     }
 
@@ -42,4 +35,5 @@ class HatSploitModule(Module, Sessions):
 
         if session:
             session.send_command(
-                "/System/Library/CoreServices/Menu\ Extras/User.menu/Contents/Resources/CGSession -suspend")
+                "/System/Library/CoreServices/Menu\ Extras/User.menu/Contents/Resources/CGSession -suspend"
+            )

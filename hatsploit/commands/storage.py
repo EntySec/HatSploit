@@ -22,9 +22,7 @@ class HatSploitCommand(Command):
     details = {
         'Category': "developer",
         'Name': "storage",
-        'Authors': [
-            'Ivan Nikolsky (enty8080) - command developer'
-        ],
+        'Authors': ['Ivan Nikolsky (enty8080) - command developer'],
         'Description': "Manage storage variables.",
         'Usage': "storage [global|local] <option> [arguments]",
         'MinArgs': 2,
@@ -32,8 +30,8 @@ class HatSploitCommand(Command):
             '-l': ['', "List all storage variables."],
             '-v': ['<name>', "Show specified storage variable value."],
             '-s': ['<name> <value>', "Set storage variable value."],
-            '-d': ['<name>', "Delete storage variable."]
-        }
+            '-d': ['<name>', "Delete storage variable."],
+        },
     }
 
     def run(self, argc, argv):
@@ -44,12 +42,15 @@ class HatSploitCommand(Command):
             if choice in ['-l', '--list']:
                 self.print_information("Global storage variables:")
                 for variable in self.global_storage.get_all():
-                    if not str.startswith(variable, '__') and not str.endswith(variable, '__'):
+                    if not str.startswith(variable, '__') and not str.endswith(
+                        variable, '__'
+                    ):
                         self.print_empty("    * " + variable)
             elif choice in ['-v', '--value']:
                 if argv[3] in self.global_storage.get_all():
-                    self.print_information(argv[3] + " = " + str(
-                        self.global_storage.get(argv[3])))
+                    self.print_information(
+                        argv[3] + " = " + str(self.global_storage.get(argv[3]))
+                    )
             elif choice in ['-s', '--set']:
                 self.global_storage.set(argv[3], argv[4])
             elif choice in ['-d', '--delete']:
@@ -62,12 +63,15 @@ class HatSploitCommand(Command):
             if choice in ['-l', '--list']:
                 self.print_information("Local storage variables:")
                 for variable in self.local_storage.get_all():
-                    if not str.startswith(variable, '__') and not str.endswith(variable, '__'):
+                    if not str.startswith(variable, '__') and not str.endswith(
+                        variable, '__'
+                    ):
                         self.print_empty("    * " + variable)
             elif choice in ['-v', '--value']:
                 if argv[3] in self.local_storage.get_all():
-                    self.print_information(argv[3] + " = " + str(
-                        self.local_storage.get(argv[3])))
+                    self.print_information(
+                        argv[3] + " = " + str(self.local_storage.get(argv[3]))
+                    )
                 else:
                     self.print_error("Invalid storage variable name!")
             elif choice in ['-s', '--set']:

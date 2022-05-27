@@ -16,12 +16,10 @@ class HatSploitCommand(Command):
     details = {
         'Category': "misc",
         'Name': "tip",
-        'Authors': [
-            'Ivan Nikolsky (enty8080) - command developer'
-        ],
+        'Authors': ['Ivan Nikolsky (enty8080) - command developer'],
         'Description': "Show random HatSploit tip.",
         'Usage': "tip",
-        'MinArgs': 0
+        'MinArgs': 0,
     }
 
     def run(self, argc, argv):

@@ -61,10 +61,7 @@ class Console:
     history = config.path_config['history_path']
     prompt = config.core_config['details']['prompt']
 
-    handler_options = {
-        'Module': {},
-        'Payload': {}
-    }
+    handler_options = {'Module': {}, 'Payload': {}}
 
     completion = None
 
@@ -152,7 +149,9 @@ class Console:
                 header += f"    --=( %yellowHatSploit Framework {version} {codename} (https://hatsploit.com)%end\n"
             else:
                 header += f"    --=( %yellowHatSploit Framework {version}%end\n"
-            header += "--==--=( Developed by EntySec (%linehttps://entysec.netlify.app%end)\n"
+            header += (
+                "--==--=( Developed by EntySec (%linehttps://entysec.netlify.app%end)\n"
+            )
             header += f"    --=( {modules_total} modules | {payloads_total} payloads "
             header += f"| {encoders_total} encoders | {plugins_total} plugins"
             header += "%end"
@@ -179,6 +178,4 @@ class Console:
                     self.runtime.update()
 
         if shell:
-            self.shell(
-                header=False
-            )
+            self.shell(header=False)

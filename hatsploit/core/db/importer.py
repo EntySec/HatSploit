@@ -152,25 +152,45 @@ class Importer:
         self.local_storage.set("commands", commands)
 
     def import_base_databases(self):
-        if os.path.exists(self.config.path_config['db_path'] + self.config.db_config['base_dbs']['module_database']):
-            self.db.connect_module_database(self.config.db_config['base_dbs']['module_database_name'],
-                                            self.config.path_config['db_path'] + self.config.db_config['base_dbs'][
-                                                'module_database'])
+        if os.path.exists(
+            self.config.path_config['db_path']
+            + self.config.db_config['base_dbs']['module_database']
+        ):
+            self.db.connect_module_database(
+                self.config.db_config['base_dbs']['module_database_name'],
+                self.config.path_config['db_path']
+                + self.config.db_config['base_dbs']['module_database'],
+            )
 
-        if os.path.exists(self.config.path_config['db_path'] + self.config.db_config['base_dbs']['payload_database']):
-            self.db.connect_payload_database(self.config.db_config['base_dbs']['payload_database_name'],
-                                            self.config.path_config['db_path'] + self.config.db_config['base_dbs'][
-                                                'payload_database'])
+        if os.path.exists(
+            self.config.path_config['db_path']
+            + self.config.db_config['base_dbs']['payload_database']
+        ):
+            self.db.connect_payload_database(
+                self.config.db_config['base_dbs']['payload_database_name'],
+                self.config.path_config['db_path']
+                + self.config.db_config['base_dbs']['payload_database'],
+            )
 
-        if os.path.exists(self.config.path_config['db_path'] + self.config.db_config['base_dbs']['encoder_database']):
-            self.db.connect_encoder_database(self.config.db_config['base_dbs']['encoder_database_name'],
-                                            self.config.path_config['db_path'] + self.config.db_config['base_dbs'][
-                                                'encoder_database'])
+        if os.path.exists(
+            self.config.path_config['db_path']
+            + self.config.db_config['base_dbs']['encoder_database']
+        ):
+            self.db.connect_encoder_database(
+                self.config.db_config['base_dbs']['encoder_database_name'],
+                self.config.path_config['db_path']
+                + self.config.db_config['base_dbs']['encoder_database'],
+            )
 
-        if os.path.exists(self.config.path_config['db_path'] + self.config.db_config['base_dbs']['plugin_database']):
-            self.db.connect_plugin_database(self.config.db_config['base_dbs']['plugin_database_name'],
-                                            self.config.path_config['db_path'] + self.config.db_config['base_dbs'][
-                                                'plugin_database'])
+        if os.path.exists(
+            self.config.path_config['db_path']
+            + self.config.db_config['base_dbs']['plugin_database']
+        ):
+            self.db.connect_plugin_database(
+                self.config.db_config['base_dbs']['plugin_database_name'],
+                self.config.path_config['db_path']
+                + self.config.db_config['base_dbs']['plugin_database'],
+            )
 
     def import_all(self):
         self.import_base_commands()

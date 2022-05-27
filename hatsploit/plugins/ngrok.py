@@ -18,10 +18,8 @@ class HatSploitPlugin(Plugin):
     details = {
         'Name': "HatSploit Ngrok Implementation",
         'Plugin': "ngrok",
-        'Authors': [
-            'Ivan Nikolsky (enty8080) - plugin developer'
-        ],
-        'Description': "Manage ngrok service right from HatSploit."
+        'Authors': ['Ivan Nikolsky (enty8080) - plugin developer'],
+        'Description': "Manage ngrok service right from HatSploit.",
     }
 
     commands = {
@@ -34,8 +32,8 @@ class HatSploitPlugin(Plugin):
                     '-l': ['', "List all active tunnels."],
                     '-o': ['<port>', "Open tunnel for specified port."],
                     '-c': ['<id>', "Close specified tunnel."],
-                    '-a': ['<token>', "Authenticate ngrok API token."]
-                }
+                    '-a': ['<token>', "Authenticate ngrok API token."],
+                },
             }
         }
     }

@@ -15,12 +15,10 @@ class HatSploitModule(Module, Sessions):
         'Category': "post",
         'Name': "Unix Obtain /etc/passwd",
         'Module': "post/unix/shell/getpasswd",
-        'Authors': [
-            'Ivan Nikolsky (enty8080) - module developer'
-        ],
+        'Authors': ['Ivan Nikolsky (enty8080) - module developer'],
         'Description': "Get current session /etc/passwd file.",
         'Platform': "unix",
-        'Rank': "medium"
+        'Rank': "medium",
     }
 
     options = {
@@ -30,17 +28,17 @@ class HatSploitModule(Module, Sessions):
             'Type': {
                 'session': {
                     'Platforms': ['linux', 'unix', 'macos', 'apple_ios'],
-                    'Type': 'shell'
+                    'Type': 'shell',
                 }
             },
-            'Required': True
+            'Required': True,
         },
         'PATH': {
             'Description': "Path to save file.",
             'Value': Loot().specific_loot('passwd'),
             'Type': None,
-            'Required': True
-        }
+            'Required': True,
+        },
     }
 
     def run(self):

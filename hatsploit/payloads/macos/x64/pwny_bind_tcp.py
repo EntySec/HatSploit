@@ -15,20 +15,19 @@ class HatSploitPayload(Payload, Pwny):
     details = {
         'Name': "macOS x64 Pwny Bind TCP",
         'Payload': "macos/x64/pwny_bind_tcp",
-        'Authors': [
-            'Ivan Nikolsky (enty8080) - payload developer'
-        ],
+        'Authors': ['Ivan Nikolsky (enty8080) - payload developer'],
         'Description': "Pwny bind TCP payload for macOS x64.",
         'Architecture': "x64",
         'Platform': "macos",
         'Session': PwnySession,
         'Rank': "high",
-        'Type': "bind_tcp"
+        'Type': "bind_tcp",
     }
 
     def run(self):
         return self.get_pwny(
             self.details['Platform'],
             self.details['Architecture'],
-            None, self.handler['BPORT']
+            None,
+            self.handler['BPORT'],
         )

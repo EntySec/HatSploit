@@ -17,15 +17,11 @@ class HatSploitCommand(Command):
     details = {
         'Category': "modules",
         'Name': "run",
-        'Authors': [
-            'Ivan Nikolsky (enty8080) - command developer'
-        ],
+        'Authors': ['Ivan Nikolsky (enty8080) - command developer'],
         'Description': "Run current module.",
         'Usage': "run [option]",
         'MinArgs': 0,
-        'Options': {
-            '-j': ['', "Run current module as a background job."]
-        }
+        'Options': {'-j': ['', "Run current module as a background job."]},
     }
 
     def run(self, argc, argv):
@@ -36,11 +32,15 @@ class HatSploitCommand(Command):
                 job_id = self.jobs.count_jobs()
 
                 self.print_process("Running module as a background job...")
-                self.print_information(f"Module started as a background job {str(job_id)}.")
+                self.print_information(
+                    f"Module started as a background job {str(job_id)}."
+                )
 
-                self.jobs.create_job(current_module.details['Name'],
-                                     current_module.details['Module'],
-                                     self.modules.run_current_module)
+                self.jobs.create_job(
+                    current_module.details['Name'],
+                    current_module.details['Module'],
+                    self.modules.run_current_module,
+                )
                 return
 
         self.modules.run_current_module()

@@ -14,12 +14,10 @@ class HatSploitModule(Module, Sessions):
         'Category': "post",
         'Name': "Unix Shell Get PID",
         'Module': "post/unix/shell/getpid",
-        'Authors': [
-            'Ivan Nikolsky (enty8080) - module developer'
-        ],
+        'Authors': ['Ivan Nikolsky (enty8080) - module developer'],
         'Description': "Get current session process id.",
         'Platform': "unix",
-        'Rank': "medium"
+        'Rank': "medium",
     }
 
     options = {
@@ -29,10 +27,10 @@ class HatSploitModule(Module, Sessions):
             'Type': {
                 'session': {
                     'Platforms': ['linux', 'unix', 'macos', 'apple_ios'],
-                    'Type': 'shell'
+                    'Type': 'shell',
                 }
             },
-            'Required': True
+            'Required': True,
         }
     }
 

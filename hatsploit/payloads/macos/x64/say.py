@@ -15,14 +15,12 @@ class HatSploitPayload(Payload, Assembler):
     details = {
         'Name': "macOS x64 Say",
         'Payload': "macos/x64/say",
-        'Authors': [
-            'Ivan Nikolsky (enty8080) - payload developer'
-        ],
+        'Authors': ['Ivan Nikolsky (enty8080) - payload developer'],
         'Description': "Say payload for macOS x64.",
         'Architecture': "x64",
         'Platform': "macos",
         'Rank': "low",
-        'Type': "one_side"
+        'Type': "one_side",
     }
 
     options = {
@@ -30,7 +28,7 @@ class HatSploitPayload(Payload, Assembler):
             'Description': "Message to say.",
             'Value': "Hello, Friend!",
             'Type': None,
-            'Required': True
+            'Required': True,
         }
     }
 
@@ -38,21 +36,26 @@ class HatSploitPayload(Payload, Assembler):
         message = self.parse_options(self.options)
 
         data = (
-            b'\xe8' + struct.pack("<I", len(message.encode() + b'\x00') + 0xd) +
-            b'/usr/bin/say\x00' +
-            message.encode() + b'\x00'
+            b'\xe8'
+            + struct.pack("<I", len(message.encode() + b'\x00') + 0xD)
+            + b'/usr/bin/say\x00'
+            + message.encode()
+            + b'\x00'
         )
 
-        return self.assemble(
-            self.details['Architecture'],
-            """
+        return (
+            self.assemble(
+                self.details['Architecture'],
+                """
             start:
                 xor rax, rax
                 mov eax, 0x200003b
-            """
-        ) + data + self.assemble(
-            self.details['Architecture'],
-            """
+            """,
+            )
+            + data
+            + self.assemble(
+                self.details['Architecture'],
+                """
             end:
                 mov rdi, [rsp]
                 lea r10, [rdi+0xd]
@@ -62,5 +65,6 @@ class HatSploitPayload(Payload, Assembler):
                 push rdi
                 mov rsi, rsp
                 syscall
-            """
+            """,
+            )
         )

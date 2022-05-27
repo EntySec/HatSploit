@@ -19,9 +19,7 @@ class HatSploitCommand(Command):
     details = {
         'Category': "databases",
         'Name': "plugin_db",
-        'Authors': [
-            'Ivan Nikolsky (enty8080) - command developer'
-        ],
+        'Authors': ['Ivan Nikolsky (enty8080) - command developer'],
         'Description': "Manage plugin databases.",
         'Usage': "plugin_db <option> [arguments]",
         'MinArgs': 1,
@@ -29,8 +27,8 @@ class HatSploitCommand(Command):
             '-l': ['', "List all connected plugin databases."],
             '-d': ['<name>', "Disconnect specified plugin database."],
             '-c': ['<name> <path>', "Connect new plugin database."],
-            '-b': ['<path> <output_path>', "Build plugin database from plugins path."]
-        }
+            '-b': ['<path> <output_path>', "Build plugin database from plugins path."],
+        },
     }
 
     def run(self, argc, argv):

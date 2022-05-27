@@ -15,12 +15,10 @@ class HatSploitCommand(Command):
     details = {
         'Category': "modules",
         'Name': "back",
-        'Authors': [
-            'Ivan Nikolsky (enty8080) - command developer'
-        ],
+        'Authors': ['Ivan Nikolsky (enty8080) - command developer'],
         'Description': "Return to the previous module.",
         'Usage': "back",
-        'MinArgs': 0
+        'MinArgs': 0,
     }
 
     def run(self, argc, argv):

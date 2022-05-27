@@ -17,32 +17,25 @@ class HatSploitModule(Module, Sessions, DB):
         'Category': "post",
         'Name': "Obtain Safari bookmarks",
         'Module': "post/apple_ios/shell/safari_bookmarks",
-        'Authors': [
-            'Ivan Nikolsky (enty8080) - module developer'
-        ],
+        'Authors': ['Ivan Nikolsky (enty8080) - module developer'],
         'Description': "Get iOS Safari bookmarks database and parse it.",
         'Platform': "apple_ios",
-        'Rank': "medium"
+        'Rank': "medium",
     }
 
     options = {
         'SESSION': {
             'Description': "Session to run on.",
             'Value': None,
-            'Type': {
-                'session': {
-                    'Platforms': ['apple_ios'],
-                    'Type': 'shell'
-                }
-            },
-            'Required': True
+            'Type': {'session': {'Platforms': ['apple_ios'], 'Type': 'shell'}},
+            'Required': True,
         },
         'PATH': {
             'Description': "Path to save file.",
             'Value': Loot().specific_loot('Bookmarks.db'),
             'Type': None,
-            'Required': True
-        }
+            'Required': True,
+        },
     }
 
     def run(self):

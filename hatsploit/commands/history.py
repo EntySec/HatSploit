@@ -15,9 +15,7 @@ class HatSploitCommand(Command):
     details = {
         'Category': "developer",
         'Name': "history",
-        'Authors': [
-            'Ivan Nikolsky (enty8080) - command developer'
-        ],
+        'Authors': ['Ivan Nikolsky (enty8080) - command developer'],
         'Description': "Manage HatSploit history.",
         'Usage': "history <option>",
         'MinArgs': 1,
@@ -25,8 +23,8 @@ class HatSploitCommand(Command):
             '-l': ['', "List all history."],
             '-c': ['', "Clear all history."],
             'on': ['', "Turn history on."],
-            'off': ['', "Turn history off."]
-        }
+            'off': ['', "Turn history off."],
+        },
     }
 
     def run(self, argc, argv):

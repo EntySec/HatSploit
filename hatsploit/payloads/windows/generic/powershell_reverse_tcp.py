@@ -12,14 +12,12 @@ class HatSploitPayload(Payload):
     details = {
         'Name': "Windows PowerShell Reverse TCP",
         'Payload': "windows/generic/powershell_reverse_tcp",
-        'Authors': [
-            'Ivan Nikolsky (enty8080) - payload developer'
-        ],
+        'Authors': ['Ivan Nikolsky (enty8080) - payload developer'],
         'Description': "Windows cmd.exe reverse TCP payload through PowerShell script.",
         'Architecture': "generic",
         'Platform': "windows",
         'Rank': "high",
-        'Type': "reverse_tcp"
+        'Type': "reverse_tcp",
     }
 
     def run(self):

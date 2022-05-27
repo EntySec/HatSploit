@@ -17,9 +17,7 @@ class HatSploitCommand(Command):
     details = {
         'Category': "sessions",
         'Name': "sessions",
-        'Authors': [
-            'Ivan Nikolsky (enty8080) - command developer'
-        ],
+        'Authors': ['Ivan Nikolsky (enty8080) - command developer'],
         'Description': "Manage opened sessions.",
         'Usage': "sessions <option> [arguments]",
         'MinArgs': 1,
@@ -29,8 +27,8 @@ class HatSploitCommand(Command):
             '-d': ['<id> <remote_file> <local_path>', "Download file from session."],
             '-u': ['<id> <local_file> <remote_path>', "Upload file to session."],
             '-c': ['<id>', "Close specified session."],
-            '--auto-interaction': ['[on|off]', "Interact with session after opening."]
-        }
+            '--auto-interaction': ['[on|off]', "Interact with session after opening."],
+        },
     }
 
     def run(self, argc, argv):

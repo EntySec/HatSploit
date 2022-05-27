@@ -19,9 +19,7 @@ class HatSploitCommand(Command):
     details = {
         'Category': "databases",
         'Name': "payload_db",
-        'Authors': [
-            'Ivan Nikolsky (enty8080) - command developer'
-        ],
+        'Authors': ['Ivan Nikolsky (enty8080) - command developer'],
         'Description': "Manage payload databases.",
         'Usage': "payload_db <option> [arguments]",
         'MinArgs': 1,
@@ -29,8 +27,11 @@ class HatSploitCommand(Command):
             '-l': ['', "List all connected payload databases."],
             '-d': ['<name>', "Disconnect specified payload database."],
             '-c': ['<name> <path>', "Connect new payload database."],
-            '-b': ['<path> <output_path>', "Build payload database from payloads path."]
-        }
+            '-b': [
+                '<path> <output_path>',
+                "Build payload database from payloads path.",
+            ],
+        },
     }
 
     def run(self, argc, argv):

@@ -17,12 +17,10 @@ class HatSploitCommand(Command):
     details = {
         'Category': "modules",
         'Name': "info",
-        'Authors': [
-            'Ivan Nikolsky (enty8080) - command developer'
-        ],
+        'Authors': ['Ivan Nikolsky (enty8080) - command developer'],
         'Description': "Show module information.",
         'Usage': "info [<module>]",
-        'MinArgs': 0
+        'MinArgs': 0,
     }
 
     complete = modules.modules_completer
@@ -39,7 +37,9 @@ class HatSploitCommand(Command):
             if argc > 1:
                 self.get_module_information(argv[1])
             else:
-                self.show.show_module_information(self.modules.get_current_module().details)
+                self.show.show_module_information(
+                    self.modules.get_current_module().details
+                )
         else:
             if argc > 1:
                 self.get_module_information(argv[1])

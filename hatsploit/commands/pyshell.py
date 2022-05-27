@@ -33,12 +33,10 @@ class HatSploitCommand(Command):
     details = {
         'Category': "developer",
         'Name': "pyshell",
-        'Authors': [
-            'Ivan Nikolsky (enty8080) - command developer'
-        ],
+        'Authors': ['Ivan Nikolsky (enty8080) - command developer'],
         'Description': "Open Python shell.",
         'Usage': "pyshell",
-        'MinArgs': 0
+        'MinArgs': 0,
     }
 
     def run(self, argc, argv):

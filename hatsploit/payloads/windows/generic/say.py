@@ -12,14 +12,12 @@ class HatSploitPayload(Payload):
     details = {
         'Name': "Windows Say",
         'Payload': "windows/generic/say",
-        'Authors': [
-            'Ivan Nikolsky (enty8080) - payload developer'
-        ],
+        'Authors': ['Ivan Nikolsky (enty8080) - payload developer'],
         'Description': "Say payload for Windows.",
         'Architecture': "generic",
         'Platform': "windows",
         'Rank': "low",
-        'Type': "one_side"
+        'Type': "one_side",
     }
 
     options = {
@@ -27,7 +25,7 @@ class HatSploitPayload(Payload):
             'Description': "Message to say.",
             'Value': "Hello, Friend!",
             'Type': None,
-            'Required': True
+            'Required': True,
         }
     }
 

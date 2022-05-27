@@ -17,16 +17,14 @@ class HatSploitCommand(Command):
     details = {
         'Category': "jobs",
         'Name': "jobs",
-        'Authors': [
-            'Ivan Nikolsky (enty8080) - command developer'
-        ],
+        'Authors': ['Ivan Nikolsky (enty8080) - command developer'],
         'Description': "Manage active jobs.",
         'Usage': "jobs <option> [arguments]",
         'MinArgs': 1,
         'Options': {
             '-l': ['', 'List all active jobs.'],
-            '-k': ['<id>', 'Kill specified job.']
-        }
+            '-k': ['<id>', 'Kill specified job.'],
+        },
     }
 
     def run(self, argc, argv):

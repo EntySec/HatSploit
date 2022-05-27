@@ -13,14 +13,12 @@ class HatSploitPayload(Payload, HatLoads):
     details = {
         'Name': "Linux x64 Shell Reverse TCP",
         'Payload': "linux/x64/shell_reverse_tcp",
-        'Authors': [
-            'Ivan Nikolsky (enty8080) - payload developer'
-        ],
+        'Authors': ['Ivan Nikolsky (enty8080) - payload developer'],
         'Description': "Shell reverse TCP payload for Linux x64.",
         'Architecture': "x64",
         'Platform': "linux",
         'Rank': "high",
-        'Type': "reverse_tcp"
+        'Type': "reverse_tcp",
     }
 
     def run(self):
@@ -28,5 +26,5 @@ class HatSploitPayload(Payload, HatLoads):
             self.details['Platform'],
             self.details['Architecture'],
             f"shell_{self.details['Type']}",
-            self.handler
+            self.handler,
         )

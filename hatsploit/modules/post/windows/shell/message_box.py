@@ -14,32 +14,25 @@ class HatSploitModule(Module, Sessions):
         'Category': "post",
         'Name': "Windows Invoke Message Box",
         'Module': "post/windows/shell/message_box",
-        'Authors': [
-            'Ivan Nikolsky (enty8080) - module developer'
-        ],
+        'Authors': ['Ivan Nikolsky (enty8080) - module developer'],
         'Description': "Invoke message box on Windows machine.",
         'Platform': "windows",
-        'Rank': "medium"
+        'Rank': "medium",
     }
 
     options = {
         'SESSION': {
             'Description': "Session to run on.",
             'Value': None,
-            'Type': {
-                'session': {
-                    'Platforms': ['windows'],
-                    'Type': 'shell'
-                }
-            },
-            'Required': True
+            'Type': {'session': {'Platforms': ['windows'], 'Type': 'shell'}},
+            'Required': True,
         },
         'MESSAGE': {
             'Description': "Message to show.",
             'Value': "Hello, Friend!",
             'Type': None,
-            'Required': True
-        }
+            'Required': True,
+        },
     }
 
     def run(self):
