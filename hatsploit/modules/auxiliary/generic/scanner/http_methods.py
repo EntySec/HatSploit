@@ -61,11 +61,16 @@ class HatSploitModule(HTTPClient, Module, TCPTools):
                     if resp:
                         if resp.status_code == 200:
                             self.supported_methods[str(port)].append(method)
+        count = 0
         if len(self.supported_methods['80']):
+            count += 1
             self.print_success(
                 f'Port 80 Supported Methods: {" ".join(self.supported_methods["80"])}'
             )
         if len(self.supported_methods['443']):
+            count += 1
             self.print_success(
                 f'Port 443 Supported Methods: {" ".join(self.supported_methods["443"])}'
             )
+        if count == 0:
+            self.print_error('No supported HTTP methods detected')
