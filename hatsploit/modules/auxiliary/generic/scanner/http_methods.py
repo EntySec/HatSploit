@@ -5,13 +5,12 @@
 # Current source: https://github.com/EntySec/HatSploit
 #
 
-import urllib.request
-from urllib.error import HTTPError, URLError
-
 from hatsploit.lib.module import Module
+from pex.proto.http import HTTPClient
+from pex.proto.tcp import TCPTools
 
 
-class HatSploitModule(Module):
+class HatSploitModule(HTTPClient, Module, TCPTools):
     details = {
         'Category': 'auxiliary',
         'Name': 'HTTP Methods',
@@ -49,18 +48,19 @@ class HatSploitModule(Module):
         remote_host = self.parse_options(self.options)
 
         self.print_process(f'Scanning {remote_host}...')
-        for method in self.http_methods:
-            for port in [80, 443]:
-                try:
-                    req = urllib.request.Request(
-                        url=f'http://{remote_host}:{port}', method=method
+        for port in [80, 443]:
+            if self.check_tcp_port(remote_host, port):
+                for method in self.http_methods:
+                    resp = self.http_request(
+                        method=method,
+                        host=remote_host,
+                        port=port,
+                        path='/',
                     )
-                    resp = urllib.request.urlopen(req)
-                    if resp.status == 200:
-                        self.supported_methods[str(port)].append(method)
-                except (HTTPError, URLError):
-                    continue
 
+                    if resp:
+                        if resp.status_code == 200:
+                            self.supported_methods[str(port)].append(method)
         if len(self.supported_methods['80']):
             self.print_success(
                 f'Port 80 Supported Methods: {" ".join(self.supported_methods["80"])}'
