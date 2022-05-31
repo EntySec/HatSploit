@@ -25,4 +25,4 @@ jobs:
       - uses: actions/checkout@v2
       - run: sudo apt update --yes
       - run: sudo apt install --yes black
-      - run: black --skip-string-normalization --check --diff --no-color .
+      - run: black --skip-string-normalization --check --diff .
