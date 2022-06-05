@@ -6,7 +6,6 @@
 #
 
 from hatsploit.lib.payload import Payload
-
 from pex.assembler import Assembler
 from pex.socket import Socket
 
