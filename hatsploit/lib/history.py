@@ -33,8 +33,8 @@ class History:
     config = Config()
     local_storage = LocalStorage()
 
-    history = config.path_config["history_path"]
-    storage_path = config.path_config["storage_path"]
+    history = config.path_config['history_path']
+    storage_path = config.path_config['storage_path']
 
     global_storage = GlobalStorage(storage_path)
 
@@ -47,13 +47,13 @@ class History:
         self.global_storage.set_all()
 
         readline.clear_history()
-        with open(self.history, "w") as history:
+        with open(self.history, 'w') as history:
             history.write("")
 
     def clear_history(self):
         readline.clear_history()
 
-        with open(self.history, "w") as history:
+        with open(self.history, 'w') as history:
             history.write("")
 
     def list_history(self):

@@ -40,9 +40,7 @@ class Handle:
     def listen_server(self, local_host, local_port, methods={}):
         listener = self.http_listener.listen_http(local_host, local_port, methods)
 
-        self.badges.print_process(
-            f"Starting HTTP listener on port {str(local_port)}..."
-        )
+        self.badges.print_process(f"Starting HTTP listener on port {str(local_port)}...")
         listener.listen()
 
         while True:
@@ -59,8 +57,7 @@ class Handle:
         address = listener.address
 
         self.badges.print_process(
-            f"Establishing connection ({address[0]}:{str(address[1])} -> {local_host}:{str(local_port)})..."
-        )
+            f"Establishing connection ({address[0]}:{str(address[1])} -> {local_host}:{str(local_port)})...")
         listener.stop()
 
         session = session()
@@ -75,8 +72,7 @@ class Handle:
         client.connect()
 
         self.badges.print_process(
-            f"Establishing connection (0.0.0.0:{str(remote_port)} -> {remote_host}:{str(remote_port)})..."
-        )
+            f"Establishing connection (0.0.0.0:{str(remote_port)} -> {remote_host}:{str(remote_port)})...")
         session = session()
         session.open(client.sock)
 

@@ -62,9 +62,7 @@ class Commands:
         self.show.show_custom_commands(handler)
 
     def commands_completer(self, text):
-        return [
-            command for command in self.get_all_commands() if command.startswith(text)
-        ]
+        return [command for command in self.get_all_commands() if command.startswith(text)]
 
     def get_commands(self):
         return self.local_storage.get("commands")

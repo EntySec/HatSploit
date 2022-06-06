@@ -46,9 +46,9 @@ class Runtime:
     loader = Loader()
 
     def check(self):
-        if os.path.exists(self.config.path_config["root_path"]):
-            workspace = self.config.path_config["user_path"]
-            loot = self.config.path_config["loot_path"]
+        if os.path.exists(self.config.path_config['root_path']):
+            workspace = self.config.path_config['user_path']
+            loot = self.config.path_config['loot_path']
 
             if not os.path.isdir(workspace):
                 os.mkdir(workspace)

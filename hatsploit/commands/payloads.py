@@ -13,12 +13,12 @@ class HatSploitCommand(Command):
     show = Show()
 
     details = {
-        "Category": "modules",
-        "Name": "payloads",
-        "Authors": ["Ivan Nikolsky (enty8080) - command developer"],
-        "Description": "Show available payloads.",
-        "Usage": "payloads",
-        "MinArgs": 0,
+        'Category': "modules",
+        'Name': "payloads",
+        'Authors': ['Ivan Nikolsky (enty8080) - command developer'],
+        'Description': "Show available payloads.",
+        'Usage': "payloads",
+        'MinArgs': 0,
     }
 
     def run(self, argc, argv):

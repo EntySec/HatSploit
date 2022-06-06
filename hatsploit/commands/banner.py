@@ -12,12 +12,12 @@ class HatSploitCommand(Command):
     banner = Banner()
 
     details = {
-        "Category": "misc",
-        "Name": "banner",
-        "Authors": ["Ivan Nikolsky (enty8080) - command developer"],
-        "Description": "Show random HatSploit banner.",
-        "Usage": "banner",
-        "MinArgs": 0,
+        'Category': "misc",
+        'Name': "banner",
+        'Authors': ['Ivan Nikolsky (enty8080) - command developer'],
+        'Description': "Show random HatSploit banner.",
+        'Usage': "banner",
+        'MinArgs': 0,
     }
 
     def run(self, argc, argv):

@@ -80,7 +80,7 @@ class Modules:
     def get_module(self, module):
         module_object = self.get_module_object(module)
         try:
-            imported_module = self.importer.import_module(module_object["Path"])
+            imported_module = self.importer.import_module(module_object['Path'])
         except Exception:
             return None
         return imported_module
@@ -94,7 +94,8 @@ class Modules:
     def get_current_module(self):
         if self.local_storage.get("current_module"):
             return self.local_storage.get_array(
-                "current_module", self.local_storage.get("current_module_number")
+                "current_module",
+                self.local_storage.get("current_module_number")
             )
         return None
 
@@ -136,7 +137,7 @@ class Modules:
         current_module = self.get_current_module()
 
         if current_module:
-            if module == current_module.details["Module"]:
+            if module == current_module.details['Module']:
                 return True
         return False
 
@@ -164,21 +165,17 @@ class Modules:
             module_object = self.import_module(module)
             if module_object:
                 if hasattr(module_object, "payload"):
-                    payload_name = module_object.payload["Value"]
+                    payload_name = module_object.payload['Value']
 
                     if payload_name:
-                        self.badges.print_process(
-                            f"Using default payload {payload_name}..."
-                        )
+                        self.badges.print_process(f"Using default payload {payload_name}...")
 
                         if self.payloads.check_exist(payload_name):
                             self.payloads.add_payload(module, payload_name)
                             self.add_to_global(module_object)
 
                             current_payload = self.payloads.get_current_payload()
-                            self.options.add_handler_options(
-                                module_object, current_payload
-                            )
+                            self.options.add_handler_options(module_object, current_payload)
 
                             return
 
@@ -193,35 +190,21 @@ class Modules:
 
     def add_to_global(self, module_object):
         if self.get_current_module():
-            self.local_storage.add_array("current_module", "")
-            self.local_storage.set(
-                "current_module_number",
-                self.local_storage.get("current_module_number") + 1,
-            )
-            self.local_storage.set_array(
-                "current_module",
-                self.local_storage.get("current_module_number"),
-                module_object,
-            )
+            self.local_storage.add_array("current_module", '')
+            self.local_storage.set("current_module_number", self.local_storage.get("current_module_number") + 1)
+            self.local_storage.set_array("current_module", self.local_storage.get("current_module_number"),
+                                         module_object)
         else:
             self.local_storage.set("current_module", [])
             self.local_storage.set("current_module_number", 0)
-            self.local_storage.add_array("current_module", "")
-            self.local_storage.set_array(
-                "current_module",
-                self.local_storage.get("current_module_number"),
-                module_object,
-            )
+            self.local_storage.add_array("current_module", '')
+            self.local_storage.set_array("current_module", self.local_storage.get("current_module_number"),
+                                         module_object)
 
     def go_back(self):
         if self.get_current_module():
-            self.local_storage.set(
-                "current_module_number",
-                self.local_storage.get("current_module_number") - 1,
-            )
-            self.local_storage.set(
-                "current_module", self.local_storage.get("current_module")[0:-1]
-            )
+            self.local_storage.set("current_module_number", self.local_storage.get("current_module_number") - 1)
+            self.local_storage.set("current_module", self.local_storage.get("current_module")[0:-1])
             if not self.local_storage.get("current_module"):
                 self.local_storage.set("current_module_number", 0)
 
@@ -238,14 +221,14 @@ class Modules:
 
         for option in current_module.options:
             opt = current_module.options[option]
-            val = str(opt["Value"])
+            val = str(opt['Value'])
 
-            if val.startswith("file:") and len(val) > 5:
+            if val.startswith('file:') and len(val) > 5:
                 file = val[5:]
 
-                with open(file, "r") as f:
+                with open(file, 'r') as f:
                     vals = f.read().strip()
-                    values.append(vals.split("\n"))
+                    values.append(vals.split('\n'))
 
         if not values:
             self.run_module(current_module)
@@ -260,10 +243,10 @@ class Modules:
 
             for option in current_module.options:
                 opt = current_module.options[option]
-                val = str(opt["Value"])
+                val = str(opt['Value'])
 
-                if val.startswith("file:") and len(val) > 5:
-                    current_module.options[option]["Value"] = values[count][i]
+                if val.startswith('file:') and len(val) > 5:
+                    current_module.options[option]['Value'] = values[count][i]
                     count += 1
 
             try:
@@ -277,19 +260,17 @@ class Modules:
     def compare_type(self, name, value, checker):
         value = str(value)
 
-        if value.startswith("file:") and len(value) > 5:
-            file = value.split(":")[1]
+        if value.startswith('file:') and len(value) > 5:
+            file = value.split(':')[1]
 
             if not os.path.isfile(file):
                 raise RuntimeError(f"Local file: {file}: does not exist!")
 
-            with open(file, "r") as f:
-                for line in f.read().split("\n"):
+            with open(file, 'r') as f:
+                for line in f.read().split('\n'):
                     if line.strip():
                         if not checker(line.strip()):
-                            raise RuntimeError(
-                                f"File contains invalid value, expected valid {name}!"
-                            )
+                            raise RuntimeError(f"File contains invalid value, expected valid {name}!")
             return
 
         if not checker(value):
@@ -299,9 +280,9 @@ class Modules:
         current_module = self.get_current_module()
 
         if current_module:
-            session_platforms = value_type["session"]["Platforms"]
-            session_platform = current_module.details["Platform"]
-            session_type = value_type["session"]["Type"]
+            session_platforms = value_type['session']['Platforms']
+            session_platform = current_module.details['Platform']
+            session_type = value_type['session']['Type']
 
             if not session_platforms:
                 if not self.sessions.check_exist(value, session_platform, session_type):
@@ -321,69 +302,61 @@ class Modules:
     def compare_types(self, value_type, value):
         if value_type and not isinstance(value_type, dict):
             if value_type.lower() in self.types.types:
-                return self.compare_type(
-                    value_type.lower(), value, self.types.types[value_type.lower()]
-                )
+                return self.compare_type(value_type.lower(), value, self.types.types[value_type.lower()])
 
-            if value_type.lower() == "payload":
+            if value_type.lower() == 'payload':
                 current_module = self.get_current_module()
 
                 if current_module:
-                    module_name = current_module.details["Module"]
+                    module_name = current_module.details['Module']
                     module_payload = current_module.payload
 
-                    types = module_payload["Types"]
-                    platforms = module_payload["Platforms"]
-                    architectures = module_payload["Architectures"]
+                    types = module_payload['Types']
+                    platforms = module_payload['Platforms']
+                    architectures = module_payload['Architectures']
 
-                    if self.payloads.check_module_compatible(
-                        value, types, platforms, architectures
-                    ):
+                    if self.payloads.check_module_compatible(value, types, platforms, architectures):
                         self.payloads.add_payload(module_name, value)
                         return
 
                 raise RuntimeError("Invalid value, expected valid payload!")
 
-            if value_type.lower() == "encoder":
+            if value_type.lower() == 'encoder':
                 current_module = self.get_current_module()
                 current_payload = self.payloads.get_current_payload()
 
                 if current_module and current_payload:
-                    architecture = current_payload.details["Architecture"]
+                    architecture = current_payload.details['Architecture']
 
                     if self.encoders.check_payload_compatible(value, architecture):
                         self.encoders.add_encoder(
-                            current_module.details["Module"],
-                            current_payload.details["Payload"],
-                            value,
-                        )
+                            current_module.details['Module'],
+                            current_payload.details['Payload'], value)
                         return
 
                 raise RuntimeError("Invalid value, expected valid encoder!")
 
         if isinstance(value_type, dict):
-            if "session" in value_type:
+            if 'session' in value_type:
                 value = str(value)
 
-                if value.startswith("file:") and len(value) > 5 and module:
-                    file = value.split(":")[1]
+                if value.startswith('file:') and len(value) > 5 and module:
+                    file = value.split(':')[1]
 
                     if not os.path.isfile(file):
                         raise RuntimeError(f"Local file: {file}: does not exist!")
 
-                    with open(file, "r") as f:
-                        for line in f.read().split("\n"):
+                    with open(file, 'r') as f:
+                        for line in f.read().split('\n'):
                             if line.strip():
                                 if not self.compare_session(value_type, line.strip()):
-                                    raise RuntimeError(
-                                        f"File contains invalid value, expected valid session!"
-                                    )
+                                    raise RuntimeError(f"File contains invalid value, expected valid session!")
                     return
 
                 return self.compare_session(value_type, value)
 
     def find_shorts(self, value_type, value):
-        if value_type == "payload":
+        if value_type == 'payload':
             payloads_shorts = self.local_storage.get("payload_shorts")
 
             if payloads_shorts:
@@ -393,7 +366,7 @@ class Modules:
                     if payload_number in payloads_shorts:
                         value = payloads_shorts[payload_number]
 
-        elif value_type == "encoder":
+        elif value_type == 'encoder':
             encoders_shorts = self.local_storage.get("encoder_shorts")
 
             if encoders_shorts:
@@ -407,20 +380,20 @@ class Modules:
 
     def set_option_value(self, current, options, option, value):
         if option in options:
-            value_type = options[option]["Type"]
+            value_type = options[option]['Type']
             value = self.find_shorts(value_type, value)
 
             if value:
                 self.compare_types(value_type, value)
 
-            options[option]["Value"] = value
+            options[option]['Value'] = value
 
             if hasattr(current, "payload"):
-                if option.lower() == "blinder" and value.lower() in ["y", "yes"]:
-                    current.payload["Value"] = None
+                if option.lower() == 'blinder' and value.lower() in ['y', 'yes']:
+                    current.payload['Value'] = None
 
-                if option.lower() == "payload":
-                    current.payload["Value"] = value
+                if option.lower() == 'payload':
+                    current.payload['Value'] = value
 
             self.badges.print_information(option + " ==> " + value)
 
@@ -432,63 +405,39 @@ class Modules:
         current_payload = self.payloads.get_current_payload()
 
         if current_module:
-            if not hasattr(current_module, "options") and not hasattr(
-                current_module, "advanced"
-            ):
+            if not hasattr(current_module, "options") and not hasattr(current_module, "advanced"):
                 if not hasattr(current_module, "payload"):
                     raise RuntimeWarning("Module has no options.")
 
             if hasattr(current_module, "options"):
-                if self.set_option_value(
-                    current_module, current_module.options, option, value
-                ):
+                if self.set_option_value(current_module, current_module.options, option, value):
                     current_payload = self.payloads.get_current_payload()
-                    return self.options.add_handler_options(
-                        current_module, current_payload
-                    )
+                    return self.options.add_handler_options(current_module, current_payload)
 
             if hasattr(current_module, "advanced"):
                 if self.set_option_value(current_module.advanced, option, value):
-                    return self.options.add_handler_options(
-                        current_module, current_payload
-                    )
+                    return self.options.add_handler_options(current_module, current_payload)
 
             if hasattr(current_module, "payload"):
                 if current_payload:
                     current_encoder = self.encoders.get_current_encoder()
 
                     if hasattr(current_payload, "options"):
-                        if self.set_option_value(
-                            current_payload, current_payload.options, option, value
-                        ):
-                            return self.options.add_handler_options(
-                                current_module, current_payload
-                            )
+                        if self.set_option_value(current_payload, current_payload.options, option, value):
+                            return self.options.add_handler_options(current_module, current_payload)
 
                     if hasattr(current_payload, "advanced"):
-                        if self.set_option_value(
-                            current_payload, current_payload.advanced, option, value
-                        ):
-                            return self.options.add_handler_options(
-                                current_module, current_payload
-                            )
+                        if self.set_option_value(current_payload, current_payload.advanced, option, value):
+                            return self.options.add_handler_options(current_module, current_payload)
 
                     if current_encoder:
                         if hasattr(current_encoder, "options"):
-                            if self.set_option_value(
-                                current_encoder, current_encoder.options, option, value
-                            ):
-                                return self.options.add_handler_options(
-                                    current_module, current_payload
-                                )
+                            if self.set_option_value(current_encoder, current_encoder.options, option, value):
+                                return self.options.add_handler_options(current_module, current_payload)
 
                         if hasattr(current_encoder, "advanced"):
-                            if self.set_option_value(
-                                current_encoder, current_encoder.advanced, option, value
-                            ):
-                                return self.options.add_handler_options(
-                                    current_module, current_payload
-                                )
+                            if self.set_option_value(current_encoder, current_encoder.advanced, option, value):
+                                return self.options.add_handler_options(current_module, current_payload)
 
             raise RuntimeError("Unrecognized module option!")
         raise RuntimeWarning("No module selected.")
@@ -501,12 +450,8 @@ class Modules:
         if hasattr(current_module, "options"):
             for option in current_module.options:
                 current_option = current_module.options[option]
-                if (
-                    not current_option["Value"]
-                    and current_option["Value"] != 0
-                    and current_option["Required"]
-                ):
-                    missed += option + ", "
+                if not current_option['Value'] and current_option['Value'] != 0 and current_option['Required']:
+                    missed += option + ', '
 
         return missed
 
@@ -514,7 +459,7 @@ class Modules:
         current_module = self.get_current_module()
 
         if current_module:
-            current_module_name = current_module.details["Module"]
+            current_module_name = current_module.details['Module']
 
             current_payload = self.payloads.get_current_payload()
             payload_data = {}
@@ -524,29 +469,21 @@ class Modules:
                 missed += self.payloads.validate_options(current_payload)
 
             if missed:
-                raise RuntimeError(
-                    f"These options are failed to validate: {missed[:-2]}!"
-                )
+                raise RuntimeError(f"These options are failed to validate: {missed[:-2]}!")
 
             try:
                 self.badges.print_empty()
 
                 if current_payload:
                     current_encoder = self.encoders.get_current_encoder()
-                    payload = self.payloads.run_payload(
-                        current_payload, current_encoder
-                    )
+                    payload = self.payloads.run_payload(current_payload, current_encoder)
 
-                    current_module.payload["Payload"] = payload
+                    current_module.payload['Payload'] = payload
 
                 self.entry_to_module(current_module)
-                self.badges.print_success(
-                    f"{current_module_name.split('/')[0].title()} module completed!"
-                )
+                self.badges.print_success(f"{current_module_name.split('/')[0].title()} module completed!")
             except (KeyboardInterrupt, EOFError):
-                raise RuntimeWarning(
-                    f"{current_module_name.split('/')[0].title()} module interrupted."
-                )
+                raise RuntimeWarning(f"{current_module_name.split('/')[0].title()} module interrupted.")
 
             except RuntimeError as e:
                 raise RuntimeError(str(e))
@@ -556,11 +493,9 @@ class Modules:
 
             except Exception as e:
                 self.badges.print_error(f"An error occurred in module: {str(e)}!")
-                self.badges.print_error(
-                    f"{current_module_name.split('/')[0].title()} module failed!"
-                )
+                self.badges.print_error(f"{current_module_name.split('/')[0].title()} module failed!")
 
             if current_payload:
-                del current_module.payload["Payload"]
+                del current_module.payload['Payload']
         else:
             raise RuntimeWarning("No module selected.")

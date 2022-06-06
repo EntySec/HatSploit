@@ -31,14 +31,14 @@ from hatsploit.lib.storage import GlobalStorage
 class Log:
     config = Config()
 
-    storage_path = config.path_config["storage_path"]
+    storage_path = config.path_config['storage_path']
     global_storage = GlobalStorage(storage_path)
 
     def enable_log(self, filename):
         if os.access(filename, os.R_OK):
             self.global_storage.set("log", filename)
             self.global_storage.set_all()
-
+    
     def disable_log(self):
-        self.global_storage.set("log", None)
-        self.global_storage.set_all()
+      self.global_storage.set("log", None)
+      self.global_storage.set_all()

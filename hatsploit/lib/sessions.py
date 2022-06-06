@@ -33,7 +33,7 @@ class Sessions:
     badges = Badges()
     config = Config()
 
-    storage_path = config.path_config["storage_path"]
+    storage_path = config.path_config['storage_path']
 
     global_storage = GlobalStorage(storage_path)
     local_storage = LocalStorage()
@@ -47,51 +47,35 @@ class Sessions:
 
         if sessions:
             for session in list(sessions):
-                if not sessions[session]["Object"].heartbeat():
-                    self.badges.print_warning(
-                        f"Session {str(session)} is dead (no heartbeat)."
-                    )
+                if not sessions[session]['Object'].heartbeat():
+                    self.badges.print_warning(f"Session {str(session)} is dead (no heartbeat).")
                     self.close_session(session)
 
-    def add_session(
-        self,
-        session_platform,
-        session_architecture,
-        session_type,
-        session_host,
-        session_port,
-        session_object,
-    ):
+    def add_session(self, session_platform, session_architecture,
+                    session_type, session_host, session_port, session_object):
         if not self.get_sessions():
             self.local_storage.set("sessions", {})
 
         session_id = 0
-        while session_id in self.get_sessions() or session_id < len(
-            self.get_sessions()
-        ):
+        while (session_id in self.get_sessions() or
+               session_id < len(self.get_sessions())):
             session_id += 1
 
         sessions = {
             session_id: {
-                "Platform": session_platform,
-                "Architecture": session_architecture,
-                "Type": session_type,
-                "Host": session_host,
-                "Port": session_port,
-                "Object": session_object,
+                'Platform': session_platform,
+                'Architecture': session_architecture,
+                'Type': session_type,
+                'Host': session_host,
+                'Port': session_port,
+                'Object': session_object
             }
         }
 
         self.local_storage.update("sessions", sessions)
         return session_id
 
-    def check_exist(
-        self,
-        session_id,
-        session_platform=None,
-        session_architecture=None,
-        session_type=None,
-    ):
+    def check_exist(self, session_id, session_platform=None, session_architecture=None, session_type=None):
         sessions = self.get_sessions()
 
         if sessions:
@@ -99,18 +83,15 @@ class Sessions:
                 valid = True
 
                 if session_platform:
-                    if sessions[int(session_id)]["Platform"] != session_platform:
+                    if sessions[int(session_id)]['Platform'] != session_platform:
                         valid = False
 
                 if session_type:
-                    if sessions[int(session_id)]["Type"] != session_type:
+                    if sessions[int(session_id)]['Type'] != session_type:
                         valid = False
 
                 if session_architecture:
-                    if (
-                        sessions[int(session_id)]["Architecture"]
-                        != session_architecture
-                    ):
+                    if sessions[int(session_id)]['Architecture'] != session_architecture:
                         valid = False
 
                 return valid
@@ -128,10 +109,8 @@ class Sessions:
         sessions = self.get_sessions()
 
         if self.check_exist(session_id):
-            self.badges.print_process(
-                f"Interacting with session {str(session_id)}...%newline"
-            )
-            sessions[int(session_id)]["Object"].interact()
+            self.badges.print_process(f"Interacting with session {str(session_id)}...%newline")
+            sessions[int(session_id)]['Object'].interact()
         else:
             raise RuntimeError("Invalid session given!")
 
@@ -139,7 +118,7 @@ class Sessions:
         sessions = self.get_sessions()
 
         if self.check_exist(session_id):
-            return sessions[int(session_id)]["Object"].download(remote_file, local_path)
+            return sessions[int(session_id)]['Object'].download(remote_file, local_path)
 
         raise RuntimeError("Invalid session given!")
 
@@ -147,7 +126,7 @@ class Sessions:
         sessions = self.get_sessions()
 
         if self.check_exist(session_id):
-            return sessions[int(session_id)]["Object"].upload(local_file, remote_path)
+            return sessions[int(session_id)]['Object'].upload(local_file, remote_path)
 
         raise RuntimeError("Invalid session given!")
 
@@ -156,7 +135,7 @@ class Sessions:
 
         if self.check_exist(session_id):
             try:
-                sessions[int(session_id)]["Object"].close()
+                sessions[int(session_id)]['Object'].close()
                 del sessions[int(session_id)]
 
                 self.local_storage.update("sessions", sessions)
@@ -171,25 +150,17 @@ class Sessions:
         if sessions:
             for session in list(sessions):
                 try:
-                    sessions[session]["Object"].close()
+                    sessions[session]['Object'].close()
                     del sessions[session]
 
                     self.local_storage.update("sessions", sessions)
                 except Exception:
                     raise RuntimeError("Failed to close session!")
 
-    def get_session(
-        self,
-        session_id,
-        session_platform=None,
-        session_architecture=None,
-        session_type=None,
-    ):
+    def get_session(self, session_id, session_platform=None, session_architecture=None, session_type=None):
         sessions = self.get_sessions()
 
-        if self.check_exist(
-            session_id, session_platform, session_architecture, session_type
-        ):
-            return sessions[int(session_id)]["Object"]
+        if self.check_exist(session_id, session_platform, session_architecture, session_type):
+            return sessions[int(session_id)]['Object']
 
         raise RuntimeError("Invalid session given!")
