@@ -84,7 +84,7 @@ class Plugins:
         loaded_plugins = {}
         plugins = self.get_plugins()[database][plugin]
         try:
-            loaded_plugins[plugin] = self.importer.import_plugin(plugins['Path'])
+            loaded_plugins[plugin] = self.importer.import_plugin(plugins["Path"])
         except Exception:
             return None
         return loaded_plugins

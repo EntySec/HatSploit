@@ -49,7 +49,7 @@ class GlobalStorage:
     def set(self, variable, value):
         storage_variables = json.load(open(self.file))
         old_storage = storage_variables
-        new_storage = open(self.file, 'w')
+        new_storage = open(self.file, "w")
 
         old_storage[variable] = str(value)
         new_storage.write(str(old_storage).replace("'", '"'))
@@ -66,7 +66,7 @@ class GlobalStorage:
         old_storage = storage_variables
 
         if variable in old_storage:
-            new_storage = open(self.file, 'w')
+            new_storage = open(self.file, "w")
 
             del old_storage[variable]
             new_storage.write(str(old_storage).replace("'", '"'))

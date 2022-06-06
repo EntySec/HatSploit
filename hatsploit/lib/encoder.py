@@ -32,13 +32,11 @@ from hatsploit.core.cli.tools import Tools
 
 class Encoder(FMT, Badges, Colors, Parser, Tables, Tools):
     details = {
-        'Name': "",
-        'Encoder': "",
-        'Authors': [
-            ''
-        ],
-        'Description': "",
-        'Architecture': ""
+        "Name": "",
+        "Encoder": "",
+        "Authors": [""],
+        "Description": "",
+        "Architecture": "",
     }
 
     def run(self):

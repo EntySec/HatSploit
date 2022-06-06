@@ -83,7 +83,7 @@ class Loader:
                         + status[cycle % len(status) + 1 :]
                     )
 
-                self.badges.print_process(status, '', '\r')
+                self.badges.print_process(status, "", "\r")
                 time.sleep(0.1)
 
         loading_process.join()

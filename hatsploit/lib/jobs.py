@@ -43,13 +43,13 @@ class Jobs:
         jobs = self.get_jobs()
         if jobs:
             for job_id in list(jobs):
-                if not jobs[job_id]['Process'].is_alive():
+                if not jobs[job_id]["Process"].is_alive():
                     self.delete_job(job_id)
 
         hidden_jobs = self.get_hidden_jobs()
         if hidden_jobs:
             for job_id in list(hidden_jobs):
-                if not hidden_jobs[job_id]['Process'].is_alive():
+                if not hidden_jobs[job_id]["Process"].is_alive():
                     self.delete_job(job_id, True)
 
     def count_jobs(self):
@@ -72,7 +72,9 @@ class Jobs:
     def stop_job(self, job):
         if job.is_alive():
             exc = ctypes.py_object(SystemExit)
-            res = ctypes.pythonapi.PyThreadState_SetAsyncExc(ctypes.c_long(job.ident), exc)
+            res = ctypes.pythonapi.PyThreadState_SetAsyncExc(
+                ctypes.c_long(job.ident), exc
+            )
 
             if res > 1:
                 ctypes.pythonapi.PyThreadState_SetAsyncExc(job.ident, None)
@@ -91,14 +93,16 @@ class Jobs:
         if self.local_storage.get(jobs_var):
             job_id = int(job_id)
             if job_id in list(self.local_storage.get(jobs_var)):
-                self.stop_job(self.local_storage.get(jobs_var)[job_id]['Process'])
+                self.stop_job(self.local_storage.get(jobs_var)[job_id]["Process"])
                 self.local_storage.delete_element(jobs_var, job_id)
             else:
                 raise RuntimeError("Invalid job given!")
         else:
             raise RuntimeError("Invalid job given!")
 
-    def create_job(self, job_name, module_name, job_function, job_arguments=[], hidden=False):
+    def create_job(
+        self, job_name, module_name, job_function, job_arguments=[], hidden=False
+    ):
         jobs_var = "jobs"
         if hidden:
             jobs_var = "hidden_jobs"
@@ -110,9 +114,9 @@ class Jobs:
 
         job_data = {
             job_id: {
-                'Name': job_name,
-                'Module': module_name,
-                'Process': self.job_process
+                "Name": job_name,
+                "Module": module_name,
+                "Process": self.job_process,
             }
         }
         self.local_storage.update(jobs_var, job_data)

@@ -31,14 +31,12 @@ from hatsploit.core.cli.tables import Tables
 
 class Command(FMT, Badges, Colors, Parser, Tables):
     details = {
-        'Category': "",
-        'Name': "",
-        'Authors': [
-            ''
-        ],
-        'Description': "",
-        'Usage': "",
-        'MinArgs': 0
+        "Category": "",
+        "Name": "",
+        "Authors": [""],
+        "Description": "",
+        "Usage": "",
+        "MinArgs": 0,
     }
 
     def run(self, argc, argv):

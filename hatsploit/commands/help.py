@@ -11,13 +11,13 @@ class HatSploitCommand(Command):
     commands = Commands()
 
     details = {
-        'Category': "core",
-        'Name': "help",
-        'Authors': ['Ivan Nikolsky (enty8080) - command developer'],
-        'Description': "Show available commands.",
-        'Usage': "help",
-        'MinArgs': 0,
+        "Category": "core",
+        "Name": "help",
+        "Authors": ["Ivan Nikolsky (enty8080) - command developer"],
+        "Description": "Show available commands.",
+        "Usage": "help",
+        "MinArgs": 0,
     }
 
     def run(self, argc, argv):
-        self.commands.execute_command(['?'])
+        self.commands.execute_command(["?"])

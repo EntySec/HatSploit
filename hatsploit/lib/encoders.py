@@ -63,7 +63,7 @@ class Encoders:
     def get_encoder(self, encoder):
         encoder_object = self.get_encoder_object(encoder)
         try:
-            imported_encoder = self.importer.import_encoder(encoder_object['Path'])
+            imported_encoder = self.importer.import_encoder(encoder_object["Path"])
         except Exception:
             return None
         return imported_encoder
@@ -81,21 +81,25 @@ class Encoders:
         current_module = self.get_current_module()
 
         if current_payload and current_module and imported_encoders:
-            current_module_name = current_module.details['Module']
-            current_payload_name = current_payload.details['Payload']
+            current_module_name = current_module.details["Module"]
+            current_payload_name = current_payload.details["Payload"]
 
             if current_module_name in imported_encoders:
                 if current_payload_name in imported_encoders[current_module_name]:
-                    if hasattr(current_payload, "options") and 'ENCODER' in current_payload.options:
-                        name = current_payload.options['ENCODER']['Value']
-                        return imported_encoders[current_module_name][current_payload_name][name]
+                    if (
+                        hasattr(current_payload, "options")
+                        and "ENCODER" in current_payload.options
+                    ):
+                        name = current_payload.options["ENCODER"]["Value"]
+                        return imported_encoders[current_module_name][
+                            current_payload_name
+                        ][name]
         return None
 
     def get_current_module(self):
         if self.local_storage.get("current_module"):
             return self.local_storage.get_array(
-                "current_module",
-                self.local_storage.get("current_module_number")
+                "current_module", self.local_storage.get("current_module_number")
             )
         return None
 
@@ -104,10 +108,10 @@ class Encoders:
         current_module_object = self.get_current_module()
 
         if current_module_object:
-            current_module_name = current_module_object.details['Module']
+            current_module_name = current_module_object.details["Module"]
 
             if hasattr(current_module_object, "payload"):
-                name = current_module_object.payload['Value']
+                name = current_module_object.payload["Value"]
 
                 if imported_payloads:
                     if current_module_name in imported_payloads:
@@ -126,28 +130,32 @@ class Encoders:
             if imported_encoders:
                 if current_module_name in imported_encoders:
                     if current_payload_name in imported_encoders[current_module_name]:
-                        imported_encoders[current_module_name][current_payload_name].update({
-                            encoder_object.details['Encoder']: encoder_object
-                        })
+                        imported_encoders[current_module_name][
+                            current_payload_name
+                        ].update({encoder_object.details["Encoder"]: encoder_object})
                     else:
-                        imported_encoders[current_module_name].update({
-                            current_payload_name: {
-                                encoder_object.details['Encoder']: encoder_object
+                        imported_encoders[current_module_name].update(
+                            {
+                                current_payload_name: {
+                                    encoder_object.details["Encoder"]: encoder_object
+                                }
                             }
-                        })
+                        )
                 else:
-                    imported_encoders.update({
-                        current_module_name: {
-                            current_payload_name: {
-                                encoder_object.details['Encoder']: encoder_object
+                    imported_encoders.update(
+                        {
+                            current_module_name: {
+                                current_payload_name: {
+                                    encoder_object.details["Encoder"]: encoder_object
+                                }
                             }
                         }
-                    })
+                    )
             else:
                 imported_encoders = {
                     current_module_name: {
                         current_payload_name: {
-                            encoder_object.details['Encoder']: encoder_object
+                            encoder_object.details["Encoder"]: encoder_object
                         }
                     }
                 }
@@ -175,7 +183,10 @@ class Encoders:
         if imported_encoders:
             if current_module_name in imported_encoders:
                 if current_payload_name in imported_encoders[current_module_name]:
-                    if encoder in imported_encoders[current_module_name][current_payload_name]:
+                    if (
+                        encoder
+                        in imported_encoders[current_module_name][current_payload_name]
+                    ):
                         return True
         return False
 
@@ -183,7 +194,7 @@ class Encoders:
         if self.check_exist(value):
             encoder = self.get_encoder_object(value)
 
-            if encoder['Architecture'] == architecture:
+            if encoder["Architecture"] == architecture:
                 return True
         return False
 
@@ -191,4 +202,6 @@ class Encoders:
         if not self.check_imported(module_name, payload_name, encoder):
             encoder_object = self.import_encoder(module_name, payload_name, encoder)
             if not encoder_object:
-                raise RuntimeError(f"Failed to select encoder from database: {encoder}!")
+                raise RuntimeError(
+                    f"Failed to select encoder from database: {encoder}!"
+                )

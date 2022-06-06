@@ -11,12 +11,12 @@ class HatSploitCommand(Command):
     modules = Modules()
 
     details = {
-        'Category': "modules",
-        'Name': "use",
-        'Authors': ['Ivan Nikolsky (enty8080) - command developer'],
-        'Description': "Use specified module.",
-        'Usage': "use <module|number>",
-        'MinArgs': 1,
+        "Category": "modules",
+        "Name": "use",
+        "Authors": ["Ivan Nikolsky (enty8080) - command developer"],
+        "Description": "Use specified module.",
+        "Usage": "use <module|number>",
+        "MinArgs": 1,
     }
 
     complete = modules.modules_completer

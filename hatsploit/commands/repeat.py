@@ -11,12 +11,12 @@ class HatSploitCommand(Command):
     commands = Commands()
 
     details = {
-        'Category': "developer",
-        'Name': "repeat",
-        'Authors': ['Ivan Nikolsky (enty8080) - command developer'],
-        'Description': "Repeat specified command.",
-        'Usage': "repeat <times> <command>",
-        'MinArgs': 2,
+        "Category": "developer",
+        "Name": "repeat",
+        "Authors": ["Ivan Nikolsky (enty8080) - command developer"],
+        "Description": "Repeat specified command.",
+        "Usage": "repeat <times> <command>",
+        "MinArgs": 2,
     }
 
     def run(self, argc, argv):

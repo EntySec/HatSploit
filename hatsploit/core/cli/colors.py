@@ -24,23 +24,23 @@ SOFTWARE.
 
 
 class Colors:
-    BLACK = '\033[30m'
-    RED = '\033[31m'
-    GREEN = '\033[32m'
-    YELLOW = '\033[33m'
-    BLUE = '\033[34m'
-    PURPLE = '\033[35m'
-    CYAN = '\033[36m'
-    WHITE = '\033[77m'
+    BLACK = "\033[30m"
+    RED = "\033[31m"
+    GREEN = "\033[32m"
+    YELLOW = "\033[33m"
+    BLUE = "\033[34m"
+    PURPLE = "\033[35m"
+    CYAN = "\033[36m"
+    WHITE = "\033[77m"
 
-    END = '\033[0m'
-    BOLD = '\033[1m'
-    DARK = '\033[2m'
-    BENT = '\033[3m'
-    LINE = '\033[4m'
-    TWINK = '\033[5m'
-    BACK = '\033[7m'
+    END = "\033[0m"
+    BOLD = "\033[1m"
+    DARK = "\033[2m"
+    BENT = "\033[3m"
+    LINE = "\033[4m"
+    TWINK = "\033[5m"
+    BACK = "\033[7m"
 
-    REMOVE = '\033[1K\r'
-    CLEAR = '\033[H\033[J'
-    NEWLINE = '\n'
+    REMOVE = "\033[1K\r"
+    CLEAR = "\033[H\033[J"
+    NEWLINE = "\n"

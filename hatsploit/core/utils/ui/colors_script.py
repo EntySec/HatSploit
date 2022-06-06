@@ -32,24 +32,24 @@ class ColorsScript:
     script_extension = "colors"
 
     commands = {
-        '%black': colors.BLACK,
-        '%red': colors.RED,
-        '%green': colors.GREEN,
-        '%yellow': colors.YELLOW,
-        '%blue': colors.BLUE,
-        '%purple': colors.PURPLE,
-        '%cyan': colors.CYAN,
-        '%white': colors.WHITE,
-        '%end': colors.END,
-        '%bold': colors.BOLD,
-        '%dark': colors.DARK,
-        '%bent': colors.BENT,
-        '%line': colors.LINE,
-        '%twink': colors.TWINK,
-        '%back': colors.BACK,
-        '%remove': colors.REMOVE,
-        '%clear': colors.CLEAR,
-        '%newline': colors.NEWLINE,
+        "%black": colors.BLACK,
+        "%red": colors.RED,
+        "%green": colors.GREEN,
+        "%yellow": colors.YELLOW,
+        "%blue": colors.BLUE,
+        "%purple": colors.PURPLE,
+        "%cyan": colors.CYAN,
+        "%white": colors.WHITE,
+        "%end": colors.END,
+        "%bold": colors.BOLD,
+        "%dark": colors.DARK,
+        "%bent": colors.BENT,
+        "%line": colors.LINE,
+        "%twink": colors.TWINK,
+        "%back": colors.BACK,
+        "%remove": colors.REMOVE,
+        "%clear": colors.CLEAR,
+        "%newline": colors.NEWLINE,
     }
 
     def parse(self, line):
@@ -61,7 +61,7 @@ class ColorsScript:
     def libreadline(self, line):
         if line and line[0:8] != "%comment" and not line.isspace():
             for command in self.commands:
-                line = line.replace(command, f'\001{command}\002')
+                line = line.replace(command, f"\001{command}\002")
         return line
 
     @staticmethod
@@ -119,7 +119,7 @@ class ColorsScript:
         last_commands = "".join(map(str, last_commands))
 
         lines = self._remove_empty_lines(lines)
-        lines[-1] = lines[-1].strip('\n') + last_commands
+        lines[-1] = lines[-1].strip("\n") + last_commands
 
         if path.endswith(self.script_extension):
             try:
@@ -138,7 +138,7 @@ class ColorsScript:
                         buffer_commands = ""
 
                         for command in self.commands:
-                            line = line.partition('%comment')[0]
+                            line = line.partition("%comment")[0]
                             line = line.replace(command, self.commands[command])
                         result += line
 
@@ -148,10 +148,10 @@ class ColorsScript:
         else:
             return None
 
-    def compile_colors_script(self, path, outfile='a.out'):
+    def compile_colors_script(self, path, outfile="a.out"):
         result = self.parse_colors_script(path)
 
         if result:
-            output = open(outfile, 'wb')
+            output = open(outfile, "wb")
             output.write(result.encode())
             output.close()

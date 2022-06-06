@@ -11,12 +11,12 @@ class HatSploitCommand(Command):
     show = Show()
 
     details = {
-        'Category': "encoder",
-        'Name': "encoders",
-        'Authors': ['Ivan Nikolsky (enty8080) - command developer'],
-        'Description': "Show available encoders.",
-        'Usage': "encoders",
-        'MinArgs': 0,
+        "Category": "encoder",
+        "Name": "encoders",
+        "Authors": ["Ivan Nikolsky (enty8080) - command developer"],
+        "Description": "Show available encoders.",
+        "Usage": "encoders",
+        "MinArgs": 0,
     }
 
     def run(self, argc, argv):

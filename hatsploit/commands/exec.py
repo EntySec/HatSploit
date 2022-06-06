@@ -11,12 +11,12 @@ class HatSploitCommand(Command):
     commands = Commands()
 
     details = {
-        'Category': "developer",
-        'Name': "exec",
-        'Authors': ['Ivan Nikolsky (enty8080) - command developer'],
-        'Description': "Execute local system command.",
-        'Usage': "exec <command>",
-        'MinArgs': 1,
+        "Category": "developer",
+        "Name": "exec",
+        "Authors": ["Ivan Nikolsky (enty8080) - command developer"],
+        "Description": "Execute local system command.",
+        "Usage": "exec <command>",
+        "MinArgs": 1,
     }
 
     def run(self, argc, argv):
