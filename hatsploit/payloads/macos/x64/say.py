@@ -1,9 +1,7 @@
-#!/usr/bin/env python3
-
-#
-# This payload requires HatSploit: https://hatsploit.com
-# Current source: https://github.com/EntySec/HatSploit
-#
+"""
+This payload requires HatSploit: https://hatsploit.com
+Current source: https://github.com/EntySec/HatSploit
+"""
 
 import struct
 
@@ -13,22 +11,22 @@ from pex.assembler import Assembler
 
 class HatSploitPayload(Payload, Assembler):
     details = {
-        'Name': "macOS x64 Say",
-        'Payload': "macos/x64/say",
-        'Authors': ['Ivan Nikolsky (enty8080) - payload developer'],
-        'Description': "Say payload for macOS x64.",
-        'Architecture': "x64",
-        'Platform': "macos",
-        'Rank': "low",
-        'Type': "one_side",
+        "Name": "macOS x64 Say",
+        "Payload": "macos/x64/say",
+        "Authors": ["Ivan Nikolsky (enty8080) - payload developer"],
+        "Description": "Say payload for macOS x64.",
+        "Architecture": "x64",
+        "Platform": "macos",
+        "Rank": "low",
+        "Type": "one_side",
     }
 
     options = {
-        'MESSAGE': {
-            'Description': "Message to say.",
-            'Value': "Hello, Friend!",
-            'Type': None,
-            'Required': True,
+        "MESSAGE": {
+            "Description": "Message to say.",
+            "Value": "Hello, Friend!",
+            "Type": None,
+            "Required": True,
         }
     }
 
@@ -36,16 +34,16 @@ class HatSploitPayload(Payload, Assembler):
         message = self.parse_options(self.options)
 
         data = (
-            b'\xe8'
-            + struct.pack("<I", len(message.encode() + b'\x00') + 0xD)
-            + b'/usr/bin/say\x00'
+            b"\xe8"
+            + struct.pack("<I", len(message.encode() + b"\x00") + 0xD)
+            + b"/usr/bin/say\x00"
             + message.encode()
-            + b'\x00'
+            + b"\x00"
         )
 
         return (
             self.assemble(
-                self.details['Architecture'],
+                self.details["Architecture"],
                 """
             start:
                 xor rax, rax
@@ -54,7 +52,7 @@ class HatSploitPayload(Payload, Assembler):
             )
             + data
             + self.assemble(
-                self.details['Architecture'],
+                self.details["Architecture"],
                 """
             end:
                 mov rdi, [rsp]

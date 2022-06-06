@@ -1,28 +1,26 @@
-#!/usr/bin/env python3
+"""
+MIT License
 
-#
-# MIT License
-#
-# Copyright (c) 2020-2022 EntySec
-#
-# Permission is hereby granted, free of charge, to any person obtaining a copy
-# of this software and associated documentation files (the "Software"), to deal
-# in the Software without restriction, including without limitation the rights
-# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-# copies of the Software, and to permit persons to whom the Software is
-# furnished to do so, subject to the following conditions:
-#
-# The above copyright notice and this permission notice shall be included in all
-# copies or substantial portions of the Software.
-#
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-# SOFTWARE.
-#
+Copyright (c) 2020-2022 EntySec
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+"""
 
 from hatvenom import HatVenom
 
@@ -76,7 +74,7 @@ class Payloads:
     def get_payload(self, payload):
         payload_object = self.get_payload_object(payload)
         try:
-            imported_payload = self.importer.import_payload(payload_object['Path'])
+            imported_payload = self.importer.import_payload(payload_object["Path"])
         except Exception:
             return None
         return imported_payload
@@ -92,10 +90,10 @@ class Payloads:
         current_module_object = self.get_current_module()
 
         if current_module_object:
-            current_module_name = current_module_object.details['Module']
+            current_module_name = current_module_object.details["Module"]
 
             if hasattr(current_module_object, "payload"):
-                name = current_module_object.payload['Value']
+                name = current_module_object.payload["Value"]
 
                 if imported_payloads:
                     if current_module_name in imported_payloads:
@@ -105,7 +103,9 @@ class Payloads:
 
     def get_current_module(self):
         if self.local_storage.get("current_module"):
-            return self.local_storage.get_array("current_module", self.local_storage.get("current_module_number"))
+            return self.local_storage.get_array(
+                "current_module", self.local_storage.get("current_module_number")
+            )
         return None
 
     def import_payload(self, module_name, payload):
@@ -117,19 +117,21 @@ class Payloads:
             imported_payloads = self.get_imported_payloads()
             if imported_payloads:
                 if current_module_name in imported_payloads:
-                    imported_payloads[current_module_name].update({
-                        payload_object.details['Payload']: payload_object
-                    })
+                    imported_payloads[current_module_name].update(
+                        {payload_object.details["Payload"]: payload_object}
+                    )
                 else:
-                    imported_payloads.update({
-                        current_module_name: {
-                            payload_object.details['Payload']: payload_object
+                    imported_payloads.update(
+                        {
+                            current_module_name: {
+                                payload_object.details["Payload"]: payload_object
+                            }
                         }
-                    })
+                    )
             else:
                 imported_payloads = {
                     current_module_name: {
-                        payload_object.details['Payload']: payload_object
+                        payload_object.details["Payload"]: payload_object
                     }
                 }
             self.local_storage.set("imported_payloads", imported_payloads)
@@ -161,15 +163,15 @@ class Payloads:
             payload = self.get_payload_object(value)
 
             if types:
-                if payload['Type'] not in types:
+                if payload["Type"] not in types:
                     return False
 
             if platforms:
-                if payload['Platform'] not in platforms:
+                if payload["Platform"] not in platforms:
                     return False
 
             if architectures:
-                if payload['Architecture'] not in architectures:
+                if payload["Architecture"] not in architectures:
                     return False
 
             return True
@@ -179,7 +181,9 @@ class Payloads:
         if not self.check_imported(module_name, payload):
             payload_object = self.import_payload(module_name, payload)
             if not payload_object:
-                raise RuntimeError(f"Failed to select payload from database: {payload}!")
+                raise RuntimeError(
+                    f"Failed to select payload from database: {payload}!"
+                )
 
     def generate_payload(self, payload, options={}, encoder=None):
         payload_object = self.get_payload(payload)
@@ -188,7 +192,7 @@ class Payloads:
 
             if hasattr(payload_object, "options"):
                 for option in options:
-                    payload_object.options[option]['Value'] = options[option]
+                    payload_object.options[option]["Value"] = options[option]
 
             encoder_object = None
             if encoder:
@@ -203,7 +207,7 @@ class Payloads:
 
         exec_f = None
 
-        if architecture in architectures['cpu']:
+        if architecture in architectures["cpu"]:
             for fmt in formats:
                 if platform in formats[fmt]:
                     exec_f = fmt
@@ -231,7 +235,11 @@ class Payloads:
         if hasattr(current_payload, "options"):
             for option in current_payload.options:
                 current_option = current_payload.options[option]
-                if not current_option['Value'] and current_option['Value'] != 0 and current_option['Required']:
-                    missed += option + ', '
+                if (
+                    not current_option["Value"]
+                    and current_option["Value"] != 0
+                    and current_option["Required"]
+                ):
+                    missed += option + ", "
 
         return missed

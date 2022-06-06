@@ -1,9 +1,7 @@
-#!/usr/bin/env python3
-
-#
-# This command requires HatSploit: https://hatsploit.com
-# Current source: https://github.com/EntySec/HatSploit
-#
+"""
+This command requires HatSploit: https://hatsploit.com
+Current source: https://github.com/EntySec/HatSploit
+"""
 
 import time
 
@@ -15,18 +13,18 @@ class HatSploitCommand(Command):
     execute = Execute()
 
     details = {
-        'Category': "developer",
-        'Name': "sleep",
-        'Authors': ['Ivan Nikolsky (enty8080) - command developer'],
-        'Description': "Sleep for specified seconds.",
-        'Usage': "sleep <seconds>",
-        'MinArgs': 1,
+        "Category": "developer",
+        "Name": "sleep",
+        "Authors": ["Ivan Nikolsky (enty8080) - command developer"],
+        "Description": "Sleep for specified seconds.",
+        "Usage": "sleep <seconds>",
+        "MinArgs": 1,
     }
 
     def run(self, argc, argv):
         seconds = argv[1]
 
-        if seconds.replace('.', '', 1).isdigit():
+        if seconds.replace(".", "", 1).isdigit():
             time.sleep(float(seconds))
         else:
             self.print_error("Seconds expected!")

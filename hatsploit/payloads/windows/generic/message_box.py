@@ -1,31 +1,29 @@
-#!/usr/bin/env python3
-
-#
-# This payload requires HatSploit: https://hatsploit.com
-# Current source: https://github.com/EntySec/HatSploit
-#
+"""
+This payload requires HatSploit: https://hatsploit.com
+Current source: https://github.com/EntySec/HatSploit
+"""
 
 from hatsploit.lib.payload import Payload
 
 
 class HatSploitPayload(Payload):
     details = {
-        'Name': "Windows Message Box",
-        'Payload': "windows/generic/message_box",
-        'Authors': ['Ivan Nikolsky (enty8080) - payload developer'],
-        'Description': "Message Box payload for Windows.",
-        'Architecture': "generic",
-        'Platform': "windows",
-        'Rank': "low",
-        'Type': "one_side",
+        "Name": "Windows Message Box",
+        "Payload": "windows/generic/message_box",
+        "Authors": ["Ivan Nikolsky (enty8080) - payload developer"],
+        "Description": "Message Box payload for Windows.",
+        "Architecture": "generic",
+        "Platform": "windows",
+        "Rank": "low",
+        "Type": "one_side",
     }
 
     options = {
-        'MESSAGE': {
-            'Description': "Message to show.",
-            'Value': "Hello, Friend!",
-            'Type': None,
-            'Required': True,
+        "MESSAGE": {
+            "Description": "Message to show.",
+            "Value": "Hello, Friend!",
+            "Type": None,
+            "Required": True,
         }
     }
 

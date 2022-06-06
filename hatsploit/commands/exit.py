@@ -1,9 +1,7 @@
-#!/usr/bin/env python3
-
-#
-# This command requires HatSploit: https://hatsploit.com
-# Current source: https://github.com/EntySec/HatSploit
-#
+"""
+This command requires HatSploit: https://hatsploit.com
+Current source: https://github.com/EntySec/HatSploit
+"""
 
 import sys
 
@@ -17,19 +15,19 @@ class HatSploitCommand(Command):
     sessions = Sessions()
 
     details = {
-        'Category': "core",
-        'Name': "exit",
-        'Authors': ['Ivan Nikolsky (enty8080) - command developer'],
-        'Description': "Exit HatSploit Framework.",
-        'Usage': "exit",
-        'MinArgs': 0,
+        "Category": "core",
+        "Name": "exit",
+        "Authors": ["Ivan Nikolsky (enty8080) - command developer"],
+        "Description": "Exit HatSploit Framework.",
+        "Usage": "exit",
+        "MinArgs": 0,
     }
 
     def run(self, argc, argv):
         if self.jobs.get_jobs():
             self.print_warning("You have some running jobs.")
 
-            if self.input_question("Exit anyway? [y/N] ")[0].lower() in ['yes', 'y']:
+            if self.input_question("Exit anyway? [y/N] ")[0].lower() in ["yes", "y"]:
                 self.jobs.stop_jobs()
             else:
                 return
@@ -37,7 +35,7 @@ class HatSploitCommand(Command):
         if self.sessions.get_sessions():
             self.print_warning("You have some opened sessions.")
 
-            if self.input_question("Exit anyway? [y/N] ")[0].lower() in ['yes', 'y']:
+            if self.input_question("Exit anyway? [y/N] ")[0].lower() in ["yes", "y"]:
                 self.sessions.close_sessions()
             else:
                 return

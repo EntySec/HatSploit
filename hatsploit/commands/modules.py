@@ -1,9 +1,7 @@
-#!/usr/bin/env python3
-
-#
-# This command requires HatSploit: https://hatsploit.com
-# Current source: https://github.com/EntySec/HatSploit
-#
+"""
+This command requires HatSploit: https://hatsploit.com
+Current source: https://github.com/EntySec/HatSploit
+"""
 
 from hatsploit.lib.command import Command
 from hatsploit.lib.modules import Modules
@@ -15,12 +13,12 @@ class HatSploitCommand(Command):
     show = Show()
 
     details = {
-        'Category': "modules",
-        'Name': "modules",
-        'Authors': ['Ivan Nikolsky (enty8080) - command developer'],
-        'Description': "Show available modules.",
-        'Usage': "modules [category]",
-        'MinArgs': 0,
+        "Category": "modules",
+        "Name": "modules",
+        "Authors": ["Ivan Nikolsky (enty8080) - command developer"],
+        "Description": "Show available modules.",
+        "Usage": "modules [category]",
+        "MinArgs": 0,
     }
 
     def collect_categories(self):
@@ -30,7 +28,7 @@ class HatSploitCommand(Command):
         if modules:
             for database in sorted(modules):
                 for module in sorted(modules[database]):
-                    category = modules[database][module]['Category']
+                    category = modules[database][module]["Category"]
 
                     if category not in categories:
                         categories.append(category)

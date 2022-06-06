@@ -1,9 +1,7 @@
-#!/usr/bin/env python3
-
-#
-# This module requires HatSploit: https://hatsploit.com
-# Current source: https://github.com/EntySec/HatSploit
-#
+"""
+This module requires HatSploit: https://hatsploit.com
+Current source: https://github.com/EntySec/HatSploit
+"""
 
 from hatsploit.lib.module import Module
 from hatsploit.lib.sessions import Sessions
@@ -11,26 +9,26 @@ from hatsploit.lib.sessions import Sessions
 
 class HatSploitModule(Module, Sessions):
     details = {
-        'Category': "post",
-        'Name': "Unix Shell Get PID",
-        'Module': "post/unix/shell/getpid",
-        'Authors': ['Ivan Nikolsky (enty8080) - module developer'],
-        'Description': "Get current session process id.",
-        'Platform': "unix",
-        'Rank': "medium",
+        "Category": "post",
+        "Name": "Unix Shell Get PID",
+        "Module": "post/unix/shell/getpid",
+        "Authors": ["Ivan Nikolsky (enty8080) - module developer"],
+        "Description": "Get current session process id.",
+        "Platform": "unix",
+        "Rank": "medium",
     }
 
     options = {
-        'SESSION': {
-            'Description': "Session to run on.",
-            'Value': None,
-            'Type': {
-                'session': {
-                    'Platforms': ['linux', 'unix', 'macos', 'apple_ios'],
-                    'Type': 'shell',
+        "SESSION": {
+            "Description": "Session to run on.",
+            "Value": None,
+            "Type": {
+                "session": {
+                    "Platforms": ["linux", "unix", "macos", "apple_ios"],
+                    "Type": "shell",
                 }
             },
-            'Required': True,
+            "Required": True,
         }
     }
 

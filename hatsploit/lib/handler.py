@@ -1,28 +1,26 @@
-#!/usr/bin/env python3
+"""
+MIT License
 
-#
-# MIT License
-#
-# Copyright (c) 2020-2022 EntySec
-#
-# Permission is hereby granted, free of charge, to any person obtaining a copy
-# of this software and associated documentation files (the "Software"), to deal
-# in the Software without restriction, including without limitation the rights
-# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-# copies of the Software, and to permit persons to whom the Software is
-# furnished to do so, subject to the following conditions:
-#
-# The above copyright notice and this permission notice shall be included in all
-# copies or substantial portions of the Software.
-#
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-# SOFTWARE.
-#
+Copyright (c) 2020-2022 EntySec
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+"""
 
 import datetime
 
@@ -49,12 +47,7 @@ from hatsploit.lib.loot import Loot
 class HatSploitSession(Session, Loot, Pull, Push, ChannelClient):
     channel = None
 
-    details = {
-        'Post': "",
-        'Platform': "",
-        'Architecture': "",
-        'Type': "shell"
-    }
+    details = {"Post": "", "Platform": "", "Architecture": "", "Type": "shell"}
 
     def open(self, client):
         self.channel = self.open_channel(client)
@@ -66,31 +59,20 @@ class HatSploitSession(Session, Loot, Pull, Push, ChannelClient):
         return not self.channel.terminated
 
     def send_command(self, command, output=False, decode=True):
-        return self.channel.send_command(
-            (command + '\n'),
-            output,
-            decode
-        )
+        return self.channel.send_command((command + "\n"), output, decode)
 
     def download(self, remote_file, local_path):
         self.print_process(f"Downloading {remote_file}...")
 
         data = self.pull(
-            platform=self.details['Platform'],
+            platform=self.details["Platform"],
             sender=self.send_command,
             location=remote_file,
-            args={
-                'decode': False,
-                'output': True
-            }
+            args={"decode": False, "output": True},
         )
 
         if data:
-            return self.save_file(
-                location=local_path,
-                data=data,
-                filename=remote_file
-            )
+            return self.save_file(location=local_path, data=data, filename=remote_file)
 
         return None
 
@@ -100,11 +82,11 @@ class HatSploitSession(Session, Loot, Pull, Push, ChannelClient):
 
         if data:
             remote_path = self.push(
-                platform=self.details['Platform'],
+                platform=self.details["Platform"],
                 sender=self.send_command,
                 data=data,
                 location=remote_path,
-                method=self.details['Post']
+                method=self.details["Post"],
             )
 
             self.print_success(f"Saved to {remote_path}!")
@@ -131,32 +113,34 @@ class Handler:
     local_storage = LocalStorage()
 
     def do_job(self, p_type, target, args):
-        if p_type == 'one_side':
+        if p_type == "one_side":
             target(*args)
         else:
-            self.jobs.create_job(
-                None,
-                None,
-                target,
-                args,
-                True
-            )
+            self.jobs.create_job(None, None, target, args, True)
 
     def ensure_linemax(self, stage, linemax):
         min_size = 10000
         max_size = 100000
 
         if len(stage) >= max_size and linemax not in range(min_size, max_size):
-            self.badges.print_process(f"Ensuring stage size ({str(len(stage))} bytes)...")
+            self.badges.print_process(
+                f"Ensuring stage size ({str(len(stage))} bytes)..."
+            )
             linemax = max_size
 
         return linemax
 
-    def open_session(self, host, port, s_platform, s_architecture, s_type, session, action=None):
-        s_id = self.sessions.add_session(s_platform, s_architecture, s_type, host, port, session)
+    def open_session(
+        self, host, port, s_platform, s_architecture, s_type, session, action=None
+    ):
+        s_id = self.sessions.add_session(
+            s_platform, s_architecture, s_type, host, port, session
+        )
         time = datetime.datetime.now().astimezone().strftime("%Y-%m-%d %H:%M:%S %Z")
 
-        self.badges.print_success(f"{s_type.title()} session {str(s_id)} opened at {time}!")
+        self.badges.print_success(
+            f"{s_type.title()} session {str(s_id)} opened at {time}!"
+        )
 
         if action:
             action()
@@ -164,58 +148,63 @@ class Handler:
         if self.local_storage.get("auto_interaction"):
             self.sessions.interact_with_session(s_id)
 
-    def module_handle(self, host=None, sender=None, args={}, concat=None, location=None,
-                      background=None, method=None, timeout=None, linemax=100, ensure=False,
-                      on_session=None):
+    def module_handle(
+        self,
+        host=None,
+        sender=None,
+        args={},
+        concat=None,
+        location=None,
+        background=None,
+        method=None,
+        timeout=None,
+        linemax=100,
+        ensure=False,
+        on_session=None,
+    ):
         module = self.modules.get_current_module()
         payload = self.payloads.get_current_payload()
 
         rhost = host
         options = module.handler
 
-        if 'BLINDER' in options:
-            if options['BLINDER'].lower() in ['yes', 'y']:
+        if "BLINDER" in options:
+            if options["BLINDER"].lower() in ["yes", "y"]:
                 if sender is not None:
-                    self.handle(
-                        sender=sender,
-                        args=args,
-                        blinder=True
-                    )
+                    self.handle(sender=sender, args=args, blinder=True)
 
                     return True
 
-        if payload.details['Type'] == 'bind_tcp':
-            host = options['RBHOST']
-            port = options['RBPORT']
+        if payload.details["Type"] == "bind_tcp":
+            host = options["RBHOST"]
+            port = options["RBPORT"]
 
-        elif payload.details['Type'] == 'reverse_tcp':
-            host = options['LHOST']
-            port = options['LPORT']
+        elif payload.details["Type"] == "reverse_tcp":
+            host = options["LHOST"]
+            port = options["LPORT"]
 
         else:
             host, port = None, None
 
-        if 'Session' in payload.details:
-            session = payload.details['Session']
+        if "Session" in payload.details:
+            session = payload.details["Session"]
         else:
             session = None
 
-        if 'Arguments' in payload.details:
-            arguments = payload.details['Arguments']
+        if "Arguments" in payload.details:
+            arguments = payload.details["Arguments"]
         else:
             arguments = None
 
-        p_platform = payload.details['Platform']
-        p_architecture = payload.details['Architecture']
+        p_platform = payload.details["Platform"]
+        p_architecture = payload.details["Architecture"]
 
         stage = self.payloads.pack_payload(
-            module.payload['Payload'],
-            p_platform,
-            p_architecture
+            module.payload["Payload"], p_platform, p_architecture
         )
 
         if p_platform in self.types.platforms:
-            module_platform = module.details['Platform']
+            module_platform = module.details["Platform"]
 
             if module_platform not in self.types.platforms:
                 p_platform = module_platform
@@ -223,37 +212,49 @@ class Handler:
         self.handle(
             stage=stage,
             sender=sender,
-
             host=host,
             port=port,
-
             rhost=rhost,
-
             p_platform=p_platform,
             p_architecture=p_architecture,
-            p_type=payload.details['Type'],
-
+            p_type=payload.details["Type"],
             args=args,
             concat=concat,
             location=location,
             background=background,
-
             method=method,
             timeout=timeout,
             linemax=linemax,
-
             ensure=ensure,
             blinder=False,
-
             session=session,
             arguments=arguments,
-            on_session=on_session
+            on_session=on_session,
         )
 
-    def handle(self, stage=None, sender=None, host=None, port=None, rhost=None,
-               p_platform=None, p_architecture=None, p_type=None, args={},
-               concat=None, location=None, background=None, method=None, timeout=None, linemax=100,
-               ensure=False, blinder=False, session=None, arguments=None, on_session=None):
+    def handle(
+        self,
+        stage=None,
+        sender=None,
+        host=None,
+        port=None,
+        rhost=None,
+        p_platform=None,
+        p_architecture=None,
+        p_type=None,
+        args={},
+        concat=None,
+        location=None,
+        background=None,
+        method=None,
+        timeout=None,
+        linemax=100,
+        ensure=False,
+        blinder=False,
+        session=None,
+        arguments=None,
+        on_session=None,
+    ):
 
         if blinder:
             self.blinder.shell(sender, args)
@@ -262,69 +263,58 @@ class Handler:
         self.send_payload(
             stage=stage,
             sender=sender,
-
             p_platform=p_platform,
             p_architecture=p_architecture,
             p_type=p_type,
-
             args=args,
             concat=concat,
             location=location,
             background=background,
-
             method=method,
             linemax=linemax,
-
             ensure=ensure,
-            arguments=arguments
+            arguments=arguments,
         )
 
         remote = self.handle_session(
-            host=host,
-            port=port,
-
-            p_type=p_type,
-            session=session,
-            timeout=timeout
+            host=host, port=port, p_type=p_type, session=session, timeout=timeout
         )
 
         if not remote:
             raise RuntimeWarning("Payload sent but no session was opened.")
 
-        s_type = remote[0].details['Type']
+        s_type = remote[0].details["Type"]
 
-        remote[0].details['Post'] = method
-        remote[0].details['Platform'] = p_platform
-        remote[0].details['Architecture'] = p_architecture
+        remote[0].details["Post"] = method
+        remote[0].details["Platform"] = p_platform
+        remote[0].details["Architecture"] = p_architecture
 
-        if remote[1] not in ('127.0.0.1', '0.0.0.0'):
+        if remote[1] not in ("127.0.0.1", "0.0.0.0"):
             rhost = remote[1]
 
-        self.open_session(rhost, port, p_platform, p_architecture, s_type, remote[0], on_session)
+        self.open_session(
+            rhost, port, p_platform, p_architecture, s_type, remote[0], on_session
+        )
 
-    def module_handle_session(self, p_type='one_side', session=None, timeout=None):
+    def module_handle_session(self, p_type="one_side", session=None, timeout=None):
         module = self.modules.get_current_module()
 
         options = module.handler
         session = session if session is not None else HatSploitSession
 
-        if p_type == 'reverse_tcp':
+        if p_type == "reverse_tcp":
             new_session, host = self.server_handle.listen_session(
-                options['LHOST'],
-                options['LPORT'],
-                session, timeout
+                options["LHOST"], options["LPORT"], session, timeout
             )
 
             if not new_session and not host:
                 return None
 
-        elif p_type == 'bind_tcp':
-            host = options['RBHOST']
+        elif p_type == "bind_tcp":
+            host = options["RBHOST"]
 
             new_session = self.server_handle.connect_session(
-                options['RBHOST'],
-                options['RBPORT'],
-                session, timeout
+                options["RBHOST"], options["RBPORT"], session, timeout
             )
 
             if not new_session:
@@ -335,28 +325,34 @@ class Handler:
 
         return new_session, host
 
-    def handle_session(self, host=None, port=None, p_type='one_side', session=None, timeout=None):
+    def handle_session(
+        self, host=None, port=None, p_type="one_side", session=None, timeout=None
+    ):
         session = session if session is not None else HatSploitSession
 
-        if p_type == 'reverse_tcp':
+        if p_type == "reverse_tcp":
             if not host or not port:
                 return None
 
-            new_session, host = self.server_handle.listen_session(host, port, session, timeout)
+            new_session, host = self.server_handle.listen_session(
+                host, port, session, timeout
+            )
 
             if not new_session and not host:
                 return None
 
-        elif p_type == 'bind_tcp':
+        elif p_type == "bind_tcp":
             if not host or not port:
                 return None
 
-            new_session = self.server_handle.connect_session(host, port, session, timeout)
+            new_session = self.server_handle.connect_session(
+                host, port, session, timeout
+            )
 
             if not new_session:
                 return None
 
-        elif p_type == 'one_side':
+        elif p_type == "one_side":
             return None
 
         else:
@@ -364,10 +360,22 @@ class Handler:
 
         return new_session, host
 
-    def send_payload(self, stage=None, sender=None, p_platform='generic',
-                     p_architecture='generic', p_type='one_side', args={}, concat=None,
-                     location=None, background=None, method=None, linemax=100,
-                     ensure=False, arguments=None):
+    def send_payload(
+        self,
+        stage=None,
+        sender=None,
+        p_platform="generic",
+        p_architecture="generic",
+        p_type="one_side",
+        args={},
+        concat=None,
+        location=None,
+        background=None,
+        method=None,
+        linemax=100,
+        ensure=False,
+        arguments=None,
+    ):
         if stage is None:
             raise RuntimeError("Payload stage is not found!")
 
@@ -393,6 +401,6 @@ class Handler:
                 location,
                 concat,
                 background,
-                linemax
-            ]
+                linemax,
+            ],
         )

@@ -1,9 +1,7 @@
-#!/usr/bin/env python3
-
-#
-# This plugin requires HatSploit: https://hatsploit.com
-# Current source: https://github.com/EntySec/HatSploit
-#
+"""
+This plugin requires HatSploit: https://hatsploit.com
+Current source: https://github.com/EntySec/HatSploit
+"""
 
 import textwrap
 
@@ -12,18 +10,18 @@ from hatsploit.lib.plugin import Plugin
 
 class HatSploitPlugin(Plugin):
     details = {
-        'Name': "HatSploit Cowsay Implementation",
-        'Plugin': "cowsay",
-        'Authors': ['Ivan Nikolsky (enty8080) - plugin developer'],
-        'Description': "Cowsay plugin for HatSploit.",
+        "Name": "HatSploit Cowsay Implementation",
+        "Plugin": "cowsay",
+        "Authors": ["Ivan Nikolsky (enty8080) - plugin developer"],
+        "Description": "Cowsay plugin for HatSploit.",
     }
 
     commands = {
-        'cowsay': {
-            'cowsay': {
-                'Description': "Ask cow to say message.",
-                'Usage': "cowsay <message>",
-                'MinArgs': 1,
+        "cowsay": {
+            "cowsay": {
+                "Description": "Ask cow to say message.",
+                "Usage": "cowsay <message>",
+                "MinArgs": 1,
             }
         }
     }

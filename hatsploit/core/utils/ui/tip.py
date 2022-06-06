@@ -1,28 +1,26 @@
-#!/usr/bin/env python3
+"""
+MIT License
 
-#
-# MIT License
-#
-# Copyright (c) 2020-2022 EntySec
-#
-# Permission is hereby granted, free of charge, to any person obtaining a copy
-# of this software and associated documentation files (the "Software"), to deal
-# in the Software without restriction, including without limitation the rights
-# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-# copies of the Software, and to permit persons to whom the Software is
-# furnished to do so, subject to the following conditions:
-#
-# The above copyright notice and this permission notice shall be included in all
-# copies or substantial portions of the Software.
-#
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-# SOFTWARE.
-#
+Copyright (c) 2020-2022 EntySec
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+"""
 
 import os
 import random
@@ -43,9 +41,9 @@ class Tip:
     colors_script = ColorsScript()
 
     def print_random_tip(self):
-        if os.path.exists(self.config.path_config['tips_path']):
+        if os.path.exists(self.config.path_config["tips_path"]):
             tips = []
-            all_tips = os.listdir(self.config.path_config['tips_path'])
+            all_tips = os.listdir(self.config.path_config["tips_path"])
             for tip in all_tips:
                 tips.append(tip)
             if tips:
@@ -53,7 +51,7 @@ class Tip:
                 while not tip:
                     random_tip = random.randint(0, len(tips) - 1)
                     tip = self.colors_script.parse_colors_script(
-                        self.config.path_config['tips_path'] + tips[random_tip]
+                        self.config.path_config["tips_path"] + tips[random_tip]
                     )
 
                 self.badges.print_empty(f"%newline%endHatSploit Tip: {tip}%end%newline")

@@ -1,28 +1,26 @@
-#!/usr/bin/env python3
+"""
+MIT License
 
-#
-# MIT License
-#
-# Copyright (c) 2020-2022 EntySec
-#
-# Permission is hereby granted, free of charge, to any person obtaining a copy
-# of this software and associated documentation files (the "Software"), to deal
-# in the Software without restriction, including without limitation the rights
-# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-# copies of the Software, and to permit persons to whom the Software is
-# furnished to do so, subject to the following conditions:
-#
-# The above copyright notice and this permission notice shall be included in all
-# copies or substantial portions of the Software.
-#
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-# SOFTWARE.
-#
+Copyright (c) 2020-2022 EntySec
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+"""
 
 import os
 import subprocess
@@ -58,12 +56,12 @@ class Execute:
                             )
 
     def execute_builtin_method(self, commands):
-        if commands[0][0] == '#':
+        if commands[0][0] == "#":
             return True
-        if commands[0][0] == '?':
+        if commands[0][0] == "?":
             self.show.show_all_commands()
             return True
-        if commands[0][0] == '&':
+        if commands[0][0] == "&":
             commands[0] = commands[0][1:]
 
             self.jobs.create_job(
@@ -71,9 +69,9 @@ class Execute:
             )
 
             return True
-        if commands[0][0] == '!':
+        if commands[0][0] == "!":
             if len(commands[0]) > 1:
-                commands[0] = commands[0].replace('!', '', 1)
+                commands[0] = commands[0].replace("!", "", 1)
                 self.execute_system(commands)
             else:
                 self.badges.print_usage("!<command>")
@@ -99,36 +97,36 @@ class Execute:
         return False
 
     def check_arguments(self, commands, details):
-        if (len(commands) - 1) < details['MinArgs']:
+        if (len(commands) - 1) < details["MinArgs"]:
             return False
-        if 'Options' in details:
+        if "Options" in details:
             if len(commands) > 1:
-                if commands[1] in details['Options']:
+                if commands[1] in details["Options"]:
                     if (len(commands) - 2) < len(
-                        details['Options'][commands[1]][0].split()
+                        details["Options"][commands[1]][0].split()
                     ):
                         return False
                 else:
                     return False
 
         if len(commands) > 1:
-            if commands[1] == '?':
+            if commands[1] == "?":
                 return False
 
         return True
 
     def parse_usage(self, details):
-        self.badges.print_usage(details['Usage'])
+        self.badges.print_usage(details["Usage"])
 
-        if 'Options' in details:
-            headers = ('Option', 'Arguments', 'Description')
+        if "Options" in details:
+            headers = ("Option", "Arguments", "Description")
             data = []
 
-            for option in details['Options']:
-                info = details['Options'][option]
+            for option in details["Options"]:
+                info = details["Options"][option]
                 data.append((option, info[0], info[1]))
 
-            self.tables.print_table('Options', headers, *data)
+            self.tables.print_table("Options", headers, *data)
 
     def execute_core_command(self, commands):
         return self.execute_custom_command(commands, self.local_storage.get("commands"))

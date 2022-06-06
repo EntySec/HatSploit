@@ -1,9 +1,7 @@
-#!/usr/bin/env python3
-
-#
-# This command requires HatSploit: https://hatsploit.com
-# Current source: https://github.com/EntySec/HatSploit
-#
+"""
+This command requires HatSploit: https://hatsploit.com
+Current source: https://github.com/EntySec/HatSploit
+"""
 
 from hatsploit.lib.command import Command
 from hatsploit.lib.loot import Loot
@@ -15,23 +13,23 @@ class HatSploitCommand(Command):
     show = Show()
 
     details = {
-        'Category': "loot",
-        'Name': "loot",
-        'Authors': ['Ivan Nikolsky (enty8080) - command developer'],
-        'Description': "Manage collected loot.",
-        'Usage': "loot <option> [arguments]",
-        'MinArgs': 1,
-        'Options': {
-            '-l': ['', "List all collected loot."],
-            '-r': ['<name>', "Remove collected loot."],
+        "Category": "loot",
+        "Name": "loot",
+        "Authors": ["Ivan Nikolsky (enty8080) - command developer"],
+        "Description": "Manage collected loot.",
+        "Usage": "loot <option> [arguments]",
+        "MinArgs": 1,
+        "Options": {
+            "-l": ["", "List all collected loot."],
+            "-r": ["<name>", "Remove collected loot."],
         },
     }
 
     def run(self, argc, argv):
         choice = argv[1]
 
-        if choice == '-l':
+        if choice == "-l":
             self.show.show_loot()
 
-        elif choice == '-r':
+        elif choice == "-r":
             self.loot.remove_loot(argv[2])

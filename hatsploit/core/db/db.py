@@ -1,28 +1,26 @@
-#!/usr/bin/env python3
+"""
+MIT License
 
-#
-# MIT License
-#
-# Copyright (c) 2020-2022 EntySec
-#
-# Permission is hereby granted, free of charge, to any person obtaining a copy
-# of this software and associated documentation files (the "Software"), to deal
-# in the Software without restriction, including without limitation the rights
-# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-# copies of the Software, and to permit persons to whom the Software is
-# furnished to do so, subject to the following conditions:
-#
-# The above copyright notice and this permission notice shall be included in all
-# copies or substantial portions of the Software.
-#
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-# SOFTWARE.
-#
+Copyright (c) 2020-2022 EntySec
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+"""
 
 import os
 import json
@@ -82,17 +80,17 @@ class DB:
         except Exception:
             raise RuntimeError(f"Failed to connect encoder database: {path}!")
 
-        if '__database__' not in database:
+        if "__database__" not in database:
             raise RuntimeError(f"No __database__ section found in database: {path}!")
 
-        if database['__database__']['Type'] != "encoders":
+        if database["__database__"]["Type"] != "encoders":
             raise RuntimeError(f"Not an encoder database: {path}!")
 
-        del database['__database__']
+        del database["__database__"]
 
         encoders = {name: database}
 
-        data = {name: {'Path': path}}
+        data = {name: {"Path": path}}
         if not self.local_storage.get("connected_encoder_databases"):
             self.local_storage.set("connected_encoder_databases", {})
         self.local_storage.update("connected_encoder_databases", data)
@@ -115,17 +113,17 @@ class DB:
         except Exception:
             raise RuntimeError(f"Failed to connect payload database: {path}!")
 
-        if '__database__' not in database:
+        if "__database__" not in database:
             raise RuntimeError(f"No __database__ section found in database: {path}!")
 
-        if database['__database__']['Type'] != "payloads":
+        if database["__database__"]["Type"] != "payloads":
             raise RuntimeError(f"Not a payload database: {path}!")
 
-        del database['__database__']
+        del database["__database__"]
 
         payloads = {name: database}
 
-        data = {name: {'Path': path}}
+        data = {name: {"Path": path}}
         if not self.local_storage.get("connected_payload_databases"):
             self.local_storage.set("connected_payload_databases", {})
         self.local_storage.update("connected_payload_databases", data)
@@ -148,17 +146,17 @@ class DB:
         except Exception:
             raise RuntimeError(f"Failed to connect module database: {path}!")
 
-        if '__database__' not in database:
+        if "__database__" not in database:
             raise RuntimeError(f"No __database__ section found in database: {path}!")
 
-        if database['__database__']['Type'] != "modules":
+        if database["__database__"]["Type"] != "modules":
             raise RuntimeError(f"Not a module database: {path}!")
 
-        del database['__database__']
+        del database["__database__"]
 
         modules = {name: database}
 
-        data = {name: {'Path': path}}
+        data = {name: {"Path": path}}
         if not self.local_storage.get("connected_module_databases"):
             self.local_storage.set("connected_module_databases", {})
         self.local_storage.update("connected_module_databases", data)
@@ -181,17 +179,17 @@ class DB:
         except Exception:
             raise RuntimeError(f"Failed to connect plugin database: {path}!")
 
-        if '__database__' not in database:
+        if "__database__" not in database:
             raise RuntimeError(f"No __database__ section found in database: {path}!")
 
-        if database['__database__']['Type'] != "plugins":
+        if database["__database__"]["Type"] != "plugins":
             raise RuntimeError(f"Not a plugin database: {path}!")
 
-        del database['__database__']
+        del database["__database__"]
 
         plugins = {name: database}
 
-        data = {name: {'Path': path}}
+        data = {name: {"Path": path}}
         if not self.local_storage.get("connected_plugin_databases"):
             self.local_storage.set("connected_plugin_databases", {})
         self.local_storage.update("connected_plugin_databases", data)

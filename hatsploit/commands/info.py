@@ -1,9 +1,7 @@
-#!/usr/bin/env python3
-
-#
-# This command requires HatSploit: https://hatsploit.com
-# Current source: https://github.com/EntySec/HatSploit
-#
+"""
+This command requires HatSploit: https://hatsploit.com
+Current source: https://github.com/EntySec/HatSploit
+"""
 
 from hatsploit.lib.command import Command
 from hatsploit.lib.modules import Modules
@@ -15,12 +13,12 @@ class HatSploitCommand(Command):
     show = Show()
 
     details = {
-        'Category': "modules",
-        'Name': "info",
-        'Authors': ['Ivan Nikolsky (enty8080) - command developer'],
-        'Description': "Show module information.",
-        'Usage': "info [<module>]",
-        'MinArgs': 0,
+        "Category": "modules",
+        "Name": "info",
+        "Authors": ["Ivan Nikolsky (enty8080) - command developer"],
+        "Description": "Show module information.",
+        "Usage": "info [<module>]",
+        "MinArgs": 0,
     }
 
     complete = modules.modules_completer
@@ -44,4 +42,4 @@ class HatSploitCommand(Command):
             if argc > 1:
                 self.get_module_information(argv[1])
             else:
-                self.print_usage(self.details['Usage'])
+                self.print_usage(self.details["Usage"])

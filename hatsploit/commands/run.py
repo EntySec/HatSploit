@@ -1,9 +1,7 @@
-#!/usr/bin/env python3
-
-#
-# This command requires HatSploit: https://hatsploit.com
-# Current source: https://github.com/EntySec/HatSploit
-#
+"""
+This command requires HatSploit: https://hatsploit.com
+Current source: https://github.com/EntySec/HatSploit
+"""
 
 from hatsploit.lib.command import Command
 from hatsploit.lib.jobs import Jobs
@@ -15,20 +13,20 @@ class HatSploitCommand(Command):
     jobs = Jobs()
 
     details = {
-        'Category': "modules",
-        'Name': "run",
-        'Authors': ['Ivan Nikolsky (enty8080) - command developer'],
-        'Description': "Run current module.",
-        'Usage': "run [option]",
-        'MinArgs': 0,
-        'Options': {'-j': ['', "Run current module as a background job."]},
+        "Category": "modules",
+        "Name": "run",
+        "Authors": ["Ivan Nikolsky (enty8080) - command developer"],
+        "Description": "Run current module.",
+        "Usage": "run [option]",
+        "MinArgs": 0,
+        "Options": {"-j": ["", "Run current module as a background job."]},
     }
 
     def run(self, argc, argv):
         current_module = self.modules.get_current_module()
 
         if argc > 1:
-            if argv[1] == '-j' and current_module:
+            if argv[1] == "-j" and current_module:
                 job_id = self.jobs.count_jobs()
 
                 self.print_process("Running module as a background job...")
@@ -37,8 +35,8 @@ class HatSploitCommand(Command):
                 )
 
                 self.jobs.create_job(
-                    current_module.details['Name'],
-                    current_module.details['Module'],
+                    current_module.details["Name"],
+                    current_module.details["Module"],
                     self.modules.run_current_module,
                 )
                 return

