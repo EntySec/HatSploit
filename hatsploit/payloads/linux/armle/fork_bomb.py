@@ -8,14 +8,14 @@ from hatsploit.lib.payload import Payload
 
 class HatSploitPayload(Payload):
     details = {
-        'Name': "Linux armle Fork Bomb",
-        'Payload': "linux/armle/fork_bomb",
-        'Authors': ['Ivan Nikolsky (enty8080) - payload developer'],
-        'Description': "Fork bomb payload for Linux armle.",
-        'Architecture': "armle",
-        'Platform': "linux",
-        'Rank': "low",
-        'Type': "one_side",
+        "Name": "Linux armle Fork Bomb",
+        "Payload": "linux/armle/fork_bomb",
+        "Authors": ["Ivan Nikolsky (enty8080) - payload developer"],
+        "Description": "Fork bomb payload for Linux armle.",
+        "Architecture": "armle",
+        "Platform": "linux",
+        "Rank": "low",
+        "Type": "one_side",
     }
 
     def run(self):

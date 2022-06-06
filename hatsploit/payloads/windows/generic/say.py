@@ -8,22 +8,22 @@ from hatsploit.lib.payload import Payload
 
 class HatSploitPayload(Payload):
     details = {
-        'Name': "Windows Say",
-        'Payload': "windows/generic/say",
-        'Authors': ['Ivan Nikolsky (enty8080) - payload developer'],
-        'Description': "Say payload for Windows.",
-        'Architecture': "generic",
-        'Platform': "windows",
-        'Rank': "low",
-        'Type': "one_side",
+        "Name": "Windows Say",
+        "Payload": "windows/generic/say",
+        "Authors": ["Ivan Nikolsky (enty8080) - payload developer"],
+        "Description": "Say payload for Windows.",
+        "Architecture": "generic",
+        "Platform": "windows",
+        "Rank": "low",
+        "Type": "one_side",
     }
 
     options = {
-        'MESSAGE': {
-            'Description': "Message to say.",
-            'Value': "Hello, Friend!",
-            'Type': None,
-            'Required': True,
+        "MESSAGE": {
+            "Description": "Message to say.",
+            "Value": "Hello, Friend!",
+            "Type": None,
+            "Required": True,
         }
     }
 
