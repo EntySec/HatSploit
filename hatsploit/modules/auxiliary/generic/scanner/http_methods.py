@@ -50,7 +50,7 @@ class HatSploitModule(HTTPClient, Module, TCPTools):
             if self.check_tcp_port(remote_host, port):
                 for method in self.http_methods:
                     resp = self.http_request(
-                        method=method, host=remote_host, port=port, path="/",
+                        method=method, host=remote_host, port=port, path="/"
                     )
 
                     if resp:
