@@ -18,11 +18,3 @@ jobs:
         run: sudo pip3 install .
       - name: Perform checks
         run: hsf -c
-  linting:
-    name: Run file linter
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - run: sudo apt update --yes
-      - run: sudo apt install --yes black
-      - run: black --skip-string-normalization --check --diff .
