@@ -10,7 +10,9 @@ class HatSploitPayload(Payload):
     details = {
         'Name': "Perl Shell Reverse TCP",
         'Payload': "unix/generic/perl_reverse_tcp",
-        'Authors': ['Ivan Nikolsky (enty8080) - payload developer'],
+        'Authors': [
+            'Ivan Nikolsky (enty8080) - payload developer',
+        ],
         'Description': "Perl shell reverse TCP payload.",
         'Architecture': "generic",
         'Platform': "unix",

@@ -10,7 +10,9 @@ class HatSploitPayload(Payload):
     details = {
         'Name': "ZSH shell Reverse TCP",
         'Payload': "unix/generic/zsh_reverse_tcp",
-        'Authors': ['Ivan Nikolsky (enty8080) - payload developer'],
+        'Authors': [
+            'Ivan Nikolsky (enty8080) - payload developer',
+        ],
         'Description': "ZSH shell reverse TCP payload.",
         'Architecture': "generic",
         'Platform': "unix",

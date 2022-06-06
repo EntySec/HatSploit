@@ -13,7 +13,9 @@ class HatSploitPayload(Payload, Monhorn):
     details = {
         'Name': "Linux x86 Monhorn Reverse TCP",
         'Payload': "linux/x86/monhorn_reverse_tcp",
-        'Authors': ['Ivan Nikolsky (enty8080) - payload developer'],
+        'Authors': [
+            'Ivan Nikolsky (enty8080) - payload developer',
+        ],
         'Description': "Monhorn reverse TCP payload for Linux x86.",
         'Architecture': "x86",
         'Platform': "linux",

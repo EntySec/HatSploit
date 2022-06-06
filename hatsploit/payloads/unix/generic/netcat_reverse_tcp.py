@@ -3,16 +3,18 @@ This payload requires HatSploit: https://hatsploit.com
 Current source: https://github.com/EntySec/HatSploit
 """
 
-from hatsploit.lib.payload import Payload
-
 from pex.string import String
+
+from hatsploit.lib.payload import Payload
 
 
 class HatSploitPayload(Payload, String):
     details = {
         'Name': "Netcat Shell Reverse TCP",
         'Payload': "unix/generic/netcat_reverse_tcp",
-        'Authors': ['Ivan Nikolsky (enty8080) - payload developer'],
+        'Authors': [
+            'Ivan Nikolsky (enty8080) - payload developer',
+        ],
         'Description': "Netcat shell reverse TCP payload.",
         'Architecture': "generic",
         'Platform': "unix",

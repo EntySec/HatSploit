@@ -13,7 +13,9 @@ class HatSploitPayload(Payload, Monhorn):
     details = {
         'Name': "Linux x64 Monhorn Bind TCP",
         'Payload': "linux/x64/monhorn_bind_tcp",
-        'Authors': ['Ivan Nikolsky (enty8080) - payload developer'],
+        'Authors': [
+            'Ivan Nikolsky (enty8080) - payload developer',
+        ],
         'Description': "Monhorn bind TCP payload for Linux x64.",
         'Architecture': "x64",
         'Platform': "linux",

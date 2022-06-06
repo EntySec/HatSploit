@@ -3,16 +3,19 @@ This payload requires HatSploit: https://hatsploit.com
 Current source: https://github.com/EntySec/HatSploit
 """
 
-from hatsploit.lib.payload import Payload
 from pex.assembler import Assembler
 from pex.socket import Socket
+
+from hatsploit.lib.payload import Payload
 
 
 class HatSploitPayload(Payload, Assembler, Socket):
     details = {
         'Name': "Linux mipsbe Shell Bind TCP",
         'Payload': "linux/mipsbe/shell_bind_tcp",
-        'Authors': ['Ivan Nikolsky (enty8080) - payload developer'],
+        'Authors': [
+            'Ivan Nikolsky (enty8080) - payload developer',
+        ],
         'Description': "Shell bind TCP payload for Linux mipsbe.",
         'Architecture': "mipsbe",
         'Platform': "linux",

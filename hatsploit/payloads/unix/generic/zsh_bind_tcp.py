@@ -10,7 +10,9 @@ class HatSploitPayload(Payload):
     details = {
         'Name': "ZSH shell Bind TCP",
         'Payload': "unix/generic/zsh_bind_tcp",
-        'Authors': ['Ivan Nikolsky (enty8080) - payload developer'],
+        'Authors': [
+            'Ivan Nikolsky (enty8080) - payload developer',
+        ],
         'Description': "ZSH shell bind TCP payload.",
         'Architecture': "generic",
         'Platform': "unix",

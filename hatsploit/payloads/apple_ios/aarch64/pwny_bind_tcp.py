@@ -13,7 +13,9 @@ class HatSploitPayload(Payload, Pwny):
     details = {
         'Name': "iOS aarch64 Pwny Bind TCP",
         'Payload': "apple_ios/aarch64/pwny_bind_tcp",
-        'Authors': ['Ivan Nikolsky (enty8080) - payload developer'],
+        'Authors': [
+            'Ivan Nikolsky (enty8080) - payload developer',
+        ],
         'Description': "Pwny bind TCP payload for iOS aarch64.",
         'Architecture': "aarch64",
         'Platform': "apple_ios",

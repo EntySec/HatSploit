@@ -3,15 +3,18 @@ This payload requires HatSploit: https://hatsploit.com
 Current source: https://github.com/EntySec/HatSploit
 """
 
-from hatsploit.lib.payload import Payload
 from pex.assembler import Assembler
+
+from hatsploit.lib.payload import Payload
 
 
 class HatSploitPayload(Payload, Assembler):
     details = {
         'Name': "Linux mipsbe Reboot",
         'Payload': "linux/mipsbe/reboot",
-        'Authors': ['Ivan Nikolsky (enty8080) - payload developer'],
+        'Authors': [
+            'Ivan Nikolsky (enty8080) - payload developer',
+        ],
         'Description': "Reboot payload for Linux mipsbe.",
         'Architecture': "mipsbe",
         'Platform': "linux",

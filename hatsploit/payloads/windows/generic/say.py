@@ -10,7 +10,9 @@ class HatSploitPayload(Payload):
     details = {
         'Name': "Windows Say",
         'Payload': "windows/generic/say",
-        'Authors': ['Ivan Nikolsky (enty8080) - payload developer'],
+        'Authors': [
+            'Ivan Nikolsky (enty8080) - payload developer',
+        ],
         'Description': "Say payload for Windows.",
         'Architecture': "generic",
         'Platform': "windows",
