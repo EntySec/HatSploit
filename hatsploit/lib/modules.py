@@ -479,7 +479,7 @@ class Modules:
                     current_module.payload['Payload'] = payload
 
                     current_module.payload['Executable'] = self.payloads.pack_payload(
-                        module.payload['Payload'],
+                        current_module.payload['Payload'],
                         current_payload.details['Platform'],
                         current_payload.details['Architecture']
                     )
