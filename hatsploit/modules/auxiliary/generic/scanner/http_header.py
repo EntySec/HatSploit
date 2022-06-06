@@ -45,7 +45,7 @@ class HatSploitModule(HTTPClient, Module, TCPTools):
         if self.check_tcp_port(remote_host, remote_port):
             for method in self.http_methods:
                 resp = self.http_request(
-                    method=method, host=remote_host, port=remote_port, path="/",
+                    method=method, host=remote_host, port=remote_port, path="/"
                 )
 
                 # 405 is `Method Not Allowed'. In our case, this means HEAD
