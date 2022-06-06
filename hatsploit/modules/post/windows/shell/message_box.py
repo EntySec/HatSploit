@@ -12,7 +12,9 @@ class HatSploitModule(Module, Sessions):
         'Category': "post",
         'Name': "Windows Invoke Message Box",
         'Module': "post/windows/shell/message_box",
-        'Authors': ['Ivan Nikolsky (enty8080) - module developer'],
+        'Authors': [
+            'Ivan Nikolsky (enty8080) - module developer',
+        ],
         'Description': "Invoke message box on Windows machine.",
         'Platform': "windows",
         'Rank': "medium",

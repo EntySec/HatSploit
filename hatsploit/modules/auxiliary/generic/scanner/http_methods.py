@@ -3,9 +3,10 @@ This module requires HatSploit: https://hatsploit.com
 Current source: https://github.com/EntySec/HatSploit
 """
 
-from hatsploit.lib.module import Module
 from pex.proto.http import HTTPClient
 from pex.proto.tcp import TCPTools
+
+from hatsploit.lib.module import Module
 
 
 class HatSploitModule(HTTPClient, Module, TCPTools):

@@ -4,9 +4,9 @@ Current source: https://github.com/EntySec/HatSploit
 """
 
 import time
+from pex.proto.tcp import TCPTools
 
 from hatsploit.lib.module import Module
-from pex.proto.tcp import TCPTools
 
 
 class HatSploitModule(Module, TCPTools):
@@ -14,7 +14,9 @@ class HatSploitModule(Module, TCPTools):
         'Category': "auxiliary",
         'Name': "Port Scanner",
         'Module': "auxiliary/generic/scanner/port_scanner",
-        'Authors': ['Ivan Nikolsky (enty8080) - module developer'],
+        'Authors': [
+            'Ivan Nikolsky (enty8080) - module developer',
+        ],
         'Description': "Scan host for opened ports.",
         'Platform': "generic",
         'Rank': "low",

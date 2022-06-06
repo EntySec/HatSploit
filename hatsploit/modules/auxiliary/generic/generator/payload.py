@@ -3,10 +3,10 @@ This module requires HatSploit: https://hatsploit.com
 Current source: https://github.com/EntySec/HatSploit
 """
 
-from hatsploit.lib.module import Module
-from hatsploit.lib.loot import Loot
-
 from pex.assembler import Assembler
+
+from hatsploit.lib.loot import Loot
+from hatsploit.lib.module import Module
 
 
 class HatSploitModule(Module, Assembler):
@@ -16,7 +16,9 @@ class HatSploitModule(Module, Assembler):
         'Category': "auxiliary",
         'Name': "Generic Payload Generator",
         'Module': "auxiliary/generic/generator/payload",
-        'Authors': ['Ivan Nikolsky (enty8080) - module developer'],
+        'Authors': [
+            'Ivan Nikolsky (enty8080) - module developer',
+        ],
         'Description': "Generate specified payload.",
         'Platform': "generic",
         'Rank': "low",

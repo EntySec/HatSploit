@@ -3,8 +3,9 @@ This module requires HatSploit: https://hatsploit.com
 Current source: https://github.com/EntySec/HatSploit
 """
 
-from hatsploit.lib.module import Module
 from pex.proto.tcp import TCPTools
+
+from hatsploit.lib.module import Module
 
 
 class HatSploitModule(Module, TCPTools):
@@ -12,7 +13,9 @@ class HatSploitModule(Module, TCPTools):
         'Category': "auxiliary",
         'Name': "ADB Installation Checker",
         'Module': "auxiliary/android/checker/check_adb_installation",
-        'Authors': ['Ivan Nikolsky (enty8080) - module developer'],
+        'Authors': [
+            'Ivan Nikolsky (enty8080) - module developer',
+        ],
         'Description': "Check if remote Android device has ADB installation.",
         'Platform': "android",
         'Rank': "low",

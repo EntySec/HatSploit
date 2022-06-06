@@ -3,9 +3,9 @@ This module requires HatSploit: https://hatsploit.com
 Current source: https://github.com/EntySec/HatSploit
 """
 
+from hatsploit.lib.loot import Loot
 from hatsploit.lib.module import Module
 from hatsploit.lib.sessions import Sessions
-from hatsploit.lib.loot import Loot
 
 
 class HatSploitModule(Module, Sessions):
@@ -13,7 +13,9 @@ class HatSploitModule(Module, Sessions):
         'Category': "post",
         'Name': "Unix Obtain /etc/passwd",
         'Module': "post/unix/shell/getpasswd",
-        'Authors': ['Ivan Nikolsky (enty8080) - module developer'],
+        'Authors': [
+            'Ivan Nikolsky (enty8080) - module developer',
+        ],
         'Description': "Get current session /etc/passwd file.",
         'Platform': "unix",
         'Rank': "medium",

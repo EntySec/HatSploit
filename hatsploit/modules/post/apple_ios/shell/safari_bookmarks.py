@@ -3,11 +3,11 @@ This module requires HatSploit: https://hatsploit.com
 Current source: https://github.com/EntySec/HatSploit
 """
 
+from pex.db import DB
+
+from hatsploit.lib.loot import Loot
 from hatsploit.lib.module import Module
 from hatsploit.lib.sessions import Sessions
-from hatsploit.lib.loot import Loot
-
-from pex.db import DB
 
 
 class HatSploitModule(Module, Sessions, DB):
@@ -15,7 +15,9 @@ class HatSploitModule(Module, Sessions, DB):
         'Category': "post",
         'Name': "Obtain Safari bookmarks",
         'Module': "post/apple_ios/shell/safari_bookmarks",
-        'Authors': ['Ivan Nikolsky (enty8080) - module developer'],
+        'Authors': [
+            'Ivan Nikolsky (enty8080) - module developer',
+        ],
         'Description': "Get iOS Safari bookmarks database and parse it.",
         'Platform': "apple_ios",
         'Rank': "medium",
