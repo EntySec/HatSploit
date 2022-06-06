@@ -14,23 +14,23 @@ class HatSploitPlugin(Plugin):
     handler = ngrok
 
     details = {
-        "Name": "HatSploit Ngrok Implementation",
-        "Plugin": "ngrok",
-        "Authors": ["Ivan Nikolsky (enty8080) - plugin developer"],
-        "Description": "Manage ngrok service right from HatSploit.",
+        'Name': "HatSploit Ngrok Implementation",
+        'Plugin': "ngrok",
+        'Authors': ['Ivan Nikolsky (enty8080) - plugin developer'],
+        'Description': "Manage ngrok service right from HatSploit.",
     }
 
     commands = {
-        "ngrok": {
-            "ngrok": {
-                "Description": "Manage ngrok service.",
-                "Usage": "ngrok <option> [arguments]",
-                "MinArgs": 1,
-                "Options": {
-                    "-l": ["", "List all active tunnels."],
-                    "-o": ["<port>", "Open tunnel for specified port."],
-                    "-c": ["<id>", "Close specified tunnel."],
-                    "-a": ["<token>", "Authenticate ngrok API token."],
+        'ngrok': {
+            'ngrok': {
+                'Description': "Manage ngrok service.",
+                'Usage': "ngrok <option> [arguments]",
+                'MinArgs': 1,
+                'Options': {
+                    '-l': ['', "List all active tunnels."],
+                    '-o': ['<port>', "Open tunnel for specified port."],
+                    '-c': ['<id>', "Close specified tunnel."],
+                    '-a': ['<token>', "Authenticate ngrok API token."],
                 },
             }
         }
@@ -38,7 +38,7 @@ class HatSploitPlugin(Plugin):
 
     @staticmethod
     def parse_tunnel(tunnel):
-        tunnel = tunnel.public_url.strip("tcp://").split(":")
+        tunnel = tunnel.public_url.strip('tcp://').split(':')
 
         host = socket.gethostbyname(tunnel[0])
         port = tunnel[1]
@@ -46,7 +46,7 @@ class HatSploitPlugin(Plugin):
         return host, port
 
     def ngrok(self, argc, argv):
-        if argv[1] in ["-o", "--open"]:
+        if argv[1] in ['-o', '--open']:
             try:
                 self.print_process(f"Opening tunnel for port {argv[2]}...")
 
@@ -60,10 +60,10 @@ class HatSploitPlugin(Plugin):
             except Exception:
                 self.print_error(f"Failed to open tunnel port {argv[2]}!")
 
-        elif argv[1] in ["-a", "--auth"]:
+        elif argv[1] in ['-a', '--auth']:
             self.handler.set_auth_token(argv[2])
 
-        elif argv[1] in ["-c", "--close"]:
+        elif argv[1] in ['-c', '--close']:
             try:
                 self.print_process(f"Closing tunnel {argv[2]}...")
 
@@ -72,8 +72,8 @@ class HatSploitPlugin(Plugin):
             except Exception:
                 self.print_error(f"Invalid tunnel given!")
 
-        elif argv[1] in ["-l", "--list"]:
-            headers = ("ID", "Connection")
+        elif argv[1] in ['-l', '--list']:
+            headers = ('ID', 'Connection')
 
             tunnel_id = 0
             tunnels_data = []
@@ -83,7 +83,7 @@ class HatSploitPlugin(Plugin):
                 tunnel_id += 1
 
             if tunnels_data:
-                self.print_table("Active Tunnels", headers, *tunnels_data)
+                self.print_table('Active Tunnels', headers, *tunnels_data)
             else:
                 self.print_warning("No active tunnels available.")
 

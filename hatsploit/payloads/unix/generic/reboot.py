@@ -8,14 +8,14 @@ from hatsploit.lib.payload import Payload
 
 class HatSploitPayload(Payload):
     details = {
-        "Name": "Unix Reboot",
-        "Payload": "unix/generic/reboot",
-        "Authors": ["Ivan Nikolsky (enty8080) - payload developer"],
-        "Description": "Reboot payload for unix.",
-        "Architecture": "generic",
-        "Platform": "unix",
-        "Rank": "low",
-        "Type": "one_side",
+        'Name': "Unix Reboot",
+        'Payload': "unix/generic/reboot",
+        'Authors': ['Ivan Nikolsky (enty8080) - payload developer'],
+        'Description': "Reboot payload for unix.",
+        'Architecture': "generic",
+        'Platform': "unix",
+        'Rank': "low",
+        'Type': "one_side",
     }
 
     def run(self):

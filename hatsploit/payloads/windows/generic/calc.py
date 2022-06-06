@@ -8,14 +8,14 @@ from hatsploit.lib.payload import Payload
 
 class HatSploitPayload(Payload):
     details = {
-        "Name": "Windows Calculator",
-        "Payload": "windows/generic/calc",
-        "Authors": ["Ivan Nikolsky (enty8080) - payload developer"],
-        "Description": "Windows calc.exe payload.",
-        "Architecture": "generic",
-        "Platform": "windows",
-        "Rank": "high",
-        "Type": "one_side",
+        'Name': "Windows Calculator",
+        'Payload': "windows/generic/calc",
+        'Authors': ['Ivan Nikolsky (enty8080) - payload developer'],
+        'Description': "Windows calc.exe payload.",
+        'Architecture': "generic",
+        'Platform': "windows",
+        'Rank': "high",
+        'Type': "one_side",
     }
 
     def run(self):

