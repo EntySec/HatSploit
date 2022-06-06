@@ -478,6 +478,12 @@ class Modules:
 
                     current_module.payload['Payload'] = payload
 
+                    current_module.payload['Executable'] = self.payloads.pack_payload(
+                        module.payload['Payload'],
+                        current_payload.details['Platform'],
+                        current_payload.details['Architecture']
+                    )
+
                 self.entry_to_module(current_module)
                 self.badges.print_success(f"{current_module_name.split('/')[0].title()} module completed!")
             except (KeyboardInterrupt, EOFError):
@@ -495,5 +501,6 @@ class Modules:
 
             if current_payload:
                 del current_module.payload['Payload']
+                del current_module.payload['Executable']
         else:
             raise RuntimeWarning("No module selected.")
