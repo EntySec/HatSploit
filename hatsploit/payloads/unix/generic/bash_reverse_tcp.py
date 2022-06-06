@@ -1,9 +1,7 @@
-#!/usr/bin/env python3
-
-#
-# This payload requires HatSploit: https://hatsploit.com
-# Current source: https://github.com/EntySec/HatSploit
-#
+"""
+This payload requires HatSploit: https://hatsploit.com
+Current source: https://github.com/EntySec/HatSploit
+"""
 
 import random
 
