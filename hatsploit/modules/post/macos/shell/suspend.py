@@ -9,21 +9,21 @@ from hatsploit.lib.sessions import Sessions
 
 class HatSploitModule(Module, Sessions):
     details = {
-        'Category': "post",
-        'Name': "macOS Shell Suspend",
-        'Module': "post/macos/shell/suspend",
-        'Authors': ['Ivan Nikolsky (enty8080) - module developer'],
-        'Description': "Suspend macOS through shell.",
-        'Platform': "macos",
-        'Rank': "medium",
+        "Category": "post",
+        "Name": "macOS Shell Suspend",
+        "Module": "post/macos/shell/suspend",
+        "Authors": ["Ivan Nikolsky (enty8080) - module developer"],
+        "Description": "Suspend macOS through shell.",
+        "Platform": "macos",
+        "Rank": "medium",
     }
 
     options = {
-        'SESSION': {
-            'Description': "Session to run on.",
-            'Value': None,
-            'Type': {'session': {'Platforms': ['macos'], 'Type': 'shell'}},
-            'Required': True,
+        "SESSION": {
+            "Description": "Session to run on.",
+            "Value": None,
+            "Type": {"session": {"Platforms": ["macos"], "Type": "shell"}},
+            "Required": True,
         }
     }
 

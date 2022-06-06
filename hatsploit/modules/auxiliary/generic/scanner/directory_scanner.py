@@ -12,27 +12,27 @@ class HatSploitModule(Module, HTTPClient):
     config = Config()
 
     details = {
-        'Category': "auxiliary",
-        'Name': "WEB Directory Scanner",
-        'Module': "auxiliary/generic/scanner/directory_scanner",
-        'Authors': ['Ivan Nikolsky (enty8080) - module developer'],
-        'Description': "Website directory scanner.",
-        'Platform': "generic",
-        'Rank': "medium",
+        "Category": "auxiliary",
+        "Name": "WEB Directory Scanner",
+        "Module": "auxiliary/generic/scanner/directory_scanner",
+        "Authors": ["Ivan Nikolsky (enty8080) - module developer"],
+        "Description": "Website directory scanner.",
+        "Platform": "generic",
+        "Rank": "medium",
     }
 
     options = {
-        'HOST': {
-            'Description': "Remote host.",
-            'Value': None,
-            'Type': None,
-            'Required': True,
+        "HOST": {
+            "Description": "Remote host.",
+            "Value": None,
+            "Type": None,
+            "Required": True,
         },
-        'PORT': {
-            'Description': "Remote port.",
-            'Value': 80,
-            'Type': "port",
-            'Required': True,
+        "PORT": {
+            "Description": "Remote port.",
+            "Value": 80,
+            "Type": "port",
+            "Required": True,
         },
     }
 
@@ -44,10 +44,10 @@ class HatSploitModule(Module, HTTPClient):
         with open(
             f"{self.config.path_config['wordlists_path']}directories.txt"
         ) as file:
-            directories = list(filter(None, file.read().split('\n')))
+            directories = list(filter(None, file.read().split("\n")))
 
         for path in directories:
-            path = '/' + path.replace("\n", "")
+            path = "/" + path.replace("\n", "")
 
             response = self.http_request(
                 method="HEAD", host=remote_host, port=remote_port, path=path

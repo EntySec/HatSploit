@@ -9,21 +9,21 @@ from pex.proto.tcp import TCPTools
 
 class HatSploitModule(Module, TCPTools):
     details = {
-        'Category': "auxiliary",
-        'Name': "ADB Installation Checker",
-        'Module': "auxiliary/android/checker/check_adb_installation",
-        'Authors': ['Ivan Nikolsky (enty8080) - module developer'],
-        'Description': "Check if remote Android device has ADB installation.",
-        'Platform': "android",
-        'Rank': "low",
+        "Category": "auxiliary",
+        "Name": "ADB Installation Checker",
+        "Module": "auxiliary/android/checker/check_adb_installation",
+        "Authors": ["Ivan Nikolsky (enty8080) - module developer"],
+        "Description": "Check if remote Android device has ADB installation.",
+        "Platform": "android",
+        "Rank": "low",
     }
 
     options = {
-        'HOST': {
-            'Description': "Remote host.",
-            'Value': None,
-            'Type': "ip",
-            'Required': True,
+        "HOST": {
+            "Description": "Remote host.",
+            "Value": None,
+            "Type": "ip",
+            "Required": True,
         }
     }
 
