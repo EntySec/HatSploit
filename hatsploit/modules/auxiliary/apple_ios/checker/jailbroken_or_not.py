@@ -9,21 +9,21 @@ from pex.proto.tcp import TCPTools
 
 class HatSploitModule(Module, TCPTools):
     details = {
-        "Category": "auxiliary",
-        "Name": "Jailbreak Installation Checker",
-        "Module": "auxiliary/apple_ios/checker/jailbroken_or_not",
-        "Authors": ["Ivan Nikolsky (enty8080) - module developer"],
-        "Description": "Check if remote iPhone jailbroken.",
-        "Platform": "apple_ios",
-        "Rank": "low",
+        'Category': "auxiliary",
+        'Name': "Jailbreak Installation Checker",
+        'Module': "auxiliary/apple_ios/checker/jailbroken_or_not",
+        'Authors': ['Ivan Nikolsky (enty8080) - module developer'],
+        'Description': "Check if remote iPhone jailbroken.",
+        'Platform': "apple_ios",
+        'Rank': "low",
     }
 
     options = {
-        "HOST": {
-            "Description": "Remote host.",
-            "Value": None,
-            "Type": "ip",
-            "Required": True,
+        'HOST': {
+            'Description': "Remote host.",
+            'Value': None,
+            'Type': "ip",
+            'Required': True,
         }
     }
 

