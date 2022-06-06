@@ -13,7 +13,9 @@ class HatSploitCommand(Command):
     details = {
         'Category': "modules",
         'Name': "set",
-        'Authors': ['Ivan Nikolsky (enty8080) - command developer'],
+        'Authors': [
+            'Ivan Nikolsky (enty8080) - command developer',
+        ],
         'Description': "Set an option value.",
         'Usage': "set <option> <value>",
         'MinArgs': 2,

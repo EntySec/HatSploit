@@ -15,7 +15,9 @@ class HatSploitCommand(Command):
     details = {
         'Category': "developer",
         'Name': "log",
-        'Authors': ['Ivan Nikolsky (enty8080) - command developer'],
+        'Authors': [
+            'Ivan Nikolsky (enty8080) - command developer',
+        ],
         'Description': "Log HatSploit output to log file.",
         'Usage': "log <option> [arguments]",
         'MinArgs': 1,

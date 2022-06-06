@@ -22,28 +22,24 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
-import sys
 import logging
-
-from flask import cli
+import sys
 from flask import Flask
+from flask import cli
 from flask import jsonify
-from flask import request
 from flask import make_response
-
+from flask import request
 from io import StringIO
-
 from pex.string import String
 
-from hatsploit.core.cli.fmt import FMT
 from hatsploit.core.base.execute import Execute
-
+from hatsploit.core.cli.fmt import FMT
+from hatsploit.lib.config import Config
 from hatsploit.lib.jobs import Jobs
-from hatsploit.lib.options import Options
 from hatsploit.lib.modules import Modules
+from hatsploit.lib.options import Options
 from hatsploit.lib.payloads import Payloads
 from hatsploit.lib.sessions import Sessions
-from hatsploit.lib.config import Config
 
 
 class APIPool:
@@ -64,7 +60,7 @@ class APIPool:
 
 
 class API:
-    def __init__(self, username, password, host="127.0.0.1", port=8008):
+    def __init__(self, username, password, host='127.0.0.1', port=8008):
         self.string_tools = String()
 
         self.fmt = FMT()
@@ -94,11 +90,11 @@ class API:
 
         @rest_api.before_request
         def validate_token():
-            if request.path not in ["/login", "/"]:
-                token = request.form["token"]
+            if request.path not in ['/login', '/']:
+                token = request.form['token']
 
                 if token != self.token:
-                    return make_response("", 401)
+                    return make_response('', 401)
 
                 current_module = self.modules.get_current_module()
                 current_payload = self.payloads.get_current_payload()
@@ -108,10 +104,10 @@ class API:
 
                 self.options.add_handler_options(current_module, current_payload)
 
-        @rest_api.route("/", methods=["GET", "POST"])
+        @rest_api.route('/', methods=['GET', 'POST'])
         def api():
-            version = self.config.core_config["details"]["version"]
-            codename = self.config.core_config["details"]["codename"]
+            version = self.config.core_config['details']['version']
+            codename = self.config.core_config['details']['codename']
 
             response = "HatSploit REST API server\n"
             response += f"Version: {version}\n"
@@ -121,30 +117,30 @@ class API:
 
             return make_response(f"<pre>{response}</pre>", 200)
 
-        @rest_api.route("/login", methods=["POST"])
+        @rest_api.route('/login', methods=['POST'])
         def login_api():
-            username = request.form["username"]
-            password = request.form["password"]
+            username = request.form['username']
+            password = request.form['password']
 
             if username == self.username and password == self.password:
                 return jsonify(token=self.token)
-            return make_response("", 401)
+            return make_response('', 401)
 
-        @rest_api.route("/execute", methods=["POST"])
+        @rest_api.route('/execute', methods=['POST'])
         def commands_api():
-            command = request.form["command"]
+            command = request.form['command']
             commands = self.fmt.format_commands(command)
 
             self.execute.execute_command(commands)
 
-        @rest_api.route("/payloads", methods=["POST"])
+        @rest_api.route('/payloads', methods=['POST'])
         def payloads_api():
             action = None
 
-            if "action" in request.form:
-                action = request.form["action"]
+            if 'action' in request.form:
+                action = request.form['action']
 
-            if action == "list":
+            if action == 'list':
                 data = {}
                 all_payloads = self.payloads.get_payloads()
                 number = 0
@@ -156,11 +152,11 @@ class API:
                         data.update(
                             {
                                 number: {
-                                    "Category": payloads[payload]["Category"],
-                                    "Payload": payloads[payload]["Payload"],
-                                    "Rank": payloads[payload]["Rank"],
-                                    "Name": payloads[payload]["Name"],
-                                    "Platform": payloads[payload]["Platform"],
+                                    'Category': payloads[payload]['Category'],
+                                    'Payload': payloads[payload]['Payload'],
+                                    'Rank': payloads[payload]['Rank'],
+                                    'Name': payloads[payload]['Name'],
+                                    'Platform': payloads[payload]['Platform'],
                                 }
                             }
                         )
@@ -168,16 +164,16 @@ class API:
                         number += 1
 
                 return jsonify(data)
-            return make_response("", 200)
+            return make_response('', 200)
 
-        @rest_api.route("/modules", methods=["POST"])
+        @rest_api.route('/modules', methods=['POST'])
         def modules_api():
             action = None
 
-            if "action" in request.form:
-                action = request.form["action"]
+            if 'action' in request.form:
+                action = request.form['action']
 
-            if action == "list":
+            if action == 'list':
                 data = {}
                 all_modules = self.modules.get_modules()
                 number = 0
@@ -189,11 +185,11 @@ class API:
                         data.update(
                             {
                                 number: {
-                                    "Category": modules[module]["Category"],
-                                    "Module": modules[module]["Module"],
-                                    "Rank": modules[module]["Rank"],
-                                    "Name": modules[module]["Name"],
-                                    "Platform": modules[module]["Platform"],
+                                    'Category': modules[module]['Category'],
+                                    'Module': modules[module]['Module'],
+                                    'Rank': modules[module]['Rank'],
+                                    'Name': modules[module]['Name'],
+                                    'Platform': modules[module]['Platform'],
                                 }
                             }
                         )
@@ -202,7 +198,7 @@ class API:
 
                 return jsonify(data)
 
-            if action == "options":
+            if action == 'options':
                 data = {}
                 current_module = self.modules.get_current_module()
 
@@ -211,21 +207,21 @@ class API:
 
                     for option in sorted(options):
                         value, required = (
-                            options[option]["Value"],
-                            options[option]["Required"],
+                            options[option]['Value'],
+                            options[option]['Required'],
                         )
                         if required:
-                            required = "yes"
+                            required = 'yes'
                         else:
-                            required = "no"
+                            required = 'no'
                         if not value and value != 0:
                             value = ""
                         data.update(
                             {
                                 option: {
-                                    "Value": value,
-                                    "Required": required,
-                                    "Description": options[option]["Description"],
+                                    'Value': value,
+                                    'Required': required,
+                                    'Description': options[option]['Description'],
                                 }
                             }
                         )
@@ -238,22 +234,22 @@ class API:
 
                             for option in sorted(options):
                                 value, required = (
-                                    options[option]["Value"],
-                                    options[option]["Required"],
+                                    options[option]['Value'],
+                                    options[option]['Required'],
                                 )
                                 if required:
-                                    required = "yes"
+                                    required = 'yes'
                                 else:
-                                    required = "no"
+                                    required = 'no'
                                 if not value and value != 0:
                                     value = ""
                                 data.update(
                                     {
                                         option: {
-                                            "Value": value,
-                                            "Required": required,
-                                            "Description": options[option][
-                                                "Description"
+                                            'Value': value,
+                                            'Required': required,
+                                            'Description': options[option][
+                                                'Description'
                                             ],
                                         }
                                     }
@@ -261,15 +257,15 @@ class API:
 
                 return jsonify(data)
 
-            if action == "use":
-                self.modules.use_module(request.form["module"])
+            if action == 'use':
+                self.modules.use_module(request.form['module'])
 
-            if action == "set":
+            if action == 'set':
                 self.modules.set_current_module_option(
-                    request.form["option"], request.form["value"]
+                    request.form['option'], request.form['value']
                 )
 
-            if action == "run":
+            if action == 'run':
                 current_module = self.modules.get_current_module()
 
                 if current_module:
@@ -277,90 +273,90 @@ class API:
                         self.modules.run_current_module()
                         return make_response(str(pool), 200)
 
-            return make_response("", 200)
+            return make_response('', 200)
 
-        @rest_api.route("/sessions", methods=["POST"])
+        @rest_api.route('/sessions', methods=['POST'])
         def sessions_api():
             action = None
 
-            if "action" in request.form:
-                action = request.form["action"]
+            if 'action' in request.form:
+                action = request.form['action']
 
-            if action == "close":
-                session = request.form["session"]
+            if action == 'close':
+                session = request.form['session']
                 self.sessions.close_session(session)
 
-            elif action == "list":
+            elif action == 'list':
                 data = {}
                 sessions = self.sessions.get_sessions()
-                fetch = "all"
+                fetch = 'all'
 
-                if "fetch" in request.form:
-                    fetch = request.form["fetch"]
+                if 'fetch' in request.form:
+                    fetch = request.form['fetch']
 
                 if sessions:
                     for session in sessions:
-                        if fetch == "all":
+                        if fetch == 'all':
                             data.update(
                                 {
                                     session: {
-                                        "Platform": sessions[session]["Platform"],
-                                        "Architecture": sessions[session][
-                                            "Architecture"
+                                        'Platform': sessions[session]['Platform'],
+                                        'Architecture': sessions[session][
+                                            'Architecture'
                                         ],
-                                        "Type": sessions[session]["Type"],
-                                        "Host": sessions[session]["Host"],
-                                        "Port": sessions[session]["Port"],
+                                        'Type': sessions[session]['Type'],
+                                        'Host': sessions[session]['Host'],
+                                        'Port': sessions[session]['Port'],
                                     }
                                 }
                             )
-                        elif fetch == sessions[session]["Platform"]:
+                        elif fetch == sessions[session]['Platform']:
                             data.update(
                                 {
                                     session: {
-                                        "Platform": sessions[session]["Platform"],
-                                        "Architecture": sessions[session][
-                                            "Architecture"
+                                        'Platform': sessions[session]['Platform'],
+                                        'Architecture': sessions[session][
+                                            'Architecture'
                                         ],
-                                        "Type": sessions[session]["Type"],
-                                        "Host": sessions[session]["Host"],
-                                        "Port": sessions[session]["Port"],
+                                        'Type': sessions[session]['Type'],
+                                        'Host': sessions[session]['Host'],
+                                        'Port': sessions[session]['Port'],
                                     }
                                 }
                             )
 
                 return jsonify(data)
 
-            elif action == "execute":
-                session = request.form["session"]
+            elif action == 'execute':
+                session = request.form['session']
                 session = self.sessions.get_session(session)
 
                 if session:
-                    if request.form["output"].lower() in ["yes", "y"]:
+                    if request.form['output'].lower() in ['yes', 'y']:
                         output = session.send_command(
-                            request.form["command"], output=True
+                            request.form['command'], output=True
                         )
                         return jsonify(output=output)
 
-                    session.send_command(request.form["command"])
+                    session.send_command(request.form['command'])
 
-            elif action == "download":
-                if "local_path" in request.form:
-                    local_path = request.form["local_path"]
+            elif action == 'download':
+                if 'local_path' in request.form:
+                    local_path = request.form['local_path']
                 else:
-                    local_path = self.config.path_config["loot_path"]
+                    local_path = self.config.path_config['loot_path']
 
                 self.sessions.session_download(
-                    request.form["session"], request.form["remote_file"], local_path
+                    request.form['session'], request.form['remote_file'], local_path
                 )
 
-            elif action == "upload":
+            elif action == 'upload':
                 self.session.session_upload(
-                    request.form["session"],
-                    request.form["local_file"],
-                    request.form["remote_path"],
+                    request.form['session'],
+                    request.form['local_file'],
+                    request.form['remote_path'],
                 )
 
-            return make_response("", 200)
+            return make_response('', 200)
 
         rest_api.run(host=self.host, port=self.port)

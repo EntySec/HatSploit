@@ -25,8 +25,8 @@ SOFTWARE.
 import readline
 
 from hatsploit.lib.config import Config
-from hatsploit.lib.storage import LocalStorage
 from hatsploit.lib.storage import GlobalStorage
+from hatsploit.lib.storage import LocalStorage
 
 
 class History:

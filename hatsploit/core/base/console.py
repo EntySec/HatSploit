@@ -27,17 +27,14 @@ import readline
 import sys
 
 from hatsploit.core.base.execute import Execute
-
-from hatsploit.core.cli.fmt import FMT
 from hatsploit.core.cli.badges import Badges
-
-from hatsploit.core.utils.ui.completer import Completer
+from hatsploit.core.cli.fmt import FMT
 from hatsploit.core.utils.ui.banner import Banner
+from hatsploit.core.utils.ui.completer import Completer
 from hatsploit.core.utils.ui.tip import Tip
-
-from hatsploit.lib.runtime import Runtime
 from hatsploit.lib.config import Config
 from hatsploit.lib.modules import Modules
+from hatsploit.lib.runtime import Runtime
 from hatsploit.lib.storage import LocalStorage
 
 
@@ -56,23 +53,23 @@ class Console:
     modules = Modules()
     local_storage = LocalStorage()
 
-    history = config.path_config["history_path"]
-    prompt = config.core_config["details"]["prompt"]
+    history = config.path_config['history_path']
+    prompt = config.core_config['details']['prompt']
 
-    handler_options = {"Module": {}, "Payload": {}}
+    handler_options = {'Module': {}, 'Payload': {}}
 
     completion = None
 
     def shell_execute(self):
         if not self.modules.get_current_module():
-            prompt = f"({self.prompt})> "
+            prompt = f'({self.prompt})> '
         else:
             current_module = self.modules.get_current_module()
 
-            category = current_module.details["Category"]
-            name = current_module.details["Name"]
+            category = current_module.details['Category']
+            name = current_module.details['Name']
 
-            prompt = f"({self.prompt}: {category}: %red{name}%end)> "
+            prompt = f'({self.prompt}: {category}: %red{name}%end)> '
         commands = self.badges.input_empty(prompt)
 
         self.runtime.update()
@@ -99,7 +96,7 @@ class Console:
             readline.set_auto_history(True)
 
             if not os.path.exists(self.history):
-                open(self.history, "w").close()
+                open(self.history, 'w').close()
             readline.read_history_file(self.history)
 
         readline.set_completer(self.completer.completer)
@@ -108,16 +105,16 @@ class Console:
         readline.parse_and_bind("tab: complete")
 
     def show_header(self):
-        version = self.config.core_config["details"]["version"]
-        codename = self.config.core_config["details"]["codename"]
+        version = self.config.core_config['details']['version']
+        codename = self.config.core_config['details']['codename']
 
-        if self.config.core_config["console"]["clear"]:
-            self.badges.print_empty("%clear", end="")
+        if self.config.core_config['console']['clear']:
+            self.badges.print_empty("%clear", end='')
 
-        if self.config.core_config["console"]["banner"]:
+        if self.config.core_config['console']['banner']:
             self.banner.print_random_banner()
 
-        if self.config.core_config["console"]["header"]:
+        if self.config.core_config['console']['header']:
             plugins = self.local_storage.get("plugins")
             modules = self.local_storage.get("modules")
             payloads = self.local_storage.get("payloads")
@@ -156,7 +153,7 @@ class Console:
 
             self.badges.print_empty(header)
 
-        if self.config.core_config["console"]["tip"]:
+        if self.config.core_config['console']['tip']:
             self.tip.print_random_tip()
 
     def script(self, input_files, shell=False):
@@ -164,8 +161,8 @@ class Console:
 
         for input_file in input_files:
             if os.path.exists(input_file):
-                file = open(input_file, "r")
-                file_text = file.read().split("\n")
+                file = open(input_file, 'r')
+                file_text = file.read().split('\n')
                 file.close()
 
                 for line in file_text:

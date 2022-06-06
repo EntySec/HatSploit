@@ -22,10 +22,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
-from pex.proto.tcp import TCPClient
-
-from pex.proto.tcp import TCPListener
 from pex.proto.http import HTTPListener
+from pex.proto.tcp import TCPClient
+from pex.proto.tcp import TCPListener
 
 from hatsploit.core.cli.badges import Badges
 

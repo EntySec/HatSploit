@@ -17,7 +17,9 @@ class HatSploitCommand(Command):
     details = {
         'Category': "databases",
         'Name': "plugin_db",
-        'Authors': ['Ivan Nikolsky (enty8080) - command developer'],
+        'Authors': [
+            'Ivan Nikolsky (enty8080) - command developer',
+        ],
         'Description': "Manage plugin databases.",
         'Usage': "plugin_db <option> [arguments]",
         'MinArgs': 1,

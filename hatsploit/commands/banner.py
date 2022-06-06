@@ -3,9 +3,8 @@ This command requires HatSploit: https://hatsploit.com
 Current source: https://github.com/EntySec/HatSploit
 """
 
-from hatsploit.lib.command import Command
-
 from hatsploit.core.utils.ui.banner import Banner
+from hatsploit.lib.command import Command
 
 
 class HatSploitCommand(Command):
@@ -14,7 +13,9 @@ class HatSploitCommand(Command):
     details = {
         'Category': "misc",
         'Name': "banner",
-        'Authors': ['Ivan Nikolsky (enty8080) - command developer'],
+        'Authors': [
+            'Ivan Nikolsky (enty8080) - command developer',
+        ],
         'Description': "Show random HatSploit banner.",
         'Usage': "banner",
         'MinArgs': 0,

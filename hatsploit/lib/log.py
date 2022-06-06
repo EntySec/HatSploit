@@ -38,7 +38,7 @@ class Log:
         if os.access(filename, os.R_OK):
             self.global_storage.set("log", filename)
             self.global_storage.set_all()
-    
+
     def disable_log(self):
-      self.global_storage.set("log", None)
-      self.global_storage.set_all()
+        self.global_storage.set("log", None)
+        self.global_storage.set_all()

@@ -24,16 +24,14 @@ SOFTWARE.
 
 import os
 import sys
-
 import traceback
 
+from hatsploit.core.base.loader import Loader
+from hatsploit.core.cli.badges import Badges
 from hatsploit.lib.config import Config
 from hatsploit.lib.jobs import Jobs
 from hatsploit.lib.loot import Loot
 from hatsploit.lib.sessions import Sessions
-
-from hatsploit.core.cli.badges import Badges
-from hatsploit.core.base.loader import Loader
 
 
 class Runtime:

@@ -39,23 +39,23 @@ class Check:
         one_fail = False
         self.badges.print_process("Checking all base modules...")
 
-        modules_path = os.path.normpath(self.config.path_config["modules_path"])
+        modules_path = os.path.normpath(self.config.path_config['modules_path'])
 
         for dest, _, files in os.walk(modules_path):
             for file in files:
-                if file.endswith(".py") and file != "__init__.py":
-                    module = dest + "/" + file[:-3]
+                if file.endswith('.py') and file != '__init__.py':
+                    module = dest + '/' + file[:-3]
 
                     try:
                         module_object = self.importer.import_module(module)
                         keys = [
-                            "Category",
-                            "Name",
-                            "Module",
-                            "Authors",
-                            "Description",
-                            "Platform",
-                            "Rank",
+                            'Category',
+                            'Name',
+                            'Module',
+                            'Authors',
+                            'Description',
+                            'Platform',
+                            'Rank',
                         ]
                         assert all(key in module_object.details for key in keys)
                         self.badges.print_success(f"{module}: OK")
@@ -71,21 +71,21 @@ class Check:
         one_fail = False
         self.badges.print_process("Checking all base encoders...")
 
-        encoders_path = os.path.normpath(self.config.path_config["encoders_path"])
+        encoders_path = os.path.normpath(self.config.path_config['encoders_path'])
 
         for dest, _, files in os.walk(encoders_path):
             for file in files:
-                if file.endswith(".py") and file != "__init__.py":
-                    encoder = dest + "/" + file[:-3]
+                if file.endswith('.py') and file != '__init__.py':
+                    encoder = dest + '/' + file[:-3]
 
                     try:
                         encoder_object = self.importer.import_encoder(encoder)
                         keys = [
-                            "Name",
-                            "Encoder",
-                            "Authors",
-                            "Description",
-                            "Architecture",
+                            'Name',
+                            'Encoder',
+                            'Authors',
+                            'Description',
+                            'Architecture',
                         ]
                         assert all(key in encoder_object.details for key in keys)
                         self.badges.print_success(f"{encoder}: OK")
@@ -101,24 +101,24 @@ class Check:
         one_fail = False
         self.badges.print_process("Checking all base payloads...")
 
-        payloads_path = os.path.normpath(self.config.path_config["payloads_path"])
+        payloads_path = os.path.normpath(self.config.path_config['payloads_path'])
 
         for dest, _, files in os.walk(payloads_path):
             for file in files:
-                if file.endswith(".py") and file != "__init__.py":
-                    payload = dest + "/" + file[:-3]
+                if file.endswith('.py') and file != '__init__.py':
+                    payload = dest + '/' + file[:-3]
 
                     try:
                         payload_object = self.importer.import_payload(payload)
                         keys = [
-                            "Name",
-                            "Payload",
-                            "Authors",
-                            "Description",
-                            "Architecture",
-                            "Platform",
-                            "Rank",
-                            "Type",
+                            'Name',
+                            'Payload',
+                            'Authors',
+                            'Description',
+                            'Architecture',
+                            'Platform',
+                            'Rank',
+                            'Type',
                         ]
                         assert all(key in payload_object.details for key in keys)
                         self.badges.print_success(f"{payload}: OK")
@@ -134,16 +134,16 @@ class Check:
         one_fail = False
         self.badges.print_process("Checking all base plugins...")
 
-        plugins_path = os.path.normpath(self.config.path_config["plugins_path"])
+        plugins_path = os.path.normpath(self.config.path_config['plugins_path'])
 
         for dest, _, files in os.walk(plugins_path):
             for file in files:
-                if file.endswith(".py") and file != "__init__.py":
-                    plugin = dest + "/" + file[:-3]
+                if file.endswith('.py') and file != '__init__.py':
+                    plugin = dest + '/' + file[:-3]
 
                     try:
                         plugin_object = self.importer.import_plugin(plugin)
-                        keys = ["Name", "Authors", "Description"]
+                        keys = ['Name', 'Authors', 'Description']
                         assert all(key in plugin_object.details for key in keys)
                         self.badges.print_success(f"{plugin}: OK")
 

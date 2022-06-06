@@ -25,7 +25,6 @@ SOFTWARE.
 import readline
 
 from hatsploit.core.cli.fmt import FMT
-
 from hatsploit.lib.commands import Commands
 
 
@@ -63,14 +62,14 @@ class Completer:
                         if hasattr(commands[command[0]], "complete"):
                             complete_function = commands[command[0]].complete
                         else:
-                            if "Options" in commands[command[0]].details:
-                                options = commands[command[0]].details["Options"]
+                            if 'Options' in commands[command[0]].details:
+                                options = commands[command[0]].details['Options']
                             else:
                                 complete_function = self.default_completer
 
                     elif command[0] in other_commands:
-                        if "Options" in other_commands[command[0]]:
-                            options = other_commands[command[0]]["Options"]
+                        if 'Options' in other_commands[command[0]]:
+                            options = other_commands[command[0]]['Options']
                         else:
                             complete_function = self.default_completer
 

@@ -13,7 +13,9 @@ class HatSploitCommand(Command):
     details = {
         'Category': "developer",
         'Name': "exec",
-        'Authors': ['Ivan Nikolsky (enty8080) - command developer'],
+        'Authors': [
+            'Ivan Nikolsky (enty8080) - command developer',
+        ],
         'Description': "Execute local system command.",
         'Usage': "exec <command>",
         'MinArgs': 1,

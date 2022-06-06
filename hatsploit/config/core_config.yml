@@ -23,12 +23,12 @@
 #
 
 details:
-    codename: "stable"
-    version: "5.0.0"
-    prompt: "hsf"
+  codename: "stable"
+  version: "5.0.0"
+  prompt: "hsf"
 
 console:
-    clear: true
-    banner: true
-    header: true
-    tip: true
+  clear: true
+  banner: true
+  header: true
+  tip: true

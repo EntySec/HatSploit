@@ -3,15 +3,18 @@ This encoder requires HatSploit: https://hatsploit.com
 Current source: https://github.com/EntySec/HatSploit
 """
 
-from hatsploit.lib.encoder import Encoder
 from pex.string import String
+
+from hatsploit.lib.encoder import Encoder
 
 
 class HatSploitEncoder(Encoder, String):
     details = {
         'Name': "Base64 Encoder for Command",
         'Encoder': "generic/base64",
-        'Authors': ['Ivan Nikolsky (enty8080) - payload developer'],
+        'Authors': [
+            'Ivan Nikolsky (enty8080) - encoder developer',
+        ],
         'Description': "Encode command with base64.",
         'Architecture': "generic",
     }

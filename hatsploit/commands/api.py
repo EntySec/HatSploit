@@ -3,12 +3,11 @@ This command requires HatSploit: https://hatsploit.com
 Current source: https://github.com/EntySec/HatSploit
 """
 
-from hatsploit.lib.command import Command
-from hatsploit.lib.jobs import Jobs
-
 from pex.proto.tcp import TCPTools
 
 from hatsploit.core.utils.api import API
+from hatsploit.lib.command import Command
+from hatsploit.lib.jobs import Jobs
 
 
 class HatSploitCommand(Command, TCPTools):
@@ -17,7 +16,9 @@ class HatSploitCommand(Command, TCPTools):
     details = {
         'Category': "developer",
         'Name': "api",
-        'Authors': ['Ivan Nikolsky (enty8080) - command developer'],
+        'Authors': [
+            'Ivan Nikolsky (enty8080) - command developer',
+        ],
         'Description': "Manage HatSploit REST API server.",
         'Usage': "api <option> [arguments]",
         'MinArgs': 1,

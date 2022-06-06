@@ -13,7 +13,9 @@ class HatSploitCommand(Command):
     details = {
         'Category': "encoder",
         'Name': "encoders",
-        'Authors': ['Ivan Nikolsky (enty8080) - command developer'],
+        'Authors': [
+            'Ivan Nikolsky (enty8080) - command developer',
+        ],
         'Description': "Show available encoders.",
         'Usage': "encoders",
         'MinArgs': 0,

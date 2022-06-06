@@ -23,9 +23,9 @@ SOFTWARE.
 """
 
 import copy
+from pex.proto.tcp import TCPTools
 
 from hatsploit.lib.storage import LocalStorage
-from pex.proto.tcp import TCPTools
 
 
 class Options:

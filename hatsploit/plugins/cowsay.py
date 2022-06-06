@@ -12,7 +12,9 @@ class HatSploitPlugin(Plugin):
     details = {
         'Name': "HatSploit Cowsay Implementation",
         'Plugin': "cowsay",
-        'Authors': ['Ivan Nikolsky (enty8080) - plugin developer'],
+        'Authors': [
+            'Ivan Nikolsky (enty8080) - plugin developer',
+        ],
         'Description': "Cowsay plugin for HatSploit.",
     }
 

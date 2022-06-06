@@ -13,7 +13,9 @@ class HatSploitCommand(Command):
     details = {
         'Category': "developer",
         'Name': "history",
-        'Authors': ['Ivan Nikolsky (enty8080) - command developer'],
+        'Authors': [
+            'Ivan Nikolsky (enty8080) - command developer',
+        ],
         'Description': "Manage HatSploit history.",
         'Usage': "history <option>",
         'MinArgs': 1,

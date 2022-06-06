@@ -22,14 +22,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
-import os
 import datetime
-
+import os
 from pex.fs import FS
 from pex.string import String
 
 from hatsploit.core.cli.badges import Badges
-
 from hatsploit.lib.config import Config
 
 
@@ -115,6 +113,6 @@ class Loot(String, FS):
                 os.path.getmtime(
                     self.loot + loot
                 )).astimezone().strftime("%Y-%m-%d %H:%M:%S %Z")
-            ))
+                          ))
 
         return loots

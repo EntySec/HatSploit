@@ -15,7 +15,9 @@ class HatSploitCommand(Command):
     details = {
         'Category': "sessions",
         'Name': "sessions",
-        'Authors': ['Ivan Nikolsky (enty8080) - command developer'],
+        'Authors': [
+            'Ivan Nikolsky (enty8080) - command developer',
+        ],
         'Description': "Manage opened sessions.",
         'Usage': "sessions <option> [arguments]",
         'MinArgs': 1,

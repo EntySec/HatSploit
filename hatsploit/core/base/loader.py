@@ -30,7 +30,6 @@ from hatsploit.core.cli.badges import Badges
 from hatsploit.core.db.builder import Builder
 from hatsploit.core.db.importer import Importer
 from hatsploit.core.utils.update import Update
-
 from hatsploit.lib.config import Config
 
 
@@ -71,19 +70,19 @@ class Loader:
 
                 if status[cycle % len(status)] in list(string.ascii_lowercase):
                     status = (
-                        status[: cycle % len(status)]
-                        + status[cycle % len(status)].upper()
-                        + status[cycle % len(status) + 1 :]
+                            status[: cycle % len(status)]
+                            + status[cycle % len(status)].upper()
+                            + status[cycle % len(status) + 1:]
                     )
 
                 elif status[cycle % len(status)] in list(string.ascii_uppercase):
                     status = (
-                        status[: cycle % len(status)]
-                        + status[cycle % len(status)].lower()
-                        + status[cycle % len(status) + 1 :]
+                            status[: cycle % len(status)]
+                            + status[cycle % len(status)].lower()
+                            + status[cycle % len(status) + 1:]
                     )
 
-                self.badges.print_process(status, "", "\r")
+                self.badges.print_process(status, '', '\r')
                 time.sleep(0.1)
 
         loading_process.join()

@@ -22,17 +22,15 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
-import os
 import copy
-
+import os
 from pex.type import Type
 
 from hatsploit.core.cli.badges import Badges
 from hatsploit.core.db.importer import Importer
-
+from hatsploit.lib.encoders import Encoders
 from hatsploit.lib.options import Options
 from hatsploit.lib.payloads import Payloads
-from hatsploit.lib.encoders import Encoders
 from hatsploit.lib.sessions import Sessions
 from hatsploit.lib.storage import LocalStorage
 

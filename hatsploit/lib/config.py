@@ -23,8 +23,8 @@ SOFTWARE.
 """
 
 import os
-import yaml
 import pathlib
+import yaml
 
 from hatsploit.lib.storage import GlobalStorage
 from hatsploit.lib.storage import LocalStorage
@@ -45,7 +45,7 @@ class Config:
         self.db_config = self.local_storage.get("db_config")
         self.path_config = {
             'user_path': self.user_path,
-            
+
             'loot_path': f'{self.user_path}loot/',
             'db_path': f'{self.user_path}db/',
 

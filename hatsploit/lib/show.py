@@ -22,16 +22,15 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
-from hatsploit.lib.jobs import Jobs
-from hatsploit.lib.loot import Loot
-from hatsploit.lib.storage import LocalStorage
-from hatsploit.lib.modules import Modules
-from hatsploit.lib.payloads import Payloads
-from hatsploit.lib.encoders import Encoders
-from hatsploit.lib.sessions import Sessions
-
 from hatsploit.core.cli.colors import Colors
 from hatsploit.core.cli.tables import Tables
+from hatsploit.lib.encoders import Encoders
+from hatsploit.lib.jobs import Jobs
+from hatsploit.lib.loot import Loot
+from hatsploit.lib.modules import Modules
+from hatsploit.lib.payloads import Payloads
+from hatsploit.lib.sessions import Sessions
+from hatsploit.lib.storage import LocalStorage
 
 
 class Show:
@@ -506,7 +505,8 @@ class Show:
                 if not value and value != 0:
                     value = ""
                 options_data.append((option, value, required, options[option]['Description']))
-            self.tables.print_table(f"Module Advanced Options ({current_module.details['Module']})", headers, *options_data)
+            self.tables.print_table(f"Module Advanced Options ({current_module.details['Module']})", headers,
+                                    *options_data)
 
         if hasattr(current_module, "payload"):
             current_payload = self.payloads.get_current_payload()

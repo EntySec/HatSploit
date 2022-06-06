@@ -30,17 +30,17 @@ class Parser:
         if not option:
             values = []
             for option_name in options:
-                if option_name.upper() not in Options().handler_options["Module"]:
-                    if option_name.upper() not in Options().handler_options["Payload"]:
-                        values.append(str(options[option_name]["Value"]))
+                if option_name.upper() not in Options().handler_options['Module']:
+                    if option_name.upper() not in Options().handler_options['Payload']:
+                        values.append(str(options[option_name]['Value']))
             if len(values) == 1:
                 return values[0]
             return values
-        return str(options[option]["Value"])
+        return str(options[option]['Value'])
 
     @staticmethod
     def parse_ports_range(ports_range):
-        start = int(ports_range.split("-")[0].strip())
-        end = int(ports_range.split("-")[1].strip())
+        start = int(ports_range.split('-')[0].strip())
+        end = int(ports_range.split('-')[1].strip())
 
         return start, end

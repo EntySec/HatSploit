@@ -13,7 +13,9 @@ class HatSploitCommand(Command):
     details = {
         'Category': "modules",
         'Name': "options",
-        'Authors': ['Ivan Nikolsky (enty8080) - command developer'],
+        'Authors': [
+            'Ivan Nikolsky (enty8080) - command developer',
+        ],
         'Description': "Show current module options.",
         'Usage': "options",
         'MinArgs': 0,

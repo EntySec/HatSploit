@@ -20,7 +20,9 @@ class HatSploitCommand(Command):
     details = {
         'Category': "developer",
         'Name': "storage",
-        'Authors': ['Ivan Nikolsky (enty8080) - command developer'],
+        'Authors': [
+            'Ivan Nikolsky (enty8080) - command developer',
+        ],
         'Description': "Manage storage variables.",
         'Usage': "storage [global|local] <option> [arguments]",
         'MinArgs': 2,
@@ -41,7 +43,7 @@ class HatSploitCommand(Command):
                 self.print_information("Global storage variables:")
                 for variable in self.global_storage.get_all():
                     if not str.startswith(variable, '__') and not str.endswith(
-                        variable, '__'
+                            variable, '__'
                     ):
                         self.print_empty("    * " + variable)
             elif choice in ['-v', '--value']:
@@ -62,7 +64,7 @@ class HatSploitCommand(Command):
                 self.print_information("Local storage variables:")
                 for variable in self.local_storage.get_all():
                     if not str.startswith(variable, '__') and not str.endswith(
-                        variable, '__'
+                            variable, '__'
                     ):
                         self.print_empty("    * " + variable)
             elif choice in ['-v', '--value']:
