@@ -204,11 +204,7 @@ class Handler:
         p_platform = payload.details['Platform']
         p_architecture = payload.details['Architecture']
 
-        stage = self.payloads.pack_payload(
-            module.payload['Payload'],
-            p_platform,
-            p_architecture
-        )
+        stage = module.payload['Executable']
 
         if p_platform in self.types.platforms:
             module_platform = module.details['Platform']
