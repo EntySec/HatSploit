@@ -61,11 +61,10 @@ class HatSploitSession(Session, Loot, Pull, Push, ChannelClient):
     def heartbeat(self):
         return not self.channel.terminated
 
-    def send_command(self, command, output=False, decode=True):
+    def send_command(self, command, output=False):
         return self.channel.send_command(
             (command + '\n'),
-            output,
-            decode
+            output
         )
 
     def download(self, remote_file, local_path):
