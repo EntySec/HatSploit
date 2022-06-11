@@ -56,6 +56,15 @@ class Commands:
                     return False
         return True
 
+    def execute_custom_plugin_command(self, commands, plugins, error=True):
+        if commands:
+            if not self.execute.execute_builtin_method(commands):
+                if not self.execute.execute_custom_plugin_command(commands, plugins):
+                    if error:
+                        raise RuntimeError(f"Unrecognized command: {commands[0]}!")
+                    return False
+        return True
+
     def show_commands(self, handler):
         self.show.show_custom_commands(handler)
 
