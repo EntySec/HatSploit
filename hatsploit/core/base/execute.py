@@ -141,28 +141,23 @@ class Execute:
         return False
 
     def execute_plugin_command(self, commands):
-        if self.local_storage.get("loaded_plugins"):
-            for plugin in self.local_storage.get("loaded_plugins"):
-                if hasattr(
-                        self.local_storage.get("loaded_plugins")[plugin], "commands"
-                ):
-                    for label in self.local_storage.get("loaded_plugins")[
-                        plugin
-                    ].commands:
-                        if (
-                                commands[0]
-                                in self.local_storage.get("loaded_plugins")[
-                            plugin
-                        ].commands[label]
-                        ):
-                            command_object = self.local_storage.get("loaded_plugins")[
-                                plugin
-                            ]
-                            command = command_object.commands[label][commands[0]]
-                            self.parse_and_execute_command(
-                                commands, command, command_object
-                            )
-                            return True
+        return self.execute_custom_plugin_command(
+            commands, self.local_storage.get("loaded_plugins")
+        )
+
+    def execute_custom_plugin_command(self, commands, plugins):
+        if plugins:
+            for plugin in plugins:
+                for label in plugins[plugin].commands:
+                    if commands[0] in plugins[plugin].commands[label]:
+                        command_object = plugins[plugin]
+                        command = command_object.commands[label][commands[0]]
+
+                        self.parse_and_execute_command(
+                            commands, command, command_object
+                        )
+
+                        return True
         return False
 
     def parse_and_execute_command(self, commands, command, command_object):
