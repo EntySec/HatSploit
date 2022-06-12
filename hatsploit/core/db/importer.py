@@ -145,6 +145,24 @@ class Importer:
 
         return commands
 
+    def import_plugins(self, path):
+        if not path.endswith('/'):
+            path += '/'
+
+        plugins = {}
+        plugin_path = os.path.split(path)[0]
+
+        for file in os.listdir(plugin_path):
+            if file.endswith('py'):
+                try:
+                    plugin_object = self.plugins.import_plugin(plugin_path + '/' + file[:-3])
+                    plugin_name = plugin_object.details['Name']
+                    plugins[plugin_name] = plugin_object
+                except Exception:
+                    self.badges.print_error(f"Failed to load {file[:-3]} plugin!")
+
+        return plugins
+
     def import_base_commands(self):
         commands = self.import_commands(self.config.path_config['commands_path'])
         self.local_storage.set("commands", commands)
