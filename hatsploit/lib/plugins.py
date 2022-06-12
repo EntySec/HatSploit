@@ -89,6 +89,9 @@ class Plugins:
             return None
         return loaded_plugins
 
+    def import_plugins(self, path):
+        return self.importer.import_plugins(path)
+
     def add_plugin(self, database, plugin):
         plugins = self.get_plugins()[database][plugin]
 
