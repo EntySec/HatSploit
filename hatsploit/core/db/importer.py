@@ -155,7 +155,7 @@ class Importer:
         for file in os.listdir(plugin_path):
             if file.endswith('py'):
                 try:
-                    plugin_object = self.plugins.import_plugin(plugin_path + '/' + file[:-3])
+                    plugin_object = self.import_plugin(plugin_path + '/' + file[:-3])
                     plugin_name = plugin_object.details['Name']
                     plugins[plugin_name] = plugin_object
                 except Exception:
