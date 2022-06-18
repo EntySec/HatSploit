@@ -71,7 +71,7 @@ class HatSploit:
         return True
 
     def launch(self, shell=True, script=[]):
-        if self.runtime.catch(self.runtime.check):
+        if self.runtime.catch(self.runtime.check) is not Exception:
             if self.policy():
                 build = False
 
@@ -81,7 +81,7 @@ class HatSploit:
                     )
                     build = build[0].lower() in ['y', 'yes']
 
-                if self.runtime.catch(self.runtime.start, [build]):
+                if self.runtime.catch(self.runtime.start, [build]) is not Exception:
                     if not script:
                         if shell:
                             self.console.shell()
