@@ -156,7 +156,7 @@ class Importer:
             if file.endswith('py'):
                 try:
                     plugin_object = self.import_plugin(plugin_path + '/' + file[:-3])
-                    plugin_name = plugin_object.details['Name']
+                    plugin_name = plugin_object.details['Plugin']
                     plugins[plugin_name] = plugin_object
                 except Exception:
                     self.badges.print_error(f"Failed to load {file[:-3]} plugin!")
