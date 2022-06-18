@@ -68,11 +68,10 @@ class Runtime:
 
     def catch(self, function, args=[]):
         try:
-            function(*args)
-            return True
+            return function(*args)
 
         except (KeyboardInterrupt, EOFError):
-            return True
+            return
 
         except RuntimeError as e:
             self.badges.print_error(str(e))
@@ -84,4 +83,4 @@ class Runtime:
             self.badges.print_error(f"An error occured: {str(e)}!")
             traceback.print_stack(file=sys.stdout)
 
-        return False
+        return Exception
