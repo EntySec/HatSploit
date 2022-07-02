@@ -207,11 +207,14 @@ class Modules:
                 self.local_storage.set("current_module_number", 0)
 
     @staticmethod
-    def run_module(current_module):
+    def check_module(current_module):
         if hasattr(current_module, "check"):
-            if current_module.check():
-                current_module.run()
-        else:
+            return current_module.check()
+        return True
+
+    @staticmethod
+    def run_module(current_module):
+        if self.check_module(current_module):
             current_module.run()
 
     def entry_to_module(self, current_module):
@@ -452,6 +455,13 @@ class Modules:
                     missed += option + ', '
 
         return missed
+
+    def check_current_module(self):
+        current_module = self.get_current_module()
+
+        if current_module:
+            return self.check_module(current_module)
+        return False
 
     def run_current_module(self):
         current_module = self.get_current_module()
