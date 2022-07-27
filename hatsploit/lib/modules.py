@@ -105,6 +105,15 @@ class Modules:
                 return modules_shorts[number]
         return None
 
+    def search_module(self, name):
+        modules = self.get_modules()
+
+        for database in modules:
+            for module in modules[database]:
+                if modules[database][module]['Name'].lower() == name.lower():
+                    return modules[database][module]['Module']
+        return None
+
     def import_module(self, module):
         module_object = self.get_module(module)
 
