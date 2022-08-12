@@ -104,6 +104,15 @@ class Payloads:
             return self.local_storage.get_array("current_module", self.local_storage.get("current_module_number"))
         return None
 
+    def search_payload(self, name):
+        payloads = self.get_payloads()
+
+        for database in payloads:
+            for payload in payloads[database]:
+                if payloads[database][payload]['Name'].lower() == name.lower():
+                    return payloads[database][payload]['Payload']
+        return None
+
     def import_payload(self, module_name, payload):
         payload_object = self.get_payload(payload)
 
