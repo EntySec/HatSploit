@@ -407,7 +407,10 @@ class Show:
         else:
             raise RuntimeWarning("No opened sessions available.")
 
-    def show_information(self, details):
+    def show_module_information(self):
+        current_module = self.modules.get_current_module()
+        details = current_module.details
+
         if 'Name' in details:
             self.badges.print_information(f"Name: {details['Name']}")
         if 'Module' in details:
