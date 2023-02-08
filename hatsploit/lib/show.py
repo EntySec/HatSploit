@@ -24,6 +24,7 @@ SOFTWARE.
 
 from hatsploit.core.cli.colors import Colors
 from hatsploit.core.cli.tables import Tables
+from hatsploit.core.cli.badges import Badges
 from hatsploit.lib.encoders import Encoders
 from hatsploit.lib.jobs import Jobs
 from hatsploit.lib.loot import Loot
@@ -44,6 +45,7 @@ class Show:
 
     colors = Colors()
     tables = Tables()
+    badges = Badges()
 
     def show_custom_commands(self, handler):
         commands_data = {}
