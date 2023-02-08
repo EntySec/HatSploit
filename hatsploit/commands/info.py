@@ -38,7 +38,7 @@ class HatSploitCommand(Command):
                 self.get_module_information(argv[1])
             else:
                 self.show.show_module_information(
-                    self.modules.get_current_module().details
+                    None
                 )
         else:
             if argc > 1:
