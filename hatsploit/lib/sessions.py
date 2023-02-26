@@ -40,7 +40,7 @@ class Sessions:
 
     def get_sessions(self):
         sessions = self.local_storage.get("sessions")
-        return sessions
+        return sessions if sessions else {}
 
     def close_dead(self):
         sessions = self.get_sessions()
