@@ -34,10 +34,12 @@ class Jobs:
     job_process = None
 
     def get_jobs(self):
-        return self.local_storage.get("jobs")
+        jobs = self.local_storage.get("jobs")
+        return jobs if jobs else {}
 
     def get_hidden_jobs(self):
-        return self.local_storage.get("hidden_jobs")
+        jobs = self.local_storage.get("hidden_jobs")
+        return jobs if jobs else {}
 
     def stop_dead(self):
         jobs = self.get_jobs()
