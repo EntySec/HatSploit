@@ -6,11 +6,13 @@ Current source: https://github.com/EntySec/HatSploit
 from hatsploit.lib.command import Command
 from hatsploit.lib.jobs import Jobs
 from hatsploit.lib.modules import Modules
+from hatsploit.lib.runtime import Runtime
 
 
 class HatSploitCommand(Command):
     modules = Modules()
     jobs = Jobs()
+    runtime = Runtime()
 
     details = {
         'Category': "modules",
@@ -39,6 +41,7 @@ class HatSploitCommand(Command):
                 self.jobs.create_job(
                     current_module.details['Name'],
                     current_module.details['Module'],
+                    self.runtime.catch
                     self.modules.run_current_module,
                 )
                 return
