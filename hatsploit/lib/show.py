@@ -428,7 +428,7 @@ class Show:
         if not hasattr(current_module, "options") and not hasattr(current_module, "payload"):
             raise RuntimeWarning("Module has no options.")
 
-        if not hasattr(current_module, "options") and not hasattr(self.payloads.get_current_payload(), "options"):
+        if not hasattr(current_module, "options") and not hasattr(self.payloads.get_current_payload(current_module), "options"):
             raise RuntimeWarning("Module has no options.")
 
         headers = ("Option", "Value", "Required", "Description")
@@ -449,8 +449,8 @@ class Show:
             self.tables.print_table(f"Module Options ({current_module.details['Module']})", headers, *options_data)
 
         if hasattr(current_module, "payload"):
-            current_payload = self.payloads.get_current_payload()
-            current_encoder = self.encoders.get_current_encoder()
+            current_payload = self.payloads.get_current_payload(current_module)
+            current_encoder = self.encoders.get_current_encoder(current_module, current_payload)
 
             if current_payload and hasattr(current_payload, "options"):
                 options_data = []
@@ -493,7 +493,7 @@ class Show:
         if not hasattr(current_module, "advanced") and not hasattr(current_module, "payload"):
             raise RuntimeWarning("Module has no advanced options.")
 
-        if not hasattr(current_module, "advanced") and not hasattr(self.payloads.get_current_payload(), "advanced"):
+        if not hasattr(current_module, "advanced") and not hasattr(self.payloads.get_current_payload(current_module), "advanced"):
             raise RuntimeWarning("Module has no advanced options.")
 
         headers = ("Option", "Value", "Required", "Description")
@@ -515,8 +515,8 @@ class Show:
                                     *options_data)
 
         if hasattr(current_module, "payload"):
-            current_payload = self.payloads.get_current_payload()
-            current_encoder = self.encoders.get_current_encoder()
+            current_payload = self.payloads.get_current_payload(current_module)
+            current_encoder = self.encoders.get_current_encoder(current_module, current_payload)
 
             if current_payload and hasattr(current_payload, "advanced"):
                 options_data = []
