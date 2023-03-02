@@ -83,9 +83,9 @@ class Payloads:
             return self.get_payloads()[database][payload]
         return None
 
-    def get_current_payload(self):
+    def get_current_payload(self, current_module):
         imported_payloads = self.get_imported_payloads()
-        current_module_object = self.get_current_module()
+        current_module_object = current_module
 
         if current_module_object:
             current_module_name = current_module_object.details['Module']
@@ -97,11 +97,6 @@ class Payloads:
                     if current_module_name in imported_payloads:
                         if name in imported_payloads[current_module_name]:
                             return imported_payloads[current_module_name][name]
-        return None
-
-    def get_current_module(self):
-        if self.local_storage.get("current_module"):
-            return self.local_storage.get_array("current_module", self.local_storage.get("current_module_number"))
         return None
 
     def search_payload(self, name):
