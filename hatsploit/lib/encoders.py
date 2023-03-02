@@ -74,7 +74,7 @@ class Encoders:
             return self.get_encoders()[database][encoder]
         return None
 
-    def get_current_encoder(self, current_module, current_encoder):
+    def get_current_encoder(self, current_module, current_payload):
         imported_encoders = self.get_imported_encoders()
 
         if current_payload and current_module and imported_encoders:
