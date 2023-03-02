@@ -472,7 +472,7 @@ class Modules:
         return False
 
     def run_current_module(self):
-        current_module = self.get_current_module()
+        current_module = copy.deepcopy(self.get_current_module())
 
         if current_module:
             current_module_name = current_module.details['Module']
