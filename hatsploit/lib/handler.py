@@ -35,7 +35,6 @@ from hatsploit.lib.encoders import Encoders
 from hatsploit.lib.handle import Handle
 from hatsploit.lib.jobs import Jobs
 from hatsploit.lib.loot import Loot
-from hatsploit.lib.modules import Modules
 from hatsploit.lib.payloads import Payloads
 from hatsploit.lib.session import Session
 from hatsploit.lib.sessions import Sessions
@@ -117,7 +116,6 @@ class Handler:
     server_handle = Handle()
 
     sessions = Sessions()
-    modules = Modules()
     payloads = Payloads()
     encoders = Encoders()
     jobs = Jobs()
@@ -159,11 +157,10 @@ class Handler:
         if self.local_storage.get("auto_interaction"):
             self.sessions.interact_with_session(s_id)
 
-    def module_handle(self, host=None, sender=None, args={}, concat=None, location=None,
+    def module_handle(self, module, host=None, sender=None, args={}, concat=None, location=None,
                       background=None, method=None, timeout=None, linemax=100, ensure=False,
                       on_session=None):
-        module = self.modules.get_current_module()
-        payload = self.payloads.get_current_payload()
+        payload = self.payloads.get_current_payload(module)
 
         rhost = host
         options = module.handler
@@ -293,9 +290,7 @@ class Handler:
 
         self.open_session(rhost, port, p_platform, p_architecture, s_type, remote[0], on_session)
 
-    def module_handle_session(self, p_type='one_side', session=None, timeout=None):
-        module = self.modules.get_current_module()
-
+    def module_handle_session(self, module, p_type='one_side', session=None, timeout=None):
         options = module.handler
         session = session if session is not None else HatSploitSession
 
