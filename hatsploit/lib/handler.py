@@ -35,7 +35,6 @@ from hatsploit.lib.encoders import Encoders
 from hatsploit.lib.handle import Handle
 from hatsploit.lib.jobs import Jobs
 from hatsploit.lib.loot import Loot
-from hatsploit.lib.payloads import Payloads
 from hatsploit.lib.session import Session
 from hatsploit.lib.sessions import Sessions
 from hatsploit.lib.storage import LocalStorage
@@ -116,7 +115,6 @@ class Handler:
     server_handle = Handle()
 
     sessions = Sessions()
-    payloads = Payloads()
     encoders = Encoders()
     jobs = Jobs()
     types = Type()
@@ -160,7 +158,7 @@ class Handler:
     def module_handle(self, module, host=None, sender=None, args={}, concat=None, location=None,
                       background=None, method=None, timeout=None, linemax=100, ensure=False,
                       on_session=None):
-        payload = self.payloads.get_current_payload(module)
+        payload = module.payload['Object']
 
         rhost = host
         options = module.handler
