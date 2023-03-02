@@ -477,7 +477,7 @@ class Modules:
         if current_module:
             current_module_name = current_module.details['Module']
 
-            current_payload = self.payloads.get_current_payload(current_module)
+            current_payload = copy.deepcopy(self.payloads.get_current_payload(current_module))
             payload_data = {}
 
             missed = self.validate_options(current_module)
@@ -495,6 +495,7 @@ class Modules:
                     payload = self.payloads.run_payload(current_payload, current_encoder)
 
                     current_module.payload['Payload'] = payload
+                    current_module.payload['Object'] = current_payload
 
                     current_module.payload['Executable'] = self.payloads.pack_payload(
                         current_module.payload['Payload'],
