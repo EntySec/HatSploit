@@ -181,7 +181,7 @@ class Modules:
                             self.payloads.add_payload(module, payload_name)
                             self.add_to_global(module_object)
 
-                            current_payload = self.payloads.get_current_payload()
+                            current_payload = self.payloads.get_current_payload(module_object)
                             self.options.add_handler_options(module_object, current_payload)
 
                             return
@@ -190,7 +190,7 @@ class Modules:
 
                 self.add_to_global(module_object)
 
-                current_payload = self.payloads.get_current_payload()
+                current_payload = self.payloads.get_current_payload(module_object)
                 self.options.add_handler_options(module_object, current_payload)
             else:
                 raise RuntimeError(f"Failed to select module from database: {module}!")
@@ -330,7 +330,7 @@ class Modules:
 
             if value_type.lower() == 'encoder':
                 current_module = self.get_current_module()
-                current_payload = self.payloads.get_current_payload()
+                current_payload = self.payloads.get_current_payload(current_module)
 
                 if current_module and current_payload:
                     architecture = current_payload.details['Architecture']
