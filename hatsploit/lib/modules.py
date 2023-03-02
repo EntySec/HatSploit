@@ -409,7 +409,7 @@ class Modules:
 
     def set_current_module_option(self, option, value):
         current_module = self.get_current_module()
-        current_payload = self.payloads.get_current_payload()
+        current_payload = self.payloads.get_current_payload(current_module)
 
         if current_module:
             if not hasattr(current_module, "options") and not hasattr(current_module, "advanced"):
@@ -418,7 +418,7 @@ class Modules:
 
             if hasattr(current_module, "options"):
                 if self.set_option_value(current_module, current_module.options, option, value):
-                    current_payload = self.payloads.get_current_payload()
+                    current_payload = self.payloads.get_current_payload(current_module)
                     return self.options.add_handler_options(current_module, current_payload)
 
             if hasattr(current_module, "advanced"):
@@ -427,7 +427,7 @@ class Modules:
 
             if hasattr(current_module, "payload"):
                 if current_payload:
-                    current_encoder = self.encoders.get_current_encoder()
+                    current_encoder = self.encoders.get_current_encoder(current_module, current_payload)
 
                     if hasattr(current_payload, "options"):
                         if self.set_option_value(current_payload, current_payload.options, option, value):
@@ -491,7 +491,7 @@ class Modules:
                 self.badges.print_empty()
 
                 if current_payload:
-                    current_encoder = self.encoders.get_current_encoder()
+                    current_encoder = self.encoders.get_current_encoder(current_module, current_payload)
                     payload = self.payloads.run_payload(current_payload, current_encoder)
 
                     current_module.payload['Payload'] = payload
