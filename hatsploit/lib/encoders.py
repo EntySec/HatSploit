@@ -74,11 +74,8 @@ class Encoders:
             return self.get_encoders()[database][encoder]
         return None
 
-    def get_current_encoder(self):
+    def get_current_encoder(self, current_module, current_encoder):
         imported_encoders = self.get_imported_encoders()
-
-        current_payload = self.get_current_payload()
-        current_module = self.get_current_module()
 
         if current_payload and current_module and imported_encoders:
             current_module_name = current_module.details['Module']
@@ -89,30 +86,6 @@ class Encoders:
                     if hasattr(current_payload, "options") and 'ENCODER' in current_payload.options:
                         name = current_payload.options['ENCODER']['Value']
                         return imported_encoders[current_module_name][current_payload_name][name]
-        return None
-
-    def get_current_module(self):
-        if self.local_storage.get("current_module"):
-            return self.local_storage.get_array(
-                "current_module",
-                self.local_storage.get("current_module_number")
-            )
-        return None
-
-    def get_current_payload(self):
-        imported_payloads = self.local_storage.get("imported_payloads")
-        current_module_object = self.get_current_module()
-
-        if current_module_object:
-            current_module_name = current_module_object.details['Module']
-
-            if hasattr(current_module_object, "payload"):
-                name = current_module_object.payload['Value']
-
-                if imported_payloads:
-                    if current_module_name in imported_payloads:
-                        if name in imported_payloads[current_module_name]:
-                            return imported_payloads[current_module_name][name]
         return None
 
     def import_encoder(self, module_name, payload_name, encoder):
