@@ -477,7 +477,7 @@ class Modules:
         if current_module:
             current_module_name = current_module.details['Module']
 
-            current_payload = self.payloads.get_current_payload()
+            current_payload = self.payloads.get_current_payload(current_module)
             payload_data = {}
 
             missed = self.validate_options(current_module)
