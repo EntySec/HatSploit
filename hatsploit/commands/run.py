@@ -42,7 +42,7 @@ class HatSploitCommand(Command):
                     current_module.details['Name'],
                     current_module.details['Module'],
                     self.runtime.catch,
-                    self.modules.run_current_module,
+                    [self.modules.run_current_module],
                 )
                 return
 
