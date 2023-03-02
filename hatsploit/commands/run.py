@@ -41,7 +41,7 @@ class HatSploitCommand(Command):
                 self.jobs.create_job(
                     current_module.details['Name'],
                     current_module.details['Module'],
-                    self.runtime.catch
+                    self.runtime.catch,
                     self.modules.run_current_module,
                 )
                 return
