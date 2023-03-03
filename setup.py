@@ -52,7 +52,7 @@ setup(name='hatsploit',
           'pyngrok',
           'hatasm @ git+https://github.com/EntySec/HatAsm',
           'hatvenom @ git+https://github.com/EntySec/HatVenom',
-          'pex @ git+https://github.com/enty8080/Pex',
+          'pex @ git+https://github.com/EntySec/Pex',
       ],
       zip_safe=False,
       )
