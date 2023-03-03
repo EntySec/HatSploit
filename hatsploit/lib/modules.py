@@ -471,13 +471,37 @@ class Modules:
 
         return False
 
+    def copy_payload_object(self, current_payload):
+        payload_copy = copy.deepcopy(current_payload)
+        payload_copy.details = copy.deepcopy(current_payload.details)
+
+        if hasattr(current_payload, "handler"):
+            payload_copy.handler = copy.deepcopy(current_payload.handler)
+
+        return payload_copy
+
+    def copy_module_object(self, current_module):
+        module_copy = copy.deepcopy(current_module)
+        module_copy.details = copy.deepcopy(current_module.details)
+
+        if hasattr(current_module, "options"):
+            module_copy.options = copy.deepcopy(current_module.options)
+        if hasattr(current_module, "advanced"):
+            module_copy.advanced = copy.deepcopy(current_module.advanced)
+        if hasattr(current_module, "payload"):
+            module_copy.payload = copy.deepcopy(current_module.payload)
+        if hasattr(current_module, "handler"):
+            module_copy.handler = copy.deepcopy(current_module.handler)
+
+        return module_copy
+
     def run_current_module(self):
-        current_module = copy.deepcopy(self.get_current_module())
+        current_module = self.get_current_module()
 
         if current_module:
             current_module_name = current_module.details['Module']
 
-            current_payload = copy.deepcopy(self.payloads.get_current_payload(current_module))
+            current_payload = self.payloads.get_current_payload(current_module)
             payload_data = {}
 
             missed = self.validate_options(current_module)
@@ -495,7 +519,7 @@ class Modules:
                     payload = self.payloads.run_payload(current_payload, current_encoder)
 
                     current_module.payload['Payload'] = payload
-                    current_module.payload['Object'] = current_payload
+                    current_module.payload['Object'] = self.copy_payload_object(current_payload)
 
                     current_module.payload['Executable'] = self.payloads.pack_payload(
                         current_module.payload['Payload'],
@@ -503,7 +527,7 @@ class Modules:
                         current_payload.details['Architecture']
                     )
 
-                self.entry_to_module(current_module)
+                self.entry_to_module(self.copy_module_object(current_module))
                 self.badges.print_success(f"{current_module_name.split('/')[0].title()} module completed!")
             except (KeyboardInterrupt, EOFError):
                 raise RuntimeWarning(f"{current_module_name.split('/')[0].title()} module interrupted.")
