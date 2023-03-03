@@ -8,18 +8,21 @@ from hatsploit.lib.show import Show
 
 
 class HatSploitCommand(Command):
-    show = Show()
+    def __init__(self):
+        super().__init__()
 
-    details = {
-        'Category': "encoder",
-        'Name': "encoders",
-        'Authors': [
-            'Ivan Nikolsky (enty8080) - command developer',
-        ],
-        'Description': "Show available encoders.",
-        'Usage': "encoders",
-        'MinArgs': 0,
-    }
+        self.show = Show()
+
+        self.details = {
+            'Category': "encoder",
+            'Name': "encoders",
+            'Authors': [
+                'Ivan Nikolsky (enty8080) - command developer',
+            ],
+            'Description': "Show available encoders.",
+            'Usage': "encoders",
+            'MinArgs': 0,
+        }
 
     def run(self, argc, argv):
         self.show.show_encoders()

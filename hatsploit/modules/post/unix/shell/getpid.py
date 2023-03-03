@@ -8,31 +8,34 @@ from hatsploit.lib.sessions import Sessions
 
 
 class HatSploitModule(Module, Sessions):
-    details = {
-        'Category': "post",
-        'Name': "Unix Shell Get PID",
-        'Module': "post/unix/shell/getpid",
-        'Authors': [
-            'Ivan Nikolsky (enty8080) - module developer',
-        ],
-        'Description': "Get current session process id.",
-        'Platform': "unix",
-        'Rank': "medium",
-    }
+    def __init__(self):
+        super().__init__()
 
-    options = {
-        'SESSION': {
-            'Description': "Session to run on.",
-            'Value': None,
-            'Type': {
-                'session': {
-                    'Platforms': ['linux', 'unix', 'macos', 'apple_ios'],
-                    'Type': 'shell',
-                }
-            },
-            'Required': True,
+        self.details = {
+            'Category': "post",
+            'Name': "Unix Shell Get PID",
+            'Module': "post/unix/shell/getpid",
+            'Authors': [
+                'Ivan Nikolsky (enty8080) - module developer',
+            ],
+            'Description': "Get current session process id.",
+            'Platform': "unix",
+            'Rank': "medium",
         }
-    }
+
+        self.options = {
+            'SESSION': {
+                'Description': "Session to run on.",
+                'Value': None,
+                'Type': {
+                    'session': {
+                        'Platforms': ['linux', 'unix', 'macos', 'apple_ios'],
+                        'Type': 'shell',
+                    }
+                },
+                'Required': True,
+            }
+        }
 
     def run(self):
         session = self.parse_options(self.options)

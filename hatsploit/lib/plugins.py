@@ -26,9 +26,12 @@ from hatsploit.core.db.importer import Importer
 from hatsploit.lib.storage import LocalStorage
 
 
-class Plugins:
-    importer = Importer()
-    local_storage = LocalStorage()
+class Plugins(object):
+    def __init__(self):
+        super().__init__()
+
+        self.importer = Importer()
+        self.local_storage = LocalStorage()
 
     def get_plugins(self):
         return self.local_storage.get("plugins")

@@ -28,10 +28,13 @@ import threading
 from hatsploit.lib.storage import LocalStorage
 
 
-class Jobs:
-    local_storage = LocalStorage()
+class Jobs(object):
+    def __init__(self):
+        super().__init__()
 
-    job_process = None
+        self.local_storage = LocalStorage()
+
+        self.job_process = None
 
     def get_jobs(self):
         jobs = self.local_storage.get("jobs")
@@ -71,7 +74,8 @@ class Jobs:
             for job_id in list(hidden_jobs):
                 self.delete_job(job_id, True)
 
-    def stop_job(self, job):
+    @staticmethod
+    def stop_job(job):
         if job.is_alive():
             exc = ctypes.py_object(SystemExit)
             res = ctypes.pythonapi.PyThreadState_SetAsyncExc(ctypes.c_long(job.ident), exc)

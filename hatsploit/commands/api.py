@@ -3,30 +3,32 @@ This command requires HatSploit: https://hatsploit.com
 Current source: https://github.com/EntySec/HatSploit
 """
 
-from pex.proto.tcp import TCPTools
-
 from hatsploit.core.utils.api import API
 from hatsploit.lib.command import Command
 from hatsploit.lib.jobs import Jobs
+from pex.proto.tcp import TCPTools
 
 
 class HatSploitCommand(Command, TCPTools):
-    jobs = Jobs()
+    def __init__(self):
+        super().__init__()
 
-    details = {
-        'Category': "developer",
-        'Name': "api",
-        'Authors': [
-            'Ivan Nikolsky (enty8080) - command developer',
-        ],
-        'Description': "Manage HatSploit REST API server.",
-        'Usage': "api <option> [arguments]",
-        'MinArgs': 1,
-        'Options': {
-            'off': ['<port>', "Turn REST API server off."],
-            'on': ['<port> <username> <password>', "Turn REST API server on."],
-        },
-    }
+        self.jobs = Jobs()
+
+        self.details = {
+            'Category': "developer",
+            'Name': "api",
+            'Authors': [
+                'Ivan Nikolsky (enty8080) - command developer',
+            ],
+            'Description': "Manage HatSploit REST API server.",
+            'Usage': "api <option> [arguments]",
+            'MinArgs': 1,
+            'Options': {
+                'off': ['<port>', "Turn REST API server off."],
+                'on': ['<port> <username> <password>', "Turn REST API server on."],
+            },
+        }
 
     def run(self, argc, argv):
         if argv[1] == 'on':

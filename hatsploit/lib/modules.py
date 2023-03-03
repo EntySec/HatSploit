@@ -35,17 +35,20 @@ from hatsploit.lib.sessions import Sessions
 from hatsploit.lib.storage import LocalStorage
 
 
-class Modules:
-    types = Type()
+class Modules(object):
+    def __init__(self):
+        super().__init__()
 
-    badges = Badges()
-    importer = Importer()
+        self.types = Type()
 
-    options = Options()
-    payloads = Payloads()
-    encoders = Encoders()
-    sessions = Sessions()
-    local_storage = LocalStorage()
+        self.badges = Badges()
+        self.importer = Importer()
+
+        self.options = Options()
+        self.payloads = Payloads()
+        self.encoders = Encoders()
+        self.sessions = Sessions()
+        self.local_storage = LocalStorage()
 
     def modules_completer(self, text):
         modules = self.get_modules()
@@ -181,7 +184,7 @@ class Modules:
                             self.payloads.add_payload(module, payload_name)
                             self.add_to_global(module_object)
 
-                            current_payload = self.payloads.get_current_payload()
+                            current_payload = self.payloads.get_current_payload(module_object)
                             self.options.add_handler_options(module_object, current_payload)
 
                             return
@@ -190,7 +193,7 @@ class Modules:
 
                 self.add_to_global(module_object)
 
-                current_payload = self.payloads.get_current_payload()
+                current_payload = self.payloads.get_current_payload(module_object)
                 self.options.add_handler_options(module_object, current_payload)
             else:
                 raise RuntimeError(f"Failed to select module from database: {module}!")
@@ -264,7 +267,8 @@ class Modules:
             current_module.options = save
             save = copy.deepcopy(current_module.options)
 
-    def compare_type(self, name, value, checker):
+    @staticmethod
+    def compare_type(name, value, checker):
         value = str(value)
 
         if value.startswith('file:') and len(value) > 5:
@@ -330,7 +334,7 @@ class Modules:
 
             if value_type.lower() == 'encoder':
                 current_module = self.get_current_module()
-                current_payload = self.payloads.get_current_payload()
+                current_payload = self.payloads.get_current_payload(current_module)
 
                 if current_module and current_payload:
                     architecture = current_payload.details['Architecture']
@@ -409,7 +413,7 @@ class Modules:
 
     def set_current_module_option(self, option, value):
         current_module = self.get_current_module()
-        current_payload = self.payloads.get_current_payload()
+        current_payload = self.payloads.get_current_payload(current_module)
 
         if current_module:
             if not hasattr(current_module, "options") and not hasattr(current_module, "advanced"):
@@ -418,16 +422,16 @@ class Modules:
 
             if hasattr(current_module, "options"):
                 if self.set_option_value(current_module, current_module.options, option, value):
-                    current_payload = self.payloads.get_current_payload()
+                    current_payload = self.payloads.get_current_payload(current_module)
                     return self.options.add_handler_options(current_module, current_payload)
 
             if hasattr(current_module, "advanced"):
-                if self.set_option_value(current_module.advanced, option, value):
+                if self.set_option_value(current_module, current_module.advanced, option, value):
                     return self.options.add_handler_options(current_module, current_payload)
 
             if hasattr(current_module, "payload"):
                 if current_payload:
-                    current_encoder = self.encoders.get_current_encoder()
+                    current_encoder = self.encoders.get_current_encoder(current_module, current_payload)
 
                     if hasattr(current_payload, "options"):
                         if self.set_option_value(current_payload, current_payload.options, option, value):
@@ -472,29 +476,33 @@ class Modules:
         return False
 
     def run_current_module(self):
-        current_module = self.get_current_module()
+        current_module = copy.deepcopy(self.get_current_module())
 
         if current_module:
             current_module_name = current_module.details['Module']
 
-            current_payload = self.payloads.get_current_payload()
-            payload_data = {}
+            current_payload = copy.deepcopy(
+                self.payloads.get_current_payload(current_module))
 
             missed = self.validate_options(current_module)
             if current_payload:
                 missed += self.payloads.validate_options(current_payload)
 
             if missed:
-                raise RuntimeError(f"These options are failed to validate: {missed[:-2]}!")
+                raise RuntimeError(
+                    f"These options are failed to validate: {missed[:-2]}!")
 
             try:
                 self.badges.print_empty()
 
                 if current_payload:
-                    current_encoder = self.encoders.get_current_encoder()
-                    payload = self.payloads.run_payload(current_payload, current_encoder)
+                    current_encoder = self.encoders.get_current_encoder(
+                        current_module, current_payload)
+                    payload = self.payloads.run_payload(
+                        current_payload, current_encoder)
 
                     current_module.payload['Payload'] = payload
+                    current_module.payload['Object'] = current_payload
 
                     current_module.payload['Executable'] = self.payloads.pack_payload(
                         current_module.payload['Payload'],
@@ -503,19 +511,11 @@ class Modules:
                     )
 
                 self.entry_to_module(current_module)
-                self.badges.print_success(f"{current_module_name.split('/')[0].title()} module completed!")
+                self.badges.print_success(
+                    f"{current_module_name.split('/')[0].title()} module completed!")
             except (KeyboardInterrupt, EOFError):
-                raise RuntimeWarning(f"{current_module_name.split('/')[0].title()} module interrupted.")
-
-            except RuntimeError as e:
-                raise RuntimeError(str(e))
-
-            except RuntimeWarning as w:
-                raise RuntimeWarning(str(w))
-
-            except Exception as e:
-                self.badges.print_error(f"An error occurred in module: {str(e)}!")
-                self.badges.print_error(f"{current_module_name.split('/')[0].title()} module failed!")
+                raise RuntimeWarning(
+                    f"{current_module_name.split('/')[0].title()} module interrupted.")
 
             if current_payload:
                 del current_module.payload['Payload']

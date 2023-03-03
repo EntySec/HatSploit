@@ -35,22 +35,23 @@ from hatsploit.lib.encoders import Encoders
 from hatsploit.lib.handle import Handle
 from hatsploit.lib.jobs import Jobs
 from hatsploit.lib.loot import Loot
-from hatsploit.lib.modules import Modules
-from hatsploit.lib.payloads import Payloads
 from hatsploit.lib.session import Session
 from hatsploit.lib.sessions import Sessions
 from hatsploit.lib.storage import LocalStorage
 
 
 class HatSploitSession(Session, Loot, Pull, Push, ChannelClient):
-    channel = None
+    def __init__(self):
+        super().__init__()
 
-    details = {
-        'Post': "",
-        'Platform': "",
-        'Architecture': "",
-        'Type': "shell"
-    }
+        self.channel = None
+
+        self.details = {
+            'Post': "",
+            'Platform': "",
+            'Architecture': "",
+            'Type': "shell"
+        }
 
     def open(self, client):
         self.channel = self.open_channel(client)
@@ -111,19 +112,20 @@ class HatSploitSession(Session, Loot, Pull, Push, ChannelClient):
         self.channel.interact()
 
 
-class Handler:
-    blinder = Blinder()
-    post = Post()
-    server_handle = Handle()
+class Handler(object):
+    def __init__(self):
+        super().__init__()
 
-    sessions = Sessions()
-    modules = Modules()
-    payloads = Payloads()
-    encoders = Encoders()
-    jobs = Jobs()
-    types = Type()
-    badges = Badges()
-    local_storage = LocalStorage()
+        self.blinder = Blinder()
+        self.post = Post()
+        self.server_handle = Handle()
+
+        self.sessions = Sessions()
+        self.encoders = Encoders()
+        self.jobs = Jobs()
+        self.types = Type()
+        self.badges = Badges()
+        self.local_storage = LocalStorage()
 
     def do_job(self, p_type, target, args):
         if p_type == 'one_side':
@@ -159,11 +161,10 @@ class Handler:
         if self.local_storage.get("auto_interaction"):
             self.sessions.interact_with_session(s_id)
 
-    def module_handle(self, host=None, sender=None, args={}, concat=None, location=None,
+    def module_handle(self, module, host=None, sender=None, args={}, concat=None, location=None,
                       background=None, method=None, timeout=None, linemax=100, ensure=False,
                       on_session=None):
-        module = self.modules.get_current_module()
-        payload = self.payloads.get_current_payload()
+        payload = module.payload['Object']
 
         rhost = host
         options = module.handler
@@ -293,9 +294,7 @@ class Handler:
 
         self.open_session(rhost, port, p_platform, p_architecture, s_type, remote[0], on_session)
 
-    def module_handle_session(self, p_type='one_side', session=None, timeout=None):
-        module = self.modules.get_current_module()
-
+    def module_handle_session(self, module, p_type='one_side', session=None, timeout=None):
         options = module.handler
         session = session if session is not None else HatSploitSession
 

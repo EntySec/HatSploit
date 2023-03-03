@@ -33,13 +33,16 @@ from hatsploit.lib.payloads import Payloads
 from hatsploit.lib.storage import LocalStorage
 
 
-class Builder:
-    modules = Modules()
-    payloads = Payloads()
-    badges = Badges()
-    config = Config()
-    importer = Importer()
-    local_storage = LocalStorage()
+class Builder(object):
+    def __init__(self):
+        super().__init__()
+
+        self.modules = Modules()
+        self.payloads = Payloads()
+        self.badges = Badges()
+        self.config = Config()
+        self.importer = Importer()
+        self.local_storage = LocalStorage()
 
     def check_base_built(self):
         if (
@@ -48,9 +51,7 @@ class Builder:
                     + self.config.db_config['base_dbs']['module_database']
                 )
                 and os.path.exists(
-            self.config.path_config['db_path']
-            + self.config.db_config['base_dbs']['payload_database']
-        )
+            self.config.path_config['db_path'] + self.config.db_config['base_dbs']['payload_database'])
                 and os.path.exists(
             self.config.path_config['db_path']
             + self.config.db_config['base_dbs']['plugin_database']

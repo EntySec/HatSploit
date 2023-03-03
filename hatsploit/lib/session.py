@@ -30,11 +30,14 @@ from hatsploit.core.cli.tables import Tables
 
 
 class Session(FMT, Badges, Colors, Parser, Tables):
-    details = {
-        'Post': "",
-        'Platform': "",
-        'Type': ""
-    }
+    def __init__(self):
+        super().__init__()
+
+        self.details = {
+            'Post': "",
+            'Platform': "",
+            'Type': ""
+        }
 
     def open(self, client):
         pass

@@ -10,29 +10,32 @@ from hatsploit.lib.storage import LocalStorage
 
 
 class HatSploitCommand(Command):
-    config = Config()
+    def __init__(self):
+        super().__init__()
 
-    storage_path = config.path_config['storage_path']
+        self.config = Config()
 
-    local_storage = LocalStorage()
-    global_storage = GlobalStorage(storage_path)
+        self.storage_path = self.config.path_config['storage_path']
 
-    details = {
-        'Category': "developer",
-        'Name': "storage",
-        'Authors': [
-            'Ivan Nikolsky (enty8080) - command developer',
-        ],
-        'Description': "Manage storage variables.",
-        'Usage': "storage [global|local] <option> [arguments]",
-        'MinArgs': 2,
-        'Options': {
-            '-l': ['', "List all storage variables."],
-            '-v': ['<name>', "Show specified storage variable value."],
-            '-s': ['<name> <value>', "Set storage variable value."],
-            '-d': ['<name>', "Delete storage variable."],
-        },
-    }
+        self.local_storage = LocalStorage()
+        self.global_storage = GlobalStorage(self.storage_path)
+
+        self.details = {
+            'Category': "developer",
+            'Name': "storage",
+            'Authors': [
+                'Ivan Nikolsky (enty8080) - command developer',
+            ],
+            'Description': "Manage storage variables.",
+            'Usage': "storage [global|local] <option> [arguments]",
+            'MinArgs': 2,
+            'Options': {
+                '-l': ['', "List all storage variables."],
+                '-v': ['<name>', "Show specified storage variable value."],
+                '-s': ['<name> <value>', "Set storage variable value."],
+                '-d': ['<name>', "Delete storage variable."],
+            },
+        }
 
     def run(self, argc, argv):
         type_of_storage = argv[1]

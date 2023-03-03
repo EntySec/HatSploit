@@ -8,18 +8,21 @@ from hatsploit.lib.show import Show
 
 
 class HatSploitCommand(Command):
-    show = Show()
+    def __init__(self):
+        super().__init__()
 
-    details = {
-        'Category': "modules",
-        'Name': "options",
-        'Authors': [
-            'Ivan Nikolsky (enty8080) - command developer',
-        ],
-        'Description': "Show current module options.",
-        'Usage': "options",
-        'MinArgs': 0,
-    }
+        self.show = Show()
+
+        self.details = {
+            'Category': "modules",
+            'Name': "options",
+            'Authors': [
+                'Ivan Nikolsky (enty8080) - command developer',
+            ],
+            'Description': "Show current module options.",
+            'Usage': "options",
+            'MinArgs': 0,
+        }
 
     def run(self, argc, argv):
         self.show.show_options()

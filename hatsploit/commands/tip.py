@@ -8,18 +8,21 @@ from hatsploit.lib.command import Command
 
 
 class HatSploitCommand(Command):
-    tip = Tip()
+    def __init__(self):
+        super().__init__()
 
-    details = {
-        'Category': "misc",
-        'Name': "tip",
-        'Authors': [
-            'Ivan Nikolsky (enty8080) - command developer',
-        ],
-        'Description': "Show random HatSploit tip.",
-        'Usage': "tip",
-        'MinArgs': 0,
-    }
+        self.tip = Tip()
+
+        self.details = {
+            'Category': "misc",
+            'Name': "tip",
+            'Authors': [
+                'Ivan Nikolsky (enty8080) - command developer',
+            ],
+            'Description': "Show random HatSploit tip.",
+            'Usage': "tip",
+            'MinArgs': 0,
+        }
 
     def run(self, argc, argv):
         self.tip.print_random_tip()

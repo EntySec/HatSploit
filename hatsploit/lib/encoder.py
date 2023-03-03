@@ -31,15 +31,18 @@ from hatsploit.core.cli.tools import Tools
 
 
 class Encoder(FMT, Badges, Colors, Parser, Tables, Tools):
-    details = {
-        'Name': "",
-        'Encoder': "",
-        'Authors': [
-            ''
-        ],
-        'Description': "",
-        'Architecture': ""
-    }
+    def __init__(self):
+        super().__init__()
+
+        self.details = {
+            'Name': "",
+            'Encoder': "",
+            'Authors': [
+                ''
+            ],
+            'Description': "",
+            'Architecture': ""
+        }
 
     def run(self):
         pass

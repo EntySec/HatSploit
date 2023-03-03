@@ -33,13 +33,16 @@ from hatsploit.core.utils.update import Update
 from hatsploit.lib.config import Config
 
 
-class Loader:
-    badges = Badges()
-    importer = Importer()
-    builder = Builder()
-    update = Update()
+class Loader(object):
+    def __init__(self):
+        super().__init__()
 
-    config = Config()
+        self.badges = Badges()
+        self.importer = Importer()
+        self.builder = Builder()
+        self.update = Update()
+
+        self.config = Config()
 
     def load_update_process(self):
         if self.update.check_update():

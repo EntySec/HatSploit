@@ -8,24 +8,27 @@ from hatsploit.lib.history import History
 
 
 class HatSploitCommand(Command):
-    history = History()
+    def __init__(self):
+        super().__init__()
 
-    details = {
-        'Category': "developer",
-        'Name': "history",
-        'Authors': [
-            'Ivan Nikolsky (enty8080) - command developer',
-        ],
-        'Description': "Manage HatSploit history.",
-        'Usage': "history <option>",
-        'MinArgs': 1,
-        'Options': {
-            '-l': ['', "List all history."],
-            '-c': ['', "Clear all history."],
-            'on': ['', "Turn history on."],
-            'off': ['', "Turn history off."],
-        },
-    }
+        self.history = History()
+
+        self.details = {
+            'Category': "developer",
+            'Name': "history",
+            'Authors': [
+                'Ivan Nikolsky (enty8080) - command developer',
+            ],
+            'Description': "Manage HatSploit history.",
+            'Usage': "history <option>",
+            'MinArgs': 1,
+            'Options': {
+                '-l': ['', "List all history."],
+                '-c': ['', "Clear all history."],
+                'on': ['', "Turn history on."],
+                'off': ['', "Turn history off."],
+            },
+        }
 
     def run(self, argc, argv):
         option = argv[1]

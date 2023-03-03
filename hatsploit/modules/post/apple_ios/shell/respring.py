@@ -8,26 +8,29 @@ from hatsploit.lib.sessions import Sessions
 
 
 class HatSploitModule(Module, Sessions):
-    details = {
-        'Category': "post",
-        'Name': "iOS Restart SpringBoard",
-        'Module': "post/apple_ios/shell/respring",
-        'Authors': [
-            'Ivan Nikolsky (enty8080) - module developer',
-        ],
-        'Description': "Restart iOS SpringBoard.app through shell.",
-        'Platform': "apple_ios",
-        'Rank': "medium",
-    }
+    def __init__(self):
+        super().__init__()
 
-    options = {
-        'SESSION': {
-            'Description': "Session to run on.",
-            'Value': None,
-            'Type': {'session': {'Platforms': ['apple_ios'], 'Type': 'shell'}},
-            'Required': True,
+        self.details = {
+            'Category': "post",
+            'Name': "iOS Restart SpringBoard",
+            'Module': "post/apple_ios/shell/respring",
+            'Authors': [
+                'Ivan Nikolsky (enty8080) - module developer',
+            ],
+            'Description': "Restart iOS SpringBoard.app through shell.",
+            'Platform': "apple_ios",
+            'Rank': "medium",
         }
-    }
+
+        self.options = {
+            'SESSION': {
+                'Description': "Session to run on.",
+                'Value': None,
+                'Type': {'session': {'Platforms': ['apple_ios'], 'Type': 'shell'}},
+                'Required': True,
+            }
+        }
 
     def run(self):
         session = self.parse_options(self.options)

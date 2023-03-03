@@ -8,22 +8,25 @@ from hatsploit.lib.show import Show
 
 
 class HatSploitCommand(Command):
-    show = Show()
+    def __init__(self):
+        super().__init__()
 
-    details = {
-        'Category': "core",
-        'Name': "search",
-        'Authors': [
-            'Ivan Nikolsky (enty8080) - command developer',
-        ],
-        'Description': "Search payloads, modules and plugins.",
-        'Usage': "search <option> <keyword>",
-        'MinArgs': 1,
-        'Options': {
-            '-w': ['[payloads|encoders|modules|plugins]', "Select where to search."],
-            '-e': ['', "Search everywhere."],
-        },
-    }
+        self.show = Show()
+
+        self.details = {
+            'Category': "core",
+            'Name': "search",
+            'Authors': [
+                'Ivan Nikolsky (enty8080) - command developer',
+            ],
+            'Description': "Search payloads, modules and plugins.",
+            'Usage': "search <option> <keyword>",
+            'MinArgs': 1,
+            'Options': {
+                '-w': ['[payloads|encoders|modules|plugins]', "Select where to search."],
+                '-e': ['', "Search everywhere."],
+            },
+        }
 
     def run(self, argc, argv):
         if argv[1] not in ['-w', '--where']:

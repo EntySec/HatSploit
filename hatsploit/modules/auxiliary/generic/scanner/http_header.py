@@ -3,41 +3,42 @@ This module requires HatSploit: https://hatsploit.com
 Current source: https://github.com/EntySec/HatSploit
 """
 
+from hatsploit.lib.module import Module
 from pex.proto.http import HTTPClient
 from pex.proto.tcp import TCPTools
 
-from hatsploit.lib.module import Module
-
 
 class HatSploitModule(HTTPClient, Module, TCPTools):
-    details = {
-        'Category': 'auxiliary',
-        'Name': 'HTTP Header',
-        'Module': 'auxiliary/generic/scanner/http_header',
-        'Authors': ['Noah Altunian (naltun) - contributor'],
-        'Description': 'Retrieve HTTP headers from a server.',
-        'Platform': 'generic',
-        'Rank': 'low',
-    }
+    def __init__(self):
+        super().__init__()
 
-    options = {
-        'HOST': {
-            'Description': 'Remote host.',
-            'Value': None,
-            'Type': 'ip',
-            'Required': True,
-        },
-        'PORT': {
-            'Description': 'Remote port.',
-            'Value': 80,
-            'Type': 'port',
-            'Required': True,
-        },
-    }
+        self.details = {
+            'Category': 'auxiliary',
+            'Name': 'HTTP Header',
+            'Module': 'auxiliary/generic/scanner/http_header',
+            'Authors': ['Noah Altunian (naltun) - contributor'],
+            'Description': 'Retrieve HTTP headers from a server.',
+            'Platform': 'generic',
+            'Rank': 'low',
+        }
 
-    http_methods = ['HEAD', 'GET']
+        self.options = {
+            'HOST': {
+                'Description': 'Remote host.',
+                'Value': None,
+                'Type': 'ip',
+                'Required': True,
+            },
+            'PORT': {
+                'Description': 'Remote port.',
+                'Value': 80,
+                'Type': 'port',
+                'Required': True,
+            },
+        }
 
-    headers = {}
+        self.http_methods = ['HEAD', 'GET']
+        self.headers = {}
 
     def run(self):
         remote_host, remote_port = self.parse_options(self.options)

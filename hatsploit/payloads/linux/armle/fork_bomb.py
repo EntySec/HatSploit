@@ -7,18 +7,21 @@ from hatsploit.lib.payload import Payload
 
 
 class HatSploitPayload(Payload):
-    details = {
-        'Name': "Linux armle Fork Bomb",
-        'Payload': "linux/armle/fork_bomb",
-        'Authors': [
-            'Ivan Nikolsky (enty8080) - payload developer',
-        ],
-        'Description': "Fork bomb payload for Linux armle.",
-        'Architecture': "armle",
-        'Platform': "linux",
-        'Rank': "low",
-        'Type': "one_side",
-    }
+    def __init__(self):
+        super().__init__()
+
+        self.details = {
+            'Name': "Linux armle Fork Bomb",
+            'Payload': "linux/armle/fork_bomb",
+            'Authors': [
+                'Ivan Nikolsky (enty8080) - payload developer',
+            ],
+            'Description': "Fork bomb payload for Linux armle.",
+            'Architecture': "armle",
+            'Platform': "linux",
+            'Rank': "low",
+            'Type': "one_side",
+        }
 
     def run(self):
         return (

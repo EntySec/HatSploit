@@ -8,18 +8,21 @@ from hatsploit.lib.command import Command
 
 
 class HatSploitCommand(Command):
-    banner = Banner()
+    def __init__(self):
+        super().__init__()
 
-    details = {
-        'Category': "misc",
-        'Name': "banner",
-        'Authors': [
-            'Ivan Nikolsky (enty8080) - command developer',
-        ],
-        'Description': "Show random HatSploit banner.",
-        'Usage': "banner",
-        'MinArgs': 0,
-    }
+        self.banner = Banner()
+
+        self.details = {
+            'Category': "misc",
+            'Name': "banner",
+            'Authors': [
+                'Ivan Nikolsky (enty8080) - command developer',
+            ],
+            'Description': "Show random HatSploit banner.",
+            'Usage': "banner",
+            'MinArgs': 0,
+        }
 
     def run(self, argc, argv):
         self.banner.print_random_banner()

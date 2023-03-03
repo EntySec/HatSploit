@@ -28,11 +28,14 @@ from hatsploit.lib.config import Config
 from hatsploit.lib.storage import GlobalStorage
 
 
-class Log:
-    config = Config()
+class Log(object):
+    def __init__(self):
+        super().__init__()
 
-    storage_path = config.path_config['storage_path']
-    global_storage = GlobalStorage(storage_path)
+        self.config = Config()
+
+        self.storage_path = self.config.path_config['storage_path']
+        self.global_storage = GlobalStorage(self.storage_path)
 
     def enable_log(self, filename):
         if os.access(filename, os.R_OK):

@@ -29,14 +29,17 @@ from hatsploit.lib.show import Show
 from hatsploit.lib.storage import LocalStorage
 
 
-class Commands:
-    show = Show()
+class Commands(object):
+    def __init__(self):
+        super().__init__()
 
-    importer = Importer()
-    execute = Execute()
+        self.show = Show()
 
-    modules = Modules()
-    local_storage = LocalStorage()
+        self.importer = Importer()
+        self.execute = Execute()
+
+        self.modules = Modules()
+        self.local_storage = LocalStorage()
 
     def load_commands(self, path):
         return self.importer.import_commands(path)

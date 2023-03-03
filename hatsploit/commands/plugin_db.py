@@ -10,26 +10,29 @@ from hatsploit.lib.show import Show
 
 
 class HatSploitCommand(Command):
-    db = DB()
-    builder = Builder()
-    show = Show()
+    def __init__(self):
+        super().__init__()
 
-    details = {
-        'Category': "databases",
-        'Name': "plugin_db",
-        'Authors': [
-            'Ivan Nikolsky (enty8080) - command developer',
-        ],
-        'Description': "Manage plugin databases.",
-        'Usage': "plugin_db <option> [arguments]",
-        'MinArgs': 1,
-        'Options': {
-            '-l': ['', "List all connected plugin databases."],
-            '-d': ['<name>', "Disconnect specified plugin database."],
-            '-c': ['<name> <path>', "Connect new plugin database."],
-            '-b': ['<path> <output_path>', "Build plugin database from plugins path."],
-        },
-    }
+        self.db = DB()
+        self.builder = Builder()
+        self.show = Show()
+
+        self.details = {
+            'Category': "databases",
+            'Name': "plugin_db",
+            'Authors': [
+                'Ivan Nikolsky (enty8080) - command developer',
+            ],
+            'Description': "Manage plugin databases.",
+            'Usage': "plugin_db <option> [arguments]",
+            'MinArgs': 1,
+            'Options': {
+                '-l': ['', "List all connected plugin databases."],
+                '-d': ['<name>', "Disconnect specified plugin database."],
+                '-c': ['<name> <path>', "Connect new plugin database."],
+                '-b': ['<path> <output_path>', "Build plugin database from plugins path."],
+            },
+        }
 
     def run(self, argc, argv):
         choice = argv[1]

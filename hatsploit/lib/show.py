@@ -34,18 +34,21 @@ from hatsploit.lib.sessions import Sessions
 from hatsploit.lib.storage import LocalStorage
 
 
-class Show:
-    jobs = Jobs()
-    loot = Loot()
-    local_storage = LocalStorage()
-    modules = Modules()
-    payloads = Payloads()
-    encoders = Encoders()
-    sessions = Sessions()
+class Show(object):
+    def __init__(self):
+        super().__init__()
 
-    colors = Colors()
-    tables = Tables()
-    badges = Badges()
+        self.jobs = Jobs()
+        self.loot = Loot()
+        self.local_storage = LocalStorage()
+        self.modules = Modules()
+        self.payloads = Payloads()
+        self.encoders = Encoders()
+        self.sessions = Sessions()
+
+        self.colors = Colors()
+        self.tables = Tables()
+        self.badges = Badges()
 
     def show_custom_commands(self, handler):
         commands_data = {}
@@ -428,7 +431,7 @@ class Show:
         if not hasattr(current_module, "options") and not hasattr(current_module, "payload"):
             raise RuntimeWarning("Module has no options.")
 
-        if not hasattr(current_module, "options") and not hasattr(self.payloads.get_current_payload(), "options"):
+        if not hasattr(current_module, "options") and not hasattr(self.payloads.get_current_payload(current_module), "options"):
             raise RuntimeWarning("Module has no options.")
 
         headers = ("Option", "Value", "Required", "Description")
@@ -449,8 +452,8 @@ class Show:
             self.tables.print_table(f"Module Options ({current_module.details['Module']})", headers, *options_data)
 
         if hasattr(current_module, "payload"):
-            current_payload = self.payloads.get_current_payload()
-            current_encoder = self.encoders.get_current_encoder()
+            current_payload = self.payloads.get_current_payload(current_module)
+            current_encoder = self.encoders.get_current_encoder(current_module, current_payload)
 
             if current_payload and hasattr(current_payload, "options"):
                 options_data = []
@@ -493,7 +496,7 @@ class Show:
         if not hasattr(current_module, "advanced") and not hasattr(current_module, "payload"):
             raise RuntimeWarning("Module has no advanced options.")
 
-        if not hasattr(current_module, "advanced") and not hasattr(self.payloads.get_current_payload(), "advanced"):
+        if not hasattr(current_module, "advanced") and not hasattr(self.payloads.get_current_payload(current_module), "advanced"):
             raise RuntimeWarning("Module has no advanced options.")
 
         headers = ("Option", "Value", "Required", "Description")
@@ -515,8 +518,8 @@ class Show:
                                     *options_data)
 
         if hasattr(current_module, "payload"):
-            current_payload = self.payloads.get_current_payload()
-            current_encoder = self.encoders.get_current_encoder()
+            current_payload = self.payloads.get_current_payload(current_module)
+            current_encoder = self.encoders.get_current_encoder(current_module, current_payload)
 
             if current_payload and hasattr(current_payload, "advanced"):
                 options_data = []

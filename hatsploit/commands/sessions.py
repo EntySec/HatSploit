@@ -9,27 +9,30 @@ from hatsploit.lib.show import Show
 
 
 class HatSploitCommand(Command):
-    sessions = Sessions()
-    show = Show()
+    def __init__(self):
+        super().__init__()
 
-    details = {
-        'Category': "sessions",
-        'Name': "sessions",
-        'Authors': [
-            'Ivan Nikolsky (enty8080) - command developer',
-        ],
-        'Description': "Manage opened sessions.",
-        'Usage': "sessions <option> [arguments]",
-        'MinArgs': 1,
-        'Options': {
-            '-l': ['', "List all opened sessions."],
-            '-i': ['<id>', "Interact with specified session."],
-            '-d': ['<id> <remote_file> <local_path>', "Download file from session."],
-            '-u': ['<id> <local_file> <remote_path>', "Upload file to session."],
-            '-c': ['<id>', "Close specified session."],
-            '--auto-interaction': ['[on|off]', "Interact with session after opening."],
-        },
-    }
+        self.sessions = Sessions()
+        self.show = Show()
+
+        self.details = {
+            'Category': "sessions",
+            'Name': "sessions",
+            'Authors': [
+                'Ivan Nikolsky (enty8080) - command developer',
+            ],
+            'Description': "Manage opened sessions.",
+            'Usage': "sessions <option> [arguments]",
+            'MinArgs': 1,
+            'Options': {
+                '-l': ['', "List all opened sessions."],
+                '-i': ['<id>', "Interact with specified session."],
+                '-d': ['<id> <remote_file> <local_path>', "Download file from session."],
+                '-u': ['<id> <local_file> <remote_path>', "Upload file to session."],
+                '-c': ['<id>', "Close specified session."],
+                '--auto-interaction': ['[on|off]', "Interact with session after opening."],
+            },
+        }
 
     def run(self, argc, argv):
         if argv[1] == '-l':

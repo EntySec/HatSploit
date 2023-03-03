@@ -29,12 +29,15 @@ from pex.proto.tcp import TCPListener
 from hatsploit.core.cli.badges import Badges
 
 
-class Handle:
-    badges = Badges()
-    tcp_client = TCPClient()
+class Handle(object):
+    def __init__(self):
+        super().__init__()
 
-    tcp_listener = TCPListener()
-    http_listener = HTTPListener()
+        self.badges = Badges()
+        self.tcp_client = TCPClient()
+
+        self.tcp_listener = TCPListener()
+        self.http_listener = HTTPListener()
 
     def listen_server(self, local_host, local_port, methods={}):
         listener = self.http_listener.listen_http(local_host, local_port, methods)

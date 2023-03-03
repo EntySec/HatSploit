@@ -28,12 +28,15 @@ from hatsploit.core.cli.fmt import FMT
 from hatsploit.lib.commands import Commands
 
 
-class Completer:
-    fmt = FMT()
+class Completer(object):
+    def __init__(self):
+        super().__init__()
 
-    commands = Commands()
+        self.fmt = FMT()
 
-    matches = None
+        self.commands = Commands()
+
+        self.matches = None
 
     def completer(self, text, state):
         if state == 0:

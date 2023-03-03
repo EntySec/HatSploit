@@ -10,18 +10,21 @@ from hatsploit.lib.command import Command
 
 
 class HatSploitCommand(Command):
-    execute = Execute()
+    def __init__(self):
+        super().__init__()
 
-    details = {
-        'Category': "developer",
-        'Name': "sleep",
-        'Authors': [
-            'Ivan Nikolsky (enty8080) - command developer',
-        ],
-        'Description': "Sleep for specified seconds.",
-        'Usage': "sleep <seconds>",
-        'MinArgs': 1,
-    }
+        self.execute = Execute()
+
+        self.details = {
+            'Category': "developer",
+            'Name': "sleep",
+            'Authors': [
+                'Ivan Nikolsky (enty8080) - command developer',
+            ],
+            'Description': "Sleep for specified seconds.",
+            'Usage': "sleep <seconds>",
+            'MinArgs': 1,
+        }
 
     def run(self, argc, argv):
         seconds = argv[1]

@@ -32,10 +32,13 @@ from hatsploit.lib.config import Config
 
 
 class Loot(String, FS):
-    badges = Badges()
+    def __init__(self):
+        super().__init__()
 
-    loot = Config().path_config['loot_path']
-    data = Config().path_config['data_path']
+        self.badges = Badges()
+
+        self.loot = Config().path_config['loot_path']
+        self.data = Config().path_config['data_path']
 
     def create_loot(self):
         if not os.path.isdir(self.loot):

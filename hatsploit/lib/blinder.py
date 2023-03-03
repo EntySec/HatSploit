@@ -27,9 +27,12 @@ from pex.post import PostTools
 from hatsploit.core.cli.badges import Badges
 
 
-class Blinder:
-    badges = Badges()
-    post_tools = PostTools()
+class Blinder(object):
+    def __init__(self):
+        super().__init__()
+
+        self.badges = Badges()
+        self.post_tools = PostTools()
 
     def shell(self, sender, args={}):
         self.badges.print_empty()

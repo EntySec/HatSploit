@@ -32,13 +32,16 @@ from hatsploit.core.utils.ui.colors_script import ColorsScript
 from hatsploit.lib.config import Config
 
 
-class Tip:
-    parser = Parser()
-    config = Config()
-    badges = Badges()
-    colors = Colors()
+class Tip(object):
+    def __init__(self):
+        super().__init__()
 
-    colors_script = ColorsScript()
+        self.parser = Parser()
+        self.config = Config()
+        self.badges = Badges()
+        self.colors = Colors()
+
+        self.colors_script = ColorsScript()
 
     def print_random_tip(self):
         if os.path.exists(self.config.path_config['tips_path']):

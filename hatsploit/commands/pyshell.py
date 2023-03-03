@@ -28,16 +28,19 @@ from hatsploit.lib.command import Command
 
 
 class HatSploitCommand(Command):
-    details = {
-        'Category': "developer",
-        'Name': "pyshell",
-        'Authors': [
-            'Ivan Nikolsky (enty8080) - command developer',
-        ],
-        'Description': "Open Python shell.",
-        'Usage': "pyshell",
-        'MinArgs': 0,
-    }
+    def __init__(self):
+        super().__init__()
+
+        self.details = {
+            'Category': "developer",
+            'Name': "pyshell",
+            'Authors': [
+                'Ivan Nikolsky (enty8080) - command developer',
+            ],
+            'Description': "Open Python shell.",
+            'Usage': "pyshell",
+            'MinArgs': 0,
+        }
 
     def run(self, argc, argv):
         self.print_information(f"Python {platform.python_version()} console")

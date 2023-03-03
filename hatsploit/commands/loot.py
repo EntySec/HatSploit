@@ -9,23 +9,26 @@ from hatsploit.lib.show import Show
 
 
 class HatSploitCommand(Command):
-    loot = Loot()
-    show = Show()
+    def __init__(self):
+        super().__init__()
 
-    details = {
-        'Category': "loot",
-        'Name': "loot",
-        'Authors': [
-            'Ivan Nikolsky (enty8080) - command developer',
-        ],
-        'Description': "Manage collected loot.",
-        'Usage': "loot <option> [arguments]",
-        'MinArgs': 1,
-        'Options': {
-            '-l': ['', "List all collected loot."],
-            '-r': ['<name>', "Remove collected loot."],
-        },
-    }
+        self.loot = Loot()
+        self.show = Show()
+
+        self.details = {
+            'Category': "loot",
+            'Name': "loot",
+            'Authors': [
+                'Ivan Nikolsky (enty8080) - command developer',
+            ],
+            'Description': "Manage collected loot.",
+            'Usage': "loot <option> [arguments]",
+            'MinArgs': 1,
+            'Options': {
+                '-l': ['', "List all collected loot."],
+                '-r': ['<name>', "Remove collected loot."],
+            },
+        }
 
     def run(self, argc, argv):
         choice = argv[1]

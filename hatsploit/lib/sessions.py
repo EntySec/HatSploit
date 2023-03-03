@@ -29,14 +29,17 @@ from hatsploit.lib.storage import GlobalStorage
 from hatsploit.lib.storage import LocalStorage
 
 
-class Sessions:
-    badges = Badges()
-    config = Config()
+class Sessions(object):
+    def __init__(self):
+        super().__init__()
 
-    storage_path = config.path_config['storage_path']
+        self.badges = Badges()
+        self.config = Config()
 
-    global_storage = GlobalStorage(storage_path)
-    local_storage = LocalStorage()
+        self.storage_path = self.config.path_config['storage_path']
+
+        self.global_storage = GlobalStorage(self.storage_path)
+        self.local_storage = LocalStorage()
 
     def get_sessions(self):
         sessions = self.local_storage.get("sessions")

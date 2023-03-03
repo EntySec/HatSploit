@@ -25,8 +25,11 @@ SOFTWARE.
 from hatsploit.lib.jobs import Jobs
 
 
-class Tools:
-    jobs = Jobs()
+class Tools(object):
+    def __init__(self):
+        super().__init__()
+
+        self.jobs = Jobs()
 
     def background(self, function, arguments=[]):
         self.jobs.create_job(None, None, function, arguments, True)

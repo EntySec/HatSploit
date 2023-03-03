@@ -3,45 +3,47 @@ This module requires HatSploit: https://hatsploit.com
 Current source: https://github.com/EntySec/HatSploit
 """
 
+from hatsploit.lib.module import Module
 from pex.proto.http import HTTPClient
 from pex.proto.tcp import TCPTools
 
-from hatsploit.lib.module import Module
-
 
 class HatSploitModule(HTTPClient, Module, TCPTools):
-    details = {
-        'Category': 'auxiliary',
-        'Name': 'HTTP Methods',
-        'Module': 'auxiliary/generic/scanner/http_methods',
-        'Authors': ['Noah Altunian (naltun) - contributor'],
-        'Description': 'Find supported HTTP methods on a server',
-        'Platform': 'generic',
-        'Rank': 'low',
-    }
+    def __init__(self):
+        super().__init__()
 
-    options = {
-        'HOST': {
-            'Description': 'Remote host.',
-            'Value': None,
-            'Type': 'ip',
-            'Required': True,
+        self.details = {
+            'Category': 'auxiliary',
+            'Name': 'HTTP Methods',
+            'Module': 'auxiliary/generic/scanner/http_methods',
+            'Authors': ['Noah Altunian (naltun) - contributor'],
+            'Description': 'Find supported HTTP methods on a server',
+            'Platform': 'generic',
+            'Rank': 'low',
         }
-    }
 
-    http_methods = [
-        'CONNECT',
-        'DELETE',
-        'GET',
-        'HEAD',
-        'OPTIONS',
-        'PATCH',
-        'POST',
-        'PUT',
-        'TRACE',
-    ]
+        self.options = {
+            'HOST': {
+                'Description': 'Remote host.',
+                'Value': None,
+                'Type': 'ip',
+                'Required': True,
+            }
+        }
 
-    supported_methods = {'80': [], '443': [], 'count': 0}
+        self.http_methods = [
+            'CONNECT',
+            'DELETE',
+            'GET',
+            'HEAD',
+            'OPTIONS',
+            'PATCH',
+            'POST',
+            'PUT',
+            'TRACE',
+        ]
+
+        self.supported_methods = {'80': [], '443': [], 'count': 0}
 
     def run(self):
         remote_host = self.parse_options(self.options)
