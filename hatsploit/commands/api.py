@@ -30,23 +30,22 @@ class HatSploitCommand(Command, TCPTools):
             },
         }
 
+    def run(self, argc, argv):
+        if argv[1] == 'on':
+            if not self.check_tcp_port('127.0.0.1', argv[2]):
+                rest_api = API(
+                    host='127.0.0.1', port=argv[2], username=argv[3], password=argv[4]
+                )
 
-def run(self, argc, argv):
-    if argv[1] == 'on':
-        if not self.check_tcp_port('127.0.0.1', argv[2]):
-            rest_api = API(
-                host='127.0.0.1', port=argv[2], username=argv[3], password=argv[4]
-            )
+                self.print_success(f"REST API server started on port {argv[2]}!")
 
-            self.print_success(f"REST API server started on port {argv[2]}!")
+                self.print_information(f"Username: {rest_api.username}")
+                self.print_information(f"Password: {rest_api.password}")
+                self.print_information(f"API token: {rest_api.token}")
 
-            self.print_information(f"Username: {rest_api.username}")
-            self.print_information(f"Password: {rest_api.password}")
-            self.print_information(f"API token: {rest_api.token}")
+                self.jobs.create_job(f"REST API on port {argv[2]}", None, rest_api.run)
+            else:
+                self.print_error(f"Failed to start REST API server!")
 
-            self.jobs.create_job(f"REST API on port {argv[2]}", None, rest_api.run)
-        else:
-            self.print_error(f"Failed to start REST API server!")
-
-    elif argv[1] == 'off':
-        pass
+        elif argv[1] == 'off':
+            pass
