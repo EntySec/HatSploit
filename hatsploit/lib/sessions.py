@@ -36,9 +36,9 @@ class Sessions(object):
         self.badges = Badges()
         self.config = Config()
 
-        self.storage_path = config.path_config['storage_path']
+        self.storage_path = self.config.path_config['storage_path']
 
-        self.global_storage = GlobalStorage(storage_path)
+        self.global_storage = GlobalStorage(self.storage_path)
         self.local_storage = LocalStorage()
 
     def get_sessions(self):
