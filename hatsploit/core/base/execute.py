@@ -35,14 +35,17 @@ from hatsploit.lib.show import Show
 from hatsploit.lib.storage import LocalStorage
 
 
-class Execute:
-    jobs = Jobs()
-    fmt = FMT()
-    badges = Badges()
-    tables = Tables()
-    local_storage = LocalStorage()
-    modules = Modules()
-    show = Show()
+class Execute(object):
+    def __init__(self):
+        super().__init__()
+
+        self.jobs = Jobs()
+        self.fmt = FMT()
+        self.badges = Badges()
+        self.tables = Tables()
+        self.local_storage = LocalStorage()
+        self.modules = Modules()
+        self.show = Show()
 
     def execute_command(self, commands):
         if commands:
@@ -95,7 +98,8 @@ class Execute:
                 return True
         return False
 
-    def check_arguments(self, commands, details):
+    @staticmethod
+    def check_arguments(commands, details):
         if (len(commands) - 1) < details['MinArgs']:
             return False
         if 'Options' in details:

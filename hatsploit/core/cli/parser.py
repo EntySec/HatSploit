@@ -25,8 +25,12 @@ SOFTWARE.
 from hatsploit.lib.options import Options
 
 
-class Parser:
-    def parse_options(self, options, option=None):
+class Parser(object):
+    def __init__(self):
+        super().__init__()
+
+    @staticmethod
+    def parse_options(options, option=None):
         if not option:
             values = []
             for option_name in options:

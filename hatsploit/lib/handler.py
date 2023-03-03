@@ -41,14 +41,17 @@ from hatsploit.lib.storage import LocalStorage
 
 
 class HatSploitSession(Session, Loot, Pull, Push, ChannelClient):
-    channel = None
+    def __init__(self):
+        super().__init__()
 
-    details = {
-        'Post': "",
-        'Platform': "",
-        'Architecture': "",
-        'Type': "shell"
-    }
+        self.channel = None
+
+        self.details = {
+            'Post': "",
+            'Platform': "",
+            'Architecture': "",
+            'Type': "shell"
+        }
 
     def open(self, client):
         self.channel = self.open_channel(client)
@@ -109,17 +112,20 @@ class HatSploitSession(Session, Loot, Pull, Push, ChannelClient):
         self.channel.interact()
 
 
-class Handler:
-    blinder = Blinder()
-    post = Post()
-    server_handle = Handle()
+class Handler(object):
+    def __init__(self):
+        super().__init__()
 
-    sessions = Sessions()
-    encoders = Encoders()
-    jobs = Jobs()
-    types = Type()
-    badges = Badges()
-    local_storage = LocalStorage()
+        self.blinder = Blinder()
+        self.post = Post()
+        self.server_handle = Handle()
+
+        self.sessions = Sessions()
+        self.encoders = Encoders()
+        self.jobs = Jobs()
+        self.types = Type()
+        self.badges = Badges()
+        self.local_storage = LocalStorage()
 
     def do_job(self, p_type, target, args):
         if p_type == 'one_side':

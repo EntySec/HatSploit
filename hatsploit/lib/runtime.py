@@ -34,14 +34,17 @@ from hatsploit.lib.loot import Loot
 from hatsploit.lib.sessions import Sessions
 
 
-class Runtime:
-    config = Config()
-    jobs = Jobs()
-    loot = Loot()
-    sessions = Sessions()
+class Runtime(object):
+    def __init__(self):
+        super().__init__()
 
-    badges = Badges()
-    loader = Loader()
+        self.config = Config()
+        self.jobs = Jobs()
+        self.loot = Loot()
+        self.sessions = Sessions()
+
+        self.badges = Badges()
+        self.loader = Loader()
 
     def check(self):
         if os.path.exists(self.config.path_config['root_path']):

@@ -31,18 +31,21 @@ from hatsploit.core.cli.tools import Tools
 
 
 class Payload(FMT, Badges, Colors, Parser, Tables, Tools):
-    details = {
-        'Name': "",
-        'Payload': "",
-        'Authors': [
-            ''
-        ],
-        'Description': "",
-        'Architecture': "",
-        'Platform': "",
-        'Rank': "",
-        'Type': ""
-    }
+    def __init__(self):
+        super().__init__()
+
+        self.details = {
+            'Name': "",
+            'Payload': "",
+            'Authors': [
+                ''
+            ],
+            'Description': "",
+            'Architecture': "",
+            'Platform': "",
+            'Rank': "",
+            'Type': ""
+        }
 
     def run(self):
         pass

@@ -27,10 +27,12 @@ from hatsploit.core.db.importer import Importer
 from hatsploit.lib.storage import LocalStorage
 
 
-class Encoders:
-    importer = Importer()
+class Encoders(object):
+    def __init__(self):
+        super().__init__()
 
-    local_storage = LocalStorage()
+        self.importer = Importer()
+        self.local_storage = LocalStorage()
 
     def encoders_completer(self, text):
         encoders = self.get_encoders()

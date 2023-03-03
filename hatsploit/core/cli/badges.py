@@ -27,8 +27,11 @@ import os
 from hatsploit.core.base.io import IO
 
 
-class Badges:
-    io = IO()
+class Badges(object):
+    def __init__(self):
+        super().__init__()
+
+        self.io = IO()
 
     def print_empty(self, message='', start='%remove', end='%newline'):
         self.io.print(message, start, end)

@@ -38,18 +38,21 @@ from hatsploit.lib.jobs import Jobs
 from hatsploit.lib.runtime import Runtime
 
 
-class HatSploit:
-    jobs = Jobs()
-    config = Config()
-    runtime = Runtime()
+class HatSploit(object):
+    def __init__(self):
+        super().__init__()
 
-    console = Console()
-    builder = Builder()
-    badges = Badges()
-    check = Check()
-    update = Update()
+        self.jobs = Jobs()
+        self.config = Config()
+        self.runtime = Runtime()
 
-    path_config = config.path_config
+        self.console = Console()
+        self.builder = Builder()
+        self.badges = Badges()
+        self.check = Check()
+        self.update = Update()
+
+        self.path_config = self.config.path_config
 
     def policy(self):
         if not os.path.exists(self.path_config['accept_path']):

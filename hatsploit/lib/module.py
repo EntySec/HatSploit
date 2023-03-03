@@ -31,17 +31,20 @@ from hatsploit.core.cli.tools import Tools
 
 
 class Module(FMT, Badges, Colors, Parser, Tables, Tools):
-    details = {
-        'Category': "",
-        'Name': "",
-        'Module': "",
-        'Authors': [
-            ''
-        ],
-        'Description': "",
-        'Platform': "",
-        'Rank': ""
-    }
+    def __init__(self):
+        super().__init__()
+
+        self.details = {
+            'Category': "",
+            'Name': "",
+            'Module': "",
+            'Authors': [
+                ''
+            ],
+            'Description': "",
+            'Platform': "",
+            'Rank': ""
+        }
 
     def run(self):
         pass

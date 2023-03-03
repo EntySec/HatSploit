@@ -30,8 +30,10 @@ from hatsploit.lib.storage import GlobalStorage
 from hatsploit.lib.storage import LocalStorage
 
 
-class Config:
+class Config(object):
     def __init__(self):
+        super().__init__()
+
         self.local_storage = LocalStorage()
 
         self.user_path = f'{pathlib.Path.home()}/.hsf/'

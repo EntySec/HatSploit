@@ -38,27 +38,30 @@ from hatsploit.lib.runtime import Runtime
 from hatsploit.lib.storage import LocalStorage
 
 
-class Console:
-    execute = Execute()
+class Console(object):
+    def __init__(self):
+        super().__init__()
 
-    fmt = FMT()
-    badges = Badges()
+        self.execute = Execute()
 
-    completer = Completer()
-    banner = Banner()
-    tip = Tip()
+        self.fmt = FMT()
+        self.badges = Badges()
 
-    runtime = Runtime()
-    config = Config()
-    modules = Modules()
-    local_storage = LocalStorage()
+        self.completer = Completer()
+        self.banner = Banner()
+        self.tip = Tip()
 
-    history = config.path_config['history_path']
-    prompt = config.core_config['details']['prompt']
+        self.runtime = Runtime()
+        self.config = Config()
+        self.modules = Modules()
+        self.local_storage = LocalStorage()
 
-    handler_options = {'Module': {}, 'Payload': {}}
+        self.history = self.config.path_config['history_path']
+        self.prompt = self.config.core_config['details']['prompt']
 
-    completion = None
+        self.handler_options = {'Module': {}, 'Payload': {}}
+
+        self.completion = None
 
     def shell_execute(self):
         if not self.modules.get_current_module():

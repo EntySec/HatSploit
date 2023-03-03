@@ -28,8 +28,11 @@ import os
 from hatsploit.lib.storage import LocalStorage
 
 
-class DB:
-    local_storage = LocalStorage()
+class DB(object):
+    def __init__(self):
+        super().__init__()
+
+        self.local_storage = LocalStorage()
 
     def disconnect_payload_database(self, name):
         if self.local_storage.get("connected_payload_databases"):

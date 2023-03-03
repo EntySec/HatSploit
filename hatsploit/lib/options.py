@@ -28,75 +28,78 @@ from pex.proto.tcp import TCPTools
 from hatsploit.lib.storage import LocalStorage
 
 
-class Options:
-    local_storage = LocalStorage()
+class Options(object):
+    def __init__(self):
+        super().__init__()
 
-    handler_options = {
-        'Module': {
-            'BLINDER': {
-                'Description': 'Use Blinder.',
-                'Value': 'yes',
-                'Type': "boolean",
-                'Required': True
+        self.local_storage = LocalStorage()
+
+        self.handler_options = {
+            'Module': {
+                'BLINDER': {
+                    'Description': 'Use Blinder.',
+                    'Value': 'yes',
+                    'Type': "boolean",
+                    'Required': True
+                },
+                'PAYLOAD': {
+                    'Description': 'Payload to use.',
+                    'Value': None,
+                    'Type': "payload",
+                    'Required': False
+                },
+                'LHOST': {
+                    'Description': "Local host to listen on.",
+                    'Value': "0.0.0.0",
+                    'Type': "ip",
+                    'Required': True
+                },
+                'LPORT': {
+                    'Description': "Local port to listen on.",
+                    'Value': 8888,
+                    'Type': "port",
+                    'Required': True
+                },
+                'RBHOST': {
+                    'Description': "Remote bind host to connect.",
+                    'Value': None,
+                    'Type': "ip",
+                    'Required': True
+                },
+                'RBPORT': {
+                    'Description': "Remote bind port to connect.",
+                    'Value': 8888,
+                    'Type': "port",
+                    'Required': True
+                }
             },
-            'PAYLOAD': {
-                'Description': 'Payload to use.',
-                'Value': None,
-                'Type': "payload",
-                'Required': False
-            },
-            'LHOST': {
-                'Description': "Local host to listen on.",
-                'Value': "0.0.0.0",
-                'Type': "ip",
-                'Required': True
-            },
-            'LPORT': {
-                'Description': "Local port to listen on.",
-                'Value': 8888,
-                'Type': "port",
-                'Required': True
-            },
-            'RBHOST': {
-                'Description': "Remote bind host to connect.",
-                'Value': None,
-                'Type': "ip",
-                'Required': True
-            },
-            'RBPORT': {
-                'Description': "Remote bind port to connect.",
-                'Value': 8888,
-                'Type': "port",
-                'Required': True
-            }
-        },
-        'Payload': {
-            'ENCODER': {
-                'Description': 'Encoder to use.',
-                'Value': None,
-                'Type': "encoder",
-                'Required': False
-            },
-            'RHOST': {
-                'Description': "Remote host to connect.",
-                'Value': TCPTools.get_local_host(),
-                'Type': "ip",
-                'Required': True
-            },
-            'RPORT': {
-                'Description': "Remote port to connect.",
-                'Value': 8888,
-                'Type': "port",
-                'Required': True
-            },
-            'BPORT': {
-                'Description': "Port to bind to.",
-                'Value': 8888,
-                'Type': "port",
-                'Required': True
+            'Payload': {
+                'ENCODER': {
+                    'Description': 'Encoder to use.',
+                    'Value': None,
+                    'Type': "encoder",
+                    'Required': False
+                },
+                'RHOST': {
+                    'Description': "Remote host to connect.",
+                    'Value': TCPTools.get_local_host(),
+                    'Type': "ip",
+                    'Required': True
+                },
+                'RPORT': {
+                    'Description': "Remote port to connect.",
+                    'Value': 8888,
+                    'Type': "port",
+                    'Required': True
+                },
+                'BPORT': {
+                    'Description': "Port to bind to.",
+                    'Value': 8888,
+                    'Type': "port",
+                    'Required': True
+                }
             }
         }
-    }
 
     @staticmethod
     def remove_options(target, options):

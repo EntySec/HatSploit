@@ -34,18 +34,21 @@ from hatsploit.lib.sessions import Sessions
 from hatsploit.lib.storage import LocalStorage
 
 
-class Show:
-    jobs = Jobs()
-    loot = Loot()
-    local_storage = LocalStorage()
-    modules = Modules()
-    payloads = Payloads()
-    encoders = Encoders()
-    sessions = Sessions()
+class Show(object):
+    def __init__(self):
+        super().__init__()
 
-    colors = Colors()
-    tables = Tables()
-    badges = Badges()
+        self.jobs = Jobs()
+        self.loot = Loot()
+        self.local_storage = LocalStorage()
+        self.modules = Modules()
+        self.payloads = Payloads()
+        self.encoders = Encoders()
+        self.sessions = Sessions()
+
+        self.colors = Colors()
+        self.tables = Tables()
+        self.badges = Badges()
 
     def show_custom_commands(self, handler):
         commands_data = {}

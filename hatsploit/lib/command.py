@@ -30,16 +30,19 @@ from hatsploit.core.cli.tables import Tables
 
 
 class Command(FMT, Badges, Colors, Parser, Tables):
-    details = {
-        'Category': "",
-        'Name': "",
-        'Authors': [
-            ''
-        ],
-        'Description': "",
-        'Usage': "",
-        'MinArgs': 0
-    }
+    def __init__(self):
+        super().__init__()
+
+        self.details = {
+            'Category': "",
+            'Name': "",
+            'Authors': [
+                ''
+            ],
+            'Description': "",
+            'Usage': "",
+            'MinArgs': 0
+        }
 
     def run(self, argc, argv):
         pass

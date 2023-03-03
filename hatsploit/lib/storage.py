@@ -25,8 +25,10 @@ SOFTWARE.
 import json
 
 
-class GlobalStorage:
+class GlobalStorage(object):
     def __init__(self, file):
+        super().__init__()
+
         self.file = file
 
     def set_all(self):
@@ -75,7 +77,10 @@ class GlobalStorage:
             pass
 
 
-class LocalStorage:
+class LocalStorage(object):
+    def __init__(self):
+        super().__init__()
+
     @staticmethod
     def get_all():
         return globals()

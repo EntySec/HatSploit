@@ -31,15 +31,18 @@ from hatsploit.lib.options import Options
 from hatsploit.lib.storage import LocalStorage
 
 
-class Payloads:
-    hatvenom = HatVenom()
+class Payloads(object):
+    def __init__(self):
+        super().__init__()
 
-    types = Type()
+        self.hatvenom = HatVenom()
 
-    importer = Importer()
-    options = Options()
-    local_storage = LocalStorage()
-    encoders = Encoders()
+        self.types = Type()
+
+        self.importer = Importer()
+        self.options = Options()
+        self.local_storage = LocalStorage()
+        self.encoders = Encoders()
 
     def payloads_completer(self, text):
         payloads = self.get_payloads()

@@ -30,10 +30,13 @@ from hatsploit.core.db.importer import Importer
 from hatsploit.lib.config import Config
 
 
-class Check:
-    config = Config()
-    importer = Importer()
-    badges = Badges()
+class Check(object):
+    def __init__(self):
+        super().__init__()
+
+        self.config = Config()
+        self.importer = Importer()
+        self.badges = Badges()
 
     def check_modules(self):
         one_fail = False

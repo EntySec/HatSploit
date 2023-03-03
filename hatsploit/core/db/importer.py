@@ -36,11 +36,14 @@ from hatsploit.lib.config import Config
 from hatsploit.lib.storage import LocalStorage
 
 
-class Importer:
-    badges = Badges()
-    db = DB()
-    local_storage = LocalStorage()
-    config = Config()
+class Importer(object):
+    def __init__(self):
+        super().__init__()
+
+        self.badges = Badges()
+        self.db = DB()
+        self.local_storage = LocalStorage()
+        self.config = Config()
 
     @staticmethod
     def import_check(module_name):
@@ -52,7 +55,8 @@ class Importer:
             return True
         return True
 
-    def import_command(self, command_path):
+    @staticmethod
+    def import_command(command_path):
         try:
             if not command_path.endswith('.py'):
                 command_path = command_path + '.py'
@@ -67,7 +71,8 @@ class Importer:
 
         return command
 
-    def import_payload(self, payload_path):
+    @staticmethod
+    def import_payload(payload_path):
         try:
             if not payload_path.endswith('.py'):
                 payload_path = payload_path + '.py'
@@ -82,7 +87,8 @@ class Importer:
 
         return payload
 
-    def import_encoder(self, encoder_path):
+    @staticmethod
+    def import_encoder(encoder_path):
         try:
             if not encoder_path.endswith('.py'):
                 encoder_path = encoder_path + '.py'
@@ -97,7 +103,8 @@ class Importer:
 
         return encoder
 
-    def import_module(self, module_path):
+    @staticmethod
+    def import_module(module_path):
         try:
             if not module_path.endswith('.py'):
                 module_path = module_path + '.py'
@@ -112,7 +119,8 @@ class Importer:
 
         return module
 
-    def import_plugin(self, plugin_path):
+    @staticmethod
+    def import_plugin(plugin_path):
         try:
             if not plugin_path.endswith('.py'):
                 plugin_path = plugin_path + '.py'

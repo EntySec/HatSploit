@@ -32,10 +32,13 @@ from hatsploit.core.utils.ui.colors_script import ColorsScript
 from hatsploit.lib.storage import LocalStorage
 
 
-class IO:
-    local_storage = LocalStorage()
-    fmt = FMT()
-    colors_script = ColorsScript()
+class IO(object):
+    def __init__(self):
+        super().__init__()
+
+        self.local_storage = LocalStorage()
+        self.fmt = FMT()
+        self.colors_script = ColorsScript()
 
     def print(self, message='', start='%remove', end='%newline'):
         line = self.colors_script.parse(start + message + end)

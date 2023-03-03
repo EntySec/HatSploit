@@ -32,9 +32,12 @@ from hatsploit.core.cli.badges import Badges
 from hatsploit.lib.config import Config
 
 
-class Update:
-    config = Config()
-    badges = Badges()
+class Update(object):
+    def __init__(self):
+        super().__init__()
+
+        self.config = Config()
+        self.badges = Badges()
 
     def check_update(self):
         try:

@@ -31,13 +31,16 @@ from hatsploit.core.cli.tools import Tools
 
 
 class Plugin(FMT, Badges, Colors, Parser, Tables, Tools):
-    details = {
-        'Name': "",
-        'Authors': [
-            ''
-        ],
-        'Description': ""
-    }
+    def __init__(self):
+        super().__init__()
+
+        self.details = {
+            'Name': "",
+            'Authors': [
+                ''
+            ],
+            'Description': ""
+        }
 
     def load(self):
         pass

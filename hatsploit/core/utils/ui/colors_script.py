@@ -27,30 +27,33 @@ import os
 from hatsploit.core.cli.colors import Colors
 
 
-class ColorsScript:
-    colors = Colors()
-    script_extension = "colors"
+class ColorsScript(object):
+    def __init__(self):
+        super().__init__()
 
-    commands = {
-        '%black': colors.BLACK,
-        '%red': colors.RED,
-        '%green': colors.GREEN,
-        '%yellow': colors.YELLOW,
-        '%blue': colors.BLUE,
-        '%purple': colors.PURPLE,
-        '%cyan': colors.CYAN,
-        '%white': colors.WHITE,
-        '%end': colors.END,
-        '%bold': colors.BOLD,
-        '%dark': colors.DARK,
-        '%bent': colors.BENT,
-        '%line': colors.LINE,
-        '%twink': colors.TWINK,
-        '%back': colors.BACK,
-        '%remove': colors.REMOVE,
-        '%clear': colors.CLEAR,
-        '%newline': colors.NEWLINE,
-    }
+        self.colors = Colors()
+        self.script_extension = "colors"
+
+        self.commands = {
+            '%black': self.colors.BLACK,
+            '%red': self.colors.RED,
+            '%green': self.colors.GREEN,
+            '%yellow': self.colors.YELLOW,
+            '%blue': self.colors.BLUE,
+            '%purple': self.colors.PURPLE,
+            '%cyan': self.colors.CYAN,
+            '%white': self.colors.WHITE,
+            '%end': self.colors.END,
+            '%bold': self.colors.BOLD,
+            '%dark': self.colors.DARK,
+            '%bent': self.colors.BENT,
+            '%line': self.colors.LINE,
+            '%twink': self.colors.TWINK,
+            '%back': self.colors.BACK,
+            '%remove': self.colors.REMOVE,
+            '%clear': self.colors.CLEAR,
+            '%newline': self.colors.NEWLINE,
+        }
 
     def parse(self, line):
         if line and line[0:8] != "%comment" and not line.isspace():
