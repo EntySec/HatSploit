@@ -7,6 +7,7 @@ from hatsploit.lib.command import Command
 from hatsploit.lib.jobs import Jobs
 from hatsploit.lib.modules import Modules
 from hatsploit.lib.runtime import Runtime
+from hatsploit.lib.sessions import Sessions
 
 
 class HatSploitCommand(Command):
@@ -16,6 +17,7 @@ class HatSploitCommand(Command):
         self.modules = Modules()
         self.jobs = Jobs()
         self.runtime = Runtime()
+        self.sessions = Sessions()
 
         self.details = {
             'Category': "modules",
@@ -35,6 +37,8 @@ class HatSploitCommand(Command):
         if argc > 1:
             if argv[1] == '-j' and current_module:
                 job_id = self.jobs.count_jobs()
+
+                self.sessions.disable_auto_interaction() # so it won't break prompt
 
                 self.print_process("Running module as a background job...")
                 self.print_information(
