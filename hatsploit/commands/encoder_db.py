@@ -10,29 +10,32 @@ from hatsploit.lib.show import Show
 
 
 class HatSploitCommand(Command):
-    db = DB()
-    builder = Builder()
-    show = Show()
+    def __init__(self):
+        super().__init__()
 
-    details = {
-        'Category': "databases",
-        'Name': "encoder_db",
-        'Authors': [
-            'Ivan Nikolsky (enty8080) - command developer',
-        ],
-        'Description': "Manage encoder databases.",
-        'Usage': "encoder_db <option> [arguments]",
-        'MinArgs': 1,
-        'Options': {
-            '-l': ['', "List all connected encoder databases."],
-            '-d': ['<name>', "Disconnect specified encoder database."],
-            '-c': ['<name> <path>', "Connect new encoder database."],
-            '-b': [
-                '<path> <output_path>',
-                "Build encoder database from encoders path.",
+        self.db = DB()
+        self.builder = Builder()
+        self.show = Show()
+
+        self.details = {
+            'Category': "databases",
+            'Name': "encoder_db",
+            'Authors': [
+                'Ivan Nikolsky (enty8080) - command developer',
             ],
-        },
-    }
+            'Description': "Manage encoder databases.",
+            'Usage': "encoder_db <option> [arguments]",
+            'MinArgs': 1,
+            'Options': {
+                '-l': ['', "List all connected encoder databases."],
+                '-d': ['<name>', "Disconnect specified encoder database."],
+                '-c': ['<name> <path>', "Connect new encoder database."],
+                '-b': [
+                    '<path> <output_path>',
+                    "Build encoder database from encoders path.",
+                ],
+            },
+        }
 
     def run(self, argc, argv):
         choice = argv[1]

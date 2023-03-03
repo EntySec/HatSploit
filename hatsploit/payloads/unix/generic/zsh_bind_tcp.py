@@ -7,18 +7,21 @@ from hatsploit.lib.payload import Payload
 
 
 class HatSploitPayload(Payload):
-    details = {
-        'Name': "ZSH shell Bind TCP",
-        'Payload': "unix/generic/zsh_bind_tcp",
-        'Authors': [
-            'Ivan Nikolsky (enty8080) - payload developer',
-        ],
-        'Description': "ZSH shell bind TCP payload.",
-        'Architecture': "generic",
-        'Platform': "unix",
-        'Rank': "high",
-        'Type': "bind_tcp",
-    }
+    def __init__(self):
+        super().__init__()
+
+        self.details = {
+            'Name': "ZSH shell Bind TCP",
+            'Payload': "unix/generic/zsh_bind_tcp",
+            'Authors': [
+                'Ivan Nikolsky (enty8080) - payload developer',
+            ],
+            'Description': "ZSH shell bind TCP payload.",
+            'Architecture': "generic",
+            'Platform': "unix",
+            'Rank': "high",
+            'Type': "bind_tcp",
+        }
 
     def run(self):
         bind_port = self.handler['BPORT']

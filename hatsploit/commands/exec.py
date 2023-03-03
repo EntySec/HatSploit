@@ -8,18 +8,21 @@ from hatsploit.lib.commands import Commands
 
 
 class HatSploitCommand(Command):
-    commands = Commands()
+    def __init__(self):
+        super().__init__()
 
-    details = {
-        'Category': "developer",
-        'Name': "exec",
-        'Authors': [
-            'Ivan Nikolsky (enty8080) - command developer',
-        ],
-        'Description': "Execute local system command.",
-        'Usage': "exec <command>",
-        'MinArgs': 1,
-    }
+        self.commands = Commands()
+
+        self.details = {
+            'Category': "developer",
+            'Name': "exec",
+            'Authors': [
+                'Ivan Nikolsky (enty8080) - command developer',
+            ],
+            'Description': "Execute local system command.",
+            'Usage': "exec <command>",
+            'MinArgs': 1,
+        }
 
     def run(self, argc, argv):
         commands = self.format_commands(argv[1])

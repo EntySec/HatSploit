@@ -9,19 +9,22 @@ from hatsploit.lib.show import Show
 
 
 class HatSploitCommand(Command):
-    modules = Modules()
-    show = Show()
+    def __init__(self):
+        super().__init__()
 
-    details = {
-        'Category': "modules",
-        'Name': "info",
-        'Authors': [
-            'Ivan Nikolsky (enty8080) - command developer',
-        ],
-        'Description': "Show module information.",
-        'Usage': "info [<module>]",
-        'MinArgs': 0,
-    }
+        self.modules = Modules()
+        self.show = Show()
+
+        self.details = {
+            'Category': "modules",
+            'Name': "info",
+            'Authors': [
+                'Ivan Nikolsky (enty8080) - command developer',
+            ],
+            'Description': "Show module information.",
+            'Usage': "info [<module>]",
+            'MinArgs': 0,
+        }
 
     complete = modules.modules_completer
 

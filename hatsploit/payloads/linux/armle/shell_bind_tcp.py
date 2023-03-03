@@ -3,24 +3,26 @@ This payload requires HatSploit: https://hatsploit.com
 Current source: https://github.com/EntySec/HatSploit
 """
 
-from pex.socket import Socket
-
 from hatsploit.lib.payload import Payload
+from pex.socket import Socket
 
 
 class HatSploitPayload(Payload, Socket):
-    details = {
-        'Name': "Linux armle Shell Bind TCP",
-        'Payload': "linux/armle/shell_bind_tcp",
-        'Authors': [
-            'Ivan Nikolsky (enty8080) - payload developer',
-        ],
-        'Description': "Shell bind TCP payload for Linux armle.",
-        'Architecture': "armle",
-        'Platform': "linux",
-        'Rank': "high",
-        'Type': "bind_tcp",
-    }
+    def __init__(self):
+        super().__init__()
+
+        self.details = {
+            'Name': "Linux armle Shell Bind TCP",
+            'Payload': "linux/armle/shell_bind_tcp",
+            'Authors': [
+                'Ivan Nikolsky (enty8080) - payload developer',
+            ],
+            'Description': "Shell bind TCP payload for Linux armle.",
+            'Architecture': "armle",
+            'Platform': "linux",
+            'Rank': "high",
+            'Type': "bind_tcp",
+        }
 
     def run(self):
         bind_port = self.pack_port(self.handler['BPORT'])

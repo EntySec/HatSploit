@@ -11,19 +11,22 @@ from hatsploit.lib.sessions import Sessions
 
 
 class HatSploitCommand(Command):
-    jobs = Jobs()
-    sessions = Sessions()
+    def __init__(self):
+        super().__init__()
 
-    details = {
-        'Category': "core",
-        'Name': "exit",
-        'Authors': [
-            'Ivan Nikolsky (enty8080) - command developer',
-        ],
-        'Description': "Exit HatSploit Framework.",
-        'Usage': "exit",
-        'MinArgs': 0,
-    }
+        self.jobs = Jobs()
+        self.sessions = Sessions()
+
+        self.details = {
+            'Category': "core",
+            'Name': "exit",
+            'Authors': [
+                'Ivan Nikolsky (enty8080) - command developer',
+            ],
+            'Description': "Exit HatSploit Framework.",
+            'Usage': "exit",
+            'MinArgs': 0,
+        }
 
     def run(self, argc, argv):
         if self.jobs.get_jobs():

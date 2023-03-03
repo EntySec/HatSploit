@@ -8,18 +8,21 @@ from hatsploit.lib.plugins import Plugins
 
 
 class HatSploitCommand(Command):
-    plugins = Plugins()
+    def __init__(self):
+        super().__init__()
 
-    details = {
-        'Category': "plugins",
-        'Name': "unload",
-        'Authors': [
-            'Ivan Nikolsky (enty8080) - command developer',
-        ],
-        'Description': "Unload specified loaded plugin.",
-        'Usage': "unload <plugin|number>",
-        'MinArgs': 1,
-    }
+        self.plugins = Plugins()
+
+        self.details = {
+            'Category': "plugins",
+            'Name': "unload",
+            'Authors': [
+                'Ivan Nikolsky (enty8080) - command developer',
+            ],
+            'Description': "Unload specified loaded plugin.",
+            'Usage': "unload <plugin|number>",
+            'MinArgs': 1,
+        }
 
     complete = plugins.loaded_plugins_completer
 

@@ -7,18 +7,21 @@ from hatsploit.lib.payload import Payload
 
 
 class HatSploitPayload(Payload):
-    details = {
-        'Name': "KSH shell Reverse TCP",
-        'Payload': "unix/generic/ksh_reverse_tcp",
-        'Authors': [
-            'Ivan Nikolsky (enty8080) - payload developer',
-        ],
-        'Description': "KSH shell reverse TCP payload.",
-        'Architecture': "generic",
-        'Platform': "unix",
-        'Rank': "high",
-        'Type': "reverse_tcp",
-    }
+    def __init__(self):
+        super().__init__()
+
+        self.details = {
+            'Name': "KSH shell Reverse TCP",
+            'Payload': "unix/generic/ksh_reverse_tcp",
+            'Authors': [
+                'Ivan Nikolsky (enty8080) - payload developer',
+            ],
+            'Description': "KSH shell reverse TCP payload.",
+            'Architecture': "generic",
+            'Platform': "unix",
+            'Rank': "high",
+            'Type': "reverse_tcp",
+        }
 
     def run(self):
         remote_host = self.handler['RHOST']

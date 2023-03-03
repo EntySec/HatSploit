@@ -8,18 +8,21 @@ from hatsploit.lib.commands import Commands
 
 
 class HatSploitCommand(Command):
-    commands = Commands()
+    def __init__(self):
+        super().__init__()
 
-    details = {
-        'Category': "developer",
-        'Name': "repeat",
-        'Authors': [
-            'Ivan Nikolsky (enty8080) - command developer',
-        ],
-        'Description': "Repeat specified command.",
-        'Usage': "repeat <times> <command>",
-        'MinArgs': 2,
-    }
+        self.commands = Commands()
+
+        self.details = {
+            'Category': "developer",
+            'Name': "repeat",
+            'Authors': [
+                'Ivan Nikolsky (enty8080) - command developer',
+            ],
+            'Description': "Repeat specified command.",
+            'Usage': "repeat <times> <command>",
+            'MinArgs': 2,
+        }
 
     def run(self, argc, argv):
         if argv[1].isdigit():

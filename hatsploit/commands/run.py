@@ -10,21 +10,24 @@ from hatsploit.lib.runtime import Runtime
 
 
 class HatSploitCommand(Command):
-    modules = Modules()
-    jobs = Jobs()
-    runtime = Runtime()
+    def __init__(self):
+        super().__init__()
 
-    details = {
-        'Category': "modules",
-        'Name': "run",
-        'Authors': [
-            'Ivan Nikolsky (enty8080) - command developer',
-        ],
-        'Description': "Run current module.",
-        'Usage': "run [option]",
-        'MinArgs': 0,
-        'Options': {'-j': ['', "Run current module as a background job."]},
-    }
+        self.modules = Modules()
+        self.jobs = Jobs()
+        self.runtime = Runtime()
+
+        self.details = {
+            'Category': "modules",
+            'Name': "run",
+            'Authors': [
+                'Ivan Nikolsky (enty8080) - command developer',
+            ],
+            'Description': "Run current module.",
+            'Usage': "run [option]",
+            'MinArgs': 0,
+            'Options': {'-j': ['', "Run current module as a background job."]},
+        }
 
     def run(self, argc, argv):
         current_module = self.modules.get_current_module()
