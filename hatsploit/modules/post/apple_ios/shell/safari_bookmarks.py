@@ -3,40 +3,42 @@ This module requires HatSploit: https://hatsploit.com
 Current source: https://github.com/EntySec/HatSploit
 """
 
-from pex.db import DB
-
 from hatsploit.lib.loot import Loot
 from hatsploit.lib.module import Module
 from hatsploit.lib.sessions import Sessions
+from pex.db import DB
 
 
 class HatSploitModule(Module, Sessions, DB):
-    details = {
-        'Category': "post",
-        'Name': "Obtain Safari bookmarks",
-        'Module': "post/apple_ios/shell/safari_bookmarks",
-        'Authors': [
-            'Ivan Nikolsky (enty8080) - module developer',
-        ],
-        'Description': "Get iOS Safari bookmarks database and parse it.",
-        'Platform': "apple_ios",
-        'Rank': "medium",
-    }
+    def __init__(self):
+        super().__init__()
 
-    options = {
-        'SESSION': {
-            'Description': "Session to run on.",
-            'Value': None,
-            'Type': {'session': {'Platforms': ['apple_ios'], 'Type': 'shell'}},
-            'Required': True,
-        },
-        'PATH': {
-            'Description': "Path to save file.",
-            'Value': Loot().specific_loot('Bookmarks.db'),
-            'Type': None,
-            'Required': True,
-        },
-    }
+        self.details = {
+            'Category': "post",
+            'Name': "Obtain Safari bookmarks",
+            'Module': "post/apple_ios/shell/safari_bookmarks",
+            'Authors': [
+                'Ivan Nikolsky (enty8080) - module developer',
+            ],
+            'Description': "Get iOS Safari bookmarks database and parse it.",
+            'Platform': "apple_ios",
+            'Rank': "medium",
+        }
+
+        self.options = {
+            'SESSION': {
+                'Description': "Session to run on.",
+                'Value': None,
+                'Type': {'session': {'Platforms': ['apple_ios'], 'Type': 'shell'}},
+                'Required': True,
+            },
+            'PATH': {
+                'Description': "Path to save file.",
+                'Value': Loot().specific_loot('Bookmarks.db'),
+                'Type': None,
+                'Required': True,
+            },
+        }
 
     def run(self):
         session, path = self.parse_options(self.options)

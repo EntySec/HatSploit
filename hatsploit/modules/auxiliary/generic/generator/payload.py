@@ -3,42 +3,44 @@ This module requires HatSploit: https://hatsploit.com
 Current source: https://github.com/EntySec/HatSploit
 """
 
-from pex.assembler import Assembler
-
 from hatsploit.lib.loot import Loot
 from hatsploit.lib.module import Module
+from pex.assembler import Assembler
 
 
 class HatSploitModule(Module, Assembler):
-    loot = Loot()
+    def __init__(self):
+        super().__init__()
 
-    details = {
-        'Category': "auxiliary",
-        'Name': "Generic Payload Generator",
-        'Module': "auxiliary/generic/generator/payload",
-        'Authors': [
-            'Ivan Nikolsky (enty8080) - module developer',
-        ],
-        'Description': "Generate specified payload.",
-        'Platform': "generic",
-        'Rank': "low",
-    }
+        self.loot = Loot()
 
-    payload = {
-        'Value': 'macos/x64/say',
-        'Architectures': None,
-        'Platforms': None,
-        'Types': None,
-    }
-
-    options = {
-        'PATH': {
-            'Description': "Path to save file.",
-            'Value': loot.random_loot(),
-            'Type': None,
-            'Required': True,
+        self.details = {
+            'Category': "auxiliary",
+            'Name': "Generic Payload Generator",
+            'Module': "auxiliary/generic/generator/payload",
+            'Authors': [
+                'Ivan Nikolsky (enty8080) - module developer',
+            ],
+            'Description': "Generate specified payload.",
+            'Platform': "generic",
+            'Rank': "low",
         }
-    }
+
+        self.payload = {
+            'Value': 'macos/x64/say',
+            'Architectures': None,
+            'Platforms': None,
+            'Types': None,
+        }
+
+        self.options = {
+            'PATH': {
+                'Description': "Path to save file.",
+                'Value': self.loot.random_loot(),
+                'Type': None,
+                'Required': True,
+            }
+        }
 
     def run(self):
         path = self.parse_options(self.options)

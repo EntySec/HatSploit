@@ -10,33 +10,36 @@ from hatsploit.lib.plugin import Plugin
 
 
 class HatSploitPlugin(Plugin):
-    tunnels = []
-    handler = ngrok
+    def __init__(self):
+        super().__init__()
 
-    details = {
-        'Name': "HatSploit Ngrok Implementation",
-        'Plugin': "ngrok",
-        'Authors': [
-            'Ivan Nikolsky (enty8080) - plugin developer'
-        ],
-        'Description': "Manage ngrok service right from HatSploit.",
-    }
+        self.tunnels = []
+        self.handler = ngrok
 
-    commands = {
-        'ngrok': {
+        self.details = {
+            'Name': "HatSploit Ngrok Implementation",
+            'Plugin': "ngrok",
+            'Authors': [
+                'Ivan Nikolsky (enty8080) - plugin developer'
+            ],
+            'Description': "Manage ngrok service right from HatSploit.",
+        }
+
+        self.commands = {
             'ngrok': {
-                'Description': "Manage ngrok service.",
-                'Usage': "ngrok <option> [arguments]",
-                'MinArgs': 1,
-                'Options': {
-                    '-l': ['', "List all active tunnels."],
-                    '-o': ['<port>', "Open tunnel for specified port."],
-                    '-c': ['<id>', "Close specified tunnel."],
-                    '-a': ['<token>', "Authenticate ngrok API token."],
-                },
+                'ngrok': {
+                    'Description': "Manage ngrok service.",
+                    'Usage': "ngrok <option> [arguments]",
+                    'MinArgs': 1,
+                    'Options': {
+                        '-l': ['', "List all active tunnels."],
+                        '-o': ['<port>', "Open tunnel for specified port."],
+                        '-c': ['<id>', "Close specified tunnel."],
+                        '-a': ['<token>', "Authenticate ngrok API token."],
+                    },
+                }
             }
         }
-    }
 
     @staticmethod
     def parse_tunnel(tunnel):
@@ -47,7 +50,7 @@ class HatSploitPlugin(Plugin):
 
         return host, port
 
-    def ngrok(self, argc, argv):
+    def ngrok(self, _, argv):
         if argv[1] in ['-o', '--open']:
             try:
                 self.print_process(f"Opening tunnel for port {argv[2]}...")

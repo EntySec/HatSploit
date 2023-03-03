@@ -9,24 +9,27 @@ from hatsploit.lib.plugin import Plugin
 
 
 class HatSploitPlugin(Plugin):
-    details = {
-        'Name': "HatSploit Cowsay Implementation",
-        'Plugin': "cowsay",
-        'Authors': [
-            'Ivan Nikolsky (enty8080) - plugin developer',
-        ],
-        'Description': "Cowsay plugin for HatSploit.",
-    }
+    def __init__(self):
+        super().__init__()
 
-    commands = {
-        'cowsay': {
+        self.details = {
+            'Name': "HatSploit Cowsay Implementation",
+            'Plugin': "cowsay",
+            'Authors': [
+                'Ivan Nikolsky (enty8080) - plugin developer',
+            ],
+            'Description': "Cowsay plugin for HatSploit.",
+        }
+
+        self.commands = {
             'cowsay': {
-                'Description': "Ask cow to say message.",
-                'Usage': "cowsay <message>",
-                'MinArgs': 1,
+                'cowsay': {
+                    'Description': "Ask cow to say message.",
+                    'Usage': "cowsay <message>",
+                    'MinArgs': 1,
+                }
             }
         }
-    }
 
     def ask_cow(self, message, length=40):
         return self.build_bubble(message, length) + self.build_cow()
@@ -68,7 +71,7 @@ class HatSploitPlugin(Plugin):
         bubble.append(" --" + "-" * bordersize)
         return "\n".join(bubble)
 
-    def cowsay(self, argc, argv):
+    def cowsay(self, _, argv):
         message = argv[1]
         cow = self.ask_cow(message, len(message))
         self.print_empty(cow)

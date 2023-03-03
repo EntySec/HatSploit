@@ -3,32 +3,34 @@ This module requires HatSploit: https://hatsploit.com
 Current source: https://github.com/EntySec/HatSploit
 """
 
-from pex.proto.tcp import TCPTools
-
 from hatsploit.lib.module import Module
+from pex.proto.tcp import TCPTools
 
 
 class HatSploitModule(Module, TCPTools):
-    details = {
-        'Category': "auxiliary",
-        'Name': "Jailbreak Installation Checker",
-        'Module': "auxiliary/apple_ios/checker/jailbroken_or_not",
-        'Authors': [
-            'Ivan Nikolsky (enty8080) - module developer',
-        ],
-        'Description': "Check if remote iPhone jailbroken.",
-        'Platform': "apple_ios",
-        'Rank': "low",
-    }
+    def __init__(self):
+        super().__init__()
 
-    options = {
-        'HOST': {
-            'Description': "Remote host.",
-            'Value': None,
-            'Type': "ip",
-            'Required': True,
+        self.details = {
+            'Category': "auxiliary",
+            'Name': "Jailbreak Installation Checker",
+            'Module': "auxiliary/apple_ios/checker/jailbroken_or_not",
+            'Authors': [
+                'Ivan Nikolsky (enty8080) - module developer',
+            ],
+            'Description': "Check if remote iPhone jailbroken.",
+            'Platform': "apple_ios",
+            'Rank': "low",
         }
-    }
+
+        self.options = {
+            'HOST': {
+                'Description': "Remote host.",
+                'Value': None,
+                'Type': "ip",
+                'Required': True,
+            }
+        }
 
     def run(self):
         remote_host = self.parse_options(self.options)

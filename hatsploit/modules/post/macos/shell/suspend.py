@@ -8,26 +8,29 @@ from hatsploit.lib.sessions import Sessions
 
 
 class HatSploitModule(Module, Sessions):
-    details = {
-        'Category': "post",
-        'Name': "macOS Shell Suspend",
-        'Module': "post/macos/shell/suspend",
-        'Authors': [
-            'Ivan Nikolsky (enty8080) - module developer',
-        ],
-        'Description': "Suspend macOS through shell.",
-        'Platform': "macos",
-        'Rank': "medium",
-    }
+    def __init__(self):
+        super().__init__()
 
-    options = {
-        'SESSION': {
-            'Description': "Session to run on.",
-            'Value': None,
-            'Type': {'session': {'Platforms': ['macos'], 'Type': 'shell'}},
-            'Required': True,
+        self.details = {
+            'Category': "post",
+            'Name': "macOS Shell Suspend",
+            'Module': "post/macos/shell/suspend",
+            'Authors': [
+                'Ivan Nikolsky (enty8080) - module developer',
+            ],
+            'Description': "Suspend macOS through shell.",
+            'Platform': "macos",
+            'Rank': "medium",
         }
-    }
+
+        self.options = {
+            'SESSION': {
+                'Description': "Session to run on.",
+                'Value': None,
+                'Type': {'session': {'Platforms': ['macos'], 'Type': 'shell'}},
+                'Required': True,
+            }
+        }
 
     def run(self):
         session = self.parse_options(self.options)
