@@ -24,7 +24,7 @@ class HatSploitCommand(Command):
             'MinArgs': 1,
         }
 
-    complete = plugins.plugins_completer
+        self.complete = self.plugins.plugins_completer
 
     def run(self, argc, argv):
         self.plugins.load_plugin(argv[1])
