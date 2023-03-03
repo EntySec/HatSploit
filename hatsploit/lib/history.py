@@ -36,10 +36,10 @@ class History(object):
         self.config = Config()
         self.local_storage = LocalStorage()
 
-        self.history = config.path_config['history_path']
-        self.storage_path = config.path_config['storage_path']
+        self.history = self.config.path_config['history_path']
+        self.storage_path = self.config.path_config['storage_path']
 
-        self.global_storage = GlobalStorage(storage_path)
+        self.global_storage = GlobalStorage(self.storage_path)
 
     def enable_history(self):
         self.global_storage.set("history", True)
