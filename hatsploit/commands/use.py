@@ -24,7 +24,7 @@ class HatSploitCommand(Command):
             'MinArgs': 1,
         }
 
-        self.complete = modules.modules_completer
+        self.complete = self.modules.modules_completer
 
     def run(self, argc, argv):
         self.modules.use_module(argv[1])
