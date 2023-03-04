@@ -5,7 +5,6 @@ Current source: https://github.com/EntySec/HatSploit
 
 from hatsploit.lib.command import Command
 from hatsploit.lib.modules import Modules
-from hatsploit.lib.runtime import Runtime
 from hatsploit.lib.jobs import Jobs
 from hatsploit.lib.sessions import Sessions
 
@@ -15,7 +14,6 @@ class HatSploitCommand(Command):
         super().__init__()
 
         self.modules = Modules()
-        self.runtime = Runtime()
         self.sessions = Sessions()
         self.jobs = Jobs()
 
@@ -34,11 +32,6 @@ class HatSploitCommand(Command):
             },
         }
 
-    def loop(self):
-        self.print_process("Requesting module to run in cycle...")
-
-        self.modules.run_current_module(loop=True)
-
     def run(self, argc, argv):
         current_module = self.modules.get_current_module()
 
@@ -55,25 +48,28 @@ class HatSploitCommand(Command):
             job_id = self.jobs.count_jobs()
 
             if argc > 2 and argv[2] == '-c':
+                self.print_process("Requesting module to run in cycle...")
+
                 self.jobs.create_job(
                     current_module.details['Name'],
                     current_module.details['Module'],
-                    self.runtime.catch,
-                    [self.loop]
+                    self.modules.run_current_module,
+                    [True]
                 )
 
             else:
                 self.jobs.create_job(
                     current_module.details['Name'],
                     current_module.details['Module'],
-                    self.runtime.catch,
-                    [self.modules.run_current_module]
+                    self.modules.run_current_module,
                 )
 
             self.print_information(
                 f"Module started as a background job {str(job_id)}."
             )
         elif argc > 1 and argv[1] == '-c':
+            self.print_process("Requesting module to run in cycle...")
+
             self.sessions.disable_auto_interaction()
             self.print_warning("Disabled auto interaction with sessions.")
 
@@ -85,15 +81,15 @@ class HatSploitCommand(Command):
                 self.jobs.create_job(
                     current_module.details['Name'],
                     current_module.details['Module'],
-                    self.runtime.catch,
-                    [self.loop]
+                    self.modules.run_current_module,
+                    [True]
                 )
 
                 self.print_information(
                     f"Module started as a background job {str(job_id)}."
                 )
             else:
-                self.loop()
+                self.modules.run_current_module(loop=True)
 
         else:
             self.modules.run_current_module()
