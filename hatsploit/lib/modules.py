@@ -33,6 +33,7 @@ from hatsploit.lib.options import Options
 from hatsploit.lib.payloads import Payloads
 from hatsploit.lib.sessions import Sessions
 from hatsploit.lib.storage import LocalStorage
+from hatsploit.lib.runtime import Runtime
 
 
 class Modules(object):
@@ -43,6 +44,7 @@ class Modules(object):
 
         self.badges = Badges()
         self.importer = Importer()
+        self.runtime = Runtime()
 
         self.options = Options()
         self.payloads = Payloads()
