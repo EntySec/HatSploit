@@ -37,10 +37,14 @@ class HatSploitCommand(Command):
     def loop(self):
         self.print_process("Requesting module to run in cycle...")
 
-        self.modules.run_current_module(cycle=True)
+        self.modules.run_current_module(loop=True)
 
     def run(self, argc, argv):
         current_module = self.modules.get_current_module()
+
+        if not current_module:
+            self.print_warning("No module selected.")
+            return
 
         if argc > 1 and argv[1] == '-j':
             self.print_process("Running module as a background job...")
