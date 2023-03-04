@@ -48,6 +48,10 @@ class HatSploitCommand(Command):
 
         if argc > 1 and argv[1] == '-j':
             self.print_process("Running module as a background job...")
+
+            self.sessions.disable_auto_interaction()
+            self.print_warning("Disabled auto interaction with sessions.")
+
             job_id = self.jobs.count_jobs()
 
             if argc > 2 and argv[2] == '-c':
@@ -70,8 +74,12 @@ class HatSploitCommand(Command):
                 f"Module started as a background job {str(job_id)}."
             )
         elif argc > 1 and argv[1] == '-c':
+            self.sessions.disable_auto_interaction()
+            self.print_warning("Disabled auto interaction with sessions.")
+
             if argc > 2 and argv[2] == '-j':
                 self.print_process("Running module as a background job...")
+
                 job_id = self.jobs.count_jobs()
 
                 self.jobs.create_job(
