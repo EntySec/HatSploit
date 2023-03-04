@@ -32,6 +32,7 @@ from hatsploit.lib.encoders import Encoders
 from hatsploit.lib.options import Options
 from hatsploit.lib.payloads import Payloads
 from hatsploit.lib.sessions import Sessions
+from hatsploit.lib.jobs import Jobs
 from hatsploit.lib.storage import LocalStorage
 
 
@@ -43,6 +44,7 @@ class Modules(object):
 
         self.badges = Badges()
         self.importer = Importer()
+        self.jobs = Jobs()
 
         self.options = Options()
         self.payloads = Payloads()
