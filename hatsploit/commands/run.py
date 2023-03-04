@@ -6,6 +6,7 @@ Current source: https://github.com/EntySec/HatSploit
 from hatsploit.lib.command import Command
 from hatsploit.lib.modules import Modules
 from hatsploit.lib.runtime import Runtime
+from hatsploit.lib.jobs import Jobs
 from hatsploit.lib.sessions import Sessions
 
 
@@ -16,6 +17,7 @@ class HatSploitCommand(Command):
         self.modules = Modules()
         self.runtime = Runtime()
         self.sessions = Sessions()
+        self.jobs = Jobs()
 
         self.details = {
             'Category': "modules",
