@@ -33,7 +33,6 @@ from hatsploit.lib.options import Options
 from hatsploit.lib.payloads import Payloads
 from hatsploit.lib.sessions import Sessions
 from hatsploit.lib.storage import LocalStorage
-from hatsploit.lib.runtime import Runtime
 
 
 class Modules(object):
@@ -44,7 +43,6 @@ class Modules(object):
 
         self.badges = Badges()
         self.importer = Importer()
-        self.runtime = Runtime()
 
         self.options = Options()
         self.payloads = Payloads()
@@ -479,12 +477,20 @@ class Modules(object):
 
     def run_current_module(self, loop=False):
         if not loop:
-            return self.prepare_and_entry()
+            if exception_handler is not None:
+                return exception_handler(
+                    self.prepare_and_entry
+                )
+            else:
+                return self.prepare_and_entry()
 
         while True:
-            self.runtime.catch(
-                self.prepare_and_entry
-            )
+            if exception_handler is not None:
+                exception_handler(
+                    self.prepare_and_entry
+                )
+            else:
+                self.prepare_and_entry()
 
     def prepare_and_entry(self):
         current_module = copy.deepcopy(self.get_current_module())
