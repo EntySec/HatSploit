@@ -6,6 +6,7 @@ Current source: https://github.com/EntySec/HatSploit
 from hatsploit.lib.command import Command
 from hatsploit.lib.modules import Modules
 from hatsploit.lib.jobs import Jobs
+from hatsploit.lib.runtime import Runtime
 from hatsploit.lib.sessions import Sessions
 
 
@@ -15,6 +16,7 @@ class HatSploitCommand(Command):
 
         self.modules = Modules()
         self.sessions = Sessions()
+        self.runtime = Runtime()
         self.jobs = Jobs()
 
         self.details = {
@@ -54,7 +56,7 @@ class HatSploitCommand(Command):
                     current_module.details['Name'],
                     current_module.details['Module'],
                     self.modules.run_current_module,
-                    [True]
+                    [True, self.runtime.catch],
                 )
 
             else:
@@ -62,6 +64,7 @@ class HatSploitCommand(Command):
                     current_module.details['Name'],
                     current_module.details['Module'],
                     self.modules.run_current_module,
+                    [False, self.runtime.catch],
                 )
 
             self.print_information(
@@ -82,7 +85,7 @@ class HatSploitCommand(Command):
                     current_module.details['Name'],
                     current_module.details['Module'],
                     self.modules.run_current_module,
-                    [True]
+                    [True, self.runtime.catch]
                 )
 
                 self.print_information(
