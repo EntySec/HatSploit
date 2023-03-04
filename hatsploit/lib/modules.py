@@ -475,18 +475,18 @@ class Modules(object):
 
         return False
 
-    def run_current_module(self, loop=False):
+    def run_current_module(self, loop=False, catch=None):
         if not loop:
-            if exception_handler is not None:
-                return exception_handler(
+            if catch is not None:
+                return catch(
                     self.prepare_and_entry
                 )
             else:
                 return self.prepare_and_entry()
 
         while True:
-            if exception_handler is not None:
-                exception_handler(
+            if catch is not None:
+                catch(
                     self.prepare_and_entry
                 )
             else:
