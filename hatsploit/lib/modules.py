@@ -32,7 +32,6 @@ from hatsploit.lib.encoders import Encoders
 from hatsploit.lib.options import Options
 from hatsploit.lib.payloads import Payloads
 from hatsploit.lib.sessions import Sessions
-from hatsploit.lib.jobs import Jobs
 from hatsploit.lib.storage import LocalStorage
 
 
@@ -44,7 +43,6 @@ class Modules(object):
 
         self.badges = Badges()
         self.importer = Importer()
-        self.jobs = Jobs()
 
         self.options = Options()
         self.payloads = Payloads()
@@ -477,11 +475,7 @@ class Modules(object):
 
         return False
 
-    def cycled_entry_to_module(self, current_module):
-        while True:
-            self.entry_to_module(current_module)
-
-    def run_current_module(self, job=False, cycle=False):
+    def run_current_module(self, loop=False):
         current_module = copy.deepcopy(self.get_current_module())
 
         if current_module:
@@ -516,31 +510,11 @@ class Modules(object):
                         current_payload.details['Architecture']
                     )
 
-                if job:
-                    job_id = self.jobs.count_jobs()
-
-                    if not cycle:
-                        self.jobs.create_job(
-                            current_module.details['Name'],
-                            current_module.details['Module'],
-                            self.entry_to_module,
-                            [current_module]
-                        )
-                    else:
-
-                        self.jobs.create_job(
-                            current_module.details['Name'],
-                            current_module.details['Module'],
-                            self.cycled_entry_to_module,
-                            [current_module]
-                        )
-                    return job_id
-                else:
-
-                    if not cycle:
+                if loop:
+                    while True:
                         self.entry_to_module(current_module)
-                    else:
-                        self.cycled_entry_to_module(current_module)
+                else:
+                    self.entry_to_module(current_module)
 
                 self.badges.print_success(
                     f"{current_module_name.split('/')[0].title()} module completed!")
