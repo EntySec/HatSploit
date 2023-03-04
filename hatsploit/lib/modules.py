@@ -475,7 +475,11 @@ class Modules(object):
 
         return False
 
-    def run_current_module(self):
+    def cycled_entry_to_module(self, current_module):
+        while True:
+            self.entry_to_module(current_module)
+
+    def run_current_module(self, job=False, cycle=False):
         current_module = copy.deepcopy(self.get_current_module())
 
         if current_module:
@@ -510,7 +514,32 @@ class Modules(object):
                         current_payload.details['Architecture']
                     )
 
-                self.entry_to_module(current_module)
+                if job:
+                    job_id = self.jobs.count_jobs()
+
+                    if not cycle:
+                        self.jobs.create_job(
+                            current_module.details['Name'],
+                            current_module.details['Module'],
+                            self.entry_to_module,
+                            [current_module]
+                        )
+                    else:
+
+                        self.jobs.create_job(
+                            current_module.details['Name'],
+                            current_module.details['Module'],
+                            self.cycled_entry_to_module,
+                            [current_module]
+                        )
+                    return job_id
+                else:
+
+                    if not cycle:
+                        self.entry_to_module(current_module)
+                    else:
+                        self.cycled_entry_to_module(current_module)
+
                 self.badges.print_success(
                     f"{current_module_name.split('/')[0].title()} module completed!")
             except (KeyboardInterrupt, EOFError):
