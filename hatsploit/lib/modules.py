@@ -514,12 +514,12 @@ class Modules(object):
                     while True:
                         if catch is not None:
                             self.catch(
-                                self.entry_to_module(current_module))
+                                self.entry_to_module, [current_module])
                         else:
                             self.entry_to_module(current_module)
                 else:
                     if catch is not None:
-                        self.catch(self.entry_to_module(current_module))
+                        self.catch(self.entry_to_module, [current_module])
                     else:
                         self.entry_to_module(current_module)
 
