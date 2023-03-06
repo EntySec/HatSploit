@@ -476,23 +476,6 @@ class Modules(object):
         return False
 
     def run_current_module(self, loop=False, catch=None):
-        if not loop:
-            if catch is not None:
-                return catch(
-                    self.prepare_and_entry
-                )
-            else:
-                return self.prepare_and_entry()
-
-        while True:
-            if catch is not None:
-                catch(
-                    self.prepare_and_entry
-                )
-            else:
-                self.prepare_and_entry()
-
-    def prepare_and_entry(self):
         current_module = copy.deepcopy(self.get_current_module())
 
         if current_module:
@@ -527,7 +510,18 @@ class Modules(object):
                         current_payload.details['Architecture']
                     )
 
-                self.entry_to_module(current_module)
+                if loop:
+                    while True:
+                        if catch is not None:
+                            self.catch(
+                                self.entry_to_module(current_module))
+                        else:
+                            self.entry_to_module(current_module)
+                else:
+                    if catch is not None:
+                        self.catch(self.entry_to_module(current_module))
+                    else:
+                        self.entry_to_module(current_module)
 
                 self.badges.print_success(
                     f"{current_module_name.split('/')[0].title()} module completed!")
