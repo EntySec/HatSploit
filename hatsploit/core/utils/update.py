@@ -33,18 +33,30 @@ from hatsploit.lib.config import Config
 
 
 class Update(object):
-    def __init__(self):
+    """ Subclass of hatsploit.core.utils module.
+
+    This subclass of hatsploit.core.utils module is intended for
+    providing tools for working with HatSploit updates.
+    """
+
+    def __init__(self) -> None:
         super().__init__()
 
         self.config = Config()
         self.badges = Badges()
 
-    def check_update(self):
+    def check_update(self) -> bool:
+        """ Check for HatSploit update.
+
+        :return bool: True if update available else False
+        """
+
         try:
             remote_config = requests.get(
                 'https://raw.githubusercontent.com/EntySec/HatSploit/main/hatsploit/config/core_config.yml',
                 stream=True,
             ).content
+
         except Exception:
             remote_config = None
 
@@ -55,12 +67,19 @@ class Update(object):
             local_version = self.config.core_config['details']['version']
 
             return version.parse(local_version) < version.parse(remote_version)
-        return remote_config
+        return False
 
-    def update(self):
+    def update(self) -> None:
+        """ Check for HatSploit update and update it if update
+        is available.
+
+        :return None: None
+        """
+
         if self.check_update():
             self.badges.print_process("Updating HatSploit Framework...")
             shutil.rmtree(os.path.abspath(self.config.path_config['root_path']))
+
             subprocess.call(
                 [
                     'pip3',
@@ -70,6 +89,8 @@ class Update(object):
                 ],
                 shell=False,
             )
+
             self.badges.print_success("HatSploit updated successfully!")
             return
+
         self.badges.print_warning("Your HatSploit is up-to-date.")

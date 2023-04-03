@@ -23,9 +23,9 @@
 #
 
 details:
-  codename: "stable"
-  version: "5.0.0"
-  prompt: "hsf"
+  codename: "m4ry3s1n4"
+  version: "6.0.0"
+  prompt: "hsf6"
 
 console:
   clear: true

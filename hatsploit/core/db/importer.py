@@ -35,9 +35,22 @@ from hatsploit.core.db.db import DB
 from hatsploit.lib.config import Config
 from hatsploit.lib.storage import LocalStorage
 
+from hatsploit.lib.module import Module
+from hatsploit.lib.command import Command
+from hatsploit.lib.plugin import Plugin
+from hatsploit.lib.encoder import Encoder
+from hatsploit.lib.payload import Payload
+
 
 class Importer(object):
-    def __init__(self):
+    """ Subclass of hatsploit.core.db module.
+
+    This subclass of hatsploit.core.db module is intended for
+    providing tools for importing HatSploit modules, plugins,
+    commands, etc.
+    """
+
+    def __init__(self) -> None:
         super().__init__()
 
         self.badges = Badges()
@@ -46,17 +59,14 @@ class Importer(object):
         self.config = Config()
 
     @staticmethod
-    def import_check(module_name):
-        try:
-            __import__(module_name)
-        except ModuleNotFoundError:
-            return False
-        except Exception:
-            return True
-        return True
+    def import_command(command_path: str) -> Command:
+        """ Import command from path.
 
-    @staticmethod
-    def import_command(command_path):
+        :param str command_path: path to command
+        :return Command: command object
+        :raises RuntimeError: with trailing error message
+        """
+
         try:
             if not command_path.endswith('.py'):
                 command_path = command_path + '.py'
@@ -66,13 +76,21 @@ class Importer(object):
 
             spec.loader.exec_module(command)
             command = command.HatSploitCommand()
+
         except Exception as e:
             raise RuntimeError(f"Failed to import command: {str(e)}!")
 
         return command
 
     @staticmethod
-    def import_payload(payload_path):
+    def import_payload(payload_path: str) -> Payload:
+        """ Import payload from path.
+
+        :param str payload_path: path to payload
+        :return Payload: payload object
+        :raises RuntimeError: with trailing error message
+        """
+
         try:
             if not payload_path.endswith('.py'):
                 payload_path = payload_path + '.py'
@@ -82,13 +100,21 @@ class Importer(object):
 
             spec.loader.exec_module(payload)
             payload = payload.HatSploitPayload()
+
         except Exception as e:
             raise RuntimeError(f"Failed to import payload: {str(e)}!")
 
         return payload
 
     @staticmethod
-    def import_encoder(encoder_path):
+    def import_encoder(encoder_path: str) -> Encoder:
+        """ Import encoder from path.
+
+        :param str encoder_path: path to encoder
+        :return Encoder: encoder object
+        :raises RuntimeError: with trailing error message
+        """
+
         try:
             if not encoder_path.endswith('.py'):
                 encoder_path = encoder_path + '.py'
@@ -98,13 +124,21 @@ class Importer(object):
 
             spec.loader.exec_module(encoder)
             encoder = encoder.HatSploitEncoder()
+
         except Exception as e:
             raise RuntimeError(f"Failed to import encoder: {str(e)}!")
 
         return encoder
 
     @staticmethod
-    def import_module(module_path):
+    def import_module(module_path: str) -> Module:
+        """ Import module from path.
+
+        :param str module_path: path to module
+        :return Module: module object
+        :raises RuntimeError: with trailing error message
+        """
+
         try:
             if not module_path.endswith('.py'):
                 module_path = module_path + '.py'
@@ -114,13 +148,21 @@ class Importer(object):
 
             spec.loader.exec_module(module)
             module = module.HatSploitModule()
+
         except Exception as e:
             raise RuntimeError(f"Failed to import module: {str(e)}!")
 
         return module
 
     @staticmethod
-    def import_plugin(plugin_path):
+    def import_plugin(plugin_path: str) -> Plugin:
+        """ Import plugin from path.
+
+        :param str plugin_path: path to plugin
+        :return Plugin: plugin object
+        :raises RuntimeError: with trailing error message
+        """
+
         try:
             if not plugin_path.endswith('.py'):
                 plugin_path = plugin_path + '.py'
@@ -130,12 +172,20 @@ class Importer(object):
 
             spec.loader.exec_module(plugin)
             plugin = plugin.HatSploitPlugin()
+
         except Exception as e:
             raise RuntimeError(f"Failed to import plugin: {str(e)}!")
 
         return plugin
 
-    def import_commands(self, path):
+    def import_commands(self, path: str) -> dict:
+        """ Import all commands from path.
+
+        :param str path: path to commands
+        :return dict: commands, command names as keys and
+        command objects as items
+        """
+
         if not path.endswith('/'):
             path += '/'
 
@@ -148,12 +198,20 @@ class Importer(object):
                     command_object = self.import_command(command_path + '/' + file[:-3])
                     command_name = command_object.details['Name']
                     commands[command_name] = command_object
+
                 except Exception:
                     self.badges.print_error(f"Failed to load {file[:-3]} command!")
 
         return commands
 
-    def import_plugins(self, path):
+    def import_plugins(self, path: str) -> dict:
+        """ Import all plugins from path.
+
+        :param str path: path to plguins
+        :return dict: plugins, plugin names as keys and
+        plugin objects as items
+        """
+
         if not path.endswith('/'):
             path += '/'
 
@@ -166,56 +224,59 @@ class Importer(object):
                     plugin_object = self.import_plugin(plugin_path + '/' + file[:-3])
                     plugin_name = plugin_object.details['Plugin']
                     plugins[plugin_name] = plugin_object
+
                 except Exception:
                     self.badges.print_error(f"Failed to load {file[:-3]} plugin!")
 
         return plugins
 
-    def import_base_commands(self):
+    def import_base_commands(self) -> None:
+        """ Import base (core) commands.
+
+        :return None: None
+        """
+
         commands = self.import_commands(self.config.path_config['commands_path'])
         self.local_storage.set("commands", commands)
 
-    def import_base_databases(self):
-        if os.path.exists(
-                self.config.path_config['db_path']
-                + self.config.db_config['base_dbs']['module_database']
-        ):
+    def import_base_databases(self) -> None:
+        """ Import base databases.
+
+        :return None: None
+        """
+
+        base_dbs = self.config.db_config['base_dbs']
+        db_path = self.config.path_config['db_path']
+
+        if os.path.exists(db_path + base_dbs['module_database']):
             self.db.connect_module_database(
-                self.config.db_config['base_dbs']['module_database_name'],
-                self.config.path_config['db_path']
-                + self.config.db_config['base_dbs']['module_database'],
+                base_dbs['module_database_name'],
+                db_path + base_dbs['module_database'],
             )
 
-        if os.path.exists(
-                self.config.path_config['db_path']
-                + self.config.db_config['base_dbs']['payload_database']
-        ):
+        if os.path.exists(db_path + base_dbs['payload_database']):
             self.db.connect_payload_database(
-                self.config.db_config['base_dbs']['payload_database_name'],
-                self.config.path_config['db_path']
-                + self.config.db_config['base_dbs']['payload_database'],
+                base_dbs['payload_database_name'],
+                db_path + base_dbs['payload_database'],
             )
 
-        if os.path.exists(
-                self.config.path_config['db_path']
-                + self.config.db_config['base_dbs']['encoder_database']
-        ):
+        if os.path.exists(db_path + base_dbs['encoder_database']):
             self.db.connect_encoder_database(
-                self.config.db_config['base_dbs']['encoder_database_name'],
-                self.config.path_config['db_path']
-                + self.config.db_config['base_dbs']['encoder_database'],
+                base_dbs['encoder_database_name'],
+                db_path + base_dbs['encoder_database'],
             )
 
-        if os.path.exists(
-                self.config.path_config['db_path']
-                + self.config.db_config['base_dbs']['plugin_database']
-        ):
+        if os.path.exists(db_path + base_dbs['plugin_database']):
             self.db.connect_plugin_database(
-                self.config.db_config['base_dbs']['plugin_database_name'],
-                self.config.path_config['db_path']
-                + self.config.db_config['base_dbs']['plugin_database'],
+                base_dbs['plugin_database_name'],
+                db_path + base_dbs['plugin_database'],
             )
 
-    def import_all(self):
+    def import_all(self) -> None:
+        """ Import all base commands and all base databases.
+
+        :return None: None
+        """
+
         self.import_base_commands()
         self.import_base_databases()

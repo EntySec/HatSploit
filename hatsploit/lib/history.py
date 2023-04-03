@@ -22,7 +22,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
-import readline
+try:
+    import gnureadline as readline
+except Exception:
+    import readline
 
 from hatsploit.lib.config import Config
 from hatsploit.lib.storage import GlobalStorage
@@ -30,7 +33,13 @@ from hatsploit.lib.storage import LocalStorage
 
 
 class History(object):
-    def __init__(self):
+    """ Subclass of hatsploit.lib module.
+
+    This subclass of hatsploit.lib module is intended for providing
+    tools for interacting with HatSploit history and configuring it.
+    """
+
+    def __init__(self) -> None:
         super().__init__()
 
         self.config = Config()
@@ -41,25 +50,49 @@ class History(object):
 
         self.global_storage = GlobalStorage(self.storage_path)
 
-    def enable_history(self):
+    def enable_history(self) -> None:
+        """ Enable history globally
+        (create history file in workspace).
+
+        :return None: None
+        """
+
         self.global_storage.set("history", True)
         self.global_storage.set_all()
 
-    def disable_history(self):
+    def disable_history(self) -> None:
+        """ Disable and delete history globally
+        (remove history file from workspace).
+
+        :return None: None
+        """
+
         self.global_storage.set("history", False)
         self.global_storage.set_all()
 
         readline.clear_history()
+
         with open(self.history, 'w') as history:
             history.write("")
 
-    def clear_history(self):
+    def clear_history(self) -> None:
+        """ Clear history, clear history file.
+
+        :return None: None
+        """
+
         readline.clear_history()
 
         with open(self.history, 'w') as history:
             history.write("")
 
-    def list_history(self):
+    def list_history(self) -> list:
+        """ List history.
+
+        :return list: history, line per index
+        :raises RuntimeWarning: with trailing warning message
+        """
+
         using_history = self.local_storage.get("history")
 
         if using_history:
@@ -68,6 +101,7 @@ class History(object):
 
                 for index in range(1, readline.get_current_history_length() + 1):
                     history.append(readline.get_history_item(index))
+
                 return history
 
             raise RuntimeWarning("HatSploit history empty.")

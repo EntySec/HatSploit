@@ -24,12 +24,15 @@ SOFTWARE.
 
 import logging
 import sys
+
 from flask import Flask
 from flask import cli
 from flask import jsonify
 from flask import make_response
 from flask import request
+
 from io import StringIO
+
 from pex.string import String
 
 from hatsploit.core.base.execute import Execute
@@ -42,7 +45,14 @@ from hatsploit.lib.payloads import Payloads
 from hatsploit.lib.sessions import Sessions
 
 
-class APIPool:
+class APIPool(object):
+    """ Subclass of hatsploit.core.utils module.
+
+    This subclass of hatsploit.core.utils module is intended
+    for providing a pool for API which collects all output
+    and saves it to pool.
+    """
+
     def __init__(self):
         self._stdout = None
         self._string_io = None
@@ -60,7 +70,22 @@ class APIPool:
 
 
 class API(object):
-    def __init__(self, username, password, host='127.0.0.1', port=8008):
+    """ Subclass of hatsploit.core.utils module.
+
+    This subclass of hatsploit.core.utils module is intended for
+    providing tools for working with HatSploit REST API.
+    """
+
+    def __init__(self, username: str, password: str, host: str = '127.0.0.1', port: int = 7777) -> None:
+        """ Initialize HatSploit REST API server.
+
+        :param str username: REST API server username
+        :param str password: REST API server password
+        :param str host: REST API server host
+        :param int port: REST API server port
+        :return None: None
+        """
+
         super().__init__()
 
         self.string_tools = String()
@@ -83,7 +108,12 @@ class API(object):
 
         self.token = self.string_tools.random_string(32)
 
-    def run(self):
+    def run(self) -> None:
+        """ Run REST API server.
+
+        :return None: None
+        """
+
         cli.show_server_banner = lambda *_: None
         rest_api = Flask("HatSploit")
 
@@ -91,23 +121,28 @@ class API(object):
         log.setLevel(logging.ERROR)
 
         @rest_api.before_request
-        def validate_token():
+        def validate_token() -> None:
+            """ Validate REST API token.
+
+            :return None: None
+            """
+
             if request.path not in ['/login', '/']:
                 token = request.form['token']
 
                 if token != self.token:
                     return make_response('', 401)
 
-                current_module = self.modules.get_current_module()
-                current_payload = self.payloads.get_current_payload(current_module)
-
                 self.jobs.stop_dead()
                 self.sessions.close_dead()
 
-                self.options.add_handler_options(current_module, current_payload)
-
         @rest_api.route('/', methods=['GET', 'POST'])
-        def api():
+        def api() -> None:
+            """ Represents / route for REST API server.
+
+            :return None: None
+            """
+
             version = self.config.core_config['details']['version']
             codename = self.config.core_config['details']['codename']
 
@@ -120,7 +155,12 @@ class API(object):
             return make_response(f"<pre>{response}</pre>", 200)
 
         @rest_api.route('/login', methods=['POST'])
-        def login_api():
+        def login_api() -> None:
+            """ Represents /login route for REST API server.
+
+            :return None: None
+            """
+
             username = request.form['username']
             password = request.form['password']
 
@@ -129,14 +169,24 @@ class API(object):
             return make_response('', 401)
 
         @rest_api.route('/execute', methods=['POST'])
-        def commands_api():
+        def commands_api() -> None:
+            """ Represents /execute route for REST API server.
+
+            :return None: None
+            """
+
             command = request.form['command']
             commands = self.fmt.format_commands(command)
 
             self.execute.execute_command(commands)
 
         @rest_api.route('/payloads', methods=['POST'])
-        def payloads_api():
+        def payloads_api() -> None:
+            """ Represents /payloads route for REST API server.
+
+            :return None: None
+            """
+
             action = None
 
             if 'action' in request.form:
@@ -169,7 +219,12 @@ class API(object):
             return make_response('', 200)
 
         @rest_api.route('/modules', methods=['POST'])
-        def modules_api():
+        def modules_api() -> None:
+            """ Represents /modules route for REST API server.
+
+            :return None: None
+            """
+
             action = None
 
             if 'action' in request.form:
@@ -279,6 +334,11 @@ class API(object):
 
         @rest_api.route('/sessions', methods=['POST'])
         def sessions_api():
+            """ Represents /sessions route for REST API server.
+
+            :return None: None
+            """
+
             action = None
 
             if 'action' in request.form:

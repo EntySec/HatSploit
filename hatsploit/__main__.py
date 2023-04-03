@@ -39,7 +39,13 @@ from hatsploit.lib.runtime import Runtime
 
 
 class HatSploit(object):
-    def __init__(self):
+    """ Main class of hatsploit module.
+
+    This main class of hatsploit module is a representation of
+    HatSploit Framework CLI interface.
+    """
+
+    def __init__(self) -> None:
         super().__init__()
 
         self.jobs = Jobs()
@@ -54,7 +60,13 @@ class HatSploit(object):
 
         self.path_config = self.config.path_config
 
-    def policy(self):
+    def policy(self) -> bool:
+        """ Print Terms of Service and ask for confirmation.
+
+        :return bool: True if user accepted Terms of Service
+        else False
+        """
+
         if not os.path.exists(self.path_config['accept_path']):
             self.badges.print_information("--( The HatSploit Terms of Service )--")
 
@@ -73,7 +85,16 @@ class HatSploit(object):
 
         return True
 
-    def launch(self, shell=True, script=[]):
+    def launch(self, shell: bool = True, scripts: list = []) -> None:
+        """ Launch HatSploit CLI interpreter.
+
+        :param bool shell: True to launch shell interpreter
+        after all scripts executed else False
+        :param list scripts: list of filenames of files
+        containing HatSploit scripts
+        :return None: None
+        """
+
         if self.runtime.catch(self.runtime.check) is not Exception:
             if self.policy():
                 build = False
@@ -85,13 +106,18 @@ class HatSploit(object):
                     build = build[0].lower() in ['y', 'yes']
 
                 if self.runtime.catch(self.runtime.start, [build]) is not Exception:
-                    if not script:
+                    if not scripts:
                         if shell:
                             self.console.shell()
                     else:
-                        self.console.script(script, shell)
+                        self.console.script(scripts, shell)
 
-    def cli(self):
+    def cli(self) -> None:
+        """ Main command-line arguments handler.
+
+        :return None: None
+        """
+
         description = "Modular penetration testing platform that enables you to write, test, and execute exploit code."
         parser = argparse.ArgumentParser(description=description)
         parser.add_argument(
@@ -220,13 +246,13 @@ class HatSploit(object):
                 sys.exit(1)
 
             if args.no_startup:
-                self.launch(shell=args.no_exit, script=[args.script])
+                self.launch(shell=args.no_exit, scripts=[args.script])
 
             else:
                 if os.path.exists(self.path_config['startup_path']):
                     self.launch(
                         shell=args.no_exit,
-                        script=[self.path_config['startup_path'], args.script],
+                        scripts=[self.path_config['startup_path'], args.script],
                     )
 
             sys.exit(0)
@@ -235,6 +261,6 @@ class HatSploit(object):
             self.launch()
         else:
             if os.path.exists(self.path_config['startup_path']):
-                self.launch(script=[self.path_config['startup_path']])
+                self.launch(scripts=[self.path_config['startup_path']])
             else:
                 self.launch()

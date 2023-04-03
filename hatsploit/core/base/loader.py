@@ -34,7 +34,13 @@ from hatsploit.lib.config import Config
 
 
 class Loader(object):
-    def __init__(self):
+    """ Subclass of hatsploit.core.base module.
+
+    This subclass of hatsploit.core.base module is intended
+    for providing HatSploit loader.
+    """
+
+    def __init__(self) -> None:
         super().__init__()
 
         self.badges = Badges()
@@ -44,18 +50,38 @@ class Loader(object):
 
         self.config = Config()
 
-    def load_update_process(self):
+    def load_update_process(self) -> None:
+        """ Check for update and notify user if one available.
+
+        :return None: None
+        """
+
         if self.update.check_update():
             self.badges.print_warning("Your HatSploit Framework is out-dated.")
             self.badges.print_information("Consider running %greenhsf --update%end.")
             time.sleep(1)
 
-    def load_everything(self, build_base=False):
+    def load_everything(self, build_base: bool = False) -> None:
+        """ Load everything, every single database.
+
+        :param bool build_base: True to build base
+        databases else False
+        :return None: None
+        """
+
         if build_base:
             self.builder.build_base()
+
         self.importer.import_all()
 
-    def load_all(self, build_base=False):
+    def load_all(self, build_base: bool = False) -> None:
+        """ Load all: core, databases, interface, etc.
+
+        :param bool build_base: True to build base
+        databases else False
+        :return None: None
+        """
+
         self.load_update_process()
 
         loading_process = threading.Thread(
@@ -67,7 +93,7 @@ class Loader(object):
         cycle = 0
 
         while loading_process.is_alive():
-            for char in "/-\|":
+            for char in r"/-\|":
                 status = base_line + char
                 cycle += 1
 

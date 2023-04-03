@@ -31,7 +31,13 @@ from hatsploit.core.cli.tools import Tools
 
 
 class Module(FMT, Badges, Colors, Parser, Tables, Tools):
-    def __init__(self):
+    """ Subclass of hatsploit.lib module.
+
+    This subclass of hatsploit.lib module is intended for providing
+    wrapper for a module.
+    """
+
+    def __init__(self) -> None:
         super().__init__()
 
         self.details = {
@@ -46,5 +52,10 @@ class Module(FMT, Badges, Colors, Parser, Tables, Tools):
             'Rank': ""
         }
 
-    def run(self):
+    def run(self) -> None:
+        """ Run this module.
+
+        :return None: None
+        """
+
         pass

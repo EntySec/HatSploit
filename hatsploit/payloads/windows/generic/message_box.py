@@ -21,6 +21,7 @@ class HatSploitPayload(Payload):
             'Platform': "windows",
             'Rank': "low",
             'Type': "one_side",
+            'Actions': ['execute']
         }
 
         self.options = {

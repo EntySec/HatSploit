@@ -22,26 +22,45 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
+try:
+    import gnureadline as readline
+except Exception:
+    import readline
+
 import os
-import readline
 import sys
+
+from colorscript import ColorScript
 
 from hatsploit.core.cli.colors import Colors
 from hatsploit.core.cli.fmt import FMT
-from hatsploit.core.utils.ui.colors_script import ColorsScript
 from hatsploit.lib.storage import LocalStorage
 
 
 class IO(object):
-    def __init__(self):
+    """ Subclass of hatsploit.core.base module.
+
+    This subclass of hatsploit.core.base module is intended for
+    providing an implementation of I/O for HatSploit interpreter.
+    """
+
+    def __init__(self) -> None:
         super().__init__()
 
         self.local_storage = LocalStorage()
         self.fmt = FMT()
-        self.colors_script = ColorsScript()
+        self.color_script = ColorScript()
 
-    def print(self, message='', start='%remove', end='%newline'):
-        line = self.colors_script.parse(start + message + end)
+    def print(self, message: str = '', start: str = '%remove', end: str = '%newline') -> None:
+        """ Print string.
+
+        :param str message: message to print
+        :param str start: string to print before the message
+        :param str end: string to print after the message
+        :return None: None
+        """
+
+        line = self.color_script.parse(start + message + end)
         use_log = self.local_storage.get("log")
 
         sys.stdout.write(line)
@@ -57,9 +76,17 @@ class IO(object):
             sys.stdout.write(prompt)
             sys.stdout.flush()
 
-    def input(self, message='', start='%remove%end', end='%end'):
-        line = self.colors_script.parse(
-            self.colors_script.libreadline(start + message + end)
+    def input(self, message: str = '', start: str = '%remove%end', end: str = '%end') -> list:
+        """ Input string.
+
+        :param str message: message to print
+        :param str start: string to print before the message
+        :param str end: string to print after the message
+        :return list: read string separated by space and commas
+        """
+
+        line = self.color_script.parse(
+            self.color_script.libreadline(start + message + end)
         )
 
         use_log = self.local_storage.get("log")

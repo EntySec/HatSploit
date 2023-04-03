@@ -25,5 +25,5 @@ class HatSploitCommand(Command):
         }
 
 
-def run(self, argc, argv):
-    self.modules.go_back()
+    def run(self, argc, argv):
+        self.modules.go_back()

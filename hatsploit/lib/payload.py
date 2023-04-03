@@ -31,7 +31,13 @@ from hatsploit.core.cli.tools import Tools
 
 
 class Payload(FMT, Badges, Colors, Parser, Tables, Tools):
-    def __init__(self):
+    """ Subclass of hatsploit.lib module.
+
+    This subclass of hatsploit.lib module is intended for providing
+    wrapper for a payload.
+    """
+
+    def __init__(self) -> None:
         super().__init__()
 
         self.details = {
@@ -44,8 +50,14 @@ class Payload(FMT, Badges, Colors, Parser, Tables, Tools):
             'Architecture': "",
             'Platform': "",
             'Rank': "",
-            'Type': ""
+            'Type': "",
+            'Actions': []
         }
 
-    def run(self):
+    def run(self) -> None:
+        """ Run this payload.
+
+        :return None: None
+        """
+
         pass

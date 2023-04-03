@@ -22,33 +22,47 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
-import readline
+try:
+    import gnureadline as readline
+except Exception:
+    import readline
 
 from hatsploit.core.cli.fmt import FMT
 from hatsploit.lib.commands import Commands
 
 
 class Completer(object):
-    def __init__(self):
+    """ Subclass of hatsploit.core.utils.ui module.
+
+    This subclass of hatsploit.core.utils.ui module is intended for
+    providing a completer for HatSploit CLI interpreter.
+    """
+
+    def __init__(self) -> None:
         super().__init__()
 
         self.fmt = FMT()
-
         self.commands = Commands()
 
         self.matches = None
 
-    def completer(self, text, state):
+    def completer(self, text: str, state: int) -> list:
+        """ Tab-completion handler.
+
+        :param str text: text to complete
+        :param int state: cursor state
+        :return list: matches
+        """
+
         if state == 0:
             options = []
+            complete_function = self.default_completer
 
             original_line = readline.get_line_buffer()
             line = original_line.lstrip()
 
             stripped = len(original_line) - len(line)
-
             start_index = readline.get_begidx() - stripped
-            end_index = readline.get_endidx() - stripped
 
             if start_index > 0:
                 command = self.fmt.format_commands(line)
@@ -64,6 +78,7 @@ class Completer(object):
                     if command[0] in commands:
                         if hasattr(commands[command[0]], "complete"):
                             complete_function = commands[command[0]].complete
+
                         else:
                             if 'Options' in commands[command[0]].details:
                                 options = commands[command[0]].details['Options']
@@ -73,6 +88,7 @@ class Completer(object):
                     elif command[0] in other_commands:
                         if 'Options' in other_commands[command[0]]:
                             options = other_commands[command[0]]['Options']
+
                         else:
                             complete_function = self.default_completer
 
@@ -89,10 +105,26 @@ class Completer(object):
         try:
             return self.matches[state]
         except IndexError:
-            return None
+            return []
 
-    def options_completer(self, options, text):
+    @staticmethod
+    def options_completer(options: dict, text: str) -> list:
+        """ Tab-completion handler for options.
+
+        :param dict options: dictionary, option names as keys and
+        option details as items
+        :param str text: text to complete
+        :return list: matches
+        """
+
         return [option for option in options if option.startswith(text)]
 
-    def default_completer(self, text):
+    @staticmethod
+    def default_completer(text: str) -> list:
+        """ Tab-completion handler for defaults.
+
+        :param str text: text to complete
+        :return list: matches
+        """
+
         return []

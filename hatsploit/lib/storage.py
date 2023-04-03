@@ -24,47 +24,86 @@ SOFTWARE.
 
 import json
 
+from typing import Union, Any
+
 
 class GlobalStorage(object):
-    def __init__(self, file):
+    """ Subclass of hatsploit.lib module.
+
+    This subclass of hatsploit.lib module is intended for providing
+    tools for interacting with global storage. Global storage represents
+    storage which is storing data on the filesystem and does not reset
+    after HatSploit exits.
+    """
+
+    def __init__(self, file: str) -> None:
+        """ Initialize global storage.
+
+        :param str file: name of file where you want to have
+        global storage.
+        :return None: None
+        """
+
         super().__init__()
 
         self.file = file
 
-    def set_all(self):
-        storage_variables = json.load(open(self.file))
+    def set_all(self) -> None:
+        """ Apply all variables from global storage.
+
+        :return None: None
+        """
+
+        storage_variables = self.get_all()
+
         for variable in storage_variables:
-            if storage_variables[variable] == "True":
-                variable_value = True
-            elif storage_variables[variable] == "False":
-                variable_value = False
-            elif storage_variables[variable] == "None":
-                variable_value = None
-            else:
-                variable_value = storage_variables[variable]
-            LocalStorage.set(variable, variable_value)
+            variable_value = storage_variables[variable]
+            LocalStorage().set(variable, variable_value)
 
-    def get_all(self):
-        storage_variables = json.load(open(self.file))
-        return storage_variables
+    def get_all(self) -> dict:
+        """ Get all global storage variables as a dictionary.
 
-    def set(self, variable, value):
-        storage_variables = json.load(open(self.file))
-        old_storage = storage_variables
-        new_storage = open(self.file, 'w')
+        :return dict: variables, variable names as keys
+        and variable values as items
+        """
 
-        old_storage[variable] = str(value)
-        new_storage.write(str(old_storage).replace("'", '"'))
-        new_storage.close()
+        return json.load(open(self.file))
 
-    def get(self, variable):
-        storage_variables = json.load(open(self.file))
+    def set(self, variable: str, value: Any) -> None:
+        """ Set global storage variable.
+
+        :param str variable: variable name
+        :param Any value: variable value
+        :return None: None
+        """
+
+        config = self.get_all()
+        config.update({variable: value})
+
+        json.dump(config, open(self.file, 'w'))
+
+    def get(self, variable: str) -> Union[None, Any]:
+        """ Get global storage variable value.
+
+        :param str variable: variable name
+        :return Union[None, Any]: None if no such variable else value
+        """
+
+        storage_variables = self.get_all()
+
         if variable in storage_variables:
             return storage_variables[variable]
+
         return None
 
-    def delete(self, variable):
-        storage_variables = json.load(open(self.file))
+    def delete(self, variable: str) -> None:
+        """ Delete global storage variable.
+
+        :param str variable: variable name
+        :return None: None
+        """
+
+        storage_variables = self.get_all()
         old_storage = storage_variables
 
         if variable in old_storage:
@@ -78,66 +117,77 @@ class GlobalStorage(object):
 
 
 class LocalStorage(object):
-    def __init__(self):
+    """ Subclass of hatsploit.lib module.
+
+    This subclass of hatsploit.lib module is intende for providing
+    tools for interacting and configuring local storage. Local storage
+    is a general HatSploit storage that erases after HatSploit exits.
+    """
+
+    def __init__(self) -> None:
         super().__init__()
 
     @staticmethod
-    def get_all():
+    def get_all() -> dict:
+        """ Return all local storage variables.
+
+        :return dict: variables, variable names as keys and
+        variable values as items
+        """
+
         return globals()
 
     @staticmethod
-    def add(name):
-        globals()[name] = None
+    def set(name: str, value: Any) -> None:
+        """ Set local storage variable value.
 
-    @staticmethod
-    def set(name, value):
+        :param str name: variable name
+        :param Any value: variable value
+        :return None: None
+        """
+
         globals()[name] = value
 
-    @staticmethod
-    def update(name, value):
-        try:
-            globals()[name].update(value)
-        except Exception:
-            pass
+    def update(self, name: str, value: Any) -> None:
+        """ Update local storage variable if it is a dictionary.
+
+        :param str name: variable name
+        :param Any value: variable value
+        :return None: None
+        """
+
+        self.get(name, {}).update(value)
+
+    def delete_element(self, name: str, value: str, default: Any = None) -> Any:
+        """ Delete element from specific local storage variable
+        if it is a dictionary.
+
+        :param str name: variable name
+        :param str value: value to delete
+        :param Any default: value to return if element was not found
+        :return Any: deleted element's value
+        """
+
+        return self.get(name, {}).pop(value, default)
 
     @staticmethod
-    def add_array(name, value):
-        try:
-            globals()[name].append(value)
-        except Exception:
-            pass
+    def delete(name: str, default: Any = None) -> Any:
+        """ Delete variable from local storage.
+
+        :param str name: variable name
+        :param Any default: value to return if variable was not found
+        :return Any: deleted variable's value
+        """
+
+        return globals().pop(name, default)
 
     @staticmethod
-    def get_array(name, value):
-        try:
-            return globals()[name][value]
-        except Exception:
-            return None
+    def get(name: str, default: Any = None) -> Any:
+        """ Get variable value from local storage.
 
-    @staticmethod
-    def set_array(name, value1, value2):
-        try:
-            globals()[name][value1] = value2
-        except Exception:
-            pass
+        :param str name: variable name
+        :param Any default: value to return if variable was not found
+        :return Any: variable value
+        """
 
-    @staticmethod
-    def delete_element(name, value):
-        try:
-            del globals()[name][value]
-        except Exception:
-            pass
-
-    @staticmethod
-    def delete(name):
-        try:
-            del globals()[name]
-        except Exception:
-            pass
-
-    @staticmethod
-    def get(name):
-        try:
-            return globals()[name]
-        except Exception:
-            return None
+        return globals().get(name, default)

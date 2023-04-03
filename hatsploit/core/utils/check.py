@@ -31,23 +31,35 @@ from hatsploit.lib.config import Config
 
 
 class Check(object):
-    def __init__(self):
+    """ Subclass of hatsploit.core.utils module.
+
+    This subclass of hatsploit.core.utils module is intended for
+    providing tools for checking HatSploit modules, payloads, plugins and
+    encoders.
+    """
+
+    def __init__(self) -> None:
         super().__init__()
 
         self.config = Config()
         self.importer = Importer()
         self.badges = Badges()
 
-    def check_modules(self):
+    def check_modules(self) -> bool:
+        """ Check base modules.
+
+        :return bool: True if success else False
+        """
+
         one_fail = False
         self.badges.print_process("Checking all base modules...")
 
         modules_path = os.path.normpath(self.config.path_config['modules_path'])
 
-        for dest, _, files in os.walk(modules_path):
+        for dir, _, files in os.walk(modules_path):
             for file in files:
                 if file.endswith('.py') and file != '__init__.py':
-                    module = dest + '/' + file[:-3]
+                    module = dir + '/' + file[:-3]
 
                     try:
                         module_object = self.importer.import_module(module)
@@ -60,6 +72,7 @@ class Check(object):
                             'Platform',
                             'Rank',
                         ]
+
                         assert all(key in module_object.details for key in keys)
                         self.badges.print_success(f"{module}: OK")
 
@@ -68,18 +81,24 @@ class Check(object):
                         self.badges.print_error(f"{module}: FAIL")
 
                         one_fail = True
+
         return not one_fail
 
-    def check_encoders(self):
+    def check_encoders(self) -> None:
+        """ Check base encoders.
+
+        :return bool: True if success else False
+        """
+
         one_fail = False
         self.badges.print_process("Checking all base encoders...")
 
         encoders_path = os.path.normpath(self.config.path_config['encoders_path'])
 
-        for dest, _, files in os.walk(encoders_path):
+        for dir, _, files in os.walk(encoders_path):
             for file in files:
                 if file.endswith('.py') and file != '__init__.py':
-                    encoder = dest + '/' + file[:-3]
+                    encoder = dir + '/' + file[:-3]
 
                     try:
                         encoder_object = self.importer.import_encoder(encoder)
@@ -90,6 +109,7 @@ class Check(object):
                             'Description',
                             'Architecture',
                         ]
+
                         assert all(key in encoder_object.details for key in keys)
                         self.badges.print_success(f"{encoder}: OK")
 
@@ -98,18 +118,24 @@ class Check(object):
                         self.badges.print_error(f"{encoder}: FAIL")
 
                         one_fail = True
+
         return not one_fail
 
-    def check_payloads(self):
+    def check_payloads(self) -> bool:
+        """ Check base payloads.
+
+        :return bool: True if success else False
+        """
+
         one_fail = False
         self.badges.print_process("Checking all base payloads...")
 
         payloads_path = os.path.normpath(self.config.path_config['payloads_path'])
 
-        for dest, _, files in os.walk(payloads_path):
+        for dir, _, files in os.walk(payloads_path):
             for file in files:
                 if file.endswith('.py') and file != '__init__.py':
-                    payload = dest + '/' + file[:-3]
+                    payload = dir + '/' + file[:-3]
 
                     try:
                         payload_object = self.importer.import_payload(payload)
@@ -123,6 +149,7 @@ class Check(object):
                             'Rank',
                             'Type',
                         ]
+
                         assert all(key in payload_object.details for key in keys)
                         self.badges.print_success(f"{payload}: OK")
 
@@ -131,22 +158,29 @@ class Check(object):
                         self.badges.print_error(f"{payload}: FAIL")
 
                         one_fail = True
+
         return not one_fail
 
-    def check_plugins(self):
+    def check_plugins(self) -> bool:
+        """ Check base plugins.
+
+        :return bool: True if success else False
+        """
+
         one_fail = False
         self.badges.print_process("Checking all base plugins...")
 
         plugins_path = os.path.normpath(self.config.path_config['plugins_path'])
 
-        for dest, _, files in os.walk(plugins_path):
+        for dir, _, files in os.walk(plugins_path):
             for file in files:
                 if file.endswith('.py') and file != '__init__.py':
-                    plugin = dest + '/' + file[:-3]
+                    plugin = dir + '/' + file[:-3]
 
                     try:
                         plugin_object = self.importer.import_plugin(plugin)
                         keys = ['Name', 'Authors', 'Description']
+
                         assert all(key in plugin_object.details for key in keys)
                         self.badges.print_success(f"{plugin}: OK")
 
@@ -155,9 +189,15 @@ class Check(object):
                         self.badges.print_error(f"{plugin}: FAIL")
 
                         one_fail = True
+
         return not one_fail
 
-    def check_all(self):
+    def check_all(self) -> bool:
+        """ Check base modules, encoders, payloads and plugins
+
+        :return bool: True if success else False
+        """
+
         fails = list()
 
         fails.append(self.check_modules())
@@ -169,5 +209,6 @@ class Check(object):
             if not fail:
                 self.badges.print_error("Not all checks passed!")
                 return False
+
         self.badges.print_success("All checks passed!")
         return True

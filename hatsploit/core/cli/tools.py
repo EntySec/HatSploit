@@ -22,14 +22,37 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
+from typing import Callable, Any
+
 from hatsploit.lib.jobs import Jobs
 
 
 class Tools(object):
-    def __init__(self):
+    """ Subclass of hatsploit.core.cli module.
+
+    This subclass of hatsploit.core.cli module is intended for
+    providing various tools and shortcuts.
+    """
+
+    def __init__(self) -> None:
         super().__init__()
 
         self.jobs = Jobs()
 
-    def background(self, function, arguments=[]):
-        self.jobs.create_job(None, None, function, arguments, True)
+    def background(self, target: Callable[..., Any], args: list = [], kwargs: dict = {}) -> None:
+        """ Start function as a background job.
+
+        :param Callable[..., Any] target: function to start
+        :param list args: extra target function arguments
+        :param dict kwargs: extra job function kwargs
+        :return None: None
+        """
+
+        self.jobs.create_job(
+            job=None,
+            module=None,
+            target=target,
+            args=args,
+            kwargs=kwargs,
+            hidden=True
+        )

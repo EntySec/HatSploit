@@ -45,7 +45,7 @@ class HatSploitModule(Module, TCPTools):
 
     def run(self):
         remote_host, ports_range = self.parse_options(self.options)
-        start, end = self.parse_ports_range(ports_range)
+        start, end = 0, 0  # fit it
 
         self.print_process(f"Scanning {remote_host}...")
         for port in range(start, end):

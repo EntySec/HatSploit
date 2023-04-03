@@ -53,6 +53,8 @@ setup(name='hatsploit',
           'hatasm @ git+https://github.com/EntySec/HatAsm',
           'hatvenom @ git+https://github.com/EntySec/HatVenom',
           'pex @ git+https://github.com/EntySec/Pex',
+          'colorscript @ git+https://github.com/EntySec/ColorScript',
+          'pawn @ git+https://github.com/EntySec/Pawn',
       ],
       zip_safe=False,
       )

@@ -31,7 +31,13 @@ from hatsploit.core.cli.tools import Tools
 
 
 class Plugin(FMT, Badges, Colors, Parser, Tables, Tools):
-    def __init__(self):
+    """ Subclass of hatsploit.lib module.
+
+    This subclass of hatsploit.lib module is intended for providing
+    wrapper for a plugin.
+    """
+
+    def __init__(self) -> None:
         super().__init__()
 
         self.details = {
@@ -42,5 +48,10 @@ class Plugin(FMT, Badges, Colors, Parser, Tables, Tools):
             'Description': ""
         }
 
-    def load(self):
+    def load(self) -> None:
+        """ Load this plugin.
+
+        :return None: None
+        """
+
         pass

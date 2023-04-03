@@ -22,6 +22,7 @@ class HatSploitPayload(Payload, Socket):
             'Platform': "linux",
             'Rank': "high",
             'Type': "reverse_tcp",
+            'Actions': ['drop']
         }
 
     def run(self):
