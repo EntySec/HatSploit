@@ -21,7 +21,7 @@ class HatSploitPayload(Payload):
             'Platform': "unix",
             'Rank': "high",
             'Type': "bind_tcp",
-            'Actions': ['execute']
+            'Actions': ['phaseless']
         }
 
     def run(self):

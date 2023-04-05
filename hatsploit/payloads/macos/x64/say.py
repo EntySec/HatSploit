@@ -24,7 +24,7 @@ class HatSploitPayload(Payload, Assembler):
             'Platform': "macos",
             'Rank': "low",
             'Type': "one_side",
-            'Actions': ['drop']
+            'Actions': ['phaseless']
         }
 
         self.options = {

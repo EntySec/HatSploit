@@ -22,7 +22,7 @@ class HatSploitPayload(Payload, Assembler):
             'Platform': "linux",
             'Rank': "low",
             'Type': "one_side",
-            'Actions': ['drop']
+            'Actions': ['phaseless']
         }
 
     def run(self):

@@ -22,7 +22,7 @@ class HatSploitPayload(Payload, String):
             'Platform': "unix",
             'Rank': "high",
             'Type': "reverse_tcp",
-            'Actions': ['execute']
+            'Actions': ['phaseless']
         }
 
     def run(self):
