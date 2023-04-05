@@ -177,13 +177,13 @@ class Console(object):
             header = ""
             header += "%end"
             if codename:
-                header += f"    --=( %yellowHatSploit Framework {version} {codename} (https://hatsploit.com)%end\n"
+                header += f"    --=[ %yellowHatSploit Framework {version} {codename} (https://hatsploit.com)%end\n"
             else:
-                header += f"    --=( %yellowHatSploit Framework {version}%end\n"
+                header += f"    --=[ %yellowHatSploit Framework {version}%end\n"
             header += (
-                "--==--=( Developed by EntySec (%linehttps://entysec.com%end)\n"
+                "--==--=[ Developed by EntySec (%linehttps://entysec.com%end)\n"
             )
-            header += f"    --=( {modules_total} modules | {payloads_total} payloads "
+            header += f"    --=[ {modules_total} modules | {payloads_total} payloads "
             header += f"| {encoders_total} encoders | {plugins_total} plugins"
             header += "%end"
 
