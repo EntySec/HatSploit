@@ -120,8 +120,8 @@ class Runtime(object):
         except RuntimeWarning as w:
             self.badges.print_warning(str(w))
 
-        # except Exception as e:
-        #     self.badges.print_error(f"An error occured: {str(e)}!")
-        #     traceback.print_stack(file=sys.stdout)
+        except Exception as e:
+            self.badges.print_error(f"An error occurred: {str(e)}!")
+            traceback.print_stack(file=sys.stdout)
 
         return Exception

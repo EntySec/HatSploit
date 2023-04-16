@@ -104,20 +104,20 @@ class Hand(object):
 
     def phaseless_payload(self, payload: Payload, host: str, port: int,
                           encoder: Optional[Encoder] = None,
-                          *args, **kwargs) -> None:
+                          *args, **kwargs) -> Union[socket.socket, str]:
         """ Send payload to the target system.
 
         :param Payload payload: payload
         :param str host: host to start listener on or connect to
         :param int port: port to start listener on or connect to
         :param Optional[Encoder] encoder: encoder to apply
-        :return None: None
+        :return Union[socket.socket, str]: final socket and host
         """
 
         if not payload:
             raise RuntimeError("Payload was not found!")
 
-        sender = kwargs.pop('sender', None)
+        sender = kwargs.get('sender', None)
 
         if not sender:
             raise RuntimeError("Payload sender is not specified!")
@@ -129,80 +129,91 @@ class Hand(object):
 
         platform = payload.details['Platform']
         arch = payload.details['Architecture']
+        type = payload.details['Type']
 
-        stage = self.payloads.run_payload(payload, encoder)
-        space = kwargs.pop('space', 4096)
+        main = self.payloads.run_payload(payload, encoder)
+        space = kwargs.get('space', 4096)
 
-        if len(stage) >= space:
-            zero_stage = self.pawn.get_stage(
-                payload=stage,
+        if len(main) >= space:
+            phase, send_size = self.pawn.get_pawn(
+                module=platform + '/' + arch + '/' + type,
                 platform=platform,
                 arch=arch,
-                type=payload.details['Type']
             )
 
-            zero_stage = self.payload.pack_payload(zero_stage, platform, arch)
+            if phase and hasattr(payload, 'phase'):
+                phase = self.payload.pack_payload(phase, platform, arch)
 
-            self.badges.print_process(f"Sending payload phase ({str(len(zero_stage))} bytes)...")
-            self.post.post(
-                sender=sender,
-                stage=zero_stage,
-                platform=platform,
-                architecture=arch,
-                *args, **kwargs
-            )
+                self.badges.print_process(f"Sending payload phase ({str(len(phase))} bytes)...")
+                self.post.post(
+                    payload=phase,
+                    platform=platform,
+                    arch=arch,
+                    *args, **kwargs
+                )
 
-            client, host = self.handle_session(
-                host=host,
-                port=port,
-                type=type,
-                session=None,
-                timeout=timeout
-            )
+                client, host = self.handle_session(
+                    host=host,
+                    port=port,
+                    type=type,
+                    session=None,
+                    timeout=timeout
+                )
 
-            stage = self.payloads.pack_payload(
-                stage,
-                platform,
-                arch
-            )
+                if send_size:
+                    client.send(len(payload).to_bytes(send_size, 'little'))
+                client.send(payload.phase())
 
-            self.badges.print_process(f"Sending payload ({str(len(stage))} bytes)...")
-            client.send(len(stage))
-            client.send(stage)
+                step = 1
 
-        else:
-            stage = self.payloads.pack_payload(
-                stage,
-                platform,
-                arch
-            )
+                while True:
+                    if not hasattr(payload, f'phase{str(step)}'):
+                        break
 
-            self.badges.print_process(f"Sending payload ({str(len(stage))} bytes)...")
-            self.post.post(
-                sender=sender,
-                stage=stage,
-                platform=platform,
-                architecture=arch,
-                arguments=arguments,
-                *args, **kwargs
-            )
+                    client.send(payload.phase())
+                    step += 1
+
+                return client, host
+
+        phase = self.payloads.pack_payload(
+            main,
+            platform,
+            arch
+        )
+
+        self.badges.print_process(f"Sending payload ({str(len(phase))} bytes)...")
+        self.post.post(
+            payload=phase,
+            platform=platform,
+            architecture=arch,
+            arguments=arguments,
+            *args, **kwargs
+        )
+
+        return self.handle_session(
+            host=host,
+            port=port,
+            type=type,
+            session=None,
+            timeout=timeout
+        )
 
     def phase_payload(self, payload: Payload, host: str, port: int,
                       encoder: Optional[Encoder] = None,
-                      *args, **kwargs) -> None:
+                      *args, **kwargs) -> Union[socket.socket, str]:
         """ Send phase and then payload.
 
         :param Payload payload: payload
         :param str host: host to start listener on or connect to
         :param int port: port to start listener on or connect to
         :param Optional[Encoder] encoder: encoder to apply
-        :return None: None
+        :return Union[socket.socket, str]: final socket and host
         """
 
         if not payload:
             raise RuntimeError("Payload was not found!")
 
-        sender = kwargs.pop('sender', None)
+        sender = kwargs.get('sender', None)
 
         if not sender:
             raise RuntimeError("Payload sender is not specified!")
@@ -212,46 +223,59 @@ class Hand(object):
 
         platform = payload.details['Platform']
         arch = payload.details['Architecture']
+        type = payload.details['Type']
 
-        stage = self.payloads.run_payload(payload, encoder)
-        space = kwargs.pop('space', 4096)
+        main = self.payloads.run_payload(payload, encoder)
+        space = kwargs.get('space', 4096)
 
-        if len(stage) >= space:
-            zero_stage = self.pawn.get_stage(
-                payload=stage,
+        if len(main) >= space:
+            phase, send_size = self.pawn.get_pawn(
+                module=platform + '/' + arch + '/' + type,
                 platform=platform,
                 arch=arch,
-                type=payload.details['Type']
             )
 
-            self.badges.print_process(f"Sending payload phase ({str(len(zero_stage))} bytes)...")
-            self.post_tools.post_payload(
-                sender=sender,
-                payload=zero_stage,
-                *args, **kargs
-            )
+            if phase:
+                self.badges.print_process(f"Sending payload phase ({str(len(phase))} bytes)...")
+                self.post_tools.post_payload(
+                    payload=phase,
+                    *args, **kargs
+                )
 
-            client, host = self.handle_session(
-                host=host,
-                port=port,
-                type=type,
-                session=None,
-                timeout=timeout
-            )
+                client, host = self.handle_session(
+                    host=host,
+                    port=port,
+                    type=type,
+                    session=None,
+                    timeout=timeout
+                )
 
-            stage = self.payloads.pack_payload(
-                stage,
-                platform,
-                arch
-            )
+                if hasattr(payload, 'phase'):
+                    if send_size:
+                        client.send(len(payload).to_bytes(send_size, 'little'))
+                    client.send(payload.phase())
 
-            self.badges.print_process(f"Sending payload ({str(len(stage))} bytes)...")
-            client.send(stage)
+                step = 1
 
-        else:
-            self.badges.print_process(f"Sending payload ({str(len(stage))} bytes)...")
-            self.post_tools.post_payload(
-                sender=sender,
-                payload=stage,
-                *args, **kargs
-            )
+                while True:
+                    if not hasattr(payload, f'phase{str(step)}'):
+                        break
+
+                    client.send(payload.phase())
+                    step += 1
+
+                return client, host
+
+        self.badges.print_process(f"Sending payload ({str(len(main))} bytes)...")
+        self.post_tools.post_payload(
+            payload=main,
+            *args, **kargs
+        )
+
+        return self.handle_session(
+            host=host,
+            port=port,
+            type=type,
+            session=None,
+            timeout=timeout
+        )

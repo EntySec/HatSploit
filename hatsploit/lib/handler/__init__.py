@@ -162,7 +162,7 @@ class Handler(object):
         )
 
     def handle(self, payload: Payload, host: str, port: int, action: str,
-               session: Optional[Session] = HatSploitSession, timeout: Optional[int] = None,
+               session: Optional[Session] = HatSploitSession,
                encoder: Optional[Encoder] = None, on_session: Optional[Callable[..., Any]] = None,
                *args, **kwargs) -> None:
         """ Handle session.
@@ -172,14 +172,12 @@ class Handler(object):
         :param int port: port
         :param str action: type of handler
         :param Optional[Session] session: session handler
-        :param Optional[int] timeout: timeout
         :param Encoder encoder: encoder object of encoder to apply
         :param Optional[Callable[..., Any]] on_session: function of an action that
         should be performed right after session was opened
         """
 
         actions = payload.details['Actions']
-        type = payload.details['Type']
 
         if actions and action not in actions:
             action = payload.details['Actions'][0]
@@ -188,28 +186,27 @@ class Handler(object):
             raise RuntimeError(f"Unrecognized handler action: {action}!")
 
         if action == 'phaseless':
-            self.jobs.create_job(
-                job=None,
-                module=None,
-                target=self.hand.phaseless_payload,
-                args=[payload, host, port, encoder, *args],
-                kwargs=kwargs,
-                hidden=True,
+            client, host = self.hand.phaseless_payload(
+                payload=payload,
+                host=host,
+                port=port,
+                encoder=encoder,
+                *args, **kwargs
             )
 
-        elif action == 'phase':
-            self.jobs.create_job(
-                job=None,
-                module=None,
-                target=self.hand.phase_payload,
-                args=[payload, host, port, encoder, *args],
-                kwargs=kwargs,
-                hidden=True
+        else:
+            client, host = self.hand.phase_payload(
+                payload=payload,
+                host=host,
+                port=port,
+                encoder=encoder,
+                *args, **kwargs
             )
-
-        client, host = self.hand.handle_session(host, port, type, session, timeout)
 
         if client:
+            session = session()
+            session.open(client)
+
             self.open_session(
                 host=host,
                 port=port,
