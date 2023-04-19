@@ -134,12 +134,22 @@ class Hand(object):
         main = self.payloads.run_payload(payload, encoder)
         space = kwargs.get('space', 4096)
 
-        if len(main) >= space:
-            phase, send_size = self.pawn.get_pawn(
-                module=platform + '/' + arch + '/' + type,
-                platform=platform,
-                arch=arch,
-            )
+        if len(main) >= space and type != 'one_side':
+            if type == 'bind_tcp':
+                phase, send_size = self.pawn.get_pawn(
+                    module=platform + '/' + arch + '/' + type,
+                    platform=platform,
+                    arch=arch,
+                    port=port,
+                )
+            else:
+                phase, send_size = self.pawn.get_pawn(
+                    module=platform + '/' + arch + '/' + type,
+                    platform=platform,
+                    arch=arch,
+                    host=host,
+                    port=port,
+                )
 
             if phase and hasattr(payload, 'phase'):
                 phase = self.payload.pack_payload(phase, platform, arch)
@@ -228,12 +238,22 @@ class Hand(object):
         main = self.payloads.run_payload(payload, encoder)
         space = kwargs.get('space', 4096)
 
-        if len(main) >= space:
-            phase, send_size = self.pawn.get_pawn(
-                module=platform + '/' + arch + '/' + type,
-                platform=platform,
-                arch=arch,
-            )
+        if len(main) >= space and type != 'one_side':
+            if type == 'bind_tcp':
+                phase, send_size = self.pawn.get_pawn(
+                    module=platform + '/' + arch + '/' + type,
+                    platform=platform,
+                    arch=arch,
+                    port=port,
+                )
+            else:
+                phase, send_size = self.pawn.get_pawn(
+                    module=platform + '/' + arch + '/' + type,
+                    platform=platform,
+                    arch=arch,
+                    host=host,
+                    port=port,
+                )
 
             if phase:
                 self.badges.print_process(f"Sending payload phase ({str(len(phase))} bytes)...")
