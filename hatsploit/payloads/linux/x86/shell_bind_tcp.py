@@ -25,7 +25,7 @@ class HatSploitPayload(Payload, Assembler, Socket):
             'Type': "bind_tcp",
         }
 
-    def phase(self):
+    def implant(self):
         return self.assemble(
             self.details['Architecture'],
             """
