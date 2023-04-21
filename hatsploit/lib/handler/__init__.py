@@ -65,8 +65,8 @@ class Handler(object):
         self.server_handle = Handle()
 
         self.actions = [
-            'phaseless',
-            'phase',
+            'shell',
+            'memory',
         ]
 
         self.types = [
@@ -135,10 +135,9 @@ class Handler(object):
             session = payload.details['Session']
 
         action = module.payload['Action']
-        actions = payload.details['Actions']
 
         if action not in actions:
-            raise RuntimeError("Unresolved payload and module action conflict!")
+            raise RuntimeError("Unresolved module action conflict!")
 
         if payload.details['Type'] == 'bind_tcp':
             host = options['RBHOST']
@@ -177,16 +176,17 @@ class Handler(object):
         should be performed right after session was opened
         """
 
-        actions = payload.details['Actions']
+        if action == 'shell':
+            client, host = self.hand.shell_payload(
+                payload=payload,
+                host=host,
+                port=port,
+                encoder=encoder,
+                *args, **kwargs
+            )
 
-        if actions and action not in actions:
-            action = payload.details['Actions'][0]
-
-        if action not in self.actions:
-            raise RuntimeError(f"Unrecognized handler action: {action}!")
-
-        if action == 'phaseless':
-            client, host = self.hand.phaseless_payload(
+        elif action == 'memory':
+            client, host = self.hand.memory_payload(
                 payload=payload,
                 host=host,
                 port=port,
@@ -195,13 +195,7 @@ class Handler(object):
             )
 
         else:
-            client, host = self.hand.phase_payload(
-                payload=payload,
-                host=host,
-                port=port,
-                encoder=encoder,
-                *args, **kwargs
-            )
+            raise RuntimeError(f"Unrecognized handler action: {action}!")
 
         if client:
             session = session()

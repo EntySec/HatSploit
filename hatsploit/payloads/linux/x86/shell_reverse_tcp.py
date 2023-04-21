@@ -23,7 +23,6 @@ class HatSploitPayload(Payload, Assembler, Socket):
             'Platform': "linux",
             'Rank': "high",
             'Type': "reverse_tcp",
-            'Actions': ['phaseless']
         }
 
     def phase(self):

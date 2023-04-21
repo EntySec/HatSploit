@@ -22,7 +22,6 @@ class HatSploitPayload(Payload, Assembler):
             'Platform': "linux",
             'Rank': "low",
             'Type': "one_side",
-            'Actions': ['phaseless']
         }
 
     def run(self):

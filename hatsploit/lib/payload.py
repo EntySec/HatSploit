@@ -50,8 +50,7 @@ class Payload(FMT, Badges, Colors, Parser, Tables, Tools):
             'Architecture': "",
             'Platform': "",
             'Rank': "",
-            'Type': "",
-            'Actions': []
+            'Type': ""
         }
 
     def run(self) -> None:

@@ -21,7 +21,6 @@ class HatSploitPayload(Payload):
             'Platform': "unix",
             'Rank': "low",
             'Type': "one_side",
-            'Actions': ['phaseless']
         }
 
     def run(self):

@@ -23,7 +23,6 @@ class HatSploitPayload(Payload, Assembler, Socket):
             'Platform': "linux",
             'Rank': "high",
             'Type': "bind_tcp",
-            'Actions': ['phaseless']
         }
 
     def phase(self):
