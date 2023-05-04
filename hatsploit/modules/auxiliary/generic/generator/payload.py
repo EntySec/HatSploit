@@ -4,7 +4,7 @@ Current source: https://github.com/EntySec/HatSploit
 """
 
 from hatsploit.lib.loot import Loot
-from hatsploit.lib.module import Module
+from hatsploit.lib.module.basic import *
 from hatsploit.lib.payloads import Payloads
 from hatsploit.lib.encoders import Encoders
 
@@ -37,17 +37,10 @@ class HatSploitModule(Module, Assembler):
             'Types': None,
         }
 
-        self.options = {
-            'PATH': {
-                'Description': "Path to save file.",
-                'Value': self.loot.random_loot(),
-                'Type': None,
-                'Required': True,
-            }
-        }
+        self.path = Option(self.loot.random_loot(), "Path to save file.", True)
 
     def run(self):
-        path = self.parse_options(self.options)
+        path = self.path.value
         payload = self.payload['Payload']
 
         executable = self.payloads.pack_payload(

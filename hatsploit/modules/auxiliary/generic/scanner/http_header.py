@@ -3,7 +3,7 @@ This module requires HatSploit: https://hatsploit.com
 Current source: https://github.com/EntySec/HatSploit
 """
 
-from hatsploit.lib.module import Module
+from hatsploit.lib.module.basic import *
 from pex.proto.http import HTTPClient
 from pex.proto.tcp import TCPTools
 
@@ -22,26 +22,14 @@ class HatSploitModule(HTTPClient, Module, TCPTools):
             'Rank': 'low',
         }
 
-        self.options = {
-            'HOST': {
-                'Description': 'Remote host.',
-                'Value': None,
-                'Type': 'ip',
-                'Required': True,
-            },
-            'PORT': {
-                'Description': 'Remote port.',
-                'Value': 80,
-                'Type': 'port',
-                'Required': True,
-            },
-        }
+        self.host = IPv4Option(None, "Remote host.", True)
+        self.port = PortOption(80, "Remote port", True)
 
         self.http_methods = ['HEAD', 'GET']
         self.headers = {}
 
     def run(self):
-        remote_host, remote_port = self.parse_options(self.options)
+        remote_host, remote_port = self.host.value, self.port.value
 
         self.print_process(f'Scanning {remote_host}...')
         if self.check_tcp_port(remote_host, remote_port):
@@ -53,8 +41,6 @@ class HatSploitModule(HTTPClient, Module, TCPTools):
                     path='/',
                 )
 
-                # 405 is `Method Not Allowed'. In our case, this means HEAD
-                # requests are not supported. Fall back to a GET request.
                 if resp.status_code != 405:
                     self.print_information(
                         f'Header retrieved with %bold{method}%end HTTP method...'

@@ -3,7 +3,7 @@ This payload requires HatSploit: https://hatsploit.com
 Current source: https://github.com/EntySec/HatSploit
 """
 
-from hatsploit.lib.payload import Payload
+from hatsploit.lib.payload.basic import *
 
 
 class HatSploitPayload(Payload):
@@ -24,6 +24,4 @@ class HatSploitPayload(Payload):
         }
 
     def run(self):
-        payload = "reboot"
-
-        return payload
+        return "reboot"

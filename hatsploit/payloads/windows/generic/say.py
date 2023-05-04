@@ -3,7 +3,7 @@ This payload requires HatSploit: https://hatsploit.com
 Current source: https://github.com/EntySec/HatSploit
 """
 
-from hatsploit.lib.payload import Payload
+from hatsploit.lib.payload.basic import *
 
 
 class HatSploitPayload(Payload):
@@ -23,22 +23,13 @@ class HatSploitPayload(Payload):
             'Type': "one_side",
         }
 
-        self.options = {
-            'MESSAGE': {
-                'Description': "Message to say.",
-                'Value': "Hello, Friend!",
-                'Type': None,
-                'Required': True,
-            }
-        }
+        self.message = Option("Hello, HatSploit!", "Message to show.", True)
 
     def run(self):
-        message = self.parse_options(self.options)
-
         source = (
             "Add-Type -AssemblyName System.speech;"
             "$speak = New-Object System.Speech.Synthesis.SpeechSynthesizer;"
-            f"$speak.Speak('{message}')"
+            f"$speak.Speak('{self.message.value}')"
         )
 
         payload = f"powershell -w hidden -nop -c {source}"

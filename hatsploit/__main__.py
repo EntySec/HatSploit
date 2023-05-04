@@ -233,7 +233,7 @@ class HatSploit(object):
                 )
 
                 self.jobs.create_job(
-                    f"REST API on port {str(port)}", None, rest_api.run
+                    f"REST API on port {str(port)}", "", rest_api.run
                 )
 
         elif args.update:

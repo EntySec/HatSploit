@@ -29,7 +29,6 @@ from colorscript import ColorScript
 
 from hatsploit.core.cli.badges import Badges
 from hatsploit.core.cli.colors import Colors
-from hatsploit.core.cli.parser import Parser
 from hatsploit.lib.config import Config
 
 
@@ -43,7 +42,6 @@ class Banner(object):
     def __init__(self) -> None:
         super().__init__()
 
-        self.parser = Parser()
         self.config = Config()
         self.badges = Badges()
         self.colors = Colors()

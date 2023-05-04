@@ -22,9 +22,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
-from typing import Union
+from typing import Union, Optional
 
 from hatsploit.lib.encoder import Encoder
+from hatsploit.lib.options import Options
 from hatsploit.lib.module import Module
 from hatsploit.lib.payload import Payload
 
@@ -44,6 +45,7 @@ class Encoders(object):
         super().__init__()
 
         self.importer = Importer()
+        self.options = Options()
         self.local_storage = LocalStorage()
 
     def encoders_completer(self, text: str) -> list:
@@ -111,6 +113,7 @@ class Encoders(object):
 
         try:
             imported_encoder = self.importer.import_encoder(encoder_object['Path'])
+            self.options.add_options(imported_encoder)
         except Exception:
             return None
 
@@ -141,15 +144,14 @@ class Encoders(object):
 
         imported_encoders = self.get_imported_encoders()
 
-        if payload and module and imported_encoders:
+        if payload and module and imported_encoders and 'Encoder' in payload.details:
             module_name = module.details['Module']
             payload_name = payload.details['Payload']
 
             if module_name in imported_encoders and payload_name in imported_encoders[module_name]:
-                if hasattr(payload, "options") and 'ENCODER' in payload.options:
-                    name = payload.options['ENCODER']['Value']
+                name = payload.details['Encoder']['Value']
 
-                    return imported_encoders[module_name][payload_name][name]
+                return imported_encoders[module_name][payload_name].get(name, None)
 
     def import_encoder(self, module: str, payload: str, encoder: str) -> Union[Encoder, None]:
         """ Import encoder.
@@ -266,6 +268,17 @@ class Encoders(object):
         if not self.check_imported(module, payload, encoder):
             if not self.import_encoder(module, payload, encoder):
                 raise RuntimeError(f"Failed to select encoder from database: {encoder}!")
+
+    def set_option_value(self, encoder: Encoder, option: str, value: Optional[str] = None) -> bool:
+        """ Set encoder option value.
+
+        :param Encoder encoder: encoder object
+        :param str option: option name
+        :param Optional[str] value: option value
+        :return bool: True if success else False
+        """
+
+        return self.options.set_option(encoder, option, value)
 
     @staticmethod
     def validate_options(encoder: Encoder) -> list:

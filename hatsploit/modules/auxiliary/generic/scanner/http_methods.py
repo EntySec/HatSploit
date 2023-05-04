@@ -3,7 +3,7 @@ This module requires HatSploit: https://hatsploit.com
 Current source: https://github.com/EntySec/HatSploit
 """
 
-from hatsploit.lib.module import Module
+from hatsploit.lib.module.basic import *
 from pex.proto.http import HTTPClient
 from pex.proto.tcp import TCPTools
 
@@ -22,14 +22,7 @@ class HatSploitModule(HTTPClient, Module, TCPTools):
             'Rank': 'low',
         }
 
-        self.options = {
-            'HOST': {
-                'Description': 'Remote host.',
-                'Value': None,
-                'Type': 'ip',
-                'Required': True,
-            }
-        }
+        self.host = IPv4Option(None, "Remote host.", True)
 
         self.http_methods = [
             'CONNECT',
@@ -46,7 +39,7 @@ class HatSploitModule(HTTPClient, Module, TCPTools):
         self.supported_methods = {'80': [], '443': [], 'count': 0}
 
     def run(self):
-        remote_host = self.parse_options(self.options)
+        remote_host = self.host.value
 
         self.print_process(f'Scanning {remote_host}...')
         for port in [80, 443]:

@@ -25,11 +25,10 @@ SOFTWARE.
 from hatsploit.core.cli.badges import Badges
 from hatsploit.core.cli.colors import Colors
 from hatsploit.core.cli.fmt import FMT
-from hatsploit.core.cli.parser import Parser
 from hatsploit.core.cli.tables import Tables
 
 
-class Command(FMT, Badges, Colors, Parser, Tables):
+class Command(FMT, Badges, Colors, Tables):
     """ Subclass of hatsploit.lib module.
 
     This subclass of hatsploit.lib module is intended for providing

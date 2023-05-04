@@ -22,11 +22,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
-try:
-    import gnureadline as readline
-except Exception:
-    import readline
-
 import os
 import sys
 
@@ -35,6 +30,15 @@ from colorscript import ColorScript
 from hatsploit.core.cli.colors import Colors
 from hatsploit.core.cli.fmt import FMT
 from hatsploit.lib.storage import LocalStorage
+
+patch = False
+
+try:
+    import gnureadline as readline
+
+except Exception:
+    import readline
+    patch = True
 
 
 class IO(object):
@@ -85,9 +89,12 @@ class IO(object):
         :return list: read string separated by space and commas
         """
 
-        line = self.color_script.parse(
-            self.color_script.libreadline(start + message + end)
-        )
+        message = start + message + end
+
+        if patch:
+            message = self.color_script.libreadline(message)
+
+        line = self.color_script.parse(message)
 
         use_log = self.local_storage.get("log")
         self.local_storage.set("prompt", line)

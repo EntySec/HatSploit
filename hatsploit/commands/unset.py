@@ -4,25 +4,25 @@ Current source: https://github.com/EntySec/HatSploit
 """
 
 from hatsploit.lib.command import Command
-from hatsploit.lib.show import Show
+from hatsploit.lib.modules import Modules
 
 
 class HatSploitCommand(Command):
     def __init__(self):
         super().__init__()
 
-        self.show = Show()
+        self.modules = Modules()
 
         self.details = {
             'Category': "modules",
-            'Name': "advanced",
+            'Name': "unset",
             'Authors': [
                 'Ivan Nikolsky (enty8080) - command developer',
             ],
-            'Description': "Show current module advanced options.",
-            'Usage': "options",
-            'MinArgs': 0,
+            'Description': "Unset an option / Set to nil.",
+            'Usage': "unset <option>",
+            'MinArgs': 1,
         }
 
     def run(self, argc, argv):
-        self.show.show_advanced()
+        self.modules.set_current_module_option(argv[1].lower())

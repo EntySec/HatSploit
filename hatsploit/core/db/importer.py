@@ -30,6 +30,8 @@ import sys
 import threading
 import time
 
+from typing import Union
+
 from hatsploit.core.cli.badges import Badges
 from hatsploit.core.db.db import DB
 from hatsploit.lib.config import Config

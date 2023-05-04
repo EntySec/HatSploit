@@ -5,7 +5,7 @@ Current source: https://github.com/EntySec/HatSploit
 
 from pex.string import String
 
-from hatsploit.lib.encoder import Encoder
+from hatsploit.lib.encoder.basic import *
 
 
 class HatSploitEncoder(Encoder, String):

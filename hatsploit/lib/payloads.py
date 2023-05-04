@@ -30,10 +30,10 @@ from typing import Union, Any, Optional
 from hatsploit.core.db.importer import Importer
 
 from hatsploit.lib.payload import Payload
+from hatsploit.lib.options import Options
 from hatsploit.lib.encoder import Encoder
 from hatsploit.lib.module import Module
 from hatsploit.lib.encoders import Encoders
-from hatsploit.lib.options import Options
 from hatsploit.lib.storage import LocalStorage
 
 
@@ -121,6 +121,7 @@ class Payloads(object):
 
         try:
             imported_payload = self.importer.import_payload(payload_object['Path'])
+            self.options.add_options(imported_payload)
         except Exception:
             return None
 
@@ -150,14 +151,13 @@ class Payloads(object):
 
         imported_payloads = self.get_imported_payloads()
 
-        if module and imported_payloads and hasattr(module, "payload"):
+        if module and imported_payloads and 'Payload' in module.details:
             module_name = module.details['Module']
 
             if module_name in imported_payloads:
-                name = module.payload['Value']
+                name = module.details['Payload']['Value']
 
-                if name in imported_payloads[module_name]:
-                    return imported_payloads[module_name][name]
+                return imported_payloads[module_name].get(name, None)
 
     def search_payload(self, name: str) -> str:
         """ Get payload name by full payload name.
@@ -261,20 +261,21 @@ class Payloads(object):
         payload = self.get_payload_object(payload)
 
         if payload:
-            types = module.payload['Types']
+            if 'Payload' in module.details:
+                types = module.details['Payload'].get('Types', None)
 
-            if types and payload['Type'] not in types:
-                return False
+                if types and payload['Type'] not in types:
+                    return False
 
-            platforms = module.payload['Platforms']
+                platforms = module.details['Payload'].get('Platforms', None)
 
-            if platforms and payload['Platform'] not in platforms:
-                return False
+                if platforms and payload['Platform'] not in platforms:
+                    return False
 
-            arches = module.payload['Architectures']
+                arches = module.details['Payload'].get('Architectures', None)
 
-            if arches and payload['Architecture'] not in arches:
-                return False
+                if arches and payload['Architecture'] not in arches:
+                    return False
 
             return True
 
@@ -293,6 +294,17 @@ class Payloads(object):
             if not self.import_payload(module, payload):
                 raise RuntimeError(f"Failed to select payload from database: {payload}!")
 
+    def set_option_value(self, payload: Payload, option: str, value: Optional[str] = None) -> bool:
+        """ Set payload option value.
+
+        :param Payload payload: payload object
+        :param str option: option name
+        :param Optional[str] value: option value
+        :return bool: True if success else False
+        """
+
+        return self.options.set_option(payload, option, value)
+
     def generate_payload(self, payload: str, options: dict = {}, encoder: Optional[str] = None) -> Any:
         """ Generate payload using specific payload and encoder.
 
@@ -306,11 +318,9 @@ class Payloads(object):
         payload = self.get_payload(payload)
 
         if payload:
-            self.options.add_payload_handler(payload)
-
             if hasattr(payload, "options"):
                 for option in options:
-                    payload.options[option]['Value'] = options[option]
+                    self.set_option_value(payload, option, options[option])
 
             if encoder:
                 encoder = self.encoders.get_encoder(encoder)
@@ -329,14 +339,14 @@ class Payloads(object):
         fmts = self.types.formats
         arches = self.types.architectures
 
-        exec = None
+        cpu = None
 
         if arch in arches['cpu']:
             for fmt in fmts:
                 if platform in fmts[fmt]:
-                    exec = fmt
+                    cpu = fmt
 
-            return self.hatvenom.generate(exec, arch, payload)
+            return self.hatvenom.generate(cpu, arch, payload)
 
         return payload
 

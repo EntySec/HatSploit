@@ -25,8 +25,11 @@ SOFTWARE.
 import socket
 import datetime
 
+from pex.proto.tcp import TCPTools
+
 from typing import Optional, Callable, Tuple, Any, Union
 
+from hatsploit.lib.option import *
 from hatsploit.lib.blinder import Blinder
 from hatsploit.lib.payload import Payload
 from hatsploit.lib.module import Module
@@ -36,9 +39,7 @@ from hatsploit.lib.encoder import Encoder
 from hatsploit.lib.sessions import Sessions
 from hatsploit.lib.session import Session
 
-from hatsploit.lib.handle import Handle
-
-from hatsploit.lib.handler.hand import Hand
+from hatsploit.lib.handler.send import Send
 from hatsploit.lib.handler.misc import HatSploitSession
 
 from hatsploit.core.cli.badges import Badges
@@ -54,15 +55,12 @@ class Handler(object):
     def __init__(self) -> None:
         super().__init__()
 
+        self.send = Send()
+
         self.sessions = Sessions()
-        self.hand = Hand()
         self.badges = Badges()
         self.jobs = Jobs()
         self.encoders = Encoders()
-
-        self.blinder = Blinder()
-
-        self.server_handle = Handle()
 
         self.actions = [
             'shell',
@@ -74,6 +72,16 @@ class Handler(object):
             'reverse_tcp',
             'bind_tcp'
         ]
+
+        self.payload = PayloadOption(None, "Payload to use.", True, object=Module)
+        self.blinder = BooleanOption('no', "Start blind command injection.", False, object=Module)
+        self.encoder = EncoderOption(None, "Encoder to use.", False, object=Payload)
+
+        self.lhost = IPv4Option(TCPTools.get_local_host(), "Local host.", True, object=Module)
+        self.lport = PortOption(8888, "Local port.", True, object=Module)
+
+        self.rhost = IPv4Option(TCPTools.get_local_host(), "Remote host.", True, object=Payload)
+        self.rport = PortOption(8888, "Remote port.", True, object=Payload)
 
     def open_session(self, host: str, port: int, session: Session,
                      on_session: Optional[Callable[..., Any]] = None) -> None:
@@ -105,70 +113,45 @@ class Handler(object):
         if self.sessions.get_auto_interaction:
             self.sessions.interact_with_session(session)
 
-    def module_handle(self, module: Module, *args, **kwargs) -> None:
+    def module_handle(self, *args, **kwargs) -> None:
         """ Handle session from module.
 
-        :param Module module: module object
         :return None: None
         :raises RuntimeError: with trailing error message
         """
 
-        if not hasattr(module, "payload") or not hasattr(module, "handler"):
+        if not self.payload.value:
             raise RuntimeError("Module has not payload!")
 
-        payload = module.payload['Payload']
-        encoder = module.payload['Encoder']
+        payload = self.payload.payload
+        encoder = self.encoder.encoder
 
-        options = module.handler
+        if self.blinder.value:
+            sender = kwargs.pop('sender', None)
+            args = kwargs.pop('args', {})
 
-        if 'BLINDER' in options:
-            if options['BLINDER'].lower() in ['yes', 'y']:
-                sender = kwargs.pop('sender', None)
-                args = kwargs.pop('args', {})
-
-                if sender:
-                    return self.blinder.shell(sender, args)
+            if sender:
+                return Blinder().shell(sender, args)
 
         session = HatSploitSession
 
         if 'Session' in payload.details:
             session = payload.details['Session']
 
-        action = module.payload['Action']
-
-        if action not in actions:
-            raise RuntimeError("Unresolved module action conflict!")
-
-        if payload.details['Type'] == 'bind_tcp':
-            host = options['RBHOST']
-            port = options['RBPORT']
-
-        elif payload.details['Type'] == 'reverse_tcp':
-            host = options['LHOST']
-            port = options['LPORT']
-
-        else:
-            host, port = None, None
-
         self.handle(
-            host=host,
-            port=port,
             payload=payload,
             session=session,
             encoder=encoder,
-            action=action,
             *args, **kwargs
         )
 
-    def handle(self, payload: Payload, host: str, port: int, action: str,
+    def handle(self, payload: Payload, action: str = 'shell',
                session: Optional[Session] = HatSploitSession,
                encoder: Optional[Encoder] = None, on_session: Optional[Callable[..., Any]] = None,
                *args, **kwargs) -> None:
         """ Handle session.
 
         :param Payload payload: payload object
-        :param str host: host
-        :param int port: port
         :param str action: type of handler
         :param Optional[Session] session: session handler
         :param Encoder encoder: encoder object of encoder to apply
@@ -177,19 +160,19 @@ class Handler(object):
         """
 
         if action == 'shell':
-            client, host = self.hand.shell_payload(
+            client, host = self.send.shell_payload(
                 payload=payload,
-                host=host,
-                port=port,
+                host=self.lhost.value,
+                port=self.lport.value,
                 encoder=encoder,
                 *args, **kwargs
             )
 
         elif action == 'memory':
-            client, host = self.hand.memory_payload(
+            client, host = self.send.memory_payload(
                 payload=payload,
-                host=host,
-                port=port,
+                host=self.lhost.value,
+                port=self.lport.value,
                 encoder=encoder,
                 *args, **kwargs
             )
@@ -199,41 +182,31 @@ class Handler(object):
 
         if client:
             session = session()
+
+            session.details['Platform'] = payload.details['Platform']
+            session.details['Architecture'] = payload.details['Architecture']
+
             session.open(client)
 
             self.open_session(
                 host=host,
-                port=port,
+                port=self.lport.value,
                 session=session,
                 on_session=on_session
             )
 
-    def module_handle_session(self, module: Module, type: str = 'one_side',
-                              session: Optional[Session] = HatSploitSession,
-                              timeout: Optional[int] = None) -> Tuple[Union[Session, socket.socket], str]:
+    def module_handle_session(self, type: str = 'one_side',
+                              *args, **kwargs) -> Tuple[Union[Session, socket.socket], str]:
         """ Handle session from module.
 
-        :param Module module: module object
         :param str type: type of payload (see self.types)
-        :param Optional[Session] session: session handler
-        :param Optional[int] timeout: timeout
         :return Tuple[Union[Session, socket.socket], str]: session and host
         :raises RuntimeError: with trailing error message
         :raises RuntimeWarning: with trailing warning message
         """
 
-        options = module.handler
-
         if type not in self.types:
             raise RuntimeError(f"Invalid payload type: {type}!")
 
-        if type == 'reverse_tcp':
-            return self.hand.handle_session(
-                options['LHOST'], options['LPORT'], type, session, timeout)
-
-        elif type == 'bind_tcp':
-            return self.hand.handle_session(
-                options['RBHOST'], options['RBPORT'], type, session, timeout)
-
-        else:
-            raise RuntimeWarning("Payload sent, but not session was opened.")
+        return self.send.handle_session(
+            host=self.lhost.value, port=self.lport.value, type=type, *args, **kwargs)

@@ -5,7 +5,7 @@ Current source: https://github.com/EntySec/HatSploit
 
 import struct
 
-from hatsploit.lib.payload import Payload
+from hatsploit.lib.payload.basic import *
 from pex.assembler import Assembler
 
 
@@ -26,48 +26,37 @@ class HatSploitPayload(Payload, Assembler):
             'Type': "one_side",
         }
 
-        self.options = {
-            'MESSAGE': {
-                'Description': "Message to say.",
-                'Value': "Hello, Friend!",
-                'Type': None,
-                'Required': True,
-            }
-        }
+        self.message = Option("Hello, HatSploit!", "Message to say.", True)
 
     def run(self):
-        message = self.parse_options(self.options)
-
         data = (
                 b'\xe8'
-                + struct.pack("<I", len(message.encode() + b'\x00') + 0xD)
+                + struct.pack("<I", len(self.message.value.encode() + b'\x00') + 0xD)
                 + b'/usr/bin/say\x00'
-                + message.encode()
+                + self.message.value.encode()
                 + b'\x00'
         )
 
         return (
-                self.assemble(
-                    self.details['Architecture'],
-                    """
+            self.assemble(
+                self.details['Architecture'],
+                """
                 start:
                     xor rax, rax
                     mov eax, 0x200003b
                 """,
-                )
-                + data
-                + self.assemble(
-            self.details['Architecture'],
-            """
-        end:
-            mov rdi, [rsp]
-            lea r10, [rdi+0xd]
-            xor rdx, rdx
-            push rdx
-            push r10
-            push rdi
-            mov rsi, rsp
-            syscall
-        """,
-        )
+            ) + data + self.assemble(
+                self.details['Architecture'],
+                """
+                end:
+                    mov rdi, [rsp]
+                    lea r10, [rdi+0xd]
+                    xor rdx, rdx
+                    push rdx
+                    push r10
+                    push rdi
+                    mov rsi, rsp
+                    syscall
+                """,
+            )
         )

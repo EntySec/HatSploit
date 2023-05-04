@@ -6,7 +6,7 @@ Current source: https://github.com/EntySec/HatSploit
 from pex.arch import X86
 from pex.string import String
 
-from hatsploit.lib.encoder import Encoder
+from hatsploit.lib.encoder.basic import *
 
 
 class HatSploitEncoder(Encoder, String, X86):
@@ -23,25 +23,21 @@ class HatSploitEncoder(Encoder, String, X86):
             'Architecture': "x64",
         }
 
-        self.options = {
-            'KEY': {
-                'Description': "8-byte key to encode.",
-                'Value': "P@ssW0rd",
-                'Type': None,
-                'Required': True,
-            }
-        }
+        self.key = Option("hatspl64", "8-byte key to encode.", True)
 
     def run(self):
-        key = self.parse_options(self.options)
-        count = -1 * int((len(self.payload) - 1 / len(key)) + 1)
+        count = -1 * int((len(self.payload) - 1 / len(self.key.value)) + 1)
 
         decoder = (
                 b"\x48\x31\xc9"
-                b"\x48\x81\xe9" + self.pack_dword(count) + b"\x48\x8d\x05\xef\xff\xff\xff"
-                                                           b"\x48\xbb" + key.encode() + b"\x48\x31\x58\x27"
-                                                                                        b"\x48\x2d\xf8\xff\xff\xff"
-                                                                                        b"\xe2\xf4"
+                b"\x48\x81\xe9"
+                + self.pack_dword(count) +
+                b"\x48\x8d\x05\xef\xff\xff\xff"
+                b"\x48\xbb"
+                + self.key.value.encode() +
+                b"\x48\x31\x58\x27"
+                b"\x48\x2d\xf8\xff\xff\xff"
+                b"\xe2\xf4"
         )
 
-        return decoder + self.xor_key_bytes(self.payload, key.encode())
+        return decoder + self.xor_key_bytes(self.payload, self.key.value.encode())

