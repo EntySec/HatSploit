@@ -429,6 +429,56 @@ class Modules(object):
 
         return value
 
+    def get_current_options(self) -> dict:
+        """ Get all options from current module,
+        payload which is used in it and encoder.
+
+        :return dict: options, option names as keys
+        and option data as items
+        """
+
+        options = {}
+
+        module = self.get_current_module()
+        payload = self.payloads.get_current_payload(module)
+        encoder = self.encoders.get_current_encoder(module, payload)
+
+        if hasattr(module, 'options'):
+            options.update(module.options)
+
+        if hasattr(payload, 'options'):
+            options.update(payload.options)
+
+        if hasattr(encoder, 'options'):
+            options.update(encoder.options)
+
+        return options
+
+    def get_current_advanced(self) -> dict:
+        """ Get all advanced options from current module,
+        payload which is used in it and encoder.
+
+        :return dict: options, option names as keys
+        and option data as items
+        """
+
+        options = {}
+
+        module = self.get_current_module()
+        payload = self.payloads.get_current_payload(module)
+        encoder = self.encoders.get_current_encoder(module, payload)
+
+        if hasattr(module, 'advanced'):
+            options.update(module.advanced)
+
+        if hasattr(payload, 'advanced'):
+            options.update(payload.advanced)
+
+        if hasattr(encoder, 'advanced'):
+            options.update(encoder.advanced)
+
+        return options
+
     def set_option_value(self, module: Module, option: str, value: Optional[str] = None) -> bool:
         """ Set module option value.
 

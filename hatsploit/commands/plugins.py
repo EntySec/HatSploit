@@ -4,6 +4,7 @@ Current source: https://github.com/EntySec/HatSploit
 """
 
 from hatsploit.lib.command import Command
+from hatsploit.lib.plugins import Plugins
 from hatsploit.lib.show import Show
 
 
@@ -12,6 +13,7 @@ class HatSploitCommand(Command):
         super().__init__()
 
         self.show = Show()
+        self.plguins = Plugins()
 
         self.details = {
             'Category': "plugins",
@@ -23,6 +25,9 @@ class HatSploitCommand(Command):
             'Usage': "plugins",
             'MinArgs': 0,
         }
+
+    def rpc(self, *args):
+        return self.plugins.get_plugins()
 
     def run(self, argc, argv):
         self.show.show_plugins()

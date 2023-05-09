@@ -4,7 +4,6 @@ Current source: https://github.com/EntySec/HatSploit
 """
 
 from hatsploit.lib.payload.basic import *
-from hatsploit.lib.handler import Handler
 
 from pex.assembler import Assembler
 from pex.socket import Socket

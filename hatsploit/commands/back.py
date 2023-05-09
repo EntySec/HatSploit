@@ -24,6 +24,8 @@ class HatSploitCommand(Command):
             'MinArgs': 0,
         }
 
+    def rpc(self, *args):
+        self.run(0, [])
 
     def run(self, argc, argv):
         self.modules.go_back()

@@ -680,6 +680,40 @@ class Show(object):
             Rank:        {details['Rank']}
         """))
 
+    def show_options_table(self, title: str, options: dict) -> None:
+        """ Show options for specific title.
+
+        :param str title: title
+        :param dict options: options, option names as keys and option data as
+        items
+        :return None: None
+        """
+
+        headers = ("Option", "Value", "Required", "Description")
+        options_data = []
+
+        for option in sorted(options):
+            if options[option]['Visible']:
+                value, required = options[option]['Value'], \
+                    options[option]['Required']
+
+                if required:
+                    required = "yes"
+                else:
+                    required = "no"
+
+                if isinstance(value, bool):
+                    if value:
+                        value = "yes"
+                    else:
+                        value = "no"
+
+                options_data.append(
+                    (option, "" if value is None else value, required, options[option]['Description'])
+                )
+
+        self.tables.print_table(title, headers, *options_data)
+
     def show_options(self) -> None:
         """ Show options.
 
@@ -693,76 +727,17 @@ class Show(object):
         if not module:
             raise RuntimeWarning("No module selected.")
 
-        headers = ("Option", "Value", "Required", "Description")
-
         if hasattr(module, "options"):
-            options_data = []
-            options = module.options
-
-            for option in sorted(options):
-                if options[option]['Visible']:
-                    value, required = options[option]['Value'], \
-                                    options[option]['Required']
-
-                    if required:
-                        required = "yes"
-                    else:
-                        required = "no"
-
-                    if not value and value != 0:
-                        value = ""
-
-                    options_data.append(
-                        (option, value, required, options[option]['Description'])
-                    )
-
-            self.tables.print_table(f"Module Options ({module.details['Module']})", headers, *options_data)
+            self.show_options_table(f"Module Options ({module.details['Module']})", module.options)
 
         if payload:
             encoder = self.encoders.get_current_encoder(module, payload)
 
             if payload and hasattr(payload, "options"):
-                options_data = []
-
-                for option in sorted(payload.options):
-                    if payload.options[option]['Visible']:
-                        value, required = payload.options[option]['Value'], \
-                                      payload.options[option]['Required']
-                        if required:
-                            required = "yes"
-                        else:
-                            required = "no"
-                        if not value and value != 0:
-                            value = ""
-
-                        options_data.append(
-                            (option, value, required, payload.options[option]['Description'])
-                        )
-
-                self.tables.print_table(f"Payload Options ({payload.details['Payload']})", headers,
-                                        *options_data)
+                self.show_options_table(f"Payload Options ({payload.details['Payload']})", payload.options)
 
             if encoder and hasattr(encoder, "options"):
-                options_data = []
-
-                for option in sorted(encoder.options):
-                    if encoder.options[option]['Visible']:
-                        value, required = encoder.options[option]['Value'], \
-                                        encoder.options[option]['Required']
-                        if required:
-                            required = "yes"
-                        else:
-                            required = "no"
-
-                        if not value and value != 0:
-                            value = ""
-
-                        options_data.append(
-                            (option, value, required, encoder.options[option]['Description'])
-                        )
-
-                self.tables.print_table(f"Encoder Options ({encoder.details['Encoder']})", headers,
-                                        *options_data)
+                self.show_options_table(f"Encoder Options ({encoder.details['Encoder']})", encoder.options)
 
     def show_advanced(self) -> None:
         """ Show advanced options.
@@ -777,77 +752,17 @@ class Show(object):
         if not module:
             raise RuntimeWarning("No module selected.")
 
-        headers = ("Option", "Value", "Required", "Description")
-
         if hasattr(module, "advanced"):
-            options_data = []
-            options = module.advanced
-
-            for option in sorted(options):
-                if options[option]['Visible']:
-                    value, required = options[option]['Value'], \
-                                    options[option]['Required']
-
-                    if required:
-                        required = "yes"
-                    else:
-                        required = "no"
-
-                    if not value and value != 0:
-                        value = ""
-
-                    options_data.append(
-                        (option, value, required, options[option]['Description'])
-                    )
-
-            self.tables.print_table(f"Module Advanced Options ({module.details['Module']})", headers,
-                                    *options_data)
+            self.show_options_table(
+                f"Module Advanced Options ({module.details['Module']})", module.advanced)
 
         if payload:
             encoder = self.encoders.get_current_encoder(module, payload)
 
             if payload and hasattr(payload, "advanced"):
-                options_data = []
-
-                for option in sorted(payload.advanced):
-                    if payload.advanced[option]['Visible']:
-                        value, required = payload.advanced[option]['Value'], \
-                                        payload.advanced[option]['Required']
-
-                        if required:
-                            required = "yes"
-                        else:
-                            required = "no"
-
-                        if not value and value != 0:
-                            value = ""
-
-                        options_data.append(
-                            (option, value, required, payload.advanced[option]['Description'])
-                        )
-
-                self.tables.print_table(f"Payload Advanced Options ({payload.details['Payload']})", headers,
-                                        *options_data)
+                self.show_options_table(
+                    f"Payload Advanced Options ({payload.details['Payload']})", payload.advanced)
 
             if encoder and hasattr(encoder, "advanced"):
-                options_data = []
-
-                for option in sorted(encoder.advanced):
-                    if encoder.advanced[option]['Visible']:
-                        value, required = encoder.advanced[option]['Value'], \
-                                        encoder.advanced[option]['Required']
-
-                        if required:
-                            required = "yes"
-                        else:
-                            required = "no"
-
-                        if not value and value != 0:
-                            value = ""
-
-                        options_data.append(
-                            (option, value, required, encoder.advanced[option]['Description'])
-                        )
-
-                self.tables.print_table(f"Encoder Advanced Options ({encoder.details['Encoder']})", headers,
-                                        *options_data)
+                self.show_options_table(
+                    f"Encoder Advanced Options ({encoder.details['Encoder']})", encoder.advanced)

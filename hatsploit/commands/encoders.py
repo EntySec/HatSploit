@@ -4,6 +4,7 @@ Current source: https://github.com/EntySec/HatSploit
 """
 
 from hatsploit.lib.command import Command
+from hatsploit.lib.encoders import Encoders
 from hatsploit.lib.show import Show
 
 
@@ -12,6 +13,7 @@ class HatSploitCommand(Command):
         super().__init__()
 
         self.show = Show()
+        self.encoders = Encoders()
 
         self.details = {
             'Category': "encoder",
@@ -23,6 +25,9 @@ class HatSploitCommand(Command):
             'Usage': "encoders",
             'MinArgs': 0,
         }
+
+    def rpc(self, *args):
+        return self.encoders.get_encoders()
 
     def run(self, argc, argv):
         self.show.show_encoders()

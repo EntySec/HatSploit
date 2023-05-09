@@ -27,10 +27,10 @@ import os
 import sys
 import yaml
 
+from hatsploit.core.utils.rpc import RPC
 from hatsploit.core.base.console import Console
 from hatsploit.core.cli.badges import Badges
 from hatsploit.core.db.builder import Builder
-from hatsploit.core.utils.api import API
 from hatsploit.core.utils.check import Check
 from hatsploit.core.utils.update import Update
 from hatsploit.lib.config import Config
@@ -85,13 +85,14 @@ class HatSploit(object):
 
         return True
 
-    def launch(self, shell: bool = True, scripts: list = []) -> None:
+    def launch(self, shell: bool = True, scripts: list = [], rpc: list = []) -> None:
         """ Launch HatSploit CLI interpreter.
 
         :param bool shell: True to launch shell interpreter
         after all scripts executed else False
         :param list scripts: list of filenames of files
         containing HatSploit scripts
+        :param list rpc: RPC host and port
         :return None: None
         """
 
@@ -108,6 +109,7 @@ class HatSploit(object):
                 if self.runtime.catch(self.runtime.start, [build]) is not Exception:
                     if not scripts:
                         if shell:
+                            self.jobs.create_job(f"RPC on port {str(rpc[1])}", "", RPC(*rpc).run)
                             self.console.shell()
                     else:
                         self.console.script(scripts, shell)
@@ -152,27 +154,21 @@ class HatSploit(object):
             help='Check only base plugins.',
         )
         parser.add_argument(
-            '--rest-api',
-            dest='rest_api',
+            '--rpc',
+            dest='rpc',
             action='store_true',
-            help='Start HatSploit REST API server.',
+            help='Start HatSploit RPC server.',
         )
         parser.add_argument(
             '--host',
             dest='host',
-            help='HatSploit REST API server host. [default: 127.0.0.1]',
+            help='HatSploit RPC server host. [default: 127.0.0.1]',
         )
         parser.add_argument(
             '--port',
             dest='port',
             type=int,
-            help='HatSploit REST API server port. [default: 8008]',
-        )
-        parser.add_argument(
-            '--username', dest='username', help='HatSploit REST API server username.'
-        )
-        parser.add_argument(
-            '--password', dest='password', help='HatSploit REST API server password.'
+            help='HatSploit RPC server port. [default: 5000]',
         )
         parser.add_argument(
             '-u',
@@ -201,6 +197,11 @@ class HatSploit(object):
         )
         args = parser.parse_args()
 
+        rpc = ()
+
+        if args.rpc:
+            rpc = (args.host or '127.0.0.1', args.port or 5000)
+
         if args.check_all:
             sys.exit(not self.check.check_all())
 
@@ -216,26 +217,6 @@ class HatSploit(object):
         elif args.check_encoders:
             sys.exit(self.check.check_encoders())
 
-        elif args.rest_api:
-            if not args.username and not args.password:
-                parser.print_help()
-                sys.exit(1)
-            else:
-                host, port = '127.0.0.1', 8008
-                if args.host:
-                    host = args.host
-
-                if args.port:
-                    port = args.port
-
-                rest_api = API(
-                    host=host, port=port, username=args.username, password=args.password
-                )
-
-                self.jobs.create_job(
-                    f"REST API on port {str(port)}", "", rest_api.run
-                )
-
         elif args.update:
             self.update.update()
             sys.exit(0)
@@ -246,21 +227,22 @@ class HatSploit(object):
                 sys.exit(1)
 
             if args.no_startup:
-                self.launch(shell=args.no_exit, scripts=[args.script])
+                self.launch(shell=args.no_exit, scripts=[args.script], rpc=rpc)
 
             else:
                 if os.path.exists(self.path_config['startup_path']):
                     self.launch(
                         shell=args.no_exit,
                         scripts=[self.path_config['startup_path'], args.script],
+                        rpc=rpc
                     )
 
             sys.exit(0)
 
         if args.no_startup:
-            self.launch()
+            self.launch(rpc=rpc)
         else:
             if os.path.exists(self.path_config['startup_path']):
-                self.launch(scripts=[self.path_config['startup_path']])
+                self.launch(scripts=[self.path_config['startup_path']], rpc=rcp)
             else:
-                self.launch()
+                self.launch(rpc=rcp)

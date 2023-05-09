@@ -40,6 +40,42 @@ class DB(object):
 
         self.local_storage = LocalStorage()
 
+    def get_encoder_databases(self) -> dict:
+        """ Get connected encoder databases.
+
+        :return dict: databases, database name as keys and
+        database data as items
+        """
+
+        return self.local_storage.get("connected_encoder_databases", {})
+
+    def get_payload_databases(self) -> dict:
+        """ Get connected payload databases.
+
+        :return dict: databases, database name as keys and
+        database data as items
+        """
+
+        return self.local_storage.get("connected_payload_databases", {})
+
+    def get_module_databases(self) -> dict:
+        """ Get connected module databases.
+
+        :return dict: databases, database name as keys and
+        database data as items
+        """
+
+        return self.local_storage.get("connected_module_databases", {})
+
+    def get_plugin_databases(self) -> dict:
+        """ Get connected plugin databases.
+
+        :return dict: databases, database name as keys and
+        database data as items
+        """
+
+        return self.local_storage.get("connected_plugin_databases", {})
+
     def disconnect_payload_database(self, name: str) -> None:
         """ Disconnect payload database.
 

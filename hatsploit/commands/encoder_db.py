@@ -37,6 +37,25 @@ class HatSploitCommand(Command):
             },
         }
 
+    def rpc(self, *args):
+        if len(args) < 1:
+            return
+
+        if args[0] == 'list':
+            return self.db.get_encoder_databases()
+
+        elif args[0] == 'disconnect':
+            if len(args) >= 2:
+                self.db.disconnect_encoder_database(args[1])
+
+        elif args[0] == 'build':
+            if len(args) >= 3:
+                self.builder.build_encoder_database(args[1], args[2])
+
+        elif args[0] == 'connect':
+            if len(args) >= 3:
+                self.db.connect_encoder_database(args[1], args[2])
+
     def run(self, argc, argv):
         choice = argv[1]
 
