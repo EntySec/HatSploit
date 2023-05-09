@@ -25,35 +25,48 @@ SOFTWARE.
 import os
 import random
 
+from colorscript import ColorScript
+
 from hatsploit.core.cli.badges import Badges
 from hatsploit.core.cli.colors import Colors
-from hatsploit.core.cli.parser import Parser
-from hatsploit.core.utils.ui.colors_script import ColorsScript
 from hatsploit.lib.config import Config
 
 
 class Tip(object):
-    def __init__(self):
+    """ Subclass of hatsploit.core.utils.ui module.
+
+    This subclass of hatsploit.core.utils.ui module is intended for
+    providing tools for printing tips in UI.
+    """
+
+    def __init__(self) -> None:
         super().__init__()
 
-        self.parser = Parser()
         self.config = Config()
         self.badges = Badges()
         self.colors = Colors()
 
-        self.colors_script = ColorsScript()
+        self.color_script = ColorScript()
 
-    def print_random_tip(self):
+    def print_random_tip(self) -> None:
+        """ Print random tip.
+
+        :return None: None
+        """
+
         if os.path.exists(self.config.path_config['tips_path']):
             tips = []
             all_tips = os.listdir(self.config.path_config['tips_path'])
+
             for tip in all_tips:
                 tips.append(tip)
+
             if tips:
                 tip = ""
+
                 while not tip:
                     random_tip = random.randint(0, len(tips) - 1)
-                    tip = self.colors_script.parse_colors_script(
+                    tip = self.color_script.parse_file(
                         self.config.path_config['tips_path'] + tips[random_tip]
                     )
 

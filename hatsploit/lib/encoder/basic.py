@@ -22,29 +22,5 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
-from hatsploit.lib.options import Options
-
-
-class Parser(object):
-    def __init__(self):
-        super().__init__()
-
-    @staticmethod
-    def parse_options(options, option=None):
-        if not option:
-            values = []
-            for option_name in options:
-                if option_name.upper() not in Options().handler_options['Module']:
-                    if option_name.upper() not in Options().handler_options['Payload']:
-                        values.append(str(options[option_name]['Value']))
-            if len(values) == 1:
-                return values[0]
-            return values
-        return str(options[option]['Value'])
-
-    @staticmethod
-    def parse_ports_range(ports_range):
-        start = int(ports_range.split('-')[0].strip())
-        end = int(ports_range.split('-')[1].strip())
-
-        return start, end
+from hatsploit.lib.encoder import Encoder
+from hatsploit.lib.option import *

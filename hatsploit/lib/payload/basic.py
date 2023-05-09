@@ -22,27 +22,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
-from hatsploit.core.cli.badges import Badges
-from hatsploit.core.cli.colors import Colors
-from hatsploit.core.cli.fmt import FMT
-from hatsploit.core.cli.parser import Parser
-from hatsploit.core.cli.tables import Tables
-from hatsploit.core.cli.tools import Tools
-
-
-class Encoder(FMT, Badges, Colors, Parser, Tables, Tools):
-    def __init__(self):
-        super().__init__()
-
-        self.details = {
-            'Name': "",
-            'Encoder': "",
-            'Authors': [
-                ''
-            ],
-            'Description': "",
-            'Architecture': ""
-        }
-
-    def run(self):
-        pass
+from hatsploit.lib.payload import Payload
+from hatsploit.lib.handler import Handler
+from hatsploit.lib.option import *

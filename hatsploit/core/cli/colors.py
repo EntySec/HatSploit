@@ -24,7 +24,13 @@ SOFTWARE.
 
 
 class Colors(object):
-    def __init__(self):
+    """ Subclass of hatsploit.core.cli module.
+
+    This subclass of hatsploit.core.cli module is intended for
+    providing different color bindings for interface.
+    """
+
+    def __init__(self) -> None:
         super().__init__()
 
         self.BLACK = '\033[30m'

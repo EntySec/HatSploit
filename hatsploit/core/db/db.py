@@ -29,12 +29,61 @@ from hatsploit.lib.storage import LocalStorage
 
 
 class DB(object):
-    def __init__(self):
+    """ Subclass of hatsploit.core.db module.
+
+    This subclass of hatsploit.core.db module is intended for
+    providing tools for working with HatSploit databases.
+    """
+
+    def __init__(self) -> None:
         super().__init__()
 
         self.local_storage = LocalStorage()
 
-    def disconnect_payload_database(self, name):
+    def get_encoder_databases(self) -> dict:
+        """ Get connected encoder databases.
+
+        :return dict: databases, database name as keys and
+        database data as items
+        """
+
+        return self.local_storage.get("connected_encoder_databases", {})
+
+    def get_payload_databases(self) -> dict:
+        """ Get connected payload databases.
+
+        :return dict: databases, database name as keys and
+        database data as items
+        """
+
+        return self.local_storage.get("connected_payload_databases", {})
+
+    def get_module_databases(self) -> dict:
+        """ Get connected module databases.
+
+        :return dict: databases, database name as keys and
+        database data as items
+        """
+
+        return self.local_storage.get("connected_module_databases", {})
+
+    def get_plugin_databases(self) -> dict:
+        """ Get connected plugin databases.
+
+        :return dict: databases, database name as keys and
+        database data as items
+        """
+
+        return self.local_storage.get("connected_plugin_databases", {})
+
+    def disconnect_payload_database(self, name: str) -> None:
+        """ Disconnect payload database.
+
+        :param str name: database name
+        :return None: None
+        :raises RuntimeError: with trailing error message
+        """
+
         if self.local_storage.get("connected_payload_databases"):
             if name in self.local_storage.get("connected_payload_databases"):
                 self.local_storage.delete_element("connected_payload_databases", name)
@@ -43,7 +92,14 @@ class DB(object):
 
         raise RuntimeError("No such payload database connected!")
 
-    def disconnect_encoder_database(self, name):
+    def disconnect_encoder_database(self, name: str) -> None:
+        """ Disconnect encoder database.
+
+        :param str name: database name
+        :return None: None
+        :raises RuntimeError: with trailing error message
+        """
+
         if self.local_storage.get("connected_encoder_databases"):
             if name in self.local_storage.get("connected_encoder_databases"):
                 self.local_storage.delete_element("connected_encoder_databases", name)
@@ -52,7 +108,14 @@ class DB(object):
 
         raise RuntimeError("No such encoder database connected!")
 
-    def disconnect_module_database(self, name):
+    def disconnect_module_database(self, name: str) -> None:
+        """ Disconnect module database.
+
+        :param str name: database name
+        :return None: None
+        :raises RuntimeError: with trailing error message
+        """
+
         if self.local_storage.get("connected_module_databases"):
             if name in self.local_storage.get("connected_module_databases"):
                 self.local_storage.delete_element("connected_module_databases", name)
@@ -61,7 +124,14 @@ class DB(object):
 
         raise RuntimeError("No such module database connected!")
 
-    def disconnect_plugin_database(self, name):
+    def disconnect_plugin_database(self, name: str) -> None:
+        """ Disconnect plugin database.
+
+        :param str name: database name
+        :return None: None
+        :raises RuntimeError: with trailing error message
+        """
+
         if self.local_storage.get("connected_plugin_databases"):
             if name in self.local_storage.get("connected_plugin_databases"):
                 self.local_storage.delete_element("connected_plugin_databases", name)
@@ -70,7 +140,15 @@ class DB(object):
 
         raise RuntimeError("No such plugin database connected!")
 
-    def connect_encoder_database(self, name, path):
+    def connect_encoder_database(self, name: str, path: str) -> None:
+        """ Connect encoder database.
+
+        :param str name: name to give to the database
+        :param str path: path to the database
+        :return None: None
+        :raises RuntimeError: with trailing error message
+        """
+
         if self.local_storage.get("connected_encoder_databases"):
             if name in self.local_storage.get("connected_encoder_databases"):
                 raise RuntimeWarning(f"Encoder database is already connected: {path}.")
@@ -103,7 +181,15 @@ class DB(object):
         else:
             self.local_storage.set("encoders", encoders)
 
-    def connect_payload_database(self, name, path):
+    def connect_payload_database(self, name: str, path: str) -> None:
+        """ Connect payload database.
+
+        :param str name: name to give to the database
+        :param str path: path to the database
+        :return None: None
+        :raises RuntimeError: with trailing error message
+        """
+
         if self.local_storage.get("connected_payload_databases"):
             if name in self.local_storage.get("connected_payload_databases"):
                 raise RuntimeWarning(f"Payload database is already connected: {path}.")
@@ -136,7 +222,15 @@ class DB(object):
         else:
             self.local_storage.set("payloads", payloads)
 
-    def connect_module_database(self, name, path):
+    def connect_module_database(self, name: str, path: str) -> None:
+        """ Connect module database.
+
+        :param str name: name to give to the database
+        :param str path: path to the database
+        :return None: None
+        :raises RuntimeError: with trailing error message
+        """
+
         if self.local_storage.get("connected_module_databases"):
             if name in self.local_storage.get("connected_module_databases"):
                 raise RuntimeWarning(f"Module database is already connected: {path}.")
@@ -169,7 +263,15 @@ class DB(object):
         else:
             self.local_storage.set("modules", modules)
 
-    def connect_plugin_database(self, name, path):
+    def connect_plugin_database(self, name: str, path: str) -> None:
+        """ Connect plugin database.
+
+        :param str name: name to give to the database
+        :param str path: path to the database
+        :return None: None
+        :raises RuntimeError: with trailing error message
+        """
+
         if self.local_storage.get("connected_plugin_databases"):
             if name in self.local_storage.get("connected_plugin_databases"):
                 raise RuntimeWarning(f"Plugin database is already connected: {path}.")

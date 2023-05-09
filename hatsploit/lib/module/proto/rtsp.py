@@ -22,29 +22,32 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
-from hatsploit.core.cli.badges import Badges
-from hatsploit.core.cli.colors import Colors
-from hatsploit.core.cli.fmt import FMT
-from hatsploit.core.cli.parser import Parser
-from hatsploit.core.cli.tables import Tables
-from hatsploit.core.cli.tools import Tools
+from pex.proto.rtsp import RTSPClient, RTSPSocket
+from hatsploit.lib.option import *
 
 
-class Module(FMT, Badges, Colors, Parser, Tables, Tools):
-    def __init__(self):
+class RTSP(RTSPClient):
+    """ Subclass of hatsploit.lib.module.proto module.
+
+    This subclass of hatsploit.lib.module.proto module is a representation
+    of a wrapper of RTSP client for a module.
+    """
+
+    def __init__(self) -> None:
         super().__init__()
 
-        self.details = {
-            'Category': "",
-            'Name': "",
-            'Module': "",
-            'Authors': [
-                ''
-            ],
-            'Description': "",
-            'Platform': "",
-            'Rank': ""
-        }
+        self.timeout = IntegerOption(10, "Connection timeout.", False)
+        self.host = IPv4Option(None, "SSH host.", True)
+        self.port = PortOption(554, "SSH port.", True)
 
-    def run(self):
-        pass
+    def open_rtsp(self) -> RTSPSocket:
+        """ Open RTSP socket.
+
+        :return RTSPSocket: RTSP socket
+        """
+
+        return super().open_rtsp(
+            host=self.host.value,
+            port=self.port.value,
+            timeout=self.timeout.value
+        )

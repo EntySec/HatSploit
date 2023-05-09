@@ -25,13 +25,18 @@ SOFTWARE.
 from hatsploit.core.cli.badges import Badges
 from hatsploit.core.cli.colors import Colors
 from hatsploit.core.cli.fmt import FMT
-from hatsploit.core.cli.parser import Parser
 from hatsploit.core.cli.tables import Tables
 from hatsploit.core.cli.tools import Tools
 
 
-class Plugin(FMT, Badges, Colors, Parser, Tables, Tools):
-    def __init__(self):
+class Plugin(FMT, Badges, Colors, Tables, Tools):
+    """ Subclass of hatsploit.lib module.
+
+    This subclass of hatsploit.lib module is intended for providing
+    wrapper for a plugin.
+    """
+
+    def __init__(self) -> None:
         super().__init__()
 
         self.details = {
@@ -42,5 +47,10 @@ class Plugin(FMT, Badges, Colors, Parser, Tables, Tools):
             'Description': ""
         }
 
-    def load(self):
+    def load(self) -> None:
+        """ Load this plugin.
+
+        :return None: None
+        """
+
         pass

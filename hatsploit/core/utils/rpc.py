@@ -22,30 +22,44 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
-from hatsploit.core.cli.badges import Badges
-from hatsploit.core.cli.colors import Colors
-from hatsploit.core.cli.fmt import FMT
-from hatsploit.core.cli.parser import Parser
-from hatsploit.core.cli.tables import Tables
-from hatsploit.core.cli.tools import Tools
+from jsonrpclib.SimpleJSONRPCServer import SimpleJSONRPCServer
+
+from hatsploit.lib.commands import Commands
 
 
-class Payload(FMT, Badges, Colors, Parser, Tables, Tools):
-    def __init__(self):
-        super().__init__()
+class RPC(object):
+    """ Subclass of hatsploit.core.utils module.
 
-        self.details = {
-            'Name': "",
-            'Payload': "",
-            'Authors': [
-                ''
-            ],
-            'Description': "",
-            'Architecture': "",
-            'Platform': "",
-            'Rank': "",
-            'Type': ""
-        }
+    This subclass of hatsploit.core.utils module is intended for providing
+    an implementation of a remote procedure calls for HatSploit.
+    """
 
-    def run(self):
-        pass
+    def __init__(self, host: str, port: int = 1006) -> None:
+        """ Initialize RPC server.
+
+        :param str host: host to start RPC server on
+        :param int port: port to start RPC server on
+        """
+
+        self.host = host
+        self.port = int(port)
+
+        self.commands = Commands()
+
+    def run(self) -> None:
+        """ Run RPC server.
+
+        :return None: None
+        """
+
+        rpc = SimpleJSONRPCServer((self.host, self.port))
+        commands = self.commands.get_commands()
+
+        for command in commands:
+            name = command
+            command = commands[command]
+
+            if hasattr(command, 'rpc'):
+                rpc.register_function(command.rpc, name)
+
+        rpc.serve_forever()

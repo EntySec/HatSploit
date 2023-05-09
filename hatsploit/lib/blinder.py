@@ -22,19 +22,34 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
+from typing import Callable, Any
+
 from pex.post import PostTools
 
 from hatsploit.core.cli.badges import Badges
 
 
 class Blinder(object):
-    def __init__(self):
+    """ Subclass of hatsploit.lib module.
+
+    This subclass of hatsploit.lib module is intended for providing
+    an implementation of Blinder, blind command injection handler.
+    """
+
+    def __init__(self) -> None:
         super().__init__()
 
         self.badges = Badges()
         self.post_tools = PostTools()
 
-    def shell(self, sender, args={}):
+    def shell(self, sender: Callable[..., Any], args: dict = {}) -> None:
+        """ Blinder shell, aka command handler.
+
+        :param Callable sender: function via which Blinder sends commands
+        :param dict args: extra sender arguments
+        :return None: None
+        """
+
         self.badges.print_empty()
         self.badges.print_information("Welcome to Blinder, blind command injection handler.")
         self.badges.print_information("Blinder is not a reverse shell, just a blind command injection.")
@@ -48,8 +63,9 @@ class Blinder(object):
                 return
 
             self.badges.print_process("Sending command to target...")
-            output = self.post_tools.post_command(sender, command, args)
+            output = self.post_tools.post_payload(sender, command, args)
 
             if output:
                 self.badges.print_empty(f'\n{output}')
+
             self.badges.print_empty('')

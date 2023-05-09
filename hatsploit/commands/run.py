@@ -35,9 +35,9 @@ class HatSploitCommand(Command):
         }
 
     def run(self, argc, argv):
-        current_module = self.modules.get_current_module()
+        module = self.modules.get_current_module()
 
-        if not current_module:
+        if not module:
             self.print_warning("No module selected.")
             return
 
@@ -53,16 +53,16 @@ class HatSploitCommand(Command):
                 self.print_process("Requesting module to run in cycle...")
 
                 self.jobs.create_job(
-                    current_module.details['Name'],
-                    current_module.details['Module'],
+                    module.details['Name'],
+                    module.details['Module'],
                     self.modules.run_current_module,
                     [True, self.runtime.catch],
                 )
 
             else:
                 self.jobs.create_job(
-                    current_module.details['Name'],
-                    current_module.details['Module'],
+                    module.details['Name'],
+                    module.details['Module'],
                     self.modules.run_current_module,
                     [False, self.runtime.catch],
                 )
@@ -82,8 +82,8 @@ class HatSploitCommand(Command):
                 job_id = self.jobs.count_jobs()
 
                 self.jobs.create_job(
-                    current_module.details['Name'],
-                    current_module.details['Module'],
+                    module.details['Name'],
+                    module.details['Module'],
                     self.modules.run_current_module,
                     [True, self.runtime.catch]
                 )

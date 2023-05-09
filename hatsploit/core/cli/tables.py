@@ -26,12 +26,37 @@ from hatsploit.core.cli.badges import Badges
 
 
 class Tables(object):
-    def __init__(self):
+    """ Subclass of hatsploit.core.cli module.
+
+    This subclass of hatsploit.core.cli module is intended for
+    providing an implementation for tables printer, which can
+    print data as a table.
+    """
+
+    def __init__(self) -> None:
         super().__init__()
 
         self.badges = Badges()
 
-    def print_table(self, name, headers, *args, **kwargs) -> None:
+    def print_table(self, name: str, headers: tuple, *args, **kwargs) -> None:
+        """ Print table.
+
+        Usage example: print_table('Example', ('Col1', 'Col2'), *[(1,2),(3,4)])
+        Sample output:
+
+        Example
+        =======
+
+          Col1    Col2
+          ----    ----
+          1       2
+          3       4
+
+        :param str name: table name
+        :param tuple headers: tuple of headers
+        :return None: None
+        """
+
         extra_fill = kwargs.get("extra_fill", 4)
         header_separator = kwargs.get("header_separator", "-")
 

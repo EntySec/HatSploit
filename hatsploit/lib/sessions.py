@@ -22,15 +22,24 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
+from typing import Optional
+
 from hatsploit.core.cli.badges import Badges
 from hatsploit.lib.config import Config
 
+from hatsploit.lib.session import Session
 from hatsploit.lib.storage import GlobalStorage
 from hatsploit.lib.storage import LocalStorage
 
 
 class Sessions(object):
-    def __init__(self):
+    """ Subclass of hatsploit.lib module.
+
+    This subclass of hatsploit.lib module is intended for providing
+    tools for working with HatSploit sessions.
+    """
+
+    def __init__(self) -> None:
         super().__init__()
 
         self.badges = Badges()
@@ -41,11 +50,21 @@ class Sessions(object):
         self.global_storage = GlobalStorage(self.storage_path)
         self.local_storage = LocalStorage()
 
-    def get_sessions(self):
-        sessions = self.local_storage.get("sessions")
-        return sessions if sessions else {}
+    def get_sessions(self) -> dict:
+        """ Get all opened sessions.
 
-    def close_dead(self):
+        :return dict: sessions, session ids as keys and
+        session details as items
+        """
+
+        return self.local_storage.get("sessions", {})
+
+    def close_dead(self) -> None:
+        """ Close all dead sessions.
+
+        :return None: None
+        """
+
         sessions = self.get_sessions()
 
         if sessions:
@@ -54,8 +73,18 @@ class Sessions(object):
                     self.badges.print_warning(f"Session {str(session)} is dead (no heartbeat).")
                     self.close_session(session)
 
-    def add_session(self, session_platform, session_architecture,
-                    session_type, session_host, session_port, session_object):
+    def add_session(self, platform: str, arch: str, type: str,
+                    host: str, port: int, session: Session) -> int:
+        """ Add session to local storage.
+
+        :param str platform: session platform
+        :param str arch: session architecture
+        :param str type: session type
+        :param str host: session host
+        :param int port: session port
+        :param Session session: session object
+        """
+
         if not self.get_sessions():
             self.local_storage.set("sessions", {})
 
@@ -66,58 +95,106 @@ class Sessions(object):
 
         sessions = {
             session_id: {
-                'Platform': session_platform,
-                'Architecture': session_architecture,
-                'Type': session_type,
-                'Host': session_host,
-                'Port': session_port,
-                'Object': session_object
+                'Platform': platform,
+                'Architecture': arch,
+                'Type': type,
+                'Host': host,
+                'Port': port,
+                'Object': session
             }
         }
 
         self.local_storage.update("sessions", sessions)
         return session_id
 
-    def check_exist(self, session_id, session_platform=None, session_architecture=None, session_type=None):
+    def check_exist(self, session_id: int, platform: Optional[str] = None,
+                    arch: Optional[str] = None, type: Optional[str] = None) -> bool:
+        """ Check if session exists in local storage.
+
+        :param int session_id: session id
+        :param Optional[str] platform: session platform
+        :param Optional[str] arch: session architecture
+        :param Optional[str] type: session type
+        :return bool: True if exists else False
+        """
+
         sessions = self.get_sessions()
 
         if sessions:
             if int(session_id) in sessions:
+                session = sessions[int(session_id)]
                 valid = True
 
-                if session_platform:
-                    if sessions[int(session_id)]['Platform'] != session_platform:
+                if platform:
+                    if session['Platform'] != platform:
                         valid = False
 
-                if session_type:
-                    if sessions[int(session_id)]['Type'] != session_type:
+                if type:
+                    if session['Type'] != type:
                         valid = False
 
-                if session_architecture:
-                    if sessions[int(session_id)]['Architecture'] != session_architecture:
+                if arch:
+                    if session['Architecture'] != arch:
                         valid = False
 
                 return valid
         return False
 
-    def enable_auto_interaction(self):
+    def get_auto_interaction(self) -> bool:
+        """ Check if auto-interaction allowed.
+
+        :return bool: True if allowed else False
+        """
+
+        return self.local_storage.get("auto_interaction", False)
+
+    def enable_auto_interaction(self) -> None:
+        """ Enable automatic interaction with session
+        right after it was opened.
+
+        :return None: None
+        """
+
         self.global_storage.set("auto_interaction", True)
         self.global_storage.set_all()
 
-    def disable_auto_interaction(self):
+    def disable_auto_interaction(self) -> None:
+        """ Disable automatic interaction with session
+        right after it was opened.
+
+        :return None: None
+        """
+
         self.global_storage.set("auto_interaction", False)
         self.global_storage.set_all()
 
-    def interact_with_session(self, session_id):
+    def interact_with_session(self, session_id: int) -> None:
+        """ Interact with specific session.
+
+        :param int session_id: session id
+        :return None: None
+        :raises RuntimeError: with trailing error message
+        """
+
         sessions = self.get_sessions()
 
         if self.check_exist(session_id):
             self.badges.print_process(f"Interacting with session {str(session_id)}...%newline")
             sessions[int(session_id)]['Object'].interact()
+
         else:
             raise RuntimeError("Invalid session given!")
 
-    def session_download(self, session_id, remote_file, local_path):
+    def session_download(self, session_id: int, remote_file: str, local_path: str) -> bool:
+        """ Download file from session.
+
+        :param int session_id: session id
+        :param str remote_file: remote file to download
+        :param str local_path: local path to save downloaded file
+        :return bool: True if success else False
+        :raises RuntimeError: with trailing error message
+        """
+
         sessions = self.get_sessions()
 
         if self.check_exist(session_id):
@@ -125,7 +202,16 @@ class Sessions(object):
 
         raise RuntimeError("Invalid session given!")
 
-    def session_upload(self, session_id, local_file, remote_path):
+    def session_upload(self, session_id: int, local_file: str, remote_path: str) -> bool:
+        """ Upload file to session.
+
+        :param int session_id: session id
+        :param str local_file: local file to upload
+        :param str remote_path: remote path to save uploaded file
+        :return bool: True if success else False
+        :raises RuntimeError: with trailing error message
+        """
+
         sessions = self.get_sessions()
 
         if self.check_exist(session_id):
@@ -133,7 +219,14 @@ class Sessions(object):
 
         raise RuntimeError("Invalid session given!")
 
-    def close_session(self, session_id):
+    def close_session(self, session_id: int) -> None:
+        """ Close specific session.
+
+        :param int session_id: session id
+        :return None: None
+        :raises RuntimeError: with trailing error message
+        """
+
         sessions = self.get_sessions()
 
         if self.check_exist(session_id):
@@ -142,12 +235,20 @@ class Sessions(object):
                 del sessions[int(session_id)]
 
                 self.local_storage.update("sessions", sessions)
+
             except Exception:
                 raise RuntimeError("Failed to close session!")
+
         else:
             raise RuntimeError("Invalid session given!")
 
-    def close_sessions(self):
+    def close_sessions(self) -> None:
+        """ Close all sessions.
+
+        :return None: None
+        :raises RuntimeError: with trailing error message
+        """
+
         sessions = self.get_sessions()
 
         if sessions:
@@ -157,13 +258,25 @@ class Sessions(object):
                     del sessions[session]
 
                     self.local_storage.update("sessions", sessions)
+
                 except Exception:
                     raise RuntimeError("Failed to close session!")
 
-    def get_session(self, session_id, session_platform=None, session_architecture=None, session_type=None):
+    def get_session(self, session_id: int, platform: Optional[str] = None,
+                    arch: Optional[str] = None, type: Optional[str] = None) -> Session:
+        """ Get session object.
+
+        :param int session_id: session id
+        :param Optional[str] platform: session platform
+        :param Optional[str] arch: session architecture
+        :param Optional[str] type: session type
+        :return Session: session object
+        :raises RuntimeError: with trailing error message
+        """
+
         sessions = self.get_sessions()
 
-        if self.check_exist(session_id, session_platform, session_architecture, session_type):
+        if self.check_exist(session_id, platform, arch, type):
             return sessions[int(session_id)]['Object']
 
         raise RuntimeError("Invalid session given!")

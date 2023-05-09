@@ -40,6 +40,9 @@ class HatSploitCommand(Command):
 
         return categories
 
+    def rpc(self, *args):
+        return self.modules.get_modules()
+
     def run(self, argc, argv):
         categories = self.collect_categories()
 

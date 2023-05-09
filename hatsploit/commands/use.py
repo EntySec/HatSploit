@@ -26,5 +26,11 @@ class HatSploitCommand(Command):
 
         self.complete = self.modules.modules_completer
 
+    def rpc(self, *args):
+        if len(args) < 1:
+            return
+
+        self.modules.use_module(args[0])
+
     def run(self, argc, argv):
         self.modules.use_module(argv[1])

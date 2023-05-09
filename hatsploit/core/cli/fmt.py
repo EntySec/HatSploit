@@ -26,14 +26,28 @@ import re
 
 
 class FMT(object):
-    def __init__(self):
+    """ Subclass of hatsploit.core.cli module.
+
+    This subclass of hatsploit.core.cli module is intended for
+    providing tools for formatting.
+    """
+
+    def __init__(self) -> None:
         super().__init__()
 
     @staticmethod
-    def format_commands(commands):
-        commands = re.split(''' (?=(?:[^'"]|'[^']*'|"[^"]*")*$)''', commands)
-        formated_commands = []
+    def format_commands(command: str) -> list:
+        """ Split command by space and commas.
+
+        :param str command: command to split
+        :return list: list of commands
+        """
+
+        commands = re.split(''' (?=(?:[^'"]|'[^']*'|"[^"]*")*$)''', command)
+        formatted_commands = []
+
         for command in commands:
             if command:
-                formated_commands.append(command.strip('"').strip("'"))
-        return formated_commands
+                formatted_commands.append(command.strip('"').strip("'"))
+
+        return formatted_commands

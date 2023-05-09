@@ -3,7 +3,7 @@ This payload requires HatSploit: https://hatsploit.com
 Current source: https://github.com/EntySec/HatSploit
 """
 
-from hatsploit.lib.payload import Payload
+from hatsploit.lib.payload.basic import *
 from pex.assembler import Assembler
 
 
@@ -11,7 +11,7 @@ class HatSploitPayload(Payload, Assembler):
     def __init__(self):
         super().__init__()
 
-        self.details = {
+        self.details.update({
             'Name': "Linux x64 Reboot",
             'Payload': "linux/x64/reboot",
             'Authors': [
@@ -22,7 +22,7 @@ class HatSploitPayload(Payload, Assembler):
             'Platform': "linux",
             'Rank': "low",
             'Type': "one_side",
-        }
+        })
 
     def run(self):
         return self.assemble(

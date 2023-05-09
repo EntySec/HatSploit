@@ -26,5 +26,8 @@ class HatSploitCommand(Command):
             'MinArgs': 0,
         }
 
+    def rpc(self, *args):
+        return self.payloads.get_payloads()
+
     def run(self, argc, argv):
         self.show.show_payloads()

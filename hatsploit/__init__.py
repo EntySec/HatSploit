@@ -33,6 +33,11 @@ from hatsploit.lib.runtime import Runtime
 runtime = Runtime()
 
 
-def cli():
+def cli() -> None:
+    """ Wrapper for HatSploit interpreter.
+
+    :return None: None
+    """
+
     hsf = HatSploit()
     runtime.catch(hsf.cli)

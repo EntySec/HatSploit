@@ -25,35 +25,48 @@ SOFTWARE.
 import os
 import random
 
+from colorscript import ColorScript
+
 from hatsploit.core.cli.badges import Badges
 from hatsploit.core.cli.colors import Colors
-from hatsploit.core.cli.parser import Parser
-from hatsploit.core.utils.ui.colors_script import ColorsScript
 from hatsploit.lib.config import Config
 
 
 class Banner(object):
-    def __init__(self):
+    """ Subclass of hatsploit.core.utils.ui module.
+
+    This subclass of hatsploit.core.utils.ui module is intended for
+    providing tools for printing banners in UI.
+    """
+
+    def __init__(self) -> None:
         super().__init__()
 
-        self.parser = Parser()
         self.config = Config()
         self.badges = Badges()
         self.colors = Colors()
 
-        self.colors_script = ColorsScript()
+        self.color_script = ColorScript()
 
-    def print_random_banner(self):
+    def print_random_banner(self) -> None:
+        """ Print random banner.
+
+        :return None: None
+        """
+
         if os.path.exists(self.config.path_config['banners_path']):
             banners = []
             all_banners = os.listdir(self.config.path_config['banners_path'])
+
             for banner in all_banners:
                 banners.append(banner)
+
             if banners:
                 banner = ""
+
                 while not banner:
                     random_banner = random.randint(0, len(banners) - 1)
-                    banner = self.colors_script.parse_colors_script(
+                    banner = self.color_script.parse_file(
                         self.config.path_config['banners_path'] + banners[random_banner]
                     )
 

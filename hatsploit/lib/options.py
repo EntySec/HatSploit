@@ -22,233 +22,183 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
-import copy
-from pex.proto.tcp import TCPTools
+import os
 
-from hatsploit.lib.storage import LocalStorage
+from typing import Any, Optional, Union, Callable
+
+from hatsploit.lib.encoder import Encoder
+from hatsploit.lib.module import Module
+from hatsploit.lib.payload import Payload
+
+
+class Option(object):
+    """ Subclass of hatsploit.lib module.
+
+    This subclass of hatsploit.lib module is intended for providing
+    an implementation of option for module, encoder and payload.
+    """
+
+    def __init__(self, value: Any = None, description: Optional[str] = None,
+                 required: bool = False, advanced: bool = False,
+                 object: Optional[Union[Module, Payload, Encoder]] = None) -> None:
+        """ Set option.
+
+        :param Any value: option value
+        :param Optional[str] description: option description
+        :param bool required: True if required else False
+        :param bool advanced: True if advanced else False
+        :param Optional[Union[Module, Payload, Encoder]] object: object
+        :return None: None
+        """
+
+        super().__init__()
+
+        self.value = None
+
+        self.description = description
+        self.required = required
+
+        self.advanced = advanced
+        self.object = object
+
+        self.payload = None
+        self.encoder = None
+        self.session = None
+
+        self.little = b''
+        self.big = b''
+
+        self.visible = True
+
+        if value is not None:
+            self.set(value)
+
+    @staticmethod
+    def check(name: str, checker: Callable[[str], bool], value: Optional[str] = None) -> None:
+        """ Compare value type using checker.
+
+        :param str name: option name
+        :param Callable[[str], bool] checker: checker function
+        :param Optional[str] value: option value to check type for
+        :return None: None
+        :raises RuntimeError: with trailing error message
+        """
+
+        value = str(value)
+
+        if value.startswith('file:') and len(value) > 5:
+            file = value.split(':')[1]
+
+            if not os.path.isfile(file):
+                raise RuntimeError(f"Local file: {file}: does not exist!")
+
+            with open(file, 'r') as f:
+                for line in f.read().split('\n'):
+                    if line.strip():
+                        if not checker(line.strip()):
+                            raise RuntimeError(f"File contains invalid value, expected valid {name}!")
+            return
+
+        if not checker(value):
+            raise RuntimeError(f"Invalid value, expected valid {name}!")
+
+    def set(self, value):
+        self.value = value
+
+    def get(self):
+        return self.value
+
+    def unset(self):
+        self.value = None
 
 
 class Options(object):
-    def __init__(self):
+    """ Subclass of hatsploit.lib module.
+
+    This subclass of hatsploit.lib module is intended for providing
+    tools for working with module, payload or encoder options.
+    """
+
+    def __init__(self) -> None:
         super().__init__()
 
-        self.local_storage = LocalStorage()
+    @staticmethod
+    def set_option(object: Union[Module, Payload, Encoder],
+                   option: str, value: Optional[str] = None) -> bool:
+        """ Set option.
 
-        self.handler_options = {
-            'Module': {
-                'BLINDER': {
-                    'Description': 'Use Blinder.',
-                    'Value': 'yes',
-                    'Type': "boolean",
-                    'Required': True
-                },
-                'PAYLOAD': {
-                    'Description': 'Payload to use.',
-                    'Value': None,
-                    'Type': "payload",
-                    'Required': False
-                },
-                'LHOST': {
-                    'Description': "Local host to listen on.",
-                    'Value': "0.0.0.0",
-                    'Type': "ip",
-                    'Required': True
-                },
-                'LPORT': {
-                    'Description': "Local port to listen on.",
-                    'Value': 8888,
-                    'Type': "port",
-                    'Required': True
-                },
-                'RBHOST': {
-                    'Description': "Remote bind host to connect.",
-                    'Value': None,
-                    'Type': "ip",
-                    'Required': True
-                },
-                'RBPORT': {
-                    'Description': "Remote bind port to connect.",
-                    'Value': 8888,
-                    'Type': "port",
-                    'Required': True
-                }
-            },
-            'Payload': {
-                'ENCODER': {
-                    'Description': 'Encoder to use.',
-                    'Value': None,
-                    'Type': "encoder",
-                    'Required': False
-                },
-                'RHOST': {
-                    'Description': "Remote host to connect.",
-                    'Value': TCPTools.get_local_host(),
-                    'Type': "ip",
-                    'Required': True
-                },
-                'RPORT': {
-                    'Description': "Remote port to connect.",
-                    'Value': 8888,
-                    'Type': "port",
-                    'Required': True
-                },
-                'BPORT': {
-                    'Description': "Port to bind to.",
-                    'Value': 8888,
-                    'Type': "port",
-                    'Required': True
-                }
-            }
-        }
+        :param Union[Module, Payload, Encoder] object: object
+        :param str option: option name
+        :param Optional[str] value: option value
+        :return bool: True if success else False
+        """
+
+        if hasattr(object, 'advanced'):
+            if option in object.advanced:
+                attr = getattr(object, option)
+
+                if attr.visible:
+                    if value is not None:
+                        attr.set(value)
+                        object.advanced[option]['Value'] = str(value)
+                    else:
+                        attr.unset()
+                        object.advanced[option]['Value'] = None
+
+                    return True
+
+        if hasattr(object, 'options'):
+            if option in object.options:
+                attr = getattr(object, option)
+
+                if attr.visible:
+                    if value is not None:
+                        attr.set(value)
+                        object.options[option]['Value'] = str(value)
+                    else:
+                        attr.unset()
+                        object.options[option]['Value'] = None
+
+                    return True
+
+        return False
 
     @staticmethod
-    def remove_options(target, options):
-        for option in list(target):
-            if option.upper() in options:
-                target.pop(option)
+    def add_options(object: Union[Module, Payload, Encoder]) -> None:
+        """ Import external options from module, payload or encoder.
 
-    @staticmethod
-    def check_options(target):
-        if not hasattr(target, "options"):
-            return False
-        if not isinstance(target.options, dict):
-            return False
-        return True
+        :param Union[Module, Payload, Encoder] object: object
+        :return None: None
+        """
 
-    def add_handler_options(self, current_module, current_payload):
-        if current_module:
-            if hasattr(current_module, "payload"):
-                blinder_option = 'blinder'.upper()
-                payload_option = 'payload'.upper()
+        for attr in dir(object):
+            option = getattr(object, attr)
 
-                handler_options = copy.deepcopy(self.handler_options)
-                saved_handler_options = self.local_storage.get("handler_options")
+            if not isinstance(option, Option):
+                continue
 
-                if not saved_handler_options:
-                    saved_handler_options = {
-                        'Module': {
-                        },
-                        'Payload': {
-                        }
+            if option.object:
+                if not isinstance(object, option.object):
+                    continue
+
+            if option.advanced:
+                if not hasattr(object, 'advanced'):
+                    object.advanced = {}
+
+                options = object.advanced
+            else:
+                if not hasattr(object, 'options'):
+                    object.options = {}
+
+                options = object.options
+
+            options.update(
+                {
+                    attr.lower(): {
+                        'Value': option.value,
+                        'Description': option.description,
+                        'Required': option.required,
+                        'Visible': option.visible
                     }
-
-                module = current_module.details['Module']
-
-                if module not in saved_handler_options['Module']:
-                    saved_handler_options['Module'][module] = handler_options['Module']
-
-                if not self.check_options(current_module):
-                    current_module.options = {}
-
-                current_module.options.update(saved_handler_options['Module'][module])
-                current_module.options[payload_option]['Value'] = current_module.payload['Value']
-
-                if not current_payload:
-                    current_module.options[blinder_option]['Value'] = 'yes'
-                    current_module.options[blinder_option]['Required'] = True
-                else:
-                    current_module.options[blinder_option]['Value'] = 'no'
-                    current_module.options[blinder_option]['Required'] = False
-
-                if 'Blinder' in current_module.payload:
-                    if not current_module.payload['Blinder']:
-                        current_module.options.pop(blinder_option)
-
-                if blinder_option in current_module.options and not current_payload:
-                    if current_module.options[blinder_option]['Value'].lower() in ['yes', 'y']:
-                        current_module.payload['Value'] = None
-
-                        current_module.options[payload_option]['Value'] = None
-                        current_module.options[payload_option]['Required'] = False
-                    else:
-                        current_module.options[payload_option]['Required'] = True
-                else:
-                    current_module.options[payload_option]['Required'] = True
-
-                if 'Handler' in current_module.payload:
-                    special = current_module.payload['Handler']
-                else:
-                    special = ''
-
-                if current_payload:
-                    payload = current_module.payload['Value']
-
-                    if payload not in saved_handler_options['Payload']:
-                        saved_handler_options['Payload'][payload] = handler_options['Payload']
-
-                    if not self.check_options(current_payload):
-                        current_payload.options = {}
-
-                    current_payload.options.update(saved_handler_options['Payload'][payload])
-
-                    if current_payload.details['Type'] == 'reverse_tcp':
-                        if special != 'bind_tcp':
-                            self.remove_options(current_module.options, ['RBHOST', 'RBPORT'])
-                            self.remove_options(current_payload.options, ['BPORT'])
-
-                    elif current_payload.details['Type'] == 'bind_tcp':
-                        if special != 'reverse_tcp':
-                            self.remove_options(current_module.options, ['LHOST', 'LPORT'])
-                            self.remove_options(current_payload.options, ['RHOST', 'RPORT'])
-
-                    else:
-                        self.remove_options(current_payload.options, ['RHOST', 'RPORT', 'BPORT'])
-
-                        if special != 'reverse_tcp':
-                            self.remove_options(current_module.options, ['LHOST', 'LPORT'])
-
-                        if special != 'bind_tcp':
-                            self.remove_options(current_module.options, ['RBHOST', 'RBPORT'])
-                else:
-                    if special != 'reverse_tcp':
-                        self.remove_options(current_module.options, ['LHOST', 'LPORT'])
-
-                    if special != 'bind_tcp':
-                        self.remove_options(current_module.options, ['RBHOST', 'RBPORT'])
-
-                for option in current_module.options:
-                    if option.upper() in handler_options['Module']:
-                        saved_handler_options['Module'][module][option]['Value'] = \
-                            current_module.options[option]['Value']
-
-                current_module.handler = {}
-                for option in saved_handler_options['Module'][module]:
-                    current_module.handler.update({option: saved_handler_options['Module'][module][option]['Value']})
-
-                if current_payload:
-                    payload = current_module.payload['Value']
-
-                    for option in current_payload.options:
-                        if option.upper() in handler_options['Payload']:
-                            saved_handler_options['Payload'][payload][option]['Value'] = \
-                                current_payload.options[option]['Value']
-
-                    current_payload.handler = {}
-                    for option in saved_handler_options['Payload'][payload]:
-                        value = saved_handler_options['Payload'][payload][option]['Value']
-
-                        current_payload.handler.update({option: value})
-                        current_module.handler.update({option: value})
-
-                    for option in saved_handler_options['Module'][module]:
-                        current_payload.handler.update({
-                            option: saved_handler_options['Module'][module][option]['Value']
-                        })
-
-                self.local_storage.set("handler_options", saved_handler_options)
-
-    def add_payload_handler(self, current_payload):
-        handler_options = {}
-        current_payload.handler = {}
-
-        handler_options.update(self.handler_options['Payload'])
-
-        if current_payload.details['Type'] == 'reverse_tcp':
-            self.remove_options(handler_options, ['BPORT'])
-        elif current_payload.details['Type'] == 'bind_tcp':
-            self.remove_options(handler_options, ['RHOST', 'RPORT'])
-        else:
-            self.remove_options(handler_options, ['RHOST', 'RPORT', 'BPORT'])
-
-        for option in handler_options:
-            current_payload.handler.update({option: handler_options[option]['Value']})
+                }
+            )

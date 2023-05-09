@@ -22,6 +22,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
+import socket
+
+from typing import Union, Tuple, Optional, Callable
+
+from hatsploit.lib.session import Session
+
 from pex.proto.http import HTTPListener
 from pex.proto.tcp import TCPClient
 from pex.proto.tcp import TCPListener
@@ -30,7 +36,13 @@ from hatsploit.core.cli.badges import Badges
 
 
 class Handle(object):
-    def __init__(self):
+    """ Subclass of hatsploit.lib module.
+
+    This subclass of hatsploit.lib module is intended for providing
+    native implementations of http/tcp servers and clients.
+    """
+
+    def __init__(self) -> None:
         super().__init__()
 
         self.badges = Badges()
@@ -39,7 +51,16 @@ class Handle(object):
         self.tcp_listener = TCPListener()
         self.http_listener = HTTPListener()
 
-    def listen_server(self, local_host, local_port, methods={}):
+    def listen_server(self, local_host: str, local_port: int, methods: dict = {}) -> None:
+        """ HTTP server.
+
+        :param str local_host: local host to start server on
+        :param int local_port: local port to start server on
+        :param dict methods: allowed HTTP methods, names as keys and
+        handlers as items
+        :return None: None
+        """
+
         listener = self.http_listener.listen_http(local_host, local_port, methods)
 
         self.badges.print_process(f"Starting HTTP listener on port {str(local_port)}...")
@@ -48,7 +69,18 @@ class Handle(object):
         while True:
             listener.accept()
 
-    def listen_session(self, local_host, local_port, session, timeout=None):
+    def listen_session(self, local_host: str, local_port: int,
+                       session: Optional[Callable[[], Session]] = None,
+                       timeout: Optional[int] = None) -> Tuple[Union[Session, socket.socket], str]:
+        """ TCP listener for specific session handler.
+
+        :param str local_host: local host to start server on
+        :param int local_port: local port to start server on
+        :param Optional[Callable[[], Session]] session: session handler
+        :param Optional[int] timeout: timeout for server
+        :return Tuple[Union[Session, socket.socket], str]: received session and address
+        """
+
         listener = self.tcp_listener.listen_tcp(local_host, local_port, timeout)
 
         self.badges.print_process(f"Starting TCP listener on port {str(local_port)}...")
@@ -62,12 +94,26 @@ class Handle(object):
             f"Establishing connection ({address[0]}:{str(address[1])} -> {local_host}:{str(local_port)})...")
         listener.stop()
 
-        session = session()
-        session.open(listener.client)
+        if session:
+            session = session()
+            session.open(listener.client)
+        else:
+            session = listener.client
 
         return session, address[0]
 
-    def connect_session(self, remote_host, remote_port, session, timeout=None):
+    def connect_session(self, remote_host: str, remote_port: int,
+                        session: Optional[Callable[[], Session]] = None,
+                        timeout: Optional[int] = None) -> Union[Session, socket.socket]:
+        """ Connect to server and receive session.
+
+        :param str remote_host: remote host to connect to
+        :param int remote_port: remote port to connect to
+        :param Optional[Callable[[], Session]] session: session handler
+        :param Optional[int] timeout: connection timeout
+        :return Union[Session, socket.socket]: received session
+        """
+
         client = self.tcp_client.open_tcp(remote_host, remote_port, timeout)
 
         self.badges.print_process(f"Connecting to {local_host}:{str(local_port)}...")
@@ -75,7 +121,11 @@ class Handle(object):
 
         self.badges.print_process(
             f"Establishing connection (0.0.0.0:{str(remote_port)} -> {remote_host}:{str(remote_port)})...")
-        session = session()
-        session.open(client.sock)
+
+        if session:
+            session = session()
+            session.open(client.sock)
+        else:
+            session = client.sock
 
         return session

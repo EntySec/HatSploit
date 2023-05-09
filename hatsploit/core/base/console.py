@@ -22,8 +22,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
+try:
+    import gnureadline as readline
+except Exception:
+    import readline
+
 import os
-import readline
 import sys
 
 from hatsploit.core.base.execute import Execute
@@ -39,7 +43,13 @@ from hatsploit.lib.storage import LocalStorage
 
 
 class Console(object):
-    def __init__(self):
+    """ Subclass of hatsploit.core.base module.
+
+    This subclass of hatsploit.lib.base module represents console
+    handler for HatSploit.
+    """
+
+    def __init__(self) -> None:
         super().__init__()
 
         self.execute = Execute()
@@ -63,16 +73,21 @@ class Console(object):
 
         self.completion = None
 
-    def shell_execute(self):
+    def shell_execute(self) -> None:
+        """ Start HatSploit shell interpreter.
+
+        :return None: None
+        """
+
         if not self.modules.get_current_module():
-            prompt = f'({self.prompt})> '
+            prompt = f'[{self.prompt}]> '
         else:
-            current_module = self.modules.get_current_module()
+            module = self.modules.get_current_module()
 
-            category = current_module.details['Category']
-            name = current_module.details['Name']
+            category = module.details['Category']
+            name = module.details['Name']
 
-            prompt = f'({self.prompt}: {category}: %red{name}%end)> '
+            prompt = f'[{self.prompt}: {category}: %red{name}%end]> '
         commands = self.badges.input_empty(prompt)
 
         self.runtime.update()
@@ -82,7 +97,14 @@ class Console(object):
         if self.local_storage.get("history"):
             readline.write_history_file(self.history)
 
-    def shell(self, history=True, header=True):
+    def shell(self, history: bool = True, header: bool = True) -> None:
+        """ Configure HatSploit shell interpreter and start it.
+
+        :param bool history: enable history
+        :param bool header: print header
+        :return None: None
+        """
+
         if history:
             self.launch_history()
         if header:
@@ -91,7 +113,13 @@ class Console(object):
         while True:
             self.runtime.catch(self.shell_execute)
 
-    def launch_history(self):
+    def launch_history(self) -> None:
+        """ Setup history and tab-completion for
+        HatSploit shell interpreter.
+
+        :return None: None
+        """
+
         readline.set_auto_history(False)
 
         using_history = self.local_storage.get("history")
@@ -107,7 +135,12 @@ class Console(object):
 
         readline.parse_and_bind("tab: complete")
 
-    def show_header(self):
+    def show_header(self) -> None:
+        """ Print HatSploit shell interpreter header.
+
+        :return None: None
+        """
+
         version = self.config.core_config['details']['version']
         codename = self.config.core_config['details']['codename']
 
@@ -144,13 +177,13 @@ class Console(object):
             header = ""
             header += "%end"
             if codename:
-                header += f"    --=( %yellowHatSploit Framework {version} {codename} (https://hatsploit.com)%end\n"
+                header += f"    --=[ %yellowHatSploit Framework {version} {codename} (https://hatsploit.com)%end\n"
             else:
-                header += f"    --=( %yellowHatSploit Framework {version}%end\n"
+                header += f"    --=[ %yellowHatSploit Framework {version}%end\n"
             header += (
-                "--==--=( Developed by EntySec (%linehttps://entysec.netlify.app%end)\n"
+                "--==--=[ Developed by EntySec (%linehttps://entysec.com%end)\n"
             )
-            header += f"    --=( {modules_total} modules | {payloads_total} payloads "
+            header += f"    --=[ {modules_total} modules | {payloads_total} payloads "
             header += f"| {encoders_total} encoders | {plugins_total} plugins"
             header += "%end"
 
@@ -159,7 +192,16 @@ class Console(object):
         if self.config.core_config['console']['tip']:
             self.tip.print_random_tip()
 
-    def script(self, input_files, shell=False):
+    def script(self, input_files: list, shell: bool = False) -> None:
+        """ Execute HatSploit script(s).
+
+        :param list input_files: list of filenames of files
+        containing HatSploit scripts
+        :param bool shell: True to launch shell interpreter
+        after all scripts executed else False
+        :return None: None
+        """
+
         self.show_header()
 
         for input_file in input_files:

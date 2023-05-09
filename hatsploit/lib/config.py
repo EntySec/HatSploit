@@ -31,10 +31,17 @@ from hatsploit.lib.storage import LocalStorage
 
 
 class Config(object):
-    def __init__(self):
+    """ Subclass of hatsploit.lib module.
+
+    This subclass of hatsploit.lib module is intended for providing
+    tools for configuring HatSploit Framework.
+    """
+
+    def __init__(self) -> None:
         super().__init__()
 
         self.local_storage = LocalStorage()
+        self.global_storage = None
 
         self.user_path = f'{pathlib.Path.home()}/.hsf/'
         self.base_path = f'{os.path.dirname(os.path.dirname(__file__))}/'
@@ -76,10 +83,22 @@ class Config(object):
         self.core_config = self.local_storage.get("core_config")
 
     @staticmethod
-    def get_config_file(content):
+    def get_config_file(content: dict) -> dict:
+        """ Serialize content.
+
+        :param dict content: content, configurations
+        :return dict: serialized config
+        """
+
         return yaml.safe_load(content)
 
-    def configure(self):
+    def configure(self) -> None:
+        """ Configure HatSploit, read config files and
+        apply all configurations.
+
+        :return None: None
+        """
+
         db_config = self.get_config_file(open(self.db_config_file))
         core_config = self.get_config_file(open(self.core_config_file))
 

