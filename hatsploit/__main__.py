@@ -109,7 +109,9 @@ class HatSploit(object):
                 if self.runtime.catch(self.runtime.start, [build]) is not Exception:
                     if not scripts:
                         if shell:
-                            self.jobs.create_job(f"RPC on port {str(rpc[1])}", "", RPC(*rpc).run)
+                            if len(rpc) >= 2:
+                                self.jobs.create_job(f"RPC on port {str(rpc[1])}", "", RPC(*rpc).run)
+
                             self.console.shell()
                     else:
                         self.console.script(scripts, shell)
@@ -243,6 +245,6 @@ class HatSploit(object):
             self.launch(rpc=rpc)
         else:
             if os.path.exists(self.path_config['startup_path']):
-                self.launch(scripts=[self.path_config['startup_path']], rpc=rcp)
+                self.launch(scripts=[self.path_config['startup_path']], rpc=rpc)
             else:
-                self.launch(rpc=rcp)
+                self.launch(rpc=rpc)
