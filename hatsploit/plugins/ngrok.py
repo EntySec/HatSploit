@@ -16,14 +16,14 @@ class HatSploitPlugin(Plugin):
         self.tunnels = []
         self.handler = ngrok
 
-        self.details = {
+        self.details.update({
             'Name': "HatSploit Ngrok Implementation",
             'Plugin': "ngrok",
             'Authors': [
                 'Ivan Nikolsky (enty8080) - plugin developer'
             ],
             'Description': "Manage ngrok service right from HatSploit.",
-        }
+        })
 
         self.commands = {
             'ngrok': {
