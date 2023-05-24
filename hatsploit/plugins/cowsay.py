@@ -12,14 +12,14 @@ class HatSploitPlugin(Plugin):
     def __init__(self):
         super().__init__()
 
-        self.details = {
+        self.details.update({
             'Name': "HatSploit Cowsay Implementation",
             'Plugin': "cowsay",
             'Authors': [
                 'Ivan Nikolsky (enty8080) - plugin developer',
             ],
             'Description': "Cowsay plugin for HatSploit.",
-        }
+        })
 
         self.commands = {
             'cowsay': {
