@@ -22,17 +22,8 @@ class HatSploitEncoder(Encoder, String):
             'Architecture': "generic",
         })
 
-        self.options = {
-            'SHELL': {
-                'Description': "Shell to execute.",
-                'Value': "$SHELL",
-                'Type': None,
-                'Required': True,
-            }
-        }
+        self.shell = Option("$SHELL", "Shell to execute.", True)
 
     def run(self):
-        shell = self.parse_options(self.options)
-
         encoded_payload = self.base64_string(self.payload)
-        return f'base64 --decode <<< {encoded_payload} | {shell}'
+        return f'base64 --decode <<< {encoded_payload} | {self.shell.value}'
