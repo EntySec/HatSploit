@@ -13,7 +13,7 @@ class HatSploitEncoder(Encoder, String, X86):
     def __init__(self):
         super().__init__()
 
-        self.details = {
+        self.details.update({
             'Name': "x64 XOR Encoder",
             'Encoder': "x64/xor",
             'Authors': [
@@ -21,7 +21,7 @@ class HatSploitEncoder(Encoder, String, X86):
             ],
             'Description': "Simple XOR encoder for x64.",
             'Architecture': "x64",
-        }
+        })
 
         self.key = Option("hatspl64", "8-byte key to encode.", True)
 
