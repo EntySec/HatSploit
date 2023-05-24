@@ -12,7 +12,7 @@ class HatSploitEncoder(Encoder, String):
     def __init__(self):
         super().__init__()
 
-        self.details = {
+        self.details.update({
             'Name': "Base64 Encoder for Command",
             'Encoder': "generic/base64",
             'Authors': [
@@ -20,7 +20,7 @@ class HatSploitEncoder(Encoder, String):
             ],
             'Description': "Encode command with base64.",
             'Architecture': "generic",
-        }
+        })
 
         self.options = {
             'SHELL': {
