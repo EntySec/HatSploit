@@ -11,7 +11,7 @@ class HatSploitPayload(Payload, String):
     def __init__(self):
         super().__init__()
 
-        self.details = {
+        self.details.update({
             'Name': "Netcat Shell Reverse TCP",
             'Payload': "unix/generic/netcat_reverse_tcp",
             'Authors': [
@@ -22,7 +22,7 @@ class HatSploitPayload(Payload, String):
             'Platform': "unix",
             'Rank': "high",
             'Type': "reverse_tcp",
-        }
+        })
 
     def run(self):
         filename = self.random_string(8)

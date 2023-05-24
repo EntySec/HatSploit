@@ -11,7 +11,7 @@ class HatSploitPayload(Payload, Handler, Socket):
     def __init__(self):
         super().__init__()
 
-        self.details = {
+        self.details.update({
             'Name': "Linux armle Shell Bind TCP",
             'Payload': "linux/armle/shell_bind_tcp",
             'Authors': [
@@ -22,7 +22,7 @@ class HatSploitPayload(Payload, Handler, Socket):
             'Platform': "linux",
             'Rank': "high",
             'Type': "bind_tcp",
-        }
+        })
 
     def run(self):
         return (

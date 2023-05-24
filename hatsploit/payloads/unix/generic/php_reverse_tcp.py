@@ -10,7 +10,7 @@ class HatSploitPayload(Payload):
     def __init__(self):
         super().__init__()
 
-        self.details = {
+        self.details.update({
             'Name': "PHP Shell Reverse TCP",
             'Payload': "unix/generic/php_reverse_tcp",
             'Authors': [
@@ -21,7 +21,7 @@ class HatSploitPayload(Payload):
             'Platform': "unix",
             'Rank': "high",
             'Type': "reverse_tcp",
-        }
+        })
 
     def run(self):
         payload = (

@@ -13,7 +13,7 @@ class HatSploitPayload(Payload, Assembler):
     def __init__(self):
         super().__init__()
 
-        self.details = {
+        self.details.update({
             'Name': "macOS x64 Say",
             'Payload': "macos/x64/say",
             'Authors': [
@@ -24,7 +24,7 @@ class HatSploitPayload(Payload, Assembler):
             'Platform': "macos",
             'Rank': "low",
             'Type': "one_side",
-        }
+        })
 
         self.message = Option("Hello, HatSploit!", "Message to say.", True)
 

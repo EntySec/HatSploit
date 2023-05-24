@@ -10,7 +10,7 @@ class HatSploitPayload(Payload):
     def __init__(self):
         super().__init__()
 
-        self.details = {
+        self.details.update({
             'Name': "Windows Calculator",
             'Payload': "windows/generic/calc",
             'Authors': [
@@ -21,7 +21,7 @@ class HatSploitPayload(Payload):
             'Platform': "windows",
             'Rank': "high",
             'Type': "one_side",
-        }
+        })
 
     def run(self):
         return "calc.exe"

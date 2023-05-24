@@ -12,7 +12,7 @@ class HatSploitPayload(Payload, Handler, Assembler, Socket):
     def __init__(self):
         super().__init__()
 
-        self.details = {
+        self.details.update({
             'Name': "macOS x64 Shell Reverse TCP",
             'Payload': "macos/x64/shell_reverse_tcp",
             'Authors': [
@@ -23,7 +23,7 @@ class HatSploitPayload(Payload, Handler, Assembler, Socket):
             'Platform': "macos",
             'Rank': "high",
             'Type': "reverse_tcp",
-        }
+        })
 
     def run(self):
         return self.assemble(

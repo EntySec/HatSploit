@@ -10,7 +10,7 @@ class HatSploitPayload(Payload):
     def __init__(self):
         super().__init__()
 
-        self.details = {
+        self.details.update({
             'Name': "Unix Reboot",
             'Payload': "unix/generic/reboot",
             'Authors': [
@@ -21,7 +21,7 @@ class HatSploitPayload(Payload):
             'Platform': "unix",
             'Rank': "low",
             'Type': "one_side",
-        }
+        })
 
     def run(self):
         return "reboot"

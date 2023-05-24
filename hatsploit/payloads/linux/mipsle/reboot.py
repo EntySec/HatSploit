@@ -11,7 +11,7 @@ class HatSploitPayload(Payload, Assembler):
     def __init__(self):
         super().__init__()
 
-        self.details = {
+        self.details.update({
             'Name': "Linux mipsle Reboot",
             'Payload': "linux/mipsle/reboot",
             'Authors': [
@@ -22,7 +22,7 @@ class HatSploitPayload(Payload, Assembler):
             'Platform': "linux",
             'Rank': "low",
             'Type': "one_side",
-        }
+        })
 
     def run(self):
         return self.assemble(

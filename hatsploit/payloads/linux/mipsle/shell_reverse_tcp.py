@@ -12,7 +12,7 @@ class HatSploitPayload(Payload, Handler, Assembler, Socket):
     def __init__(self):
         super().__init__()
 
-        self.details = {
+        self.details.update({
             'Name': "Linux mipsle Shell Reverse TCP",
             'Payload': "linux/mipsle/shell_reverse_tcp",
             'Authors': [
@@ -23,7 +23,7 @@ class HatSploitPayload(Payload, Handler, Assembler, Socket):
             'Platform': "linux",
             'Rank': "high",
             'Type': "reverse_tcp",
-        }
+        })
 
     def run(self):
         return self.assemble(

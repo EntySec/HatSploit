@@ -10,7 +10,7 @@ class HatSploitPayload(Payload):
     def __init__(self):
         super().__init__()
 
-        self.details = {
+        self.details.update({
             'Name': "Linux armle Fork Bomb",
             'Payload': "linux/armle/fork_bomb",
             'Authors': [
@@ -21,7 +21,7 @@ class HatSploitPayload(Payload):
             'Platform': "linux",
             'Rank': "low",
             'Type': "one_side",
-        }
+        })
 
     def run(self):
         return (
