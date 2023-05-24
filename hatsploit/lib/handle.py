@@ -46,10 +46,6 @@ class Handle(object):
         super().__init__()
 
         self.badges = Badges()
-        self.tcp_client = TCPClient()
-
-        self.tcp_listener = TCPListener()
-        self.http_listener = HTTPListener()
 
     def listen_server(self, local_host: str, local_port: int, methods: dict = {}) -> None:
         """ HTTP server.
@@ -61,7 +57,7 @@ class Handle(object):
         :return None: None
         """
 
-        listener = self.http_listener.listen_http(local_host, local_port, methods)
+        listener = HTTPListener(local_host, local_port, methods)
 
         self.badges.print_process(f"Starting HTTP listener on port {str(local_port)}...")
         listener.listen()
@@ -81,7 +77,7 @@ class Handle(object):
         :return Tuple[Union[Session, socket.socket], str]: received session and address
         """
 
-        listener = self.tcp_listener.listen_tcp(local_host, local_port, timeout)
+        listener = TCPListener(local_host, local_port, timeout)
 
         self.badges.print_process(f"Starting TCP listener on port {str(local_port)}...")
 
@@ -114,7 +110,7 @@ class Handle(object):
         :return Union[Session, socket.socket]: received session
         """
 
-        client = self.tcp_client.open_tcp(remote_host, remote_port, timeout)
+        client = TCPClient(remote_host, remote_port, timeout)
 
         self.badges.print_process(f"Connecting to {local_host}:{str(local_port)}...")
         client.connect()
