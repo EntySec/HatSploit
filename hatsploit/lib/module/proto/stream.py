@@ -22,11 +22,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
-from pex.proto.stream import StreamClient, Streamer
+from pex.proto.stream import StreamClient
 from hatsploit.lib.option import *
 
 
-class Stream(StreamClient):
+class Stream(object):
     """ Subclass of hatsploit.lib.module.proto module.
 
     This subclass of hatsploit.lib.module.proto module is a representation
@@ -38,13 +38,13 @@ class Stream(StreamClient):
 
         self.html = Option(None, "HTML path.", False, True)
 
-    def open_stream(self, *args, **kwargs) -> Streamer:
+    def open_stream(self, *args, **kwargs) -> StreamClient:
         """ Get streamer.
 
-        :return Streamer: streamer
+        :return StreamClient: streamer
         """
 
-        return super().open_stream(
+        return StreamClient(
             path=self.html.value,
             *args, **kwargs
         )

@@ -22,11 +22,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
-from pex.proto.rtsp import RTSPClient, RTSPSocket
+from pex.proto.rtsp import RTSPClient
 from hatsploit.lib.option import *
 
 
-class RTSP(RTSPClient):
+class RTSP(object):
     """ Subclass of hatsploit.lib.module.proto module.
 
     This subclass of hatsploit.lib.module.proto module is a representation
@@ -40,13 +40,13 @@ class RTSP(RTSPClient):
         self.host = IPv4Option(None, "SSH host.", True)
         self.port = PortOption(554, "SSH port.", True)
 
-    def open_rtsp(self) -> RTSPSocket:
-        """ Open RTSP socket.
+    def open_rtsp(self) -> RTSPClient:
+        """ Open RTSP client.
 
-        :return RTSPSocket: RTSP socket
+        :return RTSPClient: RTSP client
         """
 
-        return super().open_rtsp(
+        return RTSPClient(
             host=self.host.value,
             port=self.port.value,
             timeout=self.timeout.value

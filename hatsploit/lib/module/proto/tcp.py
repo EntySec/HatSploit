@@ -22,11 +22,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
-from pex.proto.tcp import TCPClient, TCPSocket, TCPListener, TCPListen, TCPTools
+from pex.proto.tcp import TCPClient, TCPListener, TCPTools
 from hatsploit.lib.option import *
 
 
-class TCP(TCPClient, TCPListener, TCPTools):
+class TCP(object):
     """ Subclass of hatsploit.lib.module.proto module.
 
     This subclass of hatsploit.lib.module.proto module is a representation
@@ -46,31 +46,31 @@ class TCP(TCPClient, TCPListener, TCPTools):
         :return bool: True if TCP port is opened else False
         """
 
-        return super().check_tcp_port(
+        return TCPTools().check_tcp_port(
             host=self.host.value,
             port=self.port.value,
             timeout=self.timeout.value
         )
 
-    def open_tcp(self) -> TCPSocket:
-        """ Open TCP socket.
+    def open_tcp(self) -> TCPClient:
+        """ Open TCP client.
 
-        :return TCPSocket: TCP socket
+        :return TCPClient: TCP client
         """
 
-        return super().open_tcp(
+        return TCPClient(
             host=self.host.value,
             port=self.port.value,
             timeout=self.timeout.value
         )
 
-    def listen_tcp(self) -> TCPListen:
+    def listen_tcp(self) -> TCPListener:
         """ Start TCP listener.
 
-        :return TCPListen: TCP listener
+        :return TCPListener: TCP listener
         """
 
-        return super().listen_tcp(
+        return TCPListener(
             host=self.host.value,
             port=self.port.value,
             timeout=self.timeout.value

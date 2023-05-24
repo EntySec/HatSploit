@@ -22,11 +22,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
-from pex.proto.ftp import FTPClient, FTPSocket
+from pex.proto.ftp import FTPClient
 from hatsploit.lib.option import *
 
 
-class FTP(FTPClient):
+class FTP(object):
     """ Subclass of hatsploit.lib.module.proto module.
 
     This subclass of hatsploit.lib.module.proto module is a representation
@@ -41,13 +41,13 @@ class FTP(FTPClient):
         self.port = PortOption(23, "ADB port.", True)
         self.ssl = BooleanOption('no', "Use SSL.", False)
 
-    def open_ftp(self) -> FTPSocket:
-        """ Open FTP socket.
+    def open_ftp(self) -> FTPClient:
+        """ Open FTP client.
 
-        :return FTPSocket: FTP socket
+        :return FTPClient: FTP client
         """
 
-        return super().open_ftp(
+        return FTPClient(
             host=self.host.value,
             port=self.port.value,
             timeout=self.timeout.value,

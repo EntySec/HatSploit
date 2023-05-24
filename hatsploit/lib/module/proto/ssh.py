@@ -22,11 +22,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
-from pex.proto.ssh import SSHClient, SSHSocket
+from pex.proto.ssh import SSHClient
 from hatsploit.lib.option import *
 
 
-class SSH(SSHClient):
+class SSH(object):
     """ Subclass of hatsploit.lib.module.proto module.
 
     This subclass of hatsploit.lib.module.proto module is a representation
@@ -42,13 +42,13 @@ class SSH(SSHClient):
         self.username = Option(None, "SSH username.", True)
         self.password = Option(None, "SSH password.", True)
 
-    def open_ssh(self) -> SSHSocket:
-        """ Open SSH socket.
+    def open_ssh(self) -> SSHClient:
+        """ Open SSH client.
 
-        :return SSHSocket: SSH socket
+        :return SSHClient: SSH client
         """
 
-        return super().open_ssh(
+        return SSHClient(
             host=self.host.value,
             port=self.port.value,
             username=self.username.value,

@@ -22,11 +22,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
-from pex.proto.udp import UDPClient, UDPSocket
+from pex.proto.udp import UDPClient
 from hatsploit.lib.option import *
 
 
-class UDP(UDPClient):
+class UDP(object):
     """ Subclass of hatsploit.lib.module.proto module.
 
     This subclass of hatsploit.lib.module.proto module is a representation
@@ -40,13 +40,13 @@ class UDP(UDPClient):
         self.host = IPv4Option(None, "UDP host.", True)
         self.port = PortOption(None, "UDP port.", True)
 
-    def open_udp(self) -> UDPSocket:
-        """ Open UDP socket.
+    def open_udp(self) -> UDPClient:
+        """ Open UDP client.
 
-        :return SSHSocket: UDP socket
+        :return UDPClient: UDP client
         """
 
-        return super().open_udp(
+        return UDPClient(
             host=self.host.value,
             port=self.port.value,
             timeout=self.timeout.value

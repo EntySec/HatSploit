@@ -22,11 +22,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
-from pex.proto.adb import ADBClient, ADBSocket
+from pex.proto.adb import ADBClient
 from hatsploit.lib.option import *
 
 
-class ADB(ADBClient):
+class ADB(object):
     """ Subclass of hatsploit.lib.module.proto module.
 
     This subclass of hatsploit.lib.module.proto module is a representation
@@ -40,13 +40,13 @@ class ADB(ADBClient):
         self.host = IPv4Option(None, "ADB host.", True)
         self.port = PortOption(5555, "ADB port.", True)
 
-    def open_adb(self) -> ADBSocket:
-        """ Open ADB socket.
+    def open_adb(self) -> ADBClient:
+        """ Open ADB client.
 
-        :return ADBSocket: ADB socket
+        :return ADBClient: ADB client
         """
 
-        return super().open_adb(
+        return ADBClient(
             host=self.host.value,
             port=self.port.value,
             timeout=self.timeout.value

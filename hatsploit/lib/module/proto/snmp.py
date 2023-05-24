@@ -22,11 +22,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
-from pex.proto.snmp import SNMPClient, SNMPSocket
+from pex.proto.snmp import SNMPClient
 from hatsploit.lib.option import *
 
 
-class SNMP(SNMPClient):
+class SNMP(object):
     """ Subclass of hatsploit.lib.module.proto module.
 
     This subclass of hatsploit.lib.module.proto module is a representation
@@ -40,13 +40,13 @@ class SNMP(SNMPClient):
         self.host = IPv4Option(None, "SNMP host.", True)
         self.port = PortOption(161, "SNMP port.", True)
 
-    def open_snmp(self) -> SNMPSocket:
-        """ Open SNMP socket.
+    def open_snmp(self) -> SNMPClient:
+        """ Open SNMP client.
 
-        :return SNMPSocket: SNMP socket
+        :return SNMPClient: SNMP client
         """
 
-        return super().open_snmp(
+        return SNMPClient(
             host=self.host.value,
             port=self.port.value,
             timeout=self.timeout.value

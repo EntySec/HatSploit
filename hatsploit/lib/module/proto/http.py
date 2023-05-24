@@ -22,11 +22,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
-from pex.proto.http import HTTPClient, HTTPListener, HTTPListen
+from pex.proto.http import HTTPClient, HTTPListener
 from hatsploit.lib.option import *
 
 
-class HTTP(HTTPClient, HTTPListener):
+class HTTP(object):
     """ Subclass of hatsploit.lib.module.proto module.
 
     This subclass of hatsploit.lib.module.proto module is a representation
@@ -47,7 +47,7 @@ class HTTP(HTTPClient, HTTPListener):
         :return str: HTTP response
         """
 
-        return super().http_request(
+        return HTTPClient().http_request(
             host=self.host.value,
             port=self.port.value,
             ssl=self.ssl.value,
@@ -55,13 +55,13 @@ class HTTP(HTTPClient, HTTPListener):
             *args, **kwargs
         )
 
-    def listen_http(self, *args, **kwargs) -> HTTPListen:
+    def listen_http(self, *args, **kwargs) -> HTTPListener:
         """ Start HTTP listener.
 
-        :return HTTPListen: HTTP socket
+        :return HTTPListener: HTTP listener
         """
 
-        return super().listen_http(
+        return HTTPListener(
             host=self.host.value,
             port=self.port.value,
             *args, **kwargs
