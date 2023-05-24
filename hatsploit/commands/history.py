@@ -13,7 +13,7 @@ class HatSploitCommand(Command):
 
         self.history = History()
 
-        self.details = {
+        self.details.update({
             'Category': "developer",
             'Name': "history",
             'Authors': [
@@ -28,7 +28,7 @@ class HatSploitCommand(Command):
                 'on': ['', "Turn history on."],
                 'off': ['', "Turn history off."],
             },
-        }
+        })
 
     def run(self, argc, argv):
         option = argv[1]

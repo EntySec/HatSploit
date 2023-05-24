@@ -13,7 +13,7 @@ class HatSploitCommand(Command):
 
         self.tip = Tip()
 
-        self.details = {
+        self.details.update({
             'Category': "misc",
             'Name': "tip",
             'Authors': [
@@ -22,7 +22,7 @@ class HatSploitCommand(Command):
             'Description': "Show random HatSploit tip.",
             'Usage': "tip",
             'MinArgs': 0,
-        }
+        })
 
     def run(self, argc, argv):
         self.tip.print_random_tip()

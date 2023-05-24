@@ -13,7 +13,7 @@ class HatSploitCommand(Command):
 
         self.commands = Commands()
 
-        self.details = {
+        self.details.update({
             'Category': "developer",
             'Name': "exec",
             'Authors': [
@@ -22,7 +22,7 @@ class HatSploitCommand(Command):
             'Description': "Execute local system command.",
             'Usage': "exec <command>",
             'MinArgs': 1,
-        }
+        })
 
     def run(self, argc, argv):
         commands = self.format_commands(argv[1])

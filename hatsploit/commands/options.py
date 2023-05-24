@@ -15,7 +15,7 @@ class HatSploitCommand(Command):
         self.show = Show()
         self.modules = Modules()
 
-        self.details = {
+        self.details.update({
             'Category': "modules",
             'Name': "options",
             'Authors': [
@@ -24,7 +24,7 @@ class HatSploitCommand(Command):
             'Description': "Show current module options.",
             'Usage': "options",
             'MinArgs': 0,
-        }
+        })
 
     def rpc(self, *args):
         return self.modules.get_current_options()

@@ -15,7 +15,7 @@ class HatSploitCommand(Command):
         self.loot = Loot()
         self.show = Show()
 
-        self.details = {
+        self.details.update({
             'Category': "loot",
             'Name': "loot",
             'Authors': [
@@ -28,7 +28,7 @@ class HatSploitCommand(Command):
                 '-l': ['', "List all collected loot."],
                 '-r': ['<name>', "Remove collected loot."],
             },
-        }
+        })
 
     def run(self, argc, argv):
         choice = argv[1]

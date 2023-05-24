@@ -19,7 +19,7 @@ class HatSploitCommand(Command):
         self.runtime = Runtime()
         self.jobs = Jobs()
 
-        self.details = {
+        self.details.update({
             'Category': "modules",
             'Name': "run",
             'Authors': [
@@ -32,7 +32,7 @@ class HatSploitCommand(Command):
                 '-j': ['', "Run current module as a background job."],
                 '-c': ['', "Run current module in cycle."],
             },
-        }
+        })
 
     def run(self, argc, argv):
         module = self.modules.get_current_module()

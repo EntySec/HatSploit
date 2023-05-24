@@ -13,7 +13,7 @@ class HatSploitCommand(Command):
 
         self.modules = Modules()
 
-        self.details = {
+        self.details.update({
             'Category': "modules",
             'Name': "set",
             'Authors': [
@@ -22,7 +22,7 @@ class HatSploitCommand(Command):
             'Description': "Set an option value.",
             'Usage': "set <option> <value>",
             'MinArgs': 2,
-        }
+        })
 
     def rpc(self, *args):
         if len(args) < 2:

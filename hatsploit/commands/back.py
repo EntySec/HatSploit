@@ -13,7 +13,7 @@ class HatSploitCommand(Command):
 
         self.modules = Modules()
 
-        self.details = {
+        self.details.update({
             'Category': "modules",
             'Name': "back",
             'Authors': [
@@ -22,7 +22,7 @@ class HatSploitCommand(Command):
             'Description': "Return to the previous module.",
             'Usage': "back",
             'MinArgs': 0,
-        }
+        })
 
     def rpc(self, *args):
         self.run(0, [])

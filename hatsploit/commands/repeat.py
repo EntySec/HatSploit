@@ -13,7 +13,7 @@ class HatSploitCommand(Command):
 
         self.commands = Commands()
 
-        self.details = {
+        self.details.update({
             'Category': "developer",
             'Name': "repeat",
             'Authors': [
@@ -22,7 +22,7 @@ class HatSploitCommand(Command):
             'Description': "Repeat specified command.",
             'Usage': "repeat <times> <command>",
             'MinArgs': 2,
-        }
+        })
 
     def run(self, argc, argv):
         if argv[1].isdigit():

@@ -13,7 +13,7 @@ class HatSploitCommand(Command):
 
         self.commands = Commands()
 
-        self.details = {
+        self.details.update({
             'Category': "core",
             'Name': "help",
             'Authors': [
@@ -22,7 +22,7 @@ class HatSploitCommand(Command):
             'Description': "Show available commands.",
             'Usage': "help",
             'MinArgs': 0,
-        }
+        })
 
 
     def run(self, argc, argv):

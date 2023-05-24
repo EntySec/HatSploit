@@ -13,7 +13,7 @@ class HatSploitCommand(Command):
 
         self.banner = Banner()
 
-        self.details = {
+        self.details.update({
             'Category': "misc",
             'Name': "banner",
             'Authors': [
@@ -22,7 +22,7 @@ class HatSploitCommand(Command):
             'Description': "Show random HatSploit banner.",
             'Usage': "banner",
             'MinArgs': 0,
-        }
+        })
 
     def run(self, argc, argv):
         self.banner.print_random_banner()

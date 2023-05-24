@@ -15,7 +15,7 @@ class HatSploitCommand(Command):
         self.sessions = Sessions()
         self.show = Show()
 
-        self.details = {
+        self.details.update({
             'Category': "sessions",
             'Name': "sessions",
             'Authors': [
@@ -32,7 +32,7 @@ class HatSploitCommand(Command):
                 '-c': ['<id>', "Close specified session."],
                 '--auto-interaction': ['[on|off]', "Interact with session after opening."],
             },
-        }
+        })
 
     def run(self, argc, argv):
         if argv[1] == '-l':

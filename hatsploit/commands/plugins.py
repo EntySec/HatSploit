@@ -15,7 +15,7 @@ class HatSploitCommand(Command):
         self.show = Show()
         self.plguins = Plugins()
 
-        self.details = {
+        self.details.update({
             'Category': "plugins",
             'Name': "plugins",
             'Authors': [
@@ -24,7 +24,7 @@ class HatSploitCommand(Command):
             'Description': "Show available plugins.",
             'Usage': "plugins",
             'MinArgs': 0,
-        }
+        })
 
     def rpc(self, *args):
         return self.plugins.get_plugins()

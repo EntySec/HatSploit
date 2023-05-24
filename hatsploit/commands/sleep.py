@@ -15,7 +15,7 @@ class HatSploitCommand(Command):
 
         self.execute = Execute()
 
-        self.details = {
+        self.details.update({
             'Category': "developer",
             'Name': "sleep",
             'Authors': [
@@ -24,7 +24,7 @@ class HatSploitCommand(Command):
             'Description': "Sleep for specified seconds.",
             'Usage': "sleep <seconds>",
             'MinArgs': 1,
-        }
+        })
 
     def run(self, argc, argv):
         try:

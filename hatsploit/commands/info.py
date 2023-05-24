@@ -15,7 +15,7 @@ class HatSploitCommand(Command):
         self.modules = Modules()
         self.show = Show()
 
-        self.details = {
+        self.details.update({
             'Category': "modules",
             'Name': "info",
             'Authors': [
@@ -24,7 +24,7 @@ class HatSploitCommand(Command):
             'Description': "Show module information.",
             'Usage': "info [<module>]",
             'MinArgs': 0,
-        }
+        })
 
         self.complete = self.modules.modules_completer
 

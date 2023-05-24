@@ -15,7 +15,7 @@ class HatSploitCommand(Command):
         self.payloads = Payloads()
         self.show = Show()
 
-        self.details = {
+        self.details.update({
             'Category': "modules",
             'Name': "payloads",
             'Authors': [
@@ -24,7 +24,7 @@ class HatSploitCommand(Command):
             'Description': "Show available payloads.",
             'Usage': "payloads",
             'MinArgs': 0,
-        }
+        })
 
     def rpc(self, *args):
         return self.payloads.get_payloads()

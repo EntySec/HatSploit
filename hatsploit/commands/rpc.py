@@ -15,7 +15,7 @@ class HatSploitCommand(Command, TCPTools):
 
         self.jobs = Jobs()
 
-        self.details = {
+        self.details.update({
             'Category': "developer",
             'Name': "rpc",
             'Authors': [
@@ -28,7 +28,7 @@ class HatSploitCommand(Command, TCPTools):
                 'off': ['<port>', "Turn RPC server off."],
                 'on': ['<port>', "Turn RPC server on."],
             },
-        }
+        })
 
     def run(self, argc, argv):
         if argv[1] == 'on':

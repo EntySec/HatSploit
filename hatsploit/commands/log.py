@@ -13,7 +13,7 @@ class HatSploitCommand(Command):
 
         self.log = Log()
 
-        self.details = {
+        self.details.update({
             'Category': "developer",
             'Name': "log",
             'Authors': [
@@ -26,7 +26,7 @@ class HatSploitCommand(Command):
                 'on': ['<file>', "Turn logging on."],
                 'off': ['', "Turn logging off."],
             },
-        }
+        })
 
     def run(self, argc, argv):
         option = argv[1]

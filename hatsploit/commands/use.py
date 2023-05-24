@@ -13,7 +13,7 @@ class HatSploitCommand(Command):
 
         self.modules = Modules()
 
-        self.details = {
+        self.details.update({
             'Category': "modules",
             'Name': "use",
             'Authors': [
@@ -22,7 +22,7 @@ class HatSploitCommand(Command):
             'Description': "Use specified module.",
             'Usage': "use <module|number>",
             'MinArgs': 1,
-        }
+        })
 
         self.complete = self.modules.modules_completer
 

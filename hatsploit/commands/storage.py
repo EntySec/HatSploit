@@ -20,7 +20,7 @@ class HatSploitCommand(Command):
         self.local_storage = LocalStorage()
         self.global_storage = GlobalStorage(self.storage_path)
 
-        self.details = {
+        self.details.update({
             'Category': "developer",
             'Name': "storage",
             'Authors': [
@@ -35,7 +35,7 @@ class HatSploitCommand(Command):
                 '-s': ['<name> <value>', "Set storage variable value."],
                 '-d': ['<name>', "Delete storage variable."],
             },
-        }
+        })
 
     def run(self, argc, argv):
         type_of_storage = argv[1]

@@ -15,7 +15,7 @@ class HatSploitCommand(Command):
         self.jobs = Jobs()
         self.show = Show()
 
-        self.details = {
+        self.details.update({
             'Category': "jobs",
             'Name': "jobs",
             'Authors': [
@@ -28,7 +28,7 @@ class HatSploitCommand(Command):
                 '-l': ['', 'List all active jobs.'],
                 '-k': ['<id>', 'Kill specified job.'],
             },
-        }
+        })
 
     def run(self, argc, argv):
         choice = argv[1]

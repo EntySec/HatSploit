@@ -13,7 +13,7 @@ class HatSploitCommand(Command):
 
         self.modules = Modules()
 
-        self.details = {
+        self.details.update({
             'Category': "modules",
             'Name': "unset",
             'Authors': [
@@ -22,7 +22,7 @@ class HatSploitCommand(Command):
             'Description': "Unset an option / Set to nil.",
             'Usage': "unset <option>",
             'MinArgs': 1,
-        }
+        })
 
     def run(self, argc, argv):
         self.modules.set_current_module_option(argv[1].lower())

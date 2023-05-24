@@ -31,7 +31,7 @@ class HatSploitCommand(Command):
     def __init__(self):
         super().__init__()
 
-        self.details = {
+        self.details.update({
             'Category': "developer",
             'Name': "pyshell",
             'Authors': [
@@ -40,7 +40,7 @@ class HatSploitCommand(Command):
             'Description': "Open Python shell.",
             'Usage': "pyshell",
             'MinArgs': 0,
-        }
+        })
 
     def run(self, argc, argv):
         self.print_information(f"Python {platform.python_version()} console")

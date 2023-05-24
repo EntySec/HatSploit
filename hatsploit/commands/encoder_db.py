@@ -17,7 +17,7 @@ class HatSploitCommand(Command):
         self.builder = Builder()
         self.show = Show()
 
-        self.details = {
+        self.details.update({
             'Category': "databases",
             'Name': "encoder_db",
             'Authors': [
@@ -35,7 +35,7 @@ class HatSploitCommand(Command):
                     "Build encoder database from encoders path.",
                 ],
             },
-        }
+        })
 
     def rpc(self, *args):
         if len(args) < 1:

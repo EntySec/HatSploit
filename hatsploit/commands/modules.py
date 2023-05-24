@@ -15,7 +15,7 @@ class HatSploitCommand(Command):
         self.modules = Modules()
         self.show = Show()
 
-        self.details = {
+        self.details.update({
             'Category': "modules",
             'Name': "modules",
             'Authors': [
@@ -24,7 +24,7 @@ class HatSploitCommand(Command):
             'Description': "Show available modules.",
             'Usage': "modules [category]",
             'MinArgs': 0,
-        }
+        })
 
     def collect_categories(self):
         modules = self.modules.get_modules()

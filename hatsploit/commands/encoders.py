@@ -15,7 +15,7 @@ class HatSploitCommand(Command):
         self.show = Show()
         self.encoders = Encoders()
 
-        self.details = {
+        self.details.update({
             'Category': "encoder",
             'Name': "encoders",
             'Authors': [
@@ -24,7 +24,7 @@ class HatSploitCommand(Command):
             'Description': "Show available encoders.",
             'Usage': "encoders",
             'MinArgs': 0,
-        }
+        })
 
     def rpc(self, *args):
         return self.encoders.get_encoders()

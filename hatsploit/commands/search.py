@@ -13,7 +13,7 @@ class HatSploitCommand(Command):
 
         self.show = Show()
 
-        self.details = {
+        self.details.update({
             'Category': "core",
             'Name': "search",
             'Authors': [
@@ -26,7 +26,7 @@ class HatSploitCommand(Command):
                 '-w': ['[payloads|encoders|modules|plugins]', "Select where to search."],
                 '-e': ['', "Search everywhere."],
             },
-        }
+        })
 
     def run(self, argc, argv):
         if argv[1] not in ['-w', '--where']:

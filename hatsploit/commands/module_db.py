@@ -17,7 +17,7 @@ class HatSploitCommand(Command):
         self.builder = Builder()
         self.show = Show()
 
-        self.details = {
+        self.details.update({
             'Category': "databases",
             'Name': "module_db",
             'Authors': [
@@ -32,7 +32,7 @@ class HatSploitCommand(Command):
                 '-c': ['<name> <path>', "Connect new module database."],
                 '-b': ['<path> <output_path>', "Build module database from modules path."],
             },
-        }
+        })
 
     def rpc(self, *args):
         if len(args) < 1:

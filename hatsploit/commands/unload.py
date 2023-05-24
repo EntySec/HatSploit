@@ -13,7 +13,7 @@ class HatSploitCommand(Command):
 
         self.plugins = Plugins()
 
-        self.details = {
+        self.details.update({
             'Category': "plugins",
             'Name': "unload",
             'Authors': [
@@ -22,7 +22,7 @@ class HatSploitCommand(Command):
             'Description': "Unload specified loaded plugin.",
             'Usage': "unload <plugin|number>",
             'MinArgs': 1,
-        }
+        })
 
         self.complete = self.plugins.loaded_plugins_completer
 

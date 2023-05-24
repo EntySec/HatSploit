@@ -17,7 +17,7 @@ class HatSploitCommand(Command):
         self.jobs = Jobs()
         self.sessions = Sessions()
 
-        self.details = {
+        self.details.update({
             'Category': "core",
             'Name': "exit",
             'Authors': [
@@ -26,7 +26,7 @@ class HatSploitCommand(Command):
             'Description': "Exit HatSploit Framework.",
             'Usage': "exit",
             'MinArgs': 0,
-        }
+        })
 
     def run(self, argc, argv):
         if self.jobs.get_jobs():

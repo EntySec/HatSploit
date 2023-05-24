@@ -10,7 +10,7 @@ class HatSploitCommand(Command):
     def __init__(self):
         super().__init__()
 
-        self.details = {
+        self.details.update({
             'Category': "core",
             'Name': "clear",
             'Authors': [
@@ -19,7 +19,7 @@ class HatSploitCommand(Command):
             'Description': "Clear terminal window.",
             'Usage': "clear",
             'MinArgs': 0,
-        }
+        })
 
     def run(self, argc, argv):
         self.print_empty("%clear", end='')
