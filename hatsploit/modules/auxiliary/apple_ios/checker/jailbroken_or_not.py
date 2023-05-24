@@ -11,7 +11,7 @@ class HatSploitModule(Module, TCPTools):
     def __init__(self):
         super().__init__()
 
-        self.details = {
+        self.details.update({
             'Category': "auxiliary",
             'Name': "Jailbreak Installation Checker",
             'Module': "auxiliary/apple_ios/checker/jailbroken_or_not",
@@ -21,7 +21,7 @@ class HatSploitModule(Module, TCPTools):
             'Description': "Check if remote iPhone jailbroken.",
             'Platform': "apple_ios",
             'Rank': "low",
-        }
+        })
 
         self.target = IPv4Option(None, "Remote host.", True)
 

@@ -12,7 +12,7 @@ class HatSploitModule(Module, TCPTools):
     def __init__(self):
         super().__init__()
 
-        self.details = {
+        self.details.update({
             'Category': "auxiliary",
             'Name': "ADB Installation Checker",
             'Module': "auxiliary/android/checker/check_adb_installation",
@@ -22,7 +22,7 @@ class HatSploitModule(Module, TCPTools):
             'Description': "Check if remote Android device has ADB installation.",
             'Platform': "android",
             'Rank': "low",
-        }
+        })
 
         self.target = IPv4Option(None, "Remote host.", True)
 

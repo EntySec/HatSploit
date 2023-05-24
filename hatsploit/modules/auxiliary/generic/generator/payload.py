@@ -18,7 +18,7 @@ class HatSploitModule(Module, Assembler):
         self.loot = Loot()
         self.payloads = Payloads()
 
-        self.details = {
+        self.details.update({
             'Category': "auxiliary",
             'Name': "Generic Payload Generator",
             'Module': "auxiliary/generic/generator/payload",
@@ -28,14 +28,10 @@ class HatSploitModule(Module, Assembler):
             'Description': "Generate specified payload.",
             'Platform': "generic",
             'Rank': "low",
-        }
-
-        self.payload = {
-            'Value': 'macos/x64/say',
-            'Architectures': None,
-            'Platforms': None,
-            'Types': None,
-        }
+            'Payload': {
+                'Value': 'macos/x64/say',
+            }
+        })
 
         self.path = Option(self.loot.random_loot(), "Path to save file.", True)
 

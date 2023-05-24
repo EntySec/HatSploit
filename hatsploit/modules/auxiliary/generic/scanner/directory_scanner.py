@@ -14,7 +14,7 @@ class HatSploitModule(Module, HTTPClient):
 
         self.config = Config()
 
-        self.details = {
+        self.details.update({
             'Category': "auxiliary",
             'Name': "WEB Directory Scanner",
             'Module': "auxiliary/generic/scanner/directory_scanner",
@@ -24,7 +24,7 @@ class HatSploitModule(Module, HTTPClient):
             'Description': "Website directory scanner.",
             'Platform': "generic",
             'Rank': "medium",
-        }
+        })
 
         self.host = IPv4Option(None, "Remote host.", True)
         self.port = PortOption(80, "Remote port", True)

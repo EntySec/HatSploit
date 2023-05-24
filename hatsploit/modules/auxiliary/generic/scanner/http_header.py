@@ -12,7 +12,7 @@ class HatSploitModule(HTTPClient, Module, TCPTools):
     def __init__(self):
         super().__init__()
 
-        self.details = {
+        self.details.update({
             'Category': 'auxiliary',
             'Name': 'HTTP Header',
             'Module': 'auxiliary/generic/scanner/http_header',
@@ -20,7 +20,7 @@ class HatSploitModule(HTTPClient, Module, TCPTools):
             'Description': 'Retrieve HTTP headers from a server.',
             'Platform': 'generic',
             'Rank': 'low',
-        }
+        })
 
         self.host = IPv4Option(None, "Remote host.", True)
         self.port = PortOption(80, "Remote port", True)

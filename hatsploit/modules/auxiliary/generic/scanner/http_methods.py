@@ -12,7 +12,7 @@ class HatSploitModule(HTTPClient, Module, TCPTools):
     def __init__(self):
         super().__init__()
 
-        self.details = {
+        self.details.update({
             'Category': 'auxiliary',
             'Name': 'HTTP Methods',
             'Module': 'auxiliary/generic/scanner/http_methods',
@@ -20,7 +20,7 @@ class HatSploitModule(HTTPClient, Module, TCPTools):
             'Description': 'Find supported HTTP methods on a server',
             'Platform': 'generic',
             'Rank': 'low',
-        }
+        })
 
         self.host = IPv4Option(None, "Remote host.", True)
 

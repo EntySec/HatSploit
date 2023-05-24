@@ -14,7 +14,7 @@ class HatSploitModule(Module, Sessions, DB):
     def __init__(self):
         super().__init__()
 
-        self.details = {
+        self.details.update({
             'Category': "post",
             'Name': "Obtain Safari bookmarks",
             'Module': "post/apple_ios/shell/safari_bookmarks",
@@ -24,7 +24,7 @@ class HatSploitModule(Module, Sessions, DB):
             'Description': "Get iOS Safari bookmarks database and parse it.",
             'Platform': "apple_ios",
             'Rank': "medium",
-        }
+        })
 
         self.session = SessionOption(None, "Session to run on.", True,
                                      platforms=['apple_ios'], type='shell')

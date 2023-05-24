@@ -10,7 +10,7 @@ class HatSploitModule(Module):
     def __init__(self):
         super().__init__()
 
-        self.details = {
+        self.details.update({
             'Category': "post",
             'Name': "macOS Shell Suspend",
             'Module': "post/macos/shell/suspend",
@@ -20,7 +20,7 @@ class HatSploitModule(Module):
             'Description': "Suspend macOS through shell.",
             'Platform': "macos",
             'Rank': "medium",
-        }
+        })
 
         self.session = SessionOption(None, "Session to run on.", True,
                                      platforms=['macos'], type='shell')

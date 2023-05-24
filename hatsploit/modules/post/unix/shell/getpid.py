@@ -10,7 +10,7 @@ class HatSploitModule(Module):
     def __init__(self):
         super().__init__()
 
-        self.details = {
+        self.details.update({
             'Category': "post",
             'Name': "Unix Shell Get PID",
             'Module': "post/unix/shell/getpid",
@@ -20,7 +20,7 @@ class HatSploitModule(Module):
             'Description': "Get current session process id.",
             'Platform': "unix",
             'Rank': "medium",
-        }
+        })
 
         self.session = SessionOption(None, "Session to run on.", True,
                                      platforms=['linux', 'unix', 'macos', 'apple_ios'],

@@ -12,7 +12,7 @@ class HatSploitModule(Module, Sessions):
     def __init__(self):
         super().__init__()
 
-        self.details = {
+        self.details.update({
             'Category': "post",
             'Name': "Unix Obtain /etc/passwd",
             'Module': "post/unix/shell/getpasswd",
@@ -22,7 +22,7 @@ class HatSploitModule(Module, Sessions):
             'Description': "Get current session /etc/passwd file.",
             'Platform': "unix",
             'Rank': "medium",
-        }
+        })
 
         self.session = SessionOption(None, "Session to run on.", True,
                                      platforms=['linux', 'unix', 'macos', 'apple_ios'],
