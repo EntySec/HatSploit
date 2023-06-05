@@ -119,7 +119,7 @@ class GlobalStorage(object):
 class LocalStorage(object):
     """ Subclass of hatsploit.lib module.
 
-    This subclass of hatsploit.lib module is intende for providing
+    This subclass of hatsploit.lib module is intended for providing
     tools for interacting and configuring local storage. Local storage
     is a general HatSploit storage that erases after HatSploit exits.
     """
