@@ -31,7 +31,7 @@ from pex.post.push import Push
 from pex.proto.channel import ChannelClient
 
 
-class HatSploitSession(Session, Loot, Pull, Push, ChannelClient):
+class HatSploitSession(Session, Loot, Pull, Push):
     def __init__(self):
         super().__init__()
 
@@ -45,7 +45,7 @@ class HatSploitSession(Session, Loot, Pull, Push, ChannelClient):
         }
 
     def open(self, client):
-        self.channel = self.open_channel(client)
+        self.channel = ChannelClient(client)
 
     def close(self):
         self.channel.disconnect()
