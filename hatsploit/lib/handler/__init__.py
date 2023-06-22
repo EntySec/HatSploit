@@ -110,7 +110,7 @@ class Handler(object):
         if on_session:
             on_session()
 
-        if self.sessions.get_auto_interaction:
+        if self.sessions.get_auto_interaction():
             self.sessions.interact_with_session(session)
 
     def module_handle(self, *args, **kwargs) -> None:
