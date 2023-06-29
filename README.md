@@ -4,17 +4,17 @@
     <b>HatSploit Framework</b>
     <br>
     <br>
-    <a href="https://entysec.netlify.app">
+    <a href="https://entysec.com">
         <img src="https://img.shields.io/badge/developer-EntySec-blue.svg">
     </a>
-    <a href="https://github.com/EntySec/libpawn">
-        <img src="https://img.shields.io/badge/language-C-grey.svg">
+    <a href="https://github.com/EntySec/HatSploit">
+        <img src="https://img.shields.io/badge/language-Python-blue.svg">
     </a>
-    <a href="https://github.com/EntySec/libpawn/forks">
-        <img src="https://img.shields.io/github/forks/EntySec/libpawn?color=green">
+    <a href="https://github.com/EntySec/HatSploit/forks">
+        <img src="https://img.shields.io/github/forks/EntySec/HatSploit?color=green">
     </a>
-    <a href="https://github.com/EntySec/libpawn/stargazers">
-        <img src="https://img.shields.io/github/stars/EntySec/libpawn?color=yellow">
+    <a href="https://github.com/EntySec/HatSploit/stargazers">
+        <img src="https://img.shields.io/github/stars/EntySec/HatSploit?color=yellow">
     </a>
     <a href="https://www.codefactor.io/repository/github/entysec/hatsploit">
         <img src="https://www.codefactor.io/repository/github/entysec/hatsploit/badge" alt="CodeFactor" />
