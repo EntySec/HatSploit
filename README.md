@@ -3,7 +3,6 @@
 <p align="center">
     <b>HatSploit Framework</b><br>
     <br>
-    <p>
         <a href="https://www.codefactor.io/repository/github/entysec/hatsploit">
             <img src="https://www.codefactor.io/repository/github/entysec/hatsploit/badge" alt="CodeFactor" />
         </a>
@@ -19,7 +18,6 @@
         <a href="https://github.com/EntySec/libpawn/stargazers">
             <img src="https://img.shields.io/github/stars/EntySec/libpawn?color=yellow">
         </a>
-    </p>
     <br>
     Modular penetration testing platform that 
     <br>enables you to write, test, and execute exploit code.
