@@ -11,7 +11,7 @@ from hatsploit.lib.encoders import Encoders
 from pex.assembler import Assembler
 
 
-class HatSploitModule(Module, Assembler):
+class HatSploitModule(Module, Assembler, Handler):
     def __init__(self):
         super().__init__()
 
