@@ -295,18 +295,18 @@ class Modules(object):
 
             if module_object:
                 if 'Payload' in module_object.details:
+                    self.add_to_global(module_object)
+
                     payload_name = module_object.details['Payload'].get('Value', None)
 
                     if payload_name:
                         self.badges.print_process(f"Using default payload {payload_name}...")
 
                         if self.set_option_value(module_object, 'payload', payload_name):
-                            self.add_to_global(module_object)
                             return
 
+                        self.go_back()
                         raise RuntimeError(f"Invalid default payload: {payload_name}!")
-
-                self.add_to_global(module_object)
             else:
                 raise RuntimeError(f"Failed to select module from database: {module}!")
 
