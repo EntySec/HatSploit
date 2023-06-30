@@ -8,7 +8,7 @@ import random
 from hatsploit.lib.payload.basic import *
 
 
-class HatSploitPayload(Payload):
+class HatSploitPayload(Payload, Handler):
     def __init__(self):
         super().__init__()
 
