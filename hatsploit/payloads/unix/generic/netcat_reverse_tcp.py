@@ -7,7 +7,7 @@ from hatsploit.lib.payload.basic import *
 from pex.string import String
 
 
-class HatSploitPayload(Payload, String):
+class HatSploitPayload(Payload, Handler, String):
     def __init__(self):
         super().__init__()
 
