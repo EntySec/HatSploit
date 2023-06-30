@@ -1,4 +1,6 @@
-<h3 align="center"><img src="https://hatsploit.com/images/logo-footer.png" alt="logo" height="250px"></h3>
+<h3 align="center">
+    <img src="https://hatsploit.com/images/logo-footer.png" alt="logo" height="250px">
+</h3>
 
 <p align="center">
     <b>HatSploit Framework</b>
@@ -17,7 +19,7 @@
         <img src="https://img.shields.io/github/stars/EntySec/HatSploit?color=yellow">
     </a>
     <a href="https://www.codefactor.io/repository/github/entysec/hatsploit">
-        <img src="https://www.codefactor.io/repository/github/entysec/hatsploit/badge" alt="CodeFactor" />
+        <img src="https://www.codefactor.io/repository/github/entysec/hatsploit/badge">
     </a>
     <br>
     <br>
