@@ -29,7 +29,7 @@ class HatSploitModule(Module, Assembler):
             'Platform': "generic",
             'Rank': "low",
             'Payload': {
-                'Value': 'macos/x64/say',
+                'Value': "unix/generic/netcat_reverse_tcp",
             }
         })
 
