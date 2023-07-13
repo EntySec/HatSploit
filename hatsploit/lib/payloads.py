@@ -361,6 +361,9 @@ class Payloads(object):
         if not self.validate_options(payload):
             payload = payload.run()
 
+            if not payload:
+                raise RuntimeError("Payload does not support generation!")
+
             if encoder:
                 encoder.payload = payload
                 payload = encoder.run()
