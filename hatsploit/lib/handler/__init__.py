@@ -135,7 +135,7 @@ class Handler(object):
 
         session = HatSploitSession
 
-        if 'Session' in payload.details:
+        if 'Session' in payload.details and payload.details['Session']:
             session = payload.details['Session']
 
         self.handle(
