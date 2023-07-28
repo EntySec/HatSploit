@@ -43,7 +43,10 @@ class Session(FMT, Badges, Colors, Tables):
         self.details = {
             'Post': "",
             'Platform': "",
-            'Type': ""
+            'Arch': "",
+            'Type': "",
+            'Host': "",
+            'Port': None
         }
 
     def open(self, client: Any) -> None:

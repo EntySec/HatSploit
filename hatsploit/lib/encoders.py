@@ -250,7 +250,7 @@ class Encoders(object):
         if self.check_exist(encoder):
             encoder = self.get_encoder_object(encoder)
 
-            if encoder['Architecture'] == payload.details['Architecture']:
+            if encoder['Arch'] == payload.details['Arch']:
                 return True
 
         return False

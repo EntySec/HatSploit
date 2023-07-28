@@ -641,13 +641,13 @@ class Show(object):
 
         if sessions:
             sessions_data = []
-            headers = ("ID", "Platform", "Architecture", "Type", "Host", "Port")
+            headers = ("ID", "Platform", "Arch", "Type", "Host", "Port")
 
             for session_id in sessions:
                 session = sessions[session_id]
 
                 platform = session['Platform']
-                architecture = session['Architecture']
+                architecture = session['Arch']
                 type = session['Type']
                 host = session['Host']
                 port = session['Port']
