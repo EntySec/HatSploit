@@ -26,8 +26,6 @@ from hatsploit.core.cli.badges import Badges
 from hatsploit.core.cli.tables import Tables
 from hatsploit.core.cli.tools import Tools
 
-from hatsploit.lib.handler.misc import HatSploitSession
-
 
 class Payload(Badges, Tables, Tools):
     """ Subclass of hatsploit.lib module.
@@ -48,7 +46,7 @@ class Payload(Badges, Tables, Tools):
             'Description': "",
             'Arch': "",
             'Platform': "",
-            'Session': HatSploitSession,
+            'Session': None,
             'Rank': "",
             'Type': ""
         }
