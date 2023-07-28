@@ -107,7 +107,7 @@ class Check(object):
                             'Encoder',
                             'Authors',
                             'Description',
-                            'Architecture',
+                            'Arch',
                         ]
 
                         assert all(key in encoder_object.details for key in keys)
@@ -144,7 +144,7 @@ class Check(object):
                             'Payload',
                             'Authors',
                             'Description',
-                            'Architecture',
+                            'Arch',
                             'Platform',
                             'Rank',
                             'Type',

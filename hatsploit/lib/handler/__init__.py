@@ -83,15 +83,13 @@ class Handler(object):
         self.rhost = IPv4Option(TCPTools.get_local_host(), "Remote host.", True, object=Payload)
         self.rport = PortOption(8888, "Remote port.", True, object=Payload)
 
-    def open_session(self, host: str, port: int, session: Session,
+    def open_session(self, session: Session,
                      on_session: Optional[Callable[..., Any]] = None) -> None:
         """ Open session and interact with it if allowed.
 
         Note: This method does not open session, it just saves opened session to the
         local storage and interacts with it if allowed.
 
-        :param str host: session host
-        :param int port: session port
         :param Session session: session object
         :param Optional[Callable[..., Any]] on_session: function of an action that
         should be performed right after session was opened
@@ -99,8 +97,10 @@ class Handler(object):
         """
 
         platform = session.details['Platform']
-        arch = session.details['Architecture']
+        arch = session.details['Arch']
         type = session.details['Type']
+        host = session.details['Host']
+        port = session.details['Port']
 
         session = self.sessions.add_session(platform, arch, type, host, port, session)
         time = datetime.datetime.now().astimezone().strftime("%Y-%m-%d %H:%M:%S %Z")
@@ -135,7 +135,7 @@ class Handler(object):
 
         session = HatSploitSession
 
-        if 'Session' in payload.details:
+        if 'Session' in payload.details and payload.details['Session']:
             session = payload.details['Session']
 
         self.handle(
@@ -184,13 +184,13 @@ class Handler(object):
             session = session()
 
             session.details['Platform'] = payload.details['Platform']
-            session.details['Architecture'] = payload.details['Architecture']
+            session.details['Arch'] = payload.details['Arch']
+            session.details['Host'] = host
+            session.details['Port'] = self.lport.value
 
             session.open(client)
 
             self.open_session(
-                host=host,
-                port=self.lport.value,
                 session=session,
                 on_session=on_session
             )

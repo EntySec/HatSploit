@@ -37,12 +37,9 @@ class HatSploitSession(Session, Loot, Pull, Push):
 
         self.channel = None
 
-        self.details = {
-            'Post': "",
-            'Platform': "",
-            'Architecture': "",
+        self.details.update({
             'Type': "shell"
-        }
+        })
 
     def open(self, client):
         self.channel = ChannelClient(client)

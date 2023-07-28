@@ -45,7 +45,7 @@ class HatSploitModule(Module, Assembler, Handler):
                 self.encoders.get_current_encoder(self, payload)
             ),
             payload.details['Platform'],
-            payload.details['Architecture'],
+            payload.details['Arch'],
         )
 
         self.loot.save_file(path, executable)

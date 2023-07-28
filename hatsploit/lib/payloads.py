@@ -272,9 +272,9 @@ class Payloads(object):
                 if platforms and payload['Platform'] not in platforms:
                     return False
 
-                arches = module.details['Payload'].get('Architectures', None)
+                arches = module.details['Payload'].get('Arches', None)
 
-                if arches and payload['Architecture'] not in arches:
+                if arches and payload['Arch'] not in arches:
                     return False
 
             return True

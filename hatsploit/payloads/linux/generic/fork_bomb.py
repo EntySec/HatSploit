@@ -17,7 +17,7 @@ class HatSploitPayload(Payload):
                 'Ivan Nikolsky (enty8080) - payload developer',
             ],
             'Description': "Linux generic fork bomb.",
-            'Architecture': "generic",
+            'Arch': "generic",
             'Platform': "linux",
             'Rank': "high",
             'Type': "one_side",

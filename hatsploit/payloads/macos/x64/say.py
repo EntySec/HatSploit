@@ -20,7 +20,7 @@ class HatSploitPayload(Payload, Assembler):
                 'Ivan Nikolsky (enty8080) - payload developer',
             ],
             'Description': "Say payload for macOS x64.",
-            'Architecture': "x64",
+            'Arch': "x64",
             'Platform': "macos",
             'Rank': "low",
             'Type': "one_side",
@@ -39,14 +39,14 @@ class HatSploitPayload(Payload, Assembler):
 
         return (
             self.assemble(
-                self.details['Architecture'],
+                self.details['Arch'],
                 """
                 start:
                     xor rax, rax
                     mov eax, 0x200003b
                 """,
             ) + data + self.assemble(
-                self.details['Architecture'],
+                self.details['Arch'],
                 """
                 end:
                     mov rdi, [rsp]

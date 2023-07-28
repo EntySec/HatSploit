@@ -96,7 +96,7 @@ class Sessions(object):
         sessions = {
             session_id: {
                 'Platform': platform,
-                'Architecture': arch,
+                'Arch': arch,
                 'Type': type,
                 'Host': host,
                 'Port': port,
@@ -134,7 +134,7 @@ class Sessions(object):
                         valid = False
 
                 if arch:
-                    if session['Architecture'] != arch:
+                    if session['Arch'] != arch:
                         valid = False
 
                 return valid

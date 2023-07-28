@@ -182,7 +182,7 @@ class Send(object):
             arguments = ''
 
         platform = payload.details['Platform']
-        arch = payload.details['Architecture']
+        arch = payload.details['Arch']
         type = payload.details['Type']
 
         main = self.payloads.run_payload(payload, encoder)
@@ -269,7 +269,7 @@ class Send(object):
             raise RuntimeError("Host and port were not found for payload!")
 
         platform = payload.details['Platform']
-        arch = payload.details['Architecture']
+        arch = payload.details['Arch']
         type = payload.details['Type']
 
         main = self.payloads.run_payload(payload, encoder)

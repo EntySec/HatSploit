@@ -20,7 +20,7 @@ class HatSploitPayload(Payload, Handler, Assembler, Socket):
                 'Ivan Nikolsky (enty8080) - payload developer',
             ],
             'Description': "Shell bind TCP payload for Linux x64.",
-            'Architecture': "x64",
+            'Arch': "x64",
             'Platform': "linux",
             'Rank': "high",
             'Type': "bind_tcp",
@@ -28,7 +28,7 @@ class HatSploitPayload(Payload, Handler, Assembler, Socket):
 
     def implant(self):
         return self.assemble(
-            self.details['Architecture'],
+            self.details['Arch'],
             """
             start:
                 push 0x3
@@ -58,7 +58,7 @@ class HatSploitPayload(Payload, Handler, Assembler, Socket):
         port = self.pack_port(self.rport.value)
 
         return self.assemble(
-            self.details['Architecture'],
+            self.details['Arch'],
             f"""
             start:
                 push 0x29

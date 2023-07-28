@@ -17,7 +17,7 @@ class HatSploitPayload(Payload, Handler):
                 'Ivan Nikolsky (enty8080) - payload developer',
             ],
             'Description': "Windows cmd.exe reverse TCP payload through PowerShell script.",
-            'Architecture': "generic",
+            'Arch': "generic",
             'Platform': "windows",
             'Rank': "high",
             'Type': "reverse_tcp",
