@@ -18,7 +18,7 @@ class HatSploitPayload(Payload, Assembler):
                 'Ivan Nikolsky (enty8080) - payload developer',
             ],
             'Description': "Reboot payload for Linux mipsbe.",
-            'Architecture': "mipsbe",
+            'Arch': "mipsbe",
             'Platform': "linux",
             'Rank': "low",
             'Type': "one_side",
@@ -26,7 +26,7 @@ class HatSploitPayload(Payload, Assembler):
 
     def run(self):
         return self.assemble(
-            self.details['Architecture'],
+            self.details['Arch'],
             """
             start:
                 lui $a2, 0x4321

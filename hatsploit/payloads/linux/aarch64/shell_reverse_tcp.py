@@ -19,7 +19,7 @@ class HatSploitPayload(Payload, Handler, Assembler, Socket):
                 'Ivan Nikolsky (enty8080) - payload developer',
             ],
             'Description': "Shell reverse TCP payload for Linux aarch64.",
-            'Architecture': "aarch64",
+            'Arch': "aarch64",
             'Platform': "linux",
             'Rank': "high",
             'Type': "reverse_tcp",
@@ -27,7 +27,7 @@ class HatSploitPayload(Payload, Handler, Assembler, Socket):
 
     def run(self):
         return self.assemble(
-            self.details['Architecture'],
+            self.details['Arch'],
             f"""
             start:
                 mov x8, 0xc6

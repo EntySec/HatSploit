@@ -137,7 +137,7 @@ class Builder(object):
                                 "Encoder": encoder_object.details['Encoder'],
                                 "Authors": encoder_object.details['Authors'],
                                 "Description": encoder_object.details['Description'],
-                                "Architecture": encoder_object.details['Architecture'],
+                                "Arch": encoder_object.details['Arch'],
                             }
                         })
 
@@ -178,7 +178,7 @@ class Builder(object):
                                 "Payload": payload_object.details['Payload'],
                                 "Authors": payload_object.details['Authors'],
                                 "Description": payload_object.details['Description'],
-                                "Architecture": payload_object.details['Architecture'],
+                                "Arch": payload_object.details['Arch'],
                                 "Platform": payload_object.details['Platform'],
                                 "Rank": payload_object.details['Rank'],
                                 "Type": payload_object.details['Type'],

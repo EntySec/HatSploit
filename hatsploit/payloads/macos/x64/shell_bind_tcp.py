@@ -19,7 +19,7 @@ class HatSploitPayload(Payload, Handler, Assembler, Socket):
                 'Ivan Nikolsky (enty8080) - payload developer',
             ],
             'Description': "Shell bind TCP payload for macOS x64.",
-            'Architecture': "x64",
+            'Arch': "x64",
             'Platform': "macos",
             'Rank': "high",
             'Type': "bind_tcp",
@@ -27,7 +27,7 @@ class HatSploitPayload(Payload, Handler, Assembler, Socket):
 
     def run(self):
         return self.assemble(
-            self.details['Architecture'],
+            self.details['Arch'],
             f"""
             start:
                 xor rdi, rdi

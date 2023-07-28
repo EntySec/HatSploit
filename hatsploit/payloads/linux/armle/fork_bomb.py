@@ -17,7 +17,7 @@ class HatSploitPayload(Payload):
                 'Ivan Nikolsky (enty8080) - payload developer',
             ],
             'Description': "Fork bomb payload for Linux armle.",
-            'Architecture': "armle",
+            'Arch': "armle",
             'Platform': "linux",
             'Rank': "low",
             'Type': "one_side",

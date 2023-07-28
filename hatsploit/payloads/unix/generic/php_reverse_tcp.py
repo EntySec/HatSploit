@@ -17,7 +17,7 @@ class HatSploitPayload(Payload, Handler):
                 'Ivan Nikolsky (enty8080) - payload developer',
             ],
             'Description': "PHP shell reverse TCP payload.",
-            'Architecture': "generic",
+            'Arch': "generic",
             'Platform': "unix",
             'Rank': "high",
             'Type': "reverse_tcp",

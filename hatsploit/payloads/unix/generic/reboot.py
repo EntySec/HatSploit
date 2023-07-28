@@ -17,7 +17,7 @@ class HatSploitPayload(Payload):
                 'Ivan Nikolsky (enty8080) - payload developer',
             ],
             'Description': "Reboot payload for unix.",
-            'Architecture': "generic",
+            'Arch': "generic",
             'Platform': "unix",
             'Rank': "low",
             'Type': "one_side",
