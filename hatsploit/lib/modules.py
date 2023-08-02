@@ -292,9 +292,10 @@ class Modules(object):
 
         else:
             module_object = self.import_module(module)
-            self.add_to_global(module_object)
 
             if module_object:
+                self.add_to_global(module_object)
+
                 if 'Payload' in module_object.details:
                     payload_name = module_object.details['Payload'].get('Value', None)
 
