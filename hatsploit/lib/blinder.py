@@ -42,7 +42,7 @@ class Blinder(object):
         self.badges = Badges()
         self.post_tools = PostTools()
 
-    def shell(self, sender: Callable[..., Any], args: dict = {}) -> None:
+    def shell(self, sender: Callable[..., Any]) -> None:
         """ Blinder shell, aka command handler.
 
         :param Callable sender: function via which Blinder sends commands
@@ -63,7 +63,7 @@ class Blinder(object):
                 return
 
             self.badges.print_process("Sending command to target...")
-            output = self.post_tools.post_payload(sender, command, args)
+            output = self.post_tools.post_payload(sender, command)
 
             if output:
                 self.badges.print_empty(f'\n{output}')
