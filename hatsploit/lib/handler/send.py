@@ -306,7 +306,7 @@ class Send(object):
                 client, host = self.handle_session(
                     host=host, port=port, type=type)
 
-                self.send_implant_phasen(payload, client, send_size)
+                self.send_implant(payload, implant, client, send_size)
 
                 return client, host
 
