@@ -51,22 +51,15 @@ class HatSploitSession(Session, Loot, Pull, Push):
         return not self.channel.terminated
 
     def send_command(self, command, output=False):
-        return self.channel.send_command(
-            (command + '\n'),
-            output
-        )
+        return self.channel.send_command(command, output=output, decode=True)
 
     def download(self, remote_file, local_path):
         self.print_process(f"Downloading {remote_file}...")
 
         data = self.pull(
             platform=self.details['Platform'],
-            sender=self.send_command,
+            sender=self.channel.send_command,
             location=remote_file,
-            args={
-                'decode': False,
-                'output': True
-            }
         )
 
         if data:
