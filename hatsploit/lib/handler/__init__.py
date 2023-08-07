@@ -128,10 +128,9 @@ class Handler(object):
 
         if self.blinder.value:
             sender = kwargs.pop('sender', None)
-            args = kwargs.pop('args', {})
 
             if sender:
-                return Blinder().shell(sender, args)
+                return Blinder().shell(sender)
 
         session = HatSploitSession
 
