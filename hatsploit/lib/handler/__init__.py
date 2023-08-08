@@ -83,6 +83,8 @@ class Handler(object):
         self.rhost = IPv4Option(TCPTools.get_local_host(), "Remote host.", True, object=Payload)
         self.rport = PortOption(8888, "Remote port.", True, object=Payload)
 
+        self.space = IntegerOption(2048, "Buffer space available.", False, True)
+
     def open_session(self, session: Session,
                      on_session: Optional[Callable[..., Any]] = None) -> None:
         """ Open session and interact with it if allowed.
@@ -158,11 +160,14 @@ class Handler(object):
         should be performed right after session was opened
         """
 
+        space = kwargs.get('space', self.space.value)
+
         if action == 'shell':
             client, host = self.send.shell_payload(
                 payload=payload,
                 host=self.lhost.value,
                 port=self.lport.value,
+                space=space,
                 encoder=encoder,
                 *args, **kwargs
             )
@@ -172,6 +177,7 @@ class Handler(object):
                 payload=payload,
                 host=self.lhost.value,
                 port=self.lport.value,
+                space=space,
                 encoder=encoder,
                 *args, **kwargs
             )
