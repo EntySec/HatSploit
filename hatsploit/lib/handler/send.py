@@ -154,13 +154,15 @@ class Send(object):
 
         client.send(implant)
 
-    def shell_payload(self, payload: Payload, host: str, port: int, encoder: Optional[Encoder] = None,
+    def shell_payload(self, payload: Payload, host: str, port: int,
+                      space: int = 2048, encoder: Optional[Encoder] = None,
                       *args, **kwargs) -> Tuple[Union[socket.socket, str], str]:
         """ Send payload if the destination is shell.
 
         :param Payload payload: payload
         :param str host: host to start listener on
         :param int port: port to start listener on
+        :param int space: maximum payload size
         :param Optional[Encoder] encoder: encoder to apply
         :return Tuple[Union[socket.socket, str], str]: final socket and host
         """
@@ -186,7 +188,6 @@ class Send(object):
         type = payload.details['Type']
 
         main = self.payloads.run_payload(payload, encoder)
-        space = kwargs.get('space', 4096)
 
         if len(main) >= space and type != 'one_side' and hasattr(payload, 'implant'):
             implant = payload.implant()
@@ -246,13 +247,14 @@ class Send(object):
             host=host, port=port, type=type)
 
     def memory_payload(self, payload: Payload, host: str, port: int,
-                       encoder: Optional[Encoder] = None,
+                       space: int = 2048, encoder: Optional[Encoder] = None,
                        *args, **kwargs) -> Tuple[Union[socket.socket, str], str]:
         """ Send payload if the destination is memory.
 
         :param Payload payload: payload
         :param str host: host to start listener on
         :param int port: port to start listener on
+        :param int space: maximum payload size
         :param Optional[Encoder] encoder: encoder to apply
         :return Tuple[Union[socket.socket, str], str]: final socket and host
         """
@@ -273,7 +275,6 @@ class Send(object):
         type = payload.details['Type']
 
         main = self.payloads.run_payload(payload, encoder)
-        space = kwargs.get('space', 4096)
 
         if len(main) >= space and type != 'one_side' and hasattr(payload, 'implant'):
             implant = payload.implant()
