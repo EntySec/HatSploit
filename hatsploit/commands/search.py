@@ -21,7 +21,7 @@ class HatSploitCommand(Command):
             ],
             'Description': "Search payloads, modules and plugins.",
             'Usage': "search <option> <keyword>",
-            'MinArgs': 1,
+            'MinArgs': 2,
             'Options': {
                 '-w': ['[payloads|encoders|modules|plugins]', "Select where to search."],
                 '-e': ['', "Search everywhere."],

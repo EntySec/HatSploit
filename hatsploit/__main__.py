@@ -27,15 +27,24 @@ import os
 import sys
 import yaml
 
+from hatasm import HatAsm
+from typing import Any, Optional
+
+from pex.type import Type
+
 from hatsploit.core.utils.rpc import RPC
 from hatsploit.core.base.console import Console
 from hatsploit.core.cli.badges import Badges
+from hatsploit.core.cli.tables import Tables
 from hatsploit.core.db.builder import Builder
 from hatsploit.core.utils.check import Check
 from hatsploit.core.utils.update import Update
+
 from hatsploit.lib.config import Config
 from hatsploit.lib.jobs import Jobs
 from hatsploit.lib.runtime import Runtime
+from hatsploit.lib.payloads import Payloads
+from hatsploit.lib.show import Show
 
 
 class HatSploit(object):
@@ -85,6 +94,31 @@ class HatSploit(object):
 
         return True
 
+    def initialize(self, silent: bool = False) -> bool:
+        """ Check build and policy and ask for database.
+
+        :param bool silent: display loading message if True
+        :return bool: True if success else False
+        """
+
+        if self.runtime.catch(self.runtime.check) is Exception \
+                and not self.policy():
+            return False
+
+        build = False
+
+        if not self.builder.check_base_built():
+            build = self.badges.input_question(
+                "Do you want to build and connect base databases? [y/n] "
+            )
+
+            build = build[0].lower() in ['y', 'yes']
+
+        if self.runtime.catch(self.runtime.start, [build, silent]) is Exception:
+            return False
+
+        return True
+
     def launch(self, shell: bool = True, scripts: list = [], rpc: list = []) -> None:
         """ Launch HatSploit CLI interpreter.
 
@@ -96,31 +130,23 @@ class HatSploit(object):
         :return None: None
         """
 
-        if self.runtime.catch(self.runtime.check) is not Exception:
-            if self.policy():
-                build = False
+        if not scripts:
+            if shell:
+                if len(rpc) >= 2:
+                    self.jobs.create_job(f"RPC on port {str(rpc[1])}", "", RPC(*rpc).run)
 
-                if not self.builder.check_base_built():
-                    build = self.badges.input_question(
-                        "Do you want to build and connect base databases? [y/n] "
-                    )
-                    build = build[0].lower() in ['y', 'yes']
-
-                if self.runtime.catch(self.runtime.start, [build]) is not Exception:
-                    if not scripts:
-                        if shell:
-                            if len(rpc) >= 2:
-                                self.jobs.create_job(f"RPC on port {str(rpc[1])}", "", RPC(*rpc).run)
-
-                            self.console.shell()
-                    else:
-                        self.console.script(scripts, shell)
+                self.console.shell()
+        else:
+            self.console.script(scripts, shell)
 
     def cli(self) -> None:
         """ Main command-line arguments handler.
 
         :return None: None
         """
+
+        if not self.initialize():
+            return
 
         description = "Modular penetration testing platform that enables you to write, test, and execute exploit code."
         parser = argparse.ArgumentParser(description=description)
@@ -248,3 +274,190 @@ class HatSploit(object):
                 self.launch(scripts=[self.path_config['startup_path']], rpc=rpc)
             else:
                 self.launch(rpc=rpc)
+
+
+class StoreOptions(argparse.Action):
+    """ Subclass of hatsploit module.
+
+    This subclass of hatsploit module is a storage for command-line
+    options for payload generator CLI.
+    """
+
+    def __call__(self, parser: Any, namespace: Any, values: str,
+                 option_string: Optional[str] = None) -> None:
+        """ Create a namespace for options.
+
+        :param Any parser: parser
+        :param Any namespace: namespace
+        :param str value: values splitted by comma
+        :param Optional[str] option_string: option string
+        :return None: None
+        """
+
+        options = {}
+
+        for kv in values.split(","):
+            k, v = kv.split("=")
+            options[k] = v
+
+        setattr(namespace, self.dest, options)
+
+
+class HatSploitGen(HatSploit):
+    """ Main class of hatsploit module.
+
+    This main class of hatsploit module is a payload generator
+    CLI interface.
+    """
+
+    def __init__(self) -> None:
+        super().__init__()
+
+        self.hatasm = HatAsm()
+        self.payloads = Payloads()
+        self.show = Show()
+        self.type = Type()
+        self.badges = Badges()
+        self.tables = Tables()
+
+    def cli(self) -> None:
+        """ Main command-line arguments handler.
+
+        :return None: None
+        """
+
+        if not self.initialize(silent=True):
+            return
+
+        description = "Native HatSploit Framework advanced payload generator."
+        parser = argparse.ArgumentParser(description=description)
+        parser.add_argument(
+            '-p',
+            '--payload',
+            dest='payload',
+            help='HatSploit payload.',
+        )
+        parser.add_argument(
+            '-e',
+            '--encoder',
+            dest='encoder',
+            help='HatSploit encoder.',
+        )
+        parser.add_argument(
+            '--platform',
+            dest='platform',
+            help='Payload platform.',
+        )
+        parser.add_argument(
+            '--arch',
+            dest='arch',
+            help='Payload architecture',
+        )
+        parser.add_argument(
+            '-f',
+            '--format',
+            dest='format',
+            help='Generate payload with custom format.'
+        )
+        parser.add_argument(
+            '--formats',
+            dest='formats',
+            action='store_true',
+            help='List all formats.',
+        )
+        parser.add_argument(
+            '--payloads',
+            dest='payloads',
+            action='store_true',
+            help='List all payloads.',
+        )
+        parser.add_argument(
+            '--encoders',
+            dest='encoders',
+            action='store_true',
+            help='List all encoders.',
+        )
+        parser.add_argument(
+            '--options',
+            dest='options',
+            action=StoreOptions,
+            help='Add options to encoder/payload.',
+            metavar='option1=value1,option2=value2,...'
+        )
+        parser.add_argument(
+            '-i',
+            '--iterations',
+            dest='iterations',
+            type=int,
+            help='Number of encoding iterations.'
+        )
+        parser.add_argument(
+            '--pack',
+            dest='pack',
+            action='store_true',
+            help='Pack payload as ELF, PE or Mach-O depending on platform.',
+        )
+        parser.add_argument(
+            '-o',
+            '--output',
+            dest='output',
+            help='Output file to write payload to.'
+        )
+        args = parser.parse_args()
+
+        if args.payloads or args.encoders:
+            query = ''
+            if args.platform:
+                query += args.platform
+
+            if args.arch:
+                query += '/' + args.arch
+
+            if args.payloads:
+                self.show.show_search_payloads(query)
+            elif args.encoders:
+                self.show.show_search_encoders(query)
+
+        if args.formats:
+            if not args.platform:
+                data = []
+
+                for format in self.type.formats:
+                    platforms = ', '.join([p for p in self.type.formats[format]])
+                    data.append((format, platforms))
+
+                self.tables.print_table("Formats", ('Format', 'Platforms'), *data)
+
+            else:
+                formats = []
+
+                for format in self.type.formats:
+                    if args.platform in self.type.formats[format]:
+                        formats.append(format)
+
+                data = [(args.platform, ', '.join(formats))]
+                self.tables.print_table("Formats", ('Platform', 'Formats'), *data)
+
+        if args.payload:
+            options = {}
+
+            if args.options:
+                options = args.options.options
+
+            if args.encoder and args.iterations:
+                options['iterations'] = args.iterations
+
+            payload = self.payloads.generate_payload(
+                args.payload, options, args.encoder)
+
+            if args.pack and args.platform and args.arch:
+                payload = self.payloads.pack_payload(
+                    payload, args.platform, args.arch)
+
+            if not args.output:
+                for line in self.hatasm.hexdump(payload):
+                    self.badges.print_empty(line)
+
+            else:
+                with open(args.output, 'wb') as f:
+                    f.write(payload)
