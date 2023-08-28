@@ -22,6 +22,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
+from hatsploit.lib.option import *
+
 from hatsploit.core.cli.badges import Badges
 from hatsploit.core.cli.tables import Tables
 from hatsploit.core.cli.tools import Tools
@@ -46,6 +48,8 @@ class Encoder(Badges, Tables, Tools):
             'Description': "",
             'Arch': ""
         }
+
+        self.iterations = IntegerOption(1, "Number of iterations.", False, True)
 
     def run(self) -> None:
         """ Run this encoder.

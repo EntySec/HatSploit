@@ -25,11 +25,6 @@ SOFTWARE.
 from pex.type import Type
 from pex.socket import Socket
 
-from hatsploit.lib.modules import Modules
-from hatsploit.lib.payloads import Payloads
-from hatsploit.lib.encoders import Encoders
-from hatsploit.lib.sessions import Sessions
-
 from hatsploit.lib.options import Option
 
 
@@ -43,11 +38,6 @@ class OptionResolver(Option):
 
     def __init__(self, *args, **kwargs):
         Option.__init__(self, *args, **kwargs)
-
-        self.modules = Modules()
-        self.payloads = Payloads()
-        self.encoders = Encoders()
-        self.sessions = Sessions()
 
 
 class IPv4Option(OptionResolver):
@@ -130,87 +120,3 @@ class BooleanOption(OptionResolver):
             self.value = True
         else:
             self.value = False
-
-
-class PayloadOption(OptionResolver):
-    def set(self, value):
-        value = self.modules.find_shorts('payload', value)
-        module = self.modules.get_current_module()
-
-        if module:
-            if self.payloads.check_module_compatible(value, module):
-                module_name = module.details['Module']
-
-                self.payloads.add_payload(module_name, value)
-
-                if 'Payload' not in module.details:
-                    module.details['Payload'] = {}
-
-                module.details['Payload']['Value'] = value
-
-                self.payload = self.payloads.get_current_payload(module)
-                self.value = value
-
-                return
-
-        raise RuntimeError("Invalid option value, expected valid payload!")
-
-
-class EncoderOption(OptionResolver):
-    def set(self, value):
-        value = self.modules.find_shorts('encoder', value)
-        module = self.modules.get_current_module()
-        payload = self.payloads.get_current_payload(module)
-
-        if module and payload:
-            if self.encoders.check_payload_compatible(value, payload):
-                module_name = module.details['Module']
-                payload_name = payload.details['Payload']
-
-                self.encoders.add_encoder(module_name, payload_name, value)
-
-                if 'Encoder' not in payload.details:
-                    payload.details['Encoder'] = {}
-
-                payload.details['Encoder']['Value'] = value
-
-                self.encoder = self.encoders.get_current_encoder(module, payload)
-                self.value = value
-
-                return
-
-        raise RuntimeError("Invalid option value, expected valid encoder!")
-
-
-class SessionOption(OptionResolver):
-    def __init__(self, *args, platforms: list = [], type: str = '', **kwargs):
-        super(OptionResolver, self).__init__(*args, **kwargs)
-
-        self.platforms = platforms
-        self.type = type
-
-    def set(self, value):
-        value = int(value)
-        module = self.get_current_module()
-
-        if module:
-            platform = module.details['Platform']
-
-            if not self.platforms:
-                if not self.sessions.check_exist(value, platform, self.type):
-                    raise RuntimeError("Invalid value, expected valid session!")
-            else:
-                session = 0
-
-                for platform in self.platforms:
-                    if self.sessions.check_exist(value, platform.strip(), self.type):
-                        session = 1
-                        break
-
-                if not session:
-                    raise RuntimeError("Invalid value, expected valid session!")
-        else:
-            raise RuntimeError("Invalid value, expected valid session!")
-
-        self.value = value
-        self.session = self.sessions.get_session(value)

@@ -30,6 +30,7 @@ from pex.proto.tcp import TCPTools
 from typing import Optional, Callable, Tuple, Any, Union
 
 from hatsploit.lib.option import *
+from hatsploit.lib.complex import *
 from hatsploit.lib.blinder import Blinder
 from hatsploit.lib.payload import Payload
 from hatsploit.lib.module import Module
@@ -83,7 +84,7 @@ class Handler(object):
         self.rhost = IPv4Option(TCPTools.get_local_host(), "Remote host.", True, object=Payload)
         self.rport = PortOption(8888, "Remote port.", True, object=Payload)
 
-        self.space = IntegerOption(2048, "Buffer space available.", False, True)
+        self.space = IntegerOption(2048, "Buffer space available.", False, object=Module)
 
     def open_session(self, session: Session,
                      on_session: Optional[Callable[..., Any]] = None) -> None:

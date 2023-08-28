@@ -327,28 +327,36 @@ class Payloads(object):
 
             return self.run_payload(payload, encoder)
 
-    def pack_payload(self, payload: bytes, platform: str, arch: str) -> bytes:
+    def pack_payload(self, payload: bytes, platform: str, arch: str, file_format: Optional[str] = None) -> bytes:
         """ Pack payload in the CPU executable.
 
         :param bytes payload: payload in bytes
         :param str platform: platform to pack executable for
         :param str arch: architecture to pack executable for
+        :param Optional[str] file_format: file format to pack for
         :return bytes: CPU executable
         """
 
-        fmts = self.types.formats
-        arches = self.types.architectures
+        formats = self.types.formats
 
-        cpu = None
+        if file_format:
+            if file_format in formats:
+                if platform in formats[file_format]:
+                    return self.hatvenom.generate(file_format, arch, payload)
 
-        if arch in arches['cpu']:
-            for fmt in fmts:
-                if platform in fmts[fmt]:
-                    cpu = fmt
+                raise RuntimeError(f"File format {file_format} is not suitable for {platform}!")
+            raise RuntimeError(f"File format {file_format} is unrecognized!")
 
-            return self.hatvenom.generate(cpu, arch, payload)
+        if platform in self.types.platforms['xnu']:
+            file_format = 'macho'
+        elif platform in self.types.platforms['unix']:
+            file_format = 'elf'
+        elif platform in self.types.platforms['windows']:
+            file_format = 'pe'
+        else:
+            raise RuntimeError(f"Platform {platform} does not have suitable file format!")
 
-        return payload
+        return self.hatvenom.generate(file_format, arch, payload)
 
     def run_payload(self, payload: Payload, encoder: Optional[Encoder] = None) -> Any:
         """ Run payload and apply encoder to it.
@@ -365,8 +373,9 @@ class Payloads(object):
                 raise RuntimeError("Payload does not support generation!")
 
             if encoder:
-                encoder.payload = payload
-                payload = encoder.run()
+                for _ in range(encoder.iterations):
+                    encoder.payload = payload
+                    payload = encoder.run()
 
             return payload
 
