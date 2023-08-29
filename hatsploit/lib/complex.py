@@ -87,7 +87,7 @@ class EncoderOption(OptionResolver):
         raise RuntimeError("Invalid option value, expected valid encoder!")
 
 
-class SessionOption(OptionResolver, Sessions, Modules):
+class SessionOption(OptionResolver):
     def __init__(self, *args, platforms: list = [], type: str = '', **kwargs):
         super(OptionResolver, self).__init__(*args, **kwargs)
 

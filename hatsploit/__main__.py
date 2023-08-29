@@ -32,11 +32,15 @@ from typing import Any, Optional
 
 from pex.type import Type
 
-from hatsploit.core.utils.rpc import RPC
 from hatsploit.core.base.console import Console
+
 from hatsploit.core.cli.badges import Badges
 from hatsploit.core.cli.tables import Tables
+
+from hatsploit.core.db.db import DB
 from hatsploit.core.db.builder import Builder
+
+from hatsploit.core.utils.rpc import RPC
 from hatsploit.core.utils.check import Check
 from hatsploit.core.utils.update import Update
 
@@ -100,6 +104,9 @@ class HatSploit(object):
         :param bool silent: display loading message if True
         :return bool: True if success else False
         """
+
+        if not self.policy():
+            return False
 
         if self.runtime.catch(self.runtime.check) is Exception \
                 and not self.policy():
@@ -315,10 +322,16 @@ class HatSploitGen(HatSploit):
 
         self.hatasm = HatAsm()
         self.payloads = Payloads()
+
         self.show = Show()
         self.type = Type()
+
         self.badges = Badges()
         self.tables = Tables()
+        self.config = Config()
+
+        self.builder = Builder()
+        self.db = DB()
 
     def cli(self) -> None:
         """ Main command-line arguments handler.
@@ -415,7 +428,21 @@ class HatSploitGen(HatSploit):
             dest='output',
             help='Output file to write payload to.'
         )
+        parser.add_argument(
+            '-c',
+            '--custom',
+            dest='custom',
+            help='Specify custom payloads path.'
+        )
         args = parser.parse_args()
+
+        if args.custom:
+            self.badges.print_process(f"Using {args.custom} as custom payload path...")
+
+            self.builder.build_payload_database(
+                args.custom, self.config.path_config['db_path'] + 'custom.json')
+            self.db.connect_payload_database(
+                'custom', self.config.path_config['db_path'] + 'custom.json')
 
         if args.payloads or args.encoders:
             query = ''
@@ -430,7 +457,7 @@ class HatSploitGen(HatSploit):
             elif args.encoders:
                 self.show.show_search_encoders(query)
 
-        if args.formats:
+        elif args.formats:
             if not args.platform:
                 data = []
 
@@ -450,7 +477,7 @@ class HatSploitGen(HatSploit):
                 data = [(args.platform, ', '.join(formats))]
                 self.tables.print_table("Formats", ('Platform', 'Formats'), *data)
 
-        if args.payload:
+        elif args.payload:
             self.badges.print_process(f"Attempting to generate {args.payload}...")
 
             options = {}
@@ -485,3 +512,6 @@ class HatSploitGen(HatSploit):
                 with open(args.output, 'wb') as f:
                     self.badges.print_process(f"Saving payload to {args.output}...")
                     f.write(payload)
+
+        else:
+            parser.print_help()
