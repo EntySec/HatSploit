@@ -305,27 +305,30 @@ class Payloads(object):
 
         return self.options.set_option(payload, option, value)
 
-    def generate_payload(self, payload: str, options: dict = {}, encoder: Optional[str] = None) -> Any:
+    def generate_payload(self, payload: str, options: dict = {}, encoder: Optional[str] = None, implant: bool = False) -> Any:
         """ Generate payload using specific payload and encoder.
 
         :param str payload: payload name
         :param dict options: dictionary, option names as keys and option values
         as items
         :param Optional[str] encoder: encoder name
+        :param bool implant: True to output implant else False
         :return Any: payload returned by the specific payload
         """
 
         payload = self.get_payload(payload)
 
         if payload:
-            if hasattr(payload, "options"):
-                for option in options:
-                    self.set_option_value(payload, option, options[option])
+            for option in options:
+                self.set_option_value(payload, option, options[option])
 
             if encoder:
                 encoder = self.encoders.get_encoder(encoder)
 
-            return self.run_payload(payload, encoder)
+                for option in options:
+                    self.encoders.set_option_value(encoder, option, options[option])
+
+            return self.run_payload(payload, encoder, implant)
 
     def pack_payload(self, payload: bytes, platform: str, arch: str, file_format: Optional[str] = None) -> bytes:
         """ Pack payload in the CPU executable.
@@ -349,35 +352,91 @@ class Payloads(object):
 
         if platform in self.types.platforms['xnu']:
             file_format = 'macho'
+
         elif platform in self.types.platforms['unix']:
             file_format = 'elf'
+
         elif platform in self.types.platforms['windows']:
             file_format = 'pe'
+
         else:
             raise RuntimeError(f"Platform {platform} does not have suitable file format!")
 
         return self.hatvenom.generate(file_format, arch, payload)
 
-    def run_payload(self, payload: Payload, encoder: Optional[Encoder] = None) -> Any:
+    @staticmethod
+    def detect_badchars(code: bytes, badchars: bytes) -> bool:
+        """ Check if code contains badchars.
+
+        :param bytes code: payload code
+        :param bytes badchars: bad characters
+        :return bool: True if code contains badchars else False
+        """
+
+        if badchars:
+            for char in badchars:
+                if char in code:
+                    return True
+
+        return False
+
+    def fix_badchars(self, payload: Payload, code: bytes, badchars: bytes) -> bytes:
+        """ Fix and remove bad characters from payload.
+
+        :param Payload payload: payload object
+        :param bytes code: payload code
+        :param bytes badchars: bad characters
+        :return bytes: fixed payload code
+        """
+
+        if not self.detect_badchars(code, badchars):
+            return code
+
+        all_encoders = self.encoders.get_encoders()
+
+        if all_encoders:
+            for database in all_encoders:
+                encoders = all_encoders[database]
+
+                for encoder in encoders:
+                    if not self.encoders.check_payload_compatible(encoder, payload):
+                        continue
+
+                    encoder = self.encoders.get_encoder(encoder)
+                    encoder.payload = code
+                    new_code = encoder.run()
+
+                    if not self.detect_badchars(new_code, badchars):
+                        return new_code
+
+        return code
+
+    def run_payload(self, payload: Payload, encoder: Optional[Encoder] = None, implant: bool = False) -> Any:
         """ Run payload and apply encoder to it.
 
         :param Payload payload: payload object
         :param Optional[Encoder] encoder: encoder object
+        :param bool implant: True to output implant else False
         :return Any: payload result
         """
 
         if not self.validate_options(payload):
-            payload = payload.run()
+            code = payload.run()
 
-            if not payload:
+            if implant:
+                if hasattr(payload, "implant"):
+                    code = payload.implant()
+
+            if not code:
                 raise RuntimeError("Payload does not support generation!")
 
             if encoder:
-                for _ in range(encoder.iterations):
-                    encoder.payload = payload
-                    payload = encoder.run()
+                for _ in range(encoder.iterations.value):
+                    encoder.payload = code
+                    code = encoder.run()
 
-            return payload
+            return self.fix_badchars(
+                payload, code, payload.badchars.value)
 
     @staticmethod
     def validate_options(payload: Payload) -> list:

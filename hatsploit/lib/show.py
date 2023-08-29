@@ -530,7 +530,7 @@ class Show(object):
                     description = encoder['Name'].replace(
                         keyword, self.colors.RED + keyword + self.colors.END)
 
-                    encoder_data.append(
+                    encoders_data.append(
                         (number, name, description)
                     )
 

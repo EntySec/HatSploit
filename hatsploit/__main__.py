@@ -392,10 +392,22 @@ class HatSploitGen(HatSploit):
             help='Number of encoding iterations.'
         )
         parser.add_argument(
+            '-b',
+            '--badchars',
+            dest='badchars',
+            help='Bad characters to omit (e.g. \\x00).'
+        )
+        parser.add_argument(
             '--pack',
             dest='pack',
             action='store_true',
             help='Pack payload as ELF, PE or Mach-O depending on platform.',
+        )
+        parser.add_argument(
+            '--implant',
+            dest='implant',
+            action='store_true',
+            help='Output implant instead of complete payload.'
         )
         parser.add_argument(
             '-o',
@@ -439,25 +451,37 @@ class HatSploitGen(HatSploit):
                 self.tables.print_table("Formats", ('Platform', 'Formats'), *data)
 
         if args.payload:
+            self.badges.print_process(f"Attempting to generate {args.payload}...")
+
             options = {}
 
             if args.options:
                 options = args.options.options
 
             if args.encoder and args.iterations:
+                self.badges.print_information(f"Using {str(args.iterations)} as a number of times to encode.")
                 options['iterations'] = args.iterations
 
+            if args.badchars:
+                self.badges.print_information(f"Trying to avoid these bad characters: {args.badchars}")
+                options['badchars'] = args.badchars
+
+            if args.encoder:
+                self.badges.print_information(f"Payload will be encoded with {args.encoder}")
+
             payload = self.payloads.generate_payload(
-                args.payload, options, args.encoder)
+                args.payload, options, args.encoder, args.implant)
 
             if args.pack and args.platform and args.arch:
                 payload = self.payloads.pack_payload(
                     payload, args.platform, args.arch)
 
             if not args.output:
+                self.badges.print_process("Writing raw payload...")
                 for line in self.hatasm.hexdump(payload):
                     self.badges.print_empty(line)
 
             else:
                 with open(args.output, 'wb') as f:
+                    self.badges.print_process(f"Saving payload to {args.output}...")
                     f.write(payload)

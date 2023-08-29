@@ -40,6 +40,11 @@ class OptionResolver(Option):
         Option.__init__(self, *args, **kwargs)
 
 
+class BytesOption(OptionResolver):
+    def set(self, value):
+        self.value = bytes.fromhex(value.replace('\\x', ''))
+
+
 class IPv4Option(OptionResolver):
     def set(self, value):
         self.check('IPv4', Type().types['ipv4'], value)
