@@ -483,7 +483,7 @@ class HatSploitGen(HatSploit):
             options = {}
 
             if args.options:
-                options = args.options.options
+                options = args.options
 
             if args.encoder and args.iterations:
                 self.badges.print_information(f"Using {str(args.iterations)} as a number of times to encode.")
