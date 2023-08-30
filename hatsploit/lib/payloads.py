@@ -305,70 +305,138 @@ class Payloads(object):
 
         return self.options.set_option(payload, option, value)
 
-    def generate_payload(self, payload: str, options: dict = {}, encoder: Optional[str] = None) -> Any:
+    def generate_payload(self, payload: str, options: dict = {}, encoder: Optional[str] = None, implant: bool = False) -> Any:
         """ Generate payload using specific payload and encoder.
 
         :param str payload: payload name
         :param dict options: dictionary, option names as keys and option values
         as items
         :param Optional[str] encoder: encoder name
+        :param bool implant: True to output implant else False
         :return Any: payload returned by the specific payload
         """
 
         payload = self.get_payload(payload)
 
         if payload:
-            if hasattr(payload, "options"):
-                for option in options:
-                    self.set_option_value(payload, option, options[option])
+            for option in options:
+                self.set_option_value(payload, option, options[option])
 
             if encoder:
                 encoder = self.encoders.get_encoder(encoder)
 
-            return self.run_payload(payload, encoder)
+                for option in options:
+                    self.encoders.set_option_value(encoder, option, options[option])
 
-    def pack_payload(self, payload: bytes, platform: str, arch: str) -> bytes:
+            return self.run_payload(payload, encoder, implant)
+
+    def pack_payload(self, payload: bytes, platform: str, arch: str, file_format: Optional[str] = None) -> bytes:
         """ Pack payload in the CPU executable.
 
         :param bytes payload: payload in bytes
         :param str platform: platform to pack executable for
         :param str arch: architecture to pack executable for
+        :param Optional[str] file_format: file format to pack for
         :return bytes: CPU executable
         """
 
-        fmts = self.types.formats
-        arches = self.types.architectures
+        formats = self.types.formats
 
-        cpu = None
+        if file_format:
+            if file_format in formats:
+                if platform in formats[file_format]:
+                    return self.hatvenom.generate(file_format, arch, payload)
 
-        if arch in arches['cpu']:
-            for fmt in fmts:
-                if platform in fmts[fmt]:
-                    cpu = fmt
+                raise RuntimeError(f"File format {file_format} is not suitable for {platform}!")
+            raise RuntimeError(f"File format {file_format} is unrecognized!")
 
-            return self.hatvenom.generate(cpu, arch, payload)
+        if platform in self.types.platforms['xnu']:
+            file_format = 'macho'
 
-        return payload
+        elif platform in self.types.platforms['unix']:
+            file_format = 'elf'
 
-    def run_payload(self, payload: Payload, encoder: Optional[Encoder] = None) -> Any:
+        elif platform in self.types.platforms['windows']:
+            file_format = 'pe'
+
+        else:
+            raise RuntimeError(f"Platform {platform} does not have suitable file format!")
+
+        return self.hatvenom.generate(file_format, arch, payload)
+
+    @staticmethod
+    def detect_badchars(code: bytes, badchars: bytes) -> bool:
+        """ Check if code contains badchars.
+
+        :param bytes code: payload code
+        :param bytes badchars: bad characters
+        :return bool: True if code contains badchars else False
+        """
+
+        if badchars:
+            for char in badchars:
+                if char in code:
+                    return True
+
+        return False
+
+    def fix_badchars(self, payload: Payload, code: bytes, badchars: bytes) -> bytes:
+        """ Fix and remove bad characters from payload.
+
+        :param Payload payload: payload object
+        :param bytes code: payload code
+        :param bytes badchars: bad characters
+        :return bytes: fixed payload code
+        """
+
+        if not self.detect_badchars(code, badchars):
+            return code
+
+        all_encoders = self.encoders.get_encoders()
+
+        if all_encoders:
+            for database in all_encoders:
+                encoders = all_encoders[database]
+
+                for encoder in encoders:
+                    if not self.encoders.check_payload_compatible(encoder, payload):
+                        continue
+
+                    encoder = self.encoders.get_encoder(encoder)
+                    encoder.payload = code
+                    new_code = encoder.run()
+
+                    if not self.detect_badchars(new_code, badchars):
+                        return new_code
+
+        return code
+
+    def run_payload(self, payload: Payload, encoder: Optional[Encoder] = None, implant: bool = False) -> Any:
         """ Run payload and apply encoder to it.
 
         :param Payload payload: payload object
         :param Optional[Encoder] encoder: encoder object
+        :param bool implant: True to output implant else False
         :return Any: payload result
         """
 
         if not self.validate_options(payload):
-            payload = payload.run()
+            code = payload.run()
 
-            if not payload:
+            if implant:
+                if hasattr(payload, "implant"):
+                    code = payload.implant()
+
+            if not code:
                 raise RuntimeError("Payload does not support generation!")
 
             if encoder:
-                encoder.payload = payload
-                payload = encoder.run()
+                for _ in range(encoder.iterations.value):
+                    encoder.payload = code
+                    code = encoder.run()
 
-            return payload
+            return self.fix_badchars(
+                payload, code, payload.badchars.value)
 
     @staticmethod
     def validate_options(payload: Payload) -> list:

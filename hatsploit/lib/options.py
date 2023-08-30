@@ -26,10 +26,6 @@ import os
 
 from typing import Any, Optional, Union, Callable
 
-from hatsploit.lib.encoder import Encoder
-from hatsploit.lib.module import Module
-from hatsploit.lib.payload import Payload
-
 
 class Option(object):
     """ Subclass of hatsploit.lib module.
@@ -40,14 +36,14 @@ class Option(object):
 
     def __init__(self, value: Any = None, description: Optional[str] = None,
                  required: bool = False, advanced: bool = False,
-                 object: Optional[Union[Module, Payload, Encoder]] = None) -> None:
+                 object: Any = None) -> None:
         """ Set option.
 
         :param Any value: option value
         :param Optional[str] description: option description
         :param bool required: True if required else False
         :param bool advanced: True if advanced else False
-        :param Optional[Union[Module, Payload, Encoder]] object: object
+        :param Any object: object
         :return None: None
         """
 
@@ -123,11 +119,11 @@ class Options(object):
         super().__init__()
 
     @staticmethod
-    def set_option(object: Union[Module, Payload, Encoder],
+    def set_option(object: Any,
                    option: str, value: Optional[str] = None) -> bool:
         """ Set option.
 
-        :param Union[Module, Payload, Encoder] object: object
+        :param Any object: object
         :param str option: option name
         :param Optional[str] value: option value
         :return bool: True if success else False
@@ -164,10 +160,10 @@ class Options(object):
         return False
 
     @staticmethod
-    def add_options(object: Union[Module, Payload, Encoder]) -> None:
+    def add_options(object: Any) -> None:
         """ Import external options from module, payload or encoder.
 
-        :param Union[Module, Payload, Encoder] object: object
+        :param Any object: object
         :return None: None
         """
 

@@ -27,17 +27,27 @@ from hatsploit.lib.config import Config
 config = Config()
 config.configure()
 
-from .__main__ import HatSploit
+from .__main__ import HatSploit, HatSploitGen
 from hatsploit.lib.runtime import Runtime
 
 runtime = Runtime()
 
 
-def cli() -> None:
+def hsf_cli() -> None:
     """ Wrapper for HatSploit interpreter.
 
     :return None: None
     """
 
     hsf = HatSploit()
+    runtime.catch(hsf.cli)
+
+
+def gen_cli() -> None:
+    """ Wrapper for HatSploit payload generator.
+
+    :return None: None
+    """
+
+    hsf = HatSploitGen()
     runtime.catch(hsf.cli)

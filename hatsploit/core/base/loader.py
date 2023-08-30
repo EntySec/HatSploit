@@ -74,15 +74,20 @@ class Loader(object):
 
         self.importer.import_all()
 
-    def load_all(self, build_base: bool = False) -> None:
+    def load_all(self, build_base: bool = False, silent: bool = False) -> None:
         """ Load all: core, databases, interface, etc.
 
         :param bool build_base: True to build base
         databases else False
+        :param bool silent: display loading message if True
         :return None: None
         """
 
         self.load_update_process()
+
+        if silent:
+            self.load_everything(build_base)
+            return
 
         loading_process = threading.Thread(
             target=self.load_everything, args=[build_base]

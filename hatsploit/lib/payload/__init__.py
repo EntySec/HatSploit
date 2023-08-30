@@ -22,6 +22,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
+from hatsploit.lib.option import *
+
 from hatsploit.core.cli.badges import Badges
 from hatsploit.core.cli.tables import Tables
 from hatsploit.core.cli.tools import Tools
@@ -50,6 +52,8 @@ class Payload(Badges, Tables, Tools):
             'Rank': "",
             'Type': ""
         }
+
+        self.badchars = BytesOption(None, "Bad characters to omit.", False, True)
 
     def run(self) -> None:
         """ Run this payload.

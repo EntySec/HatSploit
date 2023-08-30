@@ -75,17 +75,18 @@ class Runtime(object):
         else:
             raise RuntimeError("HatSploit Framework is not installed!")
 
-    def start(self, build_base: bool = False) -> None:
+    def start(self, build_base: bool = False, silent: bool = False) -> None:
         """ Start HatSploit Framework and load all databases.
 
         :param bool build_base: True if you want to build
         base databases else False
+        :param bool silent: display loading message if True
         :return None: None
         :raises RuntimeError: with trailing error message
         """
 
         try:
-            self.loader.load_all(build_base)
+            self.loader.load_all(build_base, silent)
         except Exception as e:
             raise RuntimeError(f"An error occured: {str(e)}")
 
