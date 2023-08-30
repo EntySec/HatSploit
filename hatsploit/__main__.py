@@ -505,8 +505,12 @@ class HatSploitGen(HatSploit):
 
             if not args.output:
                 self.badges.print_process("Writing raw payload...")
-                for line in self.hatasm.hexdump(payload):
-                    self.badges.print_empty(line)
+
+                if isinstance(payload, bytes):
+                    for line in self.hatasm.hexdump(payload):
+                        self.badges.print_empty(line)
+                else:
+                    self.badges.print_empty(payload)
 
             else:
                 with open(args.output, 'wb') as f:
