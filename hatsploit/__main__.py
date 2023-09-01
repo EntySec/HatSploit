@@ -414,13 +414,19 @@ class HatSploitGen(HatSploit):
             '--pack',
             dest='pack',
             action='store_true',
-            help='Pack payload as ELF, PE or Mach-O depending on platform.',
+            help='Pack payload as ELF, PE or Mach-O depending on platform. (required --arch and --platform)',
         )
         parser.add_argument(
             '--implant',
             dest='implant',
             action='store_true',
             help='Output implant instead of complete payload.'
+        )
+        parser.add_argument(
+            '-a',
+            '--assembly',
+            dest='assembly',
+            help='Show assembly for payloads. (requires --arch)'
         )
         parser.add_argument(
             '-o',
@@ -507,7 +513,12 @@ class HatSploitGen(HatSploit):
                 self.badges.print_process("Writing raw payload...")
 
                 if isinstance(payload, bytes):
-                    for line in self.hatasm.hexdump(payload):
+                    if self.args.assembly and self.args.arch:
+                        hexdump = self.hatasm.hexdump_asm(self.args.arch, code=payload)
+                    else:
+                        hexdump = self.hatasm.hexdump(payload)
+
+                    for line in hexdump:
                         self.badges.print_empty(line)
                 else:
                     self.badges.print_empty(payload)
