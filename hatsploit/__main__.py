@@ -105,11 +105,11 @@ class HatSploit(object):
         :return bool: True if success else False
         """
 
-        if not self.policy():
-            return False
-
         if self.runtime.catch(self.runtime.check) is Exception \
                 and not self.policy():
+            return False
+
+        if not self.policy():
             return False
 
         build = False

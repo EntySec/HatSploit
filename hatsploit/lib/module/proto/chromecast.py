@@ -22,12 +22,31 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
-from hatsploit.lib.module.proto.adb import ADB
-from hatsploit.lib.module.proto.ssh import SSH
-from hatsploit.lib.module.proto.tcp import TCP
-from hatsploit.lib.module.proto.http import HTTP
-from hatsploit.lib.module.proto.rtsp import RTSP
-from hatsploit.lib.module.proto.udp import UDP
-from hatsploit.lib.module.proto.stream import Stream
-from hatsploit.lib.module.proto.snmp import SNMP
-from hatsploit.lib.module.proto.chromecast import Chromecast
+from pex.proto.chromecast import ChromecastClient
+from hatsploit.lib.option import *
+
+
+class Chromecast(object):
+    """ Subclass of hatsploit.lib.module.proto module.
+
+    This subclass of hatsploit.lib.module.proto module is a representation
+    of a wrapper of Chromecast client for a module.
+    """
+
+    def __init__(self) -> None:
+        super().__init__()
+
+        self.host = IPv4Option(None, "Chromecast host.", True)
+        self.port = PortOption(8009, "Chromecast port.", True)
+
+    def open_chromecast(self) -> ChromecastClient:
+        """ Open Chromecast client.
+
+        :return ChromecastClient: Chromecast client
+        """
+
+        return ChromecastClient(
+            host=self.host.value,
+            port=self.port.value
+        )
+
