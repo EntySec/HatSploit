@@ -534,7 +534,7 @@ class Modules(object):
             for option in module.options:
                 validate = module.options[option]
 
-                if not validate['Value'] and validate['Value'] != 0 and validate['Required']:
+                if validate['Value'] is None and validate['Required']:
                     missed.append(option)
 
         return missed
