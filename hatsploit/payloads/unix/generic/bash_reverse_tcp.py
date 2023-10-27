@@ -19,8 +19,8 @@ class HatSploitPayload(Payload, Handler):
                 'Ivan Nikolsky (enty8080) - payload developer',
             ],
             'Description': "BASH shell reverse TCP payload.",
-            'Arch': "generic",
-            'Platform': "unix",
+            'Arch': ARCH_GENERIC,
+            'Platform': OS_UNIX,
             'Rank': "high",
             'Type': "reverse_tcp",
         })

@@ -24,4 +24,8 @@ SOFTWARE.
 
 from hatsploit.lib.payload import Payload
 from hatsploit.lib.handler import Handler
+
+from pex.arch.types import *
+from pex.platform.types import *
+
 from hatsploit.lib.option import *

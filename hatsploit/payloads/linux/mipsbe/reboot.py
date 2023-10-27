@@ -18,8 +18,8 @@ class HatSploitPayload(Payload, Assembler):
                 'Ivan Nikolsky (enty8080) - payload developer',
             ],
             'Description': "Reboot payload for Linux mipsbe.",
-            'Arch': "mipsbe",
-            'Platform': "linux",
+            'Arch': ARCH_MIPSBE,
+            'Platform': OS_LINUX,
             'Rank': "low",
             'Type': "one_side",
         })

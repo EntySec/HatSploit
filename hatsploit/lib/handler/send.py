@@ -25,8 +25,10 @@ SOFTWARE.
 import socket
 
 from typing import Optional, Tuple, Union
+
 from hatsploit.lib.option import *
 
+from pex.platform.types import Platform
 from pex.post import Post, PostTools
 
 from hatsploit.lib.session import Session
@@ -110,13 +112,13 @@ class Send(object):
             raise RuntimeWarning("Payload sent, but not session was opened.")
 
     def send_implant(self, payload: Payload, implant: bytes,
-                     client: socket.socket, size: Optional[int] = None) -> None:
+                     client: socket.socket, send_length: bool = False) -> None:
         """ Send implant available in the payload with available phases.
 
         :param Payload payload: payload
         :param bytes implant: implant that should be sent
         :param socket.socket client: primary socket pipe
-        :param int size: None if does not require sending size else size encoding
+        :param bool send_length: send length of the implant to the phase
         :return None: None
         """
 
@@ -126,16 +128,21 @@ class Send(object):
         if not hasattr(payload, 'phase'):
             self.badges.print_process(f"Sending payload ({str(len(implant))} bytes)...")
 
-            if size:
-                client.send(len(implant).to_bytes(size, 'little'))
+            if send_length:
+                self.badges.print_process(f"Firstly sending payload length...")
+                client.send(len(implant).to_bytes(
+                    4, payload.details['Arch'].endian))
+
             client.send(implant)
 
             return
 
         phase = payload.phase()
 
-        if size:
-            client.send(len(phase).to_bytes(size, 'little'))
+        if send_length:
+            client.send(len(phase).to_bytes(
+                4, payload.details['Arch'].endian))
+
         client.send(phase)
 
         step = 1
@@ -183,8 +190,8 @@ class Send(object):
         else:
             arguments = ''
 
-        platform = payload.details['Platform']
-        arch = payload.details['Arch']
+        platform = str(payload.details['Platform'])
+        arch = str(payload.details['Arch'])
         type = payload.details['Type']
 
         main = self.payloads.run_payload(payload, encoder)
@@ -192,25 +199,28 @@ class Send(object):
         if len(main) >= space and type != 'one_side' and hasattr(payload, 'implant'):
             implant = payload.implant()
 
-            if type == 'bind_tcp':
-                phase, send_size = self.pawn.get_pawn(
-                    module=platform + '/' + arch + '/' + type,
-                    platform=platform,
-                    arch=arch,
-                    port=payload.rport.value,
-                    length=len(implant),
-                )
-            else:
-                phase, send_size = self.pawn.get_pawn(
-                    module=platform + '/' + arch + '/' + type,
-                    platform=platform,
-                    arch=arch,
-                    host=payload.rhost.value,
-                    port=payload.rport.value,
-                    length=len(implant),
-                )
+            module = self.pawn.get_pawn(
+                module='/'.join([platform, arch, type]),
+                platform=platform,
+                arch=arch,
+                type=type
+            )
 
-            if phase:
+            if module:
+                if type == 'bind_tcp':
+                    module.set('port', payload.rport.value)
+                else:
+                    module.set('host', payload.rhost.value)
+                    module.set('port', payload.rport.value)
+
+                send_length = True
+
+                if 'Length' in module.options:
+                    if module.options['Length']['Required']:
+                        module.set('length', len(implant))
+                        send_length = False
+
+                phase = self.pawn.run_pawn(module)
                 phase = self.payloads.pack_payload(phase, platform, arch)
 
                 self.badges.print_process(f"Sending payload phase ({str(len(phase))} bytes)...")
@@ -224,7 +234,7 @@ class Send(object):
                 client, host = self.handle_session(
                     host=host, port=port, type=type)
 
-                self.send_implant(payload, implant, client, send_size)
+                self.send_implant(payload, implant, client, send_length)
 
                 return client, host
 
@@ -270,8 +280,8 @@ class Send(object):
         if not host and not port:
             raise RuntimeError("Host and port were not found for payload!")
 
-        platform = payload.details['Platform']
-        arch = payload.details['Arch']
+        platform = str(payload.details['Platform'])
+        arch = str(payload.details['Arch'])
         type = payload.details['Type']
 
         main = self.payloads.run_payload(payload, encoder)
@@ -279,25 +289,29 @@ class Send(object):
         if len(main) >= space and type != 'one_side' and hasattr(payload, 'implant'):
             implant = payload.implant()
 
-            if type == 'bind_tcp':
-                phase, send_size = self.pawn.get_pawn(
-                    module=platform + '/' + arch + '/' + type,
-                    platform=platform,
-                    arch=arch,
-                    port=payload.rport.value,
-                    length=len(implant),
-                )
-            else:
-                phase, send_size = self.pawn.get_pawn(
-                    module=platform + '/' + arch + '/' + type,
-                    platform=platform,
-                    arch=arch,
-                    host=payload.rhost.value,
-                    port=payload.rport.value,
-                    length=len(implant),
-                )
+            module = self.pawn.get_pawn(
+                module='/'.join([platform, arch, type]),
+                platform=platform,
+                arch=arch,
+                type=type
+            )
 
-            if phase:
+            if module:
+                if type == 'bind_tcp':
+                    module.set('port', payload.rport.value)
+                else:
+                    module.set('host', payload.rhost.value)
+                    module.set('port', payload.rport.value)
+
+                send_length = True
+
+                if 'Length' in module.options:
+                    if module.options['Length']['Required']:
+                        module.set('length', len(implant))
+                        send_length = False
+
+                phase = self.pawn.run_pawn(module)
+
                 self.badges.print_process(f"Sending payload phase ({str(len(phase))} bytes)...")
                 self.post_tools.post_payload(
                     payload=phase,
@@ -307,7 +321,7 @@ class Send(object):
                 client, host = self.handle_session(
                     host=host, port=port, type=type)
 
-                self.send_implant(payload, implant, client, send_size)
+                self.send_implant(payload, implant, client, send_length)
 
                 return client, host
 

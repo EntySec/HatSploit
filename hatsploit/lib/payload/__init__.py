@@ -46,8 +46,8 @@ class Payload(Badges, Tables, Tools):
                 ''
             ],
             'Description': "",
-            'Arch': "",
-            'Platform': "",
+            'Arch': None,
+            'Platform': None,
             'Session': None,
             'Rank': "",
             'Type': ""

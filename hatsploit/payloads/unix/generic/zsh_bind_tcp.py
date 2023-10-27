@@ -17,8 +17,8 @@ class HatSploitPayload(Payload, Handler):
                 'Ivan Nikolsky (enty8080) - payload developer',
             ],
             'Description': "ZSH shell bind TCP payload.",
-            'Arch': "generic",
-            'Platform': "unix",
+            'Arch': ARCH_GENERIC,
+            'Platform': OS_UNIX,
             'Rank': "high",
             'Type': "bind_tcp",
         })

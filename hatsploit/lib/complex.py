@@ -22,7 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
-from hatsploit.lib.option import OptionResolver
+from hatsploit.lib.option import Option
 
 from hatsploit.lib.modules import Modules
 from hatsploit.lib.payloads import Payloads
@@ -30,7 +30,7 @@ from hatsploit.lib.encoders import Encoders
 from hatsploit.lib.sessions import Sessions
 
 
-class PayloadOption(OptionResolver):
+class PayloadOption(Option):
     modules = Modules()
     payloads = Payloads()
 
@@ -57,7 +57,7 @@ class PayloadOption(OptionResolver):
         raise RuntimeError("Invalid option value, expected valid payload!")
 
 
-class EncoderOption(OptionResolver):
+class EncoderOption(Option):
     modules = Modules()
     payloads = Payloads()
     encoders = Encoders()
@@ -87,9 +87,9 @@ class EncoderOption(OptionResolver):
         raise RuntimeError("Invalid option value, expected valid encoder!")
 
 
-class SessionOption(OptionResolver):
+class SessionOption(Option):
     def __init__(self, *args, platforms: list = [], type: str = '', **kwargs):
-        super(OptionResolver, self).__init__(*args, **kwargs)
+        Option.__init__(self, *args, **kwargs)
 
         self.sessions = Sessions()
         self.modules = Modules()
@@ -111,7 +111,7 @@ class SessionOption(OptionResolver):
                 session = 0
 
                 for platform in self.platforms:
-                    if self.sessions.check_exist(value, platform.strip(), self.type):
+                    if self.sessions.check_exist(value, platform, self.type):
                         session = 1
                         break
 

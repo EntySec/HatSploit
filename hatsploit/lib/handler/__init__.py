@@ -99,8 +99,8 @@ class Handler(object):
         :return None: None
         """
 
-        platform = session.details['Platform']
-        arch = session.details['Arch']
+        platform = str(session.details['Platform'])
+        arch = str(session.details['Arch'])
         type = session.details['Type']
         host = session.details['Host']
         port = session.details['Port']

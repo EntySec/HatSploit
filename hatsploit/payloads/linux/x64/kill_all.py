@@ -18,8 +18,8 @@ class HatSploitPayload(Payload, Assembler):
                 'Ivan Nikolsky (enty8080) - payload developer',
             ],
             'Description': "Kill all processes payload for Linux x64.",
-            'Arch': "x64",
-            'Platform': "linux",
+            'Arch': ARCH_X64,
+            'Platform': OS_LINUX,
             'Rank': "low",
             'Type': "one_side",
         })

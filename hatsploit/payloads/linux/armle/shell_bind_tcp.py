@@ -18,8 +18,8 @@ class HatSploitPayload(Payload, Handler, Socket):
                 'Ivan Nikolsky (enty8080) - payload developer',
             ],
             'Description': "Shell bind TCP payload for Linux armle.",
-            'Arch': "armle",
-            'Platform': "linux",
+            'Arch': ARCH_ARMLE,
+            'Platform': OS_LINUX,
             'Rank': "high",
             'Type': "bind_tcp",
         })

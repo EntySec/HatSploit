@@ -22,37 +22,5 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
-from hatsploit.core.cli.badges import Badges
-from hatsploit.core.cli.tables import Tables
-from hatsploit.core.cli.tools import Tools
-
-
-class Module(Badges, Tables, Tools):
-    """ Subclass of hatsploit.lib module.
-
-    This subclass of hatsploit.lib module is intended for providing
-    wrapper for a module.
-    """
-
-    def __init__(self) -> None:
-        super().__init__()
-
-        self.details = {
-            'Category': "",
-            'Name': "",
-            'Module': "",
-            'Authors': [
-                ''
-            ],
-            'Description': "",
-            'Platform': None,
-            'Rank': ""
-        }
-
-    def run(self) -> None:
-        """ Run this module.
-
-        :return None: None
-        """
-
-        pass
+from pex.arch.types import *
+from pex.platform.types import *

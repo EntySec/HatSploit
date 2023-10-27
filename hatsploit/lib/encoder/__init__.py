@@ -46,7 +46,7 @@ class Encoder(Badges, Tables, Tools):
                 ''
             ],
             'Description': "",
-            'Arch': ""
+            'Arch': None
         }
 
         self.iterations = IntegerOption(1, "Number of iterations.", False, True)

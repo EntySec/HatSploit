@@ -27,6 +27,9 @@ from pex.type import Type
 
 from typing import Union, Any, Optional
 
+from pex.platform.types import Platform
+from pex.arch.types import Arch
+
 from hatsploit.core.db.importer import Importer
 
 from hatsploit.lib.payload import Payload
@@ -263,18 +266,16 @@ class Payloads(object):
         if payload:
             if 'Payload' in module.details:
                 types = module.details['Payload'].get('Types', None)
+                platforms = module.details['Payload'].get('Platforms', None)
+                arches = module.details['Payload'].get('Arches', None)
 
                 if types and payload['Type'] not in types:
                     return False
 
-                platforms = module.details['Payload'].get('Platforms', None)
-
-                if platforms and payload['Platform'] not in platforms:
+                if platforms and not any(payload['Platform'] == platform for platform in platforms):
                     return False
 
-                arches = module.details['Payload'].get('Arches', None)
-
-                if arches and payload['Arch'] not in arches:
+                if arches and not any(payload['Arch'] == arch for arch in arches):
                     return False
 
             return True
@@ -305,7 +306,8 @@ class Payloads(object):
 
         return self.options.set_option(payload, option, value)
 
-    def generate_payload(self, payload: str, options: dict = {}, encoder: Optional[str] = None, implant: bool = False) -> Any:
+    def generate_payload(self, payload: str, options: dict = {}, encoder: Optional[str] = None,
+                         implant: bool = False) -> Any:
         """ Generate payload using specific payload and encoder.
 
         :param str payload: payload name
@@ -330,39 +332,18 @@ class Payloads(object):
 
             return self.run_payload(payload, encoder, implant)
 
-    def pack_payload(self, payload: bytes, platform: str, arch: str, file_format: Optional[str] = None) -> bytes:
+    def pack_payload(self, payload: bytes, platform: Platform, arch: Arch, file_format: Optional[str] = None) -> bytes:
         """ Pack payload in the CPU executable.
 
         :param bytes payload: payload in bytes
-        :param str platform: platform to pack executable for
-        :param str arch: architecture to pack executable for
+        :param Platform platform: platform to pack executable for
+        :param Arch arch: architecture to pack executable for
         :param Optional[str] file_format: file format to pack for
         :return bytes: CPU executable
         """
 
-        formats = self.types.formats
-
-        if file_format:
-            if file_format in formats:
-                if platform in formats[file_format]:
-                    return self.hatvenom.generate(file_format, arch, payload)
-
-                raise RuntimeError(f"File format {file_format} is not suitable for {platform}!")
-            raise RuntimeError(f"File format {file_format} is unrecognized!")
-
-        if platform in self.types.platforms['xnu']:
-            file_format = 'macho'
-
-        elif platform in self.types.platforms['unix']:
-            file_format = 'elf'
-
-        elif platform in self.types.platforms['windows']:
-            file_format = 'pe'
-
-        else:
-            raise RuntimeError(f"Platform {platform} does not have suitable file format!")
-
-        return self.hatvenom.generate(file_format, arch, payload)
+        return self.hatvenom.generate(
+            platform.exec if not file_format else file_format, str(arch), payload)
 
     @staticmethod
     def detect_badchars(code: bytes, badchars: bytes) -> bool:
@@ -452,7 +433,7 @@ class Payloads(object):
             for option in payload.options:
                 validate = payload.options[option]
 
-                if not validate['Value'] and validate['Value'] != 0 and validate['Required']:
+                if validate['Value'] is None and validate['Required']:
                     missed.append(option)
 
         return missed

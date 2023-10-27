@@ -23,4 +23,6 @@ SOFTWARE.
 """
 
 from hatsploit.lib.encoder import Encoder
+
+from pex.arch.types import *
 from hatsploit.lib.option import *

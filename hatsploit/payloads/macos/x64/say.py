@@ -20,8 +20,8 @@ class HatSploitPayload(Payload, Assembler):
                 'Ivan Nikolsky (enty8080) - payload developer',
             ],
             'Description': "Say payload for macOS x64.",
-            'Arch': "x64",
-            'Platform': "macos",
+            'Arch': ARCH_X64,
+            'Platform': OS_MACOS,
             'Rank': "low",
             'Type': "one_side",
         })
