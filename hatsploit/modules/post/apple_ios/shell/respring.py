@@ -18,12 +18,12 @@ class HatSploitModule(Module):
                 'Ivan Nikolsky (enty8080) - module developer',
             ],
             'Description': "Restart iOS SpringBoard.app through shell.",
-            'Platform': "apple_ios",
+            'Platform': OS_IPHONE,
             'Rank': "medium",
         })
 
         self.session = SessionOption(None, "Session to run on.", True,
-                                     platforms=['apple_ios'], type='shell')
+                                     platforms=[OS_IPHONE], type='shell')
 
     def run(self):
         self.session.session.send_command("killall SpringBoard")

@@ -20,7 +20,7 @@ class HatSploitModule(Module, TCPTools):
                 'Ivan Nikolsky (enty8080) - module developer',
             ],
             'Description': "Check if remote Android device has ADB installation.",
-            'Platform': "android",
+            'Platform': OS_ANDROID,
             'Rank': "low",
         })
 

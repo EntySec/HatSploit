@@ -18,7 +18,7 @@ class HatSploitModule(HTTPClient, Module, TCPTools):
             'Module': 'auxiliary/generic/scanner/http_methods',
             'Authors': ['Noah Altunian (naltun) - contributor'],
             'Description': 'Find supported HTTP methods on a server',
-            'Platform': 'generic',
+            'Platform': OS_GENERIC,
             'Rank': 'low',
         })
 

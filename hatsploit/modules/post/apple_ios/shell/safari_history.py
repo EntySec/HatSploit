@@ -21,12 +21,12 @@ class HatSploitModule(Module, Sessions, DB):
                 'Ivan Nikolsky (enty8080) - module developer',
             ],
             'Description': "Get iOS Safari history database and parse it.",
-            'Platform': "apple_ios",
+            'Platform': OS_IPHONE,
             'Rank': "medium",
         })
 
         self.session = SessionOption(None, "Session to run on.", True,
-                                     platforms=['apple_ios'], type='shell')
+                                     platforms=[OS_IPHONE], type='shell')
         self.path = Option(Loot().specific_loot('History.db'), "Path to save file.", True)
 
     def run(self):

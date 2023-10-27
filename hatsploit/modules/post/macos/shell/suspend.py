@@ -18,12 +18,12 @@ class HatSploitModule(Module):
                 'Ivan Nikolsky (enty8080) - module developer',
             ],
             'Description': "Suspend macOS through shell.",
-            'Platform': "macos",
+            'Platform': OS_MACOS,
             'Rank': "medium",
         })
 
         self.session = SessionOption(None, "Session to run on.", True,
-                                     platforms=['macos'], type='shell')
+                                     platforms=[OS_MACOS], type='shell')
 
     def run(self):
         self.session.session.send_command(

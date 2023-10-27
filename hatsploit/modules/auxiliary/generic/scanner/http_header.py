@@ -18,7 +18,7 @@ class HatSploitModule(HTTPClient, Module, TCPTools):
             'Module': 'auxiliary/generic/scanner/http_header',
             'Authors': ['Noah Altunian (naltun) - contributor'],
             'Description': 'Retrieve HTTP headers from a server.',
-            'Platform': 'generic',
+            'Platform': OS_GENERIC,
             'Rank': 'low',
         })
 

@@ -20,12 +20,12 @@ class HatSploitModule(Module, Sessions):
                 'Ivan Nikolsky (enty8080) - module developer',
             ],
             'Description': "Get current session /etc/passwd file.",
-            'Platform': "unix",
+            'Platform': OS_UNIX,
             'Rank': "medium",
         })
 
         self.session = SessionOption(None, "Session to run on.", True,
-                                     platforms=['linux', 'unix', 'macos', 'apple_ios'],
+                                     platforms=[OS_UNIX],
                                      type='shell')
         self.path = Option(Loot().specific_loot('passwd'), "Path to save file.", True)
 
