@@ -20,7 +20,7 @@ class HatSploitEncoder(Encoder, String, X86):
                 'Ivan Nikolsky (enty8080) - encoder developer',
             ],
             'Description': "Simple XOR encoder for x64.",
-            'Arch': "x64",
+            'Arch': ARCH_X64,
         })
 
         self.key = Option("hatspl64", "8-byte key to encode.", True)

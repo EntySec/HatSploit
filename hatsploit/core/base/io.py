@@ -64,7 +64,7 @@ class IO(object):
         :return None: None
         """
 
-        line = self.color_script.parse(start + message + end)
+        line = self.color_script.parse(str(start) + str(message) + str(end))
         use_log = self.local_storage.get("log")
 
         sys.stdout.write(line)
@@ -89,7 +89,7 @@ class IO(object):
         :return list: read string separated by space and commas
         """
 
-        message = start + message + end
+        message = str(start) + str(message) + str(end)
 
         if patch:
             message = self.color_script.libreadline(message)
