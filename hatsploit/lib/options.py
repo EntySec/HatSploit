@@ -69,6 +69,22 @@ class Option(object):
         if value is not None:
             self.set(value)
 
+    def __eq__(self, option: Any) -> bool:
+        """ Check if option is equal to current one.
+
+        :param Any option: can be option value or option
+        :return bool: True if equal else False
+        """
+
+        if isinstance(option, self.__class__):
+            if option.value == self.value:
+                return True
+        else:
+            if option == self.value:
+                return True
+
+        return False
+
     @staticmethod
     def check(name: str, checker: Callable[[str], bool], value: Optional[str] = None) -> None:
         """ Compare value type using checker.

@@ -54,8 +54,6 @@ class HatSploitPayload(Payload, Handler, Assembler):
         )
 
     def run(self):
-        port = self.pack_port(self.rport.value)
-
         return self.assemble(
             self.details['Arch'],
             f"""

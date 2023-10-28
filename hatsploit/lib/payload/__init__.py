@@ -22,6 +22,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
+from typing import Union
+from pawn import Pawn
+
 from hatsploit.lib.option import *
 
 from hatsploit.core.cli.badges import Badges
@@ -29,7 +32,7 @@ from hatsploit.core.cli.tables import Tables
 from hatsploit.core.cli.tools import Tools
 
 
-class Payload(Badges, Tables, Tools):
+class Payload(Badges, Tables, Tools, Pawn):
     """ Subclass of hatsploit.lib module.
 
     This subclass of hatsploit.lib module is intended for providing
@@ -54,6 +57,33 @@ class Payload(Badges, Tables, Tools):
         }
 
         self.badchars = BytesOption(None, "Bad characters to omit.", False, True)
+
+    def phase(self) -> Union[bytes, None]:
+        """ First phase.
+
+        :return bytes: bytes
+        """
+
+        type = self.details['Type']
+
+        if type not in ['reverse_tcp', 'bind_tcp']:
+            type = 'reverse_tcp'
+
+        phase = self.auto_pawn(
+            platform=self.details['Platform'],
+            arch=self.details['Arch'],
+            type=type
+        )
+
+        if phase:
+            if type == 'reverse_tcp':
+                phase.set('host', self.rhost.value)
+                phase.set('port', self.rport.value)
+
+            elif type == 'bind_tcp':
+                phase.set('port', self.rport.value)
+
+            return self.run_pawn(phase)
 
     def run(self) -> None:
         """ Run this payload.
