@@ -22,10 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
-try:
-    import gnureadline as readline
-except Exception:
-    import readline
+import readline
 
 from hatsploit.core.cli.fmt import FMT
 from hatsploit.lib.commands import Commands

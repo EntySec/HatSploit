@@ -31,14 +31,7 @@ from hatsploit.core.cli.colors import Colors
 from hatsploit.core.cli.fmt import FMT
 from hatsploit.lib.storage import LocalStorage
 
-patch = False
-
-try:
-    import gnureadline as readline
-
-except Exception:
-    import readline
-    patch = True
+import readline
 
 
 class IO(object):
@@ -90,10 +83,6 @@ class IO(object):
         """
 
         message = str(start) + str(message) + str(end)
-
-        if patch:
-            message = self.color_script.libreadline(message)
-
         line = self.color_script.parse(message)
 
         use_log = self.local_storage.get("log")
