@@ -65,6 +65,7 @@ class Option(object):
         self.big = b''
 
         self.visible = True
+        self.locked = False
 
         if value is not None:
             self.set(value)
@@ -114,13 +115,30 @@ class Option(object):
         if not checker(value):
             raise RuntimeError(f"Invalid value, expected valid {name}!")
 
-    def set(self, value):
-        self.value = value
+    def set(self, value: Any) -> None:
+        """ Set current option value.
 
-    def get(self):
+        :param Any value: value
+        :return None: None
+        """
+
+        if not self.locked:
+            self.value = value
+
+    def get(self) -> Any:
+        """ Get current option value.
+
+        :return Any: value
+        """
+
         return self.value
 
-    def unset(self):
+    def unset(self) -> None:
+        """ Unset current option value.
+
+        :return None: None
+        """
+
         self.value = None
 
 
@@ -149,7 +167,7 @@ class Options(object):
             if option in object.advanced:
                 attr = getattr(object, option)
 
-                if attr.visible:
+                if attr.visible and not attr.locked:
                     if value is not None:
                         attr.set(value)
                         object.advanced[option]['Value'] = str(value)
@@ -163,7 +181,7 @@ class Options(object):
             if option in object.options:
                 attr = getattr(object, option)
 
-                if attr.visible:
+                if attr.visible and not attr.locked:
                     if value is not None:
                         attr.set(value)
                         object.options[option]['Value'] = str(value)
@@ -210,7 +228,8 @@ class Options(object):
                         'Value': option.value,
                         'Description': option.description,
                         'Required': option.required,
-                        'Visible': option.visible
+                        'Visible': option.visible,
+                        'Locked': option.locked,
                     }
                 }
             )

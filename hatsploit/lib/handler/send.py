@@ -137,10 +137,13 @@ class Send(object):
             step += 1
 
         if hasattr(payload, 'implant'):
-            time.sleep(.5)
+            implant = payload.implant()
 
-            self.badges.print_process(f"Sending payload ({str(len(implant))} bytes)...")
-            client.send(implant)
+            if implant:
+                time.sleep(.5)
+
+                self.badges.print_process(f"Sending payload ({str(len(implant))} bytes)...")
+                client.send(implant)
 
     def shell_payload(self, payload: Payload, host: str, port: int,
                       space: int = 2048, encoder: Optional[Encoder] = None,

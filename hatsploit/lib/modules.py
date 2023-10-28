@@ -302,7 +302,7 @@ class Modules(object):
                     if payload_name:
                         self.badges.print_process(f"Using default payload {payload_name}...")
 
-                        if self.set_option_value(module_object, 'payload', payload_name):
+                        if module_object.set('payload', payload_name):
                             return
 
                         self.go_back()
@@ -479,17 +479,6 @@ class Modules(object):
 
         return options
 
-    def set_option_value(self, module: Module, option: str, value: Optional[str] = None) -> bool:
-        """ Set module option value.
-
-        :param Module module: module object
-        :param str option: option name
-        :param Optional[str] value: option value
-        :return bool: True if success else False
-        """
-
-        return self.options.set_option(module, option, value)
-
     def set_current_module_option(self, option: str, value: Optional[str] = None) -> None:
         """ Set current module option value.
 
@@ -506,15 +495,15 @@ class Modules(object):
         if not module:
             raise RuntimeWarning("No module selected.")
 
-        if self.set_option_value(module, option, value):
+        if module.set(option, value):
             self.badges.print_information(f"{option} => {value}")
             return
 
-        if payload and self.payloads.set_option_value(payload, option, value):
+        if payload and payload.set(option, value):
             self.badges.print_information(f"{option} => {value}")
             return
 
-        if encoder and self.encoders.set_option_value(encoder, option, value):
+        if encoder and encoder.set(option, value):
             self.badges.print_information(f"{option} => {value}")
             return
 

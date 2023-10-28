@@ -22,9 +22,13 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
+from typing import Any, Optional
+
 from hatsploit.core.cli.badges import Badges
 from hatsploit.core.cli.tables import Tables
 from hatsploit.core.cli.tools import Tools
+
+from hatsploit.lib.options import Options
 
 
 class Module(Badges, Tables, Tools):
@@ -48,6 +52,16 @@ class Module(Badges, Tables, Tools):
             'Platform': None,
             'Rank': ""
         }
+
+    def set(self, option: str, value: Optional[str] = None) -> bool:
+        """ Set module option.
+
+        :param str option: option name
+        :param Optional[str] value: option value
+        :return bool: True if success else False
+        """
+
+        return Options().set_option(self, option, value)
 
     def run(self) -> None:
         """ Run this module.

@@ -22,11 +22,15 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
+from typing import Any, Optional
+
 from hatsploit.lib.option import *
 
 from hatsploit.core.cli.badges import Badges
 from hatsploit.core.cli.tables import Tables
 from hatsploit.core.cli.tools import Tools
+
+from hatsploit.lib.options import Options
 
 
 class Encoder(Badges, Tables, Tools):
@@ -50,6 +54,16 @@ class Encoder(Badges, Tables, Tools):
         }
 
         self.iterations = IntegerOption(1, "Number of iterations.", False, True)
+
+    def set(self, option: str, value: Optional[str] = None) -> bool:
+        """ Set encoder option.
+
+        :param str option: option name
+        :param Optional[str] value: option value
+        :return bool: True if success else False
+        """
+
+        return Options().set_option(self, option, value)
 
     def run(self) -> None:
         """ Run this encoder.

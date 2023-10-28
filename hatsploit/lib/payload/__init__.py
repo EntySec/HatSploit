@@ -22,14 +22,16 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
-from typing import Union
+from typing import Union, Any, Optional
 from pawn import Pawn
 
-from hatsploit.lib.option import *
+from hatsploit.lib.option import BytesOption
 
 from hatsploit.core.cli.badges import Badges
 from hatsploit.core.cli.tables import Tables
 from hatsploit.core.cli.tools import Tools
+
+from hatsploit.lib.options import Options
 
 
 class Payload(Badges, Tables, Tools, Pawn):
@@ -57,6 +59,16 @@ class Payload(Badges, Tables, Tools, Pawn):
         }
 
         self.badchars = BytesOption(None, "Bad characters to omit.", False, True)
+
+    def set(self, option: str, value: Optional[str] = None) -> bool:
+        """ Set payload option.
+
+        :param str option: option name
+        :param Optional[str] value: option value
+        :return bool: True if success else False
+        """
+
+        return Options().set_option(self, option, value)
 
     def phase(self) -> Union[bytes, None]:
         """ First phase.

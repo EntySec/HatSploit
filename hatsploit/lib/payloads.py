@@ -295,17 +295,6 @@ class Payloads(object):
             if not self.import_payload(module, payload):
                 raise RuntimeError(f"Failed to select payload from database: {payload}!")
 
-    def set_option_value(self, payload: Payload, option: str, value: Optional[str] = None) -> bool:
-        """ Set payload option value.
-
-        :param Payload payload: payload object
-        :param str option: option name
-        :param Optional[str] value: option value
-        :return bool: True if success else False
-        """
-
-        return self.options.set_option(payload, option, value)
-
     def generate_payload(self, payload: str, options: dict = {}, encoder: Optional[str] = None,
                          implant: bool = False) -> Any:
         """ Generate payload using specific payload and encoder.
@@ -322,13 +311,13 @@ class Payloads(object):
 
         if payload:
             for option in options:
-                self.set_option_value(payload, option, options[option])
+                payload.set(option, options[option])
 
             if encoder:
                 encoder = self.encoders.get_encoder(encoder)
 
                 for option in options:
-                    self.encoders.set_option_value(encoder, option, options[option])
+                    encoder.set(option, options[option])
 
             return self.run_payload(payload, encoder, implant)
 

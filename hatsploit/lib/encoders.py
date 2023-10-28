@@ -269,17 +269,6 @@ class Encoders(object):
             if not self.import_encoder(module, payload, encoder):
                 raise RuntimeError(f"Failed to select encoder from database: {encoder}!")
 
-    def set_option_value(self, encoder: Encoder, option: str, value: Optional[str] = None) -> bool:
-        """ Set encoder option value.
-
-        :param Encoder encoder: encoder object
-        :param str option: option name
-        :param Optional[str] value: option value
-        :return bool: True if success else False
-        """
-
-        return self.options.set_option(encoder, option, value)
-
     @staticmethod
     def validate_options(encoder: Encoder) -> list:
         """ Validate missed encoder options.
