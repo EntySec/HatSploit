@@ -17,8 +17,8 @@ class HatSploitPayload(Payload, Handler):
                 'Ivan Nikolsky (enty8080) - payload developer',
             ],
             'Description': "AppleScript reverse TCP payload.",
-            'Arch': "generic",
-            'Platform': "macos",
+            'Arch': ARCH_APPLESCRIPT,
+            'Platform': OS_MACOS,
             'Rank': "high",
             'Type': "reverse_tcp",
         })

@@ -123,21 +123,17 @@ class Sessions(object):
         if sessions:
             if int(session_id) in sessions:
                 session = sessions[int(session_id)]
-                valid = True
 
-                if platform:
-                    if session['Platform'] != platform:
-                        valid = False
+                if platform and session['Platform'] != platform:
+                    return False
 
-                if type:
-                    if session['Type'] != type:
-                        valid = False
+                if arch and session['Arch'] != arch:
+                    return False
 
-                if arch:
-                    if session['Arch'] != arch:
-                        valid = False
+                if type and session['Type'] != type:
+                    return False
 
-                return valid
+                return True
         return False
 
     def get_auto_interaction(self) -> bool:

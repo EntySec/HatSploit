@@ -19,7 +19,7 @@ class HatSploitCommand(Command):
             'Authors': [
                 'Ivan Nikolsky (enty8080) - command developer',
             ],
-            'Description': "Unset an option / Set to nil.",
+            'Description': "Unset an option / Set to None.",
             'Usage': "unset <option>",
             'MinArgs': 1,
         })

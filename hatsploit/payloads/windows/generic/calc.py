@@ -17,8 +17,8 @@ class HatSploitPayload(Payload):
                 'Ivan Nikolsky (enty8080) - payload developer',
             ],
             'Description': "Windows calc.exe payload.",
-            'Arch': "generic",
-            'Platform': "windows",
+            'Arch': ARCH_GENERIC,
+            'Platform': OS_WINDOWS,
             'Rank': "high",
             'Type': "one_side",
         })

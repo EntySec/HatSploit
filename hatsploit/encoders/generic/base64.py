@@ -19,7 +19,7 @@ class HatSploitEncoder(Encoder, String):
                 'Ivan Nikolsky (enty8080) - encoder developer',
             ],
             'Description': "Encode command with base64.",
-            'Arch': "generic",
+            'Arch': ARCH_GENERIC,
         })
 
         self.shell = Option("$SHELL", "Shell to execute.", True)

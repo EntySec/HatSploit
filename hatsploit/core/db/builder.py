@@ -137,7 +137,7 @@ class Builder(object):
                                 "Encoder": encoder_object.details['Encoder'],
                                 "Authors": encoder_object.details['Authors'],
                                 "Description": encoder_object.details['Description'],
-                                "Arch": encoder_object.details['Arch'],
+                                "Arch": str(encoder_object.details['Arch']),
                             }
                         })
 
@@ -178,8 +178,8 @@ class Builder(object):
                                 "Payload": payload_object.details['Payload'],
                                 "Authors": payload_object.details['Authors'],
                                 "Description": payload_object.details['Description'],
-                                "Arch": payload_object.details['Arch'],
-                                "Platform": payload_object.details['Platform'],
+                                "Arch": str(payload_object.details['Arch']),
+                                "Platform": str(payload_object.details['Platform']),
                                 "Rank": payload_object.details['Rank'],
                                 "Type": payload_object.details['Type'],
                             }
@@ -223,7 +223,7 @@ class Builder(object):
                                 "Module": module_object.details['Module'],
                                 "Authors": module_object.details['Authors'],
                                 "Description": module_object.details['Description'],
-                                "Platform": module_object.details['Platform'],
+                                "Platform": str(module_object.details['Platform']),
                                 "Rank": module_object.details['Rank'],
                             }
                         })

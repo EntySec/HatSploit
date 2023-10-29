@@ -31,14 +31,7 @@ from hatsploit.core.cli.colors import Colors
 from hatsploit.core.cli.fmt import FMT
 from hatsploit.lib.storage import LocalStorage
 
-patch = False
-
-try:
-    import gnureadline as readline
-
-except Exception:
-    import readline
-    patch = True
+import readline
 
 
 class IO(object):
@@ -64,7 +57,7 @@ class IO(object):
         :return None: None
         """
 
-        line = self.color_script.parse(start + message + end)
+        line = self.color_script.parse(str(start) + str(message) + str(end))
         use_log = self.local_storage.get("log")
 
         sys.stdout.write(line)
@@ -89,11 +82,7 @@ class IO(object):
         :return list: read string separated by space and commas
         """
 
-        message = start + message + end
-
-        if patch:
-            message = self.color_script.libreadline(message)
-
+        message = str(start) + str(message) + str(end)
         line = self.color_script.parse(message)
 
         use_log = self.local_storage.get("log")

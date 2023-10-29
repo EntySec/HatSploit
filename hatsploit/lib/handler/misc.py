@@ -57,7 +57,7 @@ class HatSploitSession(Session, Loot, Pull, Push):
         self.print_process(f"Downloading {remote_file}...")
 
         data = self.pull(
-            platform=self.details['Platform'],
+            platform=str(self.details['Platform']),
             sender=self.channel.send_command,
             location=remote_file,
         )
@@ -77,7 +77,7 @@ class HatSploitSession(Session, Loot, Pull, Push):
 
         if data:
             remote_path = self.push(
-                platform=self.details['Platform'],
+                platform=str(self.details['Platform']),
                 sender=self.send_command,
                 data=data,
                 location=remote_path,

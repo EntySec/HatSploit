@@ -676,7 +676,7 @@ class Show(object):
             Name:        {details['Name']}
             Module:      {details['Module']}
             Description: {details['Description']}
-            Platform:    {details['Platform']}
+            Platform:    {str(details['Platform'])}
             Rank:        {details['Rank']}
         """))
 

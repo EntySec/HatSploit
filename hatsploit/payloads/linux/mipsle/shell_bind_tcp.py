@@ -19,8 +19,8 @@ class HatSploitPayload(Payload, Handler, Assembler, Socket):
                 'Ivan Nikolsky (enty8080) - payload developer',
             ],
             'Description': "Shell bind TCP payload for Linux mipsle.",
-            'Arch': "mipsle",
-            'Platform': "linux",
+            'Arch': ARCH_MIPSLE,
+            'Platform': OS_LINUX,
             'Rank': "high",
             'Type': "bind_tcp",
         })

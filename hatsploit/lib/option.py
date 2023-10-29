@@ -28,24 +28,12 @@ from pex.socket import Socket
 from hatsploit.lib.options import Option
 
 
-class OptionResolver(Option):
-    """ Subclass of hatsploit.lib module.
-
-    This subclass of hatsploit.lib module is a wrapper for Option
-    implementation which extends basic class allowing to call external
-    methods like Modules, Payloads, Encoders or Sessions.
-    """
-
-    def __init__(self, *args, **kwargs):
-        Option.__init__(self, *args, **kwargs)
-
-
-class BytesOption(OptionResolver):
+class BytesOption(Option):
     def set(self, value):
         self.value = bytes.fromhex(value.replace('\\x', ''))
 
 
-class IPv4Option(OptionResolver):
+class IPv4Option(Option):
     def set(self, value):
         self.check('IPv4', Type().types['ipv4'], value)
         self.value = value
@@ -54,37 +42,37 @@ class IPv4Option(OptionResolver):
         self.big = Socket().pack_host(self.value, 'big')
 
 
-class IPv6Option(OptionResolver):
+class IPv6Option(Option):
     def set(self, value):
         self.check('IPv6', Type().types['ipv6'], value)
         self.value = value
 
 
-class IPOption(OptionResolver):
+class IPOption(Option):
     def set(self, value):
         self.check('IP', Type().types['ip'], value)
         self.value = value
 
 
-class MACOption(OptionResolver):
+class MACOption(Option):
     def set(self, value):
         self.check('MAC', Type().types['mac'], value)
         self.value = value
 
 
-class IPv4CIDROption(OptionResolver):
+class IPv4CIDROption(Option):
     def set(self, value):
         self.check('IPv4 CIDR', Type().types['ipv4_cidr'], value)
         self.value = value
 
 
-class IPv6CIDROption(OptionResolver):
+class IPv6CIDROption(Option):
     def set(self, value):
         self.check('IPv6 CIDR', Type().types['ipv6_cidr'], value)
         self.value = value
 
 
-class PortOption(OptionResolver):
+class PortOption(Option):
     def set(self, value):
         self.check('port', Type().types['port'], value)
         self.value = int(value)
@@ -93,31 +81,31 @@ class PortOption(OptionResolver):
         self.big = Socket().pack_port(self.value, 'big')
 
 
-class PortRangeOption(OptionResolver):
+class PortRangeOption(Option):
     def set(self, value):
         self.check('port range', Type().types['port_range'], value)
         self.value = value
 
 
-class NumberOption(OptionResolver):
+class NumberOption(Option):
     def set(self, value):
         self.check('number', Type().types['number'], value)
         self.value = value
 
 
-class IntegerOption(OptionResolver):
+class IntegerOption(Option):
     def set(self, value):
         self.check('integer', Type().types['integer'], value)
         self.value = int(value)
 
 
-class FloatOption(OptionResolver):
+class FloatOption(Option):
     def set(self, value):
         self.check('float', Type().types['float'], value)
         self.value = float(value)
 
 
-class BooleanOption(OptionResolver):
+class BooleanOption(Option):
     def set(self, value):
         self.check('boolean', Type().types['boolean'], value)
 

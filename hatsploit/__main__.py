@@ -271,6 +271,12 @@ class HatSploit(object):
                         scripts=[self.path_config['startup_path'], args.script],
                         rpc=rpc
                     )
+                else:
+                    self.launch(
+                        shell=args.no_exit,
+                        scripts=[args.script],
+                        rpc=rpc
+                    )
 
             sys.exit(0)
 

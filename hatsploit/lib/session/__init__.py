@@ -42,8 +42,8 @@ class Session(FMT, Badges, Colors, Tables):
 
         self.details = {
             'Post': "",
-            'Platform': "",
-            'Arch': "",
+            'Platform': None,
+            'Arch': None,
             'Type': "",
             'Host': "",
             'Port': None

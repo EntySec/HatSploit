@@ -17,8 +17,8 @@ class HatSploitPayload(Payload):
                 'Ivan Nikolsky (enty8080) - payload developer',
             ],
             'Description': "Say payload for Windows.",
-            'Arch': "generic",
-            'Platform': "windows",
+            'Arch': ARCH_GENERIC,
+            'Platform': OS_WINDOWS,
             'Rank': "low",
             'Type': "one_side",
         })

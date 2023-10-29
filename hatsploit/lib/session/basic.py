@@ -22,7 +22,5 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
-from hatsploit.lib.encoder import Encoder
-
 from pex.arch.types import *
-from hatsploit.lib.option import *
+from pex.platform.types import *

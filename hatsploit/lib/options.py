@@ -65,9 +65,26 @@ class Option(object):
         self.big = b''
 
         self.visible = True
+        self.locked = False
 
         if value is not None:
             self.set(value)
+
+    def __eq__(self, option: Any) -> bool:
+        """ Check if option is equal to current one.
+
+        :param Any option: can be option value or option
+        :return bool: True if equal else False
+        """
+
+        if isinstance(option, self.__class__):
+            if option.value == self.value:
+                return True
+        else:
+            if option == self.value:
+                return True
+
+        return False
 
     @staticmethod
     def check(name: str, checker: Callable[[str], bool], value: Optional[str] = None) -> None:
@@ -98,13 +115,30 @@ class Option(object):
         if not checker(value):
             raise RuntimeError(f"Invalid value, expected valid {name}!")
 
-    def set(self, value):
-        self.value = value
+    def set(self, value: Any) -> None:
+        """ Set current option value.
 
-    def get(self):
+        :param Any value: value
+        :return None: None
+        """
+
+        if not self.locked:
+            self.value = value
+
+    def get(self) -> Any:
+        """ Get current option value.
+
+        :return Any: value
+        """
+
         return self.value
 
-    def unset(self):
+    def unset(self) -> None:
+        """ Unset current option value.
+
+        :return None: None
+        """
+
         self.value = None
 
 
@@ -133,7 +167,7 @@ class Options(object):
             if option in object.advanced:
                 attr = getattr(object, option)
 
-                if attr.visible:
+                if attr.visible and not attr.locked:
                     if value is not None:
                         attr.set(value)
                         object.advanced[option]['Value'] = str(value)
@@ -147,7 +181,7 @@ class Options(object):
             if option in object.options:
                 attr = getattr(object, option)
 
-                if attr.visible:
+                if attr.visible and not attr.locked:
                     if value is not None:
                         attr.set(value)
                         object.options[option]['Value'] = str(value)
@@ -194,7 +228,8 @@ class Options(object):
                         'Value': option.value,
                         'Description': option.description,
                         'Required': option.required,
-                        'Visible': option.visible
+                        'Visible': option.visible,
+                        'Locked': option.locked,
                     }
                 }
             )

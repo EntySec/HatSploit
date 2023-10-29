@@ -22,10 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
-try:
-    import gnureadline as readline
-except Exception:
-    import readline
+import readline
 
 import os
 import sys
@@ -192,7 +189,7 @@ class Console(object):
         if self.config.core_config['console']['tip']:
             self.tip.print_random_tip()
 
-    def script(self, input_files: list, shell: bool = False) -> None:
+    def script(self, input_files: list, shell: bool = True) -> None:
         """ Execute HatSploit script(s).
 
         :param list input_files: list of filenames of files
@@ -214,7 +211,8 @@ class Console(object):
                     commands = self.fmt.format_commands(line)
 
                     self.runtime.update()
-                    self.execute.execute_command(commands)
+                    self.runtime.catch(
+                        self.execute.execute_command(commands))
                     self.runtime.update()
 
         if shell:
