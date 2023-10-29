@@ -332,7 +332,7 @@ class Payloads(object):
         """
 
         return self.hatvenom.generate(
-            platform.exec if not file_format else file_format, str(arch), payload)
+            file_format if file_format else platform.exec, str(arch), payload)
 
     @staticmethod
     def detect_badchars(code: bytes, badchars: bytes) -> bool:

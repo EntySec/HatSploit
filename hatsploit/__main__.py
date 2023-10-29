@@ -508,19 +508,29 @@ class HatSploitGen(HatSploit):
             if args.encoder:
                 self.badges.print_information(f"Payload will be encoded with {args.encoder}")
 
+            payload = self.payloads.get_payload(args.payload)
+            if not payload:
+                self.badges.print_error(f"Invalid payload: {args.payload}!")
+                return
+
+            details = payload.details
             payload = self.payloads.generate_payload(
                 args.payload, options, args.encoder, args.implant)
 
-            if args.pack and args.platform and args.arch:
+            if args.pack:
                 payload = self.payloads.pack_payload(
-                    payload, args.platform, args.arch)
+                    payload, details['Platform'], details['Arch'], args.format)
+
+            if not payload:
+                self.badges.print_error(f"Invalid format: {args.format}!")
+                return
 
             if not args.output:
                 self.badges.print_process("Writing raw payload...")
 
                 if isinstance(payload, bytes):
-                    if self.args.assembly and self.args.arch:
-                        hexdump = self.hatasm.hexdump_asm(self.args.arch, code=payload)
+                    if self.args.assembly:
+                        hexdump = self.hatasm.hexdump_asm(details['Arch'], code=payload)
                     else:
                         hexdump = self.hatasm.hexdump(payload)
 
