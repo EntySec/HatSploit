@@ -530,7 +530,7 @@ class HatSploitGen(HatSploit):
 
                 if isinstance(payload, bytes):
                     if self.args.assembly:
-                        hexdump = self.hatasm.hexdump_asm(details['Arch'], code=payload)
+                        hexdump = self.hatasm.hexdump_asm(str(details['Arch']), code=payload)
                     else:
                         hexdump = self.hatasm.hexdump(payload)
 
