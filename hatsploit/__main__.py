@@ -515,7 +515,7 @@ class HatSploitGen(HatSploit):
 
             details = payload.details
             payload = self.payloads.generate_payload(
-                args.payload, options, args.encoder, args.implant)
+                args.payload, options, args.encoder, 'implant' if args.implant else 'run')
 
             if args.pack:
                 payload = self.payloads.pack_payload(
