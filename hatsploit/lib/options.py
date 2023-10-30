@@ -194,6 +194,25 @@ class Options(object):
         return False
 
     @staticmethod
+    def validate_options(object: Any) -> list:
+        """ Validate missed options.
+
+        :param Any object: object
+        :return list: list of missed option names
+        """
+
+        missed = []
+
+        if hasattr(object, "options"):
+            for option in object.options:
+                validate = object.options[option]
+
+                if validate['Value'] is None and validate['Required']:
+                    missed.append(option)
+
+        return missed
+
+    @staticmethod
     def add_options(object: Any) -> None:
         """ Import external options from module, payload or encoder.
 

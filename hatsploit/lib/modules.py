@@ -509,25 +509,6 @@ class Modules(object):
 
         raise RuntimeError("Unrecognized option name!")
 
-    @staticmethod
-    def validate_options(module: Module) -> list:
-        """ Validate missed module options.
-
-        :param Module module: module object
-        :return list: list of missed option names
-        """
-
-        missed = []
-
-        if hasattr(module, "options"):
-            for option in module.options:
-                validate = module.options[option]
-
-                if validate['Value'] is None and validate['Required']:
-                    missed.append(option)
-
-        return missed
-
     def check_current_module(self) -> bool:
         """ Run check method on current module.
 
@@ -557,13 +538,13 @@ class Modules(object):
 
         if module:
             module_name = module.details['Module']
-            missed = self.validate_options(module)
+            missed = self.options.validate_options(module)
 
             if payload:
-                missed += self.payloads.validate_options(payload)
+                missed += self.options.validate_options(payload)
 
                 if encoder:
-                    missed += self.encoders.validate_options(encoder)
+                    missed += self.options.validate_options(encoder)
 
             if missed:
                 raise RuntimeError(

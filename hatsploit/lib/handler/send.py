@@ -112,11 +112,13 @@ class Send(object):
         else:
             raise RuntimeWarning("Payload sent, but not session was opened.")
 
-    def send_implant(self, payload: Payload, client: socket.socket) -> None:
+    def send_implant(self, payload: Payload, client: socket.socket,
+                     encoder: Optional[Encoder] = None) -> None:
         """ Send implant available in the payload with available phases.
 
         :param Payload payload: payload
         :param socket.socket client: primary socket pipe
+        :param Optional[Encoder] encoder: encoder to encode with
         :return None: None
         """
 
@@ -128,7 +130,14 @@ class Send(object):
             if not hasattr(payload, f'phase{step}'):
                 break
 
-            phase = getattr(payload, f'phase{step}')()
+            phase = self.payloads.run_payload(
+                payload=payload,
+                encoder=encoder,
+                method=f'phase{step}'
+            )
+
+            if not phase:
+                raise RuntimeError(f"Payload phase #{str(step)} generated incorrectly!")
 
             self.badges.print_process(f"Sending payload phase #{str(step)} ({str(len(phase))} bytes)...")
             client.send(phase)
@@ -137,7 +146,14 @@ class Send(object):
             step += 1
 
         if hasattr(payload, 'implant'):
-            implant = payload.implant()
+            implant = self.payloads.run_payload(
+                payload=payload,
+                encoder=encoder,
+                method='implant'
+            )
+
+            if not implant:
+                raise RuntimeError("Payload implant generated incorrectly!")
 
             if implant:
                 time.sleep(.5)
@@ -174,10 +190,17 @@ class Send(object):
         arch = payload.details['Arch']
         type = payload.details['Type']
 
-        main = self.payloads.run_payload(payload, encoder)
+        main = self.payloads.run_payload(
+            payload=payload,
+            encoder=encoder
+        )
 
         if len(main) >= space and hasattr(payload, 'phase'):
-            phase = payload.phase()
+            phase = self.payloads.run_payload(
+                payload=payload,
+                encoder=encoder,
+                method='phase'
+            )
 
             if phase:
                 phase = self.payloads.pack_payload(
@@ -200,7 +223,7 @@ class Send(object):
                 client, host = self.handle_session(
                     host=host, port=port, type=type)
 
-                self.send_implant(payload, client)
+                self.send_implant(payload, client, encoder)
                 return client, host
 
         phase = self.payloads.pack_payload(
@@ -247,10 +270,17 @@ class Send(object):
 
         type = payload.details['Type']
 
-        main = self.payloads.run_payload(payload, encoder)
+        main = self.payloads.run_payload(
+            payload=payload,
+            encoder=encoder
+        )
 
         if len(main) >= space and hasattr(payload, 'phase'):
-            phase = payload.phase()
+            phase = self.payloads.run_payload(
+                payload=payload,
+                encoder=encoder,
+                method='phase'
+            )
 
             if phase:
                 self.badges.print_process(f"Sending payload phase ({str(len(phase))} bytes)...")
@@ -259,10 +289,13 @@ class Send(object):
                     *args, **kwargs
                 )
 
+                if type not in ['reverse_tcp', 'bind_tcp']:
+                    type = 'reverse_tcp'
+
                 client, host = self.handle_session(
                     host=host, port=port, type=type)
 
-                self.send_implant(payload, client)
+                self.send_implant(payload, client, encoder)
                 return client, host
 
         self.badges.print_process(f"Sending payload ({str(len(main))} bytes)...")

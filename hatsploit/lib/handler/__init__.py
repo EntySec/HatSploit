@@ -84,7 +84,8 @@ class Handler(object):
         self.rhost = IPv4Option(TCPTools.get_local_host(), "Remote host.", True, object=Payload)
         self.rport = PortOption(8888, "Remote port.", True, object=Payload)
 
-        self.space = IntegerOption(2048, "Buffer space available.", False, object=Module)
+        self.space = IntegerOption(2048, "Buffer space available.",
+                                   False, advanced=True, object=Module)
 
     def open_session(self, session: Session,
                      on_session: Optional[Callable[..., Any]] = None) -> None:

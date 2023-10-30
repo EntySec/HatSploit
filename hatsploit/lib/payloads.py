@@ -296,14 +296,14 @@ class Payloads(object):
                 raise RuntimeError(f"Failed to select payload from database: {payload}!")
 
     def generate_payload(self, payload: str, options: dict = {}, encoder: Optional[str] = None,
-                         implant: bool = False) -> Any:
+                         method: str = 'run') -> Any:
         """ Generate payload using specific payload and encoder.
 
         :param str payload: payload name
         :param dict options: dictionary, option names as keys and option values
         as items
         :param Optional[str] encoder: encoder name
-        :param bool implant: True to output implant else False
+        :param str method: payload generator method
         :return Any: payload returned by the specific payload
         """
 
@@ -319,7 +319,7 @@ class Payloads(object):
                 for option in options:
                     encoder.set(option, options[option])
 
-            return self.run_payload(payload, encoder, implant)
+            return self.run_payload(payload, encoder, method)
 
     def pack_payload(self, payload: bytes, platform: Platform, arch: Arch, file_format: Optional[str] = None) -> bytes:
         """ Pack payload in the CPU executable.
@@ -381,48 +381,32 @@ class Payloads(object):
 
         return code
 
-    def run_payload(self, payload: Payload, encoder: Optional[Encoder] = None, implant: bool = False) -> Any:
+    def run_payload(self, payload: Payload, encoder: Optional[Encoder] = None, method: str = 'run') -> Any:
         """ Run payload and apply encoder to it.
 
         :param Payload payload: payload object
         :param Optional[Encoder] encoder: encoder object
-        :param bool implant: True to output implant else False
+        :param str method: payload generator method (run, implant, phaseN)
         :return Any: payload result
         """
 
-        if not self.validate_options(payload):
-            code = payload.run()
+        missed = self.options.validate_options(payload)
 
-            if implant:
-                if hasattr(payload, "implant"):
-                    code = payload.implant()
+        if missed:
+            raise RuntimeError(
+                f"These options are failed to validate: {', '.join(missed)}!")
 
-            if not code:
-                raise RuntimeError("Payload does not support generation!")
+        if not hasattr(payload, method):
+            raise RuntimeError(
+                f"Payload does not have method: {method}!")
 
-            if encoder:
-                for _ in range(encoder.iterations.value):
-                    encoder.payload = code
-                    code = encoder.run()
+        code = getattr(payload, method)()
 
-            return self.fix_badchars(
-                payload, code, payload.badchars.value)
+        if not code:
+            raise RuntimeError("Empty payload output detected!")
 
-    @staticmethod
-    def validate_options(payload: Payload) -> list:
-        """ Validate missed payload options.
+        if encoder:
+            code = self.encoders.encode_payload(encoder, code)
 
-        :param Payload payload: payload object
-        :return list: list of missed option names
-        """
-
-        missed = []
-
-        if hasattr(payload, "options"):
-            for option in payload.options:
-                validate = payload.options[option]
-
-                if validate['Value'] is None and validate['Required']:
-                    missed.append(option)
-
-        return missed
+        return self.fix_badchars(
+            payload, code, payload.badchars.value)

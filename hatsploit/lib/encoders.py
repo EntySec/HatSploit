@@ -239,6 +239,26 @@ class Encoders(object):
 
         return False
 
+    def encode_payload(self, encoder: Encoder, code: bytes) -> bytes:
+        """ Encode full payload or provided code.
+
+        :param Encoder encoder: encoder object
+        :param bytes code: payload code to encode
+        :return bytes: encoded payload
+        """
+
+        missed = self.options.validate_options(encoder)
+
+        if missed:
+            raise RuntimeError(
+                f"These options are failed to validate: {', '.join(missed)}!")
+
+        for _ in range(encoder.iterations.value):
+            encoder.payload = code
+            code = encoder.run()
+
+        return code
+
     def check_payload_compatible(self, encoder: str, payload: Payload) -> bool:
         """ Check if encoder is compatible with the specific payload.
 
@@ -268,22 +288,3 @@ class Encoders(object):
         if not self.check_imported(module, payload, encoder):
             if not self.import_encoder(module, payload, encoder):
                 raise RuntimeError(f"Failed to select encoder from database: {encoder}!")
-
-    @staticmethod
-    def validate_options(encoder: Encoder) -> list:
-        """ Validate missed encoder options.
-
-        :param Encoder encoder: encoder object
-        :return list: list of missed option names
-        """
-
-        missed = []
-
-        if hasattr(encoder, "options"):
-            for option in encoder.options:
-                validate = encoder.options[option]
-
-                if validate['Value'] is None and validate['Required']:
-                    missed.append(option)
-
-        return missed
