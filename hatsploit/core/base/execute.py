@@ -137,9 +137,9 @@ class Execute(object):
                 prefix = name[:i]
 
                 if prefix not in commands:
-                    commands[prefix] = entry
+                    commands[prefix] = name
 
-                elif commands[prefix] != object:
+                elif commands[prefix] != name:
                     commands[prefix] = None
 
         if command[0] in commands:
