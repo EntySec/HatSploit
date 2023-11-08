@@ -149,7 +149,7 @@ class Execute(object):
                 return True, result
 
             else:
-                conflict = [name for name, object in handler.items() if handler.startswith(command[0])]
+                conflict = [name for name, object in handler.items() if name.startswith(command[0])]
 
                 if command[0] in conflict:
                     return True, command[0]
