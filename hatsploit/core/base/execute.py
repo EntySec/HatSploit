@@ -178,7 +178,7 @@ class Execute(object):
                 if not self.check_arguments(fixed_command, handler[name].details):
                     self.parse_usage(handler[name].details)
                 else:
-                    handle.run(len(fixed_command), fixed_command)
+                    handler[name].run(len(fixed_command), fixed_command)
 
                 return True
 
