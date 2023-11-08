@@ -26,7 +26,7 @@ import os
 import subprocess
 import sys
 
-from typing import Any
+from typing import Any, Tuple, Union
 
 from hatsploit.core.cli.badges import Badges
 from hatsploit.core.cli.fmt import FMT
@@ -118,6 +118,46 @@ class Execute(object):
         except Exception:
             self.badges.print_error(f"Unrecognized system command: {command[0]}!")
 
+    def check_command(self, command: list, handler: dict) -> Tuple[bool, Union[str, list, None]]:
+        """ Check if command or shortcut exists.
+
+        Note: handler is a dictionary containing command names as keys and
+        command objects as items.
+
+        :param list command: command with arguments
+        :param dict handler: handler to use
+        :return Tuple[bool, Union[str, list, None]]: None if not found or tuple of status and if command is single,
+            object, otherwise list of similar commands.
+        """
+
+        commands = {}
+
+        for name, object in handler.items():
+            for i in range(len(name) + 1):
+                prefix = name[:i]
+
+                if prefix not in commands:
+                    commands[prefix] = entry
+
+                elif commands[prefix] != object:
+                    commands[prefix] = None
+
+        if command[0] in commands:
+            result = commands[command[0]]
+
+            if result:
+                return True, result
+
+            else:
+                conflict = [name for name, object in handler.items() if handler.startswith(command[0])]
+
+                if command[0] in conflict:
+                    return True, command[0]
+                else:
+                    return False, conflict
+
+        return False, None
+
     def execute_custom_command(self, command: list, handler: dict) -> bool:
         """ Execute command via custom handler.
 
@@ -130,15 +170,21 @@ class Execute(object):
         """
 
         if handler:
-            if command[0] in handler:
-                handle = handler[command[0]]
+            status, name = self.check_command(command, handler)
 
-                if not self.check_arguments(command, handle.details):
-                    self.parse_usage(handle.details)
+            if status:
+                fixed_command = [name, command[1:]]
+
+                if not self.check_arguments(fixed_command, handler[name].details):
+                    self.parse_usage(handler[name].details)
                 else:
-                    handle.run(len(command), command)
+                    handle.run(len(fixed_command), fixed_command)
 
                 return True
+
+            if name is not None:
+                self.badges.print_warning(f"Did you mean? {', '.join(name)}")
+
         return False
 
     @staticmethod
@@ -209,11 +255,18 @@ class Execute(object):
 
         if module:
             if hasattr(module, "commands"):
-                if command[0] in module.commands:
-                    details = module.commands[command[0]]
-                    self.parse_and_execute_command(command, details, module)
+                status, name = self.check_command(command, module.commands)
+
+                if status:
+                    fixed_command = [name, command[1:]]
+                    self.parse_and_execute_command(
+                        fixed_command, module.commands[name], module)
 
                     return True
+
+                if name is not None:
+                    self.badges.print_warning(f"Did you mean? {', '.join(name)}")
+
         return False
 
     def execute_plugin_command(self, command: list) -> bool:
@@ -224,8 +277,7 @@ class Execute(object):
         """
 
         return self.execute_custom_plugin_command(
-            command, self.local_storage.get("loaded_plugins")
-        )
+            command, self.local_storage.get("loaded_plugins"))
 
     def execute_custom_plugin_command(self, command: list, plugins: dict) -> bool:
         """ Execute custom plugin command.
@@ -240,14 +292,20 @@ class Execute(object):
                 plugin = plugins[plugin]
 
                 for label in plugin.commands:
-                    if command[0] in plugin.commands[label]:
-                        details = plugin.commands[label][command[0]]
+                    status, name = self.check_command(command, plugin.commands[label])
+
+                    if status:
+                        fixed_command = [name, command[1:]]
+                        details = plugin.commands[label][name]
 
                         self.parse_and_execute_command(
-                            command, details, plugin
-                        )
+                            fixed_command, details, plugin)
 
                         return True
+
+                    if name is not None:
+                        self.badges.print_warning(f"Did you mean? {', '.join(name)}")
+
         return False
 
     def parse_and_execute_command(self, command: list, details: dict, handle: Any) -> None:
