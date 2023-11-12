@@ -30,7 +30,7 @@ import yaml
 from hatasm import HatAsm
 from typing import Any, Optional
 
-from pex.type import Type
+from pex.platforms.types import EXEC_FORMATS
 
 from hatsploit.core.base.console import Console
 
@@ -330,7 +330,6 @@ class HatSploitGen(HatSploit):
         self.payloads = Payloads()
 
         self.show = Show()
-        self.type = Type()
 
         self.badges = Badges()
         self.tables = Tables()
@@ -473,8 +472,8 @@ class HatSploitGen(HatSploit):
             if not args.platform:
                 data = []
 
-                for format in self.type.formats:
-                    platforms = ', '.join([p for p in self.type.formats[format]])
+                for format in EXEC_FORMATS:
+                    platforms = ', '.join([str(p) for p in EXEC_FORMATS[format]])
                     data.append((format, platforms))
 
                 self.tables.print_table("Formats", ('Format', 'Platforms'), *data)
@@ -482,8 +481,8 @@ class HatSploitGen(HatSploit):
             else:
                 formats = []
 
-                for format in self.type.formats:
-                    if args.platform in self.type.formats[format]:
+                for format in EXEC_FORMATS:
+                    if args.platform in EXEC_FORMATS[format]:
                         formats.append(format)
 
                 data = [(args.platform, ', '.join(formats))]
