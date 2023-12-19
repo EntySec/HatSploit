@@ -173,7 +173,7 @@ class Execute(object):
             status, name = self.check_command(command, handler)
 
             if status:
-                fixed_command = [name, command[1:]]
+                fixed_command = [name, *command[1:]]
 
                 if not self.check_arguments(fixed_command, handler[name].details):
                     self.parse_usage(handler[name].details)
