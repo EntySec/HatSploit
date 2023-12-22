@@ -37,7 +37,7 @@ class HatSploitModule(Module, Sessions, DB):
             self.print_process("Parsing history database...")
 
             try:
-                history = self.parse_safari_bookmarks(path)
+                history = self.parse_safari_history(path)
             except Exception:
                 self.print_error("Failed to parse history database!")
                 return
