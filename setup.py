@@ -57,6 +57,7 @@ setup(name='hatsploit',
           'pex @ git+https://github.com/EntySec/Pex',
           'colorscript @ git+https://github.com/EntySec/ColorScript',
           'pawn @ git+https://github.com/EntySec/Pawn',
+          'pwny @ git+https://github.com/EntySec/Pwny',
       ],
       zip_safe=False,
       )
