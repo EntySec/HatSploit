@@ -30,7 +30,7 @@ import yaml
 from hatasm import HatAsm
 from typing import Any, Optional
 
-from pex.platforms.types import EXEC_FORMATS
+from pex.platform.types import EXEC_FORMATS
 
 from hatsploit.core.base.console import Console
 
