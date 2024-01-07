@@ -28,7 +28,6 @@ import sys
 from colorscript import ColorScript
 
 from hatsploit.core.cli.colors import Colors
-from hatsploit.core.cli.fmt import FMT
 from hatsploit.lib.storage import LocalStorage
 
 import readline
@@ -45,7 +44,6 @@ class IO(object):
         super().__init__()
 
         self.local_storage = LocalStorage()
-        self.fmt = FMT()
         self.color_script = ColorScript()
 
     def print(self, message: str = '', start: str = '%remove', end: str = '%newline') -> None:
@@ -73,13 +71,13 @@ class IO(object):
             sys.stdout.write(prompt)
             sys.stdout.flush()
 
-    def input(self, message: str = '', start: str = '%remove%end', end: str = '%end') -> list:
+    def input(self, message: str = '', start: str = '%remove%end', end: str = '%end') -> str:
         """ Input string.
 
         :param str message: message to print
         :param str start: string to print before the message
         :param str end: string to print after the message
-        :return list: read string separated by space and commas
+        :return str: read string
         """
 
         message = str(start) + str(message) + str(end)
@@ -99,8 +97,6 @@ class IO(object):
             with open(use_log, 'a') as f:
                 f.write(commands + '\n')
                 f.flush()
-
-        commands = self.fmt.format_commands(commands)
 
         self.local_storage.set("prompt", None)
         return commands

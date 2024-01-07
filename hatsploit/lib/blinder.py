@@ -56,8 +56,7 @@ class Blinder(object):
         self.badges.print_empty()
 
         while True:
-            commands = self.badges.input_empty("%lineblinder%end > ")
-            command = ' '.join(commands)
+            command = self.badges.input_empty("%lineblinder%end > ")
 
             if not command.strip() or command == 'exit':
                 return

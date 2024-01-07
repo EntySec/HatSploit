@@ -116,35 +116,35 @@ class Badges(object):
 
         self.print_empty(f"%bold%white[i]%end {message}", start, end)
 
-    def input_empty(self, message: str = '', start: str = '%remove%end', end: str = '%end') -> list:
+    def input_empty(self, message: str = '', start: str = '%remove%end', end: str = '%end') -> str:
         """ Input string with empty start.
 
         :param str message: message to print
         :param str start: string to print before the message
         :param str end: string to print after the message
-        :return list: read string separated by space and commas
+        :return str: read string
         """
 
         return self.io.input(message, start, end)
 
-    def input_question(self, message: str, start: str = '%remove%end', end: str = '%end') -> list:
+    def input_question(self, message: str, start: str = '%remove%end', end: str = '%end') -> str:
         """ Input string with [?] start.
 
         :param str message: message to print
         :param str start: string to print before the message
         :param str end: string to print after the message
-        :return list: read string separated by space and commas
+        :return str: read string
         """
 
         return self.input_empty(f"%bold%white[?]%end {message}", start, end)
 
-    def input_arrow(self, message: str, start: str = '%remove%end', end: str = '%end') -> list:
+    def input_arrow(self, message: str, start: str = '%remove%end', end: str = '%end') -> str:
         """ Input string with [>] start.
 
         :param str message: message to print
         :param str start: string to print before the message
         :param str end: string to print after the message
-        :return list: read string separated by space and commas
+        :return str: read string
         """
 
         return self.input_empty(f"%bold%white[>]%end {message}", start, end)
