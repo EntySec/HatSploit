@@ -32,7 +32,7 @@ class HatSploitCommand(Command):
         if self.jobs.get_jobs():
             self.print_warning("You have some running jobs.")
 
-            if self.input_question("Exit anyway? [y/N] ")[0].lower() in ['yes', 'y']:
+            if self.input_question("Exit anyway? [y/N] ").lower() in ['yes', 'y']:
                 self.jobs.stop_jobs()
             else:
                 return
@@ -40,7 +40,7 @@ class HatSploitCommand(Command):
         if self.sessions.get_sessions():
             self.print_warning("You have some opened sessions.")
 
-            if self.input_question("Exit anyway? [y/N] ")[0].lower() in ['yes', 'y']:
+            if self.input_question("Exit anyway? [y/N] ").lower() in ['yes', 'y']:
                 self.sessions.close_sessions()
             else:
                 return

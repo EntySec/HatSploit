@@ -52,7 +52,7 @@ class HatSploitCommand(Command):
             if "exit" in code or "quit" in code:
                 return
             try:
-                exec(' '.join(code))
+                exec(code)
             except SystemExit:
                 return
             except (EOFError, KeyboardInterrupt):
