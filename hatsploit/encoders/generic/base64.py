@@ -16,7 +16,7 @@ class HatSploitEncoder(Encoder, String):
             'Name': "Base64 Encoder for Command",
             'Encoder': "generic/base64",
             'Authors': [
-                'Ivan Nikolsky (enty8080) - encoder developer',
+                'Ivan Nikolskiy (enty8080) - encoder developer',
             ],
             'Description': "Encode command with base64.",
             'Arch': ARCH_GENERIC,

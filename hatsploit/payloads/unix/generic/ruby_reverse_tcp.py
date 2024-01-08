@@ -14,7 +14,7 @@ class HatSploitPayload(Payload, Handler):
             'Name': "Ruby Shell Reverse TCP",
             'Payload': "unix/generic/ruby_reverse_tcp",
             'Authors': [
-                'Ivan Nikolsky (enty8080) - payload developer',
+                'Ivan Nikolskiy (enty8080) - payload developer',
             ],
             'Description': "Ruby shell reverse TCP payload.",
             'Arch': ARCH_GENERIC,

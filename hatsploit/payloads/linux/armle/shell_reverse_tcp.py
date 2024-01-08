@@ -15,7 +15,7 @@ class HatSploitPayload(Payload, Handler, Socket):
             'Name': "Linux armle Shell Reverse TCP",
             'Payload': "linux/armle/shell_reverse_tcp",
             'Authors': [
-                'Ivan Nikolsky (enty8080) - payload developer',
+                'Ivan Nikolskiy (enty8080) - payload developer',
             ],
             'Description': "Shell reverse TCP payload for Linux armle.",
             'Arch': ARCH_ARMLE,

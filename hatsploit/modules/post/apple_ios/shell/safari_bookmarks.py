@@ -19,7 +19,7 @@ class HatSploitModule(Module, Sessions, DB):
             'Name': "Obtain Safari bookmarks",
             'Module': "post/apple_ios/shell/safari_bookmarks",
             'Authors': [
-                'Ivan Nikolsky (enty8080) - module developer',
+                'Ivan Nikolskiy (enty8080) - module developer',
             ],
             'Description': "Get iOS Safari bookmarks database and parse it.",
             'Platform': OS_IPHONE,

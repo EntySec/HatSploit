@@ -19,7 +19,7 @@ class HatSploitCommand(Command):
             'Category': "sessions",
             'Name': "sessions",
             'Authors': [
-                'Ivan Nikolsky (enty8080) - command developer',
+                'Ivan Nikolskiy (enty8080) - command developer',
             ],
             'Description': "Manage opened sessions.",
             'Usage': "sessions <option> [arguments]",

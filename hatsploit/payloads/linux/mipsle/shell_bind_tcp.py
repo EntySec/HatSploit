@@ -16,7 +16,7 @@ class HatSploitPayload(Payload, Handler, Assembler, Socket):
             'Name': "Linux mipsle Shell Bind TCP",
             'Payload': "linux/mipsle/shell_bind_tcp",
             'Authors': [
-                'Ivan Nikolsky (enty8080) - payload developer',
+                'Ivan Nikolskiy (enty8080) - payload developer',
             ],
             'Description': "Shell bind TCP payload for Linux mipsle.",
             'Arch': ARCH_MIPSLE,

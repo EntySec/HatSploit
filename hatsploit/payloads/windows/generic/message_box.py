@@ -14,7 +14,7 @@ class HatSploitPayload(Payload):
             'Name': "Windows Message Box",
             'Payload': "windows/generic/message_box",
             'Authors': [
-                'Ivan Nikolsky (enty8080) - payload developer',
+                'Ivan Nikolskiy (enty8080) - payload developer',
             ],
             'Description': "Message Box payload for Windows.",
             'Arch': ARCH_GENERIC,

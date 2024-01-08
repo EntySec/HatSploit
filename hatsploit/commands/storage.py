@@ -24,7 +24,7 @@ class HatSploitCommand(Command):
             'Category': "developer",
             'Name': "storage",
             'Authors': [
-                'Ivan Nikolsky (enty8080) - command developer',
+                'Ivan Nikolskiy (enty8080) - command developer',
             ],
             'Description': "Manage storage variables.",
             'Usage': "storage [global|local] <option> [arguments]",

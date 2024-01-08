@@ -17,7 +17,7 @@ class HatSploitCommand(Command):
             'Category': "modules",
             'Name': "use",
             'Authors': [
-                'Ivan Nikolsky (enty8080) - command developer',
+                'Ivan Nikolskiy (enty8080) - command developer',
             ],
             'Description': "Use specified module.",
             'Usage': "use <module|number>",

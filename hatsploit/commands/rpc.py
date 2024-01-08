@@ -19,7 +19,7 @@ class HatSploitCommand(Command, TCPTools):
             'Category': "developer",
             'Name': "rpc",
             'Authors': [
-                'Ivan Nikolsky (enty8080) - command developer',
+                'Ivan Nikolskiy (enty8080) - command developer',
             ],
             'Description': "Manage HatSploit RPC server.",
             'Usage': "rpc <option> [arguments]",

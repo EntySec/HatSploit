@@ -19,7 +19,7 @@ class HatSploitCommand(Command):
             'Category': "encoder",
             'Name': "encoders",
             'Authors': [
-                'Ivan Nikolsky (enty8080) - command developer',
+                'Ivan Nikolskiy (enty8080) - command developer',
             ],
             'Description': "Show available encoders.",
             'Usage': "encoders",

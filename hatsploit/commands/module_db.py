@@ -21,7 +21,7 @@ class HatSploitCommand(Command):
             'Category': "databases",
             'Name': "module_db",
             'Authors': [
-                'Ivan Nikolsky (enty8080) - command developer',
+                'Ivan Nikolskiy (enty8080) - command developer',
             ],
             'Description': "Manage module databases.",
             'Usage': "module_db <option> [arguments]",

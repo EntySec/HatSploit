@@ -17,7 +17,7 @@ class HatSploitModule(Module, Sessions):
             'Name': "Unix Obtain /etc/passwd",
             'Module': "post/unix/shell/getpasswd",
             'Authors': [
-                'Ivan Nikolsky (enty8080) - module developer',
+                'Ivan Nikolskiy (enty8080) - module developer',
             ],
             'Description': "Get current session /etc/passwd file.",
             'Platform': OS_UNIX,

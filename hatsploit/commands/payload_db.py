@@ -21,7 +21,7 @@ class HatSploitCommand(Command):
             'Category': "databases",
             'Name': "payload_db",
             'Authors': [
-                'Ivan Nikolsky (enty8080) - command developer',
+                'Ivan Nikolskiy (enty8080) - command developer',
             ],
             'Description': "Manage payload databases.",
             'Usage': "payload_db <option> [arguments]",

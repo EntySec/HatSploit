@@ -17,7 +17,7 @@ class HatSploitCommand(Command):
             'Category': "modules",
             'Name': "unset",
             'Authors': [
-                'Ivan Nikolsky (enty8080) - command developer',
+                'Ivan Nikolskiy (enty8080) - command developer',
             ],
             'Description': "Unset an option / Set to None.",
             'Usage': "unset <option>",

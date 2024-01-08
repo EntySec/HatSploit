@@ -15,7 +15,7 @@ class HatSploitModule(Module):
             'Name': "iOS Restart SpringBoard",
             'Module': "post/apple_ios/shell/respring",
             'Authors': [
-                'Ivan Nikolsky (enty8080) - module developer',
+                'Ivan Nikolskiy (enty8080) - module developer',
             ],
             'Description': "Restart iOS SpringBoard.app through shell.",
             'Platform': OS_IPHONE,

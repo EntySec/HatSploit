@@ -15,7 +15,7 @@ class HatSploitModule(Module):
             'Name': "Unix Shell Get PID",
             'Module': "post/unix/shell/getpid",
             'Authors': [
-                'Ivan Nikolsky (enty8080) - module developer',
+                'Ivan Nikolskiy (enty8080) - module developer',
             ],
             'Description': "Get current session process id.",
             'Platform': OS_UNIX,

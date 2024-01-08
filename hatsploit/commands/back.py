@@ -17,7 +17,7 @@ class HatSploitCommand(Command):
             'Category': "modules",
             'Name': "back",
             'Authors': [
-                'Ivan Nikolsky (enty8080) - command developer',
+                'Ivan Nikolskiy (enty8080) - command developer',
             ],
             'Description': "Return to the previous module.",
             'Usage': "back",

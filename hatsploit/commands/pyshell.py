@@ -1,7 +1,7 @@
 """
 MIT License
 
-Copyright (c) 2020-2023 EntySec
+Copyright (c) 2020-2024 EntySec
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -35,7 +35,7 @@ class HatSploitCommand(Command):
             'Category': "developer",
             'Name': "pyshell",
             'Authors': [
-                'Ivan Nikolsky (enty8080) - command developer',
+                'Ivan Nikolskiy (enty8080) - command developer',
             ],
             'Description': "Open Python shell.",
             'Usage': "pyshell",

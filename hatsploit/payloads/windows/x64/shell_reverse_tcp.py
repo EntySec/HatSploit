@@ -15,7 +15,7 @@ class HatSploitPayload(Payload, Handler, Socket):
             'Name': "Windows x64 Shell Reverse TCP",
             'Payload': "windows/x64/shell_reverse_tcp",
             'Authors': [
-                'Ivan Nikolsky (enty8080) - payload developer',
+                'Ivan Nikolskiy (enty8080) - payload developer',
             ],
             'Description': "Reverse shell TCP payload for Windows x64.",
             'Arch': ARCH_X64,

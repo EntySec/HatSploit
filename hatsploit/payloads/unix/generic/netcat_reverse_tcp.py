@@ -15,7 +15,7 @@ class HatSploitPayload(Payload, Handler, String):
             'Name': "Netcat Shell Reverse TCP",
             'Payload': "unix/generic/netcat_reverse_tcp",
             'Authors': [
-                'Ivan Nikolsky (enty8080) - payload developer',
+                'Ivan Nikolskiy (enty8080) - payload developer',
             ],
             'Description': "Netcat shell reverse TCP payload.",
             'Arch': ARCH_GENERIC,

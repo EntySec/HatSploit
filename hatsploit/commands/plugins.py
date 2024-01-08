@@ -19,7 +19,7 @@ class HatSploitCommand(Command):
             'Category': "plugins",
             'Name': "plugins",
             'Authors': [
-                'Ivan Nikolsky (enty8080) - command developer',
+                'Ivan Nikolskiy (enty8080) - command developer',
             ],
             'Description': "Show available plugins.",
             'Usage': "plugins",

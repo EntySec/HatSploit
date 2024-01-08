@@ -16,7 +16,7 @@ class HatSploitPayload(Payload, Handler, Assembler, Socket):
             'Name': "Linux aarch64 Shell Reverse TCP",
             'Payload': "linux/aarch64/shell_reverse_tcp",
             'Authors': [
-                'Ivan Nikolsky (enty8080) - payload developer',
+                'Ivan Nikolskiy (enty8080) - payload developer',
             ],
             'Description': "Shell reverse TCP payload for Linux aarch64.",
             'Arch': ARCH_AARCH64,

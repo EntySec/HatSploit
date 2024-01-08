@@ -17,7 +17,7 @@ class HatSploitCommand(Command):
             'Category': "developer",
             'Name': "repeat",
             'Authors': [
-                'Ivan Nikolsky (enty8080) - command developer',
+                'Ivan Nikolskiy (enty8080) - command developer',
             ],
             'Description': "Repeat specified command.",
             'Usage': "repeat <times> <command>",

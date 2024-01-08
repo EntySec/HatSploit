@@ -21,7 +21,7 @@ class HatSploitCommand(Command):
             'Category': "databases",
             'Name': "encoder_db",
             'Authors': [
-                'Ivan Nikolsky (enty8080) - command developer',
+                'Ivan Nikolskiy (enty8080) - command developer',
             ],
             'Description': "Manage encoder databases.",
             'Usage': "encoder_db <option> [arguments]",

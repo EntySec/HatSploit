@@ -16,7 +16,7 @@ class HatSploitPayload(Payload, Handler, Assembler, Socket):
             'Name': "Linux mipsbe Shell Reverse TCP",
             'Payload': "linux/mipsbe/shell_reverse_tcp",
             'Authors': [
-                'Ivan Nikolsky (enty8080) - payload developer',
+                'Ivan Nikolskiy (enty8080) - payload developer',
             ],
             'Description': "Shell reverse TCP payload for Linux mipsbe.",
             'Arch': ARCH_MIPSBE,

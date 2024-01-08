@@ -15,7 +15,7 @@ class HatSploitPayload(Payload, Assembler):
             'Name': "Linux mipsbe Reboot",
             'Payload': "linux/mipsbe/reboot",
             'Authors': [
-                'Ivan Nikolsky (enty8080) - payload developer',
+                'Ivan Nikolskiy (enty8080) - payload developer',
             ],
             'Description': "Reboot payload for Linux mipsbe.",
             'Arch': ARCH_MIPSBE,

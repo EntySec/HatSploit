@@ -16,7 +16,7 @@ class HatSploitModule(Module, TCPTools):
             'Name': "Jailbreak Installation Checker",
             'Module': "auxiliary/apple_ios/checker/jailbroken_or_not",
             'Authors': [
-                'Ivan Nikolsky (enty8080) - module developer',
+                'Ivan Nikolskiy (enty8080) - module developer',
             ],
             'Description': "Check if remote iPhone jailbroken.",
             'Platform': OS_IPHONE,

@@ -17,7 +17,7 @@ class HatSploitCommand(Command):
             'Category': "misc",
             'Name': "banner",
             'Authors': [
-                'Ivan Nikolsky (enty8080) - command developer',
+                'Ivan Nikolskiy (enty8080) - command developer',
             ],
             'Description': "Show random HatSploit banner.",
             'Usage': "banner",

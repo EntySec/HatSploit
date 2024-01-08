@@ -19,7 +19,7 @@ class HatSploitCommand(Command):
             'Category': "loot",
             'Name': "loot",
             'Authors': [
-                'Ivan Nikolsky (enty8080) - command developer',
+                'Ivan Nikolskiy (enty8080) - command developer',
             ],
             'Description': "Manage collected loot.",
             'Usage': "loot <option> [arguments]",

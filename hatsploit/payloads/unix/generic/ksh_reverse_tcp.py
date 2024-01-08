@@ -14,7 +14,7 @@ class HatSploitPayload(Payload, Handler):
             'Name': "KSH shell Reverse TCP",
             'Payload': "unix/generic/ksh_reverse_tcp",
             'Authors': [
-                'Ivan Nikolsky (enty8080) - payload developer',
+                'Ivan Nikolskiy (enty8080) - payload developer',
             ],
             'Description': "KSH shell reverse TCP payload.",
             'Arch': ARCH_GENERIC,

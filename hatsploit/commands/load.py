@@ -17,7 +17,7 @@ class HatSploitCommand(Command):
             'Category': "plugins",
             'Name': "load",
             'Authors': [
-                'Ivan Nikolsky (enty8080) - command developer',
+                'Ivan Nikolskiy (enty8080) - command developer',
             ],
             'Description': "Load specific plugin.",
             'Usage': "load <plugin|number>",

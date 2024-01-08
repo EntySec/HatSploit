@@ -17,7 +17,7 @@ class HatSploitCommand(Command):
             'Category': "core",
             'Name': "search",
             'Authors': [
-                'Ivan Nikolsky (enty8080) - command developer',
+                'Ivan Nikolskiy (enty8080) - command developer',
             ],
             'Description': "Search payloads, modules and plugins.",
             'Usage': "search <option> <keyword>",

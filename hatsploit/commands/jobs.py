@@ -19,7 +19,7 @@ class HatSploitCommand(Command):
             'Category': "jobs",
             'Name': "jobs",
             'Authors': [
-                'Ivan Nikolsky (enty8080) - command developer',
+                'Ivan Nikolskiy (enty8080) - command developer',
             ],
             'Description': "Manage active jobs.",
             'Usage': "jobs <option> [arguments]",

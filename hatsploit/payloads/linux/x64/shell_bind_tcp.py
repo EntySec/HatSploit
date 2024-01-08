@@ -16,7 +16,7 @@ class HatSploitPayload(Payload, Handler, Assembler):
             'Name': "Linux x64 Shell Bind TCP",
             'Payload': "linux/x64/shell_bind_tcp",
             'Authors': [
-                'Ivan Nikolsky (enty8080) - payload developer',
+                'Ivan Nikolskiy (enty8080) - payload developer',
             ],
             'Description': "Shell bind TCP payload for Linux x64.",
             'Arch': ARCH_X64,
