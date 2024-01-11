@@ -81,7 +81,7 @@ class IO(object):
         """
 
         message = str(start) + str(message) + str(end)
-        line = self.color_script.parse(message)
+        line = self.color_script.parse_input(message)
 
         use_log = self.local_storage.get("log")
         self.local_storage.set("prompt", line)
