@@ -89,7 +89,7 @@ class Execute(object):
             command[0] = command[0][1:]
 
             self.jobs.create_job(
-                command[0], None, self.execute_command, [command], hidden=True
+                command[0], None, self.execute_command, command, hidden=True
             )
 
             return True
@@ -258,7 +258,7 @@ class Execute(object):
                 status, name = self.check_command(command, module.commands)
 
                 if status:
-                    fixed_command = [name, command[1:]]
+                    fixed_command = [name, *command[1:]]
                     self.parse_and_execute_command(
                         fixed_command, module.commands[name], module)
 
@@ -295,7 +295,7 @@ class Execute(object):
                     status, name = self.check_command(command, plugin.commands[label])
 
                     if status:
-                        fixed_command = [name, command[1:]]
+                        fixed_command = [name, *command[1:]]
                         details = plugin.commands[label][name]
 
                         self.parse_and_execute_command(
