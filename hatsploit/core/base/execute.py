@@ -89,7 +89,7 @@ class Execute(object):
             command[0] = command[0][1:]
 
             self.jobs.create_job(
-                command[0], None, self.execute_command, command, hidden=True
+                command[0], None, self.execute_command, [command], hidden=True
             )
 
             return True
