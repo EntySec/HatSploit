@@ -201,8 +201,9 @@ class Importer(object):
                     command_name = command_object.details['Name']
                     commands[command_name] = command_object
 
-                except Exception:
+                except Exception as e:
                     self.badges.print_error(f"Failed to load {file[:-3]} command!")
+                    self.badges.print_error(str(e))
 
         return commands
 
@@ -229,6 +230,7 @@ class Importer(object):
 
                 except Exception:
                     self.badges.print_error(f"Failed to load {file[:-3]} plugin!")
+                    self.badges.print_error(str(e))
 
         return plugins
 
