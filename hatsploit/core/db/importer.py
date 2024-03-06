@@ -228,7 +228,7 @@ class Importer(object):
                     plugin_name = plugin_object.details['Plugin']
                     plugins[plugin_name] = plugin_object
 
-                except Exception:
+                except Exception as e:
                     self.badges.print_error(f"Failed to load {file[:-3]} plugin!")
                     self.badges.print_error(str(e))
 
