@@ -528,7 +528,7 @@ class HatSploitGen(HatSploit):
                 self.badges.print_process("Writing raw payload...")
 
                 if isinstance(payload, bytes):
-                    if self.args.assembly:
+                    if args.assembly:
                         hexdump = self.hatasm.hexdump_asm(str(details['Arch']), code=payload)
                     else:
                         hexdump = self.hatasm.hexdump(payload)
