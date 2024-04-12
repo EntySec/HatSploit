@@ -30,7 +30,6 @@ from typing import Optional, Union
 from pex.fs import FS
 from pex.string import String
 
-from hatsploit.core.cli.badges import Badges
 from hatsploit.lib.config import Config
 
 
@@ -41,13 +40,18 @@ class Loot(String, FS):
     tools for working with loot collected by HatSploit.
     """
 
-    def __init__(self) -> None:
+    def __init__(self, loot: Optional[str] = None, data: Optional[str] = None) -> None:
+        """ Initialize loot.
+
+        :param Optional[str] loot: loot root path
+        :param Optional[str] data: data root path
+        :return None: None
+        """
+
         super().__init__()
 
-        self.badges = Badges()
-
-        self.loot = Config().path_config['loot_path']
-        self.data = Config().path_config['data_path']
+        self.loot = loot or Config().path_config['loot_path']
+        self.data = data or Config().path_config['data_path']
 
     def create_loot(self) -> None:
         """ Create loot directory in workspace.
@@ -121,9 +125,7 @@ class Loot(String, FS):
             with open(location, 'wb') as f:
                 f.write(data)
 
-            self.badges.print_success(f"Saved to {location}!")
             return os.path.abspath(location)
-
         return None
 
     def remove_file(self, filename: str) -> None:
@@ -135,8 +137,6 @@ class Loot(String, FS):
 
         self.check_file(filename)
         os.remove(filename)
-
-        self.badges.print_success(f"Removed {filename}!")
 
     def get_loot(self, filename: str) -> bytes:
         """ Get specific loot contents.
