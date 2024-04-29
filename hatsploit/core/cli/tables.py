@@ -75,6 +75,7 @@ class Tables(object):
         fill = []
         headers_line = '    '
         headers_separator_line = '    '
+
         for idx, header in enumerate(headers):
             column = [custom_len(arg[idx]) for arg in args]
             column.append(len(header))
@@ -94,12 +95,12 @@ class Tables(object):
                 )
             )
 
-        self.badges.print_empty(
-            '\n' + name.split()[0].title() + name[len(name.split()[0]):] + ':'
+        content = (
+            '\n' + name.split()[0].title() + name[len(name.split()[0]):] + ':\n\n' +
+            headers_line.rstrip() + '\n' +
+            headers_separator_line.rstrip() + '\n'
         )
-        self.badges.print_empty()
-        self.badges.print_empty(headers_line.rstrip())
-        self.badges.print_empty(headers_separator_line.rstrip())
+
         for arg in args:
             content_line = "    "
             for idx, element in enumerate(arg):
@@ -112,5 +113,7 @@ class Tables(object):
                 content_line = "".join(
                     (content_line, "{:<{}}".format(element, fill_line))
                 )
-            self.badges.print_empty(content_line.rstrip())
+            content += content_line.rstrip() + '\n'
+
+        self.badges.print_empty(content.rstrip())
         self.badges.print_empty()
