@@ -46,6 +46,49 @@ class IO(object):
         self.local_storage = LocalStorage()
         self.color_script = ColorScript()
 
+    def less(self, data: str) -> None:
+        """ Print data in less format.
+
+        :param str data: data to print
+        :return None: None
+        """
+
+        columns, rows = os.get_terminal_size()
+
+        lines = data.split('\n')
+        num_lines = len(lines)
+        start_index = 0
+        end_index = rows - 2
+
+        while start_index < num_lines:
+            for line in range(start_index, min(end_index + 1, num_lines)):
+                if line == num_lines - 1:
+                    sys.stdout.write(lines[line])
+                    sys.stdout.flush()
+                else:
+                    sys.stdout.write(lines[line] + '\n')
+                    sys.stdout.flush()
+
+            if end_index >= num_lines - 1:
+                break
+
+            sys.stdout.write("Press Enter for more, or 'q' to quit:")
+            sys.stdout.flush()
+
+            user_input = ''
+
+            while user_input not in ['\n', 'q']:
+                user_input = getch.getch()
+
+            sys.stdout.write(self.color_script.parse('%remove'))
+            sys.stdout.flush()
+
+            if user_input == 'q':
+                return
+
+            start_index = end_index + 1
+            end_index = start_index
+
     def print(self, message: str = '', start: str = '%remove', end: str = '%newline') -> None:
         """ Print string.
 
@@ -58,8 +101,7 @@ class IO(object):
         line = self.color_script.parse(str(start) + str(message) + str(end))
         use_log = self.local_storage.get("log")
 
-        sys.stdout.write(line)
-        sys.stdout.flush()
+        self.less(line)
 
         if use_log:
             with open(use_log, 'a') as f:
@@ -80,10 +122,9 @@ class IO(object):
         :return str: read string
         """
 
-        message = str(start) + str(message) + str(end)
-        line = self.color_script.parse_input(message)
-
+        line = self.color_script.parse(str(start) + str(message) + str(end))
         use_log = self.local_storage.get("log")
+
         self.local_storage.set("prompt", line)
 
         if use_log:
