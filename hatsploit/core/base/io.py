@@ -58,7 +58,7 @@ class IO(object):
         lines = data.split('\n')
         num_lines = len(lines)
         start_index = 0
-        end_index = rows - 2
+        end_index = rows - 3
 
         while start_index < num_lines:
             for line in range(start_index, min(end_index + 1, num_lines)):
