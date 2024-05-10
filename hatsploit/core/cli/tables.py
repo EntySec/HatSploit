@@ -38,7 +38,7 @@ class Tables(object):
 
         self.badges = Badges()
 
-    def print_table(self, name: str, headers: tuple, *args, **kwargs) -> None:
+        def print_table(self, name: str, headers: tuple, *args, **kwargs) -> None:
         """ Print table.
 
         Usage example: print_table('Example', ('Col1', 'Col2'), *[(1,2),(3,4)])
@@ -58,7 +58,6 @@ class Tables(object):
         """
 
         extra_fill = kwargs.get("extra_fill", 4)
-        header_separator = kwargs.get("header_separator", "-")
 
         if not all(map(lambda x: len(x) == len(headers), args)):
             return
@@ -74,7 +73,6 @@ class Tables(object):
 
         fill = []
         headers_line = '    '
-        headers_separator_line = '    '
 
         for idx, header in enumerate(headers):
             column = [custom_len(arg[idx]) for arg in args]
@@ -85,20 +83,13 @@ class Tables(object):
             headers_line = "".join(
                 (
                     headers_line,
-                    "{header:<{fill}}".format(header=header, fill=current_line_fill),
-                )
-            )
-            headers_separator_line = "".join(
-                (
-                    headers_separator_line,
-                    "{:<{}}".format(header_separator * len(header), current_line_fill),
+                    f"%bold%line{header}%end" + ' ' * (current_line_fill - len(header))
                 )
             )
 
         content = (
-            '\n' + name.split()[0].title() + name[len(name.split()[0]):] + ':\n\n' +
-            headers_line.rstrip() + '\n' +
-            headers_separator_line.rstrip() + '\n'
+            '\n%bold%line' + name[0].upper() + name[1:] + '%end:\n\n' +
+            headers_line.rstrip() + '\n'
         )
 
         for arg in args:
