@@ -38,7 +38,7 @@ class Tables(object):
 
         self.badges = Badges()
 
-        def print_table(self, name: str, headers: tuple, *args, **kwargs) -> None:
+    def print_table(self, name: str, headers: tuple, *args, **kwargs) -> None:
         """ Print table.
 
         Usage example: print_table('Example', ('Col1', 'Col2'), *[(1,2),(3,4)])
