@@ -24,6 +24,7 @@ SOFTWARE.
 
 import os
 import sys
+import getch
 
 from colorscript import ColorScript
 
