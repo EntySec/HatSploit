@@ -48,9 +48,9 @@ class HatSploitCommand(Command):
 
         if argc > 1:
             if argv[1] in categories:
-                self.show.show_modules(argv[1])
+                self.show.show_modules(self.modules.get_modules(), argv[1])
             else:
                 self.print_error("Invalid module category!")
                 self.print_information(f"Available categories: {str(categories)}")
         else:
-            self.show.show_modules()
+            self.show.show_modules(self.modules.get_modules())

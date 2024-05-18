@@ -30,4 +30,4 @@ class HatSploitCommand(Command):
         return self.modules.get_current_advanced()
 
     def run(self, argc, argv):
-        self.show.show_advanced()
+        self.show.show_advanced(self.modules.get_current_module())

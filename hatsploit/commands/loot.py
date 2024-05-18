@@ -34,7 +34,7 @@ class HatSploitCommand(Command):
         choice = argv[1]
 
         if choice == '-l':
-            self.show.show_loot()
+            self.show.show_loot(self.loot.list_loot())
 
         elif choice == '-r':
             self.loot.remove_loot(argv[2])

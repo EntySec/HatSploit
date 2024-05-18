@@ -27,10 +27,9 @@ import os
 import sys
 
 from badges import Badges
+from pex.string import String
 
 from hatsploit.core.base.execute import Execute
-
-from hatsploit.core.cli.fmt import FMT
 
 from hatsploit.core.utils.ui.banner import Banner
 from hatsploit.core.utils.ui.completer import Completer
@@ -54,7 +53,7 @@ class Console(object):
 
         self.execute = Execute()
 
-        self.fmt = FMT()
+        self.string = String()
         self.badges = Badges()
 
         self.completer = Completer()
@@ -91,7 +90,8 @@ class Console(object):
         commands = self.badges.input_empty(prompt)
 
         self.runtime.update()
-        self.execute.execute_command(self.fmt.format_commands(commands))
+        self.badges.print_function(self.execute.execute_command,
+                                   self.string.split_args(commands))
         self.runtime.update()
 
         if self.local_storage.get("history"):
@@ -211,7 +211,7 @@ class Console(object):
                 file.close()
 
                 for line in file_text:
-                    commands = self.fmt.format_commands(line)
+                    commands = self.string.split_args(line)
 
                     self.runtime.update()
                     self.runtime.catch(

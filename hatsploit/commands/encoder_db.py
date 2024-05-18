@@ -60,10 +60,14 @@ class HatSploitCommand(Command):
         choice = argv[1]
 
         if choice == '-l':
-            self.show.show_encoder_databases()
+            self.show.show_encoder_databases(
+                self.db.get_encoder_databases())
+
         elif choice == '-d':
             self.db.disconnect_encoder_database(argv[2])
+
         elif choice == '-b':
             self.builder.build_encoder_database(argv[2], argv[3])
+
         elif choice == '-c':
             self.db.connect_encoder_database(argv[2], argv[3])

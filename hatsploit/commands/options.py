@@ -30,4 +30,4 @@ class HatSploitCommand(Command):
         return self.modules.get_current_options()
 
     def run(self, argc, argv):
-        self.show.show_options()
+        self.show.show_options(self.modules.get_current_module())

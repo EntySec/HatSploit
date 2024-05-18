@@ -36,17 +36,23 @@ class HatSploitCommand(Command):
 
     def run(self, argc, argv):
         if argv[1] == '-l':
-            self.show.show_sessions()
+            self.show.show_sessions(self.sessions.get_sessions())
+
         elif argv[1] == '-c':
             self.sessions.close_session(argv[2])
+
         elif argv[1] == '-i':
             self.sessions.interact_with_session(argv[2])
+
         elif argv[1] == '-d':
             self.sessions.session_download(argv[2], argv[3], argv[4])
+
         elif argv[1] == '-u':
             self.sessions.session_upload(argv[2], argv[3], argv[4])
+
         elif argv[1] == '--auto-interaction':
             if argv[2] == 'on':
                 self.sessions.enable_auto_interaction()
+
             elif argv[2] == 'off':
                 self.sessions.disable_auto_interaction()

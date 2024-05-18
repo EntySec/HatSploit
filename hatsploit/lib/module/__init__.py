@@ -26,7 +26,7 @@ from typing import Any, Optional
 
 from badges import Badges, Tables
 
-from hatsploit.core.cli.tools import Tools
+from hatsploit.core.utils.tools import Tools
 from hatsploit.lib.options import Options
 
 

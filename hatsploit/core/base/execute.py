@@ -29,8 +29,6 @@ import sys
 from typing import Any, Tuple, Union
 from badges import Badges, Tables
 
-from hatsploit.core.cli.fmt import FMT
-
 from hatsploit.lib.jobs import Jobs
 from hatsploit.lib.modules import Modules
 from hatsploit.lib.show import Show
@@ -48,7 +46,6 @@ class Execute(object):
         super().__init__()
 
         self.jobs = Jobs()
-        self.fmt = FMT()
         self.badges = Badges()
         self.tables = Tables()
         self.local_storage = LocalStorage()

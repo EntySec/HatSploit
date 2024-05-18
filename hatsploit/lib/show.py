@@ -26,12 +26,12 @@ from typing import Optional
 from textwrap import dedent
 
 from badges import Badges, Tables
-from colorscript import Colors
 
 from hatsploit.lib.encoders import Encoders
 from hatsploit.lib.jobs import Jobs
 from hatsploit.lib.loot import Loot
 from hatsploit.lib.modules import Modules
+from hatsploit.lib.module import Module
 from hatsploit.lib.payloads import Payloads
 from hatsploit.lib.plugins import Plugins
 from hatsploit.lib.sessions import Sessions
@@ -57,7 +57,6 @@ class Show(object):
         self.encoders = Encoders()
         self.sessions = Sessions()
 
-        self.colors = Colors()
         self.tables = Tables()
         self.badges = Badges()
 
@@ -71,21 +70,19 @@ class Show(object):
         :return None: None
         """
 
-        commands_data = {}
+        data = {}
         headers = ("Command", "Description")
 
         for command in sorted(commands):
-            label = commands[command].details['Category']
-            commands_data[label] = []
+            data[commands[command].details['Category']] = []
 
         for command in sorted(commands):
-            label = commands[command].details['Category']
-            commands_data[label].append(
+            data[commands[command].details['Category']].append(
                 (command, commands[command].details['Description'])
             )
 
-        for label in sorted(commands_data):
-            self.tables.print_table(label.title() + " Commands", headers, *commands_data[label])
+        for label in sorted(data):
+            self.tables.print_table(f"{label} Commands", headers, *data[label])
 
     def show_interface_commands(self) -> None:
         """ Show interface commands.
@@ -94,57 +91,62 @@ class Show(object):
         :raises RuntimeWarning: with trailing warning message
         """
 
-        if self.local_storage.get("commands"):
-            self.show_custom_commands(self.local_storage.get("commands"))
-        else:
+        if not self.local_storage.get("commands"):
             raise RuntimeWarning("No commands available.")
 
-    def show_plugin_commands(self) -> None:
-        """ Show all loaded plugin commands.
+        self.show_custom_commands(self.local_storage.get("commands"))
 
+    def show_plugin_commands(self, plugins: dict) -> None:
+        """ Show all plugins commands.
+
+        Note: plugins is a dictionary containing plugin names as keys and
+        plugin objects as items.
+
+        :param dict plugins: plugins
         :return None: None
         """
-
-        plugins = self.plugins.get_loaded_plugins()
 
         for plugin in plugins:
             plugin = plugins[plugin]
 
-            if hasattr(plugin, "commands"):
-                commands_data = {}
-                headers = ("Command", "Description")
-                commands = plugin.commands
+            if not hasattr(plugin, "commands"):
+                continue
 
-                for label in sorted(commands):
-                    commands_data[label] = []
+            data = {}
+            headers = ("Command", "Description")
+            commands = plugin.commands
 
-                    for command in sorted(commands[label]):
-                        commands_data[label].append(
-                            (command, commands[label][command]['Description'])
-                        )
+            for label in sorted(commands):
+                data[label] = []
 
-                for label in sorted(commands_data):
-                    self.tables.print_table(label.title() + " Commands", headers, *commands_data[label])
+                for command in sorted(commands[label]):
+                    data[label].append(
+                        (command, commands[label][command]['Description'])
+                    )
 
-    def show_module_commands(self) -> None:
+            for label in sorted(data):
+                self.tables.print_table(f"{label} Commands", headers, *data[label])
+
+    def show_module_commands(self, module: Module) -> None:
         """ Show current module commands.
 
+        :param Module module: module object
         :return None: None
         """
 
-        module = self.modules.get_current_module()
+        if not hasattr(module, "commands"):
+            return
 
-        if hasattr(module, "commands"):
-            commands_data = []
-            headers = ("Command", "Description")
-            commands = module.commands
+        data = []
+        headers = ("Command", "Description")
+        commands = module.commands
 
-            for command in sorted(commands):
-                commands_data.append(
-                    (command, commands[command]['Description'])
-                )
+        for command in sorted(commands):
+            data.append(
+                (command, commands[command]['Description'])
+            )
 
-            self.tables.print_table("Module Commands", headers, *commands_data)
+        self.tables.print_table("Module Commands", headers, *data)
 
     def show_all_commands(self) -> None:
         """ Show all commands.
@@ -155,510 +157,526 @@ class Show(object):
         self.show_interface_commands()
 
         if self.modules.get_current_module():
-            self.show_module_commands()
+            self.show_module_commands(
+                self.modules.get_current_module())
 
         if self.plugins.get_loaded_plugins():
-            self.show_plugin_commands()
+            self.show_plugin_commands(
+                self.plugins.get_loaded_plugins())
 
-    def show_jobs(self) -> None:
+    def show_jobs(self, jobs: dict) -> None:
         """ Show active jobs.
 
+        :param dict jobs: dictionary of jobs, where job IDs are keys
+        and job objects are items
         :return None: None
         :raises RuntimeWarning: with trailing warning message
         """
 
-        jobs = self.jobs.get_jobs()
-
-        if jobs:
-            jobs_data = []
-            headers = ("ID", "Name", "Module")
-
-            for job_id in jobs:
-                jobs_data.append(
-                    (job_id, jobs[job_id]['Name'], jobs[job_id]['Module'])
-                )
-
-            self.tables.print_table("Active Jobs", headers, *jobs_data)
-        else:
+        if not jobs:
             raise RuntimeWarning("No running jobs available.")
 
-    def show_loot(self) -> None:
+        data = []
+        headers = ("ID", "Name", "Module")
+
+        for job_id, job in jobs.items():
+            data.append(
+                (job_id, job['Name'], job['Module'])
+            )
+
+        self.tables.print_table("Active Jobs", headers, *data)
+
+    def show_sessions(self, sessions: dict) -> None:
+        """ Show opened sessions.
+
+        :param dict sessions: sessions dictionary, where session ID is a key
+        and session data is item
+        :return None: None
+        :raises RuntimeWarning: with trailing warning message
+        """
+
+        if not sessions:
+            raise RuntimeWarning("No opened sessions available.")
+
+        data = []
+        headers = ("ID", "Platform", "Arch", "Type", "Host", "Port")
+
+        for session_id, session in sessions.items():
+            data.append(
+                (session_id, session['Platform'], session['Arch'],
+                 session['Type'], session['Host'], session['Port'])
+            )
+
+        self.tables.print_table("Opened Sessions", headers, *data)
+
+    def show_loot(self, loot: list) -> None:
         """ Show collected loot.
 
+        :param list loot: loot array
+        (array of tuples containing loot information)
         :return None: None
         :raises RuntimeWarning: with trailing warning message
         """
 
-        loots = self.loot.list_loot()
-
-        if loots:
-            headers = ("Loot", "Path", "Time")
-            self.tables.print_table("Collected Loot", headers, *loots)
-
-        else:
+        if not loot:
             raise RuntimeWarning("No loot collected yet.")
 
-    def show_module_databases(self) -> None:
+        headers = ("Loot", "Path", "Time")
+        self.tables.print_table("Collected Loot", headers, *loot)
+
+    def show_module_databases(self, databases: dict) -> None:
         """ Show connected module databases.
 
+        :param dict databases: module databases
         :return None: None
         :raises RuntimeWarning: with trailing warning message
         """
 
-        databases = self.local_storage.get("connected_module_databases")
-
-        if databases:
-            databases_data = []
-            number = 0
-            headers = ("Number", "Name", "Path")
-
-            for name in databases:
-                databases_data.append(
-                    (number, name, databases[name]['Path'])
-                )
-                number += 1
-
-            self.tables.print_table("Connected Module Databases", headers, *databases_data)
-        else:
+        if not databases:
             raise RuntimeWarning("No module databases connected.")
 
-    def show_payload_databases(self) -> None:
+        data = []
+        number = 0
+        headers = ("Number", "Name", "Path")
+
+        for name in databases:
+            data.append(
+                (number, name, databases[name]['Path'])
+            )
+            number += 1
+
+        self.tables.print_table("Connected Module Databases", headers, *data)
+
+    def show_payload_databases(self, databases: dict) -> None:
         """ Show connected payload databases.
 
+        :param dict databases: payload databases
         :return None: None
         :raises RuntimeWarning: with trailing warning message
         """
 
-        databases = self.local_storage.get("connected_payload_databases")
-
-        if databases:
-            databases_data = []
-            number = 0
-            headers = ("Number", "Name", "Path")
-
-            for name in databases:
-                databases_data.append(
-                    (number, name, databases[name]['Path'])
-                )
-                number += 1
-
-            self.tables.print_table("Connected Payload Databases", headers, *databases_data)
-        else:
+        if not databases:
             raise RuntimeWarning("No payload databases connected.")
 
-    def show_encoder_databases(self) -> None:
+        data = []
+        number = 0
+        headers = ("Number", "Name", "Path")
+
+        for name in databases:
+            data.append(
+                (number, name, databases[name]['Path'])
+            )
+            number += 1
+
+        self.tables.print_table("Connected Payload Databases", headers, *data)
+
+    def show_encoder_databases(self, databases: dict) -> None:
         """ Show connected encoder databases.
 
+        :param dict databases: encoder databases
         :return None: None
         :raises RuntimeWarning: with trailing warning message
         """
 
-        databases = self.local_storage.get("connected_encoder_databases")
-
-        if databases:
-            databases_data = []
-            number = 0
-            headers = ("Number", "Name", "Path")
-
-            for name in databases:
-                databases_data.append(
-                    (number, name, databases[name]['Path'])
-                )
-                number += 1
-
-            self.tables.print_table("Connected Encoder Databases", headers, *databases_data)
-        else:
+        if not databases:
             raise RuntimeWarning("No encoder databases connected.")
 
-    def show_plugin_databases(self) -> None:
+        data = []
+        number = 0
+        headers = ("Number", "Name", "Path")
+
+        for name in databases:
+            data.append(
+                (number, name, databases[name]['Path'])
+            )
+            number += 1
+
+        self.tables.print_table("Connected Encoder Databases", headers, *data)
+
+    def show_plugin_databases(self, databases: dict) -> None:
         """ Show connected plugin databases.
 
+        :param dict databases: plugin databases
         :return None: None
         :raises RuntimeWarning: with trailing warning message
         """
 
-        databases = self.local_storage.get("connected_plugin_databases")
-
-        if databases:
-            databases_data = []
-            number = 0
-            headers = ("Number", "Name", "Path")
-
-            for name in databases:
-                databases_data.append(
-                    (number, name, databases[name]['Path'])
-                )
-                number += 1
-
-            self.tables.print_table("Connected Plugin Databases", headers, *databases_data)
-        else:
+        if not databases:
             raise RuntimeWarning("No plugin databases connected.")
 
-    def show_plugins(self) -> None:
-        """ Show plugins.
+        data = []
+        number = 0
+        headers = ("Number", "Name", "Path")
 
+        for name in databases:
+            data.append(
+                (number, name, databases[name]['Path'])
+            )
+            number += 1
+
+        self.tables.print_table("Connected Plugin Databases", headers, *data)
+
+    def show_loaded_plugins(self, plugins: dict) -> None:
+        """ Show loaded plugins.
+
+        :param dict plugins: dictionary of plugins, where plugin name is a key
+        and plugin object is an item
         :return None: None
         :raises RuntimeWarning: with trailing warning message
         """
 
-        all_plugins = self.plugins.get_plugins()
         headers = ("Number", "Plugin", "Name")
-
-        plugin_shorts = {}
+        shorts = {}
+        data = []
         number = 0
 
-        for database in sorted(all_plugins):
-            plugins_data = []
-            plugins = all_plugins[database]
+        for plugin in sorted(plugins):
+            data.append(
+                (number, plugin, plugin[plugin].details['Name'])
+            )
 
-            for plugin in sorted(plugins):
-                plugin = plugins[plugin]
+            shorts.update({
+                number: plugin
+            })
+            number += 1
 
-                plugins_data.append(
+        if not shorts:
+            raise RuntimeWarning("No plugins available.")
+
+        self.tables.print_table(f"Loaded Plugins", headers, *data)
+        self.local_storage.set("plugin_shorts", shorts)
+
+    def show_plugins(self, plugins: dict) -> None:
+        """ Show plugins.
+
+        :param dict plugins: dictionary of plugins, where plugin name is a key
+        and plugin data is an item
+        :return None: None
+        :raises RuntimeWarning: with trailing warning message
+        """
+
+        headers = ("Number", "Plugin", "Name")
+        shorts = {}
+        number = 0
+
+        for database in sorted(plugins):
+            db_plugins = plugins[database]
+            data = []
+
+            for plugin in sorted(db_plugins):
+                plugin = db_plugins[plugin]
+
+                data.append(
                     (number, plugin['Plugin'], plugin['Name'])
                 )
 
-                plugin_shorts.update({
+                shorts.update({
                     number: plugin['Plugin']
                 })
 
                 number += 1
 
-            self.tables.print_table(f"Plugins ({database})", headers, *plugins_data)
+            self.tables.print_table(f"Plugins ({database})", headers, *data)
 
-        if plugin_shorts:
-            self.local_storage.set("plugin_shorts", plugin_shorts)
-        else:
+        if not shorts:
             raise RuntimeWarning("No plugins available.")
 
-    def show_encoders(self) -> None:
+        self.local_storage.set("plugin_shorts", shorts)
+
+    def show_encoders(self, encoders: dict) -> None:
         """ Show encoders.
 
+        :param dict encoders: dictionary of encoders, where encoder name is a key
+        and encoder data is an item
         :return None: None
         :raises RuntimeWarning: with trailing warning message
         """
 
-        all_encoders = self.local_storage.get("encoders")
         headers = ("Number", "Encoder", "Name")
-
-        encoder_shorts = {}
+        shorts = {}
         number = 0
 
-        for database in sorted(all_encoders):
-            encoders_data = []
-            encoders = all_encoders[database]
+        for database in sorted(encoders):
+            db_encoders = encoders[database]
+            data = []
 
-            for encoder in sorted(encoders):
-                encoder = encoders[encoder]
+            for encoder in sorted(db_encoders):
+                encoder = db_encoders[encoder]
 
-                encoders_data.append(
+                data.append(
                     (number, encoder['Encoder'], encoder['Name'])
                 )
 
-                encoder_shorts.update({
+                shorts.update({
                     number: encoder['Encoder']
                 })
 
                 number += 1
 
-            self.tables.print_table(f"Encoders ({database})", headers, *encoders_data)
+            self.tables.print_table(f"Encoders ({database})", headers, *data)
 
-        if encoder_shorts:
-            self.local_storage.set("encoder_shorts", encoder_shorts)
-        else:
+        if not shorts:
             raise RuntimeWarning("No encoders available.")
 
-    def show_modules(self, category: Optional[str] = None) -> None:
+        self.local_storage.set("encoder_shorts", shorts)
+
+    def show_modules(self, modules: dict, category: Optional[str] = None) -> None:
         """ Show modules by category.
 
+        :param dict modules: modules dictionary, module name as key and
+        module data as item
         :param Optional[str] category: category
         :return None: None
         :raises RuntimeWarning: with trailing warning message
         """
 
-        all_modules = self.local_storage.get("modules")
         headers = ("Number", "Category", "Module", "Rank", "Name")
-
-        module_shorts = {}
+        shorts = {}
         number = 0
 
-        for database in sorted(all_modules):
-            modules_data = []
-            modules = all_modules[database]
+        for database in sorted(modules):
+            db_modules = modules[database]
+            data = []
 
-            for module in sorted(modules):
-                module = modules[module]
+            for module in sorted(db_modules):
+                module = db_modules[module]
 
-                if category:
-                    if category == module['Category']:
-                        modules_data.append(
-                            (number, module['Category'], module['Module'],
-                             module['Rank'], module['Name'])
-                        )
-
-                        module_shorts.update({
-                            number: module['Module']
-                        })
-
-                        number += 1
-                else:
-                    modules_data.append(
+                if not category:
+                    data.append(
                         (number, module['Category'], module['Module'],
                          module['Rank'], module['Name'])
                     )
 
-                    module_shorts.update(
+                    shorts.update(
                         {number: module['Module']}
                     )
 
                     number += 1
+                    continue
+
+                if category == module['Category']:
+                    data.append(
+                        (number, module['Category'], module['Module'],
+                         module['Rank'], module['Name'])
+                    )
+
+                    shorts.update({
+                        number: module['Module']
+                    })
+
+                    number += 1
 
             if category:
-                self.tables.print_table(f"{category.title()} Modules ({database})", headers, *modules_data)
+                self.tables.print_table(f"{category.title()} Modules ({database})", headers, *data)
             else:
-                self.tables.print_table(f"Modules ({database})", headers, *modules_data)
+                self.tables.print_table(f"Modules ({database})", headers, *data)
 
-        if module_shorts:
-            self.local_storage.set("module_shorts", module_shorts)
-        else:
+        if not shorts:
             raise RuntimeWarning("No modules available.")
 
-    def show_payloads(self) -> None:
+        self.local_storage.set("module_shorts", shorts)
+
+    def show_payloads(self, payloads: dict) -> None:
         """ Show payloads.
 
+        :param dict payloads: payloads dictionary, payload name as key
+        and payload data as item
         :return None: None
         :raises RuntimeWarning: with trailing warning message
         """
 
-        all_payloads = self.local_storage.get("payloads")
         headers = ("Number", "Payload", "Rank", "Name")
-
-        payload_shorts = {}
+        shorts = {}
         number = 0
 
-        for database in sorted(all_payloads):
-            payloads_data = []
-            payloads = all_payloads[database]
+        for database in sorted(payloads):
+            db_payloads = payloads[database]
+            data = []
 
-            for payload in sorted(payloads):
-                payload = payloads[payload]
+            for payload in sorted(db_payloads):
+                payload = db_payloads[payload]
 
-                payloads_data.append(
+                data.append(
                     (number, payload['Payload'], payload['Rank'],
                      payload['Name'])
                 )
 
-                payload_shorts.update({
+                shorts.update({
                     number: payload['Payload']
                 })
 
                 number += 1
 
-            self.tables.print_table(f"Payloads ({database})", headers, *payloads_data)
+            self.tables.print_table(f"Payloads ({database})", headers, *data)
 
-        if payload_shorts:
-            self.local_storage.set("payload_shorts", payload_shorts)
-        else:
+        if not shorts:
             raise RuntimeWarning("No payloads available.")
 
-    def show_search_plugins(self, keyword: str) -> None:
+        self.local_storage.set("payload_shorts", shorts)
+
+    def show_search_plugins(self, plugins: dict, keyword: str) -> None:
         """ Show plugins that contain the keyword.
 
+        :param dict plugins: dictionary of plugins, where plugin name is a key
+        and plugin data is an item
         :param str keyword: keyword
         :return None: None
         """
 
-        all_plugins = self.local_storage.get("plugins")
         headers = ("Number", "Plugin", "Name")
-
-        plugin_shorts = {}
+        shorts = {}
         number = 0
 
-        for database in all_plugins:
-            plugins_data = []
-            plugins = all_plugins[database]
+        for database in plugins:
+            db_plugins = plugins[database]
+            data = []
 
-            for plugin in sorted(plugins):
-                plugin = plugins[plugin]
+            for plugin in sorted(db_plugins):
+                plugin = db_plugins[plugin]
 
-                if keyword in plugin['Plugin'] or keyword in plugin['Name']:
-                    name = plugin['Plugin'].replace(keyword, self.colors.RED + keyword + self.colors.END)
+                if keyword not in plugin['Plugin'] + plugin['Name']:
+                    continue
 
-                    description = plugin['Name'].replace(
-                        keyword, self.colors.RED + keyword + self.colors.END)
-
-                    plugins_data.append(
-                        (number, name, description)
-                    )
-
-                    plugin_shorts.update(
-                        {number: plugin['Plugin']}
-                    )
-
-                    number += 1
-
-            if plugins_data:
-                self.tables.print_table(f"Plugins ({database})", headers, *plugins_data)
-
-        if plugin_shorts:
-            self.local_storage.set("plugin_shorts", plugin_shorts)
-
-    def show_search_encoders(self, keyword: str) -> None:
-        """ Show encoders that contain the keyword.
-
-        :param str keyword: keyword
-        :return None: None
-        """
-
-        all_encoders = self.local_storage.get("encoders")
-        headers = ("Number", "Encoder", "Name")
-
-        encoder_shorts = {}
-        number = 0
-
-        for database in all_encoders:
-            encoders_data = []
-            encoders = all_encoders[database]
-
-            for encoder in sorted(encoders):
-                encoder = encoders[encoder]
-
-                if keyword in encoder['Encoder'] or keyword in encoder['Name']:
-                    name = encoder['Encoder'].replace(
-                        keyword, self.colors.RED + keyword + self.colors.END)
-
-                    description = encoder['Name'].replace(
-                        keyword, self.colors.RED + keyword + self.colors.END)
-
-                    encoders_data.append(
-                        (number, name, description)
-                    )
-
-                    encoder_shorts.update({
-                        number: encoder['Encoder']
-                    })
-
-                    number += 1
-
-            if encoders_data:
-                self.tables.print_table(f"Encoders ({database})", headers, *encoders_data)
-
-        if encoder_shorts:
-            self.local_storage.set("encoder_shorts", encoder_shorts)
-
-    def show_search_modules(self, keyword: str) -> None:
-        """ Show modules that contain the keyword.
-
-        :param str keyword: keyword
-        :return None: None
-        """
-
-        all_modules = self.local_storage.get("modules")
-        headers = ("Number", "Category", "Module", "Rank", "Name")
-
-        module_shorts = {}
-        number = 0
-
-        for database in all_modules:
-            modules_data = []
-            modules = all_modules[database]
-
-            for module in sorted(modules):
-                module = modules[module]
-
-                if keyword in module['Module'] or keyword in module['Name']:
-                    name = module['Module'].replace(keyword, self.colors.RED + keyword + self.colors.END)
-
-                    description = module['Name'].replace(
-                        keyword, self.colors.RED + keyword + self.colors.END)
-
-                    modules_data.append((number, module['Category'], name,
-                                         module['Rank'], description))
-
-                    module_shorts.update(
-                        {number: module['Module']}
-                    )
-
-                    number += 1
-
-            if modules_data:
-                self.tables.print_table(f"Modules ({database})", headers, *modules_data)
-
-        if module_shorts:
-            self.local_storage.set("module_shorts", module_shorts)
-
-    def show_search_payloads(self, keyword: str) -> None:
-        """ Show payloads that contain the keyword.
-
-        :param str keyword: keyword
-        :return None: None
-        """
-
-        all_payloads = self.local_storage.get("payloads")
-        headers = ("Number", "Payload", "Rank", "Name")
-
-        payload_shorts = {}
-        number = 0
-
-        for database in all_payloads:
-            payloads_data = []
-            payloads = all_payloads[database]
-
-            for payload in sorted(payloads):
-                payload = payloads[payload]
-
-                if keyword in payload['Payload'] or keyword in payload['Name']:
-                    name = payload['Payload'].replace(
-                        keyword, self.colors.RED + keyword + self.colors.END)
-
-                    description = payload['Name'].replace(
-                        keyword, self.colors.RED + keyword + self.colors.END)
-
-                    payloads_data.append(
-                        (number, name, payload['Rank'], description)
-                    )
-
-                    payload_shorts.update({
-                        number: payload['Payload']
-                    })
-
-                    number += 1
-
-            if payloads_data:
-                self.tables.print_table(f"Payloads ({database})", headers, *payloads_data)
-
-        if payload_shorts:
-            self.local_storage.set("payload_shorts", payload_shorts)
-
-    def show_sessions(self) -> None:
-        """ Show opened sessions.
-
-        :return None: None
-        :raises RuntimeWarning: with trailing warning message
-        """
-
-        sessions = self.sessions.get_sessions()
-
-        if sessions:
-            sessions_data = []
-            headers = ("ID", "Platform", "Arch", "Type", "Host", "Port")
-
-            for session_id in sessions:
-                session = sessions[session_id]
-
-                platform = session['Platform']
-                architecture = session['Arch']
-                type = session['Type']
-                host = session['Host']
-                port = session['Port']
-
-                sessions_data.append(
-                    (session_id, platform, architecture, type, host, port)
+                data.append(
+                    (number, plugin['Plugin'].replace(keyword, f'%red{keyword}%end'),
+                     plugin['Name'].replace(keyword, f'%red{keyword}%end'))
                 )
 
-            self.tables.print_table("Opened Sessions", headers, *sessions_data)
-        else:
-            raise RuntimeWarning("No opened sessions available.")
+                shorts.update(
+                    {number: plugin['Plugin']}
+                )
+
+                number += 1
+
+            if data:
+                self.tables.print_table(f"Plugins ({database})", headers, *data)
+
+        if shorts:
+            self.local_storage.set("plugin_shorts", shorts)
+
+    def show_search_encoders(self, encoders: dict, keyword: str) -> None:
+        """ Show encoders that contain the keyword.
+
+        :param dict encoders: dictionary of encoders, where encoder name is a key
+        and encoder data is an item
+        :param str keyword: keyword
+        :return None: None
+        """
+
+        headers = ("Number", "Encoder", "Name")
+        shorts = {}
+        number = 0
+
+        for database in encoders:
+            db_encoders = encoders[database]
+            data = []
+
+            for encoder in sorted(db_encoders):
+                encoder = db_encoders[encoder]
+
+                if keyword not in encoder['Encoder'] + encoder['Name']:
+                    continue
+
+                data.append(
+                    (number, encoder['Encoder'].replace(keyword, f'%red{keyword}%end'),
+                     encoder['Name'].replace(keyword, f'%red{keyword}%end'))
+                )
+
+                shorts.update(
+                    {number: encoder['Encoder']}
+                )
+
+                number += 1
+
+            if data:
+                self.tables.print_table(f"Encoders ({database})", headers, *data)
+
+        if shorts:
+            self.local_storage.set("encoder_shorts", shorts)
+
+    def show_search_modules(self, modules: dict, keyword: str) -> None:
+        """ Show modules that contain the keyword.
+
+        :param dict modules: dictionary of modules, where module name is a key
+        and module data is an item
+        :param str keyword: keyword
+        :return None: None
+        """
+
+        headers = ("Number", "Category", "Module", "Rank", "Name")
+        shorts = {}
+        number = 0
+
+        for database in modules:
+            db_modules = modules[database]
+            data = []
+
+            for module in sorted(db_modules):
+                module = db_modules[module]
+
+                if keyword not in module['Module'] + module['Name']:
+                    continue
+
+                data.append(
+                    (number, module['Category'],
+                     module['Module'].replace(keyword, f'%red{keyword}%end'),
+                     module['Rank'],
+                     module['Name'].replace(keyword, f'%red{keyword}%end'))
+                )
+
+                shorts.update(
+                    {number: module['Module']}
+                )
+
+                number += 1
+
+            if data:
+                self.tables.print_table(f"Modules ({database})", headers, *data)
+
+        if shorts:
+            self.local_storage.set("module_shorts", shorts)
+
+    def show_search_payloads(self, payloads: dict, keyword: str) -> None:
+        """ Show payloads that contain the keyword.
+
+        :param dict payloads: dictionary of payloads, where payload name is a key
+        and payload data is an item
+        :param str keyword: keyword
+        :return None: None
+        """
+
+        headers = ("Number", "Module", "Rank", "Name")
+        shorts = {}
+        number = 0
+
+        for database in payloads:
+            db_payloads = payloads[database]
+            data = []
+
+            for payload in sorted(db_payloads):
+                payload = db_payloads[payload]
+
+                if keyword not in payload['Payload'] + payload['Name']:
+                    continue
+
+                data.append(
+                    (number,
+                     payload['Payload'].replace(keyword, f'%red{keyword}%end'),
+                     payload['Rank'],
+                     payload['Name'].replace(keyword, f'%red{keyword}%end'))
+                )
+
+                shorts.update(
+                    {number: payload['Payload']}
+                )
+
+                number += 1
+
+            if data:
+                self.tables.print_table(f"Payloads ({database})", headers, *data)
+
+        if shorts:
+            self.local_storage.set("payload_shorts", shorts)
 
     def show_module_information(self, details: Optional[dict] = None) -> None:
         """ Show module details.
@@ -690,63 +708,66 @@ class Show(object):
         """
 
         headers = ("Option", "Value", "Required", "Description")
-        options_data = []
+        data = []
 
         for option in sorted(options):
-            if options[option]['Visible']:
-                value, required = options[option]['Value'], \
-                    options[option]['Required']
+            if not options[option]['Visible']:
+                continue
 
-                if required:
-                    required = "yes"
-                else:
-                    required = "no"
+            value, required = options[option]['Value'], \
+                options[option]['Required']
 
-                if isinstance(value, bool):
-                    if value:
-                        value = "yes"
-                    else:
-                        value = "no"
+            required = "yes" if required else "no"
+            value = "" if value is None else value
 
-                options_data.append(
-                    (option, "" if value is None else value, required, options[option]['Description'])
-                )
+            if isinstance(value, bool):
+                value = "yes" if value else "no"
 
-        self.tables.print_table(title, headers, *options_data)
+            data.append(
+                (option, value, required,
+                 options[option]['Description'])
+            )
 
-    def show_options(self) -> None:
+        self.tables.print_table(title, headers, *data)
+
+    def show_options(self, module: Module) -> None:
         """ Show options.
 
+        :param Module module: module object
         :return None: None
         :raises RuntimeWarning: with trailing warning message
         """
 
-        module = self.modules.get_current_module()
         payload = self.payloads.get_current_payload(module)
 
         if not module:
             raise RuntimeWarning("No module selected.")
 
         if hasattr(module, "options"):
-            self.show_options_table(f"Module Options ({module.details['Module']})", module.options)
+            self.show_options_table(
+                f"Module Options ({module.details['Module']})", module.options)
 
-        if payload:
-            encoder = self.encoders.get_current_encoder(module, payload)
+        if not payload:
+            return
 
-            if payload and hasattr(payload, "options"):
-                self.show_options_table(f"Payload Options ({payload.details['Payload']})", payload.options)
+        encoder = self.encoders.get_current_encoder(module, payload)
 
-            if encoder and hasattr(encoder, "options"):
-                self.show_options_table(f"Encoder Options ({encoder.details['Encoder']})", encoder.options)
+        if hasattr(payload, "options"):
+            self.show_options_table(
+                f"Payload Options ({payload.details['Payload']})", payload.options)
 
-    def show_advanced(self) -> None:
+        if encoder and hasattr(encoder, "options"):
+            self.show_options_table(
+                f"Encoder Options ({encoder.details['Encoder']})", encoder.options)
+
+    def show_advanced(self, module: Module) -> None:
         """ Show advanced options.
 
+        :param Module module: module object
         :return None: None
         :raises RuntimeWarning: with trailing warning message
         """
 
-        module = self.modules.get_current_module()
         payload = self.payloads.get_current_payload(module)
 
         if not module:
@@ -756,13 +777,15 @@ class Show(object):
             self.show_options_table(
                 f"Module Advanced Options ({module.details['Module']})", module.advanced)
 
-        if payload:
-            encoder = self.encoders.get_current_encoder(module, payload)
+        if not payload:
+            return
 
-            if payload and hasattr(payload, "advanced"):
-                self.show_options_table(
-                    f"Payload Advanced Options ({payload.details['Payload']})", payload.advanced)
+        encoder = self.encoders.get_current_encoder(module, payload)
 
-            if encoder and hasattr(encoder, "advanced"):
-                self.show_options_table(
-                    f"Encoder Advanced Options ({encoder.details['Encoder']})", encoder.advanced)
+        if hasattr(payload, "advanced"):
+            self.show_options_table(
+                f"Payload Advanced Options ({payload.details['Payload']})", payload.advanced)
+
+        if encoder and hasattr(encoder, "advanced"):
+            self.show_options_table(
+                f"Encoder Advanced Options ({encoder.details['Encoder']})", encoder.advanced)

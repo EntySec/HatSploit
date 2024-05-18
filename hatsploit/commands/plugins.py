@@ -13,7 +13,7 @@ class HatSploitCommand(Command):
         super().__init__()
 
         self.show = Show()
-        self.plguins = Plugins()
+        self.plugins = Plugins()
 
         self.details.update({
             'Category': "plugins",
@@ -30,4 +30,4 @@ class HatSploitCommand(Command):
         return self.plugins.get_plugins()
 
     def run(self, argc, argv):
-        self.show.show_plugins()
+        self.show.show_plugins(self.plugins.get_plugins())

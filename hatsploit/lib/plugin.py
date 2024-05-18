@@ -24,7 +24,7 @@ SOFTWARE.
 
 from badges import Badges, Tables
 
-from hatsploit.core.cli.tools import Tools
+from hatsploit.core.utils.tools import Tools
 
 
 class Plugin(Badges, Tables, Tools):

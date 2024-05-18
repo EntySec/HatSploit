@@ -24,7 +24,7 @@ SOFTWARE.
 
 import readline
 
-from hatsploit.core.cli.fmt import FMT
+from pex.string import String
 from hatsploit.lib.commands import Commands
 
 
@@ -38,7 +38,7 @@ class Completer(object):
     def __init__(self) -> None:
         super().__init__()
 
-        self.fmt = FMT()
+        self.string = String()
         self.commands = Commands()
 
         self.matches = None
@@ -62,7 +62,7 @@ class Completer(object):
             start_index = readline.get_begidx() - stripped
 
             if start_index > 0:
-                command = self.fmt.format_commands(line)
+                command = self.string.split_args(line)
 
                 if command[0] == "":
                     complete_function = self.default_completer

@@ -30,4 +30,4 @@ class HatSploitCommand(Command):
         return self.payloads.get_payloads()
 
     def run(self, argc, argv):
-        self.show.show_payloads()
+        self.show.show_payloads(self.payloads.get_payloads())

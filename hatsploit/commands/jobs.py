@@ -34,7 +34,7 @@ class HatSploitCommand(Command):
         choice = argv[1]
 
         if choice == '-l':
-            self.show.show_jobs()
+            self.show.show_jobs(self.jobs.get_jobs())
 
         elif choice == '-k':
             self.jobs.delete_job(argv[2])

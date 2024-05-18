@@ -30,4 +30,4 @@ class HatSploitCommand(Command):
         return self.encoders.get_encoders()
 
     def run(self, argc, argv):
-        self.show.show_encoders()
+        self.show.show_encoders(self.encoders.get_encoders())

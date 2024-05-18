@@ -57,10 +57,14 @@ class HatSploitCommand(Command):
         choice = argv[1]
 
         if choice == '-l':
-            self.show.show_plugin_databases()
+            self.show.show_plugin_databases(
+                self.db.get_plugin_databases())
+
         elif choice == '-d':
             self.db.disconnect_plugin_database(argv[2])
+
         elif choice == '-b':
             self.builder.build_plugin_database(argv[2], argv[3])
+
         elif choice == '-c':
             self.db.connect_plugin_database(argv[2], argv[3])
