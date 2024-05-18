@@ -343,14 +343,19 @@ class Modules(object):
         """ Run module.
 
         :param Module module: module object
+        :raises RuntimeError: with trailing error message
         :return None: None
         """
 
-        if hasattr(module, "check"):
-            if module.check():
-                module.run()
-        else:
+        if not hasattr(module, "check"):
             module.run()
+            return
+
+        if not module.check():
+            raise RuntimeWarning(
+                f"{module.details['Category'].title()} module failed! (not vulnerable)")
+
+        module.run()
 
     def entry_to_module(self, module: Module) -> None:
         """ Prepare to entry the module.
