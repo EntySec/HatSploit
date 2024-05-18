@@ -24,10 +24,9 @@ SOFTWARE.
 
 from typing import Any, Optional
 
-from hatsploit.core.cli.badges import Badges
-from hatsploit.core.cli.tables import Tables
-from hatsploit.core.cli.tools import Tools
+from badges import Badges, Tables
 
+from hatsploit.core.cli.tools import Tools
 from hatsploit.lib.options import Options
 
 

@@ -25,9 +25,9 @@ SOFTWARE.
 from typing import Optional
 from textwrap import dedent
 
-from hatsploit.core.cli.colors import Colors
-from hatsploit.core.cli.tables import Tables
-from hatsploit.core.cli.badges import Badges
+from badges import Badges, Tables
+from colorscript import Colors
+
 from hatsploit.lib.encoders import Encoders
 from hatsploit.lib.jobs import Jobs
 from hatsploit.lib.loot import Loot

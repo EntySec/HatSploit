@@ -27,7 +27,8 @@ import os
 
 from typing import Union, Optional, Callable
 
-from hatsploit.core.cli.badges import Badges
+from badges import Badges
+
 from hatsploit.core.db.importer import Importer
 
 from hatsploit.lib.encoder import Encoder

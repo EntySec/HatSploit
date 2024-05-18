@@ -25,7 +25,8 @@ SOFTWARE.
 import json
 import os
 
-from hatsploit.core.cli.badges import Badges
+from badges import Badges
+
 from hatsploit.core.db.importer import Importer
 from hatsploit.lib.config import Config
 from hatsploit.lib.modules import Modules

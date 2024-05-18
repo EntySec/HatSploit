@@ -23,10 +23,9 @@ SOFTWARE.
 """
 
 from typing import Callable, Any
+from badges import Badges
 
 from pex.post import PostTools
-
-from hatsploit.core.cli.badges import Badges
 
 
 class Blinder(object):

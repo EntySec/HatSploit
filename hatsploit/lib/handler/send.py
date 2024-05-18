@@ -38,7 +38,7 @@ from hatsploit.lib.encoder import Encoder
 from hatsploit.lib.payloads import Payloads
 from hatsploit.lib.handle import Handle
 
-from hatsploit.core.cli.badges import Badges
+from badges import Badges
 
 from pawn import Pawn
 

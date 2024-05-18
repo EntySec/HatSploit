@@ -23,16 +23,19 @@ SOFTWARE.
 """
 
 import readline
-
 import os
 import sys
 
+from badges import Badges
+
 from hatsploit.core.base.execute import Execute
-from hatsploit.core.cli.badges import Badges
+
 from hatsploit.core.cli.fmt import FMT
+
 from hatsploit.core.utils.ui.banner import Banner
 from hatsploit.core.utils.ui.completer import Completer
 from hatsploit.core.utils.ui.tip import Tip
+
 from hatsploit.lib.config import Config
 from hatsploit.lib.modules import Modules
 from hatsploit.lib.runtime import Runtime

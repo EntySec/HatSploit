@@ -23,8 +23,8 @@ SOFTWARE.
 """
 
 from typing import Optional
+from badges import Badges
 
-from hatsploit.core.cli.badges import Badges
 from hatsploit.lib.config import Config
 
 from hatsploit.lib.session import Session

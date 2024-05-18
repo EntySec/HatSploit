@@ -43,7 +43,7 @@ from hatsploit.lib.session import Session
 from hatsploit.lib.handler.send import Send
 from hatsploit.lib.handler.misc import HatSploitSession
 
-from hatsploit.core.cli.badges import Badges
+from badges import Badges
 
 
 class Handler(object):

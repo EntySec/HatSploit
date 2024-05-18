@@ -26,9 +26,10 @@ import os
 import requests
 import shutil
 import subprocess
-from packaging import version
 
-from hatsploit.core.cli.badges import Badges
+from packaging import version
+from badges import Badges
+
 from hatsploit.lib.config import Config
 
 

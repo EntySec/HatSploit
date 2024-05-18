@@ -22,13 +22,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
-from hatsploit.core.cli.badges import Badges
-from hatsploit.core.cli.colors import Colors
-from hatsploit.core.cli.fmt import FMT
-from hatsploit.core.cli.tables import Tables
+from badges import Badges, Tables
 
 
-class Command(FMT, Badges, Colors, Tables):
+class Command(Badges, Tables):
     """ Subclass of hatsploit.lib module.
 
     This subclass of hatsploit.lib module is intended for providing

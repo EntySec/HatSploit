@@ -29,13 +29,11 @@ import yaml
 
 from hatasm import HatAsm
 from typing import Any, Optional
+from badges import Badges, Tables
 
 from pex.platform.types import EXEC_FORMATS
 
 from hatsploit.core.base.console import Console
-
-from hatsploit.core.cli.badges import Badges
-from hatsploit.core.cli.tables import Tables
 
 from hatsploit.core.db.db import DB
 from hatsploit.core.db.builder import Builder

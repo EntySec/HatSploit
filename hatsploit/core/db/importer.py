@@ -31,8 +31,8 @@ import threading
 import time
 
 from typing import Union
+from badges import Badges
 
-from hatsploit.core.cli.badges import Badges
 from hatsploit.core.db.db import DB
 from hatsploit.lib.config import Config
 from hatsploit.lib.storage import LocalStorage

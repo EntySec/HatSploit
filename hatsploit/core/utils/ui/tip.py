@@ -26,9 +26,8 @@ import os
 import random
 
 from colorscript import ColorScript
+from badges import Badges
 
-from hatsploit.core.cli.badges import Badges
-from hatsploit.core.cli.colors import Colors
 from hatsploit.lib.config import Config
 
 
@@ -44,7 +43,6 @@ class Tip(object):
 
         self.config = Config()
         self.badges = Badges()
-        self.colors = Colors()
 
         self.color_script = ColorScript()
 

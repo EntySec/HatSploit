@@ -25,6 +25,7 @@ SOFTWARE.
 import json
 
 from typing import Union, Any
+from badges import Badges
 
 
 class GlobalStorage(object):
@@ -54,11 +55,15 @@ class GlobalStorage(object):
         :return None: None
         """
 
-        storage_variables = self.get_all()
+        items = self.get_all()
 
-        for variable in storage_variables:
-            variable_value = storage_variables[variable]
-            LocalStorage().set(variable, variable_value)
+        for key, item in items.items():
+            if key == 'log':
+                Badges().set_log(item)
+            elif key == 'less':
+                Badges().set_less(item)
+            else:
+                LocalStorage().set(key, item)
 
     def get_all(self) -> dict:
         """ Get all global storage variables as a dictionary.

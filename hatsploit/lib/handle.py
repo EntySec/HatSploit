@@ -32,7 +32,7 @@ from pex.proto.http import HTTPListener
 from pex.proto.tcp import TCPClient
 from pex.proto.tcp import TCPListener
 
-from hatsploit.core.cli.badges import Badges
+from badges import Badges
 
 
 class Handle(object):

@@ -28,8 +28,9 @@ import traceback
 
 from typing import Callable, Any, Union
 
+from badges import Badges
+
 from hatsploit.core.base.loader import Loader
-from hatsploit.core.cli.badges import Badges
 from hatsploit.lib.config import Config
 from hatsploit.lib.jobs import Jobs
 from hatsploit.lib.loot import Loot

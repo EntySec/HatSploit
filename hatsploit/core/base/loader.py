@@ -26,10 +26,12 @@ import string
 import threading
 import time
 
-from hatsploit.core.cli.badges import Badges
+from badges import Badges
+
 from hatsploit.core.db.builder import Builder
 from hatsploit.core.db.importer import Importer
 from hatsploit.core.utils.update import Update
+
 from hatsploit.lib.config import Config
 
 
