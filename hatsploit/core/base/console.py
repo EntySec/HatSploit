@@ -90,8 +90,7 @@ class Console(object):
         commands = self.badges.input_empty(prompt)
 
         self.runtime.update()
-        self.badges.print_function(self.execute.execute_command,
-                                   self.string.split_args(commands))
+        self.execute.execute_command(self.string.split_args(commands))
         self.runtime.update()
 
         if self.local_storage.get("history"):
