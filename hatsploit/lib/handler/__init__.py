@@ -88,7 +88,8 @@ class Handler(object):
                                    False, advanced=True, object=Module)
 
     def open_session(self, session: Session,
-                     on_session: Optional[Callable[..., Any]] = None) -> None:
+                     on_session: Optional[Callable[..., Any] = None,
+                     details: Optional[dict] = {}) -> None:
         """ Open session and interact with it if allowed.
 
         Note: This method does not open session, it just saves opened session to the
@@ -97,8 +98,12 @@ class Handler(object):
         :param Session session: session object
         :param Optional[Callable[..., Any]] on_session: function of an action that
         should be performed right after session was opened
+        :param Optional[dict] details: session details to add
         :return None: None
         """
+
+        if details:
+            session.details.update(details)
 
         platform = str(session.details['Platform'])
         arch = str(session.details['Arch'])
@@ -189,17 +194,17 @@ class Handler(object):
 
         if client:
             session = session()
-
-            session.details['Platform'] = payload.details['Platform']
-            session.details['Arch'] = payload.details['Arch']
-            session.details['Host'] = host
-            session.details['Port'] = self.lport.value
-
             session.open(client)
 
             self.open_session(
                 session=session,
-                on_session=on_session
+                on_session=on_session,
+                details={
+                    'Platform': payload.details['Platform'],
+                    'Arch': payload.details['Arch'],
+                    'Host': host,
+                    'Port': self.lport.value
+                }
             )
 
     def module_handle_session(self, type: str = 'one_side',
