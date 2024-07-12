@@ -147,7 +147,6 @@ class Check(object):
                             'Description',
                             'Arch',
                             'Platform',
-                            'Rank',
                             'Type',
                         ]
 

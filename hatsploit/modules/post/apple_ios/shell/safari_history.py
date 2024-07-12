@@ -18,11 +18,13 @@ class HatSploitModule(Module, Sessions, DB):
             'Name': "Obtain Safari history",
             'Module': "post/apple_ios/shell/safari_history",
             'Authors': [
-                'Ivan Nikolskiy (enty8080) - module developer',
+                "Ivan Nikolskiy (enty8080) - module developer",
             ],
-            'Description': "Get iOS Safari history database and parse it.",
+            'Description': (
+                "Get iOS Safari history database and parse it."
+            ),
             'Platform': OS_IPHONE,
-            'Rank': "medium",
+            'Rank': MEDIUM_RANK,
         })
 
         self.session = SessionOption(None, "Session to run on.", True,

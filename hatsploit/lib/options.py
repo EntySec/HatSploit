@@ -57,13 +57,6 @@ class Option(object):
         self.advanced = advanced
         self.object = object
 
-        self.payload = None
-        self.encoder = None
-        self.session = None
-
-        self.little = b''
-        self.big = b''
-
         self.visible = True
         self.locked = False
 

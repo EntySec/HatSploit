@@ -82,6 +82,20 @@ class Execute(object):
             self.show.show_all_commands()
             return True
 
+        if command[0][0] == '*':
+            module = self.modules.get_current_module()
+            if not module:
+                self.badges.print_warning("No module selected.")
+                return True
+
+            self.show.show_module_information(module.details)
+            self.show.show_options(module)
+            self.show.show_advanced(module)
+            self.show.show_module_devices(module)
+            self.show.show_module_targets(module)
+
+            return True
+
         if command[0][0] == '&':
             command[0] = command[0][1:]
 

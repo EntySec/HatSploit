@@ -19,8 +19,7 @@ class HatSploitPayload(Payload, Handler):
             'Description': "Windows cmd.exe reverse TCP payload through PowerShell script.",
             'Arch': ARCH_GENERIC,
             'Platform': OS_WINDOWS,
-            'Rank': "high",
-            'Type': "reverse_tcp",
+            'Type': ReverseTCP,
         })
 
     def run(self):

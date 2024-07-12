@@ -19,8 +19,7 @@ class HatSploitPayload(Payload, Handler):
             'Description': "PHP shell reverse TCP payload.",
             'Arch': ARCH_GENERIC,
             'Platform': OS_UNIX,
-            'Rank': "high",
-            'Type': "reverse_tcp",
+            'Type': ReverseTCP,
         })
 
     def run(self):

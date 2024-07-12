@@ -678,6 +678,52 @@ class Show(object):
         if shorts:
             self.local_storage.set("payload_shorts", shorts)
 
+    def show_module_targets(self, module: Module) -> None:
+        """ Show module targets.
+
+        :param Module module: module object
+        :return None: None
+        :raises RuntimeWarning: with trailing error message
+        """
+
+        if not module:
+            raise RuntimeWarning("No module selected.")
+
+        targets = module.details['Targets']
+        headers = ('Current', 'ID', 'Name')
+        number = 0
+        data = []
+
+        for target in targets:
+            data.append(('*' if module.target == targets[target] else '', number, target))
+            number += 1
+
+        if data:
+            self.tables.print_table(f"Targets ({module.details['Module']})", headers, *data)
+
+    def show_module_devices(self, module: Module) -> None:
+        """ Show module devices.
+
+        :param Module module: module object
+        :return None: None
+        :raises RuntimeWarning: with trailing error message
+        """
+
+        if not module:
+            raise RuntimeWarning("No module selected.")
+
+        devices = module.details['Devices']
+        headers = ('ID', 'Name')
+        number = 0
+        data = []
+
+        for device in devices:
+            data.append((number, device))
+            number += 1
+
+        if data:
+            self.tables.print_table(f"Devices ({module.details['Module']})", headers, *data)
+
     def show_module_information(self, details: Optional[dict] = None) -> None:
         """ Show module details.
 

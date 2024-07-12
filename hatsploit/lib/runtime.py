@@ -124,6 +124,6 @@ class Runtime(object):
 
         except Exception as e:
             self.badges.print_error(f"An error occurred: {str(e)}!")
-            traceback.print_stack(file=sys.stdout)
+            traceback.print_exc(file=sys.stdout)
 
         return Exception

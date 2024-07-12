@@ -15,11 +15,13 @@ class HatSploitModule(Module):
             'Name': "macOS Shell Suspend",
             'Module': "post/macos/shell/suspend",
             'Authors': [
-                'Ivan Nikolskiy (enty8080) - module developer',
+                "Ivan Nikolskiy (enty8080) - module developer",
             ],
-            'Description': "Suspend macOS through shell.",
+            'Description': (
+                "Suspend macOS through shell."
+            ),
             'Platform': OS_MACOS,
-            'Rank': "medium",
+            'Rank': MEDIUM_RANK,
         })
 
         self.session = SessionOption(None, "Session to run on.", True,
@@ -27,5 +29,5 @@ class HatSploitModule(Module):
 
     def run(self):
         self.session.session.send_command(
-            "/System/Library/CoreServices/Menu\ Extras/User.menu/Contents/Resources/CGSession -suspend"
+            "/System/Library/CoreServices/Menu\\ Extras/User.menu/Contents/Resources/CGSession -suspend"
         )

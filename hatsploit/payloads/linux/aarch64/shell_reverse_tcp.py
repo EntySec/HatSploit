@@ -21,8 +21,7 @@ class HatSploitPayload(Payload, Handler, Assembler, Socket):
             'Description': "Shell reverse TCP payload for Linux aarch64.",
             'Arch': ARCH_AARCH64,
             'Platform': OS_LINUX,
-            'Rank': "high",
-            'Type': "reverse_tcp",
+            'Type': ReverseTCP,
         })
 
     def implant(self):

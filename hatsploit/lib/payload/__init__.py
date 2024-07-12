@@ -46,18 +46,17 @@ class Payload(Badges, Tables, Tools, Pawn):
         self.details = {
             'Name': "",
             'Payload': "",
-            'Authors': [
-                ''
-            ],
+            'Authors': (
+            ),
             'Description': "",
             'Arch': None,
             'Platform': None,
             'Session': None,
-            'Rank': "",
-            'Type': ""
+            'Phased': False,
+            'Type': None
         }
 
-        self.badchars = BytesOption(None, "Bad characters to omit.", False, True)
+        self.badchars = BytesOption('', "Bad characters to omit.", False, True)
 
     def set(self, option: str, value: Optional[str] = None) -> bool:
         """ Set payload option.
@@ -68,33 +67,6 @@ class Payload(Badges, Tables, Tools, Pawn):
         """
 
         return Options().set_option(self, option, value)
-
-    def phase(self) -> Union[bytes, None]:
-        """ First phase.
-
-        :return bytes: bytes
-        """
-
-        type = self.details['Type']
-
-        if type not in ['reverse_tcp', 'bind_tcp']:
-            type = 'reverse_tcp'
-
-        phase = self.auto_pawn(
-            platform=self.details['Platform'],
-            arch=self.details['Arch'],
-            type=type
-        )
-
-        if phase:
-            if type == 'reverse_tcp':
-                phase.set('host', self.rhost.value)
-                phase.set('port', self.rport.value)
-
-            elif type == 'bind_tcp':
-                phase.set('port', self.rport.value)
-
-            return self.run_pawn(phase)
 
     def run(self) -> None:
         """ Run this payload.

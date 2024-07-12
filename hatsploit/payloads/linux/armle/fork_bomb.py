@@ -19,8 +19,7 @@ class HatSploitPayload(Payload):
             'Description': "Fork bomb payload for Linux armle.",
             'Arch': ARCH_ARMLE,
             'Platform': OS_LINUX,
-            'Rank': "low",
-            'Type': "one_side",
+            'Type': OneSide,
         })
 
     def run(self):

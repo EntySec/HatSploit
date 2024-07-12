@@ -29,3 +29,4 @@ from pex.arch.types import *
 from pex.platform.types import *
 
 from hatsploit.lib.option import *
+from hatsploit.lib.payload.const import *

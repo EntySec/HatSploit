@@ -38,6 +38,7 @@ from hatsploit.lib.encoder import Encoder
 from hatsploit.lib.module import Module
 from hatsploit.lib.encoders import Encoders
 from hatsploit.lib.storage import LocalStorage
+from hatsploit.lib.mixins import PayloadMixin, PayloadGenericMixin
 
 
 class Payloads(object):
@@ -145,22 +146,29 @@ class Payloads(object):
         return {}
 
     def get_current_payload(self, module: Module) -> Union[Payload, None]:
-        """ Get current encoder, this is encoder which is currently
+        """ Get current payload, this is payload which is currently
         used within current module.
 
         :param Module module: current module
         :return Union[Payload, None]: current payload, None if no current payload
         """
 
+        if hasattr(module, 'payload'):
+            return self.get_module_payload(module.payload.value, module)
+
+    def get_module_payload(self, name: str, module: Module) -> Union[Payload, None]:
+        """ Get payload imported within the module context.
+
+        :param str name: payload name
+        :param Module module: module object
+        :return Union[Payload, None]: payload if exists
+        """
+
         imported_payloads = self.get_imported_payloads()
+        module_name = module.details['Module']
 
-        if module and imported_payloads and 'Payload' in module.details:
-            module_name = module.details['Module']
-
-            if module_name in imported_payloads:
-                name = module.details['Payload']['Value']
-
-                return imported_payloads[module_name].get(name, None)
+        if imported_payloads and module_name in imported_payloads:
+            return imported_payloads[module_name].get(name, None)
 
     def search_payload(self, name: str) -> str:
         """ Get payload name by full payload name.
@@ -253,57 +261,64 @@ class Payloads(object):
 
         return False
 
-    def check_module_compatible(self, payload: str, module: Module) -> bool:
+    def check_module_compatible(self, payload: str, module: Module) -> Union[PayloadMixin, None]:
         """ Check if payload is compatible with the specific module.
 
         :param str payload: payload name
         :param Module module: module object
-        :return bool: True if compatible else False
+        :return Union[PayloadMixin, None]: payload mixin if compatible else None
         """
 
         payload = self.get_payload_object(payload)
 
-        if payload:
-            if 'Payload' in module.details:
-                types = module.details['Payload'].get('Types', None)
-                platforms = module.details['Payload'].get('Platforms', None)
-                arches = module.details['Payload'].get('Arches', None)
+        if not payload:
+            return
 
-                if types and payload['Type'] not in types:
-                    return False
+        if not module.payload.criteria:
+            return PayloadGenericMixin
 
-                if platforms and not any(payload['Platform'] == platform for platform in platforms):
-                    return False
+        mixins = module.payload.criteria
 
-                if arches and not any(payload['Arch'] == arch for arch in arches):
-                    return False
+        for mixin in mixins:
+            types = mixins[mixin].get('Type', None)
+            platforms = mixins[mixin].get('Platform', None)
+            arches = mixins[mixin].get('Arch', None)
 
-            return True
+            if types and payload['Type'] not in types:
+                continue
 
-        return False
+            if platforms and not any(payload['Platform'] == platform for platform in platforms):
+                continue
 
-    def add_payload(self, module: str, payload: str) -> None:
+            if arches and not any(payload['Arch'] == arch for arch in arches):
+                continue
+
+            return mixin
+
+    def add_payload(self, module: Module, payload: str) -> None:
         """ Add payload to module which you want to reserve it for.
 
-        :param str module: module which you want to reserve encoder for
+        :param str module: module object
         :param str payload: payload name
         :return None: None
         :raises RuntimeError: with trailing error message
         """
 
-        if not self.check_imported(module, payload):
-            if not self.import_payload(module, payload):
+        module_name = module.details['Module']
+
+        if not self.check_imported(module_name, payload):
+            if not self.import_payload(module_name, payload):
                 raise RuntimeError(f"Failed to select payload from database: {payload}!")
 
-    def generate_payload(self, payload: str, options: dict = {}, encoder: Optional[str] = None,
-                         method: str = 'run') -> Any:
+    def generate_payload(self, payload: str, options: dict = {},
+                         encoder: Optional[str] = None,
+                         *args, **kwargs) -> Any:
         """ Generate payload using specific payload and encoder.
 
         :param str payload: payload name
         :param dict options: dictionary, option names as keys and option values
         as items
         :param Optional[str] encoder: encoder name
-        :param str method: payload generator method
         :return Any: payload returned by the specific payload
         """
 
@@ -319,7 +334,7 @@ class Payloads(object):
                 for option in options:
                     encoder.set(option, options[option])
 
-            return self.run_payload(payload, encoder, method)
+            return self.run_payload(payload, encoder, *args, **kwargs)
 
     def pack_payload(self, payload: bytes, platform: Platform, arch: Arch, file_format: Optional[str] = None) -> bytes:
         """ Pack payload in the CPU executable.
@@ -343,10 +358,9 @@ class Payloads(object):
         :return bool: True if code contains badchars else False
         """
 
-        if badchars:
-            for char in badchars:
-                if char in code:
-                    return True
+        for char in badchars:
+            if char in code:
+                return True
 
         return False
 
@@ -364,29 +378,31 @@ class Payloads(object):
 
         all_encoders = self.encoders.get_encoders()
 
-        if all_encoders:
-            for database in all_encoders:
-                encoders = all_encoders[database]
+        if not all_encoders:
+            return code
 
-                for encoder in encoders:
-                    if not self.encoders.check_payload_compatible(encoder, payload):
-                        continue
+        for database in all_encoders:
+            encoders = all_encoders[database]
 
-                    encoder = self.encoders.get_encoder(encoder)
-                    encoder.payload = code
-                    new_code = encoder.run()
+            for encoder in encoders:
+                if not self.encoders.check_payload_compatible(encoder, payload):
+                    continue
 
-                    if not self.detect_badchars(new_code, badchars):
-                        return new_code
+                encoder = self.encoders.get_encoder(encoder)
+                encoder.payload = code
+                new_code = encoder.run()
 
-        return code
+                if not self.detect_badchars(new_code, badchars):
+                    return new_code
 
-    def run_payload(self, payload: Payload, encoder: Optional[Encoder] = None, method: str = 'run') -> Any:
+    def run_payload(self, payload: Payload, encoder: Optional[Encoder] = None,
+                    method: str = 'run', badchars: bytes = b'') -> Any:
         """ Run payload and apply encoder to it.
 
         :param Payload payload: payload object
         :param Optional[Encoder] encoder: encoder object
         :param str method: payload generator method (run, implant, phaseN)
+        :param bytes badchars: add custom bad chars to omit
         :return Any: payload result
         """
 
@@ -409,4 +425,4 @@ class Payloads(object):
             code = self.encoders.encode_payload(encoder, code)
 
         return self.fix_badchars(
-            payload, code, payload.badchars.value)
+            payload, code, payload.badchars.value + badchars)

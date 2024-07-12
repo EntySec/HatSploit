@@ -22,6 +22,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
+import sys
+import traceback
 import copy
 import os
 
@@ -127,6 +129,7 @@ class Modules(object):
             imported_module = self.importer.import_module(module_object['Path'])
             self.options.add_options(imported_module)
         except Exception:
+            traceback.print_exc(file=sys.stdout)
             return None
 
         return imported_module
@@ -202,9 +205,11 @@ class Modules(object):
 
         if module_object:
             if self.get_imported_modules():
-                self.local_storage.update("imported_modules", {module: module_object})
+                self.local_storage.update(
+                    "imported_modules", {module: module_object})
             else:
-                self.local_storage.set("imported_modules", {module: module_object})
+                self.local_storage.set(
+                    "imported_modules", {module: module_object})
 
         return module_object
 
@@ -225,6 +230,16 @@ class Modules(object):
                     return True
 
         return False
+
+    @staticmethod
+    def check_payload(module: Module) -> bool:
+        """ Check if module has a payload configurable.
+
+        :param Module module: module object
+        :return bool: True if yes else False
+        """
+
+        return hasattr(module, 'payload')
 
     def check_imported(self, module: str) -> bool:
         """ Check if encoder is imported.
@@ -290,26 +305,39 @@ class Modules(object):
         if self.check_imported(module):
             module_object = imported_modules[module]
             self.add_to_global(module_object)
+            return
 
-        else:
-            module_object = self.import_module(module)
+        module_object = self.import_module(module)
 
-            if module_object:
-                self.add_to_global(module_object)
+        if not module_object:
+            raise RuntimeError(f"Failed to select module from database: {module}!")
 
-                if 'Payload' in module_object.details:
-                    payload_name = module_object.details['Payload'].get('Value', None)
+        self.add_to_global(module_object)
 
-                    if payload_name:
-                        self.badges.print_process(f"Using default payload {payload_name}...")
+        if not self.set_current_module_target(0):
+            if self.check_payload(module_object):
+                module_object.payload.criteria.update(
+                    module_object.details.get('Payload', {}))
 
-                        if module_object.set('payload', payload_name):
-                            return
+        if not self.check_payload(module_object):
+            return
 
-                        self.go_back()
-                        raise RuntimeError(f"Invalid default payload: {payload_name}!")
-            else:
-                raise RuntimeError(f"Failed to select module from database: {module}!")
+        mixins = module_object.payload.criteria
+
+        for mixin in mixins:
+            if not mixin.priority:
+                continue
+
+            payload_name = mixins[mixin].get('Value', None)
+
+            if payload_name:
+                self.badges.print_process(f"Using default payload {payload_name}...")
+
+                if module_object.set('payload', payload_name):
+                    return
+
+                self.go_back()
+                raise RuntimeError(f"Invalid default payload: {payload_name}!")
 
     def add_to_global(self, module: Module) -> None:
         """ Allocate space in local storage for module object.
@@ -528,6 +556,40 @@ class Modules(object):
                 return module.check()
 
         return False
+
+    def set_current_module_target(self, target_id: int) -> bool:
+        """ Set current module target.
+
+        :param int target_id: target ID
+        :return bool: True if success else False
+        :raises RuntimeWarning: with trailing warning message
+        """
+
+        module = self.get_current_module()
+
+        if not module:
+            raise RuntimeWarning("No module selected.")
+
+        targets = module.details['Targets']
+
+        if target_id < 0 or len(targets) <= target_id:
+            return False
+
+        target = list(targets)[target_id]
+        module.target = targets[target]
+        module.target.update({'Name': target})
+
+        if not self.check_payload(module):
+            return True
+
+        if 'Payload' in module.target:
+            module.payload.criteria.update(module.target['Payload'])
+        else:
+            module.payload.criteria.update(
+                module.details.get('Payload', {}))
+
+        module.payload.unset()
+        return True
 
     def run_current_module(self, loop: bool = False, catch: Optional[Callable[..., None]] = None) -> None:
         """ Run current module.

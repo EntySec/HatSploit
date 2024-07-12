@@ -11,17 +11,18 @@ class HatSploitPayload(Payload):
         super().__init__()
 
         self.details.update({
-            'Name': "Unix Reboot",
-            'Payload': "unix/generic/reboot",
+            'Name': "Unix Custom Command",
+            'Payload': "unix/generic/custom",
             'Authors': [
                 'Ivan Nikolskiy (enty8080) - payload developer',
             ],
-            'Description': "Reboot payload for unix.",
+            'Description': "Send custom command.",
             'Arch': ARCH_GENERIC,
             'Platform': OS_UNIX,
-            'Rank': "low",
-            'Type': "one_side",
+            'Type': OneSide,
         })
 
+        self.command = Option(None, 'Command to send', True)
+
     def run(self):
-        return "reboot"
+        return self.command

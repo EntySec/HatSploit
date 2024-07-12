@@ -13,13 +13,17 @@ class HatSploitModule(HTTPClient, Module, TCPTools):
         super().__init__()
 
         self.details.update({
-            'Category': 'auxiliary',
-            'Name': 'HTTP Methods',
-            'Module': 'auxiliary/generic/scanner/http_methods',
-            'Authors': ['Noah Altunian (naltun) - contributor'],
-            'Description': 'Find supported HTTP methods on a server',
+            'Category': "auxiliary",
+            'Name': "Enumerate HTTP Methods",
+            'Module': "auxiliary/generic/scanner/http_methods",
+            'Authors': [
+                "Noah Altunian (naltun) - module developer"
+            ],
+            'Description': (
+                "Find supported HTTP methods on a server"
+            ),
             'Platform': OS_GENERIC,
-            'Rank': 'low',
+            'Rank': LOW_RANK,
         })
 
         self.host = IPv4Option(None, "Remote host.", True)

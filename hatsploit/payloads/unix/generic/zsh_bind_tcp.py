@@ -19,8 +19,7 @@ class HatSploitPayload(Payload, Handler):
             'Description': "ZSH shell bind TCP payload.",
             'Arch': ARCH_GENERIC,
             'Platform': OS_UNIX,
-            'Rank': "high",
-            'Type': "bind_tcp",
+            'Type': BindTCP,
         })
 
     def run(self):

@@ -20,8 +20,7 @@ class HatSploitPayload(Payload, Assembler):
             'Description': "Kill all processes payload for Linux x64.",
             'Arch': ARCH_X64,
             'Platform': OS_LINUX,
-            'Rank': "low",
-            'Type': "one_side",
+            'Type': OneSide,
         })
 
     def run(self):

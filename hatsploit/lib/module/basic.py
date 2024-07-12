@@ -28,5 +28,8 @@ from hatsploit.lib.handler import Handler, HatSploitSession
 from pex.platform.types import *
 from pex.arch.types import *
 
+from hatsploit.lib.mixins import *
 from hatsploit.lib.option import *
 from hatsploit.lib.complex import *
+
+from hatsploit.lib.module.const import *

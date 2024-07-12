@@ -20,8 +20,7 @@ class HatSploitPayload(Payload, Assembler):
             'Description': "Reboot payload for Linux mipsle.",
             'Arch': ARCH_MIPSLE,
             'Platform': OS_LINUX,
-            'Rank': "low",
-            'Type': "one_side",
+            'Type': OneSide,
         })
 
     def run(self):

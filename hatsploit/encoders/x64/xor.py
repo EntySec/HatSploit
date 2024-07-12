@@ -16,9 +16,9 @@ class HatSploitEncoder(Encoder, String, X86):
         self.details.update({
             'Name': "x64 XOR Encoder",
             'Encoder': "x64/xor",
-            'Authors': [
+            'Authors': (
                 'Ivan Nikolskiy (enty8080) - encoder developer',
-            ],
+            ),
             'Description': "Simple XOR encoder for x64.",
             'Arch': ARCH_X64,
         })

@@ -19,11 +19,13 @@ class HatSploitModule(Module, HTTPClient):
             'Name': "WEB Directory Scanner",
             'Module': "auxiliary/generic/scanner/directory_scanner",
             'Authors': [
-                'Ivan Nikolskiy (enty8080) - module developer',
+                "Ivan Nikolskiy (enty8080) - module developer",
             ],
-            'Description': "Website directory scanner.",
+            'Description': (
+                "Website directory scanner."
+            ),
             'Platform': OS_GENERIC,
-            'Rank': "medium",
+            'Rank': MEDIUM_RANK,
         })
 
         self.host = IPv4Option(None, "Remote host.", True)

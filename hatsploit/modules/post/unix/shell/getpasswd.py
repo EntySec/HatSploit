@@ -17,11 +17,13 @@ class HatSploitModule(Module, Sessions):
             'Name': "Unix Obtain /etc/passwd",
             'Module': "post/unix/shell/getpasswd",
             'Authors': [
-                'Ivan Nikolskiy (enty8080) - module developer',
+                "Ivan Nikolskiy (enty8080) - module developer",
             ],
-            'Description': "Get current session /etc/passwd file.",
+            'Description': (
+                "Get current session /etc/passwd file."
+            ),
             'Platform': OS_UNIX,
-            'Rank': "medium",
+            'Rank': MEDIUM_RANK,
         })
 
         self.session = SessionOption(None, "Session to run on.", True,

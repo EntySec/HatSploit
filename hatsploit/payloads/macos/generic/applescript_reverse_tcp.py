@@ -19,8 +19,7 @@ class HatSploitPayload(Payload, Handler):
             'Description': "AppleScript reverse TCP payload.",
             'Arch': ARCH_APPLESCRIPT,
             'Platform': OS_MACOS,
-            'Rank': "high",
-            'Type': "reverse_tcp",
+            'Type': ReverseTCP,
         })
 
     def run(self):

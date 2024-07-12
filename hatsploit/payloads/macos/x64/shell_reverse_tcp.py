@@ -21,8 +21,7 @@ class HatSploitPayload(Payload, Handler, Assembler, Socket):
             'Description': "Shell reverse TCP payload for macOS x64.",
             'Arch': ARCH_X64,
             'Platform': OS_MACOS,
-            'Rank': "high",
-            'Type': "reverse_tcp",
+            'Type': ReverseTCP,
         })
 
     def run(self):

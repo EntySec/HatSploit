@@ -44,13 +44,25 @@ class Module(Badges, Tables, Tools):
             'Category': "",
             'Name': "",
             'Module': "",
-            'Authors': [
-                ''
-            ],
+            'Authors': (
+            ),
             'Description': "",
+            'Targets': {},
             'Platform': None,
-            'Rank': ""
+            'Rank': None,
+            'Devices': (
+            ),
+            'References': (
+            ),
+            'DisclosureDate': "",
+            'Notes': {
+                'Stability': [],
+                'Reliability': [],
+                'SideEffects': [],
+            }
         }
+
+        self.target = None
 
     def set(self, option: str, value: Optional[str] = None) -> bool:
         """ Set module option.

@@ -181,7 +181,6 @@ class Builder(object):
                                 "Description": payload_object.details['Description'],
                                 "Arch": str(payload_object.details['Arch']),
                                 "Platform": str(payload_object.details['Platform']),
-                                "Rank": payload_object.details['Rank'],
                                 "Type": payload_object.details['Type'],
                             }
                         })

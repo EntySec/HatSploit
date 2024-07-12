@@ -21,8 +21,7 @@ class HatSploitPayload(Payload, Handler, Assembler, Socket):
             'Description': "Shell bind TCP payload for macOS x64.",
             'Arch': ARCH_X64,
             'Platform': OS_MACOS,
-            'Rank': "high",
-            'Type': "bind_tcp",
+            'Type': BindTCP,
         })
 
     def run(self):

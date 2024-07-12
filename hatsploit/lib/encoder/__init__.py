@@ -45,9 +45,8 @@ class Encoder(Badges, Tables, Tools):
         self.details = {
             'Name': "",
             'Encoder': "",
-            'Authors': [
-                ''
-            ],
+            'Authors': (
+            ),
             'Description': "",
             'Arch': None
         }

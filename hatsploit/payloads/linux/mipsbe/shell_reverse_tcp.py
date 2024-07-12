@@ -21,8 +21,7 @@ class HatSploitPayload(Payload, Handler, Assembler, Socket):
             'Description': "Shell reverse TCP payload for Linux mipsbe.",
             'Arch': ARCH_MIPSBE,
             'Platform': OS_LINUX,
-            'Rank': "high",
-            'Type': "reverse_tcp",
+            'Type': ReverseTCP,
         })
 
     def run(self):

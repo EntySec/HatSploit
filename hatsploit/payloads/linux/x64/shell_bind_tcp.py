@@ -21,8 +21,7 @@ class HatSploitPayload(Payload, Handler, Assembler):
             'Description': "Shell bind TCP payload for Linux x64.",
             'Arch': ARCH_X64,
             'Platform': OS_LINUX,
-            'Rank': "high",
-            'Type': "bind_tcp",
+            'Type': BindTCP,
         })
 
     def implant(self):

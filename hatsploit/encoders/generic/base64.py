@@ -15,9 +15,9 @@ class HatSploitEncoder(Encoder, String):
         self.details.update({
             'Name': "Base64 Encoder for Command",
             'Encoder': "generic/base64",
-            'Authors': [
+            'Authors': (
                 'Ivan Nikolskiy (enty8080) - encoder developer',
-            ],
+            ),
             'Description': "Encode command with base64.",
             'Arch': ARCH_GENERIC,
         })

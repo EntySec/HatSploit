@@ -133,6 +133,23 @@ class Encoders(object):
             return self.get_encoders()[database][encoder]
         return {}
 
+    def get_payload_encoder(self, name: str, module: Module, payload: Payload) -> Union[Encoder, None]:
+        """ Get encoder associated with specific payload context.
+
+        :param str name: encoder name
+        :param Module module: module object
+        :param Payload payload: payload object
+        :return Union[Encoder, None]: encoder if exists
+        """
+
+        imported_encoders = self.get_imported_encoders()
+        module_name = module.details['Module']
+        payload_name = payload.details['Payload']
+
+        if imported_encoders and module_name in imported_encoders \
+                and payload_name in imported_encoders[module_name]:
+            return imported_encoders[module_name][payload_name].get(name, None)
+
     def get_current_encoder(self, module: Module, payload: Payload) -> Union[Encoder, None]:
         """ Get current encoder, this is encoder which is currently
         used within current module and current payload.
@@ -142,16 +159,8 @@ class Encoders(object):
         :return Union[Encoder, None]: current encoder, None if no current encoder
         """
 
-        imported_encoders = self.get_imported_encoders()
-
-        if payload and module and imported_encoders and 'Encoder' in payload.details:
-            module_name = module.details['Module']
-            payload_name = payload.details['Payload']
-
-            if module_name in imported_encoders and payload_name in imported_encoders[module_name]:
-                name = payload.details['Encoder']['Value']
-
-                return imported_encoders[module_name][payload_name].get(name, None)
+        if hasattr(payload, 'encoder'):
+            return self.get_payload_encoder(payload.encoder.value, module, payload)
 
     def import_encoder(self, module: str, payload: str, encoder: str) -> Union[Encoder, None]:
         """ Import encoder.
@@ -275,16 +284,19 @@ class Encoders(object):
 
         return False
 
-    def add_encoder(self, module: str, payload: str, encoder: str) -> None:
+    def add_encoder(self, module: Module, payload: Payload, encoder: str) -> None:
         """ Add encoder to module and payload which you want to reserve it for.
 
-        :param str module: module which you want to reserve encoder for
-        :param str payload: payload which you want to reserve encoder for
+        :param Module module: module which you want to reserve encoder for
+        :param Payload payload: payload which you want to reserve encoder for
         :param str encoder: encoder name
         :return None: None
         :raises RuntimeError: with trailing error message
         """
 
-        if not self.check_imported(module, payload, encoder):
-            if not self.import_encoder(module, payload, encoder):
+        module_name = module.details['Module']
+        payload_name = payload.details['Payload']
+
+        if not self.check_imported(module_name, payload_name, encoder):
+            if not self.import_encoder(module_name, payload_name, encoder):
                 raise RuntimeError(f"Failed to select encoder from database: {encoder}!")

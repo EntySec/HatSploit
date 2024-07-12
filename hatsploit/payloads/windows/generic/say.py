@@ -19,8 +19,7 @@ class HatSploitPayload(Payload):
             'Description': "Say payload for Windows.",
             'Arch': ARCH_GENERIC,
             'Platform': OS_WINDOWS,
-            'Rank': "low",
-            'Type': "one_side",
+            'Type': OneSide,
         })
 
         self.message = Option("Hello, HatSploit!", "Message to show.", True)

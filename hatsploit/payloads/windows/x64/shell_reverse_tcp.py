@@ -20,8 +20,7 @@ class HatSploitPayload(Payload, Handler, Socket):
             'Description': "Reverse shell TCP payload for Windows x64.",
             'Arch': ARCH_X64,
             'Platform': OS_WINDOWS,
-            'Rank': "low",
-            'Type': "reverse_tcp",
+            'Type': ReverseTCP,
         })
 
     def run(self):

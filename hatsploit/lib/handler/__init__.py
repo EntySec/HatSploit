@@ -26,12 +26,11 @@ import socket
 import datetime
 
 from pex.proto.tcp import TCPTools
-
 from typing import Optional, Callable, Tuple, Any, Union
 
 from hatsploit.lib.option import *
 from hatsploit.lib.complex import *
-from hatsploit.lib.blinder import Blinder
+from hatsploit.lib.pseudo import Pseudo
 from hatsploit.lib.payload import Payload
 from hatsploit.lib.module import Module
 from hatsploit.lib.jobs import Jobs
@@ -42,6 +41,7 @@ from hatsploit.lib.session import Session
 
 from hatsploit.lib.handler.send import Send
 from hatsploit.lib.handler.misc import HatSploitSession
+from hatsploit.lib.payload.const import *
 
 from badges import Badges
 
@@ -63,19 +63,14 @@ class Handler(object):
         self.jobs = Jobs()
         self.encoders = Encoders()
 
-        self.actions = [
-            'shell',
-            'memory',
-        ]
-
         self.types = [
-            'one_side',
-            'reverse_tcp',
-            'bind_tcp'
+            OneSide,
+            ReverseTCP,
+            BindTCP
         ]
 
         self.payload = PayloadOption(None, "Payload to use.", True, object=Module)
-        self.blinder = BooleanOption('no', "Start blind command injection.", False, object=Module)
+        self.pseudo = BooleanOption('no', "Use pseudo shell instead of payload.", False, object=Module)
         self.encoder = EncoderOption(None, "Encoder to use.", False, object=Payload)
 
         self.lhost = IPv4Option(TCPTools.get_local_host(), "Local host.", True, object=Module)
@@ -84,11 +79,8 @@ class Handler(object):
         self.rhost = IPv4Option(TCPTools.get_local_host(), "Remote host.", True, object=Payload)
         self.rport = PortOption(8888, "Remote port.", True, object=Payload)
 
-        self.space = IntegerOption(2048, "Buffer space available.",
-                                   False, advanced=True, object=Module)
-
     def open_session(self, session: Session,
-                     on_session: Optional[Callable[..., Any] = None,
+                     on_session: Optional[Callable[..., Any]] = None,
                      details: Optional[dict] = {}) -> None:
         """ Open session and interact with it if allowed.
 
@@ -114,7 +106,8 @@ class Handler(object):
         session = self.sessions.add_session(platform, arch, type, host, port, session)
         time = datetime.datetime.now().astimezone().strftime("%Y-%m-%d %H:%M:%S %Z")
 
-        self.badges.print_success(f"{type.title()} session {str(session)} opened at {time}!")
+        self.badges.print_success(
+            f"{type.title()} session {str(session)} opened at {time}!")
 
         if on_session:
             on_session()
@@ -132,19 +125,20 @@ class Handler(object):
         if not self.payload.value:
             raise RuntimeError("Module has not payload!")
 
-        payload = self.payload.payload
-        encoder = self.encoder.encoder
+        payload = self.payload
+        encoder = self.encoder
 
-        if self.blinder.value:
+        if self.pseudo.value:
             sender = kwargs.pop('sender', None)
 
             if sender:
-                return Blinder().shell(sender)
+                return Pseudo().shell(sender)
 
         session = HatSploitSession
 
-        if 'Session' in payload.details and payload.details['Session']:
-            session = payload.details['Session']
+        if 'Session' in payload.payload.details and \
+                payload.payload.details['Session']:
+            session = payload.payload.details['Session']
 
         self.handle(
             payload=payload,
@@ -153,44 +147,37 @@ class Handler(object):
             *args, **kwargs
         )
 
-    def handle(self, payload: Payload, action: str = 'shell',
+    def handle(self, payload: PayloadOption,
                session: Optional[Session] = HatSploitSession,
-               encoder: Optional[Encoder] = None, on_session: Optional[Callable[..., Any]] = None,
+               encoder: Optional[EncoderOption] = None,
+               on_session: Optional[Callable[..., Any]] = None,
                *args, **kwargs) -> None:
         """ Handle session.
 
-        :param Payload payload: payload object
-        :param str action: type of handler
+        :param PayloadOption payload: payload option object
         :param Optional[Session] session: session handler
-        :param Encoder encoder: encoder object of encoder to apply
+        :param Optional[EncoderOption] encoder: encoder option object of encoder to apply
         :param Optional[Callable[..., Any]] on_session: function of an action that
         should be performed right after session was opened
         """
 
-        space = kwargs.get('space', self.space.value)
-
-        if action == 'shell':
-            client, host = self.send.shell_payload(
+        if not payload.mixin.inline:
+            client, host = self.send.drop_payload(
                 payload=payload,
                 host=self.lhost.value,
                 port=self.lport.value,
-                space=space,
-                encoder=encoder,
-                *args, **kwargs
-            )
-
-        elif action == 'memory':
-            client, host = self.send.memory_payload(
-                payload=payload,
-                host=self.lhost.value,
-                port=self.lport.value,
-                space=space,
                 encoder=encoder,
                 *args, **kwargs
             )
 
         else:
-            raise RuntimeError(f"Unrecognized handler action: {action}!")
+            client, host = self.send.inline_payload(
+                payload=payload,
+                host=self.lhost.value,
+                port=self.lport.value,
+                encoder=encoder,
+                *args, **kwargs
+            )
 
         if client:
             session = session()
@@ -200,8 +187,8 @@ class Handler(object):
                 session=session,
                 on_session=on_session,
                 details={
-                    'Platform': payload.details['Platform'],
-                    'Arch': payload.details['Arch'],
+                    'Platform': payload.payload.details['Platform'],
+                    'Arch': payload.payload.details['Arch'],
                     'Host': host,
                     'Port': self.lport.value
                 }

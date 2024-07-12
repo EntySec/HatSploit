@@ -30,7 +30,7 @@ class HTTP(object):
     """ Subclass of hatsploit.lib.module.proto module.
 
     This subclass of hatsploit.lib.module.proto module is a representation
-    of a wrapper of TCP client for a module.
+    of a wrapper of HTTP client for a module.
     """
 
     def __init__(self) -> None:

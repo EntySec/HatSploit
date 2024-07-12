@@ -16,11 +16,13 @@ class HatSploitModule(Module, TCPTools):
             'Name': "Jailbreak Installation Checker",
             'Module': "auxiliary/apple_ios/checker/jailbroken_or_not",
             'Authors': [
-                'Ivan Nikolskiy (enty8080) - module developer',
+                "Ivan Nikolskiy (enty8080) - module developer",
             ],
-            'Description': "Check if remote iPhone jailbroken.",
+            'Description': (
+                "Check if remote iPhone jailbroken."
+            ),
             'Platform': OS_IPHONE,
-            'Rank': "low",
+            'Rank': LOW_RANK,
         })
 
         self.target = IPv4Option(None, "Remote host.", True)

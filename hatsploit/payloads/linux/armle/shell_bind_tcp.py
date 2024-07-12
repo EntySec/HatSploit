@@ -20,8 +20,7 @@ class HatSploitPayload(Payload, Handler, Socket):
             'Description': "Shell bind TCP payload for Linux armle.",
             'Arch': ARCH_ARMLE,
             'Platform': OS_LINUX,
-            'Rank': "high",
-            'Type': "bind_tcp",
+            'Type': BindTCP,
         })
 
     def run(self):
