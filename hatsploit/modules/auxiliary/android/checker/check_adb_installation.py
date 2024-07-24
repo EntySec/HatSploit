@@ -3,16 +3,13 @@ This module requires HatSploit: https://hatsploit.com
 Current source: https://github.com/EntySec/HatSploit
 """
 
-from hatsploit.lib.module.basic import *
+from hatsploit.lib.core.module.basic import *
+from hatsploit.lib.core.module.proto import TCP
 
-from pex.proto.tcp import TCPTools
 
-
-class HatSploitModule(Module, TCPTools):
+class HatSploitModule(Module, TCP):
     def __init__(self):
-        super().__init__()
-
-        self.details.update({
+        super().__init__({
             'Category': "auxiliary",
             'Name': "ADB Installation Checker",
             'Module': "auxiliary/android/checker/check_adb_installation",
@@ -26,14 +23,13 @@ class HatSploitModule(Module, TCPTools):
             'Rank': LOW_RANK,
         })
 
-        self.target = IPv4Option(None, "Remote host.", True)
+        self.port.set(5555)
+        self.port.visible = False
+        self.host.description = "ADB host."
 
     def run(self):
-        target = self.target.value
-
-        self.print_process(f"Checking {target}...")
-
-        if self.check_tcp_port(target, 5555):
+        if self.is_on():
             self.print_success("Target device may has ADB installation!")
-        else:
-            self.print_warning("Looks like target device has no ADB installation.")
+            return
+
+        self.print_warning("Looks like target device has no ADB installation.")

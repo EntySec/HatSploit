@@ -5,17 +5,12 @@ Current source: https://github.com/EntySec/HatSploit
 
 import time
 
-from hatsploit.core.base.execute import Execute
-from hatsploit.lib.command import Command
+from badges.cmd import Command
 
 
-class HatSploitCommand(Command):
+class ExternalCommand(Command):
     def __init__(self):
-        super().__init__()
-
-        self.execute = Execute()
-
-        self.details.update({
+        super().__init__({
             'Category': "developer",
             'Name': "sleep",
             'Authors': [
@@ -26,8 +21,8 @@ class HatSploitCommand(Command):
             'MinArgs': 1,
         })
 
-    def run(self, argc, argv):
+    def run(self, args):
         try:
-            time.sleep(float(argv[1]))
+            time.sleep(float(args[1]))
         except ValueError:
             self.print_error("Seconds expected!")

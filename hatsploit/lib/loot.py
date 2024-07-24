@@ -22,8 +22,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
-import datetime
 import os
+import datetime
 
 from typing import Optional, Union
 
@@ -33,25 +33,12 @@ from pex.string import String
 from hatsploit.lib.config import Config
 
 
-class Loot(String, FS):
+class Loot(Config, String, FS):
     """ Subclass of hatsploit.lib module.
 
     This subclass of hatsploit.lib module is intended for providing
     tools for working with loot collected by HatSploit.
     """
-
-    def __init__(self, loot: Optional[str] = None, data: Optional[str] = None) -> None:
-        """ Initialize loot.
-
-        :param Optional[str] loot: loot root path
-        :param Optional[str] data: data root path
-        :return None: None
-        """
-
-        super().__init__()
-
-        self.loot = loot or Config().path_config['loot_path']
-        self.data = data or Config().path_config['data_path']
 
     def create_loot(self) -> None:
         """ Create loot directory in workspace.
@@ -59,8 +46,8 @@ class Loot(String, FS):
         :return None: None
         """
 
-        if not os.path.isdir(self.loot):
-            os.mkdir(self.loot)
+        if not os.path.isdir(self.path_config['loot_path']):
+            os.mkdir(self.path_config['loot_path'])
 
     def specific_loot(self, filename: str) -> str:
         """ Return full path to the specific file
@@ -70,7 +57,7 @@ class Loot(String, FS):
         :return str: path to the file
         """
 
-        return self.loot + filename
+        return self.path_config['loot_path'] + filename
 
     def random_loot(self, extension: Optional[str] = None) -> str:
         """ Generate random loot path and add extension (if specified).
@@ -84,7 +71,7 @@ class Loot(String, FS):
         if extension:
             filename += '.' + extension
 
-        return self.loot + filename
+        return self.path_config['loot_path'] + filename
 
     def get_file(self, filename: str) -> bytes:
         """ Get specific file contents.
@@ -146,7 +133,8 @@ class Loot(String, FS):
         """
 
         filename = os.path.split(filename)[1]
-        return self.get_file(self.loot + filename)
+        return self.get_file(
+            self.path_config['loot_path'] + filename)
 
     def save_loot(self, filename: str, data: bytes) -> Union[str, None]:
         """ Save contents to loot directory.
@@ -157,7 +145,8 @@ class Loot(String, FS):
         """
 
         filename = os.path.split(filename)[1]
-        return self.save_file(self.loot + filename, data)
+        return self.save_file(
+            self.path_config['loot_path'] + filename, data)
 
     def remove_loot(self, filename: str) -> None:
         """ Remove specific loot from loot directory.
@@ -167,7 +156,8 @@ class Loot(String, FS):
         """
 
         filename = os.path.split(filename)[1]
-        self.remove_file(self.loot + filename)
+        self.remove_file(
+            self.path_config['loot_path'] + filename)
 
     def get_data(self, filename: str) -> bytes:
         """ Get contents of file from data directory.
@@ -177,8 +167,8 @@ class Loot(String, FS):
         :raises RuntimeError: with trailing error message
         """
 
-        if os.path.exists(self.data + filename):
-            with open(self.data + filename, 'rb') as f:
+        if os.path.exists(self.path_config['data_path'] + filename):
+            with open(self.path_config['data_path'] + filename, 'rb') as f:
                 return f.read()
         else:
             raise RuntimeError("Invalid data given!")
@@ -190,10 +180,11 @@ class Loot(String, FS):
         """
 
         loots = []
+        loot_path = self.path_config['loot_path']
 
-        for loot in os.listdir(self.loot):
-            loots.append((loot, self.loot + loot, datetime.datetime.fromtimestamp(
-                os.path.getmtime(self.loot + loot)).astimezone().strftime(
-                "%Y-%m-%d %H:%M:%S %Z")))
+        for loot in os.listdir(loot_path):
+            loots.append((loot, loot_path + loot, datetime.datetime.fromtimestamp(
+                os.path.getmtime(loot_path + loot)
+            ).astimezone().strftime("%Y-%m-%d %H:%M:%S %Z")))
 
         return loots

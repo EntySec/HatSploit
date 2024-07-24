@@ -23,7 +23,6 @@ SOFTWARE.
 """
 
 import os
-import sys
 
 from badges import Badges
 
@@ -31,20 +30,13 @@ from hatsploit.core.db.importer import Importer
 from hatsploit.lib.config import Config
 
 
-class Check(object):
+class Check(Badges, Config):
     """ Subclass of hatsploit.core.utils module.
 
     This subclass of hatsploit.core.utils module is intended for
     providing tools for checking HatSploit modules, payloads, plugins and
     encoders.
     """
-
-    def __init__(self) -> None:
-        super().__init__()
-
-        self.config = Config()
-        self.importer = Importer()
-        self.badges = Badges()
 
     def check_modules(self) -> bool:
         """ Check base modules.
@@ -53,35 +45,37 @@ class Check(object):
         """
 
         one_fail = False
-        self.badges.print_process("Checking all base modules...")
+        self.print_process("Checking all base modules...")
 
-        modules_path = os.path.normpath(self.config.path_config['modules_path'])
+        modules_path = os.path.normpath(self.path_config['modules_path'])
 
         for dir, _, files in os.walk(modules_path):
             for file in files:
-                if file.endswith('.py') and file != '__init__.py':
-                    module = dir + '/' + file[:-3]
+                if not file.endswith('.py') or file == '__init__.py':
+                    continue
 
-                    try:
-                        module_object = self.importer.import_module(module)
-                        keys = [
-                            'Category',
-                            'Name',
-                            'Module',
-                            'Authors',
-                            'Description',
-                            'Platform',
-                            'Rank',
-                        ]
+                module = dir + '/' + file[:-3]
 
-                        assert all(key in module_object.details for key in keys)
-                        self.badges.print_success(f"{module}: OK")
+                try:
+                    module_object = Importer().import_module(module)
+                    keys = [
+                        'Category',
+                        'Name',
+                        'Module',
+                        'Authors',
+                        'Description',
+                        'Platform',
+                        'Rank',
+                    ]
 
-                    except Exception as e:
-                        self.badges.print_error(str(e))
-                        self.badges.print_error(f"{module}: FAIL")
+                    assert all(key in module_object.info for key in keys)
+                    self.print_success(f"{module}: OK")
 
-                        one_fail = True
+                except Exception as e:
+                    self.print_error(str(e))
+                    self.print_error(f"{module}: FAIL")
+
+                    one_fail = True
 
         return not one_fail
 
@@ -92,33 +86,35 @@ class Check(object):
         """
 
         one_fail = False
-        self.badges.print_process("Checking all base encoders...")
+        self.print_process("Checking all base encoders...")
 
-        encoders_path = os.path.normpath(self.config.path_config['encoders_path'])
+        encoders_path = os.path.normpath(self.path_config['encoders_path'])
 
         for dir, _, files in os.walk(encoders_path):
             for file in files:
-                if file.endswith('.py') and file != '__init__.py':
-                    encoder = dir + '/' + file[:-3]
+                if not file.endswith('.py') or file == '__init__.py':
+                    continue
 
-                    try:
-                        encoder_object = self.importer.import_encoder(encoder)
-                        keys = [
-                            'Name',
-                            'Encoder',
-                            'Authors',
-                            'Description',
-                            'Arch',
-                        ]
+                encoder = dir + '/' + file[:-3]
 
-                        assert all(key in encoder_object.details for key in keys)
-                        self.badges.print_success(f"{encoder}: OK")
+                try:
+                    encoder_object = Importer().import_encoder(encoder)
+                    keys = [
+                        'Name',
+                        'Encoder',
+                        'Authors',
+                        'Description',
+                        'Arch',
+                    ]
 
-                    except Exception as e:
-                        self.badges.print_error(str(e))
-                        self.badges.print_error(f"{encoder}: FAIL")
+                    assert all(key in encoder_object.info for key in keys)
+                    self.print_success(f"{encoder}: OK")
 
-                        one_fail = True
+                except Exception as e:
+                    self.print_error(str(e))
+                    self.print_error(f"{encoder}: FAIL")
+
+                    one_fail = True
 
         return not one_fail
 
@@ -129,35 +125,38 @@ class Check(object):
         """
 
         one_fail = False
-        self.badges.print_process("Checking all base payloads...")
+        self.print_process("Checking all base payloads...")
 
-        payloads_path = os.path.normpath(self.config.path_config['payloads_path'])
+        payloads_path = os.path.normpath(self.path_config['payloads_path'])
 
         for dir, _, files in os.walk(payloads_path):
             for file in files:
-                if file.endswith('.py') and file != '__init__.py':
-                    payload = dir + '/' + file[:-3]
+                if not file.endswith('.py') or file == '__init__.py':
+                    continue
 
-                    try:
-                        payload_object = self.importer.import_payload(payload)
-                        keys = [
-                            'Name',
-                            'Payload',
-                            'Authors',
-                            'Description',
-                            'Arch',
-                            'Platform',
-                            'Type',
-                        ]
+                payload = dir + '/' + file[:-3]
 
-                        assert all(key in payload_object.details for key in keys)
-                        self.badges.print_success(f"{payload}: OK")
+                try:
+                    payload_object = Importer().import_payload(payload)
+                    keys = [
+                        'Category',
+                        'Name',
+                        'Payload',
+                        'Authors',
+                        'Description',
+                        'Arch',
+                        'Platform',
+                        'Type',
+                    ]
 
-                    except Exception as e:
-                        self.badges.print_error(str(e))
-                        self.badges.print_error(f"{payload}: FAIL")
+                    assert all(key in payload_object.info for key in keys)
+                    self.print_success(f"{payload}: OK")
 
-                        one_fail = True
+                except Exception as e:
+                    self.print_error(str(e))
+                    self.print_error(f"{payload}: FAIL")
+
+                    one_fail = True
 
         return not one_fail
 
@@ -168,27 +167,29 @@ class Check(object):
         """
 
         one_fail = False
-        self.badges.print_process("Checking all base plugins...")
+        self.print_process("Checking all base plugins...")
 
-        plugins_path = os.path.normpath(self.config.path_config['plugins_path'])
+        plugins_path = os.path.normpath(self.path_config['plugins_path'])
 
         for dir, _, files in os.walk(plugins_path):
             for file in files:
-                if file.endswith('.py') and file != '__init__.py':
-                    plugin = dir + '/' + file[:-3]
+                if not file.endswith('.py') or file == '__init__.py':
+                    continue
 
-                    try:
-                        plugin_object = self.importer.import_plugin(plugin)
-                        keys = ['Name', 'Authors', 'Description']
+                plugin = dir + '/' + file[:-3]
 
-                        assert all(key in plugin_object.details for key in keys)
-                        self.badges.print_success(f"{plugin}: OK")
+                try:
+                    plugin_object = Importer().import_plugin(plugin)
+                    keys = ['Name', 'Authors', 'Description']
 
-                    except Exception as e:
-                        self.badges.print_error(str(e))
-                        self.badges.print_error(f"{plugin}: FAIL")
+                    assert all(key in plugin_object.info for key in keys)
+                    self.print_success(f"{plugin}: OK")
 
-                        one_fail = True
+                except Exception as e:
+                    self.print_error(str(e))
+                    self.print_error(f"{plugin}: FAIL")
+
+                    one_fail = True
 
         return not one_fail
 
@@ -207,8 +208,8 @@ class Check(object):
 
         for fail in fails:
             if not fail:
-                self.badges.print_error("Not all checks passed!")
+                self.print_error("Not all checks passed!")
                 return False
 
-        self.badges.print_success("All checks passed!")
+        self.print_success("All checks passed!")
         return True

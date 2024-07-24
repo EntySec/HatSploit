@@ -3,19 +3,14 @@ This command requires HatSploit: https://hatsploit.com
 Current source: https://github.com/EntySec/HatSploit
 """
 
-from hatsploit.lib.command import Command
-from hatsploit.lib.encoders import Encoders
-from hatsploit.lib.show import Show
+from badges.cmd import Command
+from hatsploit.lib.ui.encoders import Encoders
+from hatsploit.lib.ui.show import Show
 
 
-class HatSploitCommand(Command):
+class ExternalCommand(Command):
     def __init__(self):
-        super().__init__()
-
-        self.show = Show()
-        self.encoders = Encoders()
-
-        self.details.update({
+        super().__init__({
             'Category': "encoder",
             'Name': "encoders",
             'Authors': [
@@ -26,8 +21,10 @@ class HatSploitCommand(Command):
             'MinArgs': 0,
         })
 
-    def rpc(self, *args):
+        self.encoders = Encoders()
+
+    def rpc(self, *_):
         return self.encoders.get_encoders()
 
-    def run(self, argc, argv):
-        self.show.show_encoders(self.encoders.get_encoders())
+    def run(self, _):
+        Show().show_encoders(self.encoders.get_encoders())

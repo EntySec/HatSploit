@@ -3,17 +3,13 @@ This command requires HatSploit: https://hatsploit.com
 Current source: https://github.com/EntySec/HatSploit
 """
 
-from hatsploit.lib.command import Command
-from hatsploit.lib.modules import Modules
+from badges.cmd import Command
+from hatsploit.lib.ui.modules import Modules
 
 
-class HatSploitCommand(Command):
+class ExternalCommand(Command):
     def __init__(self):
-        super().__init__()
-
-        self.modules = Modules()
-
-        self.details.update({
+        super().__init__({
             'Category': "modules",
             'Name': "unset",
             'Authors': [
@@ -24,5 +20,7 @@ class HatSploitCommand(Command):
             'MinArgs': 1,
         })
 
-    def run(self, argc, argv):
-        self.modules.set_current_module_option(argv[1].lower())
+        self.modules = Modules()
+
+    def run(self, args):
+        self.modules.set_current_module_option(args[1])

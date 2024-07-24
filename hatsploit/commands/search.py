@@ -3,26 +3,18 @@ This command requires HatSploit: https://hatsploit.com
 Current source: https://github.com/EntySec/HatSploit
 """
 
-from hatsploit.lib.command import Command
-from hatsploit.lib.show import Show
+from badges.cmd import Command
+from hatsploit.lib.ui.show import Show
 
-from hatsploit.lib.modules import Modules
-from hatsploit.lib.payloads import Payloads
-from hatsploit.lib.encoders import Encoders
-from hatsploit.lib.plugins import Plugins
+from hatsploit.lib.ui.modules import Modules
+from hatsploit.lib.ui.payloads import Payloads
+from hatsploit.lib.ui.encoders import Encoders
+from hatsploit.lib.ui.plugins import Plugins
 
 
-class HatSploitCommand(Command):
+class ExternalCommand(Command):
     def __init__(self):
-        super().__init__()
-
-        self.show = Show()
-        self.modules = Modules()
-        self.payloads = Payloads()
-        self.encoders = Encoders()
-        self.plugins = Plugins()
-
-        self.details.update({
+        super().__init__({
             'Category': "core",
             'Name': "search",
             'Authors': [
@@ -33,30 +25,36 @@ class HatSploitCommand(Command):
             'MinArgs': 1,
         })
 
-    def run(self, argc, argv):
-        if argc > 2:
-            if argv[1] == 'modules':
+        self.show = Show()
+        self.modules = Modules()
+        self.payloads = Payloads()
+        self.encoders = Encoders()
+        self.plugins = Plugins()
+
+    def run(self, args):
+        if len(args) > 2:
+            if args[1] == 'modules':
                 self.show.show_search_modules(
-                    self.modules.get_modules(), argv[2])
+                    self.modules.get_modules(), args[2])
 
-            elif argv[1] == 'payloads':
+            elif args[1] == 'payloads':
                 self.show.show_search_payloads(
-                    self.payloads.get_payloads(), argv[2])
+                    self.payloads.get_payloads(), args[2])
 
-            elif argv[1] == 'encoders':
+            elif args[1] == 'encoders':
                 self.show.show_search_encoders(
-                    self.encoders.get_encoders(), argv[2])
+                    self.encoders.get_encoders(), args[2])
 
-            elif argv[1] == 'plugins':
+            elif args[1] == 'plugins':
                 self.show.show_search_plugins(
-                    self.plugins.get_plugins(), argv[2])
+                    self.plugins.get_plugins(), args[2])
             return
 
         self.show.show_search_modules(
-            self.modules.get_modules(), argv[1])
+            self.modules.get_modules(), args[1])
         self.show.show_search_payloads(
-            self.payloads.get_payloads(), argv[1])
+            self.payloads.get_payloads(), args[1])
         self.show.show_search_encoders(
-            self.encoders.get_encoders(), argv[1])
+            self.encoders.get_encoders(), args[1])
         self.show.show_search_plugins(
-            self.plugins.get_plugins(), argv[1])
+            self.plugins.get_plugins(), args[1])

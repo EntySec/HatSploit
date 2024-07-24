@@ -4,17 +4,14 @@ Current source: https://github.com/EntySec/HatSploit
 """
 
 from hatsploit.lib.config import Config
-from hatsploit.lib.module.basic import *
-from pex.proto.http import HTTPClient
+
+from hatsploit.lib.core.module.basic import *
+from hatsploit.lib.core.module.proto import HTTP
 
 
-class HatSploitModule(Module, HTTPClient):
+class HatSploitModule(Module, HTTP):
     def __init__(self):
-        super().__init__()
-
-        self.config = Config()
-
-        self.details.update({
+        super().__init__({
             'Category': "auxiliary",
             'Name': "WEB Directory Scanner",
             'Module': "auxiliary/generic/scanner/directory_scanner",
@@ -28,8 +25,7 @@ class HatSploitModule(Module, HTTPClient):
             'Rank': MEDIUM_RANK,
         })
 
-        self.host = IPv4Option(None, "Remote host.", True)
-        self.port = PortOption(80, "Remote port", True)
+        self.config = Config()
 
     def run(self):
         self.print_process(f"Scanning {self.host.value}...")
@@ -43,7 +39,7 @@ class HatSploitModule(Module, HTTPClient):
             path = '/' + path.replace("\n", "")
 
             response = self.http_request(
-                method="HEAD", host=self.host.value, port=self.port.value, path=path
+                method="HEAD", path=path
             )
 
             if response is not None:

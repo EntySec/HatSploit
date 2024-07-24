@@ -22,67 +22,31 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
-import importlib.util
-import json
 import os
-import string
-import sys
-import threading
-import time
+
+import importlib.util
 
 from typing import Union
 from badges import Badges
 
 from hatsploit.core.db.db import DB
 from hatsploit.lib.config import Config
-from hatsploit.lib.storage import LocalStorage
 
-from hatsploit.lib.module import Module
-from hatsploit.lib.command import Command
-from hatsploit.lib.plugin import Plugin
-from hatsploit.lib.encoder import Encoder
-from hatsploit.lib.payload import Payload
+from hatsploit.lib.core.module import Module
+from hatsploit.lib.core.plugin import Plugin
+from hatsploit.lib.core.encoder import Encoder
+from hatsploit.lib.core.payload import Payload
+
+from hatsploit.lib.storage import STORAGE
 
 
-class Importer(object):
+class Importer(Config, Badges, DB):
     """ Subclass of hatsploit.core.db module.
 
     This subclass of hatsploit.core.db module is intended for
     providing tools for importing HatSploit modules, plugins,
     commands, etc.
     """
-
-    def __init__(self) -> None:
-        super().__init__()
-
-        self.badges = Badges()
-        self.db = DB()
-        self.local_storage = LocalStorage()
-        self.config = Config()
-
-    @staticmethod
-    def import_command(command_path: str) -> Command:
-        """ Import command from path.
-
-        :param str command_path: path to command
-        :return Command: command object
-        :raises RuntimeError: with trailing error message
-        """
-
-        try:
-            if not command_path.endswith('.py'):
-                command_path = command_path + '.py'
-
-            spec = importlib.util.spec_from_file_location(command_path, command_path)
-            command = importlib.util.module_from_spec(spec)
-
-            spec.loader.exec_module(command)
-            command = command.HatSploitCommand()
-
-        except Exception as e:
-            raise RuntimeError(f"Failed to import command: {str(e)}!")
-
-        return command
 
     @staticmethod
     def import_payload(payload_path: str) -> Payload:
@@ -180,33 +144,6 @@ class Importer(object):
 
         return plugin
 
-    def import_commands(self, path: str) -> dict:
-        """ Import all commands from path.
-
-        :param str path: path to commands
-        :return dict: commands, command names as keys and
-        command objects as items
-        """
-
-        if not path.endswith('/'):
-            path += '/'
-
-        commands = {}
-        command_path = os.path.split(path)[0]
-
-        for file in os.listdir(command_path):
-            if file.endswith('py'):
-                try:
-                    command_object = self.import_command(command_path + '/' + file[:-3])
-                    command_name = command_object.details['Name']
-                    commands[command_name] = command_object
-
-                except Exception as e:
-                    self.badges.print_error(f"Failed to load {file[:-3]} command!")
-                    self.badges.print_error(str(e))
-
-        return commands
-
     def import_plugins(self, path: str) -> dict:
         """ Import all plugins from path.
 
@@ -222,26 +159,19 @@ class Importer(object):
         plugin_path = os.path.split(path)[0]
 
         for file in os.listdir(plugin_path):
-            if file.endswith('py'):
-                try:
-                    plugin_object = self.import_plugin(plugin_path + '/' + file[:-3])
-                    plugin_name = plugin_object.details['Plugin']
-                    plugins[plugin_name] = plugin_object
+            if not file.endswith('py'):
+                continue
 
-                except Exception as e:
-                    self.badges.print_error(f"Failed to load {file[:-3]} plugin!")
-                    self.badges.print_error(str(e))
+            try:
+                plugin_object = self.import_plugin(plugin_path + '/' + file[:-3])
+                plugin_name = plugin_object.info['Plugin']
+                plugins[plugin_name] = plugin_object
+
+            except Exception as e:
+                self.print_error(f"Failed to load {file[:-3]} plugin!")
+                self.print_error(str(e))
 
         return plugins
-
-    def import_base_commands(self) -> None:
-        """ Import base (core) commands.
-
-        :return None: None
-        """
-
-        commands = self.import_commands(self.config.path_config['commands_path'])
-        self.local_storage.set("commands", commands)
 
     def import_base_databases(self) -> None:
         """ Import base databases.
@@ -249,29 +179,29 @@ class Importer(object):
         :return None: None
         """
 
-        base_dbs = self.config.db_config['base_dbs']
-        db_path = self.config.path_config['db_path']
+        base_dbs = self.db_config['base_dbs']
+        db_path = self.path_config['db_path']
 
         if os.path.exists(db_path + base_dbs['module_database']):
-            self.db.connect_module_database(
+            self.connect_module_database(
                 base_dbs['module_database_name'],
                 db_path + base_dbs['module_database'],
             )
 
         if os.path.exists(db_path + base_dbs['payload_database']):
-            self.db.connect_payload_database(
+            self.connect_payload_database(
                 base_dbs['payload_database_name'],
                 db_path + base_dbs['payload_database'],
             )
 
         if os.path.exists(db_path + base_dbs['encoder_database']):
-            self.db.connect_encoder_database(
+            self.connect_encoder_database(
                 base_dbs['encoder_database_name'],
                 db_path + base_dbs['encoder_database'],
             )
 
         if os.path.exists(db_path + base_dbs['plugin_database']):
-            self.db.connect_plugin_database(
+            self.connect_plugin_database(
                 base_dbs['plugin_database_name'],
                 db_path + base_dbs['plugin_database'],
             )
@@ -282,5 +212,4 @@ class Importer(object):
         :return None: None
         """
 
-        self.import_base_commands()
         self.import_base_databases()

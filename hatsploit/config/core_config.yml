@@ -23,9 +23,9 @@
 #
 
 details:
-  codename: "n0w4r"
-  version: "7.0.0"
-  prompt: "hsf7"
+  codename: "unfulf1ll3d"
+  version: "3.0.0"
+  prompt: "%yellowhsf3%end"
 
 console:
   clear: true

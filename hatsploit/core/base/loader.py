@@ -22,35 +22,21 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
+import time
 import string
 import threading
-import time
-
-from badges import Badges
 
 from hatsploit.core.db.builder import Builder
 from hatsploit.core.db.importer import Importer
 from hatsploit.core.utils.update import Update
 
-from hatsploit.lib.config import Config
 
-
-class Loader(object):
+class Loader(Builder):
     """ Subclass of hatsploit.core.base module.
 
     This subclass of hatsploit.core.base module is intended
     for providing HatSploit loader.
     """
-
-    def __init__(self) -> None:
-        super().__init__()
-
-        self.badges = Badges()
-        self.importer = Importer()
-        self.builder = Builder()
-        self.update = Update()
-
-        self.config = Config()
 
     def load_update_process(self) -> None:
         """ Check for update and notify user if one available.
@@ -58,9 +44,9 @@ class Loader(object):
         :return None: None
         """
 
-        if self.update.check_update():
-            self.badges.print_warning("Your HatSploit Framework is out-dated.")
-            self.badges.print_information("Consider running %greenhsf --update%end.")
+        if Update().check_update():
+            self.print_warning("Your HatSploit Framework is out-dated.")
+            self.print_information("Consider running %greenhsf --update%end.")
             time.sleep(1)
 
     def load_everything(self, build_base: bool = False) -> None:
@@ -71,10 +57,12 @@ class Loader(object):
         :return None: None
         """
 
-        if build_base:
-            self.builder.build_base()
+        self.load_update_process()
 
-        self.importer.import_all()
+        if build_base:
+            self.build_base()
+
+        Importer().import_all()
 
     def load_all(self, build_base: bool = False, silent: bool = False) -> None:
         """ Load all: core, databases, interface, etc.
@@ -84,8 +72,6 @@ class Loader(object):
         :param bool silent: display loading message if True
         :return None: None
         """
-
-        self.load_update_process()
 
         if silent:
             self.load_everything(build_base)
@@ -118,7 +104,7 @@ class Loader(object):
                             + status[cycle % len(status) + 1:]
                     )
 
-                self.badges.print_process(status, '', '\r')
+                self.print_process(status, '', '\r')
                 time.sleep(0.1)
 
         loading_process.join()

@@ -22,16 +22,15 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
-import argparse
 import os
 import sys
-import yaml
+import argparse
 
 from hatasm import HatAsm
 from typing import Any, Optional
 from badges import Badges, Tables
 
-from pex.platform.types import EXEC_FORMATS
+from pex.platform import EXEC_FORMATS
 
 from hatsploit.core.base.console import Console
 
@@ -43,34 +42,22 @@ from hatsploit.core.utils.check import Check
 from hatsploit.core.utils.update import Update
 
 from hatsploit.lib.config import Config
-from hatsploit.lib.jobs import Jobs
+from hatsploit.lib.ui.jobs import Jobs
 from hatsploit.lib.runtime import Runtime
-from hatsploit.lib.payloads import Payloads
-from hatsploit.lib.encoders import Encoders
-from hatsploit.lib.show import Show
+from hatsploit.lib.ui.payloads import Payloads
+from hatsploit.lib.ui.encoders import Encoders
+from hatsploit.lib.ui.show import Show
 
 
-class HatSploit(object):
+class HatSploit(Badges, Config):
     """ Main class of hatsploit module.
 
     This main class of hatsploit module is a representation of
     HatSploit Framework CLI interface.
     """
 
-    def __init__(self) -> None:
-        super().__init__()
-
-        self.jobs = Jobs()
-        self.config = Config()
-        self.runtime = Runtime()
-
-        self.console = Console()
-        self.builder = Builder()
-        self.badges = Badges()
-        self.check = Check()
-        self.update = Update()
-
-        self.path_config = self.config.path_config
+    jobs = Jobs()
+    runtime = Runtime()
 
     def policy(self) -> bool:
         """ Print Terms of Service and ask for confirmation.
@@ -80,14 +67,14 @@ class HatSploit(object):
         """
 
         if not os.path.exists(self.path_config['accept_path']):
-            self.badges.print_information("--( The HatSploit Terms of Service )--")
+            self.print_information("--( The HatSploit Terms of Service )--")
 
             with open(
                     self.path_config['policy_path'] + 'terms_of_service.txt', 'r'
             ) as f:
-                self.badges.print_empty(f.read())
+                self.print_empty(f.read())
 
-            agree = self.badges.input_question(
+            agree = self.input_question(
                 "Accept HatSploit Framework Terms of Service? [y/n] "
             )
             if agree[0].lower() not in ['y', 'yes']:
@@ -113,8 +100,8 @@ class HatSploit(object):
 
         build = False
 
-        if not self.builder.check_base_built():
-            build = self.badges.input_question(
+        if not Builder().check_base_built():
+            build = self.input_question(
                 "Do you want to build and connect base databases? [y/n] "
             )
 
@@ -141,9 +128,9 @@ class HatSploit(object):
                 if len(rpc) >= 2:
                     self.jobs.create_job(f"RPC on port {str(rpc[1])}", "", RPC(*rpc).run)
 
-                self.console.shell()
+                Console().shell()
         else:
-            self.console.script(scripts, shell)
+            Console().script(scripts, shell)
 
     def cli(self) -> None:
         """ Main command-line arguments handler.
@@ -237,22 +224,22 @@ class HatSploit(object):
             rpc = (args.host or '127.0.0.1', args.port or 5000)
 
         if args.check_all:
-            sys.exit(not self.check.check_all())
+            sys.exit(not Check().check_all())
 
         elif args.check_modules:
-            sys.exit(self.check.check_modules())
+            sys.exit(Check().check_modules())
 
         elif args.check_payloads:
-            sys.exit(self.check.check_payloads())
+            sys.exit(Check().check_payloads())
 
         elif args.check_plugins:
-            sys.exit(self.check.check_plugins())
+            sys.exit(Check().check_plugins())
 
         elif args.check_encoders:
-            sys.exit(self.check.check_encoders())
+            sys.exit(Check().check_encoders())
 
         elif args.update:
-            self.update.update()
+            Update().update()
             sys.exit(0)
 
         elif args.script:
@@ -315,28 +302,15 @@ class StoreOptions(argparse.Action):
         setattr(namespace, self.dest, options)
 
 
-class HatSploitGen(HatSploit):
+class HatSploitGen(HatSploit, Tables, HatAsm):
     """ Main class of hatsploit module.
 
     This main class of hatsploit module is a payload generator
     CLI interface.
     """
 
-    def __init__(self) -> None:
-        super().__init__()
-
-        self.hatasm = HatAsm()
-        self.payloads = Payloads()
-        self.encoders = Encoders()
-
-        self.show = Show()
-
-        self.badges = Badges()
-        self.tables = Tables()
-        self.config = Config()
-
-        self.builder = Builder()
-        self.db = DB()
+    payloads = Payloads()
+    encoders = Encoders()
 
     def cli(self) -> None:
         """ Main command-line arguments handler.
@@ -431,6 +405,7 @@ class HatSploitGen(HatSploit):
             '-a',
             '--assembly',
             dest='assembly',
+            action='store_true',
             help='Show assembly for payloads. (requires --arch)'
         )
         parser.add_argument(
@@ -448,12 +423,12 @@ class HatSploitGen(HatSploit):
         args = parser.parse_args()
 
         if args.custom:
-            self.badges.print_process(f"Using {args.custom} as custom payload path...")
+            self.print_process(f"Using {args.custom} as custom payload path...")
 
-            self.builder.build_payload_database(
-                args.custom, self.config.path_config['db_path'] + 'custom.json')
-            self.db.connect_payload_database(
-                'custom', self.config.path_config['db_path'] + 'custom.json')
+            Builder().build_payload_database(
+                args.custom, self.path_config['db_path'] + 'custom.json')
+            DB().connect_payload_database(
+                'custom', self.path_config['db_path'] + 'custom.json')
 
         if args.payloads or args.encoders:
             query = ''
@@ -464,10 +439,10 @@ class HatSploitGen(HatSploit):
                 query += '/' + args.arch
 
             if args.payloads:
-                self.show.show_search_payloads(
+                Show().show_search_payloads(
                     self.payloads.get_payloads(), query)
             elif args.encoders:
-                self.show.show_search_encoders(
+                Show().show_search_encoders(
                     self.encoders.get_encoders(), query)
 
         elif args.formats:
@@ -478,7 +453,7 @@ class HatSploitGen(HatSploit):
                     platforms = ', '.join([str(p) for p in EXEC_FORMATS[format]])
                     data.append((format, platforms))
 
-                self.tables.print_table("Formats", ('Format', 'Platforms'), *data)
+                self.print_table("Formats", ('Format', 'Platforms'), *data)
 
             else:
                 formats = []
@@ -488,10 +463,10 @@ class HatSploitGen(HatSploit):
                         formats.append(format)
 
                 data = [(args.platform, ', '.join(formats))]
-                self.tables.print_table("Formats", ('Platform', 'Formats'), *data)
+                self.print_table("Formats", ('Platform', 'Formats'), *data)
 
         elif args.payload:
-            self.badges.print_process(f"Attempting to generate {args.payload}...")
+            self.print_process(f"Attempting to generate {args.payload}...")
 
             options = {}
 
@@ -499,22 +474,22 @@ class HatSploitGen(HatSploit):
                 options = args.options
 
             if args.encoder and args.iterations:
-                self.badges.print_information(f"Using {str(args.iterations)} as a number of times to encode.")
+                self.print_information(f"Using {str(args.iterations)} as a number of times to encode.")
                 options['iterations'] = args.iterations
 
             if args.badchars:
-                self.badges.print_information(f"Trying to avoid these bad characters: {args.badchars}")
+                self.print_information(f"Trying to avoid these bad characters: {args.badchars}")
                 options['badchars'] = args.badchars
 
             if args.encoder:
-                self.badges.print_information(f"Payload will be encoded with {args.encoder}")
+                self.print_information(f"Payload will be encoded with {args.encoder}")
 
             payload = self.payloads.get_payload(args.payload)
             if not payload:
-                self.badges.print_error(f"Invalid payload: {args.payload}!")
+                self.print_error(f"Invalid payload: {args.payload}!")
                 return
 
-            details = payload.details
+            details = payload.info
             payload = self.payloads.generate_payload(
                 args.payload, options, args.encoder, 'implant' if args.implant else 'run')
 
@@ -523,26 +498,26 @@ class HatSploitGen(HatSploit):
                     payload, details['Platform'], details['Arch'], args.format)
 
             if not payload:
-                self.badges.print_error(f"Invalid format: {args.format}!")
+                self.print_error(f"Invalid format: {args.format}!")
                 return
 
             if not args.output:
-                self.badges.print_process("Writing raw payload...")
+                self.print_process(f"Writing raw payload ({str(len(payload))} bytes)...")
 
                 if isinstance(payload, bytes):
                     if args.assembly:
-                        hexdump = self.hatasm.hexdump_asm(str(details['Arch']), code=payload)
+                        hexdump = self.hexdump_asm(str(details['Arch']), code=payload)
                     else:
-                        hexdump = self.hatasm.hexdump(payload)
+                        hexdump = self.hexdump(payload)
 
                     for line in hexdump:
-                        self.badges.print_empty(line)
+                        self.print_empty(line)
                 else:
-                    self.badges.print_empty(payload)
+                    self.print_empty(payload)
 
             else:
                 with open(args.output, 'wb') as f:
-                    self.badges.print_process(f"Saving payload to {args.output}...")
+                    self.print_process(f"Saving payload to {args.output} ({str(len(payload))} bytes)...")
                     f.write(payload)
 
         else:

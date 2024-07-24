@@ -6,17 +6,12 @@ Current source: https://github.com/EntySec/HatSploit
 import socket
 from pyngrok import ngrok
 
-from hatsploit.lib.plugin import Plugin
+from hatsploit.lib.core.plugin import Plugin
 
 
 class HatSploitPlugin(Plugin):
     def __init__(self):
-        super().__init__()
-
-        self.tunnels = []
-        self.handler = ngrok
-
-        self.details.update({
+        super().__init__({
             'Name': "HatSploit Ngrok Implementation",
             'Plugin': "ngrok",
             'Authors': [
@@ -25,21 +20,22 @@ class HatSploitPlugin(Plugin):
             'Description': "Manage ngrok service right from HatSploit.",
         })
 
-        self.commands = {
+        self.commands.update({
             'ngrok': {
-                'ngrok': {
-                    'Description': "Manage ngrok service.",
-                    'Usage': "ngrok <option> [arguments]",
-                    'MinArgs': 1,
-                    'Options': {
-                        '-l': ['', "List all active tunnels."],
-                        '-o': ['<port>', "Open tunnel for specified port."],
-                        '-c': ['<id>', "Close specified tunnel."],
-                        '-a': ['<token>', "Authenticate ngrok API token."],
-                    },
-                }
+                'Description': "Manage ngrok service.",
+                'Usage': "ngrok <option> [arguments]",
+                'MinArgs': 1,
+                'Options': {
+                    '-l': ['', "List all active tunnels."],
+                    '-o': ['<port>', "Open tunnel for specified port."],
+                    '-c': ['<id>', "Close specified tunnel."],
+                    '-a': ['<token>', "Authenticate ngrok API token."],
+                },
             }
-        }
+        })
+
+        self.tunnels = []
+        self.handler = ngrok
 
     @staticmethod
     def parse_tunnel(tunnel):
@@ -50,34 +46,35 @@ class HatSploitPlugin(Plugin):
 
         return host, port
 
-    def ngrok(self, _, argv):
-        if argv[1] in ['-o', '--open']:
+    def ngrok(self, args):
+        if args[1] in ['-o', '--open']:
             try:
-                self.print_process(f"Opening tunnel for port {argv[2]}...")
+                self.print_process(f"Opening tunnel for port {args[2]}...")
 
-                tunnel = self.handler.connect(int(argv[2]), "tcp")
+                tunnel = self.handler.connect(int(args[2]), "tcp")
                 data = self.parse_tunnel(tunnel)
 
-                route = f"127.0.0.1:{argv[2]} -> {data[0]}:{data[1]}"
+                route = f"127.0.0.1:{args[2]} -> {data[0]}:{data[1]}"
 
                 self.print_success(f"Tunnel opened ({route})!")
                 self.tunnels.append([route, tunnel])
             except Exception:
-                self.print_error(f"Failed to open tunnel port {argv[2]}!")
+                self.print_error(f"Failed to open tunnel port {args[2]}!")
 
-        elif argv[1] in ['-a', '--auth']:
-            self.handler.set_auth_token(argv[2])
+        elif args[1] in ['-a', '--auth']:
+            self.handler.set_auth_token(args[2])
 
-        elif argv[1] in ['-c', '--close']:
+        elif args[1] in ['-c', '--close']:
             try:
-                self.print_process(f"Closing tunnel {argv[2]}...")
+                self.print_process(f"Closing tunnel {args[2]}...")
 
-                self.handler.disconnect(self.tunnels[int(argv[2])][1])
-                self.tunnels.pop(int(argv[2]))
+                self.handler.disconnect(self.tunnels[int(args[2])][1])
+                self.tunnels.pop(int(args[2]))
+
             except Exception:
                 self.print_error(f"Invalid tunnel given!")
 
-        elif argv[1] in ['-l', '--list']:
+        elif args[1] in ['-l', '--list']:
             headers = ('ID', 'Connection')
 
             tunnel_id = 0

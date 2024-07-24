@@ -22,34 +22,21 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
-import json
 import os
+import json
 
 from badges import Badges
 
 from hatsploit.core.db.importer import Importer
 from hatsploit.lib.config import Config
-from hatsploit.lib.modules import Modules
-from hatsploit.lib.payloads import Payloads
-from hatsploit.lib.storage import LocalStorage
 
 
-class Builder(object):
+class Builder(Config, Badges):
     """ Subclass of hatsploit.core.db module.
 
     This subclass of hatsploit.core.db module is intended for
     providing tools for building HatSploit databases.
     """
-
-    def __init__(self) -> None:
-        super().__init__()
-
-        self.modules = Modules()
-        self.payloads = Payloads()
-        self.badges = Badges()
-        self.config = Config()
-        self.importer = Importer()
-        self.local_storage = LocalStorage()
 
     def check_base_built(self) -> bool:
         """ Check if base databases are built.
@@ -57,8 +44,8 @@ class Builder(object):
         :return bool: True if built else False
         """
 
-        base_dbs = self.config.db_config['base_dbs']
-        db_path = self.config.path_config['db_path']
+        base_dbs = self.db_config['base_dbs']
+        db_path = self.path_config['db_path']
 
         if os.path.exists(db_path + base_dbs['module_database']) \
                 and os.path.exists(db_path + base_dbs['payload_database']) \
@@ -86,26 +73,26 @@ class Builder(object):
         :return None: None
         """
 
-        base_dbs = self.config.db_config['base_dbs']
-        db_path = self.config.path_config['db_path']
+        base_dbs = self.db_config['base_dbs']
+        db_path = self.path_config['db_path']
 
         if not os.path.exists(db_path):
             os.mkdir(db_path)
 
         self.build_module_database(
-            self.config.path_config['modules_path'],
+            self.path_config['modules_path'],
             db_path + base_dbs['module_database'],
         )
         self.build_payload_database(
-            self.config.path_config['payloads_path'],
+            self.path_config['payloads_path'],
             db_path + base_dbs['payload_database'],
         )
         self.build_encoder_database(
-            self.config.path_config['encoders_path'],
+            self.path_config['encoders_path'],
             db_path + base_dbs['encoder_database'],
         )
         self.build_plugin_database(
-            self.config.path_config['plugins_path'],
+            self.path_config['plugins_path'],
             db_path + base_dbs['plugin_database'],
         )
 
@@ -124,28 +111,30 @@ class Builder(object):
 
         for dir, _, files in os.walk(encoder_path):
             for file in files:
-                if file.endswith('.py') and file != '__init__.py':
-                    encoder = dir + '/' + file[:-3]
+                if not file.endswith('.py') or file == '__init__.py':
+                    continue
 
-                    try:
-                        encoder_object = self.importer.import_encoder(encoder)
-                        encoder_name = encoder_object.details['Encoder']
+                encoder = dir + '/' + file[:-3]
 
-                        database.update({
-                            encoder_name: {
-                                "Path": encoder,
-                                "Name": encoder_object.details['Name'],
-                                "Encoder": encoder_object.details['Encoder'],
-                                "Authors": encoder_object.details['Authors'],
-                                "Description": encoder_object.details['Description'],
-                                "Arch": str(encoder_object.details['Arch']),
-                            }
-                        })
+                try:
+                    encoder_object = Importer().import_encoder(encoder)
+                    encoder_name = encoder_object.info['Encoder']
 
-                    except Exception:
-                        self.badges.print_error(
-                            f"Failed to add {encoder} to encoder database!"
-                        )
+                    database.update({
+                        encoder_name: {
+                            "Path": encoder,
+                            "Name": encoder_object.info['Name'],
+                            "Encoder": encoder_object.info['Encoder'],
+                            "Authors": encoder_object.info['Authors'],
+                            "Description": encoder_object.info['Description'],
+                            "Arch": str(encoder_object.info['Arch']),
+                        }
+                    })
+
+                except Exception:
+                    self.print_error(
+                        f"Failed to add {encoder} to encoder database!"
+                    )
 
         with open(database_path, 'w') as f:
             json.dump(database, f)
@@ -165,30 +154,33 @@ class Builder(object):
 
         for dir, _, files in os.walk(payload_path):
             for file in files:
-                if file.endswith('.py') and file != '__init__.py':
-                    payload = dir + '/' + file[:-3]
+                if not file.endswith('.py') or file == '__init__.py':
+                    continue
 
-                    try:
-                        payload_object = self.importer.import_payload(payload)
-                        payload_name = payload_object.details['Payload']
+                payload = dir + '/' + file[:-3]
 
-                        database.update({
-                            payload_name: {
-                                "Path": payload,
-                                "Name": payload_object.details['Name'],
-                                "Payload": payload_object.details['Payload'],
-                                "Authors": payload_object.details['Authors'],
-                                "Description": payload_object.details['Description'],
-                                "Arch": str(payload_object.details['Arch']),
-                                "Platform": str(payload_object.details['Platform']),
-                                "Type": payload_object.details['Type'],
-                            }
-                        })
+                try:
+                    payload_object = Importer().import_payload(payload)
+                    payload_name = payload_object.info['Payload']
 
-                    except Exception:
-                        self.badges.print_error(
-                            f"Failed to add {payload} to payload database!"
-                        )
+                    database.update({
+                        payload_name: {
+                            "Path": payload,
+                            "Category": payload_object.info['Category'],
+                            "Name": payload_object.info['Name'],
+                            "Payload": payload_object.info['Payload'],
+                            "Authors": payload_object.info['Authors'],
+                            "Description": payload_object.info['Description'],
+                            "Arch": str(payload_object.info['Arch']),
+                            "Platform": str(payload_object.info['Platform']),
+                            "Type": payload_object.info['Type'],
+                        }
+                    })
+
+                except Exception:
+                    self.print_error(
+                        f"Failed to add {payload} to payload database!"
+                    )
 
         with open(database_path, 'w') as f:
             json.dump(database, f)
@@ -208,30 +200,32 @@ class Builder(object):
 
         for dir, _, files in os.walk(module_path):
             for file in files:
-                if file.endswith('.py') and file != '__init__.py':
-                    module = dir + '/' + file[:-3]
+                if not file.endswith('.py') or file == '__init__.py':
+                    continue
 
-                    try:
-                        module_object = self.importer.import_module(module)
-                        module_name = module_object.details['Module']
+                module = dir + '/' + file[:-3]
 
-                        database.update({
-                            module_name: {
-                                "Path": module,
-                                "Category": module_object.details['Category'],
-                                "Name": module_object.details['Name'],
-                                "Module": module_object.details['Module'],
-                                "Authors": module_object.details['Authors'],
-                                "Description": module_object.details['Description'],
-                                "Platform": str(module_object.details['Platform']),
-                                "Rank": module_object.details['Rank'],
-                            }
-                        })
+                try:
+                    module_object = Importer().import_module(module)
+                    module_name = module_object.info['Module']
 
-                    except Exception:
-                        self.badges.print_error(
-                            f"Failed to add {module} to module database!"
-                        )
+                    database.update({
+                        module_name: {
+                            "Path": module,
+                            "Category": module_object.info['Category'],
+                            "Name": module_object.info['Name'],
+                            "Module": module_object.info['Module'],
+                            "Authors": module_object.info['Authors'],
+                            "Description": module_object.info['Description'],
+                            "Platform": str(module_object.info['Platform']),
+                            "Rank": module_object.info['Rank'],
+                        }
+                    })
+
+                except Exception:
+                    self.print_error(
+                        f"Failed to add {module} to module database!"
+                    )
 
         with open(database_path, 'w') as f:
             json.dump(database, f)
@@ -251,27 +245,29 @@ class Builder(object):
 
         for dir, _, files in os.walk(plugin_path):
             for file in files:
-                if file.endswith('.py') and file != '__init__.py':
-                    plugin = dir + '/' + file[:-3]
+                if not file.endswith('.py') or file == '__init__.py':
+                    continue
 
-                    try:
-                        plugin_object = self.importer.import_plugin(plugin)
-                        plugin_name = plugin_object.details['Plugin']
+                plugin = dir + '/' + file[:-3]
 
-                        database.update({
-                            plugin_name: {
-                                "Path": plugin,
-                                "Name": plugin_object.details['Name'],
-                                "Plugin": plugin_object.details['Plugin'],
-                                "Authors": plugin_object.details['Authors'],
-                                "Description": plugin_object.details['Description'],
-                            }
-                        })
+                try:
+                    plugin_object = Importer().import_plugin(plugin)
+                    plugin_name = plugin_object.info['Plugin']
 
-                    except Exception:
-                        self.badges.print_error(
-                            f"Failed to add {plugin} to plugin database!"
-                        )
+                    database.update({
+                        plugin_name: {
+                            "Path": plugin,
+                            "Name": plugin_object.info['Name'],
+                            "Plugin": plugin_object.info['Plugin'],
+                            "Authors": plugin_object.info['Authors'],
+                            "Description": plugin_object.info['Description'],
+                        }
+                    })
+
+                except Exception:
+                    self.print_error(
+                        f"Failed to add {plugin} to plugin database!"
+                    )
 
         with open(database_path, 'w') as f:
             json.dump(database, f)

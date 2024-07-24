@@ -3,19 +3,14 @@ This command requires HatSploit: https://hatsploit.com
 Current source: https://github.com/EntySec/HatSploit
 """
 
-from hatsploit.lib.command import Command
-from hatsploit.lib.jobs import Jobs
-from hatsploit.lib.show import Show
+from badges.cmd import Command
+from hatsploit.lib.ui.jobs import Jobs
+from hatsploit.lib.ui.show import Show
 
 
-class HatSploitCommand(Command):
+class ExternalCommand(Command):
     def __init__(self):
-        super().__init__()
-
-        self.jobs = Jobs()
-        self.show = Show()
-
-        self.details.update({
+        super().__init__({
             'Category': "jobs",
             'Name': "jobs",
             'Authors': [
@@ -25,16 +20,17 @@ class HatSploitCommand(Command):
             'Usage': "jobs <option> [arguments]",
             'MinArgs': 1,
             'Options': {
-                '-l': ['', 'List all active jobs.'],
-                '-k': ['<id>', 'Kill specified job.'],
+                'list': ['', 'List all active jobs.'],
+                'kill': ['<id>', 'Kill specified job.'],
             },
         })
 
-    def run(self, argc, argv):
-        choice = argv[1]
+        self.jobs = Jobs()
+        self.show = Show()
 
-        if choice == '-l':
+    def run(self, args):
+        if args[1] == 'list':
             self.show.show_jobs(self.jobs.get_jobs())
 
-        elif choice == '-k':
-            self.jobs.delete_job(argv[2])
+        elif args[1] == 'kill':
+            self.jobs.delete_job(args[2])

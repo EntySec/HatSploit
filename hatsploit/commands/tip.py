@@ -4,16 +4,12 @@ Current source: https://github.com/EntySec/HatSploit
 """
 
 from hatsploit.core.utils.ui.tip import Tip
-from hatsploit.lib.command import Command
+from badges.cmd import Command
 
 
-class HatSploitCommand(Command):
+class ExternalCommand(Command):
     def __init__(self):
-        super().__init__()
-
-        self.tip = Tip()
-
-        self.details.update({
+        super().__init__({
             'Category': "misc",
             'Name': "tip",
             'Authors': [
@@ -24,5 +20,5 @@ class HatSploitCommand(Command):
             'MinArgs': 0,
         })
 
-    def run(self, argc, argv):
-        self.tip.print_random_tip()
+    def run(self, _):
+        Tip().print_random_tip()

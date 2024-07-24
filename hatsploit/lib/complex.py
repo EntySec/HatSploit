@@ -22,14 +22,93 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
-from typing import Union
+from typing import Union, Any
 
-from hatsploit.lib.option import Option
-from hatsploit.lib.modules import Modules
-from hatsploit.lib.payloads import Payloads
-from hatsploit.lib.encoders import Encoders
-from hatsploit.lib.sessions import Sessions
-from hatsploit.lib.mixins import PayloadMixin
+from pex.post.push import Push
+from pex.post.method import select_method
+
+from pex.platform import *
+
+from hatsploit.lib.ui.option import Option, IPv4Option, PortOption
+from hatsploit.lib.ui.modules import Modules
+from hatsploit.lib.ui.payloads import Payloads
+from hatsploit.lib.ui.encoders import Encoders
+from hatsploit.lib.ui.sessions import Sessions
+
+from hatsploit.lib.mixins import (
+    PayloadMixin,
+    PayloadDropMixin
+)
+
+
+class DropperOption(Option):
+    """ Subclass of hatsploit.lib.option module.
+
+    This subclass of hatsploit.lib.option module is a representation
+    of an option that stores dropper.
+    """
+
+    def __init__(self, *args, **kwargs) -> None:
+        """ Initialize payload option.
+
+        :return None: None
+        """
+
+        self.modules = Modules()
+
+        super().__init__(*args, **kwargs)
+
+        self.method = None
+
+        self.srvhost = IPv4Option('SRVHOST', None, "HTTP server host.", True)
+        self.srvport = PortOption('SRVPORT', 80, "HTTP server port.", True)
+        self.urlpath = Option('URLPATH', "/", "File path on server", True)
+
+        self.push = Push()
+
+    def set(self, value: str) -> None:
+        """ Set current option value.
+
+        :param str value: option value to set
+        :return None: None
+        """
+
+        module = self.modules.get_current_module()
+
+        if module:
+            if not self.modules.check_payload(module) and \
+                    PayloadDropMixin not in module.payload.criteria:
+                self.visible = False
+                return
+
+            if not module.payload.payload:
+                raise RuntimeError("Invalid option value, expected valid droppera!")
+
+            method = select_method(
+                methods=self.push.methods,
+                platform=module.payload.info['Platform'],
+                method=value
+            )
+
+            if not method:
+                raise RuntimeError("Invalid option value, expected valid dropperb!")
+
+            if method.name != value:
+                raise RuntimeError("Invalid option value, expected valid dropperc!")
+
+            if method.uri:
+                module.srvhost = self.srvhost
+                module.srvport = self.srvport
+
+                self.srvport.visible = True
+                self.srvhost.visible = True
+            else:
+                self.srvport.visible = False
+                self.srvhost.visible = False
+
+            self.method = method
+
+        self.value = value
 
 
 class PayloadOption(Option):
@@ -48,11 +127,16 @@ class PayloadOption(Option):
         super().__init__(*args, **kwargs)
 
         self.payload = None
+        self.phase = None
+
+        self.info = {}
         self.criteria = {}
 
         self.config = {
             'BadChars': b'',
-            'Space': 2048
+            'Space': 2048,
+            'Append': b'',
+            'Prepend': b''
         }
 
         self.mixin = None
@@ -61,20 +145,36 @@ class PayloadOption(Option):
         self.payloads = Payloads()
         self.encoders = Encoders()
 
-    def run(self, method: str = 'run') -> bytes:
+    def run(self, method: str = 'run', phase: bool = False) -> Union[Any, None]:
         """ Run current payload.
 
         :param str method: payload object method
-        :return bytes: generated payload
+        :param bool phase: run phase instead of payload
+        :return Union[Any, None]: generated payload or None
         """
 
-        if not self.payload:
+        payload = self.payload
+
+        if phase:
+            payload = self.phase
+
+        if not payload:
             return b''
 
-        return self.payloads.run_payload(
-            self.payload, self.encoders.get_current_encoder(
-                self.modules.get_current_module(), self.payload),
-            method=method, badchars=self.config['BadChars'])
+        if phase:
+            for option in self.payload.options:
+                payload.set(option, self.payload.options[option].value)
+
+        buffer = self.payloads.run_payload(
+            payload, self.encoders.get_current_encoder(
+                self.modules.get_current_module(), payload),
+            method=method,
+            badchars=self.config['BadChars'],
+            prepend=self.config['Prepend'],
+            append=self.config['Append']
+        )
+
+        return buffer
 
     def set(self, value: Union[str, int]) -> None:
         """ Set current option value.
@@ -89,6 +189,9 @@ class PayloadOption(Option):
         if not module:
             raise RuntimeError("No module specified for payload!")
 
+        if not self.payloads.check_usable(value):
+            raise RuntimeError("Invalid option value, expected valid payload!")
+
         self.mixin = self.payloads.check_module_compatible(
             value, module)
 
@@ -100,7 +203,21 @@ class PayloadOption(Option):
         self.payloads.add_payload(module, value)
 
         self.payload = self.payloads.get_module_payload(value, module)
+        self.info.update(self.payload.info)
         self.value = value
+
+        phase = self.payload.info['Phase']
+
+        if not phase:
+            phase = '/'.join((str(self.info['Platform']),
+                              str(self.info['Arch']),
+                              str(self.info['Type'])))
+
+        if not self.payloads.check_exist(phase):
+            return
+
+        self.payloads.add_payload(module, phase)
+        self.phase = self.payloads.get_module_payload(phase, module)
 
 
 class EncoderOption(Option):
@@ -183,7 +300,7 @@ class SessionOption(Option):
         module = self.modules.get_current_module()
 
         if module:
-            platform = module.details['Platform']
+            platform = module.info['Platform']
 
             if not self.platforms:
                 if not self.sessions.check_exist(value, platform, self.type):

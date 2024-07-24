@@ -3,17 +3,13 @@ This command requires HatSploit: https://hatsploit.com
 Current source: https://github.com/EntySec/HatSploit
 """
 
-from hatsploit.lib.command import Command
+from badges.cmd import Command
 from hatsploit.lib.log import Log
 
 
-class HatSploitCommand(Command):
+class ExternalCommand(Command):
     def __init__(self):
-        super().__init__()
-
-        self.log = Log()
-
-        self.details.update({
+        super().__init__({
             'Category': "developer",
             'Name': "log",
             'Authors': [
@@ -28,11 +24,11 @@ class HatSploitCommand(Command):
             },
         })
 
-    def run(self, argc, argv):
-        option = argv[1]
+        self.log = Log()
 
-        if option == 'on':
-            self.log.enable_log(argv[2])
+    def run(self, args):
+        if args[1] == 'on':
+            self.log.enable_log(args[2])
 
-        elif option == 'off':
+        elif args[1] == 'off':
             self.log.disable_log()

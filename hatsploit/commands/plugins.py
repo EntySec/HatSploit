@@ -3,19 +3,14 @@ This command requires HatSploit: https://hatsploit.com
 Current source: https://github.com/EntySec/HatSploit
 """
 
-from hatsploit.lib.command import Command
-from hatsploit.lib.plugins import Plugins
-from hatsploit.lib.show import Show
+from badges.cmd import Command
+from hatsploit.lib.ui.plugins import Plugins
+from hatsploit.lib.ui.show import Show
 
 
-class HatSploitCommand(Command):
+class ExternalCommand(Command):
     def __init__(self):
-        super().__init__()
-
-        self.show = Show()
-        self.plugins = Plugins()
-
-        self.details.update({
+        super().__init__({
             'Category': "plugins",
             'Name': "plugins",
             'Authors': [
@@ -26,8 +21,11 @@ class HatSploitCommand(Command):
             'MinArgs': 0,
         })
 
-    def rpc(self, *args):
+        self.show = Show()
+        self.plugins = Plugins()
+
+    def rpc(self, *_):
         return self.plugins.get_plugins()
 
-    def run(self, argc, argv):
+    def run(self, _):
         self.show.show_plugins(self.plugins.get_plugins())

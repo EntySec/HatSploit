@@ -4,16 +4,12 @@ Current source: https://github.com/EntySec/HatSploit
 """
 
 from hatsploit.core.utils.ui.banner import Banner
-from hatsploit.lib.command import Command
+from badges.cmd import Command
 
 
-class HatSploitCommand(Command):
+class ExternalCommand(Command):
     def __init__(self):
-        super().__init__()
-
-        self.banner = Banner()
-
-        self.details.update({
+        super().__init__({
             'Category': "misc",
             'Name': "banner",
             'Authors': [
@@ -24,5 +20,5 @@ class HatSploitCommand(Command):
             'MinArgs': 0,
         })
 
-    def run(self, argc, argv):
-        self.banner.print_random_banner()
+    def run(self, _):
+        Banner().print_random_banner()

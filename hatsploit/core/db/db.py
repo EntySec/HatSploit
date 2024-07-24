@@ -22,10 +22,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
-import json
 import os
+import json
 
-from hatsploit.lib.storage import LocalStorage
+from hatsploit.lib.storage import STORAGE
 
 
 class DB(object):
@@ -35,48 +35,48 @@ class DB(object):
     providing tools for working with HatSploit databases.
     """
 
-    def __init__(self) -> None:
-        super().__init__()
-
-        self.local_storage = LocalStorage()
-
-    def get_encoder_databases(self) -> dict:
+    @staticmethod
+    def get_encoder_databases() -> dict:
         """ Get connected encoder databases.
 
         :return dict: databases, database name as keys and
         database data as items
         """
 
-        return self.local_storage.get("connected_encoder_databases", {})
+        return STORAGE.get("connected_encoder_databases", {})
 
-    def get_payload_databases(self) -> dict:
+    @staticmethod
+    def get_payload_databases() -> dict:
         """ Get connected payload databases.
 
         :return dict: databases, database name as keys and
         database data as items
         """
 
-        return self.local_storage.get("connected_payload_databases", {})
+        return STORAGE.get("connected_payload_databases", {})
 
-    def get_module_databases(self) -> dict:
+    @staticmethod
+    def get_module_databases() -> dict:
         """ Get connected module databases.
 
         :return dict: databases, database name as keys and
         database data as items
         """
 
-        return self.local_storage.get("connected_module_databases", {})
+        return STORAGE.get("connected_module_databases", {})
 
-    def get_plugin_databases(self) -> dict:
+    @staticmethod
+    def get_plugin_databases() -> dict:
         """ Get connected plugin databases.
 
         :return dict: databases, database name as keys and
         database data as items
         """
 
-        return self.local_storage.get("connected_plugin_databases", {})
+        return STORAGE.get("connected_plugin_databases", {})
 
-    def disconnect_payload_database(self, name: str) -> None:
+    @staticmethod
+    def disconnect_payload_database(name: str) -> None:
         """ Disconnect payload database.
 
         :param str name: database name
@@ -84,15 +84,16 @@ class DB(object):
         :raises RuntimeError: with trailing error message
         """
 
-        if self.local_storage.get("connected_payload_databases"):
-            if name in self.local_storage.get("connected_payload_databases"):
-                self.local_storage.delete_element("connected_payload_databases", name)
-                self.local_storage.delete_element("payloads", name)
+        if STORAGE.get("connected_payload_databases"):
+            if name in STORAGE.get("connected_payload_databases"):
+                STORAGE.delete_element("connected_payload_databases", name)
+                STORAGE.delete_element("payloads", name)
                 return
 
         raise RuntimeError("No such payload database connected!")
 
-    def disconnect_encoder_database(self, name: str) -> None:
+    @staticmethod
+    def disconnect_encoder_database(name: str) -> None:
         """ Disconnect encoder database.
 
         :param str name: database name
@@ -100,15 +101,16 @@ class DB(object):
         :raises RuntimeError: with trailing error message
         """
 
-        if self.local_storage.get("connected_encoder_databases"):
-            if name in self.local_storage.get("connected_encoder_databases"):
-                self.local_storage.delete_element("connected_encoder_databases", name)
-                self.local_storage.delete_element("encoders", name)
+        if STORAGE.get("connected_encoder_databases"):
+            if name in STORAGE.get("connected_encoder_databases"):
+                STORAGE.delete_element("connected_encoder_databases", name)
+                STORAGE.delete_element("encoders", name)
                 return
 
         raise RuntimeError("No such encoder database connected!")
 
-    def disconnect_module_database(self, name: str) -> None:
+    @staticmethod
+    def disconnect_module_database(name: str) -> None:
         """ Disconnect module database.
 
         :param str name: database name
@@ -116,15 +118,16 @@ class DB(object):
         :raises RuntimeError: with trailing error message
         """
 
-        if self.local_storage.get("connected_module_databases"):
-            if name in self.local_storage.get("connected_module_databases"):
-                self.local_storage.delete_element("connected_module_databases", name)
-                self.local_storage.delete_element("modules", name)
+        if STORAGE.get("connected_module_databases"):
+            if name in STORAGE.get("connected_module_databases"):
+                STORAGE.delete_element("connected_module_databases", name)
+                STORAGE.delete_element("modules", name)
                 return
 
         raise RuntimeError("No such module database connected!")
 
-    def disconnect_plugin_database(self, name: str) -> None:
+    @staticmethod
+    def disconnect_plugin_database(name: str) -> None:
         """ Disconnect plugin database.
 
         :param str name: database name
@@ -132,15 +135,16 @@ class DB(object):
         :raises RuntimeError: with trailing error message
         """
 
-        if self.local_storage.get("connected_plugin_databases"):
-            if name in self.local_storage.get("connected_plugin_databases"):
-                self.local_storage.delete_element("connected_plugin_databases", name)
-                self.local_storage.delete_element("plugins", name)
+        if STORAGE.get("connected_plugin_databases"):
+            if name in STORAGE.get("connected_plugin_databases"):
+                STORAGE.delete_element("connected_plugin_databases", name)
+                STORAGE.delete_element("plugins", name)
                 return
 
         raise RuntimeError("No such plugin database connected!")
 
-    def connect_encoder_database(self, name: str, path: str) -> None:
+    @staticmethod
+    def connect_encoder_database(name: str, path: str) -> None:
         """ Connect encoder database.
 
         :param str name: name to give to the database
@@ -149,8 +153,8 @@ class DB(object):
         :raises RuntimeError: with trailing error message
         """
 
-        if self.local_storage.get("connected_encoder_databases"):
-            if name in self.local_storage.get("connected_encoder_databases"):
+        if STORAGE.get("connected_encoder_databases"):
+            if name in STORAGE.get("connected_encoder_databases"):
                 raise RuntimeWarning(f"Encoder database is already connected: {path}.")
 
         if not os.path.exists(path) or not str.endswith(path, "json"):
@@ -172,16 +176,17 @@ class DB(object):
         encoders = {name: database}
 
         data = {name: {'Path': path}}
-        if not self.local_storage.get("connected_encoder_databases"):
-            self.local_storage.set("connected_encoder_databases", {})
-        self.local_storage.update("connected_encoder_databases", data)
+        if not STORAGE.get("connected_encoder_databases"):
+            STORAGE.set("connected_encoder_databases", {})
+        STORAGE.update("connected_encoder_databases", data)
 
-        if self.local_storage.get("encoders"):
-            self.local_storage.update("encoders", encoders)
+        if STORAGE.get("encoders"):
+            STORAGE.update("encoders", encoders)
         else:
-            self.local_storage.set("encoders", encoders)
+            STORAGE.set("encoders", encoders)
 
-    def connect_payload_database(self, name: str, path: str) -> None:
+    @staticmethod
+    def connect_payload_database(name: str, path: str) -> None:
         """ Connect payload database.
 
         :param str name: name to give to the database
@@ -190,8 +195,8 @@ class DB(object):
         :raises RuntimeError: with trailing error message
         """
 
-        if self.local_storage.get("connected_payload_databases"):
-            if name in self.local_storage.get("connected_payload_databases"):
+        if STORAGE.get("connected_payload_databases"):
+            if name in STORAGE.get("connected_payload_databases"):
                 raise RuntimeWarning(f"Payload database is already connected: {path}.")
 
         if not os.path.exists(path) or not str.endswith(path, "json"):
@@ -213,16 +218,17 @@ class DB(object):
         payloads = {name: database}
 
         data = {name: {'Path': path}}
-        if not self.local_storage.get("connected_payload_databases"):
-            self.local_storage.set("connected_payload_databases", {})
-        self.local_storage.update("connected_payload_databases", data)
+        if not STORAGE.get("connected_payload_databases"):
+            STORAGE.set("connected_payload_databases", {})
+        STORAGE.update("connected_payload_databases", data)
 
-        if self.local_storage.get("payloads"):
-            self.local_storage.update("payloads", payloads)
+        if STORAGE.get("payloads"):
+            STORAGE.update("payloads", payloads)
         else:
-            self.local_storage.set("payloads", payloads)
+            STORAGE.set("payloads", payloads)
 
-    def connect_module_database(self, name: str, path: str) -> None:
+    @staticmethod
+    def connect_module_database(name: str, path: str) -> None:
         """ Connect module database.
 
         :param str name: name to give to the database
@@ -231,8 +237,8 @@ class DB(object):
         :raises RuntimeError: with trailing error message
         """
 
-        if self.local_storage.get("connected_module_databases"):
-            if name in self.local_storage.get("connected_module_databases"):
+        if STORAGE.get("connected_module_databases"):
+            if name in STORAGE.get("connected_module_databases"):
                 raise RuntimeWarning(f"Module database is already connected: {path}.")
 
         if not os.path.exists(path) or not str.endswith(path, "json"):
@@ -254,16 +260,17 @@ class DB(object):
         modules = {name: database}
 
         data = {name: {'Path': path}}
-        if not self.local_storage.get("connected_module_databases"):
-            self.local_storage.set("connected_module_databases", {})
-        self.local_storage.update("connected_module_databases", data)
+        if not STORAGE.get("connected_module_databases"):
+            STORAGE.set("connected_module_databases", {})
+        STORAGE.update("connected_module_databases", data)
 
-        if self.local_storage.get("modules"):
-            self.local_storage.update("modules", modules)
+        if STORAGE.get("modules"):
+            STORAGE.update("modules", modules)
         else:
-            self.local_storage.set("modules", modules)
+            STORAGE.set("modules", modules)
 
-    def connect_plugin_database(self, name: str, path: str) -> None:
+    @staticmethod
+    def connect_plugin_database(name: str, path: str) -> None:
         """ Connect plugin database.
 
         :param str name: name to give to the database
@@ -272,8 +279,8 @@ class DB(object):
         :raises RuntimeError: with trailing error message
         """
 
-        if self.local_storage.get("connected_plugin_databases"):
-            if name in self.local_storage.get("connected_plugin_databases"):
+        if STORAGE.get("connected_plugin_databases"):
+            if name in STORAGE.get("connected_plugin_databases"):
                 raise RuntimeWarning(f"Plugin database is already connected: {path}.")
 
         if not os.path.exists(path) or not str.endswith(path, "json"):
@@ -295,11 +302,11 @@ class DB(object):
         plugins = {name: database}
 
         data = {name: {'Path': path}}
-        if not self.local_storage.get("connected_plugin_databases"):
-            self.local_storage.set("connected_plugin_databases", {})
-        self.local_storage.update("connected_plugin_databases", data)
+        if not STORAGE.get("connected_plugin_databases"):
+            STORAGE.set("connected_plugin_databases", {})
+        STORAGE.update("connected_plugin_databases", data)
 
-        if self.local_storage.get("plugins"):
-            self.local_storage.update("plugins", plugins)
+        if STORAGE.get("plugins"):
+            STORAGE.update("plugins", plugins)
         else:
-            self.local_storage.set("plugins", plugins)
+            STORAGE.set("plugins", plugins)
