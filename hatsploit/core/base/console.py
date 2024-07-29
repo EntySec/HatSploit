@@ -69,16 +69,24 @@ class Console(Cmd):
         :return None: None
         """
 
+        self.runtime.refresh()
         module = self.modules.get_current_module()
 
         if not module:
             self.set_prompt(f'[{self.scheme}]> ')
             return
 
-        category = module.info['Category']
-        name = module.info['Name']
+        self.set_prompt(f'[{self.scheme}: %red{module.info["Name"]}%end]> ')
 
-        self.set_prompt(f'[{self.scheme}: {category}: %red{name}%end]> ')
+    def precmd(self, line: str) -> str:
+        """ Refresh console before executing command.
+
+        :param str line: command line
+        :return str: command line
+        """
+
+        self.runtime.refresh()
+        return line
 
     def shell(self, header: bool = True) -> None:
         """ Configure HatSploit shell interpreter and start it.

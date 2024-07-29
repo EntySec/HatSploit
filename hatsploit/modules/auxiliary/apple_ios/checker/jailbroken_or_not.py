@@ -23,6 +23,7 @@ class HatSploitModule(Module, TCP):
             'Rank': LOW_RANK,
         })
 
+    def __call__(self):
         self.port.set(22)
         self.port.visible = False
         self.host.description = "iPhone host."

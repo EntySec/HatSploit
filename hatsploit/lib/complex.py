@@ -55,9 +55,6 @@ class DropperOption(Option):
         """
 
         self.modules = Modules()
-
-        super().__init__(*args, **kwargs)
-
         self.method = None
 
         self.srvhost = IPv4Option('SRVHOST', None, "HTTP server host.", True)
@@ -66,6 +63,8 @@ class DropperOption(Option):
 
         self.push = Push()
 
+        super().__init__(*args, **kwargs)
+
     def set(self, value: str) -> None:
         """ Set current option value.
 
@@ -73,41 +72,40 @@ class DropperOption(Option):
         :return None: None
         """
 
+        method = select_method(
+            methods=self.push.methods,
+        )
+
         module = self.modules.get_current_module()
 
         if module:
-            if not self.modules.check_payload(module) and \
-                    PayloadDropMixin not in module.payload.criteria:
-                self.visible = False
-                return
+            if hasattr(module, 'payload') and module.payload.payload:
+                method = select_method(
+                    methods=self.push.methods,
+                    platform=module.payload.info['Platform'],
+                    method=value
+                )
 
-            if not module.payload.payload:
-                raise RuntimeError("Invalid option value, expected valid droppera!")
+                if not method:
+                    raise RuntimeError("Invalid option value, expected valid dropper!")
 
-            method = select_method(
-                methods=self.push.methods,
-                platform=module.payload.info['Platform'],
-                method=value
-            )
+                if method.name != value and value != 'auto':
+                    raise RuntimeError("Invalid option value, expected valid dropper!")
 
-            if not method:
-                raise RuntimeError("Invalid option value, expected valid dropperb!")
-
-            if method.name != value:
-                raise RuntimeError("Invalid option value, expected valid dropperc!")
-
-            if method.uri:
+            if value in ['wget', 'curl']:
                 module.srvhost = self.srvhost
                 module.srvport = self.srvport
+                module.urlpath = self.urlpath
 
                 self.srvport.visible = True
                 self.srvhost.visible = True
+                self.urlpath.visible = True
             else:
                 self.srvport.visible = False
                 self.srvhost.visible = False
+                self.urlpath.visible = False
 
-            self.method = method
-
+        self.method = method
         self.value = value
 
 

@@ -23,7 +23,9 @@ class ExternalCommand(Command):
 
         self.modules = Modules()
         self.show = Show()
-        self.complete = self.modules.modules_completer()
+
+    def complete(self):
+        return self.modules.modules_completer()
 
     def get_module_information(self, module):
         if self.modules.check_exist(module):

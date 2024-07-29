@@ -22,6 +22,9 @@ class ExternalCommand(Command):
 
         self.modules = Modules()
 
+    def complete(self):
+        return {name: None for name in self.modules.get_current_options()}
+
     def rpc(self, *args):
         if len(args) < 2:
             return

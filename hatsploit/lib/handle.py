@@ -47,13 +47,14 @@ class Handle(Badges):
     """
 
     def listen_server(self, local_host: str, local_port: int,
-                      methods: dict = {}) -> None:
+                      methods: dict = {}, limit: Optional[int] = None) -> None:
         """ HTTP server.
 
         :param str local_host: local host to start server on
         :param int local_port: local port to start server on
         :param dict methods: allowed HTTP methods, names as keys and
         handlers as items
+        :param Optional[int] limit: number of connections to accept
         :return None: None
         """
 
@@ -62,8 +63,12 @@ class Handle(Badges):
         self.print_process(f"Starting HTTP listener on port {str(local_port)}...")
         listener.listen()
 
-        while True:
-            listener.accept()
+        if limit:
+            for _ in range(limit):
+                listener.accept()
+        else:
+            while True:
+                listener.accept()
 
     def listen_session(self, local_host: str, local_port: int,
                        session: Optional[Callable[[], Session]] = None,

@@ -21,7 +21,9 @@ class ExternalCommand(Command):
         })
 
         self.plugins = Plugins()
-        self.complete = self.plugins.loaded_plugins_completer()
+
+    def complete(self):
+        return self.plugins.loaded_plugins_completer()
 
     def run(self, args):
         plugin = self.plugins.get_loaded_plugins()[args[1]]

@@ -21,7 +21,9 @@ class ExternalCommand(Command):
         })
 
         self.modules = Modules()
-        self.complete = self.modules.modules_completer()
+
+    def complete(self):
+        return self.modules.modules_completer()
 
     def rpc(self, *args):
         if len(args) < 1:

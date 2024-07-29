@@ -28,4 +28,4 @@ class ExternalCommand(Command):
         return self.modules.get_current_advanced()
 
     def run(self, _):
-        Show().show_advanced(self.modules.get_current_advanced())
+        Show().show_advanced(self.modules.get_current_module())

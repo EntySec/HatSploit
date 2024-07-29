@@ -43,7 +43,7 @@ from hatsploit.lib.ui.jobs import Jobs
 from hatsploit.lib.ui.sessions import Sessions
 
 
-class Runtime(Jobs, Loot, Sessions, Loader):
+class Runtime(Jobs, Sessions, Loader):
     """ Subclass of hatsploit.lib module.
 
     This subclass of hatsploit.lib module is intended for providing
@@ -58,15 +58,15 @@ class Runtime(Jobs, Loot, Sessions, Loader):
         :raises RuntimeError: with trailing error message
         """
 
-        if os.path.exists(self.path_config['root_path']):
-            workspace = self.path_config['user_path']
-            loot = self.path_config['loot_path']
+        if os.path.exists(Config().path_config['root_path']):
+            workspace = Config().path_config['user_path']
+            loot = Config().path_config['loot_path']
 
             if not os.path.isdir(workspace):
                 os.mkdir(workspace)
 
             if not os.path.isdir(loot):
-                self.create_loot()
+                Loot().create_loot()
 
         else:
             raise RuntimeError("HatSploit Framework is not installed!")

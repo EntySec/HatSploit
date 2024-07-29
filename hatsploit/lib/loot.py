@@ -33,12 +33,24 @@ from pex.string import String
 from hatsploit.lib.config import Config
 
 
-class Loot(Config, String, FS):
+class Loot(object):
     """ Subclass of hatsploit.lib module.
 
     This subclass of hatsploit.lib module is intended for providing
     tools for working with loot collected by HatSploit.
     """
+
+    def __init__(self, loot: Optional[str] = None,
+                 data: Optional[str] = None) -> None:
+        """ Initialize loot.
+
+        :param Optional[str] loot: loot root path
+        :param Optional[str] data: data root path
+        :return None: None
+        """
+
+        self.loot = loot or Config().path_config['loot_path']
+        self.data = data or Config().path_config['data_path']
 
     def create_loot(self) -> None:
         """ Create loot directory in workspace.
@@ -46,8 +58,8 @@ class Loot(Config, String, FS):
         :return None: None
         """
 
-        if not os.path.isdir(self.path_config['loot_path']):
-            os.mkdir(self.path_config['loot_path'])
+        if not os.path.isdir(self.loot):
+            os.mkdir(self.loot)
 
     def specific_loot(self, filename: str) -> str:
         """ Return full path to the specific file
@@ -57,7 +69,7 @@ class Loot(Config, String, FS):
         :return str: path to the file
         """
 
-        return self.path_config['loot_path'] + filename
+        return self.loot + filename
 
     def random_loot(self, extension: Optional[str] = None) -> str:
         """ Generate random loot path and add extension (if specified).
@@ -66,26 +78,28 @@ class Loot(Config, String, FS):
         :return str: random loot path
         """
 
-        filename = self.random_string(16)
+        filename = String.random_string(16)
 
         if extension:
             filename += '.' + extension
 
-        return self.path_config['loot_path'] + filename
+        return self.loot + filename
 
-    def get_file(self, filename: str) -> bytes:
+    @staticmethod
+    def get_file(filename: str) -> bytes:
         """ Get specific file contents.
 
         :param str filename: file name
         :return bytes: file contents
         """
 
-        self.check_file(filename)
+        FS.check_file(filename)
 
         with open(filename, 'rb') as f:
             return f.read()
 
-    def save_file(self, location: str, data: bytes, extension: Optional[str] = None,
+    @staticmethod
+    def save_file(location: str, data: bytes, extension: Optional[str] = None,
                   filename: Optional[str] = None) -> Union[str, None]:
         """ Save contents to specific location.
 
@@ -96,14 +110,14 @@ class Loot(Config, String, FS):
         :return Union[str, None]: path if success else None
         """
 
-        exists, is_dir = self.exists(location)
+        exists, is_dir = FS.exists(location)
 
         if exists:
             if is_dir:
                 if location.endswith('/'):
-                    location += os.path.split(filename)[1] if filename else self.random_string(16)
+                    location += os.path.split(filename)[1] if filename else String.random_string(16)
                 else:
-                    location += '/' + os.path.split(filename)[1] if filename else self.random_string(16)
+                    location += '/' + os.path.split(filename)[1] if filename else String.random_string(16)
 
             if extension:
                 if not location.endswith('.' + extension):
@@ -115,14 +129,15 @@ class Loot(Config, String, FS):
             return os.path.abspath(location)
         return None
 
-    def remove_file(self, filename: str) -> None:
+    @staticmethod
+    def remove_file(filename: str) -> None:
         """ Remove specific file.
 
         :param str filename: file name
         :return None: None
         """
 
-        self.check_file(filename)
+        FS.check_file(filename)
         os.remove(filename)
 
     def get_loot(self, filename: str) -> bytes:
@@ -133,8 +148,7 @@ class Loot(Config, String, FS):
         """
 
         filename = os.path.split(filename)[1]
-        return self.get_file(
-            self.path_config['loot_path'] + filename)
+        return self.get_file(self.loot + filename)
 
     def save_loot(self, filename: str, data: bytes) -> Union[str, None]:
         """ Save contents to loot directory.
@@ -145,8 +159,7 @@ class Loot(Config, String, FS):
         """
 
         filename = os.path.split(filename)[1]
-        return self.save_file(
-            self.path_config['loot_path'] + filename, data)
+        return self.save_file(self.loot + filename, data)
 
     def remove_loot(self, filename: str) -> None:
         """ Remove specific loot from loot directory.
@@ -156,8 +169,7 @@ class Loot(Config, String, FS):
         """
 
         filename = os.path.split(filename)[1]
-        self.remove_file(
-            self.path_config['loot_path'] + filename)
+        self.remove_file(self.loot + filename)
 
     def get_data(self, filename: str) -> bytes:
         """ Get contents of file from data directory.
@@ -167,8 +179,8 @@ class Loot(Config, String, FS):
         :raises RuntimeError: with trailing error message
         """
 
-        if os.path.exists(self.path_config['data_path'] + filename):
-            with open(self.path_config['data_path'] + filename, 'rb') as f:
+        if os.path.exists(self.data + filename):
+            with open(self.data + filename, 'rb') as f:
                 return f.read()
         else:
             raise RuntimeError("Invalid data given!")
@@ -180,11 +192,10 @@ class Loot(Config, String, FS):
         """
 
         loots = []
-        loot_path = self.path_config['loot_path']
 
-        for loot in os.listdir(loot_path):
-            loots.append((loot, loot_path + loot, datetime.datetime.fromtimestamp(
-                os.path.getmtime(loot_path + loot)
-            ).astimezone().strftime("%Y-%m-%d %H:%M:%S %Z")))
+        for loot in os.listdir(self.loot):
+            loots.append((loot, self.loot + loot, datetime.datetime.fromtimestamp(
+                os.path.getmtime(self.loot + loot)).astimezone().strftime(
+                "%Y-%m-%d %H:%M:%S %Z")))
 
         return loots
