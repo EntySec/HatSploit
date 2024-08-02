@@ -192,13 +192,10 @@ class Handler(BaseMixin, Sessions):
 
         self.handle(
             payload=self.payload,
-            session=self.payload.info.get(
-                'Session', HatSploitSession),
             *args, **kwargs
         )
 
     def handle(self, payload: PayloadOption,
-               session: Optional[Session] = HatSploitSession,
                on_session: Optional[Callable[..., Any]] = None,
                **kwargs) -> None:
         """ Handle session.
@@ -227,15 +224,12 @@ class Handler(BaseMixin, Sessions):
             )
 
         if client:
-            session = session()
-            session.open(client)
-
             self.open_session(
-                session=session,
+                session=client,
                 on_session=on_session,
                 info={
-                    'Platform': payload.payload.info['Platform'],
-                    'Arch': payload.payload.info['Arch'],
+                    'Platform': payload.info['Platform'],
+                    'Arch': payload.info['Arch'],
                     'Host': host,
                     'Port': self.lport.value
                 }
