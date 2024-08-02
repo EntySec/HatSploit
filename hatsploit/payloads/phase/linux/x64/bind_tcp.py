@@ -9,8 +9,8 @@ from hatsploit.lib.core.payload.basic import *
 class HatSploitPayload(Payload, Handler):
     def __init__(self):
         super().__init__({
-            'Name': "Linux x64 Reverse TCP",
-            'Payload': "linux/x64/reverse_tcp",
+            'Name': "Linux x64 Bind TCP",
+            'Payload': "linux/x64/bind_tcp",
             'Authors': [
                 "Ivan Nikolskiy (enty8080) - payload developer",
             ],
