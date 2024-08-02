@@ -81,6 +81,11 @@ class Send(Handle, Jobs):
         :raises RuntimeError: with trailing error message
         """
 
+        if not payload.payload:
+            raise RuntimeError("No payload configured for handler!")
+
+        type = payload.info['Type']
+
         if type not in self.types:
             raise RuntimeError(f"Invalid payload type: {type}!")
 
@@ -93,7 +98,7 @@ class Send(Handle, Jobs):
             if not client and not host:
                 raise RuntimeError("Reverse TCP received corrupted session!")
 
-            if phased:
+            if payload.payload.phased.value or phased:
                 self.send_all(payload, client)
 
             return client, host
@@ -107,7 +112,7 @@ class Send(Handle, Jobs):
             if not client:
                 raise RuntimeError("Bind TCP received corrupted session!")
 
-            if phased:
+            if payload.payload.phased.value or phased:
                 self.send_all(payload, client)
 
             return client, host
