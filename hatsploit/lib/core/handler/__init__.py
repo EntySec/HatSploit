@@ -203,6 +203,7 @@ class Handler(BaseMixin, Sessions):
         :param PayloadOption payload: payload option object
         :param Optional[Callable[..., Any]] on_session: function of an action that
         should be performed right after session was opened
+        :return None: None
         """
 
         if not payload.mixin.inline:
@@ -234,17 +235,30 @@ class Handler(BaseMixin, Sessions):
                 }
             )
 
-    def module_handle_session(self, *args, **kwargs) -> Tuple[Union[Session, socket.socket], str]:
+    def module_handle_session(self, on_session: Optional[Callable[..., Any]] = None,
+                              *args, **kwargs) -> None:
         """ Handle session from module.
 
-        :return Tuple[Union[Session, socket.socket], str]: session and host
-        :raises RuntimeError: with trailing error message
-        :raises RuntimeWarning: with trailing warning message
+        :param Optional[Callable[..., Any]] on_session: function of an action that
+        should be performed right after session was opened
+        :return None: None
         """
 
-        return Send().handle_session(
+        client, host = Send().handle_session(
             host=self.lhost.value,
             port=self.lport.value,
             payload=self.payload,
             *args, **kwargs
         )
+
+        if client:
+            self.open_session(
+                session=client,
+                on_session=on_session,
+                info={
+                    'Platform': payload.info['Platform'],
+                    'Arch': payload.info['Arch'],
+                    'Host': host,
+                    'Port': self.lport.value
+                }
+            )
