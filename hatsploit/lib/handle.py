@@ -24,46 +24,51 @@ SOFTWARE.
 
 import socket
 
-from typing import Union, Tuple, Optional, Callable
+from typing import (
+    Union,
+    Tuple,
+    Optional,
+    Callable
+)
 
-from hatsploit.lib.session import Session
+from hatsploit.lib.core.session import Session
 
 from pex.proto.http import HTTPListener
-from pex.proto.tcp import TCPClient
-from pex.proto.tcp import TCPListener
+from pex.proto.tcp import TCPClient, TCPListener
 
 from badges import Badges
 
 
-class Handle(object):
+class Handle(Badges):
     """ Subclass of hatsploit.lib module.
 
     This subclass of hatsploit.lib module is intended for providing
     native implementations of http/tcp servers and clients.
     """
 
-    def __init__(self) -> None:
-        super().__init__()
-
-        self.badges = Badges()
-
-    def listen_server(self, local_host: str, local_port: int, methods: dict = {}) -> None:
+    def listen_server(self, local_host: str, local_port: int,
+                      methods: dict = {}, limit: Optional[int] = None) -> None:
         """ HTTP server.
 
         :param str local_host: local host to start server on
         :param int local_port: local port to start server on
         :param dict methods: allowed HTTP methods, names as keys and
         handlers as items
+        :param Optional[int] limit: number of connections to accept
         :return None: None
         """
 
         listener = HTTPListener(local_host, local_port, methods)
 
-        self.badges.print_process(f"Starting HTTP listener on port {str(local_port)}...")
+        self.print_process(f"Starting HTTP listener on port {str(local_port)}...")
         listener.listen()
 
-        while True:
-            listener.accept()
+        if limit:
+            for _ in range(limit):
+                listener.accept()
+        else:
+            while True:
+                listener.accept()
 
     def listen_session(self, local_host: str, local_port: int,
                        session: Optional[Callable[[], Session]] = None,
@@ -79,14 +84,14 @@ class Handle(object):
 
         listener = TCPListener(local_host, local_port, timeout)
 
-        self.badges.print_process(f"Starting TCP listener on port {str(local_port)}...")
+        self.print_process(f"Starting TCP listener on port {str(local_port)}...")
 
         listener.listen()
         listener.accept()
 
         address = listener.address
 
-        self.badges.print_process(
+        self.print_process(
             f"Establishing connection ({address[0]}:{str(address[1])} -> {local_host}:{str(local_port)})...")
         listener.stop()
 
@@ -112,10 +117,10 @@ class Handle(object):
 
         client = TCPClient(remote_host, remote_port, timeout)
 
-        self.badges.print_process(f"Connecting to {local_host}:{str(local_port)}...")
+        self.print_process(f"Connecting to {local_host}:{str(local_port)}...")
         client.connect()
 
-        self.badges.print_process(
+        self.print_process(
             f"Establishing connection (0.0.0.0:{str(remote_port)} -> {remote_host}:{str(remote_port)})...")
 
         if session:

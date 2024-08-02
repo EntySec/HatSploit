@@ -3,17 +3,12 @@ This command requires HatSploit: https://hatsploit.com
 Current source: https://github.com/EntySec/HatSploit
 """
 
-from hatsploit.lib.command import Command
-from hatsploit.lib.commands import Commands
+from badges.cmd import Command
 
 
-class HatSploitCommand(Command):
+class ExternalCommand(Command):
     def __init__(self):
-        super().__init__()
-
-        self.commands = Commands()
-
-        self.details.update({
+        super().__init__({
             'Category': "developer",
             'Name': "repeat",
             'Authors': [
@@ -24,11 +19,9 @@ class HatSploitCommand(Command):
             'MinArgs': 2,
         })
 
-    def run(self, argc, argv):
-        if argv[1].isdigit():
-            commands = self.format_commands(argv[2])
-
-            for _ in range(int(argv[1])):
-                self.commands.execute_command(commands)
+    def run(self, args):
+        if args[1].isdigit():
+            for _ in range(int(args[1])):
+                self.console.onecmd(' '.join(args[2:]))
         else:
             self.print_error("Times expected!")

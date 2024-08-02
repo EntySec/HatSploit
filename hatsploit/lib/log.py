@@ -35,13 +35,10 @@ class Log(object):
     tools for interacting with HatSploit logs and configuring them.
     """
 
-    def __init__(self) -> None:
-        super().__init__()
+    config = Config()
 
-        self.config = Config()
-
-        self.storage_path = self.config.path_config['storage_path']
-        self.global_storage = GlobalStorage(self.storage_path)
+    storage_path = config.path_config['storage_path']
+    global_storage = GlobalStorage(storage_path)
 
     def enable_log(self, filename: str) -> None:
         """ Enable logging globally

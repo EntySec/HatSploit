@@ -27,7 +27,7 @@ import pathlib
 import yaml
 
 from hatsploit.lib.storage import GlobalStorage
-from hatsploit.lib.storage import LocalStorage
+from hatsploit.lib.storage import STORAGE
 
 
 class Config(object):
@@ -37,10 +37,7 @@ class Config(object):
     tools for configuring HatSploit Framework.
     """
 
-    def __init__(self) -> None:
-        super().__init__()
-
-        self.local_storage = LocalStorage()
+    def __init__(self):
         self.global_storage = None
 
         self.user_path = f'{pathlib.Path.home()}/.hsf/'
@@ -51,7 +48,7 @@ class Config(object):
         self.db_config_file = self.config_path + 'db_config.yml'
         self.core_config_file = self.config_path + 'core_config.yml'
 
-        self.db_config = self.local_storage.get("db_config")
+        self.db_config = STORAGE.get("db_config")
         self.path_config = {
             'user_path': self.user_path,
 
@@ -80,7 +77,7 @@ class Config(object):
             'storage_path': f'{self.base_path}config/storage.json'
         }
 
-        self.core_config = self.local_storage.get("core_config")
+        self.core_config = STORAGE.get("core_config")
 
     @staticmethod
     def get_config_file(content: dict) -> dict:
@@ -105,8 +102,8 @@ class Config(object):
         self.db_config = db_config
         self.core_config = core_config
 
-        self.local_storage.set("db_config", self.db_config)
-        self.local_storage.set("core_config", self.core_config)
+        STORAGE.set("db_config", self.db_config)
+        STORAGE.set("core_config", self.core_config)
 
         self.global_storage = GlobalStorage(self.path_config['storage_path'])
         self.global_storage.set_all()

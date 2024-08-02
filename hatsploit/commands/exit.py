@@ -5,19 +5,15 @@ Current source: https://github.com/EntySec/HatSploit
 
 import sys
 
-from hatsploit.lib.command import Command
-from hatsploit.lib.jobs import Jobs
-from hatsploit.lib.sessions import Sessions
+from badges.cmd import Command
+
+from hatsploit.lib.ui.jobs import Jobs
+from hatsploit.lib.ui.sessions import Sessions
 
 
-class HatSploitCommand(Command):
+class ExternalCommand(Command):
     def __init__(self):
-        super().__init__()
-
-        self.jobs = Jobs()
-        self.sessions = Sessions()
-
-        self.details.update({
+        super().__init__({
             'Category': "core",
             'Name': "exit",
             'Authors': [
@@ -28,7 +24,10 @@ class HatSploitCommand(Command):
             'MinArgs': 0,
         })
 
-    def run(self, argc, argv):
+        self.jobs = Jobs()
+        self.sessions = Sessions()
+
+    def run(self, _):
         if self.jobs.get_jobs():
             self.print_warning("You have some running jobs.")
 

@@ -3,17 +3,13 @@ This command requires HatSploit: https://hatsploit.com
 Current source: https://github.com/EntySec/HatSploit
 """
 
-from hatsploit.lib.command import Command
-from hatsploit.lib.modules import Modules
+from badges.cmd import Command
+from hatsploit.lib.ui.modules import Modules
 
 
-class HatSploitCommand(Command):
+class ExternalCommand(Command):
     def __init__(self):
-        super().__init__()
-
-        self.modules = Modules()
-
-        self.details.update({
+        super().__init__({
             'Category': "modules",
             'Name': "back",
             'Authors': [
@@ -24,8 +20,30 @@ class HatSploitCommand(Command):
             'MinArgs': 0,
         })
 
-    def rpc(self, *args):
-        self.run(0, [])
+        self.modules = Modules()
 
-    def run(self, argc, argv):
+    def rpc(self, *_):
         self.modules.go_back()
+
+    def run(self, _):
+        module = self.modules.get_current_module()
+
+        if not module:
+            return
+
+        for command in module.commands:
+            self.console.delete_external(command)
+
+        self.modules.go_back()
+
+        module = self.modules.get_current_module()
+
+        if module:
+            commands = {}
+
+            for command in module.commands:
+                commands[command] = module.commands[command]
+                commands[command]['Method'] = getattr(module, command)
+                commands[command]['Category'] = 'module'
+
+            self.console.add_external(commands)

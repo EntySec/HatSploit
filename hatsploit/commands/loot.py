@@ -3,19 +3,14 @@ This command requires HatSploit: https://hatsploit.com
 Current source: https://github.com/EntySec/HatSploit
 """
 
-from hatsploit.lib.command import Command
+from badges.cmd import Command
 from hatsploit.lib.loot import Loot
-from hatsploit.lib.show import Show
+from hatsploit.lib.ui.show import Show
 
 
-class HatSploitCommand(Command):
+class ExternalCommand(Command):
     def __init__(self):
-        super().__init__()
-
-        self.loot = Loot()
-        self.show = Show()
-
-        self.details.update({
+        super().__init__({
             'Category': "loot",
             'Name': "loot",
             'Authors': [
@@ -25,16 +20,17 @@ class HatSploitCommand(Command):
             'Usage': "loot <option> [arguments]",
             'MinArgs': 1,
             'Options': {
-                '-l': ['', "List all collected loot."],
-                '-r': ['<name>', "Remove collected loot."],
+                'list': ['', "List all collected loot."],
+                'remove': ['<name>', "Remove collected loot."],
             },
         })
 
-    def run(self, argc, argv):
-        choice = argv[1]
+        self.loot = Loot()
+        self.show = Show()
 
-        if choice == '-l':
+    def run(self, args):
+        if args[1] == 'list':
             self.show.show_loot(self.loot.list_loot())
 
-        elif choice == '-r':
-            self.loot.remove_loot(argv[2])
+        elif args[1] == 'remove':
+            self.loot.remove_loot(args[2])

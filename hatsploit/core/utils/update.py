@@ -33,18 +33,12 @@ from badges import Badges
 from hatsploit.lib.config import Config
 
 
-class Update(object):
+class Update(Config, Badges):
     """ Subclass of hatsploit.core.utils module.
 
     This subclass of hatsploit.core.utils module is intended for
     providing tools for working with HatSploit updates.
     """
-
-    def __init__(self) -> None:
-        super().__init__()
-
-        self.config = Config()
-        self.badges = Badges()
 
     def check_update(self) -> bool:
         """ Check for HatSploit update.
@@ -62,10 +56,10 @@ class Update(object):
             remote_config = None
 
         if remote_config:
-            remote_version = self.config.get_config_file(remote_config)['details'][
+            remote_version = self.get_config_file(remote_config)['details'][
                 'version'
             ]
-            local_version = self.config.core_config['details']['version']
+            local_version = self.core_config['details']['version']
 
             return version.parse(local_version) < version.parse(remote_version)
         return False
@@ -78,8 +72,8 @@ class Update(object):
         """
 
         if self.check_update():
-            self.badges.print_process("Updating HatSploit Framework...")
-            shutil.rmtree(os.path.abspath(self.config.path_config['root_path']))
+            self.print_process("Updating HatSploit Framework...")
+            shutil.rmtree(os.path.abspath(self.path_config['root_path']))
 
             subprocess.call(
                 [

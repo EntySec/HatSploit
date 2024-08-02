@@ -3,19 +3,14 @@ This command requires HatSploit: https://hatsploit.com
 Current source: https://github.com/EntySec/HatSploit
 """
 
-from hatsploit.lib.command import Command
-from hatsploit.lib.modules import Modules
-from hatsploit.lib.show import Show
+from badges.cmd import Command
+from hatsploit.lib.ui.modules import Modules
+from hatsploit.lib.ui.show import Show
 
 
-class HatSploitCommand(Command):
+class ExternalCommand(Command):
     def __init__(self):
-        super().__init__()
-
-        self.modules = Modules()
-        self.show = Show()
-
-        self.details.update({
+        super().__init__({
             'Category': "modules",
             'Name': "modules",
             'Authors': [
@@ -26,31 +21,33 @@ class HatSploitCommand(Command):
             'MinArgs': 0,
         })
 
+        self.modules = Modules()
+        self.show = Show()
+
     def collect_categories(self):
         modules = self.modules.get_modules()
         categories = []
 
         if modules:
-            for database in sorted(modules):
-                for module in sorted(modules[database]):
-                    category = modules[database][module]['Category']
+            for module in sorted(modules):
+                category = modules[module]['Category']
 
-                    if category not in categories:
-                        categories.append(category)
+                if category not in categories:
+                    categories.append(category)
 
         return categories
 
-    def rpc(self, *args):
+    def rpc(self, *_):
         return self.modules.get_modules()
 
-    def run(self, argc, argv):
+    def run(self, args):
         categories = self.collect_categories()
 
-        if argc > 1:
-            if argv[1] in categories:
-                self.show.show_modules(self.modules.get_modules(), argv[1])
+        if len(args) > 1:
+            if args[1] in categories:
+                self.show.show_modules(self.modules.get_modules(), args[1])
             else:
                 self.print_error("Invalid module category!")
-                self.print_information(f"Available categories: {str(categories)}")
+                self.print_information(f"Available categories: {', '.join(categories)}")
         else:
             self.show.show_modules(self.modules.get_modules())

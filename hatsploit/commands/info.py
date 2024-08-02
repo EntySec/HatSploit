@@ -3,19 +3,14 @@ This command requires HatSploit: https://hatsploit.com
 Current source: https://github.com/EntySec/HatSploit
 """
 
-from hatsploit.lib.command import Command
-from hatsploit.lib.modules import Modules
-from hatsploit.lib.show import Show
+from badges.cmd import Command
+from hatsploit.lib.ui.modules import Modules
+from hatsploit.lib.ui.show import Show
 
 
-class HatSploitCommand(Command):
+class ExternalCommand(Command):
     def __init__(self):
-        super().__init__()
-
-        self.modules = Modules()
-        self.show = Show()
-
-        self.details.update({
+        super().__init__({
             'Category': "modules",
             'Name': "info",
             'Authors': [
@@ -26,7 +21,11 @@ class HatSploitCommand(Command):
             'MinArgs': 0,
         })
 
-        self.complete = self.modules.modules_completer
+        self.modules = Modules()
+        self.show = Show()
+
+    def complete(self):
+        return self.modules.modules_completer()
 
     def get_module_information(self, module):
         if self.modules.check_exist(module):
@@ -35,16 +34,16 @@ class HatSploitCommand(Command):
         else:
             self.print_error("Invalid module!")
 
-    def run(self, argc, argv):
+    def run(self, args):
         if self.modules.get_current_module():
-            if argc > 1:
-                self.get_module_information(argv[1])
+            if len(args) > 1:
+                self.get_module_information(args[1])
             else:
                 self.show.show_module_information(
                     None
                 )
         else:
-            if argc > 1:
-                self.get_module_information(argv[1])
+            if len(args) > 1:
+                self.get_module_information(args[1])
             else:
-                self.print_usage(self.details['Usage'])
+                self.print_usage(self.info['Usage'])

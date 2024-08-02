@@ -3,19 +3,15 @@ This command requires HatSploit: https://hatsploit.com
 Current source: https://github.com/EntySec/HatSploit
 """
 
+from badges.cmd import Command
+from hatsploit.lib.ui.jobs import Jobs
 from hatsploit.core.utils.rpc import RPC
-from hatsploit.lib.command import Command
-from hatsploit.lib.jobs import Jobs
 from pex.proto.tcp import TCPTools
 
 
-class HatSploitCommand(Command, TCPTools):
+class ExternalCommand(Command):
     def __init__(self):
-        super().__init__()
-
-        self.jobs = Jobs()
-
-        self.details.update({
+        super().__init__({
             'Category': "developer",
             'Name': "rpc",
             'Authors': [
@@ -30,17 +26,19 @@ class HatSploitCommand(Command, TCPTools):
             },
         })
 
-    def run(self, argc, argv):
-        if argv[1] == 'on':
-            if not self.check_tcp_port('127.0.0.1', argv[2]):
+        self.jobs = Jobs()
+
+    def run(self, args):
+        if args[1] == 'on':
+            if not TCPTools().check_tcp_port('127.0.0.1', args[2]):
                 rpc = RPC(
-                    host='127.0.0.1', port=argv[2]
+                    host='127.0.0.1', port=args[2]
                 )
 
-                self.print_success(f"RPC server started on port {argv[2]}!")
-                self.jobs.create_job(f"RPC on port {argv[2]}", "", rpc.run)
+                self.print_success(f"RPC server started on port {args[2]}!")
+                self.jobs.create_job(f"RPC on port {args[2]}", "", rpc.run)
             else:
                 self.print_error(f"Failed to start RPC server!")
 
-        elif argv[1] == 'off':
+        elif args[1] == 'off':
             pass

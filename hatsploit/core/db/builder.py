@@ -22,34 +22,21 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
-import json
 import os
+import sqlite3
 
 from badges import Badges
 
 from hatsploit.core.db.importer import Importer
 from hatsploit.lib.config import Config
-from hatsploit.lib.modules import Modules
-from hatsploit.lib.payloads import Payloads
-from hatsploit.lib.storage import LocalStorage
 
 
-class Builder(object):
+class Builder(Config, Badges):
     """ Subclass of hatsploit.core.db module.
 
     This subclass of hatsploit.core.db module is intended for
     providing tools for building HatSploit databases.
     """
-
-    def __init__(self) -> None:
-        super().__init__()
-
-        self.modules = Modules()
-        self.payloads = Payloads()
-        self.badges = Badges()
-        self.config = Config()
-        self.importer = Importer()
-        self.local_storage = LocalStorage()
 
     def check_base_built(self) -> bool:
         """ Check if base databases are built.
@@ -57,13 +44,10 @@ class Builder(object):
         :return bool: True if built else False
         """
 
-        base_dbs = self.config.db_config['base_dbs']
-        db_path = self.config.path_config['db_path']
+        base_dbs = self.db_config['base_dbs']
+        db_path = self.path_config['db_path']
 
-        if os.path.exists(db_path + base_dbs['module_database']) \
-                and os.path.exists(db_path + base_dbs['payload_database']) \
-                and os.path.exists(db_path + base_dbs['plugin_database']) \
-                and os.path.exists(db_path + base_dbs['encoder_database']):
+        if os.path.exists(db_path + base_dbs['database']):
             return True
 
         return False
@@ -86,27 +70,27 @@ class Builder(object):
         :return None: None
         """
 
-        base_dbs = self.config.db_config['base_dbs']
-        db_path = self.config.path_config['db_path']
+        base_dbs = self.db_config['base_dbs']
+        db_path = self.path_config['db_path']
 
         if not os.path.exists(db_path):
             os.mkdir(db_path)
 
         self.build_module_database(
-            self.config.path_config['modules_path'],
-            db_path + base_dbs['module_database'],
+            self.path_config['modules_path'],
+            db_path + base_dbs['database'],
         )
         self.build_payload_database(
-            self.config.path_config['payloads_path'],
-            db_path + base_dbs['payload_database'],
+            self.path_config['payloads_path'],
+            db_path + base_dbs['database'],
         )
         self.build_encoder_database(
-            self.config.path_config['encoders_path'],
-            db_path + base_dbs['encoder_database'],
+            self.path_config['encoders_path'],
+            db_path + base_dbs['database'],
         )
         self.build_plugin_database(
-            self.config.path_config['plugins_path'],
-            db_path + base_dbs['plugin_database'],
+            self.path_config['plugins_path'],
+            db_path + base_dbs['database'],
         )
 
     def build_encoder_database(self, input_path: str, output_path: str) -> None:
@@ -117,38 +101,45 @@ class Builder(object):
         :return None: None
         """
 
-        database_path = output_path
-        database = {"__database__": {"Type": "encoders"}}
+        con = sqlite3.connect(output_path)
+        cur = con.cursor()
 
-        encoder_path = os.path.normpath(input_path)
+        cur.execute('''CREATE TABLE IF NOT EXISTS
+                encoders(
+                    BaseName TEXT PRIMARY KEY,
+                    Path TEXT,
+                    Name TEXT,
+                    Description TEXT,
+                    Arch TEXT
+                )''')
 
-        for dir, _, files in os.walk(encoder_path):
+        data = []
+
+        for dir, _, files in os.walk(os.path.normpath(input_path)):
             for file in files:
-                if file.endswith('.py') and file != '__init__.py':
-                    encoder = dir + '/' + file[:-3]
+                if not file.endswith('.py') or file == '__init__.py':
+                    continue
 
-                    try:
-                        encoder_object = self.importer.import_encoder(encoder)
-                        encoder_name = encoder_object.details['Encoder']
+                encoder = os.path.join(dir, file[:-3])
 
-                        database.update({
-                            encoder_name: {
-                                "Path": encoder,
-                                "Name": encoder_object.details['Name'],
-                                "Encoder": encoder_object.details['Encoder'],
-                                "Authors": encoder_object.details['Authors'],
-                                "Description": encoder_object.details['Description'],
-                                "Arch": str(encoder_object.details['Arch']),
-                            }
-                        })
+                try:
+                    encoder_object = Importer().import_encoder(encoder)
+                    data.append((
+                        encoder_object.info['Encoder'],
+                        encoder,
+                        encoder_object.info['Name'],
+                        encoder_object.info['Description'],
+                        str(encoder_object.info['Arch'])
+                    ))
 
-                    except Exception:
-                        self.badges.print_error(
-                            f"Failed to add {encoder} to encoder database!"
-                        )
+                except Exception:
+                    self.print_error(
+                        f"Failed to add {encoder} to encoder database!"
+                    )
 
-        with open(database_path, 'w') as f:
-            json.dump(database, f)
+        cur.executemany('''INSERT OR REPLACE INTO encoders
+                        VALUES (?, ?, ?, ?, ?)''', data)
+        con.commit()
 
     def build_payload_database(self, input_path: str, output_path: str) -> None:
         """ Build payload database from payload path.
@@ -158,41 +149,51 @@ class Builder(object):
         :return None: None
         """
 
-        database_path = output_path
-        database = {"__database__": {"Type": "payloads"}}
+        con = sqlite3.connect(output_path)
+        cur = con.cursor()
 
-        payload_path = os.path.normpath(input_path)
+        cur.execute('''CREATE TABLE IF NOT EXISTS
+                payloads(
+                    BaseName TEXT PRIMARY KEY,
+                    Path TEXT,
+                    Category TEXT,
+                    Name TEXT,
+                    Description TEXT,
+                    Arch TEXT,
+                    Platform TEXT,
+                    Type TEXT
+                )''')
 
-        for dir, _, files in os.walk(payload_path):
+        data = []
+
+        for dir, _, files in os.walk(os.path.normpath(input_path)):
             for file in files:
-                if file.endswith('.py') and file != '__init__.py':
-                    payload = dir + '/' + file[:-3]
+                if not file.endswith('.py') or file == '__init__.py':
+                    continue
 
-                    try:
-                        payload_object = self.importer.import_payload(payload)
-                        payload_name = payload_object.details['Payload']
+                payload = os.path.join(dir, file[:-3])
 
-                        database.update({
-                            payload_name: {
-                                "Path": payload,
-                                "Name": payload_object.details['Name'],
-                                "Payload": payload_object.details['Payload'],
-                                "Authors": payload_object.details['Authors'],
-                                "Description": payload_object.details['Description'],
-                                "Arch": str(payload_object.details['Arch']),
-                                "Platform": str(payload_object.details['Platform']),
-                                "Rank": payload_object.details['Rank'],
-                                "Type": payload_object.details['Type'],
-                            }
-                        })
+                try:
+                    payload_object = Importer().import_payload(payload)
+                    data.append((
+                        payload_object.info['Payload'],
+                        payload,
+                        payload_object.info['Category'],
+                        payload_object.info['Name'],
+                        payload_object.info['Description'],
+                        str(payload_object.info['Arch']),
+                        str(payload_object.info['Platform']),
+                        payload_object.info['Type'],
+                    ))
 
-                    except Exception:
-                        self.badges.print_error(
-                            f"Failed to add {payload} to payload database!"
-                        )
+                except Exception:
+                    self.print_error(
+                        f"Failed to add {payload} to payload database!"
+                    )
 
-        with open(database_path, 'w') as f:
-            json.dump(database, f)
+        cur.executemany('''INSERT OR REPLACE INTO payloads
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?)''', data)
+        con.commit()
 
     def build_module_database(self, input_path: str, output_path: str) -> None:
         """ Build module database from module path.
@@ -202,40 +203,51 @@ class Builder(object):
         :return None: None
         """
 
-        database_path = output_path
-        database = {"__database__": {"Type": "modules"}}
+        con = sqlite3.connect(output_path)
+        cur = con.cursor()
 
-        module_path = os.path.normpath(input_path)
+        cur.execute('''CREATE TABLE IF NOT EXISTS
+                modules(
+                    BaseName TEXT PRIMARY KEY,
+                    Path TEXT,
+                    Category TEXT,
+                    Name TEXT,
+                    Description TEXT,
+                    Platform TEXT,
+                    DisclosureDate TEXT,
+                    Rank TEXT
+                )''')
 
-        for dir, _, files in os.walk(module_path):
+        data = []
+
+        for dir, _, files in os.walk(os.path.normpath(input_path)):
             for file in files:
-                if file.endswith('.py') and file != '__init__.py':
-                    module = dir + '/' + file[:-3]
+                if not file.endswith('.py') or file == '__init__.py':
+                    continue
 
-                    try:
-                        module_object = self.importer.import_module(module)
-                        module_name = module_object.details['Module']
+                module = os.path.join(dir, file[:-3])
 
-                        database.update({
-                            module_name: {
-                                "Path": module,
-                                "Category": module_object.details['Category'],
-                                "Name": module_object.details['Name'],
-                                "Module": module_object.details['Module'],
-                                "Authors": module_object.details['Authors'],
-                                "Description": module_object.details['Description'],
-                                "Platform": str(module_object.details['Platform']),
-                                "Rank": module_object.details['Rank'],
-                            }
-                        })
+                try:
+                    module_object = Importer().import_module(module)
+                    data.append((
+                        module_object.info['Module'],
+                        module,
+                        module_object.info['Category'],
+                        module_object.info['Name'],
+                        module_object.info['Description'],
+                        str(module_object.info['Platform']),
+                        module_object.info['DisclosureDate'],
+                        module_object.info['Rank'],
+                    ))
 
-                    except Exception:
-                        self.badges.print_error(
-                            f"Failed to add {module} to module database!"
-                        )
+                except Exception:
+                    self.print_error(
+                        f"Failed to add {module} to module database!"
+                    )
 
-        with open(database_path, 'w') as f:
-            json.dump(database, f)
+        cur.executemany('''INSERT OR REPLACE INTO modules
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?)''', data)
+        con.commit()
 
     def build_plugin_database(self, input_path: str, output_path: str) -> None:
         """ Build plugin database from plugin path.
@@ -245,34 +257,40 @@ class Builder(object):
         :return None: None
         """
 
-        database_path = output_path
-        database = {"__database__": {"Type": "plugins"}}
+        con = sqlite3.connect(output_path)
+        cur = con.cursor()
 
-        plugin_path = os.path.normpath(input_path)
+        cur.execute('''CREATE TABLE IF NOT EXISTS
+                plugins(
+                    BaseName TEXT PRIMARY KEY,
+                    Path TEXT,
+                    Name TEXT,
+                    Description TEXT
+                )''')
 
-        for dir, _, files in os.walk(plugin_path):
+        data = []
+
+        for dir, _, files in os.walk(os.path.normpath(input_path)):
             for file in files:
-                if file.endswith('.py') and file != '__init__.py':
-                    plugin = dir + '/' + file[:-3]
+                if not file.endswith('.py') or file == '__init__.py':
+                    continue
 
-                    try:
-                        plugin_object = self.importer.import_plugin(plugin)
-                        plugin_name = plugin_object.details['Plugin']
+                plugin = os.path.join(dir, file[:-3])
 
-                        database.update({
-                            plugin_name: {
-                                "Path": plugin,
-                                "Name": plugin_object.details['Name'],
-                                "Plugin": plugin_object.details['Plugin'],
-                                "Authors": plugin_object.details['Authors'],
-                                "Description": plugin_object.details['Description'],
-                            }
-                        })
+                try:
+                    plugin_object = Importer().import_plugin(plugin)
+                    data.append((
+                        plugin_object.info['Plugin'],
+                        plugin,
+                        plugin_object.info['Name'],
+                        plugin_object.info['Description'],
+                    ))
 
-                    except Exception:
-                        self.badges.print_error(
-                            f"Failed to add {plugin} to plugin database!"
-                        )
+                except Exception:
+                    self.print_error(
+                        f"Failed to add {plugin} to plugin database!"
+                    )
 
-        with open(database_path, 'w') as f:
-            json.dump(database, f)
+        cur.executemany('''INSERT OR REPLACE INTO plugins
+                        VALUES (?, ?, ?, ?)''', data)
+        con.commit()

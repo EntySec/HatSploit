@@ -5,14 +5,12 @@ Current source: https://github.com/EntySec/HatSploit
 
 import textwrap
 
-from hatsploit.lib.plugin import Plugin
+from hatsploit.lib.core.plugin import Plugin
 
 
 class HatSploitPlugin(Plugin):
     def __init__(self):
-        super().__init__()
-
-        self.details.update({
+        super().__init__({
             'Name': "HatSploit Cowsay Implementation",
             'Plugin': "cowsay",
             'Authors': [
@@ -21,15 +19,13 @@ class HatSploitPlugin(Plugin):
             'Description': "Cowsay plugin for HatSploit.",
         })
 
-        self.commands = {
+        self.commands.update({
             'cowsay': {
-                'cowsay': {
-                    'Description': "Ask cow to say message.",
-                    'Usage': "cowsay <message>",
-                    'MinArgs': 1,
-                }
+                'Description': "Ask cow to say message.",
+                'Usage': "cowsay <message>",
+                'MinArgs': 1,
             }
-        }
+        })
 
     def ask_cow(self, message, length=40):
         return self.build_bubble(message, length) + self.build_cow()
@@ -47,9 +43,9 @@ class HatSploitPlugin(Plugin):
     @staticmethod
     def build_cow():
         return """
-         \   ^__^ 
-          \  (oo)\_______
-             (__)\       )\/\\
+         \\   ^__^ 
+          \\  (oo)\\_______
+             (__)\\       )\\/\\
                  ||----w |
                  ||     ||
         """
@@ -71,14 +67,10 @@ class HatSploitPlugin(Plugin):
         bubble.append(" --" + "-" * bordersize)
         return "\n".join(bubble)
 
-    def cowsay(self, _, argv):
-        message = argv[1]
-        cow = self.ask_cow(message, len(message))
+    def cowsay(self, args):
+        cow = self.ask_cow(args[1], len(args[1]))
         self.print_empty(cow)
 
     def load(self):
-        message = "Cow here, moo!"
-        cow = self.ask_cow(message, len(message))
-        self.print_empty(cow)
-
+        self.cowsay(["cowsay", "Cow here, moo!"])
         self.print_information("Use %greencowsay%end to call me.")

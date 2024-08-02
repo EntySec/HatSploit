@@ -26,25 +26,18 @@ import os
 import random
 
 from colorscript import ColorScript
+
 from badges import Badges
 
 from hatsploit.lib.config import Config
 
 
-class Banner(object):
-    """ Subclass of hatsploit.core.utils.ui module.
+class Banner(Config, Badges):
+    """ Subclass of seashell.core module.
 
-    This subclass of hatsploit.core.utils.ui module is intended for
+    This subclass of seashell.core module is intended for
     providing tools for printing banners in UI.
     """
-
-    def __init__(self) -> None:
-        super().__init__()
-
-        self.config = Config()
-        self.badges = Badges()
-
-        self.color_script = ColorScript()
 
     def print_random_banner(self) -> None:
         """ Print random banner.
@@ -52,26 +45,21 @@ class Banner(object):
         :return None: None
         """
 
-        if os.path.exists(self.config.path_config['banners_path']):
-            banners = []
-            all_banners = os.listdir(self.config.path_config['banners_path'])
+        if not os.path.exists(self.path_config['banners_path']):
+            self.print_warning("No banners detected.")
+            return
 
-            for banner in all_banners:
-                banners.append(banner)
+        banners = list(os.listdir(self.path_config['banners_path']))
 
-            if banners:
-                banner = ""
+        if not banners:
+            self.print_warning("No banners detected.")
+            return
 
-                while not banner:
-                    random_banner = random.randint(0, len(banners) - 1)
-                    banner = self.color_script.parse_file(
-                        self.config.path_config['banners_path'] + banners[random_banner]
-                    )
+        random_banner = random.randint(0, len(banners) - 1)
+        banner = ColorScript().parse_file(
+            self.path_config['banners_path'] + banners[random_banner]
+        )
 
-                self.badges.set_less(False)
-                self.badges.print_empty(f"%newline%end{banner}%end%newline")
-                self.badges.set_less(True)
-            else:
-                self.badges.print_warning("No banners detected.")
-        else:
-            self.badges.print_warning("No banners detected.")
+        self.set_less(False)
+        self.print_empty(f"%newline%end{banner}%end%newline")
+        self.set_less(True)

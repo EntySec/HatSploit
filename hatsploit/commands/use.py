@@ -3,17 +3,13 @@ This command requires HatSploit: https://hatsploit.com
 Current source: https://github.com/EntySec/HatSploit
 """
 
-from hatsploit.lib.command import Command
-from hatsploit.lib.modules import Modules
+from badges.cmd import Command
+from hatsploit.lib.ui.modules import Modules
 
 
-class HatSploitCommand(Command):
+class ExternalCommand(Command):
     def __init__(self):
-        super().__init__()
-
-        self.modules = Modules()
-
-        self.details.update({
+        super().__init__({
             'Category': "modules",
             'Name': "use",
             'Authors': [
@@ -24,7 +20,10 @@ class HatSploitCommand(Command):
             'MinArgs': 1,
         })
 
-        self.complete = self.modules.modules_completer
+        self.modules = Modules()
+
+    def complete(self):
+        return self.modules.modules_completer()
 
     def rpc(self, *args):
         if len(args) < 1:
@@ -32,5 +31,21 @@ class HatSploitCommand(Command):
 
         self.modules.use_module(args[0])
 
-    def run(self, argc, argv):
-        self.modules.use_module(argv[1])
+    def run(self, args):
+        module = self.modules.get_current_module()
+
+        if module:
+            for command in module.commands:
+                self.console.delete_external(command)
+
+        self.modules.use_module(args[1])
+
+        module = self.modules.get_current_module()
+        commands = {}
+
+        for command in module.commands:
+            commands[command] = module.commands[command]
+            commands[command]['Method'] = getattr(module, command)
+            commands[command]['Category'] = 'module'
+
+        self.console.add_external(commands)

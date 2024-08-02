@@ -45,8 +45,6 @@ class GlobalStorage(object):
         :return None: None
         """
 
-        super().__init__()
-
         self.file = file
 
     def set_all(self) -> None:
@@ -63,7 +61,7 @@ class GlobalStorage(object):
             elif key == 'less':
                 Badges().set_less(item)
             else:
-                LocalStorage().set(key, item)
+                STORAGE.set(key, item)
 
     def get_all(self) -> dict:
         """ Get all global storage variables as a dictionary.
@@ -129,21 +127,26 @@ class LocalStorage(object):
     is a general HatSploit storage that erases after HatSploit exits.
     """
 
-    def __init__(self) -> None:
-        super().__init__()
+    def __init__(self, value: dict = {}) -> None:
+        """ Initialize storage instance.
 
-    @staticmethod
-    def get_all() -> dict:
+        :param dict value: initial value
+        :return None: None
+        """
+
+        self.value = {}
+        self.value.update(value)
+
+    def get_all(self) -> dict:
         """ Return all local storage variables.
 
         :return dict: variables, variable names as keys and
         variable values as items
         """
 
-        return globals()
+        return self.value
 
-    @staticmethod
-    def set(name: str, value: Any) -> None:
+    def set(self, name: str, value: Any) -> None:
         """ Set local storage variable value.
 
         :param str name: variable name
@@ -151,7 +154,7 @@ class LocalStorage(object):
         :return None: None
         """
 
-        globals()[name] = value
+        self.value.update({name: value})
 
     def update(self, name: str, value: Any) -> None:
         """ Update local storage variable if it is a dictionary.
@@ -175,8 +178,7 @@ class LocalStorage(object):
 
         return self.get(name, {}).pop(value, default)
 
-    @staticmethod
-    def delete(name: str, default: Any = None) -> Any:
+    def delete(self, name: str, default: Any = None) -> Any:
         """ Delete variable from local storage.
 
         :param str name: variable name
@@ -184,10 +186,9 @@ class LocalStorage(object):
         :return Any: deleted variable's value
         """
 
-        return globals().pop(name, default)
+        return self.value.pop(name, default)
 
-    @staticmethod
-    def get(name: str, default: Any = None) -> Any:
+    def get(self, name: str, default: Any = None) -> Any:
         """ Get variable value from local storage.
 
         :param str name: variable name
@@ -195,4 +196,7 @@ class LocalStorage(object):
         :return Any: variable value
         """
 
-        return globals().get(name, default)
+        return self.value.get(name, default)
+
+
+STORAGE = LocalStorage()

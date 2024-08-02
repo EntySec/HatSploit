@@ -3,17 +3,13 @@ This command requires HatSploit: https://hatsploit.com
 Current source: https://github.com/EntySec/HatSploit
 """
 
-from hatsploit.lib.command import Command
-from hatsploit.lib.plugins import Plugins
+from badges.cmd import Command
+from hatsploit.lib.ui.plugins import Plugins
 
 
-class HatSploitCommand(Command):
+class ExternalCommand(Command):
     def __init__(self):
-        super().__init__()
-
-        self.plugins = Plugins()
-
-        self.details.update({
+        super().__init__({
             'Category': "plugins",
             'Name': "load",
             'Authors': [
@@ -24,7 +20,18 @@ class HatSploitCommand(Command):
             'MinArgs': 1,
         })
 
-        self.complete = self.plugins.plugins_completer
+        self.plugins = Plugins()
 
-    def run(self, argc, argv):
-        self.plugins.load_plugin(argv[1])
+    def complete(self):
+        return self.plugins.plugins_completer()
+
+    def run(self, args):
+        plugin = self.plugins.load_plugin(args[1])
+        commands = {}
+
+        for command in plugin.commands:
+            commands[command] = plugin.commands[command]
+            commands[command]['Method'] = getattr(plugin, command)
+            commands[command]['Category'] = plugin.info['Plugin']
+
+        self.console.add_external(commands)

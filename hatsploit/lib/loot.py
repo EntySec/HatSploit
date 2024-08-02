@@ -22,8 +22,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
-import datetime
 import os
+import datetime
 
 from typing import Optional, Union
 
@@ -33,22 +33,21 @@ from pex.string import String
 from hatsploit.lib.config import Config
 
 
-class Loot(String, FS):
+class Loot(object):
     """ Subclass of hatsploit.lib module.
 
     This subclass of hatsploit.lib module is intended for providing
     tools for working with loot collected by HatSploit.
     """
 
-    def __init__(self, loot: Optional[str] = None, data: Optional[str] = None) -> None:
+    def __init__(self, loot: Optional[str] = None,
+                 data: Optional[str] = None) -> None:
         """ Initialize loot.
 
         :param Optional[str] loot: loot root path
         :param Optional[str] data: data root path
         :return None: None
         """
-
-        super().__init__()
 
         self.loot = loot or Config().path_config['loot_path']
         self.data = data or Config().path_config['data_path']
@@ -79,26 +78,28 @@ class Loot(String, FS):
         :return str: random loot path
         """
 
-        filename = self.random_string(16)
+        filename = String.random_string(16)
 
         if extension:
             filename += '.' + extension
 
         return self.loot + filename
 
-    def get_file(self, filename: str) -> bytes:
+    @staticmethod
+    def get_file(filename: str) -> bytes:
         """ Get specific file contents.
 
         :param str filename: file name
         :return bytes: file contents
         """
 
-        self.check_file(filename)
+        FS.check_file(filename)
 
         with open(filename, 'rb') as f:
             return f.read()
 
-    def save_file(self, location: str, data: bytes, extension: Optional[str] = None,
+    @staticmethod
+    def save_file(location: str, data: bytes, extension: Optional[str] = None,
                   filename: Optional[str] = None) -> Union[str, None]:
         """ Save contents to specific location.
 
@@ -109,14 +110,14 @@ class Loot(String, FS):
         :return Union[str, None]: path if success else None
         """
 
-        exists, is_dir = self.exists(location)
+        exists, is_dir = FS.exists(location)
 
         if exists:
             if is_dir:
                 if location.endswith('/'):
-                    location += os.path.split(filename)[1] if filename else self.random_string(16)
+                    location += os.path.split(filename)[1] if filename else String.random_string(16)
                 else:
-                    location += '/' + os.path.split(filename)[1] if filename else self.random_string(16)
+                    location += '/' + os.path.split(filename)[1] if filename else String.random_string(16)
 
             if extension:
                 if not location.endswith('.' + extension):
@@ -128,14 +129,15 @@ class Loot(String, FS):
             return os.path.abspath(location)
         return None
 
-    def remove_file(self, filename: str) -> None:
+    @staticmethod
+    def remove_file(filename: str) -> None:
         """ Remove specific file.
 
         :param str filename: file name
         :return None: None
         """
 
-        self.check_file(filename)
+        FS.check_file(filename)
         os.remove(filename)
 
     def get_loot(self, filename: str) -> bytes:

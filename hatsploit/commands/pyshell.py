@@ -24,14 +24,12 @@ SOFTWARE.
 
 import platform
 
-from hatsploit.lib.command import Command
+from badges.cmd import Command
 
 
-class HatSploitCommand(Command):
+class ExternalCommand(Command):
     def __init__(self):
-        super().__init__()
-
-        self.details.update({
+        super().__init__({
             'Category': "developer",
             'Name': "pyshell",
             'Authors': [
@@ -42,12 +40,12 @@ class HatSploitCommand(Command):
             'MinArgs': 0,
         })
 
-    def run(self, argc, argv):
+    def run(self, _):
         self.print_information(f"Python {platform.python_version()} console")
         self.print_empty()
 
         while True:
-            code = self.input_empty("%bold>>> %end")
+            code = input(">>> ")
 
             if "exit" in code or "quit" in code:
                 return

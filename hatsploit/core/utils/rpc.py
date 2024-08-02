@@ -24,8 +24,6 @@ SOFTWARE.
 
 from jsonrpclib.SimpleJSONRPCServer import SimpleJSONRPCServer
 
-from hatsploit.lib.commands import Commands
-
 
 class RPC(object):
     """ Subclass of hatsploit.core.utils module.
@@ -44,8 +42,6 @@ class RPC(object):
         self.host = host
         self.port = int(port)
 
-        self.commands = Commands()
-
     def run(self) -> None:
         """ Run RPC server.
 
@@ -53,7 +49,7 @@ class RPC(object):
         """
 
         rpc = SimpleJSONRPCServer((self.host, self.port))
-        commands = self.commands.get_commands()
+        commands = {}
 
         for command in commands:
             name = command
