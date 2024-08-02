@@ -70,6 +70,25 @@ class DB(object):
         STORAGE.set("database_connector", self.conn)
         STORAGE.set("database_cursor", self.cursor)
 
+    def count(self, criteria: dict = {}) -> int:
+        """ Count rows in table.
+
+        :param dict criteria: criteria
+        (key - field name, value - expected value)
+        :return int: length
+        """
+
+        query = ''
+
+        if criteria:
+            query = ' WHERE '
+            query += ' AND '.join([f'{entry}="{str(value)}"' for entry, value in criteria.items()])
+
+        query = self.cursor.execute(f'SELECT COUNT(*) FROM "{self.table}"' + query)
+        result = query.fetchone()
+
+        return result[0]
+
     def dump(self, criteria: dict = {}) -> list:
         """ Dump database table contents.
 
