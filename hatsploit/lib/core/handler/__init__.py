@@ -256,8 +256,8 @@ class Handler(BaseMixin, Sessions):
                 session=client,
                 on_session=on_session,
                 info={
-                    'Platform': payload.info['Platform'],
-                    'Arch': payload.info['Arch'],
+                    'Platform': self.payload.info['Platform'],
+                    'Arch': self.payload.info['Arch'],
                     'Host': host,
                     'Port': self.lport.value
                 }
