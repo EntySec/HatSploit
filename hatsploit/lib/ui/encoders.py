@@ -22,13 +22,16 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
+import sys
+import traceback
+
 from typing import Union
 
 from hatsploit.lib.core.encoder import Encoder
 from hatsploit.lib.core.module import Module
 from hatsploit.lib.core.payload import Payload
 
-from hatsploit.core.db.importer import Importer
+from hatsploit.core.db.db import DB
 
 from hatsploit.lib.storage import STORAGE
 
@@ -46,24 +49,18 @@ class Encoders(object):
         :return list: list of completions
         """
 
-        encoders = self.get_encoders()
-        complete = {}
-
-        for database in encoders:
-            for encoder in encoders[database]:
-                complete[encoder] = None
-
-        return complete
+        return {encoder: None for encoder in self.get_encoders()}
 
     @staticmethod
-    def get_encoders() -> dict:
+    def get_encoders(criteria: dict = {}) -> dict:
         """ Get all encoders from local storage.
 
+        :param dict criteria: DB search criteria
         :return dict: encoders, encoder names as keys and
         encoder objects as items
         """
 
-        return STORAGE.get("encoders", {})
+        return DB(table='encoders').dump(criteria=criteria)
 
     @staticmethod
     def get_imported_encoders() -> dict:
@@ -75,41 +72,24 @@ class Encoders(object):
 
         return STORAGE.get("imported_encoders", {})
 
-    def get_database(self, encoder: str) -> str:
-        """ Get database in which specific encoder exists.
-
-        :param str encoder: encoder name
-        :return str: database name
-        """
-
-        all_encoders = self.get_encoders()
-
-        if all_encoders:
-            for database in all_encoders:
-                encoders = all_encoders[database]
-
-                if encoder in encoders:
-                    return database
-
-        return ''
-
-    def get_encoder(self, encoder: str) -> Union[Encoder, None]:
+    @staticmethod
+    def get_encoder(encoder: str) -> Union[Encoder, None]:
         """ Import and get imported encoder.
 
         :param str encoder: encoder name
         :return Union[Encoder, None]: imported encoder, None if failed to import
         """
 
-        encoder_object = self.get_encoder_object(encoder)
-
         try:
-            imported_encoder = Importer().import_encoder(encoder_object['Path'])
-            imported_encoder.update()
+            encoder_object = DB(table='encoders').load(
+                criteria={'BaseName': encoder}).get(encoder)
+            encoder_object.update()
 
         except Exception:
-            return None
+            traceback.print_exc(file=sys.stdout)
+            return
 
-        return imported_encoder
+        return encoder_object
 
     def get_encoder_object(self, encoder: str) -> dict:
         """ Get encoder object, this object represents encoder details
@@ -119,11 +99,8 @@ class Encoders(object):
         :return dict: encoder object, encoder details
         """
 
-        if not self.check_exist(encoder):
-            return {}
-
-        return self.get_encoders()[
-            self.get_database(encoder)][encoder]
+        return self.get_encoders(
+            {'BaseName': encoder}).get(encoder, {})
 
     def get_payload_encoder(self, name: str, module: Module, payload: Payload) -> Union[Encoder, None]:
         """ Get encoder associated with specific payload context.
@@ -211,16 +188,7 @@ class Encoders(object):
         :return bool: True if exists else False
         """
 
-        all_encoders = self.get_encoders()
-
-        if all_encoders:
-            for database in all_encoders:
-                encoders = all_encoders[database]
-
-                if encoder in encoders:
-                    return True
-
-        return False
+        return encoder in self.get_encoders()
 
     def check_imported(self, module: str, payload: str, encoder: str) -> bool:
         """ Check if encoder is imported.

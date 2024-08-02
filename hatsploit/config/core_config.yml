@@ -28,7 +28,7 @@ details:
   prompt: "%yellowhsf3%end"
 
 console:
-  clear: true
+  clear: false
   banner: true
   header: true
   tip: true

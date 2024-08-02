@@ -29,12 +29,11 @@ class ExternalCommand(Command):
         categories = []
 
         if modules:
-            for database in sorted(modules):
-                for module in sorted(modules[database]):
-                    category = modules[database][module]['Category']
+            for module in sorted(modules):
+                category = modules[module]['Category']
 
-                    if category not in categories:
-                        categories.append(category)
+                if category not in categories:
+                    categories.append(category)
 
         return categories
 

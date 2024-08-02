@@ -23,24 +23,15 @@ SOFTWARE.
 """
 
 import os
-
 import importlib.util
-
-from typing import Union
-from badges import Badges
-
-from hatsploit.core.db.db import DB
-from hatsploit.lib.config import Config
 
 from hatsploit.lib.core.module import Module
 from hatsploit.lib.core.plugin import Plugin
 from hatsploit.lib.core.encoder import Encoder
 from hatsploit.lib.core.payload import Payload
 
-from hatsploit.lib.storage import STORAGE
 
-
-class Importer(Config, Badges, DB):
+class Importer(object):
     """ Subclass of hatsploit.core.db module.
 
     This subclass of hatsploit.core.db module is intended for
@@ -143,73 +134,3 @@ class Importer(Config, Badges, DB):
             raise RuntimeError(f"Failed to import plugin: {str(e)}!")
 
         return plugin
-
-    def import_plugins(self, path: str) -> dict:
-        """ Import all plugins from path.
-
-        :param str path: path to plguins
-        :return dict: plugins, plugin names as keys and
-        plugin objects as items
-        """
-
-        if not path.endswith('/'):
-            path += '/'
-
-        plugins = {}
-        plugin_path = os.path.split(path)[0]
-
-        for file in os.listdir(plugin_path):
-            if not file.endswith('py'):
-                continue
-
-            try:
-                plugin_object = self.import_plugin(plugin_path + '/' + file[:-3])
-                plugin_name = plugin_object.info['Plugin']
-                plugins[plugin_name] = plugin_object
-
-            except Exception as e:
-                self.print_error(f"Failed to load {file[:-3]} plugin!")
-                self.print_error(str(e))
-
-        return plugins
-
-    def import_base_databases(self) -> None:
-        """ Import base databases.
-
-        :return None: None
-        """
-
-        base_dbs = self.db_config['base_dbs']
-        db_path = self.path_config['db_path']
-
-        if os.path.exists(db_path + base_dbs['module_database']):
-            self.connect_module_database(
-                base_dbs['module_database_name'],
-                db_path + base_dbs['module_database'],
-            )
-
-        if os.path.exists(db_path + base_dbs['payload_database']):
-            self.connect_payload_database(
-                base_dbs['payload_database_name'],
-                db_path + base_dbs['payload_database'],
-            )
-
-        if os.path.exists(db_path + base_dbs['encoder_database']):
-            self.connect_encoder_database(
-                base_dbs['encoder_database_name'],
-                db_path + base_dbs['encoder_database'],
-            )
-
-        if os.path.exists(db_path + base_dbs['plugin_database']):
-            self.connect_plugin_database(
-                base_dbs['plugin_database_name'],
-                db_path + base_dbs['plugin_database'],
-            )
-
-    def import_all(self) -> None:
-        """ Import all base commands and all base databases.
-
-        :return None: None
-        """
-
-        self.import_base_databases()

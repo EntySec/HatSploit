@@ -32,7 +32,8 @@ from typing import Union, Any, Optional
 from pex.platform import Platform
 from pex.arch import Arch
 
-from hatsploit.core.db.importer import Importer
+from hatsploit.core.db.db import DB
+
 from hatsploit.lib.core.payload.const import SINGLE
 
 from hatsploit.lib.core.payload import Payload
@@ -60,24 +61,18 @@ class Payloads(HatAsm):
         :return list: list of completions
         """
 
-        payloads = self.get_payloads()
-        complete = {}
-
-        for database in payloads:
-            for payload in payloads[database]:
-                complete[payload] = None
-
-        return complete
+        return {payload: None for payload in self.get_payloads()}
 
     @staticmethod
-    def get_payloads() -> dict:
+    def get_payloads(criteria: dict = {}) -> dict:
         """ Get all payloads from local storage.
 
+        :param dict criteria: DB search criteria
         :return dict: payloads, payload names as keys and
         payload objects as items
         """
 
-        return STORAGE.get("payloads")
+        return DB(table='payloads').dump(criteria=criteria)
 
     @staticmethod
     def get_imported_payloads() -> dict:
@@ -89,42 +84,24 @@ class Payloads(HatAsm):
 
         return STORAGE.get("imported_payloads")
 
-    def get_database(self, payload: str) -> str:
-        """ Get database in which specific payload exists.
-
-        :param str payload: payload name
-        :return str: database name
-        """
-
-        all_payloads = self.get_payloads()
-
-        if all_payloads:
-            for database in all_payloads:
-                payloads = all_payloads[database]
-
-                if payload in payloads:
-                    return database
-
-        return ''
-
-    def get_payload(self, payload: str) -> Union[Payload, None]:
+    @staticmethod
+    def get_payload(payload: str) -> Union[Payload, None]:
         """ Import and get imported payload.
 
         :param str payload: payload name
         :return Union[Payload, None]: imported payload, None if failed to import
         """
 
-        payload_object = self.get_payload_object(payload)
-
         try:
-            imported_payload = Importer().import_payload(payload_object['Path'])
-            imported_payload.update()
+            payload_object = DB(table='payloads').load(
+                criteria={'BaseName': payload}).get(payload)
+            payload_object.update()
 
         except Exception:
             traceback.print_exc(file=sys.stdout)
-            return None
+            return
 
-        return imported_payload
+        return payload_object
 
     def get_payload_object(self, payload: str) -> dict:
         """ Get payload object, this object represents payload details
@@ -134,11 +111,8 @@ class Payloads(HatAsm):
         :return dict: payload object, payload details
         """
 
-        if not self.check_exist(payload):
-            return {}
-
-        return self.get_payloads()[
-            self.get_database(payload)][payload]
+        return self.get_payloads(
+            {'BaseName': payload}).get(payload, {})
 
     def get_current_payload(self, module: Module) -> Union[Payload, None]:
         """ Get current payload, this is payload which is currently
@@ -179,10 +153,9 @@ class Payloads(HatAsm):
 
         payloads = self.get_payloads()
 
-        for database in payloads:
-            for payload in payloads[database]:
-                if payloads[database][payload]['Name'].lower() == name.lower():
-                    return payloads[database][payload]['Payload']
+        for payload in payloads:
+            if payloads[payload]['Name'].lower() == name.lower():
+                return payload
 
         return ''
 
@@ -228,16 +201,7 @@ class Payloads(HatAsm):
         :return bool: True if exists else False
         """
 
-        all_payloads = self.get_payloads()
-
-        if all_payloads:
-            for database in all_payloads:
-                payloads = all_payloads[database]
-
-                if payload in payloads:
-                    return True
-
-        return False
+        return payload in self.get_payloads()
 
     def check_usable(self, payload: str) -> bool:
         """ Check if payload is usable within the console.

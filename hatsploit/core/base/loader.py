@@ -27,7 +27,6 @@ import string
 import threading
 
 from hatsploit.core.db.builder import Builder
-from hatsploit.core.db.importer import Importer
 from hatsploit.core.utils.update import Update
 
 
@@ -61,8 +60,6 @@ class Loader(Builder):
 
         if build_base:
             self.build_base()
-
-        Importer().import_all()
 
     def load_all(self, build_base: bool = False, silent: bool = False) -> None:
         """ Load all: core, databases, interface, etc.

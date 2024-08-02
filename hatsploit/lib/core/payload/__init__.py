@@ -25,7 +25,7 @@ SOFTWARE.
 from typing import Optional
 from hatasm import HatAsm
 
-from hatsploit.lib.ui.option import BytesOption
+from hatsploit.lib.ui.option import BytesOption, BooleanOption
 from hatsploit.lib.ui.options import Options
 
 from hatsploit.lib.base import BaseMixin

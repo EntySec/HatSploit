@@ -30,7 +30,7 @@ from typing import Union, Optional, Callable
 
 from badges import Badges
 
-from hatsploit.core.db.importer import Importer
+from hatsploit.core.db.db import DB
 
 from hatsploit.lib.ui.payloads import Payloads
 from hatsploit.lib.ui.sessions import Sessions
@@ -60,24 +60,18 @@ class Modules(Badges):
         :return list: list of completions
         """
 
-        modules = self.get_modules()
-        complete = {}
-
-        for database in modules:
-            for module in modules[database]:
-                complete[module] = None
-
-        return complete
+        return {module: None for module in self.get_modules()}
 
     @staticmethod
-    def get_modules() -> dict:
+    def get_modules(criteria: dict = {}) -> dict:
         """ Get all modules from local storage.
 
+        :param dict criteria: DB search criteria
         :return dict: modules, module names as keys and
         module objects as items
         """
 
-        return STORAGE.get("modules", {})
+        return DB(table='modules').dump(criteria=criteria)
 
     @staticmethod
     def get_imported_modules() -> dict:
@@ -89,42 +83,24 @@ class Modules(Badges):
 
         return STORAGE.get("imported_modules", {})
 
-    def get_database(self, module: str) -> str:
-        """ Get database in which specific module exists.
-
-        :param str module: module name
-        :return str: database name
-        """
-
-        all_modules = self.get_modules()
-
-        if all_modules:
-            for database in all_modules:
-                modules = all_modules[database]
-
-                if module in modules:
-                    return database
-
-        return ''
-
-    def get_module(self, module: str) -> Union[Module, None]:
+    @staticmethod
+    def get_module(module: str) -> Union[Module, None]:
         """ Import and get imported module.
 
         :param str module: module name
         :return Union[Module, None]: imported module, None if failed to import
         """
 
-        module_object = self.get_module_object(module)
-
         try:
-            imported_module = Importer().import_module(module_object['Path'])
-            imported_module.update()
+            module_object = DB(table='modules').load(
+                criteria={'BaseName': module}).get(module)
+            module_object.update()
 
         except Exception:
             traceback.print_exc(file=sys.stdout)
-            return None
+            return
 
-        return imported_module
+        return module_object
 
     def get_module_object(self, module: str) -> dict:
         """ Get module object, this object represents module details
@@ -134,11 +110,8 @@ class Modules(Badges):
         :return dict: module object, module details
         """
 
-        if not self.check_exist(module):
-            return {}
-
-        return self.get_modules()[
-            self.get_database(module)][module]
+        return self.get_modules(
+            {'BaseName': module}).get(module, {})
 
     @staticmethod
     def get_current_module() -> Union[Module, None]:
@@ -181,10 +154,9 @@ class Modules(Badges):
 
         modules = self.get_modules()
 
-        for database in modules:
-            for module in modules[database]:
-                if modules[database][module]['Name'].lower() == name.lower():
-                    return modules[database][module]['Module']
+        for module in modules:
+            if modules[module]['Name'].lower() == name.lower():
+                return module
 
         return ''
 
@@ -216,16 +188,7 @@ class Modules(Badges):
         :return bool: True if exists else False
         """
 
-        all_modules = self.get_modules()
-
-        if all_modules:
-            for database in all_modules:
-                modules = all_modules[database]
-
-                if module in modules:
-                    return True
-
-        return False
+        return module in self.get_modules()
 
     @staticmethod
     def check_payload(module: Module) -> bool:

@@ -22,9 +22,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
-import os
-import json
+import sqlite3
 
+from typing import Optional
+
+from hatsploit.core.db.builder import Builder
+from hatsploit.core.db.importer import Importer
+
+from hatsploit.lib.config import Config
 from hatsploit.lib.storage import STORAGE
 
 
@@ -35,278 +40,115 @@ class DB(object):
     providing tools for working with HatSploit databases.
     """
 
-    @staticmethod
-    def get_encoder_databases() -> dict:
-        """ Get connected encoder databases.
+    def __init__(self, table: str,
+                 path: Optional[str] = None) -> None:
+        """ Initialize DB connector.
 
-        :return dict: databases, database name as keys and
-        database data as items
+        :param str table: table name
+        :param Optional[str] path: path to database
+        :return None: None
         """
 
-        return STORAGE.get("connected_encoder_databases", {})
+        self.config = Config()
 
-    @staticmethod
-    def get_payload_databases() -> dict:
-        """ Get connected payload databases.
+        self.path = path or (
+            self.config.path_config['db_path'] +
+            self.config.db_config['base_dbs']['database'])
+        self.table = table
 
-        :return dict: databases, database name as keys and
-        database data as items
+        self.conn = STORAGE.get('database_connector')
+        self.cursor = STORAGE.get('database_cursor')
+
+        if self.conn and self.cursor:
+            return
+
+        self.conn = sqlite3.connect(self.path)
+        self.conn.row_factory = sqlite3.Row
+
+        self.cursor = self.conn.cursor()
+
+        STORAGE.set("database_connector", self.conn)
+        STORAGE.set("database_cursor", self.cursor)
+
+    def dump(self, criteria: dict = {}) -> list:
+        """ Dump database table contents.
+
+        :param dict criteria: criteria
+        (key - field name, value - expected value)
+        :return list: contents
         """
 
-        return STORAGE.get("connected_payload_databases", {})
+        query = ''
 
-    @staticmethod
-    def get_module_databases() -> dict:
-        """ Get connected module databases.
+        if criteria:
+            query = ' WHERE '
+            query += ' AND '.join([f'{entry}="{str(value)}"' for entry, value in criteria.items()])
 
-        :return dict: databases, database name as keys and
-        database data as items
+        query = self.cursor.execute(f'SELECT * FROM "{self.table}"' + query)
+        result = query.fetchall()
+
+        data = {}
+
+        for entry in result:
+            row = dict(entry)
+            data[row['BaseName']] = row
+
+        return data
+
+    def load(self, criteria: dict = {}) -> dict:
+        """ Load all entries matching criteria.
+
+        :param dict criteria: criteria
+        (key - field name, value - expected value)
+        :return dict: names as keys, objects as values
         """
 
-        return STORAGE.get("connected_module_databases", {})
+        data = {}
+        query = ''
 
-    @staticmethod
-    def get_plugin_databases() -> dict:
-        """ Get connected plugin databases.
+        if criteria:
+            query = ' WHERE '
+            query += ' AND '.join([f'{entry}="{str(value)}"' for entry, value in criteria.items()])
 
-        :return dict: databases, database name as keys and
-        database data as items
-        """
+        query = self.cursor.execute(f'SELECT BaseName, Path FROM "{self.table}"' + query)
+        result = query.fetchall()
 
-        return STORAGE.get("connected_plugin_databases", {})
+        for entry in result:
+            row = dict(entry)
 
-    @staticmethod
-    def disconnect_payload_database(name: str) -> None:
-        """ Disconnect payload database.
+            if self.table == 'modules':
+                data[row['BaseName']] = Importer.import_module(row['Path'])
 
-        :param str name: database name
+            elif self.table == 'payloads':
+                data[row['BaseName']] = Importer.import_payload(row['Path'])
+
+            elif self.table == 'encoders':
+                data[row['BaseName']] = Importer.import_encoder(row['Path'])
+
+            elif self.table == 'plugins':
+                data[row['BaseName']] = Importer.import_plugin(row['Path'])
+
+        return data
+
+    def build(self, path: str) -> None:
+        """ Build database table from path.
+
+        :param str path: path to build from
         :return None: None
         :raises RuntimeError: with trailing error message
         """
 
-        if STORAGE.get("connected_payload_databases"):
-            if name in STORAGE.get("connected_payload_databases"):
-                STORAGE.delete_element("connected_payload_databases", name)
-                STORAGE.delete_element("payloads", name)
-                return
+        if self.table == 'modules':
+            Builder().build_module_database(path, self.path)
 
-        raise RuntimeError("No such payload database connected!")
+        elif self.table == 'payloads':
+            Builder().build_payload_database(path, self.path)
 
-    @staticmethod
-    def disconnect_encoder_database(name: str) -> None:
-        """ Disconnect encoder database.
+        elif self.table == 'encoders':
+            Builder().build_encoder_database(path, self.path)
 
-        :param str name: database name
-        :return None: None
-        :raises RuntimeError: with trailing error message
-        """
+        elif self.table == 'plugins':
+            Builder().build_plugin_database(path, self.path)
 
-        if STORAGE.get("connected_encoder_databases"):
-            if name in STORAGE.get("connected_encoder_databases"):
-                STORAGE.delete_element("connected_encoder_databases", name)
-                STORAGE.delete_element("encoders", name)
-                return
-
-        raise RuntimeError("No such encoder database connected!")
-
-    @staticmethod
-    def disconnect_module_database(name: str) -> None:
-        """ Disconnect module database.
-
-        :param str name: database name
-        :return None: None
-        :raises RuntimeError: with trailing error message
-        """
-
-        if STORAGE.get("connected_module_databases"):
-            if name in STORAGE.get("connected_module_databases"):
-                STORAGE.delete_element("connected_module_databases", name)
-                STORAGE.delete_element("modules", name)
-                return
-
-        raise RuntimeError("No such module database connected!")
-
-    @staticmethod
-    def disconnect_plugin_database(name: str) -> None:
-        """ Disconnect plugin database.
-
-        :param str name: database name
-        :return None: None
-        :raises RuntimeError: with trailing error message
-        """
-
-        if STORAGE.get("connected_plugin_databases"):
-            if name in STORAGE.get("connected_plugin_databases"):
-                STORAGE.delete_element("connected_plugin_databases", name)
-                STORAGE.delete_element("plugins", name)
-                return
-
-        raise RuntimeError("No such plugin database connected!")
-
-    @staticmethod
-    def connect_encoder_database(name: str, path: str) -> None:
-        """ Connect encoder database.
-
-        :param str name: name to give to the database
-        :param str path: path to the database
-        :return None: None
-        :raises RuntimeError: with trailing error message
-        """
-
-        if STORAGE.get("connected_encoder_databases"):
-            if name in STORAGE.get("connected_encoder_databases"):
-                raise RuntimeWarning(f"Encoder database is already connected: {path}.")
-
-        if not os.path.exists(path) or not str.endswith(path, "json"):
-            raise RuntimeError(f"Not an encoder database: {path}!")
-
-        try:
-            database = json.load(open(path))
-        except Exception:
-            raise RuntimeError(f"Failed to connect encoder database: {path}!")
-
-        if '__database__' not in database:
-            raise RuntimeError(f"No __database__ section found in database: {path}!")
-
-        if database['__database__']['Type'] != "encoders":
-            raise RuntimeError(f"Not an encoder database: {path}!")
-
-        del database['__database__']
-
-        encoders = {name: database}
-
-        data = {name: {'Path': path}}
-        if not STORAGE.get("connected_encoder_databases"):
-            STORAGE.set("connected_encoder_databases", {})
-        STORAGE.update("connected_encoder_databases", data)
-
-        if STORAGE.get("encoders"):
-            STORAGE.update("encoders", encoders)
         else:
-            STORAGE.set("encoders", encoders)
-
-    @staticmethod
-    def connect_payload_database(name: str, path: str) -> None:
-        """ Connect payload database.
-
-        :param str name: name to give to the database
-        :param str path: path to the database
-        :return None: None
-        :raises RuntimeError: with trailing error message
-        """
-
-        if STORAGE.get("connected_payload_databases"):
-            if name in STORAGE.get("connected_payload_databases"):
-                raise RuntimeWarning(f"Payload database is already connected: {path}.")
-
-        if not os.path.exists(path) or not str.endswith(path, "json"):
-            raise RuntimeError(f"Not a payload database: {path}!")
-
-        try:
-            database = json.load(open(path))
-        except Exception:
-            raise RuntimeError(f"Failed to connect payload database: {path}!")
-
-        if '__database__' not in database:
-            raise RuntimeError(f"No __database__ section found in database: {path}!")
-
-        if database['__database__']['Type'] != "payloads":
-            raise RuntimeError(f"Not a payload database: {path}!")
-
-        del database['__database__']
-
-        payloads = {name: database}
-
-        data = {name: {'Path': path}}
-        if not STORAGE.get("connected_payload_databases"):
-            STORAGE.set("connected_payload_databases", {})
-        STORAGE.update("connected_payload_databases", data)
-
-        if STORAGE.get("payloads"):
-            STORAGE.update("payloads", payloads)
-        else:
-            STORAGE.set("payloads", payloads)
-
-    @staticmethod
-    def connect_module_database(name: str, path: str) -> None:
-        """ Connect module database.
-
-        :param str name: name to give to the database
-        :param str path: path to the database
-        :return None: None
-        :raises RuntimeError: with trailing error message
-        """
-
-        if STORAGE.get("connected_module_databases"):
-            if name in STORAGE.get("connected_module_databases"):
-                raise RuntimeWarning(f"Module database is already connected: {path}.")
-
-        if not os.path.exists(path) or not str.endswith(path, "json"):
-            raise RuntimeError(f"Not a module database: {path}!")
-
-        try:
-            database = json.load(open(path))
-        except Exception:
-            raise RuntimeError(f"Failed to connect module database: {path}!")
-
-        if '__database__' not in database:
-            raise RuntimeError(f"No __database__ section found in database: {path}!")
-
-        if database['__database__']['Type'] != "modules":
-            raise RuntimeError(f"Not a module database: {path}!")
-
-        del database['__database__']
-
-        modules = {name: database}
-
-        data = {name: {'Path': path}}
-        if not STORAGE.get("connected_module_databases"):
-            STORAGE.set("connected_module_databases", {})
-        STORAGE.update("connected_module_databases", data)
-
-        if STORAGE.get("modules"):
-            STORAGE.update("modules", modules)
-        else:
-            STORAGE.set("modules", modules)
-
-    @staticmethod
-    def connect_plugin_database(name: str, path: str) -> None:
-        """ Connect plugin database.
-
-        :param str name: name to give to the database
-        :param str path: path to the database
-        :return None: None
-        :raises RuntimeError: with trailing error message
-        """
-
-        if STORAGE.get("connected_plugin_databases"):
-            if name in STORAGE.get("connected_plugin_databases"):
-                raise RuntimeWarning(f"Plugin database is already connected: {path}.")
-
-        if not os.path.exists(path) or not str.endswith(path, "json"):
-            raise RuntimeError(f"Not a plugin database: {path}!")
-
-        try:
-            database = json.load(open(path))
-        except Exception:
-            raise RuntimeError(f"Failed to connect plugin database: {path}!")
-
-        if '__database__' not in database:
-            raise RuntimeError(f"No __database__ section found in database: {path}!")
-
-        if database['__database__']['Type'] != "plugins":
-            raise RuntimeError(f"Not a plugin database: {path}!")
-
-        del database['__database__']
-
-        plugins = {name: database}
-
-        data = {name: {'Path': path}}
-        if not STORAGE.get("connected_plugin_databases"):
-            STORAGE.set("connected_plugin_databases", {})
-        STORAGE.update("connected_plugin_databases", data)
-
-        if STORAGE.get("plugins"):
-            STORAGE.update("plugins", plugins)
-        else:
-            STORAGE.set("plugins", plugins)
+            raise RuntimeError("Table provided does not support building!")

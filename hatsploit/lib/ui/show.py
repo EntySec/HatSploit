@@ -23,7 +23,7 @@ SOFTWARE.
 """
 
 from typing import Optional
-from textwrap import dedent
+from textwrap import dedent, fill
 
 from badges import Badges, Tables
 
@@ -54,110 +54,6 @@ class Show(Badges, Tables):
     plugins = Plugins()
     encoders = Encoders()
     sessions = Sessions()
-
-    def show_custom_commands(self, commands: dict) -> None:
-        """ Show custom commands.
-
-        Note: commands is a dictionary containing command names as keys and
-        command objects as items.
-
-        :param dict commands: commands
-        :return None: None
-        """
-
-        data = {}
-        headers = ("Command", "Description")
-
-        for command in sorted(commands):
-            data[commands[command].info['Category']] = []
-
-        for command in sorted(commands):
-            data[commands[command].info['Category']].append(
-                (command, commands[command].info['Description'])
-            )
-
-        for label in sorted(data):
-            self.print_table(f"{label} Commands", headers, *data[label])
-
-    def show_interface_commands(self) -> None:
-        """ Show interface commands.
-
-        :return None: None
-        :raises RuntimeWarning: with trailing warning message
-        """
-
-        if not STORAGE.get("commands"):
-            raise RuntimeWarning("No commands available.")
-
-        self.show_custom_commands(STORAGE.get("commands"))
-
-    def show_plugin_commands(self, plugins: dict) -> None:
-        """ Show all plugins commands.
-
-        Note: plugins is a dictionary containing plugin names as keys and
-        plugin objects as items.
-
-        :param dict plugins: plugins
-        :return None: None
-        """
-
-        for plugin in plugins:
-            plugin = plugins[plugin]
-
-            if not plugin.commands:
-                continue
-
-            data = {}
-            headers = ("Command", "Description")
-            commands = plugin.commands
-
-            for label in sorted(commands):
-                data[label] = []
-
-                for command in sorted(commands[label]):
-                    data[label].append(
-                        (command, commands[label][command]['Description'])
-                    )
-
-            for label in sorted(data):
-                self.print_table(f"{label} Commands", headers, *data[label])
-
-    def show_module_commands(self, module: Module) -> None:
-        """ Show current module commands.
-
-        :param Module module: module object
-        :return None: None
-        """
-
-        if not module.commands:
-            return
-
-        data = []
-        headers = ("Command", "Description")
-        commands = module.commands
-
-        for command in sorted(commands):
-            data.append(
-                (command, commands[command]['Description'])
-            )
-
-        self.print_table("Module Commands", headers, *data)
-
-    def show_all_commands(self) -> None:
-        """ Show all commands.
-
-        :return None: None
-        """
-
-        self.show_interface_commands()
-
-        if self.modules.get_current_module():
-            self.show_module_commands(
-                self.modules.get_current_module())
-
-        if self.plugins.get_loaded_plugins():
-            self.show_plugin_commands(
-                self.plugins.get_loaded_plugins())
 
     def show_jobs(self, jobs: dict) -> None:
         """ Show active jobs.
@@ -219,98 +115,6 @@ class Show(Badges, Tables):
         headers = ("Loot", "Path", "Time")
         self.print_table("Collected Loot", headers, *loot)
 
-    def show_module_databases(self, databases: dict) -> None:
-        """ Show connected module databases.
-
-        :param dict databases: module databases
-        :return None: None
-        :raises RuntimeWarning: with trailing warning message
-        """
-
-        if not databases:
-            raise RuntimeWarning("No module databases connected.")
-
-        data = []
-        number = 0
-        headers = ("Number", "Name", "Path")
-
-        for name in databases:
-            data.append(
-                (number, name, databases[name]['Path'])
-            )
-            number += 1
-
-        self.print_table("Connected Module Databases", headers, *data)
-
-    def show_payload_databases(self, databases: dict) -> None:
-        """ Show connected payload databases.
-
-        :param dict databases: payload databases
-        :return None: None
-        :raises RuntimeWarning: with trailing warning message
-        """
-
-        if not databases:
-            raise RuntimeWarning("No payload databases connected.")
-
-        data = []
-        number = 0
-        headers = ("Number", "Name", "Path")
-
-        for name in databases:
-            data.append(
-                (number, name, databases[name]['Path'])
-            )
-            number += 1
-
-        self.print_table("Connected Payload Databases", headers, *data)
-
-    def show_encoder_databases(self, databases: dict) -> None:
-        """ Show connected encoder databases.
-
-        :param dict databases: encoder databases
-        :return None: None
-        :raises RuntimeWarning: with trailing warning message
-        """
-
-        if not databases:
-            raise RuntimeWarning("No encoder databases connected.")
-
-        data = []
-        number = 0
-        headers = ("Number", "Name", "Path")
-
-        for name in databases:
-            data.append(
-                (number, name, databases[name]['Path'])
-            )
-            number += 1
-
-        self.print_table("Connected Encoder Databases", headers, *data)
-
-    def show_plugin_databases(self, databases: dict) -> None:
-        """ Show connected plugin databases.
-
-        :param dict databases: plugin databases
-        :return None: None
-        :raises RuntimeWarning: with trailing warning message
-        """
-
-        if not databases:
-            raise RuntimeWarning("No plugin databases connected.")
-
-        data = []
-        number = 0
-        headers = ("Number", "Name", "Path")
-
-        for name in databases:
-            data.append(
-                (number, name, databases[name]['Path'])
-            )
-            number += 1
-
-        self.print_table("Connected Plugin Databases", headers, *data)
-
     def show_loaded_plugins(self, plugins: dict) -> None:
         """ Show loaded plugins.
 
@@ -353,25 +157,22 @@ class Show(Badges, Tables):
         headers = ("Number", "Plugin", "Name")
         shorts = {}
         number = 0
+        data = []
 
-        for database in sorted(plugins):
-            db_plugins = plugins[database]
-            data = []
+        for plugin in sorted(plugins):
+            plugin = plugins[plugin]
 
-            for plugin in sorted(db_plugins):
-                plugin = db_plugins[plugin]
+            data.append(
+                (number, plugin['BaseName'], plugin['Name'])
+            )
 
-                data.append(
-                    (number, plugin['Plugin'], plugin['Name'])
-                )
+            shorts.update({
+                number: plugin['BaseName']
+            })
 
-                shorts.update({
-                    number: plugin['Plugin']
-                })
+            number += 1
 
-                number += 1
-
-            self.print_table(f"Plugins ({database})", headers, *data)
+        self.print_table(f"Plugins", headers, *data)
 
         if not shorts:
             raise RuntimeWarning("No plugins available.")
@@ -390,25 +191,22 @@ class Show(Badges, Tables):
         headers = ("Number", "Encoder", "Name")
         shorts = {}
         number = 0
+        data = []
 
-        for database in sorted(encoders):
-            db_encoders = encoders[database]
-            data = []
+        for encoder in sorted(encoders):
+            encoder = encoders[encoder]
 
-            for encoder in sorted(db_encoders):
-                encoder = db_encoders[encoder]
+            data.append(
+                (number, encoder['BaseName'], encoder['Name'])
+            )
 
-                data.append(
-                    (number, encoder['Encoder'], encoder['Name'])
-                )
+            shorts.update({
+                number: encoder['BaseName']
+            })
 
-                shorts.update({
-                    number: encoder['Encoder']
-                })
+            number += 1
 
-                number += 1
-
-            self.print_table(f"Encoders ({database})", headers, *data)
+        self.print_table(f"Encoders", headers, *data)
 
         if not shorts:
             raise RuntimeWarning("No encoders available.")
@@ -428,43 +226,40 @@ class Show(Badges, Tables):
         headers = ("Number", "Category", "Module", "Rank", "Name")
         shorts = {}
         number = 0
+        data = []
 
-        for database in sorted(modules):
-            db_modules = modules[database]
-            data = []
+        for module in sorted(modules):
+            module = modules[module]
 
-            for module in sorted(db_modules):
-                module = db_modules[module]
+            if not category:
+                data.append(
+                    (number, module['Category'], module['BaseName'],
+                     module['Rank'], module['Name'])
+                )
 
-                if not category:
-                    data.append(
-                        (number, module['Category'], module['Module'],
-                         module['Rank'], module['Name'])
-                    )
+                shorts.update(
+                    {number: module['BaseName']}
+                )
 
-                    shorts.update(
-                        {number: module['Module']}
-                    )
+                number += 1
+                continue
 
-                    number += 1
-                    continue
+            if category == module['Category']:
+                data.append(
+                    (number, module['Category'], module['BaseName'],
+                     module['Rank'], module['Name'])
+                )
 
-                if category == module['Category']:
-                    data.append(
-                        (number, module['Category'], module['Module'],
-                         module['Rank'], module['Name'])
-                    )
+                shorts.update({
+                    number: module['BaseName']
+                })
 
-                    shorts.update({
-                        number: module['Module']
-                    })
+                number += 1
 
-                    number += 1
-
-            if category:
-                self.print_table(f"{category.title()} Modules ({database})", headers, *data)
-            else:
-                self.print_table(f"Modules ({database})", headers, *data)
+        if category:
+            self.print_table(f"{category.title()} Modules", headers, *data)
+        else:
+            self.print_table(f"Modules", headers, *data)
 
         if not shorts:
             raise RuntimeWarning("No modules available.")
@@ -483,25 +278,22 @@ class Show(Badges, Tables):
         headers = ("Number", "Payload", "Name")
         shorts = {}
         number = 0
+        data = []
 
-        for database in sorted(payloads):
-            db_payloads = payloads[database]
-            data = []
+        for payload in sorted(payloads):
+            payload = payloads[payload]
 
-            for payload in sorted(db_payloads):
-                payload = db_payloads[payload]
+            data.append(
+                (number, payload['BaseName'], payload['Name'])
+            )
 
-                data.append(
-                    (number, payload['Payload'], payload['Name'])
-                )
+            shorts.update({
+                number: payload['BaseName']
+            })
 
-                shorts.update({
-                    number: payload['Payload']
-                })
+            number += 1
 
-                number += 1
-
-            self.print_table(f"Payloads ({database})", headers, *data)
+        self.print_table(f"Payloads", headers, *data)
 
         if not shorts:
             raise RuntimeWarning("No payloads available.")
@@ -520,30 +312,27 @@ class Show(Badges, Tables):
         headers = ("Number", "Plugin", "Name")
         shorts = {}
         number = 0
+        data = []
 
-        for database in plugins:
-            db_plugins = plugins[database]
-            data = []
+        for plugin in sorted(plugins):
+            plugin = plugins[plugin]
 
-            for plugin in sorted(db_plugins):
-                plugin = db_plugins[plugin]
+            if keyword not in plugin['BaseName'] + plugin['Name']:
+                continue
 
-                if keyword not in plugin['Plugin'] + plugin['Name']:
-                    continue
+            data.append(
+                (number, plugin['BaseName'].replace(keyword, f'%red{keyword}%end'),
+                 plugin['Name'].replace(keyword, f'%red{keyword}%end'))
+            )
 
-                data.append(
-                    (number, plugin['Plugin'].replace(keyword, f'%red{keyword}%end'),
-                     plugin['Name'].replace(keyword, f'%red{keyword}%end'))
-                )
+            shorts.update(
+                {number: plugin['BaseName']}
+            )
 
-                shorts.update(
-                    {number: plugin['Plugin']}
-                )
+            number += 1
 
-                number += 1
-
-            if data:
-                self.print_table(f"Plugins ({database})", headers, *data)
+        if data:
+            self.print_table(f"Plugins", headers, *data)
 
         if shorts:
             STORAGE.set("plugin_shorts", shorts)
@@ -560,30 +349,27 @@ class Show(Badges, Tables):
         headers = ("Number", "Encoder", "Name")
         shorts = {}
         number = 0
+        data = []
 
-        for database in encoders:
-            db_encoders = encoders[database]
-            data = []
+        for encoder in sorted(encoders):
+            encoder = encoders[encoder]
 
-            for encoder in sorted(db_encoders):
-                encoder = db_encoders[encoder]
+            if keyword not in encoder['BaseName'] + encoder['Name']:
+                continue
 
-                if keyword not in encoder['Encoder'] + encoder['Name']:
-                    continue
+            data.append(
+                (number, encoder['BaseName'].replace(keyword, f'%red{keyword}%end'),
+                 encoder['Name'].replace(keyword, f'%red{keyword}%end'))
+            )
 
-                data.append(
-                    (number, encoder['Encoder'].replace(keyword, f'%red{keyword}%end'),
-                     encoder['Name'].replace(keyword, f'%red{keyword}%end'))
-                )
+            shorts.update(
+                {number: encoder['BaseName']}
+            )
 
-                shorts.update(
-                    {number: encoder['Encoder']}
-                )
+            number += 1
 
-                number += 1
-
-            if data:
-                self.print_table(f"Encoders ({database})", headers, *data)
+        if data:
+            self.print_table(f"Encoders", headers, *data)
 
         if shorts:
             STORAGE.set("encoder_shorts", shorts)
@@ -600,32 +386,29 @@ class Show(Badges, Tables):
         headers = ("Number", "Category", "Module", "Rank", "Name")
         shorts = {}
         number = 0
+        data = []
 
-        for database in modules:
-            db_modules = modules[database]
-            data = []
+        for module in sorted(modules):
+            module = modules[module]
 
-            for module in sorted(db_modules):
-                module = db_modules[module]
+            if keyword not in module['BaseName'] + module['Name']:
+                continue
 
-                if keyword not in module['Module'] + module['Name']:
-                    continue
+            data.append(
+                (number, module['Category'],
+                 module['BaseName'].replace(keyword, f'%red{keyword}%end'),
+                 module['Rank'],
+                 module['Name'].replace(keyword, f'%red{keyword}%end'))
+            )
 
-                data.append(
-                    (number, module['Category'],
-                     module['Module'].replace(keyword, f'%red{keyword}%end'),
-                     module['Rank'],
-                     module['Name'].replace(keyword, f'%red{keyword}%end'))
-                )
+            shorts.update(
+                {number: module['BaseName']}
+            )
 
-                shorts.update(
-                    {number: module['Module']}
-                )
+            number += 1
 
-                number += 1
-
-            if data:
-                self.print_table(f"Modules ({database})", headers, *data)
+        if data:
+            self.print_table(f"Modules", headers, *data)
 
         if shorts:
             STORAGE.set("module_shorts", shorts)
@@ -642,31 +425,28 @@ class Show(Badges, Tables):
         headers = ("Number", "Module", "Name")
         shorts = {}
         number = 0
+        data = []
 
-        for database in payloads:
-            db_payloads = payloads[database]
-            data = []
+        for payload in sorted(payloads):
+            payload = payloads[payload]
 
-            for payload in sorted(db_payloads):
-                payload = db_payloads[payload]
+            if keyword not in payload['BaseName'] + payload['Name']:
+                continue
 
-                if keyword not in payload['Payload'] + payload['Name']:
-                    continue
+            data.append(
+                (number,
+                 payload['BaseName'].replace(keyword, f'%red{keyword}%end'),
+                 payload['Name'].replace(keyword, f'%red{keyword}%end'))
+            )
 
-                data.append(
-                    (number,
-                     payload['Payload'].replace(keyword, f'%red{keyword}%end'),
-                     payload['Name'].replace(keyword, f'%red{keyword}%end'))
-                )
+            shorts.update(
+                {number: payload['BaseName']}
+            )
 
-                shorts.update(
-                    {number: payload['Payload']}
-                )
+            number += 1
 
-                number += 1
-
-            if data:
-                self.print_table(f"Payloads ({database})", headers, *data)
+        if data:
+            self.print_table(f"Payloads", headers, *data)
 
         if shorts:
             STORAGE.set("payload_shorts", shorts)
@@ -728,14 +508,36 @@ class Show(Badges, Tables):
             module = self.modules.get_current_module()
             details = module.info
 
-        self.print_empty(dedent(f"""
-            Category:    {details['Category']}
-            Name:        {details['Name']}
-            Module:      {details['Module']}
-            Description: {details['Description']}
-            Platform:    {str(details['Platform'])}
-            Rank:        {details['Rank']}
-        """))
+        style = dedent(f"""
+            Name: %s
+          Module: %s
+        Platform: %s
+            Rank: %s
+
+        Authors:
+          %s
+
+        Description:
+          %s
+
+        References:
+          %s
+        """)
+
+        authors = '\n  '.join(details['Authors'])
+        desc = fill(details['Description'], width=50,
+                    subsequent_indent='  ')
+        refs = []
+        for ref in details['References']:
+            for key, value in ref.items():
+                refs.append(f'{key}: {str(value)}')
+
+        refs = '\n  '.join(refs)
+
+        self.print_empty(
+            style % (details['Name'], details['Module'], details['Platform'],
+                     details['Rank'], authors, desc, refs)
+        )
 
     def show_options_table(self, title: str, options: dict) -> None:
         """ Show options for specific title.
