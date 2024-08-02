@@ -73,12 +73,6 @@ class Handler(BaseMixin, Sessions):
     for providing tools for working with payloads and sessions.
     """
 
-    types = [
-        ONE_SIDE,
-        REVERSE_TCP,
-        BIND_TCP
-    ]
-
     def __init__(self, info: dict = {}) -> None:
         """ Initialize handler mixin.
 
@@ -247,18 +241,17 @@ class Handler(BaseMixin, Sessions):
                 }
             )
 
-    def module_handle_session(self, type: str = 'one_side',
-                              *args, **kwargs) -> Tuple[Union[Session, socket.socket], str]:
+    def module_handle_session(self, *args, **kwargs) -> Tuple[Union[Session, socket.socket], str]:
         """ Handle session from module.
 
-        :param str type: type of payload (see self.types)
         :return Tuple[Union[Session, socket.socket], str]: session and host
         :raises RuntimeError: with trailing error message
         :raises RuntimeWarning: with trailing warning message
         """
 
-        if type not in self.types:
-            raise RuntimeError(f"Invalid payload type: {type}!")
-
         return Send().handle_session(
-            host=self.lhost.value, port=self.lport.value, type=type, *args, **kwargs)
+            host=self.lhost.value,
+            port=self.lport.value,
+            payload=self.payload,
+            *args, **kwargs
+        )
