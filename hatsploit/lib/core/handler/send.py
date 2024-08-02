@@ -38,6 +38,7 @@ from hatsploit.lib.ui.payloads import Payloads
 from hatsploit.lib.ui.jobs import Jobs
 
 from hatsploit.lib.handle import Handle
+from hatsploit.lib.core.handler.misc import HatSploitSession
 
 from hatsploit.lib.core.payload.const import (
     REVERSE_TCP,
@@ -58,15 +59,13 @@ class Send(Handle, Jobs):
     def handle_session(self, host: str, port: int,
                        payload: PayloadOption,
                        phased: bool = False,
-                       timeout: Optional[int] = None,
-                       session: Optional[Session] = None) -> Tuple[Union[Session, socket.socket], str]:
+                       timeout: Optional[int] = None) -> Tuple[Union[Session, socket.socket], str]:
         """ Handle session.
 
         :param str host: host
         :param int port: port
         :param PayloadOption payload: payload choice
         :param Optional[int] timeout: timeout
-        :param Optional[Session] session: session
         :param bool phased: send phases or continue
         :return Tuple[Union[Session, socket.socket], str]: session and host
         :raises RuntimeWarning: with trailing warning message
@@ -77,6 +76,7 @@ class Send(Handle, Jobs):
             raise RuntimeError("No payload configured for handler!")
 
         type = payload.info['Type']
+        session = payload.info.get('Session', HatSploitSession)
 
         if type == ONE_SIDE:
             if not payload.payload.phased.value and not phased:
