@@ -55,15 +55,8 @@ class Send(Handle, Jobs):
 
     payloads = Payloads()
 
-    types = [
-        ONE_SIDE,
-        REVERSE_TCP,
-        BIND_TCP
-    ]
-
     def handle_session(self, host: str, port: int,
                        payload: PayloadOption,
-                       type: str = ONE_SIDE,
                        phased: bool = False,
                        timeout: Optional[int] = None,
                        session: Optional[Session] = None) -> Tuple[Union[Session, socket.socket], str]:
@@ -72,7 +65,6 @@ class Send(Handle, Jobs):
         :param str host: host
         :param int port: port
         :param PayloadOption payload: payload choice
-        :param str type: type of payload
         :param Optional[int] timeout: timeout
         :param Optional[Session] session: session
         :param bool phased: send phases or continue
@@ -86,10 +78,22 @@ class Send(Handle, Jobs):
 
         type = payload.info['Type']
 
-        if type not in self.types:
-            raise RuntimeError(f"Invalid payload type: {type}!")
+        if type == ONE_SIDE:
+            if not payload.payload.phased.value and not phased:
+                raise RuntimeWarning("Payload sent, but no session was opened.")
 
-        if type == REVERSE_TCP:
+            if not host or not port:
+                raise RuntimeError("Reverse TCP requires host and port set!")
+
+            client, host = self.listen_session(host, port, session, timeout)
+
+            if not client and not host:
+                raise RuntimeError("Reverse TCP received corrupted session!")
+
+            self.send_all(payload, client)
+            raise RuntimeWarning("Payload sent, but no session was opened.")
+
+        elif type == REVERSE_TCP:
             if not host or not port:
                 raise RuntimeError("Reverse TCP requires host and port set!")
 
@@ -118,7 +122,7 @@ class Send(Handle, Jobs):
             return client, host
 
         else:
-            raise RuntimeWarning("Payload sent, but not session was opened.")
+            raise RuntimeError(f"Invalid payload type: {type}!")
 
     def send_all(self, payload: PayloadOption, client: socket.socket) -> None:
         """ Send implant available in the payload with available phases.
@@ -218,7 +222,6 @@ class Send(Handle, Jobs):
         arguments = payload.info.get('Arguments', '')
         platform = payload.info['Platform']
         arch = payload.info['Arch']
-        type = payload.info['Type']
 
         buffer = payload.run()
         phased = len(buffer) > space or payload.payload.phased.value
@@ -238,7 +241,6 @@ class Send(Handle, Jobs):
             if dropper.value in ['wget', 'curl']:
                 self.serve_dropper(dropper, phase)
 
-            type = type if type in [REVERSE_TCP, BIND_TCP] else REVERSE_TCP
             job_id = self.create_job(
                 'TCP handler',
                 'Handler',
@@ -247,7 +249,6 @@ class Send(Handle, Jobs):
                     host,
                     port,
                     payload,
-                    type
                 ),
                 {
                     'phased': phased
@@ -303,7 +304,6 @@ class Send(Handle, Jobs):
                 host,
                 port,
                 payload,
-                type
             ),
             timeout=1
         )
@@ -375,7 +375,6 @@ class Send(Handle, Jobs):
             if not phase:
                 raise RuntimeError("No phase available for this payload!")
 
-            type = type if type in [REVERSE_TCP, BIND_TCP] else REVERSE_TCP
             job_id = self.create_job(
                 'TCP handler',
                 'Handler',
@@ -384,7 +383,6 @@ class Send(Handle, Jobs):
                     host,
                     port,
                     payload,
-                    type
                 ),
                 {
                     'phased': True
@@ -406,7 +404,6 @@ class Send(Handle, Jobs):
                 host,
                 port,
                 payload,
-                type
             ),
             timeout=1
         )
