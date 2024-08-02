@@ -150,7 +150,7 @@ class Send(Handle, Jobs):
             time.sleep(.5)
             step += 1
 
-        if hasattr(payload, 'implant'):
+        if hasattr(payload.payload, 'implant'):
             implant = payload.run(method='implant')
 
             if not implant:
