@@ -29,6 +29,8 @@ from badges.cmd import Cmd
 from hatsploit.core.utils.ui.banner import Banner
 from hatsploit.core.utils.ui.tip import Tip
 
+from hatsploit.core.db.db import DB
+
 from hatsploit.lib.ui.modules import Modules
 
 from hatsploit.lib.config import Config
@@ -116,29 +118,6 @@ class Console(Cmd):
             Banner().print_random_banner()
 
         if self.config.core_config['console']['header']:
-            plugins = STORAGE.get("plugins")
-            modules = STORAGE.get("modules")
-            payloads = STORAGE.get("payloads")
-            encoders = STORAGE.get("encoders")
-
-            plugins_total = 0
-            modules_total = 0
-            payloads_total = 0
-            encoders_total = 0
-
-            if payloads:
-                for database in payloads:
-                    payloads_total += len(payloads[database])
-            if encoders:
-                for database in encoders:
-                    encoders_total += len(encoders[database])
-            if plugins:
-                for database in plugins:
-                    plugins_total += len(plugins[database])
-            if modules:
-                for database in modules:
-                    modules_total += len(modules[database])
-
             header = ""
             header += "%end"
             if codename:
@@ -148,8 +127,8 @@ class Console(Cmd):
             header += (
                 "--==--=[ Developed by EntySec (%linehttps://entysec.com%end)\n"
             )
-            header += f"    --=[ {modules_total} modules | {payloads_total} payloads "
-            header += f"| {encoders_total} encoders | {plugins_total} plugins"
+            header += f"    --=[ {DB(table='modules').count()} modules | {DB(table='payloads').count()} payloads "
+            header += f"| {DB(table='encoders').count()} encoders | {DB(table='plugins').count()} plugins"
             header += "%end"
 
             self.print_empty(header)
