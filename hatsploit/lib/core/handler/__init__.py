@@ -201,7 +201,6 @@ class Handler(BaseMixin, Sessions):
         """ Handle session.
 
         :param PayloadOption payload: payload option object
-        :param Optional[Session] session: session handler
         :param Optional[Callable[..., Any]] on_session: function of an action that
         should be performed right after session was opened
         """
