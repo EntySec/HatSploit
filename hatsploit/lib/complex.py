@@ -74,6 +74,7 @@ class DropperOption(Option):
 
         method = select_method(
             methods=self.push.methods,
+            method=value
         )
 
         module = self.modules.get_current_module()
