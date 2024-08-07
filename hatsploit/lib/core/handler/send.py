@@ -35,7 +35,7 @@ from hatsploit.lib.complex import *
 from hatsploit.lib.core.session import Session
 
 from hatsploit.lib.ui.payloads import Payloads
-from hatsploit.lib.ui.jobs import Jobs
+from hatsploit.lib.ui.jobs import Jobs, Job
 
 from hatsploit.lib.handle import Handle
 from hatsploit.lib.core.handler.misc import HatSploitSession
@@ -59,7 +59,8 @@ class Send(Handle, Jobs):
     def handle_session(self, host: str, port: int,
                        payload: PayloadOption,
                        phased: bool = False,
-                       timeout: Optional[int] = None) -> Tuple[Union[Session, socket.socket], str]:
+                       timeout: Optional[int] = None,
+                       job: Optional[Job] = None) -> Tuple[Union[Session, socket.socket], str]:
         """ Handle session.
 
         :param str host: host
@@ -67,6 +68,7 @@ class Send(Handle, Jobs):
         :param PayloadOption payload: payload choice
         :param Optional[int] timeout: timeout
         :param bool phased: send phases or continue
+        :param Optional[Job] job: job if exists
         :return Tuple[Union[Session, socket.socket], str]: session and host
         :raises RuntimeWarning: with trailing warning message
         :raises RuntimeError: with trailing error message
@@ -76,7 +78,6 @@ class Send(Handle, Jobs):
             raise RuntimeError("No payload configured for handler!")
 
         type = payload.info['Type']
-        session = payload.info.get('Session', HatSploitSession)
 
         if type == ONE_SIDE:
             if not payload.payload.phased.value and not phased:
@@ -85,7 +86,7 @@ class Send(Handle, Jobs):
             if not host or not port:
                 raise RuntimeError("Reverse TCP requires host and port set!")
 
-            client, host = self.listen_session(host, port, session, timeout)
+            client, host = self.listen_session(host, port, timeout=timeout, job=job)
 
             if not client and not host:
                 raise RuntimeError("Reverse TCP received corrupted session!")
@@ -97,7 +98,7 @@ class Send(Handle, Jobs):
             if not host or not port:
                 raise RuntimeError("Reverse TCP requires host and port set!")
 
-            client, host = self.listen_session(host, port, session, timeout)
+            client, host = self.listen_session(host, port, timeout=timeout, job=job)
 
             if not client and not host:
                 raise RuntimeError("Reverse TCP received corrupted session!")
@@ -111,7 +112,7 @@ class Send(Handle, Jobs):
             if not host or not port:
                 raise RuntimeError("Bind TCP requires host and port set!")
 
-            client = self.connect_session(host, port, session, timeout)
+            client = self.connect_session(host, port, timeout=timeout)
 
             if not client:
                 raise RuntimeError("Bind TCP received corrupted session!")
@@ -132,22 +133,31 @@ class Send(Handle, Jobs):
         :return None: None
         """
 
-        step = 1
+        step = 0
+        send_length = True
 
         while True:
-            if not hasattr(payload.payload, f'phase{step}'):
+            step_method = '' if not step else str(step)
+
+            if not hasattr(payload.payload, f'phase{step_method}'):
                 break
 
-            phase = payload.run(method=f'phase{step}')
+            phase = payload.run(method=f'phase{step_method}')
 
             if not phase:
                 raise RuntimeError(f"Payload phase #{str(step)} generated incorrectly!")
 
             self.print_process(
                 f"Sending payload phase #{str(step)} ({str(len(phase))} bytes)...")
-            client.send(phase)
+
+            if send_length:
+                time.sleep(.5)
+                client.send(len(phase).to_bytes(4, payload.info['Arch'].endian))
+                send_length = False
 
             time.sleep(.5)
+            client.send(phase)
+
             step += 1
 
         if hasattr(payload.payload, 'implant'):
@@ -157,10 +167,13 @@ class Send(Handle, Jobs):
                 raise RuntimeError("Payload implant generated incorrectly!")
 
             if implant:
-                time.sleep(.5)
-
                 self.print_process(
                     f"Sending payload ({str(len(implant))} bytes)...")
+                if send_length:
+                    time.sleep(.5)
+                    client.send(len(implant).to_bytes(4, payload.info['Arch'].endian))
+
+                time.sleep(.5)
                 client.send(implant)
 
     def serve_dropper(self, dropper: DropperOption, payload: bytes) -> int:
@@ -189,7 +202,9 @@ class Send(Handle, Jobs):
                     'get': get_submethod
                 },
                 1
-            )
+            ),
+            bind_to_module=True,
+            pass_job=True
         )
 
         self.print_process(f"Starting HTTP server (job {str(job_id)})...")
@@ -253,7 +268,9 @@ class Send(Handle, Jobs):
                 {
                     'phased': phased
                 },
-                timeout=1
+                timeout=1,
+                bind_to_module=True,
+                pass_job=True
             )
 
             if dropper.value not in ['wget', 'curl']:
@@ -305,7 +322,9 @@ class Send(Handle, Jobs):
                 port,
                 payload,
             ),
-            timeout=1
+            timeout=1,
+            bind_to_module=True,
+            pass_job=True
         )
 
         if dropper.value not in ['wget', 'curl']:
@@ -363,7 +382,6 @@ class Send(Handle, Jobs):
         if not host and not port:
             raise RuntimeError("Host and port were not found for payload!")
 
-        type = payload.info['Type']
         space = payload.config.get('Space', 2048)
 
         buffer = payload.run()
@@ -387,7 +405,9 @@ class Send(Handle, Jobs):
                 {
                     'phased': True
                 },
-                timeout=1
+                timeout=1,
+                bind_to_module=True,
+                pass_job=True
             )
 
             self.print_process(
@@ -405,7 +425,9 @@ class Send(Handle, Jobs):
                 port,
                 payload,
             ),
-            timeout=1
+            timeout=1,
+            bind_to_module=True,
+            pass_job=True
         )
 
         self.print_process(

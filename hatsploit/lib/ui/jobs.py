@@ -22,6 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
+import os
 import time
 import ctypes
 import threading
@@ -34,6 +35,7 @@ from typing import (
 )
 
 from hatsploit.lib.storage import STORAGE
+from hatsploit.lib.runtime import Runtime
 
 
 class Job(threading.Thread):
@@ -48,10 +50,29 @@ class Job(threading.Thread):
         threading.Thread.__init__(self, *args, **kwargs)
 
         self._return = None
+        self._exit_handle = None
+        self._exit_args = []
+        self._exit_kwargs = {}
+
         self.daemon = True
         self.visible = True
         self.module = None
         self.name = None
+        self.pass_job = False
+
+    def set_exit(self, target: Callable[..., Any], args: list = [],
+                 kwargs: dict = {}) -> None:
+        """ Set exit handle.
+
+        :param Callable[..., Any] target: exit handle callback
+        :param list args: target args
+        :param dict kwargs: target kwargs
+        :return None: None
+        """
+
+        self._exit_handle = target
+        self._exit_args = args
+        self._exit_kwargs = kwargs
 
     def run(self) -> None:
         """ Internal thread run method.
@@ -59,9 +80,15 @@ class Job(threading.Thread):
         :return None: None
         """
 
+        if self.pass_job:
+            self._kwargs['job'] = self
+
         if self._target is not None:
-            self._return = self._target(
-                *self._args, **self._kwargs)
+            self._return = Runtime().catch(
+                target=self._target,
+                args=self._args,
+                kwargs=self._kwargs
+            )
 
     def join(self, *args) -> Any:
         """ Flush job and wait for result.
@@ -78,13 +105,15 @@ class Job(threading.Thread):
         :return None: None
         """
 
-        if self.is_alive():
-            exc = ctypes.py_object(SystemExit)
-            res = ctypes.pythonapi.PyThreadState_SetAsyncExc(ctypes.c_long(self.ident), exc)
+        if self._exit_handle:
+            self._exit_handle(*self._exit_args, **self._exit_kwargs)
 
-            if res > 1:
-                ctypes.pythonapi.PyThreadState_SetAsyncExc(self.ident, None)
-                raise RuntimeError("Failed to shutdown job!")
+        exc = ctypes.py_object(Exception)
+        res = ctypes.pythonapi.PyThreadState_SetAsyncExc(ctypes.c_long(self.ident), exc)
+
+        if res > 1:
+            ctypes.pythonapi.PyThreadState_SetAsyncExc(self.ident, None)
+            raise RuntimeError("Failed to shutdown job!")
 
 
 class Jobs(object):
@@ -137,22 +166,28 @@ class Jobs(object):
 
         return len(self.get_jobs())
 
-    def stop_jobs(self) -> None:
+    def stop_jobs(self, module: Optional[str] = None) -> None:
         """ Stop all jobs.
 
+        :param Optional[str] module: kill jobs that belong to
+        specific module
         :return None: None
         """
 
         jobs = self.get_jobs()
 
         for _, job in jobs.items():
+            if module and job.module != module:
+                continue
+
             job.shutdown()
             job.join()
 
         self.stop_dead()
 
     def create_job(self, job: str, module: str, target: Callable[..., Any],
-                   args: list = [], kwargs: dict = {}, timeout: Optional[int] = None) -> int:
+                   args: list = [], kwargs: dict = {}, timeout: Optional[int] = None,
+                   bind_to_module: bool = False, pass_job: bool = False) -> int:
         """ Create and start job.
 
         :param str job: job name
@@ -162,6 +197,9 @@ class Jobs(object):
         :param list args: extra job function arguments
         :param dict kwargs: extra job function kwargs
         :param Optional[int] timeout: time to wait after job was created
+        :param bool bind_to_module: bind to module so it can be freed if module
+        is terminated or completed
+        :param bool pass_job: pass job object as a an argument `job`
         :return int: job ID
         """
 
@@ -173,13 +211,20 @@ class Jobs(object):
                 job_id < len(self.get_jobs()):
             job_id += 1
 
+        if bind_to_module:
+            module_object = STORAGE.get("current_module")
+
+            if module_object:
+                module = module_object[-1].info['Module']
+
         job_thread = Job(target=target, args=args, kwargs=kwargs)
         job_thread.module = module
         job_thread.name = job
+        job_thread.pass_job = pass_job
         job_thread.start()
 
+        STORAGE.update('jobs', {job_id: job_thread})
         if timeout:
             time.sleep(timeout)
 
-        STORAGE.update('jobs', {job_id: job_thread})
         return job_id

@@ -29,7 +29,17 @@ from pex.post.method import select_method
 
 from pex.platform import *
 
-from hatsploit.lib.ui.option import Option, IPv4Option, PortOption
+from hatsploit.lib.ui.option import (
+    Option,
+    IPv4Option,
+    PortOption
+)
+
+from hatsploit.lib.core.payload.const import (
+    ONE_SIDE,
+    REVERSE_TCP
+)
+
 from hatsploit.lib.ui.modules import Modules
 from hatsploit.lib.ui.payloads import Payloads
 from hatsploit.lib.ui.encoders import Encoders
@@ -210,7 +220,8 @@ class PayloadOption(Option):
         if not phase:
             phase = '/'.join((str(self.info['Platform']),
                               str(self.info['Arch']),
-                              str(self.info['Type'])))
+                              self.info['Type'] if self.info['Type'] != ONE_SIDE
+                              else REVERSE_TCP))
 
         if not self.payloads.check_exist(phase):
             return

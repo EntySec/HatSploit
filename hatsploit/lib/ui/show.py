@@ -524,18 +524,29 @@ class Show(Badges, Tables):
           %s
         """)
 
-        authors = '\n  '.join(details['Authors'])
+        authors = 'Use this module to see authors'
+
+        if 'Authors' in details:
+            authors = '\n  '.join(details['Authors'])
+
         desc = fill(details['Description'], width=50,
                     subsequent_indent='  ')
-        refs = []
-        for ref in details['References']:
-            for key, value in ref.items():
-                refs.append(f'{key}: {str(value)}')
 
-        refs = '\n  '.join(refs)
+        if 'References' in details:
+            refs = []
+
+            for ref in details['References']:
+                for key, value in ref.items():
+                    refs.append(f'{key}: {str(value)}')
+
+            refs = '\n  '.join(refs)
+        else:
+            refs = 'Use this module to see references'
+
+        name = details.get('BaseName', details.get('Module', 'unnamed'))
 
         self.print_empty(
-            style % (details['Name'], details['Module'], details['Platform'],
+            style % (details['Name'], name, details['Platform'],
                      details['Rank'], authors, desc, refs)
         )
 

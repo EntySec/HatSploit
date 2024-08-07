@@ -98,7 +98,6 @@ class Payloads(HatAsm):
             payload_object.update()
 
         except Exception:
-            traceback.print_exc(file=sys.stdout)
             return
 
         return payload_object

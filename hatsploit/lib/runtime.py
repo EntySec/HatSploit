@@ -38,19 +38,18 @@ from hatsploit.core.base.loader import Loader
 
 from hatsploit.lib.config import Config
 from hatsploit.lib.loot import Loot
-
-from hatsploit.lib.ui.jobs import Jobs
 from hatsploit.lib.ui.sessions import Sessions
 
 
-class Runtime(Jobs, Sessions, Loader):
+class Runtime(Sessions, Loader):
     """ Subclass of hatsploit.lib module.
 
     This subclass of hatsploit.lib module is intended for providing
     an API interface for HatSploit runtime handler.
     """
 
-    def check(self) -> None:
+    @staticmethod
+    def check() -> None:
         """ Check if HatSploit is set up correctly and
         fix it in case if problems.
 
@@ -93,20 +92,20 @@ class Runtime(Jobs, Sessions, Loader):
         :return None: None
         """
 
-        self.stop_dead()
         self.close_dead()
 
-    def catch(self, target: Callable[..., Any], args: list = []) -> Union[Any, None, Exception]:
+    def catch(self, target: Callable[..., Any], args: list = [], kwargs: dict = {}) -> Union[Any, None, Exception]:
         """ Catch exception and format error message.
 
         :param Callable[..., Any] target: target function
         :param list args: extra target function arguments
+        :param dict kwargs: extra target function arguments
         :return Union[Any, None, Exception]: target function return value, None
         in case of KeyboardInterrupt/EOFError or Exception in case of exception
         """
 
         try:
-            return target(*args)
+            return target(*args, **kwargs)
 
         except (KeyboardInterrupt, EOFError):
             return
