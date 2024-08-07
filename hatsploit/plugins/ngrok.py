@@ -15,7 +15,7 @@ class HatSploitPlugin(Plugin):
             'Name': "HatSploit Ngrok Implementation",
             'Plugin': "ngrok",
             'Authors': [
-                'Ivan Nikolskiy (enty8080) - plugin developer'
+                "Ivan Nikolskiy (enty8080) - plugin developer"
             ],
             'Description': "Manage ngrok service right from HatSploit.",
         })

