@@ -98,7 +98,7 @@ class HatSploitPayload(Payload, Handler):
                 mov ip, r0
                 mov r0, ip
                 sub sp, 4
-                add r7, 8
+                add r7, 6
                 mov r1, sp
                 mov r2, 4
                 mov r3, 0

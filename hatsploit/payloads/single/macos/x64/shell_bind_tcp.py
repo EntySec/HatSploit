@@ -13,9 +13,12 @@ class HatSploitPayload(Payload, Handler, MacOS):
             'Name': "macOS x64 Shell Bind TCP",
             'Payload': "macos/x64/shell_bind_tcp",
             'Authors': [
-                'Ivan Nikolskiy (enty8080) - payload developer',
+                "Ivan Nikolskiy (enty8080) - payload developer",
             ],
-            'Description': "Shell bind TCP payload for macOS x64.",
+            'Description': (
+                "This payload creates an interactive bind TCP shell for macOS "
+                "with x64 architecture."
+            ),
             'Arch': ARCH_X64,
             'Platform': OS_MACOS,
             'Type': BIND_TCP,

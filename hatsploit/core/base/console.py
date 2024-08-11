@@ -23,6 +23,7 @@ SOFTWARE.
 """
 
 import os
+import json
 
 from badges.cmd import Cmd
 
@@ -60,6 +61,8 @@ class Console(Cmd):
             history=self.config.path_config['history_path'],
             path=[self.config.path_config['commands_path']],
             console=self,
+            shorts=json.load(
+                open(self.config.path_config['shorts_path']))
         )
 
         self.runtime = Runtime()
