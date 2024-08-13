@@ -25,7 +25,7 @@ class HatSploitPayload(Payload, Handler, Linux):
         })
 
     def implant(self):
-        return self.assemble(
+        return self.__asm__(
             """
                 push edi
                 pop ebx
@@ -51,7 +51,7 @@ class HatSploitPayload(Payload, Handler, Linux):
         )
 
     def run(self):
-        return self.assemble(
+        return self.__asm__(
             f"""
             start:
                 xor ebx, ebx

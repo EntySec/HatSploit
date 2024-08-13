@@ -373,7 +373,7 @@ class Payloads(HatAsm):
 
         :param Payload payload: payload object
         :param Optional[Encoder] encoder: encoder object
-        :param str method: payload generator method (run, phaseN)
+        :param str method: payload generator method (run, stageN)
         :param bytes badchars: add custom bad chars to omit
         :param Union[bytes, str] prepend: prepend additional binary stub
         :param Union[bytes, str] append: append additional binary stub

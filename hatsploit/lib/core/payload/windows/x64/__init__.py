@@ -56,28 +56,28 @@ class ReverseTCP(BaseMixin):
         super().__init__(info)
 
         self.reliable = BooleanOption(
-            'PhaseReliable',
+            'StageReliable',
             'no',
             "Add error checks to payload.",
             False,
             advanced=True
         )
         self.length = IntegerOption(
-            'PhaseLength',
+            'StageLength',
             None,
-            "Length of next phase (empty to read length).",
+            "Length of next stage (empty to read length).",
             False,
             advanced=True
         )
         self.retries = IntegerOption(
-            'PhaseRetries',
+            'StageRetries',
             1,
             'Number of retries.',
             True,
             advanced=True
         )
         self.exitfunc = Option(
-            'PhaseExitFunc',
+            'StageExitFunc',
             'thread',
             'Exit function.',
             True,
@@ -115,7 +115,7 @@ class ReverseTCP(BaseMixin):
             exit=self.exitfunc.value)}
         """)
 
-        return self.assemble(payload)
+        return self.__asm__(payload)
 
     def block_reverse_tcp(self, host: str, port: int,
                           retries: int = 1, exit: str = 'thread') -> str:
@@ -198,7 +198,7 @@ class ReverseTCP(BaseMixin):
     def block_recv(self, length: Optional[int] = None, reliable: bool = True, exit: str = 'thread') -> str:
         """ Generate recv() block.
 
-        :param Optional[int] length: length of the second phase
+        :param Optional[int] length: length of the second stage
         :param bool reliable: True if reliable else False
         :param str exit: exit type
         :return str: block

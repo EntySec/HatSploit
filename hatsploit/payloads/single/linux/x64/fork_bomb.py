@@ -25,7 +25,7 @@ class HatSploitPayload(Payload, Linux):
         })
 
     def run(self):
-        return self.assemble(
+        return self.__asm__(
             """
             start:
                 push 0x39

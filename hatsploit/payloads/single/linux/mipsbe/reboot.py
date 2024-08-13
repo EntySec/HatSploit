@@ -24,7 +24,7 @@ class HatSploitPayload(Payload):
         })
 
     def run(self):
-        return self.assemble(
+        return self.__asm__(
             """
             start:
                 lui     $a2, 0x4321

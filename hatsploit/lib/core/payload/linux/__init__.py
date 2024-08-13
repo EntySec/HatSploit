@@ -152,7 +152,7 @@ class Linux(BaseMixin):
         append = b""
 
         if self.setuid.value:
-            prepend += self.assemble(
+            prepend += self.__asm__(
                 """
                 setuid:
                     eor r0, r0, r0
@@ -162,7 +162,7 @@ class Linux(BaseMixin):
             )
 
         if self.setresuid.value:
-            prepend += self.assemble(
+            prepend += self.__asm__(
                 """
                 setresuid:
                     eor r0, r0, r0
@@ -186,7 +186,7 @@ class Linux(BaseMixin):
         append = b""
 
         if self.fork.value:
-            prepend += self.assemble(
+            prepend += self.__asm__(
                 """
                 fork:
                     push 57
@@ -216,7 +216,7 @@ class Linux(BaseMixin):
             )
 
         if self.setresuid.value:
-            prepend += self.assemble(
+            prepend += self.__asm__(
                 """
                 setresuid:
                     xor rdi, rdi
@@ -228,7 +228,7 @@ class Linux(BaseMixin):
             )
 
         if self.setreuid.value:
-            prepend += self.assemble(
+            prepend += self.__asm__(
                 """
                 setreuid:
                     xor rdi, rdi
@@ -241,7 +241,7 @@ class Linux(BaseMixin):
             )
 
         if self.setuid.value:
-            prepend += self.assemble(
+            prepend += self.__asm__(
                 """
                 setuid:
                     xor rdi, rdi
@@ -252,7 +252,7 @@ class Linux(BaseMixin):
             )
 
         if self.setresgid.value:
-            prepend += self.assemble(
+            prepend += self.__asm__(
                 """
                 setresgid:
                     xor rdi, rdi
@@ -264,7 +264,7 @@ class Linux(BaseMixin):
             )
 
         if self.setregid.value:
-            prepend += self.assemble(
+            prepend += self.__asm__(
                 """
                 setregid:
                     xor rdi, rdi
@@ -277,7 +277,7 @@ class Linux(BaseMixin):
             )
 
         if self.setgid.value:
-            prepend += self.assemble(
+            prepend += self.__asm__(
                 """
                 setgid:
                     xor rdi, rdi
@@ -288,7 +288,7 @@ class Linux(BaseMixin):
             )
 
         if self.chroot_break.value:
-            prepend += self.assemble(
+            prepend += self.__asm__(
                 f"""
                 setreuid:
                     xor rdi, rdi
@@ -334,7 +334,7 @@ class Linux(BaseMixin):
             )
 
         if self.exit.value:
-            append += self.assemble(
+            append += self.__asm__(
                 """
                 exit:
                     xor rdi, rdi
@@ -357,7 +357,7 @@ class Linux(BaseMixin):
         append = b""
 
         if self.fork.value:
-            prepend += self.assemble(
+            prepend += self.__asm__(
                 """
                 fork:
                     push 0x2
@@ -386,7 +386,7 @@ class Linux(BaseMixin):
             )
 
         if self.setresuid.value:
-            prepend += self.assemble(
+            prepend += self.__asm__(
                 """
                 setresuid:
                     xor ecx, ecx
@@ -398,7 +398,7 @@ class Linux(BaseMixin):
             )
 
         if self.setreuid.value:
-            prepend += self.assemble(
+            prepend += self.__asm__(
                 """
                 setreuid:
                     xor ecx, ecx
@@ -410,7 +410,7 @@ class Linux(BaseMixin):
             )
 
         if self.setuid.value:
-            prepend += self.assemble(
+            prepend += self.__asm__(
                 """
                 setuid:
                     xor ebx, ebx
@@ -421,7 +421,7 @@ class Linux(BaseMixin):
             )
 
         if self.setresgid.value:
-            prepend += self.assemble(
+            prepend += self.__asm__(
                 """
                 setresgid:
                     xor ecx, ecx
@@ -433,7 +433,7 @@ class Linux(BaseMixin):
             )
 
         if self.setregid.value:
-            prepend += self.assemble(
+            prepend += self.__asm__(
                 """
                 setregid:
                     xor ecx, ecx
@@ -445,7 +445,7 @@ class Linux(BaseMixin):
             )
 
         if self.setgid.value:
-            prepend += self.assemble(
+            prepend += self.__asm__(
                 """
                 setgid:
                     xor ebx, ebx
@@ -456,7 +456,7 @@ class Linux(BaseMixin):
             )
 
         if self.chroot_break.value:
-            prepend += self.assemble(
+            prepend += self.__asm__(
                 """
                 setreuid:
                     xor ecx, ecx
@@ -496,7 +496,7 @@ class Linux(BaseMixin):
             )
 
         if self.exit.value:
-            append += self.assemble(
+            append += self.__asm__(
                 """
                 exit:
                     xor ebx, ebx

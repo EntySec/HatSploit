@@ -22,6 +22,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
+from hatasm import HatAsm
+
 from badges import Badges, Tables
 
 
@@ -41,3 +43,12 @@ class BaseMixin(Badges, Tables):
         """
 
         self.info = info
+
+    def __asm__(self, code: str, *args, **kwargs) -> bytes:
+        """ Assemble assembly code using current architecture.
+
+        :param str code: assembly code
+        :return bytes: assembled code
+        """
+
+        return HatAsm().assemble(self.info['Arch'], code, *args, **kwargs)

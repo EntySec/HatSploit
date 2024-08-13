@@ -25,7 +25,7 @@ class HatSploitPayload(Payload, Handler, MacOS):
         })
 
     def implant(self):
-        return self.assemble(
+        return self.__asm__(
             """
             start:
                 mov x1, 2
@@ -53,7 +53,7 @@ class HatSploitPayload(Payload, Handler, MacOS):
         )
 
     def run(self):
-        return self.assemble(
+        return self.__asm__(
             f"""
             bl start
 

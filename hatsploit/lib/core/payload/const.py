@@ -26,5 +26,5 @@ REVERSE_TCP = "reverse_tcp"
 BIND_TCP = "bind_tcp"
 ONE_SIDE = "one_side"
 
-PHASE = "phase"
+PHASE = "stage"
 SINGLE = "single"

@@ -1,5 +1,5 @@
 {
-    "kill": ["sessions kill ?1", "Kill session by ID."],
+    "kill": ["sessions close ?1", "Kill session by ID."],
     "exploit": ["run", "Run current module."],
     "devices": ["show devices", "Show current module devices."],
     "targets": ["show targets", "Show current module targets."],

