@@ -42,7 +42,7 @@ class ExternalCommand(Command):
         module = self.modules.get_current_module()
 
         for command in module.commands:
-            command.info['Method'] = getattr(module, command.inf['Name'])
+            command.info['Method'] = getattr(module, command.info['Name'])
             command.info['Category'] = 'module'
 
         self.console.add_external(module.commands)
