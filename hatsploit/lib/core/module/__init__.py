@@ -70,7 +70,7 @@ class Module(BaseMixin, Options):
 
         self.target = None
 
-        self.commands = {}
+        self.commands = []
         self.options = {}
         self.advanced = {}
 

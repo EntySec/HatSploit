@@ -131,7 +131,7 @@ class Show(Badges, Tables):
 
         for plugin in sorted(plugins):
             data.append(
-                (number, plugin, plugin[plugin].info['Name'])
+                (number, plugin, plugins[plugin].info['Name'])
             )
 
             shorts.update({

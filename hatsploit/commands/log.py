@@ -10,25 +10,36 @@ from hatsploit.lib.log import Log
 class ExternalCommand(Command):
     def __init__(self):
         super().__init__({
-            'Category': "developer",
+            'Category': "manage",
             'Name': "log",
             'Authors': [
                 'Ivan Nikolskiy (enty8080) - command developer',
             ],
             'Description': "Log HatSploit output to log file.",
-            'Usage': "log <option> [arguments]",
             'MinArgs': 1,
-            'Options': {
-                'on': ['<file>', "Turn logging on."],
-                'off': ['', "Turn logging off."],
-            },
+            'Options': [
+                (
+                    ('-e', '--enable'),
+                    {
+                        'help': "Enable logging to file.",
+                        'metavar': 'FILE',
+                    }
+                ),
+                (
+                    ('-d', '--disable'),
+                    {
+                        'help': "Disable logging to file.",
+                        'action': 'store_true'
+                    }
+                )
+            ]
         })
 
         self.log = Log()
 
     def run(self, args):
-        if args[1] == 'on':
-            self.log.enable_log(args[2])
+        if args.enable:
+            self.log.enable_log(args.enable)
 
-        elif args[1] == 'off':
+        elif args.disable:
             self.log.disable_log()

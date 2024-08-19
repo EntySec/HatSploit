@@ -10,34 +10,57 @@ from hatsploit.lib.ui.history import History
 class ExternalCommand(Command):
     def __init__(self):
         super().__init__({
-            'Category': "developer",
+            'Category': "manage",
             'Name': "history",
             'Authors': [
                 'Ivan Nikolskiy (enty8080) - command developer',
             ],
-            'Description': "Manage HatSploit history.",
-            'Usage': "history <option>",
+            'Description': "Manage HatSploit command history.",
             'MinArgs': 1,
-            'Options': {
-                'list': ['', "List all history."],
-                'clear': ['', "Clear all history."],
-                'on': ['', "Turn history on."],
-                'off': ['', "Turn history off."],
-            },
+            'Options': [
+                (
+                    ('-l', '--list'),
+                    {
+                        'help': "List collected command history.",
+                        'action': 'store_true'
+                    }
+                ),
+                (
+                    ('-c', '--clear'),
+                    {
+                        'help': "Clear collected command history",
+                        'action': 'store_true'
+                    }
+                ),
+                (
+                    ('-d', '--disable'),
+                    {
+                        'help': "Disable command history.",
+                        'action': 'store_true'
+                    }
+                ),
+                (
+                    ('-e', '--enable'),
+                    {
+                        'help': "Enable command history.",
+                        'action': 'store_true'
+                    }
+                )
+            ]
         })
 
         self.history = History()
 
     def run(self, args):
-        if args[1] == 'on':
+        if args.enable:
             self.history.enable_history()
 
-        elif args[1] == 'off':
+        elif args.disable:
             self.history.disable_history()
 
-        elif args[1] == 'clear':
+        elif args.clear:
             self.history.clear_history()
 
-        elif args[1] == 'list':
+        elif args.list:
             for entry in self.history.list_history():
                 self.print_empty(entry)

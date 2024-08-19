@@ -17,8 +17,6 @@ class ExternalCommand(Command):
                 'Ivan Nikolskiy (enty8080) - command developer',
             ],
             'Description': "Show available encoders.",
-            'Usage': "encoders",
-            'MinArgs': 0,
         })
 
         self.encoders = Encoders()

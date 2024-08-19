@@ -5,6 +5,7 @@ Current source: https://github.com/EntySec/HatSploit
 
 import textwrap
 
+from badges.cmd import Command
 from hatsploit.lib.core.plugin import Plugin
 
 
@@ -19,13 +20,14 @@ class HatSploitPlugin(Plugin):
             'Description': "Cowsay plugin for HatSploit.",
         })
 
-        self.commands.update({
-            'cowsay': {
+        self.commands = [
+            Command({
+                'Name': 'cowsay',
                 'Description': "Ask cow to say message.",
                 'Usage': "cowsay <message>",
                 'MinArgs': 1,
-            }
-        })
+            })
+        ]
 
     def ask_cow(self, message, length=40):
         return self.build_bubble(message, length) + self.build_cow()

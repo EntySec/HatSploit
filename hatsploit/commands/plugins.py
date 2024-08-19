@@ -17,8 +17,6 @@ class ExternalCommand(Command):
                 'Ivan Nikolskiy (enty8080) - command developer',
             ],
             'Description': "Show available plugins.",
-            'Usage': "plugins",
-            'MinArgs': 0,
         })
 
         self.show = Show()

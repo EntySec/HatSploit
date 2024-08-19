@@ -16,8 +16,6 @@ class ExternalCommand(Command):
                 'Ivan Nikolskiy (enty8080) - command developer',
             ],
             'Description': "Show random HatSploit banner.",
-            'Usage': "banner",
-            'MinArgs': 0,
         })
 
     def run(self, _):

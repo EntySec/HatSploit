@@ -50,7 +50,7 @@ class Plugin(BaseMixin):
 
         super().__init__(details)
 
-        self.commands = {}
+        self.commands = []
 
     def load(self) -> None:
         """ Load this plugin.

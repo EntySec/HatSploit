@@ -166,6 +166,24 @@ class Jobs(object):
 
         return len(self.get_jobs())
 
+    def stop_job(self, job_id: int) -> None:
+        """ Stop job object and delete it from the pool.
+
+        :param int job_id: job id
+        :return None: None
+        :raises RuntimeError: with trailing error message
+        """
+
+        job = self.get_job(job_id)
+
+        if not job:
+            raise RuntimeError("Invalid job ID given!")
+
+        job.shutdown()
+        job.join()
+
+        STORAGE.delete_element('jobs', job_id)
+
     def stop_jobs(self, module: Optional[str] = None) -> None:
         """ Stop all jobs.
 

@@ -3,6 +3,8 @@ This plugin requires HatSploit: https://hatsploit.com
 Current source: https://github.com/EntySec/HatSploit
 """
 
+from badges.cmd import Command
+
 from pex.proto.tcp import TCPClient
 from pex.proto.ssh import SSHClient
 from pex.proto.channel import ChannelClient
@@ -21,18 +23,20 @@ class HatSploitPlugin(Plugin):
             'Description': "Network utilities plugin for HatSploit.",
         })
 
-        self.commands.update({
-            'telnet': {
+        self.commands = [
+            Command({
+                'Name': 'telnet',
                 'Description': "Connect to TCP server.",
                 'Usage': "telnet <host> <port>",
                 'MinArgs': 2,
-            },
-            'ssh': {
+            }),
+            Command({
+                'Name': 'ssh',
                 'Description': "Connect to SSH server.",
                 'Usage': "ssh [user]@[host] [port]",
                 'MinArgs': 1
-            }
-        })
+            })
+        ]
 
     @staticmethod
     def telnet(args):
@@ -66,9 +70,6 @@ class HatSploitPlugin(Plugin):
         client.interact()
 
     def load(self):
-        self.print_information("HatSploit Network Utils")
-        self.print_information("Copyright (c) Ivan Nikolskiy 2024")
-
         banner = r"""
      _______________                        %purple|*\_/*|%end________
     |  ___________  |     %red.-.     .-.%end      |%purple|_/-\_|%end______  |
