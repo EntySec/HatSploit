@@ -519,36 +519,69 @@ class Show(Badges, Tables):
 
         Description:
           %s
-
-        References:
-          %s
         """)
 
-        authors = 'Use this module to see authors'
+        authors = '\n  '.join(details['Authors'])
+        name = details.get('BaseName', details.get('Module', 'Unnamed'))
 
-        if 'Authors' in details:
-            authors = '\n  '.join(details['Authors'])
-
-        desc = fill(details['Description'], width=50,
+        desc = dedent(details['Description']).strip()
+        desc = fill(desc, width=70,
                     subsequent_indent='  ')
 
-        if 'References' in details:
-            refs = []
+        style = style % (details['Name'], name, details['Platform'],
+                         details['Rank'], authors, desc)
 
-            for ref in details['References']:
-                for key, value in ref.items():
-                    refs.append(f'{key}: {str(value)}')
+        refs = []
 
+        for ref in details['References']:
+            for key, value in ref.items():
+                refs.append(f'{key}: {str(value)}')
+
+        if refs:
             refs = '\n  '.join(refs)
-        else:
-            refs = 'Use this module to see references'
 
-        name = details.get('BaseName', details.get('Module', 'unnamed'))
+            style += dedent(f"""
+            References:
+              %s
+            """) % refs
 
-        self.print_empty(
-            style % (details['Name'], name, details['Platform'],
-                     details['Rank'], authors, desc, refs)
-        )
+        if details['Devices']:
+            devices = '\n  '.join(details['Devices'])
+
+            style += dedent(f"""
+            Devices:
+              %s
+            """) % devices
+
+        effects = details['Notes'].get('SideEffects', [])
+        stability = details['Notes'].get('Stability', [])
+        reliability = details['Notes'].get('Reliability', [])
+
+        if effects:
+            effects = '\n  '.join(effects)
+
+            style += dedent(f"""
+            Side effects:
+              %s
+            """) % effects
+
+        if stability:
+            stability = '\n  '.join(stability)
+
+            style += dedent(f"""
+            Stability:
+              %s
+            """) % stability
+
+        if reliability:
+            reliability = '\n  '.join(reliability)
+
+            style += dedent(f"""
+            Reliability:
+              %s
+            """) % reliability
+
+        self.print_empty(style)
 
     def show_options_table(self, title: str, options: dict) -> None:
         """ Show options for specific title.

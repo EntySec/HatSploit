@@ -216,8 +216,10 @@ class Builder(Config, Badges):
                     Description TEXT,
                     Platform TEXT,
                     DisclosureDate TEXT,
-                    Devices TEXT,
-                    Refs TEXT,
+                    jDevices TEXT,
+                    jReferences TEXT,
+                    jAuthors TEXT,
+                    jNotes TEXT,
                     Rank TEXT
                 )''')
 
@@ -242,6 +244,8 @@ class Builder(Config, Badges):
                         module_object.info['DisclosureDate'],
                         json.dumps(module_object.info['Devices']),
                         json.dumps(module_object.info['References']),
+                        json.dumps(module_object.info['Authors']),
+                        json.dumps(module_object.info['Notes']),
                         module_object.info['Rank'],
                     ))
 
@@ -251,7 +255,7 @@ class Builder(Config, Badges):
                     )
 
         cur.executemany('''INSERT OR REPLACE INTO modules
-                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''', data)
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''', data)
         con.commit()
 
     def build_plugin_database(self, input_path: str, output_path: str) -> None:

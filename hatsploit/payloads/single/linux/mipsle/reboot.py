@@ -14,10 +14,10 @@ class HatSploitPayload(Payload):
             'Authors': [
                 "Ivan Nikolskiy (enty8080) - payload developer",
             ],
-            'Description': (
-                "This payload is intended to force reboot Linux "
-                "with MIPS little-endian architecture."
-            ),
+            'Description': """
+                This payload is intended to force reboot Linux
+                with MIPS little-endian architecture.
+            """,
             'Arch': ARCH_MIPSLE,
             'Platform': OS_LINUX,
             'Type': ONE_SIDE,

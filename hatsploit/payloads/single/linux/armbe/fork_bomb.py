@@ -15,10 +15,10 @@ class HatSploitPayload(Payload, Linux):
             'Authors': [
                 "Ivan Nikolskiy (enty8080) - payload developer",
             ],
-            'Description': (
-                "This payload is intended to cause infinite fork() on Linux "
-                "with ARM big-endian architecture."
-            ),
+            'Description': """
+                This payload is intended to cause infinite fork() on Linux
+                with ARM big-endian architecture.
+            """,
             'Arch': ARCH_ARMBE,
             'Platform': OS_LINUX,
             'Type': ONE_SIDE,

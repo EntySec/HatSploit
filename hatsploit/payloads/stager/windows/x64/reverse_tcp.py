@@ -15,10 +15,10 @@ class HatSploitPayload(Payload, Handler, X64ReverseTCP):
             'Authors': [
                 "Ivan Nikolskiy (enty8080) - payload developer",
             ],
-            'Description': (
-                "This payload creates an interactive reverse TCP connection for Windows "
-                "with x64 architecture and reads next stage."
-            ),
+            'Description': """
+                This payload creates an interactive reverse TCP connection for Windows
+                with x64 architecture and reads next stage.
+            """,
             'Arch': ARCH_X64,
             'Platform': OS_WINDOWS,
             'Type': REVERSE_TCP,

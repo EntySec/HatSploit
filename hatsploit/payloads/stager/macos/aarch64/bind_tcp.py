@@ -14,10 +14,10 @@ class HatSploitPayload(Payload, Handler):
             'Authors': [
                 "Ivan Nikolskiy (enty8080) - payload developer",
             ],
-            'Description': (
-                "This payload creates an interactive bind TCP connection for macOS "
-                "with aarch64 (M1, M2, M3, etc.) architecture and reads next stage."
-            ),
+            'Description': """
+                This payload creates an interactive bind TCP connection for macOS
+                with aarch64 (M1, M2, M3, etc.) architecture and reads next stage.
+            """,
             'Arch': ARCH_AARCH64,
             'Platform': OS_MACOS,
             'Type': BIND_TCP,

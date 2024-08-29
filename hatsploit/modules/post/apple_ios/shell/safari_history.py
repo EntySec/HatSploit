@@ -18,9 +18,7 @@ class HatSploitModule(Module):
             'Authors': [
                 "Ivan Nikolskiy (enty8080) - module developer",
             ],
-            'Description': (
-                "Get iOS Safari history database and parse it."
-            ),
+            'Description': "Get iOS Safari history database and parse it.",
             'Platform': OS_IPHONE,
             'Rank': MEDIUM_RANK,
         })

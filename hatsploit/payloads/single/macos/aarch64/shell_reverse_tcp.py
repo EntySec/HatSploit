@@ -15,10 +15,10 @@ class HatSploitPayload(Payload, Handler, MacOS):
             'Authors': [
                 "Ivan Nikolskiy (enty8080) - payload developer",
             ],
-            'Description': (
-                "This payload creates an interactive reverse TCP shell for macOS "
-                "with aarch64 (M1, M2, M3, etc.) architecture."
-            ),
+            'Description': """
+                This payload creates an interactive reverse TCP shell for macOS
+                with aarch64 (M1, M2, M3, etc.) architecture.
+            """,
             'Arch': ARCH_AARCH64,
             'Platform': OS_MACOS,
             'Type': REVERSE_TCP,

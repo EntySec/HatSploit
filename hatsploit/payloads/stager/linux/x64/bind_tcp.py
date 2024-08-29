@@ -14,10 +14,10 @@ class HatSploitPayload(Payload, Handler):
             'Authors': [
                 "Ivan Nikolskiy (enty8080) - payload developer",
             ],
-            'Description': (
-                "This payload creates an interactive bind TCP connection for Linux "
-                "with x64 architecture and reads next stage."
-            ),
+            'Description': """
+                This payload creates an interactive bind TCP connection for Linux
+                with x64 architecture and reads next stage.
+            """,
             'Arch': ARCH_X64,
             'Platform': OS_LINUX,
             'Type': BIND_TCP,

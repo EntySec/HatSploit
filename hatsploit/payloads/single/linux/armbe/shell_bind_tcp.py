@@ -15,10 +15,10 @@ class HatSploitPayload(Payload, Handler, Linux):
             'Authors': [
                 "Ivan Nikolskiy (enty8080) - payload developer",
             ],
-            'Description': (
-                "This payload creates an interactive bind TCP shell for Linux "
-                "with ARM big-endian architecture."
-            ),
+            'Description': """
+                This payload creates an interactive bind TCP shell for Linux
+                with ARM big-endian architecture.
+            """,
             'Arch': ARCH_ARMBE,
             'Platform': OS_LINUX,
             'Type': BIND_TCP,

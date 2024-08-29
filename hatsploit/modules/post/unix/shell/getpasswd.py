@@ -16,9 +16,7 @@ class HatSploitModule(Module):
             'Authors': [
                 "Ivan Nikolskiy (enty8080) - module developer",
             ],
-            'Description': (
-                "Get current session /etc/passwd file."
-            ),
+            'Description': "Get current session /etc/passwd file.",
             'Platform': OS_UNIX,
             'Rank': MEDIUM_RANK,
         })

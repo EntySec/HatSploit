@@ -111,6 +111,11 @@ class DB(object):
 
         for entry in result:
             row = dict(entry)
+
+            for key, value in row.copy().items():
+                if key.startswith('j'):
+                    row[key[1:]] = json.loads(value)
+
             data[row['BaseName']] = row
 
         return data

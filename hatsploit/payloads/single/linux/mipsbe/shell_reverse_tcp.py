@@ -14,10 +14,10 @@ class HatSploitPayload(Payload, Handler):
             'Authors': [
                 "Ivan Nikolskiy (enty8080) - payload developer",
             ],
-            'Description': (
-                "This payload creates an interactive reverse TCP shell for Linux "
-                "with MIPS big-endian architecture."
-            ),
+            'Description': """
+                This payload creates an interactive reverse TCP shell for Linux
+                with MIPS big-endian architecture.
+            """,
             'Arch': ARCH_MIPSBE,
             'Platform': OS_LINUX,
             'Type': REVERSE_TCP,

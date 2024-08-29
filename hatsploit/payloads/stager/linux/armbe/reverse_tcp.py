@@ -14,10 +14,10 @@ class HatSploitPayload(Payload, Handler):
             'Authors': [
                 "Ivan Nikolskiy (enty8080) - payload developer",
             ],
-            'Description': (
-                "This payload creates an interactive reverse TCP connection for Linux "
-                "with ARM big-endian architecture and reads next stage."
-            ),
+            'Description': """
+                This payload creates an interactive reverse TCP connection for Linux
+                with ARM big-endian architecture and reads next stage.
+            """,
             'Arch': ARCH_ARMBE,
             'Platform': OS_LINUX,
             'Type': REVERSE_TCP,

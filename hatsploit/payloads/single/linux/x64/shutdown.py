@@ -15,10 +15,10 @@ class HatSploitPayload(Payload, Linux):
             'Authors': [
                 "Ivan Nikolskiy (enty8080) - payload developer",
             ],
-            'Description': (
-                "This payload is intended to force halt Linux "
-                "with x64 architecture (with sync)."
-            ),
+            'Description': """
+                This payload is intended to force halt Linux
+                with x64 architecture (with sync).
+            """,
             'Arch': ARCH_X64,
             'Platform': OS_LINUX,
             'Type': ONE_SIDE,
