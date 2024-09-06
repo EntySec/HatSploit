@@ -1,5 +1,5 @@
 {
-  "history": false,
-  "log": false,
+  "history": true,
+  "log": null,
   "auto_interaction": true
 }

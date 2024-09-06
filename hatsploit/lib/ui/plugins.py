@@ -50,15 +50,17 @@ class Plugins(object):
         return {plugin: None for plugin in self.get_plugins()}
 
     @staticmethod
-    def get_plugins(criteria: dict = {}) -> dict:
+    def get_plugins(criteria: dict = {}, query: dict = {}) -> dict:
         """ Get all plugins from local storage.
 
         :param dict criteria: DB search criteria
+        :param dict query: plugin search query
         :return dict: plugins, plugin names as keys and
         plugin objects as items
         """
 
-        return DB(table='plugins').dump(criteria=criteria)
+        return DB(table='plugins').dump(
+            criteria=criteria, query=query)
 
     @staticmethod
     def get_loaded_plugins() -> dict:

@@ -64,15 +64,17 @@ class Payloads(HatAsm):
         return {payload: None for payload in self.get_payloads()}
 
     @staticmethod
-    def get_payloads(criteria: dict = {}) -> dict:
+    def get_payloads(criteria: dict = {}, query: dict = {}) -> dict:
         """ Get all payloads from local storage.
 
         :param dict criteria: DB search criteria
+        :param dict query: payload search query
         :return dict: payloads, payload names as keys and
         payload objects as items
         """
 
-        return DB(table='payloads').dump(criteria=criteria)
+        return DB(table='payloads').dump(
+            criteria=criteria, query=query)
 
     @staticmethod
     def get_imported_payloads() -> dict:

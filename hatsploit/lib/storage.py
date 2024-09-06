@@ -60,8 +60,8 @@ class GlobalStorage(object):
                 Badges().set_log(item)
             elif key == 'less':
                 Badges().set_less(item)
-            else:
-                STORAGE.set(key, item)
+
+            STORAGE.set(key, item)
 
     def get_all(self) -> dict:
         """ Get all global storage variables as a dictionary.

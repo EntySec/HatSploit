@@ -62,5 +62,4 @@ class ExternalCommand(Command):
             self.history.clear_history()
 
         elif args.list:
-            for entry in self.history.list_history():
-                self.print_empty(entry)
+            self.print_empty(self.history.get_history())

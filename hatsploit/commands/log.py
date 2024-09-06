@@ -19,6 +19,13 @@ class ExternalCommand(Command):
             'MinArgs': 1,
             'Options': [
                 (
+                    ('-l', '--list'),
+                    {
+                        'help': "Show collected log.",
+                        'action': 'store_true'
+                    }
+                ),
+                (
                     ('-e', '--enable'),
                     {
                         'help': "Enable logging to file.",
@@ -43,3 +50,6 @@ class ExternalCommand(Command):
 
         elif args.disable:
             self.log.disable_log()
+
+        elif args.list:
+            self.print_empty(self.log.get_log())

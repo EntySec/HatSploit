@@ -317,9 +317,6 @@ class Show(Badges, Tables):
         for plugin in sorted(plugins):
             plugin = plugins[plugin]
 
-            if keyword not in plugin['BaseName'] + plugin['Name']:
-                continue
-
             data.append(
                 (number, plugin['BaseName'].replace(keyword, f'%red{keyword}%end'),
                  plugin['Name'].replace(keyword, f'%red{keyword}%end'))
@@ -354,9 +351,6 @@ class Show(Badges, Tables):
         for encoder in sorted(encoders):
             encoder = encoders[encoder]
 
-            if keyword not in encoder['BaseName'] + encoder['Name']:
-                continue
-
             data.append(
                 (number, encoder['BaseName'].replace(keyword, f'%red{keyword}%end'),
                  encoder['Name'].replace(keyword, f'%red{keyword}%end'))
@@ -390,9 +384,6 @@ class Show(Badges, Tables):
 
         for module in sorted(modules):
             module = modules[module]
-
-            if keyword not in module['BaseName'] + module['Name']:
-                continue
 
             data.append(
                 (number, module['Category'],
@@ -429,9 +420,6 @@ class Show(Badges, Tables):
 
         for payload in sorted(payloads):
             payload = payloads[payload]
-
-            if keyword not in payload['BaseName'] + payload['Name']:
-                continue
 
             data.append(
                 (number,

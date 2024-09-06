@@ -56,11 +56,18 @@ class Console(Cmd):
         self.config = Config()
         self.scheme = self.config.core_config['details']['prompt']
 
+        self.history = None
+        self.log = STORAGE.get("log")
+
+        if STORAGE.get("history"):
+            self.history = self.config.path_config['history_path']
+
         super().__init__(
             prompt=f"[{self.scheme}]> ",
-            history=self.config.path_config['history_path'],
+            history=self.history,
             path=[self.config.path_config['commands_path']],
             console=self,
+            log=self.log,
             shorts=json.load(
                 open(self.config.path_config['shorts_path']))
         )
@@ -115,7 +122,7 @@ class Console(Cmd):
         codename = self.config.core_config['details']['codename']
 
         if self.config.core_config['console']['clear']:
-            self.print_empty("%clear", end='')
+            self.print_empty("%clear", end='', log=False)
 
         if self.config.core_config['console']['banner']:
             Banner().print_random_banner()
@@ -134,7 +141,7 @@ class Console(Cmd):
             header += f"| {DB(table='encoders').count()} encoders | {DB(table='plugins').count()} plugins"
             header += "%end"
 
-            self.print_empty(header)
+            self.print_empty(header, log=False, less=False)
 
         if self.config.core_config['console']['tip']:
             Tip().print_random_tip()

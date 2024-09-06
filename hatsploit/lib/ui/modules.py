@@ -68,15 +68,17 @@ class Modules(Badges):
         return {module: None for module in self.get_modules()}
 
     @staticmethod
-    def get_modules(criteria: dict = {}) -> dict:
+    def get_modules(criteria: dict = {}, query: dict = {}) -> dict:
         """ Get all modules from local storage.
 
         :param dict criteria: DB search criteria
+        :param dict query: module search query
         :return dict: modules, module names as keys and
         module objects as items
         """
 
-        return DB(table='modules').dump(criteria=criteria)
+        return DB(table='modules').dump(
+            criteria=criteria, query=query)
 
     @staticmethod
     def get_imported_modules() -> dict:

@@ -70,16 +70,17 @@ class History(object):
         with open(self.history, 'w') as history:
             history.write("")
 
-    @staticmethod
-    def list_history() -> list:
-        """ List history.
+    def get_history(self) -> str:
+        """ Get history.
 
-        :return list: history, line per index
+        :return str: history
         :raises RuntimeWarning: with trailing warning message
         """
 
         using_history = STORAGE.get("history")
 
         if using_history:
-            raise RuntimeWarning("HatSploit history empty.")
+            with open(self.history, 'r') as f:
+                return f.read()
+
         raise RuntimeWarning("No HatSploit history detected.")

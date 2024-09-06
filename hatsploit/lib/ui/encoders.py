@@ -52,15 +52,17 @@ class Encoders(object):
         return {encoder: None for encoder in self.get_encoders()}
 
     @staticmethod
-    def get_encoders(criteria: dict = {}) -> dict:
+    def get_encoders(criteria: dict = {}, query: dict = {}) -> dict:
         """ Get all encoders from local storage.
 
         :param dict criteria: DB search criteria
+        :param dict query: encoder search query
         :return dict: encoders, encoder names as keys and
         encoder objects as items
         """
 
-        return DB(table='encoders').dump(criteria=criteria)
+        return DB(table='encoders').dump(
+            criteria=criteria, query=query)
 
     @staticmethod
     def get_imported_encoders() -> dict:
