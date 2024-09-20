@@ -16,8 +16,6 @@ class ExternalCommand(Command):
                 'Ivan Nikolskiy (enty8080) - command developer',
             ],
             'Description': "Return to the previous module.",
-            'Usage': "back",
-            'MinArgs': 0,
         })
 
         self.modules = Modules()

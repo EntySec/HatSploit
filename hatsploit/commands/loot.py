@@ -11,26 +11,37 @@ from hatsploit.lib.ui.show import Show
 class ExternalCommand(Command):
     def __init__(self):
         super().__init__({
-            'Category': "loot",
+            'Category': "manage",
             'Name': "loot",
             'Authors': [
                 'Ivan Nikolskiy (enty8080) - command developer',
             ],
             'Description': "Manage collected loot.",
-            'Usage': "loot <option> [arguments]",
             'MinArgs': 1,
-            'Options': {
-                'list': ['', "List all collected loot."],
-                'remove': ['<name>', "Remove collected loot."],
-            },
+            'Options': [
+                (
+                    ('-l', '--list'),
+                    {
+                        'help': "List all collected loot.",
+                        'action': 'store_true'
+                    }
+                ),
+                (
+                    ('-r', '--remove'),
+                    {
+                        'help': 'Remove collected loot by name.',
+                        'metavar': 'NAME'
+                    }
+                )
+            ]
         })
 
         self.loot = Loot()
         self.show = Show()
 
     def run(self, args):
-        if args[1] == 'list':
+        if args.list:
             self.show.show_loot(self.loot.list_loot())
 
-        elif args[1] == 'remove':
+        elif args.remove:
             self.loot.remove_loot(args[2])

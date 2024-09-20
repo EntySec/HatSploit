@@ -115,7 +115,7 @@ class MacOS(BaseMixin):
         append = b""
 
         if self.setreuid.value:
-            prepend += self.assemble(
+            prepend += self.__asm__(
                 """
                 setreuid:
                     mov r8b, 0x2
@@ -129,7 +129,7 @@ class MacOS(BaseMixin):
             )
 
         if self.setuid.value:
-            prepend += self.assemble(
+            prepend += self.__asm__(
                 """
                 setuid:
                     mov r8b, 0x2
@@ -142,7 +142,7 @@ class MacOS(BaseMixin):
             )
 
         if self.setregid.value:
-            prepend += self.assemble(
+            prepend += self.__asm__(
                 """
                 setregid:
                     mov r8b, 0x2
@@ -156,7 +156,7 @@ class MacOS(BaseMixin):
             )
 
         if self.setgid.value:
-            prepend += self.assemble(
+            prepend += self.__asm__(
                 """
                 setgid:
                     mov r8b, 0x2
@@ -171,7 +171,7 @@ class MacOS(BaseMixin):
             )
 
         if self.exit.value:
-            append += self.assemble(
+            append += self.__asm__(
                 """
                 exit:
                     mov r8b, 0x2
@@ -196,7 +196,7 @@ class MacOS(BaseMixin):
         append = b""
 
         if self.setreuid.value:
-            prepend += self.assemble(
+            prepend += self.__asm__(
                 """
                 setreuid:
                     xor eax, eax
@@ -209,7 +209,7 @@ class MacOS(BaseMixin):
             )
 
         if self.setuid.value:
-            prepend += self.assemble(
+            prepend += self.__asm__(
                 """
                 setuid:
                     xor eax, eax
@@ -221,7 +221,7 @@ class MacOS(BaseMixin):
             )
 
         if self.setregid.value:
-            prepend += self.assemble(
+            prepend += self.__asm__(
                 """
                 setregid:
                     xor eax, eax
@@ -234,7 +234,7 @@ class MacOS(BaseMixin):
             )
 
         if self.setgid.value:
-            prepend += self.assemble(
+            prepend += self.__asm__(
                 """
                 setgid:
                     xor eax, eax
@@ -246,7 +246,7 @@ class MacOS(BaseMixin):
             )
 
         if self.exit.value:
-            append += self.assemble(
+            append += self.__asm__(
                 """
                 exit:
                     xor eax, eax

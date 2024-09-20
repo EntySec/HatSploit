@@ -17,8 +17,6 @@ class ExternalCommand(Command):
                 'Ivan Nikolskiy (enty8080) - command developer',
             ],
             'Description': "Show available payloads.",
-            'Usage': "payloads",
-            'MinArgs': 0,
         })
 
         self.payloads = Payloads()

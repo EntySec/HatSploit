@@ -60,6 +60,5 @@ class Banner(Config, Badges):
             self.path_config['banners_path'] + banners[random_banner]
         )
 
-        self.set_less(False)
-        self.print_empty(f"%newline%end{banner}%end%newline")
-        self.set_less(True)
+        self.print_empty(f"%newline%end{banner}%end%newline",
+                         log=False, less=False)

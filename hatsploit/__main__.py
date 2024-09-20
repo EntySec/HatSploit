@@ -30,8 +30,6 @@ from hatasm import HatAsm
 from typing import Any, Optional
 from badges import Badges, Tables
 
-from pex.platform import EXEC_FORMATS
-
 from hatsploit.core.base.console import Console
 
 from hatsploit.core.db.db import DB
@@ -393,7 +391,7 @@ class HatSploitGen(HatSploit, Tables, HatAsm):
             '--pack',
             dest='pack',
             action='store_true',
-            help='Pack payload as ELF, PE or Mach-O depending on platform. (required --arch and --platform)',
+            help='Pack payload as a compatible executable format.',
         )
         parser.add_argument(
             '--implant',
@@ -406,7 +404,7 @@ class HatSploitGen(HatSploit, Tables, HatAsm):
             '--assembly',
             dest='assembly',
             action='store_true',
-            help='Show assembly for payloads. (requires --arch)'
+            help='Show assembly for payloads.'
         )
         parser.add_argument(
             '-o',
@@ -414,21 +412,7 @@ class HatSploitGen(HatSploit, Tables, HatAsm):
             dest='output',
             help='Output file to write payload to.'
         )
-        parser.add_argument(
-            '-c',
-            '--custom',
-            dest='custom',
-            help='Specify custom payloads path.'
-        )
         args = parser.parse_args()
-
-        if args.custom:
-            self.print_process(f"Using {args.custom} as custom payload path...")
-
-            Builder().build_payload_database(
-                args.custom, self.path_config['db_path'] + 'custom.json')
-            DB().connect_payload_database(
-                'custom', self.path_config['db_path'] + 'custom.json')
 
         if args.payloads or args.encoders:
             query = ''
@@ -446,24 +430,15 @@ class HatSploitGen(HatSploit, Tables, HatAsm):
                     self.encoders.get_encoders(), query)
 
         elif args.formats:
-            if not args.platform:
-                data = []
+            data = []
 
-                for format in EXEC_FORMATS:
-                    platforms = ', '.join([str(p) for p in EXEC_FORMATS[format]])
-                    data.append((format, platforms))
+            for format in self.get_format():
+                data.append((
+                    format.info['Format'], format.info['Name'],
+                    format.info['Platform']
+                ))
 
-                self.print_table("Formats", ('Format', 'Platforms'), *data)
-
-            else:
-                formats = []
-
-                for format in EXEC_FORMATS:
-                    if args.platform in EXEC_FORMATS[format]:
-                        formats.append(format)
-
-                data = [(args.platform, ', '.join(formats))]
-                self.print_table("Formats", ('Platform', 'Formats'), *data)
+            self.print_table('Output Formats', ('Format', 'Name', 'Platform'), *data)
 
         elif args.payload:
             self.print_process(f"Attempting to generate {args.payload}...")
@@ -493,7 +468,7 @@ class HatSploitGen(HatSploit, Tables, HatAsm):
             payload = self.payloads.generate_payload(
                 args.payload, options, args.encoder, 'implant' if args.implant else 'run')
 
-            if args.pack:
+            if args.pack or args.format:
                 payload = self.payloads.pack_payload(
                     payload, details['Platform'], details['Arch'], args.format)
 

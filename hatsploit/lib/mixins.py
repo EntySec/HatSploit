@@ -40,7 +40,7 @@ class PayloadMixin(DataSet):
         """ Initialize payload mixin.
 
         :param bool inline: payload can be sent as a stream of
-        data without phases or dropping.
+        data without stages or dropping.
         :param bool priority: True to select over other payloads,
         else False
         :param bool force_defaults: use default mixin instead of current

@@ -20,8 +20,6 @@ class ExternalCommand(Command):
                 'Ivan Nikolskiy (enty8080) - command developer',
             ],
             'Description': "Exit HatSploit Framework.",
-            'Usage': "exit",
-            'MinArgs': 0,
         })
 
         self.jobs = Jobs()

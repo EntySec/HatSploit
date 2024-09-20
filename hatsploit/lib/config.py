@@ -74,7 +74,8 @@ class Config(object):
             'payloads_path': f'{self.base_path}payloads/',
             'encoders_path': f'{self.base_path}encoders/',
 
-            'storage_path': f'{self.base_path}config/storage.json'
+            'storage_path': f'{self.base_path}config/storage.json',
+            'shorts_path': f'{self.base_path}config/shorts.json'
         }
 
         self.core_config = STORAGE.get("core_config")

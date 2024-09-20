@@ -32,6 +32,7 @@ from typing import (
 )
 
 from hatsploit.lib.core.session import Session
+from hatsploit.lib.ui.jobs import Job
 
 from pex.proto.http import HTTPListener
 from pex.proto.tcp import TCPClient, TCPListener
@@ -47,7 +48,8 @@ class Handle(Badges):
     """
 
     def listen_server(self, local_host: str, local_port: int,
-                      methods: dict = {}, limit: Optional[int] = None) -> None:
+                      methods: dict = {}, limit: Optional[int] = None,
+                      job: Optional[Job] = None) -> None:
         """ HTTP server.
 
         :param str local_host: local host to start server on
@@ -55,10 +57,22 @@ class Handle(Badges):
         :param dict methods: allowed HTTP methods, names as keys and
         handlers as items
         :param Optional[int] limit: number of connections to accept
+        :param Optional[job] job: job if exists
         :return None: None
         """
 
         listener = HTTPListener(local_host, local_port, methods)
+
+        def shutdown_submethod(server):
+            self.print_process(f"Terminating HTTP listener on port {str(local_port)}...")
+
+            try:
+                server.stop()
+            except RuntimeError:
+                return
+
+        if job:
+            job.set_exit(target=shutdown_submethod, args=(listener,))
 
         self.print_process(f"Starting HTTP listener on port {str(local_port)}...")
         listener.listen()
@@ -70,19 +84,33 @@ class Handle(Badges):
             while True:
                 listener.accept()
 
+        listener.stop()
+
     def listen_session(self, local_host: str, local_port: int,
                        session: Optional[Callable[[], Session]] = None,
-                       timeout: Optional[int] = None) -> Tuple[Union[Session, socket.socket], str]:
+                       timeout: Optional[int] = None, job: Optional[Job] = None) -> Tuple[Union[Session, socket.socket], str]:
         """ TCP listener for specific session handler.
 
         :param str local_host: local host to start server on
         :param int local_port: local port to start server on
         :param Optional[Callable[[], Session]] session: session handler
         :param Optional[int] timeout: timeout for server
+        :param Optional[job] job: job if exists
         :return Tuple[Union[Session, socket.socket], str]: received session and address
         """
 
         listener = TCPListener(local_host, local_port, timeout)
+
+        def shutdown_submethod(server):
+            self.print_process(f"Terminating TCP listener on port {str(local_port)}...")
+
+            try:
+                server.stop()
+            except RuntimeError:
+                return
+
+        if job:
+            job.set_exit(target=shutdown_submethod, args=(listener,))
 
         self.print_process(f"Starting TCP listener on port {str(local_port)}...")
 

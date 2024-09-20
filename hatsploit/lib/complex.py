@@ -29,7 +29,17 @@ from pex.post.method import select_method
 
 from pex.platform import *
 
-from hatsploit.lib.ui.option import Option, IPv4Option, PortOption
+from hatsploit.lib.ui.option import (
+    Option,
+    IPv4Option,
+    PortOption
+)
+
+from hatsploit.lib.core.payload.const import (
+    ONE_SIDE,
+    REVERSE_TCP
+)
+
 from hatsploit.lib.ui.modules import Modules
 from hatsploit.lib.ui.payloads import Payloads
 from hatsploit.lib.ui.encoders import Encoders
@@ -126,7 +136,7 @@ class PayloadOption(Option):
         super().__init__(*args, **kwargs)
 
         self.payload = None
-        self.phase = None
+        self.stage = None
 
         self.info = {}
         self.criteria = {}
@@ -144,23 +154,23 @@ class PayloadOption(Option):
         self.payloads = Payloads()
         self.encoders = Encoders()
 
-    def run(self, method: str = 'run', phase: bool = False) -> Union[Any, None]:
+    def run(self, method: str = 'run', stage: bool = False) -> Union[Any, None]:
         """ Run current payload.
 
         :param str method: payload object method
-        :param bool phase: run phase instead of payload
+        :param bool stage: run stage instead of payload
         :return Union[Any, None]: generated payload or None
         """
 
         payload = self.payload
 
-        if phase:
-            payload = self.phase
+        if stage:
+            payload = self.stage
 
         if not payload:
             return b''
 
-        if phase:
+        if stage:
             for option in self.payload.options:
                 payload.set(option, self.payload.options[option].value)
 
@@ -205,18 +215,19 @@ class PayloadOption(Option):
         self.info.update(self.payload.info)
         self.value = value
 
-        phase = self.payload.info['Phase']
+        stage = self.payload.info['Stage']
 
-        if not phase:
-            phase = '/'.join((str(self.info['Platform']),
+        if not stage:
+            stage = '/'.join((str(self.info['Platform']),
                               str(self.info['Arch']),
-                              str(self.info['Type'])))
+                              self.info['Type'] if self.info['Type'] != ONE_SIDE
+                              else REVERSE_TCP))
 
-        if not self.payloads.check_exist(phase):
+        if not self.payloads.check_exist(stage):
             return
 
-        self.payloads.add_payload(module, phase)
-        self.phase = self.payloads.get_module_payload(phase, module)
+        self.payloads.add_payload(module, stage)
+        self.stage = self.payloads.get_module_payload(stage, module)
 
 
 class EncoderOption(Option):

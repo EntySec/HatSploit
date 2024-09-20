@@ -25,7 +25,7 @@ SOFTWARE.
 import os
 
 from hatsploit.lib.config import Config
-from hatsploit.lib.storage import GlobalStorage
+from hatsploit.lib.storage import GlobalStorage, STORAGE
 
 
 class Log(object):
@@ -59,3 +59,18 @@ class Log(object):
 
         self.global_storage.set("log", None)
         self.global_storage.set_all()
+
+    def get_log(self) -> str:
+        """ Get log if enabled.
+
+        :return str: log data
+        :raises RuntimeWarning: with trailing warning message
+        """
+
+        using_log = STORAGE.get("log")
+
+        if using_log:
+            with open(using_log, 'r') as f:
+                return f.read()
+
+        raise RuntimeWarning("No HatSploit log detected.")

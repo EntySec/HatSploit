@@ -23,7 +23,6 @@ SOFTWARE.
 """
 
 from typing import Optional
-from hatasm import HatAsm
 
 from hatsploit.lib.ui.option import BytesOption, BooleanOption
 from hatsploit.lib.ui.options import Options
@@ -54,8 +53,8 @@ class Payload(BaseMixin, Options):
             'Description': "",
             'Arch': None,
             'Platform': None,
-            'Phased': False,
-            'Phase': '',
+            'Staged': False,
+            'Stage': '',
             'Type': None,
             'Conversion': {
             },
@@ -67,10 +66,10 @@ class Payload(BaseMixin, Options):
         self.options = {}
         self.advanced = {}
 
-        self.phased = BooleanOption(
-            'Phased',
+        self.staged = BooleanOption(
+            'Staged',
             'no',
-            "Send phase instead of whole payload.",
+            "Send stage instead of whole payload.",
             False,
             advanced=True
         )
@@ -97,12 +96,3 @@ class Payload(BaseMixin, Options):
         """
 
         return
-
-    def assemble(self, code: str, *args, **kwargs) -> bytes:
-        """ Assemble assembly code using current architecture.
-
-        :param str code: assembly code
-        :return bytes: assembled code
-        """
-
-        return HatAsm().assemble(self.info['Arch'], code, *args, **kwargs)

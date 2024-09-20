@@ -131,7 +131,7 @@ class Show(Badges, Tables):
 
         for plugin in sorted(plugins):
             data.append(
-                (number, plugin, plugin[plugin].info['Name'])
+                (number, plugin, plugins[plugin].info['Name'])
             )
 
             shorts.update({
@@ -317,9 +317,6 @@ class Show(Badges, Tables):
         for plugin in sorted(plugins):
             plugin = plugins[plugin]
 
-            if keyword not in plugin['BaseName'] + plugin['Name']:
-                continue
-
             data.append(
                 (number, plugin['BaseName'].replace(keyword, f'%red{keyword}%end'),
                  plugin['Name'].replace(keyword, f'%red{keyword}%end'))
@@ -354,9 +351,6 @@ class Show(Badges, Tables):
         for encoder in sorted(encoders):
             encoder = encoders[encoder]
 
-            if keyword not in encoder['BaseName'] + encoder['Name']:
-                continue
-
             data.append(
                 (number, encoder['BaseName'].replace(keyword, f'%red{keyword}%end'),
                  encoder['Name'].replace(keyword, f'%red{keyword}%end'))
@@ -390,9 +384,6 @@ class Show(Badges, Tables):
 
         for module in sorted(modules):
             module = modules[module]
-
-            if keyword not in module['BaseName'] + module['Name']:
-                continue
 
             data.append(
                 (number, module['Category'],
@@ -429,9 +420,6 @@ class Show(Badges, Tables):
 
         for payload in sorted(payloads):
             payload = payloads[payload]
-
-            if keyword not in payload['BaseName'] + payload['Name']:
-                continue
 
             data.append(
                 (number,
@@ -519,25 +507,69 @@ class Show(Badges, Tables):
 
         Description:
           %s
-
-        References:
-          %s
         """)
 
         authors = '\n  '.join(details['Authors'])
-        desc = fill(details['Description'], width=50,
+        name = details.get('BaseName', details.get('Module', 'Unnamed'))
+
+        desc = dedent(details['Description']).strip()
+        desc = fill(desc, width=70,
                     subsequent_indent='  ')
+
+        style = style % (details['Name'], name, details['Platform'],
+                         details['Rank'], authors, desc)
+
         refs = []
+
         for ref in details['References']:
             for key, value in ref.items():
                 refs.append(f'{key}: {str(value)}')
 
-        refs = '\n  '.join(refs)
+        if refs:
+            refs = '\n  '.join(refs)
 
-        self.print_empty(
-            style % (details['Name'], details['Module'], details['Platform'],
-                     details['Rank'], authors, desc, refs)
-        )
+            style += dedent(f"""
+            References:
+              %s
+            """) % refs
+
+        if details['Devices']:
+            devices = '\n  '.join(details['Devices'])
+
+            style += dedent(f"""
+            Devices:
+              %s
+            """) % devices
+
+        effects = details['Notes'].get('SideEffects', [])
+        stability = details['Notes'].get('Stability', [])
+        reliability = details['Notes'].get('Reliability', [])
+
+        if effects:
+            effects = '\n  '.join(effects)
+
+            style += dedent(f"""
+            Side effects:
+              %s
+            """) % effects
+
+        if stability:
+            stability = '\n  '.join(stability)
+
+            style += dedent(f"""
+            Stability:
+              %s
+            """) % stability
+
+        if reliability:
+            reliability = '\n  '.join(reliability)
+
+            style += dedent(f"""
+            Reliability:
+              %s
+            """) % reliability
+
+        self.print_empty(style)
 
     def show_options_table(self, title: str, options: dict) -> None:
         """ Show options for specific title.

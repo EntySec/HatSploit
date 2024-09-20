@@ -36,8 +36,6 @@ class ExternalCommand(Command):
                 'Ivan Nikolskiy (enty8080) - command developer',
             ],
             'Description': "Open Python shell.",
-            'Usage': "pyshell",
-            'MinArgs': 0,
         })
 
     def run(self, _):

@@ -22,6 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
+import json
 import sqlite3
 
 from typing import Optional
@@ -89,28 +90,48 @@ class DB(object):
 
         return result[0]
 
-    def dump(self, criteria: dict = {}) -> list:
+    def dump(self, criteria: dict = {}, query: dict = {}) -> list:
         """ Dump database table contents.
 
         :param dict criteria: criteria
         (key - field name, value - expected value)
+        :param dict query: row search query
         :return list: contents
         """
 
-        query = ''
+        db_query = ''
 
         if criteria:
-            query = ' WHERE '
-            query += ' AND '.join([f'{entry}="{str(value)}"' for entry, value in criteria.items()])
+            db_query = ' WHERE '
+            db_query += ' AND '.join([f'{entry}="{str(value)}"' for entry, value in criteria.items()])
 
-        query = self.cursor.execute(f'SELECT * FROM "{self.table}"' + query)
-        result = query.fetchall()
+        db_query = self.cursor.execute(f'SELECT * FROM "{self.table}"' + db_query)
+        result = db_query.fetchall()
 
         data = {}
 
         for entry in result:
             row = dict(entry)
-            data[row['BaseName']] = row
+
+            for key, value in row.copy().items():
+                if key.startswith('j'):
+                    row[key[1:]] = json.loads(value)
+
+            found = 0
+
+            for key, value in query.items():
+                if isinstance(value, list):
+                    for item in value:
+                        if key in row and item in row[key]:
+                            found += 1
+                            break
+
+                else:
+                    if key in row and value in row[key]:
+                        found += 1
+
+            if found >= len(query) or not query:
+                data[row['BaseName']] = row
 
         return data
 

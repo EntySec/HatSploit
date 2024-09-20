@@ -17,8 +17,6 @@ class ExternalCommand(Command):
                 'Ivan Nikolskiy (enty8080) - command developer',
             ],
             'Description': "Show module information.",
-            'Usage': "info [<module>]",
-            'MinArgs': 0,
         })
 
         self.modules = Modules()

@@ -39,13 +39,10 @@ class ExternalCommand(Command):
                 self.console.delete_external(command)
 
         self.modules.use_module(args[1])
-
         module = self.modules.get_current_module()
-        commands = {}
 
         for command in module.commands:
-            commands[command] = module.commands[command]
-            commands[command]['Method'] = getattr(module, command)
-            commands[command]['Category'] = 'module'
+            command.info['Method'] = getattr(module, command.info['Name'])
+            command.info['Category'] = 'module'
 
-        self.console.add_external(commands)
+        self.console.add_external(module.commands)

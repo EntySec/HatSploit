@@ -16,26 +16,29 @@ class ExternalCommand(Command):
                 'Ivan Nikolskiy (enty8080) - command developer',
             ],
             'Description': "Manage database.",
-            'Usage': "db <option> [arguments]",
-            'MinArgs': 1,
-            'Options': {
-                'build': [
-                    '[modules|plugins|payloads|encoders] <path>',
-                    "Build database from path."
-                ],
-            },
+            'Options': [
+                (
+                    ('-t', '--table'),
+                    {
+                        'help': 'Table to use for DB.',
+                        'choices': ('modules', 'plugins', 'payloads', 'encoders'),
+                        'required': True
+                    }
+                ),
+                (
+                    ('-b', '--build'),
+                    {
+                        'help': 'Build database to output path.',
+                    }
+                )
+            ]
         })
 
-    def rpc(self, *args):
-        if len(args) < 1:
+    def run(self, args):
+        if args.build:
+            db = DB(table=args.table)
+            db.build(args.build)
+
             return
 
-        elif args[0] == 'build':
-            if len(args) >= 3:
-                db = DB(table=args[1])
-                db.build(args[2])
-
-    def run(self, args):
-        if args[1] == 'build':
-            db = DB(table=args[2])
-            db.build(args[3])
+        return True

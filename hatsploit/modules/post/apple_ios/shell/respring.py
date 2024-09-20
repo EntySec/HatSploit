@@ -15,9 +15,7 @@ class HatSploitModule(Module):
             'Authors': [
                 "Ivan Nikolskiy (enty8080) - module developer",
             ],
-            'Description': (
-                "Restart iOS SpringBoard.app through shell."
-            ),
+            'Description': "Restart iOS SpringBoard.app through shell.",
             'Platform': OS_IPHONE,
             'Rank': MEDIUM_RANK,
         })

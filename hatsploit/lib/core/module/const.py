@@ -22,33 +22,27 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
-SIDE_EFFECTS = 1000
-
 """
 Side Effects
 """
 
-ARTIFACTS_ON_DISK = SIDE_EFFECTS + 1
-IOC_IN_LOGS = SIDE_EFFECTS + 2
-
-STABILITY = 2000
+ARTIFACTS_ON_DISK = "Module leaves artifacts on disk"
+IOC_IN_LOGS = "Module produces IOC in logs"
 
 """
 Stability
 """
 
-CRASH_SAFE = STABILITY + 1
-CRASH_DOWN = STABILITY + 2
-ACCOUNT_LOCKOUTS = STABILITY + 3
-
-RELIABILITY = 3000
+CRASH_SAFE = "Module does not crash target"
+CRASH_DOWN = "Module might/does crash target"
+ACCOUNT_LOCKOUTS = "Module causes account lockout"
 
 """
 Reliability
 """
 
-RELIABLE_SESSION = RELIABILITY + 1
-WEAK_SESSION = RELIABILITY + 2
+RELIABLE_SESSION = "Module spawns reliable session"
+WEAK_SESSION = "Module spawns weak (unstable) session"
 
 HIGH_RANK = "high"
 MEDIUM_RANK = "medium"

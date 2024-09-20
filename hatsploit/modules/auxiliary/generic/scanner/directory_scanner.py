@@ -18,9 +18,7 @@ class HatSploitModule(Module, HTTP):
             'Authors': [
                 "Ivan Nikolskiy (enty8080) - module developer",
             ],
-            'Description': (
-                "Website directory scanner."
-            ),
+            'Description': "Website directory scanner.",
             'Platform': OS_GENERIC,
             'Rank': MEDIUM_RANK,
         })

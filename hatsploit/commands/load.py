@@ -27,11 +27,9 @@ class ExternalCommand(Command):
 
     def run(self, args):
         plugin = self.plugins.load_plugin(args[1])
-        commands = {}
 
         for command in plugin.commands:
-            commands[command] = plugin.commands[command]
-            commands[command]['Method'] = getattr(plugin, command)
-            commands[command]['Category'] = plugin.info['Plugin']
+            command.info['Method'] = getattr(plugin, command.info['Name'])
+            command.info['Category'] = plugin.info['Plugin']
 
-        self.console.add_external(commands)
+        self.console.add_external(plugin.commands)

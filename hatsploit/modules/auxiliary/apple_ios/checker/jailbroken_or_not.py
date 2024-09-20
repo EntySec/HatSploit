@@ -16,9 +16,7 @@ class HatSploitModule(Module, TCP):
             'Authors': [
                 "Ivan Nikolskiy (enty8080) - module developer",
             ],
-            'Description': (
-                "Check if remote iPhone jailbroken."
-            ),
+            'Description': "Check if remote iPhone jailbroken.",
             'Platform': OS_IPHONE,
             'Rank': LOW_RANK,
         })

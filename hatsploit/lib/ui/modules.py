@@ -26,12 +26,17 @@ import sys
 import traceback
 import copy
 
-from typing import Union, Optional, Callable
+from typing import (
+    Union,
+    Optional,
+    Callable
+)
 
 from badges import Badges
 
 from hatsploit.core.db.db import DB
 
+from hatsploit.lib.ui.jobs import Jobs
 from hatsploit.lib.ui.payloads import Payloads
 from hatsploit.lib.ui.sessions import Sessions
 from hatsploit.lib.ui.encoders import Encoders
@@ -63,15 +68,17 @@ class Modules(Badges):
         return {module: None for module in self.get_modules()}
 
     @staticmethod
-    def get_modules(criteria: dict = {}) -> dict:
+    def get_modules(criteria: dict = {}, query: dict = {}) -> dict:
         """ Get all modules from local storage.
 
         :param dict criteria: DB search criteria
+        :param dict query: module search query
         :return dict: modules, module names as keys and
         module objects as items
         """
 
-        return DB(table='modules').dump(criteria=criteria)
+        return DB(table='modules').dump(
+            criteria=criteria, query=query)
 
     @staticmethod
     def get_imported_modules() -> dict:
@@ -597,7 +604,10 @@ class Modules(Badges):
 
             self.print_success(
                 f"{module_name.split('/')[0].title()} module completed!")
+            Jobs().stop_jobs(module=module_name)
 
         except (KeyboardInterrupt, EOFError):
+            Jobs().stop_jobs(module=module_name)
+
             raise RuntimeWarning(
                 f"{module_name.split('/')[0].title()} module interrupted.")

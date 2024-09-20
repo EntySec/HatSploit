@@ -14,10 +14,10 @@ class HatSploitPayload(Payload, Handler):
             'Authors': [
                 "Ivan Nikolskiy (enty8080) - payload developer",
             ],
-            'Description': (
-                "This payload creates an interactive bind TCP shell for Linux "
-                "with AARCH64 architecture."
-            ),
+            'Description': """
+                This payload creates an interactive bind TCP shell for Linux
+                with AARCH64 architecture.
+            """,
             'Arch': ARCH_AARCH64,
             'Platform': OS_LINUX,
             'Type': BIND_TCP,
@@ -27,7 +27,7 @@ class HatSploitPayload(Payload, Handler):
                             advanced=True)
 
     def implant(self):
-        return self.assemble(
+        return self.__asm__(
             f"""
             bl start
 
@@ -56,7 +56,7 @@ class HatSploitPayload(Payload, Handler):
         )
 
     def run(self):
-        return self.assemble(
+        return self.__asm__(
             f"""
             bl start
 

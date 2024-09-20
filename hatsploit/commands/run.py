@@ -19,12 +19,22 @@ class ExternalCommand(Command):
                 'Ivan Nikolskiy (enty8080) - command developer',
             ],
             'Description': "Run current module.",
-            'Usage': "run [option]",
-            'MinArgs': 0,
-            'Options': {
-                'job': ['', "Run current module as a background job."],
-                'cycle': ['', "Run current module in cycle."],
-            },
+            'Options': [
+                (
+                    ('-j', '--job'),
+                    {
+                        'help': "Run current module as a job.",
+                        'action': 'store_true'
+                    }
+                ),
+                (
+                    ('-l', '--loop'),
+                    {
+                        'help': "Run current module in loop.",
+                        'action': 'store_true'
+                    }
+                )
+            ]
         })
 
         self.modules = Modules()
@@ -39,7 +49,7 @@ class ExternalCommand(Command):
             self.print_warning("No module selected.")
             return
 
-        if len(args) > 1 and args[1] == '-j':
+        if args.job:
             self.print_process("Running module as a background job...")
 
             self.sessions.disable_auto_interaction()
@@ -47,8 +57,8 @@ class ExternalCommand(Command):
 
             job_id = self.jobs.count_jobs()
 
-            if len(args) > 2 and args[2] == '-c':
-                self.print_process("Requesting module to run in cycle...")
+            if args.loop:
+                self.print_process("Requesting module to run in loop...")
 
                 self.jobs.create_job(
                     module.info['Name'],
@@ -68,13 +78,14 @@ class ExternalCommand(Command):
             self.print_information(
                 f"Module started as a background job {str(job_id)}."
             )
-        elif len(args) > 1 and args[1] == '-c':
-            self.print_process("Requesting module to run in cycle...")
+
+        elif args.loop:
+            self.print_process("Requesting module to run in loop...")
 
             self.sessions.disable_auto_interaction()
             self.print_warning("Disabled auto interaction with sessions.")
 
-            if len(args) > 2 and args[2] == '-j':
+            if args.job:
                 self.print_process("Running module as a background job...")
 
                 job_id = self.jobs.count_jobs()

