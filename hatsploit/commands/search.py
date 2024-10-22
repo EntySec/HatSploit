@@ -34,9 +34,15 @@ class ExternalCommand(Command):
                 (
                     ('-f', '--filter'),
                     {
-                        'help': 'Filter search result separated by comma (e.g. CVE:2020-12345)',
+                        'help': 'Filter search result separated by comma ('
+                                'filters: CVE; EDB; URL)',
                     }
                 ),
+            ],
+            'Examples': [
+                "search -f CVE:2013-7389 dlink",
+                "search -f CVE:2013-7389 ''"
+                "search apple_ios"
             ]
         })
 
@@ -47,9 +53,12 @@ class ExternalCommand(Command):
         self.plugins = Plugins()
 
     def run(self, args):
-        filter = {
-            'BaseName': args.keyword,
-        }
+        filter = {}
+
+        if args.keyword:
+            filter.update({
+                'BaseName': args.keyword,
+            })
 
         if args.filter:
             for query in args.filter.split(','):

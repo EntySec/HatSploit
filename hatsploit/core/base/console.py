@@ -137,8 +137,8 @@ class Console(Cmd):
             header += (
                 "--==--=[ Developed by EntySec (%linehttps://entysec.com%end)\n"
             )
-            header += f"    --=[ {DB(table='modules').count()} modules | {DB(table='payloads').count()} payloads "
-            header += f"| {DB(table='encoders').count()} encoders | {DB(table='plugins').count()} plugins"
+            header += f"    --=[ %red{DB(table='modules').count()}%end modules | %blue{DB(table='payloads').count()}%end payloads "
+            header += f"| %green{DB(table='encoders').count()}%end encoders | %yellow{DB(table='plugins').count()}%end plugins"
             header += "%end"
 
             self.print_empty(header, log=False, less=False)

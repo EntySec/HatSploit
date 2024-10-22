@@ -90,12 +90,13 @@ class Show(Badges, Tables):
             raise RuntimeWarning("No opened sessions available.")
 
         data = []
-        headers = ("ID", "Platform", "Arch", "Type", "Host", "Port")
+        headers = ("ID", "Platform", "Arch", "Type", "Host", "Port", "Time")
 
         for session_id, session in sessions.items():
             data.append(
                 (session_id, session.info['Platform'], session.info['Arch'],
-                 session.info['Type'], session.info['Host'], session.info['Port'])
+                 session.info['Type'], session.info['Host'], session.info[
+                     'Port'], session.info['Time'])
             )
 
         self.print_table("Opened Sessions", headers, *data)

@@ -99,6 +99,7 @@ class MacOS(BaseMixin):
 
         if self.info['Arch'] == ARCH_X64:
             return self.apply_x64(payload)
+
         elif self.info['Arch'] == ARCH_X86:
             return self.apply_x86(payload)
 

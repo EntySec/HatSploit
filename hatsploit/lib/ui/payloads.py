@@ -393,7 +393,13 @@ class Payloads(HatAsm):
             raise RuntimeError(
                 f"Payload does not have method: {method}!")
 
-        code = prepend + getattr(payload, method)() + append
+        code = getattr(payload, method)()
+
+        if type(prepend) == type(code):
+            code = prepend + code
+
+        if type(append) == type(code):
+            code += append
 
         if hasattr(payload, 'apply'):
             code = payload.apply(code)
