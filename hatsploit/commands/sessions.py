@@ -48,7 +48,7 @@ class ExternalCommand(Command):
                     ('-i', '--interact'),
                     {
                         'help': "Interact specified session.",
-                        'action': 'store_true'
+                        'type': int
                     }
                 ),
                 (
@@ -92,7 +92,7 @@ class ExternalCommand(Command):
             return
 
         if args.autoflag:
-            if args.autoflags == 'yes':
+            if args.autoflag == 'yes':
                 self.sessions.enable_auto_interaction()
             else:
                 self.sessions.disable_auto_interaction()

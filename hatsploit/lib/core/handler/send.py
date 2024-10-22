@@ -81,7 +81,7 @@ class Send(Handle, Jobs):
 
         if type == ONE_SIDE:
             if not payload.payload.staged.value and not staged:
-                raise RuntimeWarning("Payload sent, but no session was opened.")
+                return
 
             if not host or not port:
                 raise RuntimeError("Reverse TCP requires host and port set!")
@@ -92,7 +92,7 @@ class Send(Handle, Jobs):
                 raise RuntimeError("Reverse TCP received corrupted session!")
 
             self.send_all(payload, client)
-            raise RuntimeWarning("Payload sent, but no session was opened.")
+            return
 
         elif type == REVERSE_TCP:
             if not host or not port:

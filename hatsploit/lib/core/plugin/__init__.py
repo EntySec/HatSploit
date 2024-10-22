@@ -59,3 +59,11 @@ class Plugin(BaseMixin):
         """
 
         return
+
+    def unload(self) -> None:
+        """ Unload this plugin.
+
+        :return None: None
+        """
+
+        return

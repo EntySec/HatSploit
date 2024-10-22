@@ -47,7 +47,8 @@ class Session(BaseMixin):
             'Arch': None,
             'Type': "",
             'Host': "",
-            'Port': None
+            'Port': None,
+            'Time': "",
         }
         details.update(info)
 

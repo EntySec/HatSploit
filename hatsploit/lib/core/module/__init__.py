@@ -89,3 +89,19 @@ class Module(BaseMixin, Options):
         """
 
         return
+
+    def use(self) -> None:
+        """ Do something when module is used.
+
+        :return None: None
+        """
+
+        return
+
+    def unuse(self) -> None:
+        """ Do something when module is switched.
+
+        :return None: None
+        """
+
+        return

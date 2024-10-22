@@ -36,10 +36,13 @@ class HatSploitPlugin(Plugin):
     def get_border(lines, index):
         if len(lines) < 2:
             return ["<", ">"]
+
         if index == 0:
             return ["/", "\\"]
+
         if index == len(lines) - 1:
             return ["\\", "/"]
+
         return ["|", "|"]
 
     @staticmethod
@@ -56,16 +59,20 @@ class HatSploitPlugin(Plugin):
     def normalize_text(message, length):
         lines = textwrap.wrap(message, length)
         maxlen = len(max(lines, key=len))
+
         return [line.ljust(maxlen) for line in lines]
 
     def build_bubble(self, message, length=40):
         bubble = []
+
         lines = self.normalize_text(message, length)
         bordersize = len(lines[0])
         bubble.append(" __" + "_" * bordersize)
+
         for index, line in enumerate(lines):
             border = self.get_border(lines, index)
             bubble.append("%s %s %s" % (border[0], line, border[1]))
+
         bubble.append(" --" + "-" * bordersize)
         return "\n".join(bubble)
 
@@ -76,3 +83,7 @@ class HatSploitPlugin(Plugin):
     def load(self):
         self.cowsay(["cowsay", "Cow here, moo!"])
         self.print_information("Use %greencowsay%end to call me.")
+
+    def unload(self):
+        self.cowsay(["cowsay", "Bye Bye :("])
+        self.print_information("Cow left crying...")

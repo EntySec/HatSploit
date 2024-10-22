@@ -271,6 +271,8 @@ class Modules(Badges):
         if self.check_imported(module):
             module_object = imported_modules[module]
             self.add_to_global(module_object)
+
+            module_object.use()
             return
 
         module_object = self.import_module(module)
@@ -303,6 +305,7 @@ class Modules(Badges):
 
         module_object()
         module_object.update()
+        module_object.use()
 
     def add_to_global(self, module: Module) -> None:
         """ Allocate space in local storage for module object.
@@ -316,8 +319,9 @@ class Modules(Badges):
             current_module.append(module)
 
             STORAGE.set("current_module", current_module)
-        else:
-            STORAGE.set("current_module", [module])
+            return
+
+        STORAGE.set("current_module", [module])
 
     def go_back(self) -> None:
         """ Go back to the previous module in the local storage.
@@ -325,7 +329,11 @@ class Modules(Badges):
         :return None: None
         """
 
-        if self.get_current_module():
+        module_object = self.get_current_module()
+
+        if module_object:
+            module_object.unuse()
+
             current_module = STORAGE.get("current_module")
             current_module.pop()
 

@@ -134,8 +134,10 @@ class Linux(BaseMixin):
 
         if self.info['Arch'] == ARCH_X64:
             return self.apply_x64(payload)
+
         elif self.info['Arch'] == ARCH_X86:
             return self.apply_x86(payload)
+
         elif self.info['Arch'] in [ARCH_ARMLE, ARCH_ARMBE]:
             return self.apply_arm(payload)
 

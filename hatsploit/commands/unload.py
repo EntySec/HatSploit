@@ -26,7 +26,11 @@ class ExternalCommand(Command):
         return self.plugins.loaded_plugins_completer()
 
     def run(self, args):
-        plugin = self.plugins.get_loaded_plugins()[args[1]]
+        plugin = self.plugins.get_loaded_plugins().get(args[1], None)
+
+        if not plugin:
+            self.print_error(f"Plugin is not loaded: {args[1]}!")
+            return
 
         for command in plugin.commands:
             self.console.delete_external(command)

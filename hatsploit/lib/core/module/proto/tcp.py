@@ -23,6 +23,7 @@ SOFTWARE.
 """
 
 from hatsploit.lib.base import BaseMixin
+from hatsploit.lib.handle import Handle
 
 from pex.proto.tcp import (
     TCPClient,
@@ -81,14 +82,15 @@ class TCP(BaseMixin):
             timeout=self.timeout.value
         )
 
-    def listen_tcp(self) -> TCPListener:
+    def listen_tcp(self) -> None:
         """ Start TCP listener.
 
-        :return TCPListener: TCP listener
+        :return None: None
         """
 
-        return TCPListener(
-            host=self.host.value,
-            port=self.port.value,
-            timeout=self.timeout.value
+        return Handle().listen_session(
+            local_host=self.host.value,
+            local_port=self.port.value,
+            timeout=self.timeout.value,
+            *args, **kwargs
         )

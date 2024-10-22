@@ -23,6 +23,8 @@ SOFTWARE.
 """
 
 from hatsploit.lib.base import BaseMixin
+from hatsploit.lib.handle import Handle
+
 from pex.proto.http import HTTPClient, HTTPListener
 
 from hatsploit.lib.ui.option import (
@@ -68,14 +70,14 @@ class HTTP(BaseMixin):
             *args, **kwargs
         )
 
-    def listen_http(self, *args, **kwargs) -> HTTPListener:
+    def listen_http(self, *args, **kwargs) -> None:
         """ Start HTTP listener.
 
-        :return HTTPListener: HTTP listener
+        :return None: None
         """
 
-        return HTTPListener(
-            host=self.host.value,
-            port=self.port.value,
+        Handle().listen_server(
+            local_host=self.host.value,
+            local_port=self.port.value,
             *args, **kwargs
         )

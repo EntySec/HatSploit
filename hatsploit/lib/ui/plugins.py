@@ -182,6 +182,9 @@ class Plugins(object):
                     plugin = plugin_shorts[plugin_number]
 
         if self.check_loaded(plugin):
+            plugin_object = self.get_loaded_plugins()[plugin]
+            plugin_object.unload()
+
             STORAGE.delete_element("loaded_plugins", plugin)
 
         else:
