@@ -69,7 +69,15 @@ class Console(Cmd):
             console=self,
             log=self.log,
             shorts=json.load(
-                open(self.config.path_config['shorts_path']))
+                open(self.config.path_config['shorts_path'])),
+            builtins={
+                '*': [
+                    'info',
+                    'show targets',
+                    'show options',
+                    'show advanced'
+                ]
+            }
         )
 
         self.runtime = Runtime()
