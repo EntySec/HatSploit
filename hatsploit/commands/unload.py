@@ -32,7 +32,5 @@ class ExternalCommand(Command):
             self.print_error(f"Plugin is not loaded: {args[1]}!")
             return
 
-        for command in plugin.commands:
-            self.console.delete_external(command)
-
+        self.console.delete_external(plugin.commands)
         self.plugins.unload_plugin(args[1])
