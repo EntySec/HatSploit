@@ -35,8 +35,7 @@ class ExternalCommand(Command):
         module = self.modules.get_current_module()
 
         if module:
-            for command in module.commands:
-                self.console.delete_external(command)
+            self.console.delete_external(module.commands)
 
         self.modules.use_module(args[1])
         module = self.modules.get_current_module()
