@@ -48,7 +48,7 @@ class ExternalCommand(Command):
                     ('-i', '--interact'),
                     {
                         'help': "Interact specified session.",
-                        'type': int
+                        'action': 'store_true'
                     }
                 ),
                 (
