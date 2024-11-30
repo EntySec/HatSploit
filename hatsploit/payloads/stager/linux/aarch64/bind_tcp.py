@@ -25,7 +25,7 @@ class HatSploitPayload(Payload, Handler):
 
         self.reliable = BooleanOption('StageReliable', 'no', "Add error checks to payload.",
                                       False, advanced=True)
-        self.length = IntegerOption('StageLength', 4096, "Length of next stage.",
+        self.length = IntegerOption('StageLength', 4096, "Length of next stage (empty to read length).",
                                     False, advanced=True)
 
     def run(self):
