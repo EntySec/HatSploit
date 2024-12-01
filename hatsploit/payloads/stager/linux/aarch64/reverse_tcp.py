@@ -110,13 +110,13 @@ class HatSploitPayload(Payload, Handler):
                 beq fail
             """
 
-        if not self.length.value:
-            assembly += """
-                ldr w4, [sp]
-            """
-        else:
+        if self.length.value:
             assembly += f"""
                 mov x4, {hex(self.length.value)}
+            """
+        else:
+            assembly += """
+                ldr w4, [sp]
             """
 
         assembly += f"""

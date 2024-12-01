@@ -136,6 +136,9 @@ class Send(Handle, Jobs):
         step = 0
         send_length = True
 
+        if hasattr(payload.stager, 'length') and payload.stager.length.value:
+            send_length = False
+
         while True:
             step_method = '' if not step else str(step)
 
@@ -242,7 +245,7 @@ class Send(Handle, Jobs):
         staged = len(buffer) > space or payload.payload.staged.value
 
         if staged:
-            stage = payload.run(stage=True)
+            stage = payload.run(stager=True)
 
             if not stage:
                 raise RuntimeError("No stage available for this payload!")
@@ -388,7 +391,7 @@ class Send(Handle, Jobs):
         staged = len(buffer) > space or payload.payload.staged.value
 
         if staged:
-            stage = payload.run(stage=True)
+            stage = payload.run(stager=True)
 
             if not stage:
                 raise RuntimeError("No stage available for this payload!")

@@ -136,7 +136,7 @@ class PayloadOption(Option):
         super().__init__(*args, **kwargs)
 
         self.payload = None
-        self.stage = None
+        self.stager = None
 
         self.info = {}
         self.criteria = {}
@@ -154,23 +154,23 @@ class PayloadOption(Option):
         self.payloads = Payloads()
         self.encoders = Encoders()
 
-    def run(self, method: str = 'run', stage: bool = False) -> Union[Any, None]:
+    def run(self, method: str = 'run', stager: bool = False) -> Union[Any, None]:
         """ Run current payload.
 
         :param str method: payload object method
-        :param bool stage: run stage instead of payload
+        :param bool stager: generate stager instead of payload
         :return Union[Any, None]: generated payload or None
         """
 
         payload = self.payload
 
-        if stage:
-            payload = self.stage
+        if stager:
+            payload = self.stager
 
         if not payload:
             return b''
 
-        if stage:
+        if stager:
             for option in self.payload.options:
                 payload.set(option, self.payload.options[option].value)
 
@@ -227,7 +227,7 @@ class PayloadOption(Option):
             return
 
         self.payloads.add_payload(module, stage)
-        self.stage = self.payloads.get_module_payload(stage, module)
+        self.stager = self.payloads.get_module_payload(stage, module)
 
 
 class EncoderOption(Option):
